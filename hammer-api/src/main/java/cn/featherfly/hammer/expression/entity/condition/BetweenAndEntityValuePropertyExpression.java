@@ -13,6 +13,16 @@ import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunctio
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.hammer.expression.condition.field.value.SetDateExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetDoubleExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetEnumExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetIntExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalDateExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalDateTimeExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetLocalTimeExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetLongExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetNumberExpression2;
+import cn.featherfly.hammer.expression.condition.field.value.SetStringExpression2;
 
 /**
  * The Interface BetweenAndEntityValuePropertyExpression.
@@ -23,270 +33,88 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 public interface BetweenAndEntityValuePropertyExpression<T> {
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <R>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    ConditionEntityExpressionIntPropertyExpression2 property(SerializableToIntFunction<T> name);
+    SetIntExpression2 property(SerializableToIntFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <R>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    ConditionEntityExpressionLongPropertyExpression2 property(SerializableToLongFunction<T> name);
+    SetLongExpression2 property(SerializableToLongFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <R>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    ConditionEntityExpressionDoublePropertyExpression2 property(SerializableToDoubleFunction<T> name);
+    SetDoubleExpression2 property(SerializableToDoubleFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <D>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    <D extends Date> ConditionEntityExpressionDatePropertyExpression2<D> property(
-            SerializableToDateFunction<T, D> name);
+    <D extends Date> SetDateExpression2<D> property(SerializableToDateFunction<T, D> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    ConditionEntityExpressionLocalDatePropertyExpression2 property(SerializableToLocalDateFunction<T> name);
+    SetLocalDateExpression2 property(SerializableToLocalDateFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    ConditionEntityExpressionLocalTimePropertyExpression2 property(SerializableToLocalTimeFunction<T> name);
+    SetLocalTimeExpression2 property(SerializableToLocalTimeFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    ConditionEntityExpressionLocalDateTimePropertyExpression2 property(SerializableToLocalDateTimeFunction<T> name);
+    SetLocalDateTimeExpression2 property(SerializableToLocalDateTimeFunction<T> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <N>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    <N extends Number> ConditionEntityExpressionNumberPropertyExpression2<N> property(
-            SerializableToNumberFunction<T, N> name);
+    <N extends Number> SetNumberExpression2<N> property(SerializableToNumberFunction<T, N> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param <E>  the generic type
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    <E extends Enum<E>> ConditionEntityExpressionEnumPropertyExpression2<E> property(
-            SerializableToEnumFunction<T, E> name);
+    <E extends Enum<E>> SetEnumExpression2<E> property(SerializableToEnumFunction<T, E> name);
 
     /**
-     * entity great than function property expression.
+     * entity between and function property expression.
      *
      * @param name the name
-     * @return entity great than function property expression.
+     * @return set between and values expression.
      */
-    ConditionEntityExpressionStringPropertyExpression2 property(SerializableToStringFunction<T> name);
-
-    // ****************************************************************************************************************
-    //	value
-    // ****************************************************************************************************************
-
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    void value(int min, int max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void value(int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    void value(long min, long max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void value(long min, long max, BiPredicate<Long, Long> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    void value(double min, double max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void value(double min, double max, BiPredicate<Double, Double> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param <N> number type
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    <N extends Number> void value(N min, N max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param <N>            number type
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <N extends Number> void value(N min, N max, BiPredicate<N, N> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param <D> date type
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    <D extends Date> void value(D min, D max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param <D>            date type
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    <D extends Date> void value(D min, D max, BiPredicate<D, D> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    void value(LocalTime min, LocalTime max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void value(LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    void value(LocalDate min, LocalDate max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void value(LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    void value(LocalDateTime min, LocalDateTime max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void value(LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min the min
-    //     * @param max the max
-    //     * @return LogicExpression
-    //     */
-    //    void value(String min, String max);
-    //
-    //    /**
-    //     * min and max value.
-    //     *
-    //     * @param min            the min
-    //     * @param max            the max
-    //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
-    //     */
-    //    void value(String min, String max, BiPredicate<String, String> ignoreStrategy);
+    SetStringExpression2 property(SerializableToStringFunction<T> name);
 }

@@ -25,8 +25,8 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(
@@ -39,8 +39,8 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -80,7 +80,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(
@@ -93,7 +93,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -133,7 +133,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
@@ -159,8 +159,8 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(
@@ -173,8 +173,8 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -214,7 +214,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(
@@ -227,7 +227,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -267,7 +267,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,

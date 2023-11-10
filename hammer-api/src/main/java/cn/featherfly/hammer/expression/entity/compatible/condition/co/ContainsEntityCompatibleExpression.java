@@ -28,7 +28,7 @@ public interface ContainsEntityCompatibleExpression<E> extends ContainsEntityExp
      *
      * @param property the property
      * @param value    the value
-     * @return the l
+     * @return LogicExpression
      */
     void accept(String property, String value);
 
@@ -38,7 +38,7 @@ public interface ContainsEntityCompatibleExpression<E> extends ContainsEntityExp
      * @param property      the property
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     void accept(String property, String value, MatchStrategy matchStrategy);
 
@@ -48,7 +48,7 @@ public interface ContainsEntityCompatibleExpression<E> extends ContainsEntityExp
      * @param property       the property
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     void accept(String property, String value, Predicate<String> ignoreStrategy);
 
@@ -59,7 +59,7 @@ public interface ContainsEntityCompatibleExpression<E> extends ContainsEntityExp
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     void accept(String property, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

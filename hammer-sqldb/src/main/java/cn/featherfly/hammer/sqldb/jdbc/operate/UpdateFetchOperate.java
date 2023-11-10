@@ -136,8 +136,8 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     public T execute(T entity, UnaryOperator<T> updateOperator, boolean lock) {
         if (supportsResultSetUpdatable) {
             // driver support update ResultSet
-            getOperate.assertId(entity);
-            return executeResultSetUpdatable(lock, updateOperator, () -> getLockKey(entity), getIdsAsArgus(entity));
+            return executeResultSetUpdatable(lock, updateOperator, () -> getLockKey(entity),
+                    getOperate.assertAndGetIds(entity));
         } else {
             return executeCustom(lock, updateOperator, () -> getLockKey(entity),
                     forUpdate -> getOperate.get(entity, forUpdate));
@@ -280,10 +280,6 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
             key.deleteCharAt(key.length() - 1);
             return key.toString();
         }
-    }
-
-    private Object[] getIdsAsArgus(T entity) {
-        return getOperate.getIds(entity).toArray();
     }
 
     private boolean fullUpdate() {

@@ -56,7 +56,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_ba() {
+    void ba() {
         List<User> users = query.find(User.class).where().ba(User::getAge, min, max).list();
         for (User user : users) {
             //            System.out.println(user.getAge());
@@ -65,7 +65,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_nba() {
+    void nba() {
         List<User> users = query.find(User.class).where().nba(User::getAge, min, max).list();
         for (User user : users) {
             //            System.out.println(user.getAge());
@@ -74,7 +74,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_sw() {
+    void sw() {
         List<User> users = query.find(User.class).where().sw(User::getUsername, startWith).list();
         for (User user : users) {
             //            System.out.println(user.getUsername());
@@ -83,7 +83,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_nsw() {
+    void nsw() {
         List<User> users = query.find(User.class).where().nsw(User::getUsername, startWith).list();
         for (User user : users) {
             //            System.out.println(user.getUsername());
@@ -92,7 +92,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_ew() {
+    void ew() {
         List<User> users = query.find(User.class).where().ew(User::getUsername, endWith).list();
         for (User user : users) {
             //            System.out.println(user.getUsername());
@@ -101,7 +101,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_new() {
+    void newv() {
         List<User> users = query.find(User.class).where().newv(User::getUsername, endWith).list();
         for (User user : users) {
             //            System.out.println(user.getUsername());
@@ -110,7 +110,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_co() {
+    void co() {
         List<User> users = query.find(User.class).where().co(User::getUsername, contains).list();
         for (User user : users) {
             //            System.out.println(user.getUsername());
@@ -119,7 +119,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_nco() {
+    void nco() {
         List<User> users = query.find(User.class).where().nco(User::getUsername, contains).list();
         for (User user : users) {
             //            System.out.println(user.getUsername());
@@ -128,7 +128,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_eq() {
+    void eq() {
         List<User> users = query.find(User.class).where().eq(User::getUsername, username).list();
         for (User user : users) {
             assertTrue(user.getUsername().equals(username));
@@ -136,7 +136,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_ne() {
+    void ne() {
         List<User> users = query.find(User.class).where().ne(User::getUsername, username).list();
         for (User user : users) {
             assertFalse(user.getUsername().equals(username));
@@ -144,7 +144,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_lk() {
+    void lk() {
         List<User> users = null;
         users = query.find(User.class).where().lk(User::getUsername, username).list();
         for (User user : users) {
@@ -168,7 +168,7 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
     }
 
     @Test
-    void testQuery_nl() {
+    void nl() {
         List<User> users = query.find(User.class).where().nl(User::getUsername, username).list();
         for (User user : users) {
             assertFalse(user.getUsername().equals(username));

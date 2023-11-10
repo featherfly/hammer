@@ -24,8 +24,8 @@ public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(SixArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>, SortEntityExpression<E3>,
-            SortEntityExpression<E4>, SortEntityExpression<E5>, SortEntityExpression<E6>> sortEntityExpressions);
+    S asc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
+            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
 
     /**
      * desc.
@@ -33,8 +33,8 @@ public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(SixArgusConsumer<SortEntityExpression<E>, SortEntityExpression<E2>, SortEntityExpression<E3>,
-            SortEntityExpression<E4>, SortEntityExpression<E5>, SortEntityExpression<E6>> sortEntityExpressions);
+    S desc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
+            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
 
     //    /**
     //     * add ascending order value. 添加升序条件.

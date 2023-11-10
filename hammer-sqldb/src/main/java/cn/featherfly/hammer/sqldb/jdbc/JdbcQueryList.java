@@ -22,7 +22,7 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * The Interface JdbcQueryList.
+ * jdbc query list.
  *
  * @author zhongj
  */
@@ -63,7 +63,7 @@ public interface JdbcQueryList {
     //     * @param sql       the sql
     //     * @param rowMapper the row mapper
     //     * @param args      the args
-    //     * @return the list
+    //     * @return LogicExpressionist
     //     */
     //    <T> List<T> query(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
 
@@ -87,7 +87,7 @@ public interface JdbcQueryList {
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Object... args) {
@@ -104,7 +104,7 @@ public interface JdbcQueryList {
      * @param elementType2 the element type 2
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Object... args);
@@ -120,7 +120,7 @@ public interface JdbcQueryList {
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Object... args) {
@@ -139,7 +139,7 @@ public interface JdbcQueryList {
      * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
@@ -157,7 +157,7 @@ public interface JdbcQueryList {
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Object... args) {
@@ -179,7 +179,7 @@ public interface JdbcQueryList {
      * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
@@ -200,7 +200,7 @@ public interface JdbcQueryList {
      * @param elementType4 the element type 4
      * @param elementType5 the element type 5
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -225,7 +225,7 @@ public interface JdbcQueryList {
      * @param elementType5 the element type 5
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -248,7 +248,7 @@ public interface JdbcQueryList {
      * @param elementType5 the element type 5
      * @param elementType6 the element type 6
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -275,7 +275,7 @@ public interface JdbcQueryList {
      * @param elementType6 the element type 6
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -288,7 +288,7 @@ public interface JdbcQueryList {
     //     * @param sql         the sql
     //     * @param elementType the element type
     //     * @param args        the args
-    //     * @return the list
+    //     * @return LogicExpressionist
     //     */
     //    <T> List<T> query(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
 
@@ -323,7 +323,7 @@ public interface JdbcQueryList {
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Map<String, Object> args) {
@@ -340,7 +340,7 @@ public interface JdbcQueryList {
      * @param elementType2 the element type 2
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2> List<Tuple2<T1, T2>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Map<String, Object> args);
@@ -356,7 +356,7 @@ public interface JdbcQueryList {
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Map<String, Object> args) {
@@ -375,7 +375,7 @@ public interface JdbcQueryList {
      * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3> List<Tuple3<T1, T2, T3>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args);
@@ -393,7 +393,7 @@ public interface JdbcQueryList {
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Object> args) {
@@ -415,7 +415,7 @@ public interface JdbcQueryList {
      * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> query(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
@@ -436,7 +436,7 @@ public interface JdbcQueryList {
      * @param elementType4 the element type 4
      * @param elementType5 the element type 5
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -461,7 +461,7 @@ public interface JdbcQueryList {
      * @param elementType5 the element type 5
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -484,7 +484,7 @@ public interface JdbcQueryList {
      * @param elementType5 the element type 5
      * @param elementType6 the element type 6
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -511,7 +511,7 @@ public interface JdbcQueryList {
      * @param elementType6 the element type 6
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> query(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,

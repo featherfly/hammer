@@ -4,9 +4,7 @@ package cn.featherfly.hammer.expression.condition;
 import cn.featherfly.common.operator.LogicOperator;
 
 /**
- * <p>
- * 逻辑条件操作符表达式
- * </p>
+ * logic operator expression. 逻辑条件操作符表达式.
  *
  * @author zhongj
  */
@@ -14,16 +12,18 @@ public abstract class LogicOperatorExpression implements Expression {
     private LogicOperator logicOperator = LogicOperator.AND;
 
     /**
-     * @param logicOperator 逻辑运算符
+     * Instantiates a new logic operator expression.
+     *
+     * @param logicOperator the logic operator
      */
-    public LogicOperatorExpression(LogicOperator logicOperator) {
+    protected LogicOperatorExpression(LogicOperator logicOperator) {
         if (logicOperator != null) {
             this.logicOperator = logicOperator;
         }
     }
 
     /**
-     * 返回logicOperator
+     * Gets the logic operator.
      *
      * @return logicOperator
      */

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import static org.junit.Assert.assertNotNull;
 import static org.testng.Assert.assertEquals;
 
 import java.sql.CallableStatement;
@@ -10,12 +11,15 @@ import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Randoms;
 
 /**
@@ -100,6 +104,58 @@ public class JdbcNativeTest extends JdbcTestBase {
         System.out.println("call.execute() = " + b);
         System.out.println("call.getUpdateCount() = " + call.getUpdateCount());
         System.out.println("call.getInt(\"out_row_count\") = " + call.getInt("out_row_count"));
+
+        ParameterMetaData meta = call.getParameterMetaData();
+        System.out.println("meta.getParameterCount() = " + meta.getParameterCount());
+        for (int i = 1; i <= meta.getParameterCount(); i++) {
+            System.out.println("param:" + i);
+            System.out.println("meta.getParameterMode() = " + meta.getParameterMode(i));
+            System.out.println("meta.getParameterType() = " + meta.getParameterType(i));
+            System.out.println("meta.getParameterTypeName() = " + meta.getParameterTypeName(i));
+            System.out.println("meta.getParameterClassName() = " + meta.getParameterClassName(i));
+            System.out.println();
+        }
+
+        assertEquals(call.getInt(3), call.getUpdateCount());
+    }
+
+    @Test
+    void testCallOutArgu4() throws SQLException {
+        Connection conn = dataSource.getConnection();
+
+        LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+        params.put("q_name", "name_init%");
+        params.put("u_descp", "call_update_batch_" + Randoms.getInt(1000));
+        params.put("out_row_count", null); // 使用map必须把所有的参数都加进来，包含out参数
+
+        String[] keys = Lang.toArray(params.keySet());
+
+        CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
+        for (Entry<String, Object> param : params.entrySet()) {
+            JdbcUtils.setParameter(call, param.getKey(), param.getValue());
+        }
+        boolean b = call.execute();
+        System.out.println("call.execute() = " + b);
+        System.out.println("call.getUpdateCount() = " + call.getUpdateCount());
+        System.out.println("call.getInt(\"out_row_count\") = " + call.getInt("out_row_count"));
+
+        ParameterMetaData meta = call.getParameterMetaData();
+        System.out.println("meta.getParameterCount() = " + meta.getParameterCount());
+        for (int i = 1; i <= meta.getParameterCount(); i++) {
+            System.out.println("param:" + i);
+            System.out.println("meta.getParameterMode() = " + meta.getParameterMode(i));
+            System.out.println("meta.getParameterType() = " + meta.getParameterType(i));
+            System.out.println("meta.getParameterTypeName() = " + meta.getParameterTypeName(i));
+            System.out.println("meta.getParameterClassName() = " + meta.getParameterClassName(i));
+            System.out.println();
+
+            if (meta.getParameterMode(i) == ParameterMetaData.parameterModeInOut
+                    || meta.getParameterMode(i) == ParameterMetaData.parameterModeOut) {
+                params.put(keys[i - 1], call.getInt(i));
+            }
+        }
+
+        assertNotNull(params.get("out_row_count"));
 
         assertEquals(call.getInt(3), call.getUpdateCount());
     }

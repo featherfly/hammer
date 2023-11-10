@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression;
@@ -28,18 +27,19 @@ import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpres
  * The Interface EntityConditionsExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityConditionsExpression<E, C extends EntityConditionsExpression<E, C, L>,
-        L extends LogicExpression<C, L>> extends EntityBetweenExpression<E, C, L>, EntityNotBetweenExpression<E, C, L>,
-        EntityContainsExpression<E, C, L>, EntityNotContainsExpression<E, C, L>, EntityEndWithExpression<E, C, L>,
-        EntityNotEndWithExpression<E, C, L>, EntityEqualsExpression<E, C, L>, EntityGreatEqualsExpression<E, C, L>,
-        EntityGreatThanExpression<E, C, L>, EntityInExpression<E, C, L>, EntityIsNotNullExpression<E, C, L>,
-        EntityIsNullExpression<E, C, L>, EntityLessEqualsExpression<E, C, L>, EntityLessThanExpression<E, C, L>,
-        EntityNotEqualsExpression<E, C, L>, EntityNotInExpression<E, C, L>, EntityStartWithExpression<E, C, L>,
-        EntityNotStartWithExpression<E, C, L>, EntityLikeExpression<E, C, L>, EntityNotLikeExpression<E, C, L>,
-        EntityPropertyConditionsExpression<E, C, L>, NativeStringConditionExpression<C, L> {
+public interface EntityConditionsExpression<T, C extends EntityConditionsExpression<T, C, L>,
+        L extends EntityConditionsLogicExpression<T, C, L>>
+        extends EntityBetweenExpression<T, C, L>, EntityNotBetweenExpression<T, C, L>,
+        EntityContainsExpression<T, C, L>, EntityNotContainsExpression<T, C, L>, EntityEndWithExpression<T, C, L>,
+        EntityNotEndWithExpression<T, C, L>, EntityEqualsExpression<T, C, L>, EntityGreatEqualsExpression<T, C, L>,
+        EntityGreatThanExpression<T, C, L>, EntityInExpression<T, C, L>, EntityIsNotNullExpression<T, C, L>,
+        EntityIsNullExpression<T, C, L>, EntityLessEqualsExpression<T, C, L>, EntityLessThanExpression<T, C, L>,
+        EntityNotEqualsExpression<T, C, L>, EntityNotInExpression<T, C, L>, EntityStartWithExpression<T, C, L>,
+        EntityNotStartWithExpression<T, C, L>, EntityLikeExpression<T, C, L>, EntityNotLikeExpression<T, C, L>,
+        EntityPropertyConditionsExpression<T, C, L>, NativeStringConditionExpression<C, L> {
 
 }

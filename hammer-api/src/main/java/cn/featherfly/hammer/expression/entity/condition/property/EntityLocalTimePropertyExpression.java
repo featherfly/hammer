@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.property;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.LocalTimePropertyExpression;
+import cn.featherfly.hammer.expression.condition.field.LocalTimeFieldExpression;
 
 /**
  * EntityLocalTimeExpression.
@@ -23,6 +23,6 @@ import cn.featherfly.hammer.expression.condition.property.LocalTimePropertyExpre
  * @param <L> the generic type
  */
 public interface EntityLocalTimePropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends LocalTimePropertyExpression<C, L> {
+        extends LocalTimeFieldExpression<C, L> {
 
 }

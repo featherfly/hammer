@@ -2,9 +2,7 @@
 package cn.featherfly.hammer.expression.query;
 
 /**
- * <p>
- * dsl for query executor
- * </p>
+ * dsl for query executor.
  *
  * @author zhongj
  */

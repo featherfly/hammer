@@ -5,7 +5,7 @@ import java.util.function.BiFunction;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
 
 /**
  * The Interface EntityPropertyExpression2.
@@ -36,7 +36,6 @@ public interface EntityPropertyExpression2<E, E2, C extends ConditionExpression,
      * @param entitiesPropertyFunction the entities property function
      * @return the LogicExpression
      */
-    L property(
-            BiFunction<EntityPropertyFunction<E, C, L>, EntityPropertyFunction<E2, C, L>, L> entitiesPropertyFunction);
-
+    L property(BiFunction<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyExpression<E2>,
+            LogicExpression<?, ?>> entitiesPropertyFunction);
 }

@@ -50,57 +50,51 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToIntFunction<T> name, int value);
 
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLongFunction<T> name, long value);
 
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToDoubleFunction<T> name, double value);
 
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy);
 
@@ -108,9 +102,8 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value);
 
@@ -118,10 +111,9 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
 
@@ -129,9 +121,8 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D value);
 
@@ -139,67 +130,60 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime value);
 
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate value);
 
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value);
 
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
             Predicate<LocalDateTime> ignoreStrategy);
@@ -207,38 +191,34 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToStringFunction<T> name, String value);
 
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy);
 
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
-     * @return LogicExpression
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
 
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
@@ -246,51 +226,45 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     void accept(SerializableIntSupplier property);
 
     /**
      * compare. 比较
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     void accept(SerializableLongSupplier property);
 
     /**
      * compare. 比较
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     void accept(SerializableDoubleSupplier property);
 
     /**
      * compare. 比较
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 
@@ -298,8 +272,7 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <R>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     <R extends Date> void accept(SerializableDateSupplier<R> property);
 
@@ -307,9 +280,8 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <R extends Date> void accept(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
 
@@ -317,8 +289,7 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <R>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     <R extends Number> void accept(SerializableNumberSupplier<R> property);
 
@@ -326,77 +297,68 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <R extends Number> void accept(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     void accept(SerializableLocalDateSupplier property);
 
     /**
      * compare. 比较
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     void accept(SerializableLocalTimeSupplier property);
 
     /**
      * compare. 比较
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     void accept(SerializableLocalDateTimeSupplier property);
 
     /**
      * compare. 比较
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * compare. 比较
      *
-     * @param property 对象属性
-     * @return LogicExpression
+     * @param property  bean property
      */
     void accept(SerializableStringSupplier property);
 
     /**
      * compare. 比较
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 
@@ -404,9 +366,8 @@ public interface CompareEntityExpression<T> {
      * equals or not equals. 等于或者不等于.
      *
      * @param <R>           the generic type
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     void accept(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
@@ -414,10 +375,9 @@ public interface CompareEntityExpression<T> {
      * equals or not equals. 等于或者不等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

@@ -163,14 +163,11 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      * @return 指定ids的对象
      */
     public T get(final T entity, boolean forUpdate) {
-        assertId(entity);
-        List<Serializable> ids = getIds(entity);
-        assertId(ids);
         if (forUpdate) {
             return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
-                    ids.toArray());
+                    assertAndGetIds(entity));
         } else {
-            return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), ids.toArray());
+            return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), assertAndGetIds(entity));
         }
         //        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[ids.size()];
         //        Lang.each(ids, (id, i) -> {
@@ -193,6 +190,13 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (Lang.isEmpty(id)) {
             throw new SqldbHammerException("#get.id.null");
         }
+    }
+
+    protected Object[] assertAndGetIds(T entity) {
+        assertId(entity);
+        List<Serializable> ids = getIds(entity);
+        assertId(ids);
+        return ids.toArray();
     }
 
     //

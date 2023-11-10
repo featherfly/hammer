@@ -11,18 +11,18 @@ package cn.featherfly.hammer.dsl.entity.query.relation;
 
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
-import cn.featherfly.hammer.expression.api.entity.QueryRelate;
+import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 
 /**
  * EntityQueryRelatedExpression.
  *
  * @author zhongj
- * @param <J1>  the first join type
- * @param <J2>  the second join type
- * @param <QR>  the generic type
- * @param <QRF> the generic type
+ * @param <J1> the first join type
+ * @param <J2> the second join type
+ * @param <R>  the generic type
+ * @param <F>  the generic type
  */
-public interface EntityQueryRelatedExpression<J1, J2, QR extends QueryRelate<QRF>, QRF> {
+public interface EntityQueryRelatedExpression<J1, J2, R extends QueryRelateExpression<F>, F> {
 
     /**
      * On.
@@ -31,16 +31,16 @@ public interface EntityQueryRelatedExpression<J1, J2, QR extends QueryRelate<QRF
      * @param propertyName the property name
      * @return the re
      */
-    <P> QR on(SerializableFunction1<J1, P> propertyName);
+    <P> R on(SerializableFunction1<J1, P> propertyName);
 
     /**
      * On.
      *
-     * @param <JP>                 the generic type
+     * @param <P>                  the generic type
      * @param joinTypePropertyName the join type property name
      * @return the re
      */
-    <JP> QR on(SerializableFunction2<J2, JP> joinTypePropertyName);
+    <P> R on(SerializableFunction2<J2, P> joinTypePropertyName);
 
     /**
      * On.
@@ -50,6 +50,6 @@ public interface EntityQueryRelatedExpression<J1, J2, QR extends QueryRelate<QRF
      * @param joinTypePropertyName the join type property name
      * @return the re
      */
-    <P> QR on(SerializableFunction1<J1, P> propertyName, SerializableFunction2<J2, P> joinTypePropertyName);
+    <P> R on(SerializableFunction1<J1, P> propertyName, SerializableFunction2<J2, P> joinTypePropertyName);
 
 }

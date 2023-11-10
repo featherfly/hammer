@@ -95,7 +95,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         EntityRelationMapping<?> erm = getEntityRelationMapping(index);
         queryFetchAlias.add(erm.getTableAlias());
         if (index > 0) {
-            erm.selectJoinOnBasicBuilder.fetch((alias, prefixTableAlias) -> {
+            erm.selectJoinOnBasicBuilder.fetch((prefixTableAlias, alias) -> {
                 if (prefixTableAlias) {
                     EntityRelationMapping<?> jerm = getEntityRelationMapping(erm.getJoinFromIndex());
                     return jerm.getTableAlias() + Chars.DOT_CHAR + erm.getJoinFromPropertyName();
@@ -246,7 +246,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @param sql        the sql
      * @param resultType the result type
      * @param params     the params
-     * @return the list
+     * @return LogicExpressionist
      */
     @SuppressWarnings("unchecked")
     public <R> List<R> list(String sql, Object[] params) {

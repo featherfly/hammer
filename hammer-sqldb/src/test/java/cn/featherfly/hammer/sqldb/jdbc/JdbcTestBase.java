@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 import javax.validation.Validation;
@@ -92,7 +93,7 @@ public class JdbcTestBase extends TestBase {
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
                 new FreemarkerTemplatePreProcessor());
 
-        jdbcFactory = new JdbcFactoryImpl(dialect, sqlTypeMappingManager);
+        jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager);
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl();
         hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
@@ -150,8 +151,8 @@ public class JdbcTestBase extends TestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         //        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
-        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
@@ -192,8 +193,8 @@ public class JdbcTestBase extends TestBase {
         dialect = postgreSQLDialect;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
-        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
@@ -222,8 +223,8 @@ public class JdbcTestBase extends TestBase {
         dialect = Dialects.SQLITE;
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
-        jdbc = new JdbcSpringImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds, "main");
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
@@ -261,7 +262,7 @@ public class JdbcTestBase extends TestBase {
     }
 
     protected List<Object> unwrapFieldValueOperators(List<Object> values) {
-        return values.stream().map(this::unwrapFieldValueOperator).toList();
+        return values.stream().map(this::unwrapFieldValueOperator).collect(Collectors.toList());
     }
 
     protected Object unwrapFieldValueOperator(Object value) {

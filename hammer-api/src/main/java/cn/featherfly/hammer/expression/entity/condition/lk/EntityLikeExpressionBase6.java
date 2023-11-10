@@ -4,10 +4,11 @@ package cn.featherfly.hammer.expression.entity.condition.lk;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.lk.LikeSupplierExpression6;
 
 /**
  * The Interface EntityLikeExpressionBase6.
@@ -23,13 +24,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityLikeExpressionBase6<E, E2, E3, E4, E5, E6, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityLikeExpressionBase5<E, E2, E3, E4, E5, C, L> {
+        L extends LogicExpression<C, L>>
+        extends EntityLikeExpressionBase5<E, E2, E3, E4, E5, C, L>, LikeSupplierExpression6<C, L> {
 
     /**
      * like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L lk6(SerializableFunction<E6, String> name, String value) {
@@ -39,8 +41,20 @@ public interface EntityLikeExpressionBase6<E, E2, E3, E4, E5, E6, C extends Cond
     /**
      * like value.
      *
-     * @param name         参数名称
-     * @param value        参数值
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk6(SerializableFunction<E6, String> name, String value, IgnoreStrategy ignoreStrategy) {
+        return lk6(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -61,76 +75,26 @@ public interface EntityLikeExpressionBase6<E, E2, E3, E4, E5, E6, C extends Cond
     /**
      * like value.
      *
-     * @param name         the name
-     * @param value        the value
-     * @param queryPolicy  the query policy
+     * @param name           the name 参数名称
+     * @param value          the value
+     * @param queryPolicy    the query policy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return lk6(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * like value.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L lk6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * like value.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default L lk6(SerializableStringSupplier property) {
-        return lk6(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * like value.
-     *
-     * @param property     对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L lk6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return lk6(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * like value.
-     *
-     * @param property    the property
-     * @param queryPolicy the query policy
-     * @return LogicExpression
-     */
-    L lk6(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * like value.
-     *
-     * @param property     the property
-     * @param queryPolicy  the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lk6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
-    //  嵌套属性使用property(U1::getU2).property(U2:getV).lk(v)来设置
-    //    /**
-    //     * like value.
-    //     *
-    //     * @param <R>                 the generic type
-    //     * @param fetchEntity         the fetch entity
-    //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L lk6(SerializableFunction<E6, R> fetchEntity, SerializableFunction<R, String> fetchEntityProperty,
-    //            String value);
-    //
-    //    /**
-    //     * like value.
-    //     *
-    //     * @param <R>                 the generic type
-    //     * @param fetchEntityValue    the fetch entity value
-    //     * @param fetchEntityProperty the fetch entity property
-    //     * @return LogicExpression
-    //     */
-    //    <R> L lk6(SerializableSupplier6<R> fetchEntityValue, SerializableFunction<R, String> fetchEntityProperty);
-
 }

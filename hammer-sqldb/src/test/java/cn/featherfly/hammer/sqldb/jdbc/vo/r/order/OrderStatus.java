@@ -67,7 +67,7 @@ public enum OrderStatus {
     /**
      * Gets label.
      *
-     * @return the label
+     * @return LogicExpressionabel
      */
     public String getLabel() {
         return label;

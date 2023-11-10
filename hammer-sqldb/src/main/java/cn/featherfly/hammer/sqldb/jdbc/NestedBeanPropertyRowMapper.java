@@ -36,7 +36,6 @@ import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.NoSuchPropertyException;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -376,7 +375,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
             rs = sqlrs.getResultSet();
             AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
         } else {
-            throw new JdbcMappingException("ResultSet is not type of SqlResultSet");
+            throw new JdbcException("ResultSet is not type of SqlResultSet");
         }
 
         try {
@@ -400,7 +399,6 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * @see java.sql.ResultSetMetaData
      */
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
-        //        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
         T mappedObject = mapperObjectFactory.create(rs);
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
@@ -475,7 +473,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                         populatedProperties.add(mapping.propertyDescriptor.getName());
                     }
                 } else {
-                    logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
+                    logger.debug("No property found for column '{}' mapped to field '{}'", column, field);
                 }
             }
 

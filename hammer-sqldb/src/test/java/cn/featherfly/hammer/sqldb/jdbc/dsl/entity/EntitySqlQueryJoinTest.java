@@ -180,7 +180,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         assertEquals(user.getId(), userId);
 
         user = query.find(User.class).join(UserInfo::getUser).where()
-                .property((e1, e2) -> e2.apply(UserInfo::getId).eq(userInfoId)).single();
+                .property((e1, e2) -> e2.property(UserInfo::getId).eq(userInfoId)).single();
         assertEquals(user.getId(), userId);
     }
 

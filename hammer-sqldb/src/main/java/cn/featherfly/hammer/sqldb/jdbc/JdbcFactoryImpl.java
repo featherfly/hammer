@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
 
 /**
  * JdbcFactoryImpl.
@@ -31,15 +32,18 @@ public class JdbcFactoryImpl implements JdbcFactory {
     /** The sql type mapping manager. */
     protected SqlTypeMappingManager sqlTypeMappingManager;
 
+    protected DatabaseMetadata metadata;
+
     /**
      * Instantiates a new jdbc factory impl.
      *
      * @param dialect               the dialect
      * @param sqlTypeMappingManager the sql type mapping manager
      */
-    public JdbcFactoryImpl(Dialect dialect, SqlTypeMappingManager sqlTypeMappingManager) {
+    public JdbcFactoryImpl(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager sqlTypeMappingManager) {
         super();
         this.dialect = dialect;
+        this.metadata = metadata;
         this.sqlTypeMappingManager = sqlTypeMappingManager;
     }
 
@@ -64,7 +68,7 @@ public class JdbcFactoryImpl implements JdbcFactory {
      */
     @Override
     public Jdbc create(Connection connection) {
-        return new JdbcImpl(connection, dialect, sqlTypeMappingManager);
+        return new JdbcImpl(connection, dialect, metadata, sqlTypeMappingManager);
     }
 
     /**
@@ -80,7 +84,7 @@ public class JdbcFactoryImpl implements JdbcFactory {
      */
     @Override
     public JdbcSession createSession(Connection connection) {
-        return new JdbcImpl(connection, dialect, sqlTypeMappingManager);
+        return new JdbcImpl(connection, dialect, metadata, sqlTypeMappingManager);
     }
     //    /**
     //     * {@inheritDoc}

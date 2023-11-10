@@ -40,7 +40,6 @@ public class JdbcStreamTest extends JdbcTestBase {
     @Test
     public void testQueryStream() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        //        JdbcTransaction tran = jdbc.beginTransation();
         Iterable<Map<String, Object>> ids = jdbc.queryStream("select * from role where id = ?", 1);
         Iterator<Map<String, Object>> iter = ids.iterator();
         int size = 0;
@@ -49,7 +48,20 @@ public class JdbcStreamTest extends JdbcTestBase {
             iter.next();
         }
         assertTrue(size == 1);
-        //        tran.commit();
+        jdbc.close(); // 手动关闭链接
+    }
+
+    @Test
+    public void testQueryStream2() {
+        JdbcSession jdbc = jdbcFactory.createSession(dataSource);
+        //        JdbcTransaction tran = jdbc.beginTransation();
+        Iterable<Map<String, Object>> ids = jdbc.queryStream("select * from role where id = ?", 1);
+        int size = 0;
+        for (Map<String, Object> value : ids) {
+            System.out.println(value);
+            size++;
+        }
+        assertTrue(size == 1);
         jdbc.close(); // 手动关闭链接
     }
 

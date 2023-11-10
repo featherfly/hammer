@@ -25,7 +25,6 @@ public interface NullNotNullEntityExpression<E> {
      *
      * @param <R>      the generic type
      * @param property the property
-     * @return the l
      */
     default <R> void accept(SerializableFunction<E, R> property) {
         accept(property, true);
@@ -37,7 +36,6 @@ public interface NullNotNullEntityExpression<E> {
      * @param <R>      the generic type
      * @param property the property
      * @param value    the value
-     * @return the l
      */
     <R> void accept(SerializableFunction<E, R> property, Boolean value);
 }

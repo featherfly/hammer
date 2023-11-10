@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.util.List;
 import java.util.Map;
 
+import com.speedment.common.tuple.MutableTuple;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
@@ -32,7 +33,7 @@ public interface JdbcProcedure {
      *
      * @param name the procedure name
      * @param args the args
-     * @return the list
+     * @return LogicExpressionist
      */
     int call(String name, Object... args);
 
@@ -41,7 +42,28 @@ public interface JdbcProcedure {
     //     *
     //     * @param name the procedure name
     //     * @param args the args
-    //     * @return the list
+    //     * @return LogicExpressionist
+    //     */
+    //    int call(String name, SequencedMap<String, Object> args);
+    //    如果map不按照参数顺序设置，则会报错，因为无法从metadata中获取参数的名称（只能获取顺序）
+    //    所以都需要按照顺序设置了，则还设置名称是多余的
+
+    /**
+     * call procedure .
+     *
+     * @param <T>  the generic type
+     * @param name the procedure name
+     * @param args the args
+     * @return LogicExpressionist
+     */
+    <T extends MutableTuple> int call(String name, T args);
+
+    //    /**
+    //     * call procedure .
+    //     *
+    //     * @param name the procedure name
+    //     * @param args the args
+    //     * @return LogicExpressionist
     //     */
     //    int call(String name, Map<String, Object> args);
 
@@ -50,7 +72,7 @@ public interface JdbcProcedure {
      *
      * @param name the procedure name
      * @param args the args
-     * @return the list
+     * @return LogicExpressionist
      */
     List<Map<String, Object>> callQuery(String name, Object... args);
 
@@ -61,7 +83,7 @@ public interface JdbcProcedure {
      * @param name   the procedure name
      * @param mapper the mapper
      * @param args   the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <E> List<E> callQuery(String name, RowMapper<E> mapper, Object... args);
 
@@ -72,7 +94,7 @@ public interface JdbcProcedure {
      * @param name        the procedure name
      * @param elementType the element type
      * @param args        the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T> List<T> callQuery(String name, Class<T> elementType, Object... args);
 
@@ -85,7 +107,7 @@ public interface JdbcProcedure {
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
             Object... args) {
@@ -102,7 +124,7 @@ public interface JdbcProcedure {
      * @param elementType2 the element type 2
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2> List<Tuple2<T1, T2>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Object... args);
@@ -118,7 +140,7 @@ public interface JdbcProcedure {
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Object... args) {
@@ -137,7 +159,7 @@ public interface JdbcProcedure {
      * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3> List<Tuple3<T1, T2, T3>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
@@ -155,7 +177,7 @@ public interface JdbcProcedure {
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> callQuery(String name, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Object... args) {
@@ -177,7 +199,7 @@ public interface JdbcProcedure {
      * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
@@ -198,7 +220,7 @@ public interface JdbcProcedure {
      * @param elementType4 the element type 4
      * @param elementType5 the element type 5
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> callQuery(String name, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -223,7 +245,7 @@ public interface JdbcProcedure {
      * @param elementType5 the element type 5
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> callQuery(String name, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -234,7 +256,7 @@ public interface JdbcProcedure {
      *
      * @param name the procedure name
      * @param args the args
-     * @return the list
+     * @return LogicExpressionist
      */
     Map<String, Object> callQuerySingle(String name, Object... args);
 
@@ -245,7 +267,7 @@ public interface JdbcProcedure {
      * @param name   the procedure name
      * @param mapper the mapper
      * @param args   the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <E> E callQuerySingle(String name, RowMapper<E> mapper, Object... args);
 
@@ -301,7 +323,6 @@ public interface JdbcProcedure {
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
-     * @param prefixes     the prefixes
      * @param args         the args
      * @return the tuple 3
      */
@@ -340,7 +361,6 @@ public interface JdbcProcedure {
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
-     * @param prefixes     the prefixes
      * @param args         the args
      * @return the tuple 4
      */

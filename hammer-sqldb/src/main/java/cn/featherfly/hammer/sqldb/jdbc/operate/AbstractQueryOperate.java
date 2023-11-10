@@ -56,7 +56,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
      * @param databaseMetadata      the database metadata
      */
     public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-            SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
@@ -96,7 +96,6 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
                 //                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value, mappingDebugMessage);
             } else {
                 for (JdbcPropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    // YUFEI_TEST 还没有测试
                     //                    BeanProperty<?> bp = getBeanProperty(subPropertyMapping, rowNumber);
                     //                    Object value = sqlTypeMappingManager.get(resultSet, index, bp);
                     //                    //                    Object value = getColumnValue(rs, index, subPropertyMapping.getPropertyType());
@@ -110,8 +109,8 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
         if (rowNumber == 0 && logger.isDebugEnabled()) {
             StringBuilder debugMessage = new StringBuilder();
             debugMessage.append("\n---------- Mapping " + classMapping.getType().getName() + " Start ----------\n")
-                    .append(mappingDebugMessage.toString())
-                    .append("---------- Mapping " + classMapping.getType().getName() + " End ----------\n");
+                .append(mappingDebugMessage.toString())
+                .append("---------- Mapping " + classMapping.getType().getName() + " End ----------\n");
             logger.debug(debugMessage.toString());
         }
         return mappedObject;
@@ -123,11 +122,11 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
     //    }
 
     private int setProperty(int rowNumber, T mappedObject, int index, JdbcPropertyMapping propertyMapping, Object value,
-            MappingDebugMessage mappingDebugMessage) {
+        MappingDebugMessage mappingDebugMessage) {
         String propertyName = ClassMappingUtils.getPropertyAliasName(propertyMapping);
         if (logger.isDebugEnabled() && rowNumber == 0) {
             mappingDebugMessage.debug(m -> m.addMapping(propertyMapping.getRepositoryFieldName(), propertyName,
-                    propertyName, propertyMapping.getPropertyType().getName()));
+                propertyName, propertyMapping.getPropertyType().getName()));
         }
         BeanUtils.setProperty(mappedObject, propertyName, value);
         index++;

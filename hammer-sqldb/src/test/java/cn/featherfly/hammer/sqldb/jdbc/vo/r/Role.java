@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Id;
@@ -14,7 +15,12 @@ import javax.persistence.Table;
  * @author zhongj
  */
 @Table
-public class Role {
+public class Role implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1855485992632760028L;
 
     @Id
     private Integer id;

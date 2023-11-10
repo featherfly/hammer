@@ -31,7 +31,7 @@ public interface EntityIsNotNullExpressionBase4<E, E2, E3, E4, C extends Conditi
      * is not null.
      *
      * @param <R>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default <R> L inn4(SerializableFunction<E4, R> name) {
@@ -42,7 +42,7 @@ public interface EntityIsNotNullExpressionBase4<E, E2, E3, E4, C extends Conditi
      * is not null.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
+     * @param name the name
      * @param value if true, is null; if false, is not null; if null, ignore
      *              this operate
      * @return LogicExpression

@@ -138,7 +138,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
         List<User2> users = query.find(User2.class)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .sort()//
-                .asc((e1, e2) -> e2.apply(UserInfo2::getId))//
+                .asc((e1, e2) -> e2.property(UserInfo2::getId))//
                 .limit(2) //
                 .list();
         assertTrue(users.size() == 2);
@@ -146,7 +146,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
 
         users = query.find(User2.class)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
-                .sort().desc((e1, e2) -> e2.apply(UserInfo2::getId))//
+                .sort().desc((e1, e2) -> e2.property(UserInfo2::getId))//
                 .limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
@@ -157,7 +157,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .asc((e1, e2) -> e2.apply(UserInfo2::getId))//
+                .asc((e1, e2) -> e2.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
@@ -167,7 +167,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .desc((e1, e2) -> e2.apply(UserInfo2::getId))//
+                .desc((e1, e2) -> e2.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }
@@ -229,7 +229,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .sort()//
-                .asc((e1, e2, e3) -> e3.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3) -> e3.property(UserInfo2::getId))//
                 .limit(2) //
                 .list();
         assertTrue(users.size() == 2);
@@ -238,7 +238,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
         users = query.find(User2.class)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
-                .sort().desc((e1, e2, e3) -> e3.apply(UserInfo2::getId))//
+                .sort().desc((e1, e2, e3) -> e3.property(UserInfo2::getId))//
                 .limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
@@ -254,7 +254,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .asc((e1, e2, e3) -> e3.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3) -> e3.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
@@ -269,7 +269,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .desc((e1, e2, e3) -> e3.apply(UserInfo2::getId))//
+                .desc((e1, e2, e3) -> e3.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }
@@ -340,7 +340,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .sort()//
-                .asc((e1, e2, e3, e4) -> e4.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3, e4) -> e4.property(UserInfo2::getId))//
                 .limit(2) //
                 .list();
         assertTrue(users.size() == 2);
@@ -350,7 +350,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
-                .sort().desc((e1, e2, e3, e4) -> e4.apply(UserInfo2::getId))//
+                .sort().desc((e1, e2, e3, e4) -> e4.property(UserInfo2::getId))//
                 .limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
@@ -369,7 +369,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .asc((e1, e2, e3, e4) -> e4.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3, e4) -> e4.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
@@ -387,7 +387,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .desc((e1, e2, e3, e4) -> e4.apply(UserInfo2::getId))//
+                .desc((e1, e2, e3, e4) -> e4.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }
@@ -467,7 +467,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .sort()//
-                .asc((e1, e2, e3, e4, e5) -> e5.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3, e4, e5) -> e5.property(UserInfo2::getId))//
                 .limit(2) //
                 .list();
         assertTrue(users.size() == 2);
@@ -478,7 +478,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
-                .sort().desc((e1, e2, e3, e4, e5) -> e5.apply(UserInfo2::getId))//
+                .sort().desc((e1, e2, e3, e4, e5) -> e5.property(UserInfo2::getId))//
                 .limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
@@ -500,7 +500,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .asc((e1, e2, e3, e4, e5) -> e5.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3, e4, e5) -> e5.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
@@ -521,7 +521,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .desc((e1, e2, e3, e4, e5) -> e5.apply(UserInfo2::getId))//
+                .desc((e1, e2, e3, e4, e5) -> e5.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }
@@ -610,7 +610,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .sort()//
-                .asc((e1, e2, e3, e4, e5, e6) -> e6.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3, e4, e5, e6) -> e6.property(UserInfo2::getId))//
                 .limit(2) //
                 .list();
         assertTrue(users.size() == 2);
@@ -622,7 +622,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
                 .join(UserInfo2.class).on(UserInfo2::getUserId)//
-                .sort().desc((e1, e2, e3, e4, e5, e6) -> e6.apply(UserInfo2::getId))//
+                .sort().desc((e1, e2, e3, e4, e5, e6) -> e6.property(UserInfo2::getId))//
                 .limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
@@ -647,7 +647,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt6(UserInfo2::getId, 0).or().lt6(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .asc((e1, e2, e3, e4, e5, e6) -> e6.apply(UserInfo2::getId))//
+                .asc((e1, e2, e3, e4, e5, e6) -> e6.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
@@ -671,7 +671,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
                 .group().gt6(UserInfo2::getId, 0).or().lt6(UserInfo2::getId, 20).endGroup()//
                 .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
                 .sort() //
-                .desc((e1, e2, e3, e4, e5, e6) -> e6.apply(UserInfo2::getId))//
+                .desc((e1, e2, e3, e4, e5, e6) -> e6.property(UserInfo2::getId))//
                 .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }

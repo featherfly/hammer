@@ -4,10 +4,11 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.co.ContainsSupplierExpression;
 
 /**
  * The Interface EntityContainsExpression.
@@ -18,7 +19,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EntityContainsExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends ContainsSupplierExpression<C, L> {
 
     //    /**
     //     * contains value. 包含value.
@@ -31,8 +32,8 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
     /**
      * contains value. 包含value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L co(SerializableFunction<E, String> name, String value) {
@@ -42,8 +43,20 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
     /**
      * contains value. 包含value.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L co(SerializableFunction<E, String> name, String value, IgnoreStrategy ignoreStrategy) {
+        return co(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -57,7 +70,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -68,69 +81,22 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param property 对象属性
      * @return LogicExpression
      */
-    default L co(SerializableStringSupplier property) {
-        return co(property, MatchStrategy.AUTO);
+    default L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return co(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
     /**
      * contains value. 包含value.
      *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L co(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return co(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param property    the property
-     * @param queryPolicy the query policy
-     * @return the l
-     */
-    L co(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param property       the property
+     * @param name           the name
+     * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
-    L co(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
-    //    嵌套属性使用property(U1::getU2).property(U2:getV).co(v)来设置
-    //    /**
-    //     * contains value. 包含value.
-    //     *
-    //     * @param <R>                 the generic type
-    //     * @param fetchEntity         the fetch entity
-    //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
-    //     * @return LogicExpression
-    //     */
-    //    <R> L co(SerializableFunction<E, R> fetchEntity, SerializableFunction<R, String> fetchEntityProperty, String value);
-    //
-    //    /**
-    //     * contains value. 包含value.
-    //     *
-    //     * @param <R>                 the generic type
-    //     * @param fetchEntityValue    the fetch entity value
-    //     * @param fetchEntityProperty the fetch entity property
-    //     * @return LogicExpression
-    //     */
-    //    <R> L co(SerializableSupplier<R> fetchEntityValue, SerializableFunction<R, String> fetchEntityProperty);
+    L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy);
 }

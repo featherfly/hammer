@@ -4,10 +4,11 @@ package cn.featherfly.hammer.expression.entity.condition.nl;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.nl.NotLikeSupplierExpression3;
 
 /**
  * The Interface EntityNotLikeExpressionBase3.
@@ -20,13 +21,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityNotLikeExpressionBase3<E, E2, E3, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityNotLikeExpressionBase2<E, E2, C, L> {
+        extends EntityNotLikeExpressionBase2<E, E2, C, L>, NotLikeSupplierExpression3<C, L> {
 
     /**
      * not like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nl3(SerializableFunction<E3, String> name, String value) {
@@ -36,8 +37,20 @@ public interface EntityNotLikeExpressionBase3<E, E2, E3, C extends ConditionExpr
     /**
      * not like value.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl3(SerializableFunction<E3, String> name, String value, IgnoreStrategy ignoreStrategy) {
+        return nl3(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -58,6 +71,20 @@ public interface EntityNotLikeExpressionBase3<E, E2, E3, C extends ConditionExpr
     /**
      * not like value.
      *
+     * @param name           the name 参数名称
+     * @param value          the value
+     * @param queryPolicy    the query policy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nl3(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not like value.
+     *
      * @param name           the name
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -66,45 +93,5 @@ public interface EntityNotLikeExpressionBase3<E, E2, E3, C extends ConditionExpr
      */
     L nl3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default L nl3(SerializableStringSupplier property) {
-        return nl3(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not like value.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nl3(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return nl3(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not like value.
-     *
-     * @param property      the property
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L nl3(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L nl3(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
 }

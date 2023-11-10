@@ -1,14 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 
-import java.util.function.Consumer;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.FiveArgusFunction;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup5;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic5;
-import cn.featherfly.hammer.expression.api.Sortable;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression5;
+import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression5;
+import cn.featherfly.hammer.expression.query.Sortable;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
@@ -21,12 +22,12 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <E3> the generic type
  * @param <E4> the generic type
  * @param <E5> the generic type
- * @param <RS> the generic type
+ * @param <R>  the generic type
  */
-public abstract class AbstractEntitySqlQueryFetch5<E, E2, E3, E4, E5, RS> extends AbstractEntitySqlQuery<RS> implements
-        EntityWhereExpression5<E, E2, E3, E4, E5, EntityQueryConditionGroup5<E, E2, E3, E4, E5, RS>,
-                EntityQueryConditionGroupLogic5<E, E2, E3, E4, E5, RS>>,
-        Sortable<EntityQuerySortExpression5<E, E2, E3, E4, E5, RS>> {
+public abstract class AbstractEntitySqlQueryFetch5<E, E2, E3, E4, E5, R> extends AbstractEntitySqlQuery<R> implements
+        EntityWhereExpression5<E, E2, E3, E4, E5, EntityQueryConditionGroup5<E, E2, E3, E4, E5, R>,
+                EntityQueryConditionGroupLogic5<E, E2, E3, E4, E5, R>>,
+        Sortable<EntityQuerySortExpression5<E, E2, E3, E4, E5, R>> {
 
     /**
      * Instantiates a new abstract entity sql query fetched.
@@ -44,20 +45,41 @@ public abstract class AbstractEntitySqlQueryFetch5<E, E2, E3, E4, E5, RS> extend
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroup5<E, E2, E3, E4, E5, RS> where() {
+    public EntityQueryConditionGroup5<E, E2, E3, E4, E5, R> where() {
         return new EntitySqlQueryExpression5<>(factory, sqlPageFactory, queryRelation);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public EntityQueryConditionGroup5<E, E2, E3, E4, E5, R> where(
+    //            Consumer<EntityQueryConditionGroup5<E, E2, E3, E4, E5, R>> consumer) {
+    //        EntitySqlQueryExpression5<E, E2, E3, E4, E5,
+    //                R> exp = new EntitySqlQueryExpression5<>(factory, sqlPageFactory, queryRelation);
+    //        if (consumer != null) {
+    //            consumer.accept(exp);
+    //        }
+    //        return exp;
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroup5<E, E2, E3, E4, E5, RS> where(
-            Consumer<EntityQueryConditionGroup5<E, E2, E3, E4, E5, RS>> consumer) {
+    public EntityQueryConditionGroupLogic5<E, E2, E3, E4, E5, R> where(
+            FiveArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+                    EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
+                    EntityConditionsGroupExpression<E5, ?, ?>, LogicExpression<?, ?>> entityPropertyFuntion) {
         EntitySqlQueryExpression5<E, E2, E3, E4, E5,
-                RS> exp = new EntitySqlQueryExpression5<>(factory, sqlPageFactory, queryRelation);
-        if (consumer != null) {
-            consumer.accept(exp);
+                R> exp = new EntitySqlQueryExpression5<>(factory, sqlPageFactory, queryRelation);
+        if (entityPropertyFuntion != null) {
+            exp.addCondition(entityPropertyFuntion.apply(
+                    new EntitySqlQueryConditionsGroupExpression<>(0, factory, queryRelation),
+                    new EntitySqlQueryConditionsGroupExpression<>(1, factory, queryRelation),
+                    new EntitySqlQueryConditionsGroupExpression<>(2, factory, queryRelation),
+                    new EntitySqlQueryConditionsGroupExpression<>(3, factory, queryRelation),
+                    new EntitySqlQueryConditionsGroupExpression<>(4, factory, queryRelation)));
         }
         return exp;
     }
@@ -66,7 +88,7 @@ public abstract class AbstractEntitySqlQueryFetch5<E, E2, E3, E4, E5, RS> extend
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortExpression5<E, E2, E3, E4, E5, RS> sort() {
+    public EntityQuerySortExpression5<E, E2, E3, E4, E5, R> sort() {
         return new EntitySqlQueryExpression5<>(factory, sqlPageFactory, queryRelation);
     }
 

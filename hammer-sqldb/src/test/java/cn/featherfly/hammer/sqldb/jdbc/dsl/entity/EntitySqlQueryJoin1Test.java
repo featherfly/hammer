@@ -56,7 +56,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
         assertEquals(order.getId(), oid1);
 
         order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where() //
-                .property((e1, e2) -> e1.apply(Order2::getId).eq(oid1)) //
+                .property((e1, e2) -> e1.property(Order2::getId).eq(oid1)) //
                 .single();
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
@@ -68,7 +68,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
         assertEquals(order.getId(), oid1);
 
         order = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).where() //
-                .property((e1, e2) -> e2.apply(User2::getId).eq(uid1)) //
+                .property((e1, e2) -> e2.property(User2::getId).eq(uid1)) //
                 .single();
         assertNotNull(order);
         assertEquals(order.getId(), oid1);
@@ -84,7 +84,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
         assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());
 
         orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch().where() //
-                .property((e1, e2) -> e1.apply(Order2::getId).eq(oid1)) //
+                .property((e1, e2) -> e1.property(Order2::getId).eq(oid1)) //
                 .single();
         assertNotNull(orderUser);
         assertEquals(orderUser.get0().getId(), oid1);
@@ -98,7 +98,7 @@ public class EntitySqlQueryJoin1Test extends AbstractEntitySqlQueryJoinTest {
         assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());
 
         orderUser = query.find(Order2.class).join(User2.class).on(Order2::getCreateUser).fetch().where() //
-                .property((e1, e2) -> e2.apply(User2::getId).eq(uid1)) //
+                .property((e1, e2) -> e2.property(User2::getId).eq(uid1)) //
                 .single();
         assertNotNull(orderUser);
         assertEquals(orderUser.get0().getId(), oid1);

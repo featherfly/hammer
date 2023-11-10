@@ -34,7 +34,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
 
     @BeforeClass
     void be() {
-        jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
 
         Class<Article2> type = Article2.class;
 

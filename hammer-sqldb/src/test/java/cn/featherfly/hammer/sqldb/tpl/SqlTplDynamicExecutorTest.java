@@ -119,12 +119,12 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
         PaginationResults<User> us = userMapper.selectByAge2Page(age, 0, limit);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
-        assertEquals(us.getResultSize(), new Integer(limit));
+        assertEquals(us.getResultSize(), Integer.valueOf(limit));
 
         us = userMapper.selectByAge2Page(age, page);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
-        assertEquals(us.getResultSize(), new Integer(limit));
+        assertEquals(us.getResultSize(), Integer.valueOf(limit));
     }
 
     @Test
@@ -146,13 +146,13 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
 
-        assertEquals(us.getResultSize(), new Integer(limit));
+        assertEquals(us.getResultSize(), Integer.valueOf(limit));
 
         us = userMapper.select2Page(0, limit);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
 
-        assertEquals(us.getResultSize(), new Integer(limit));
+        assertEquals(us.getResultSize(), Integer.valueOf(limit));
 
     }
 }

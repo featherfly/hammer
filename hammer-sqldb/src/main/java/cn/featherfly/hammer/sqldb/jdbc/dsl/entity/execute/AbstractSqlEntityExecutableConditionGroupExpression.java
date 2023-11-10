@@ -6,8 +6,8 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractEntitySqlExecutableConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
-import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlExecutableConditionGroupExpression;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .

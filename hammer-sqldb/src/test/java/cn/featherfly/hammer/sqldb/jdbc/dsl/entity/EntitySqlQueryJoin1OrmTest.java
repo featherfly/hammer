@@ -371,7 +371,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getAge).ba(min, max)) //
+                .property((e1, e2) -> e1.property(User::getAge).ba(min, max)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(min <= u.getAge());
@@ -418,7 +418,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getAge).nba(min, max)) //
+                .property((e1, e2) -> e1.property(User::getAge).nba(min, max)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getAge() < min || max < u.getAge());
@@ -520,7 +520,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).sw(startWith)) //
+                .property((e1, e2) -> e1.property(User::getUsername).sw(startWith)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getUsername().startsWith(startWith));
@@ -577,7 +577,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).ew(endWith)) //
+                .property((e1, e2) -> e1.property(User::getUsername).ew(endWith)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getUsername().endsWith(endWith));
@@ -635,7 +635,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).lk(startWith + "%")) //
+                .property((e1, e2) -> e1.property(User::getUsername).lk(startWith + "%")) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getUsername().startsWith(startWith));
@@ -662,7 +662,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).lk("%" + endWith)) //
+                .property((e1, e2) -> e1.property(User::getUsername).lk("%" + endWith)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getUsername().endsWith(endWith));
@@ -689,7 +689,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).lk("%" + contains + "%")) //
+                .property((e1, e2) -> e1.property(User::getUsername).lk("%" + contains + "%")) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getUsername().contains(contains));
@@ -787,7 +787,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).nco(contains)) //
+                .property((e1, e2) -> e1.property(User::getUsername).nco(contains)) //
                 .list();
         for (User u : userInfos) {
             assertFalse(u.getUsername().contains(contains));
@@ -818,7 +818,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).nsw(startWith)) //
+                .property((e1, e2) -> e1.property(User::getUsername).nsw(startWith)) //
                 .list();
         for (User u : userInfos) {
             assertFalse(u.getUsername().startsWith(startWith));
@@ -849,7 +849,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).newv(endWith)) //
+                .property((e1, e2) -> e1.property(User::getUsername).newv(endWith)) //
                 .list();
         for (User u : userInfos) {
             assertFalse(u.getUsername().endsWith(endWith));
@@ -881,7 +881,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).nl(startWith + "%")) //
+                .property((e1, e2) -> e1.property(User::getUsername).nl(startWith + "%")) //
                 .list();
         for (User u : userInfos) {
             assertFalse(u.getUsername().startsWith(startWith));
@@ -908,7 +908,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).nl("%" + endWith)) //
+                .property((e1, e2) -> e1.property(User::getUsername).nl("%" + endWith)) //
                 .list();
         for (User u : userInfos) {
             assertFalse(u.getUsername().endsWith(endWith));
@@ -935,7 +935,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getUsername).nl("%" + contains + "%")) //
+                .property((e1, e2) -> e1.property(User::getUsername).nl("%" + contains + "%")) //
                 .list();
         for (User u : userInfos) {
             assertFalse(u.getUsername().contains(contains));
@@ -965,7 +965,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getAge).ge(min)) //
+                .property((e1, e2) -> e1.property(User::getAge).ge(min)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(min <= u.getAge());
@@ -1020,7 +1020,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getAge).gt(min)) //
+                .property((e1, e2) -> e1.property(User::getAge).gt(min)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(min < u.getAge());
@@ -1075,7 +1075,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getAge).le(max)) //
+                .property((e1, e2) -> e1.property(User::getAge).le(max)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getAge() <= max);
@@ -1130,7 +1130,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(User.class) //
                 .join(UserInfo::getUser) //
                 .where() //
-                .property((e1, e2) -> e1.apply(User::getAge).lt(max)) //
+                .property((e1, e2) -> e1.property(User::getAge).lt(max)) //
                 .list();
         for (User u : userInfos) {
             assertTrue(u.getAge() < max);
@@ -1225,7 +1225,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(UserInfo2.class) //
                 .join(User.class).on(UserInfo2::getUserId) //
                 .where() //
-                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).isn()) //
+                .property((e1, e2) -> e1.property(UserInfo2::getStreetNo).isn()) //
                 .list();
         for (UserInfo2 ui : userInfos) {
             assertNull(ui.getStreetNo());
@@ -1234,7 +1234,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(UserInfo2.class) //
                 .join(User.class).on(UserInfo2::getUserId) //
                 .where() //
-                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).isn(true)) //
+                .property((e1, e2) -> e1.property(UserInfo2::getStreetNo).isn(true)) //
                 .list();
         for (UserInfo2 ui : userInfos) {
             assertNull(ui.getStreetNo());
@@ -1243,7 +1243,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(UserInfo2.class) //
                 .join(User.class).on(UserInfo2::getUserId) //
                 .where() //
-                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).isn(false)) //
+                .property((e1, e2) -> e1.property(UserInfo2::getStreetNo).isn(false)) //
                 .list();
         for (UserInfo2 ui : userInfos) {
             assertNotNull(ui.getStreetNo());
@@ -1343,7 +1343,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(UserInfo2.class) //
                 .join(User.class).on(UserInfo2::getUserId) //
                 .where() //
-                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).inn()) //
+                .property((e1, e2) -> e1.property(UserInfo2::getStreetNo).inn()) //
                 .list();
         for (UserInfo2 ui : userInfos) {
             assertNotNull(ui.getStreetNo());
@@ -1352,7 +1352,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(UserInfo2.class) //
                 .join(User.class).on(UserInfo2::getUserId) //
                 .where() //
-                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).inn(true)) //
+                .property((e1, e2) -> e1.property(UserInfo2::getStreetNo).inn(true)) //
                 .list();
         for (UserInfo2 ui : userInfos) {
             assertNotNull(ui.getStreetNo());
@@ -1361,7 +1361,7 @@ public class EntitySqlQueryJoin1OrmTest extends AbstractEntitySqlQueryJoinTest {
         userInfos = query.find(UserInfo2.class) //
                 .join(User.class).on(UserInfo2::getUserId) //
                 .where() //
-                .property((e1, e2) -> e1.apply(UserInfo2::getStreetNo).inn(false)) //
+                .property((e1, e2) -> e1.property(UserInfo2::getStreetNo).inn(false)) //
                 .list();
         for (UserInfo2 ui : userInfos) {
             assertNull(ui.getStreetNo());

@@ -21,7 +21,7 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * The Interface JdbcQuerySingle.
+ * jdbc query single.
  *
  * @author zhongj
  */
@@ -142,7 +142,7 @@ public interface JdbcQuerySingle {
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Map<String, Object> args) {
@@ -161,7 +161,7 @@ public interface JdbcQuerySingle {
      * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args);
@@ -179,7 +179,7 @@ public interface JdbcQuerySingle {
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Object> args) {
@@ -201,7 +201,7 @@ public interface JdbcQuerySingle {
      * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
@@ -222,7 +222,7 @@ public interface JdbcQuerySingle {
      * @param elementType4 the element type 4
      * @param elementType5 the element type 5
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -247,7 +247,7 @@ public interface JdbcQuerySingle {
      * @param elementType5 the element type 5
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -270,7 +270,7 @@ public interface JdbcQuerySingle {
      * @param elementType5 the element type 5
      * @param elementType6 the element type 6
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -297,7 +297,7 @@ public interface JdbcQuerySingle {
      * @param elementType6 the element type 6
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -370,7 +370,7 @@ public interface JdbcQuerySingle {
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Object... args) {
@@ -389,7 +389,7 @@ public interface JdbcQuerySingle {
      * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
@@ -407,7 +407,7 @@ public interface JdbcQuerySingle {
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Object... args) {
@@ -429,7 +429,7 @@ public interface JdbcQuerySingle {
      * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
@@ -450,7 +450,7 @@ public interface JdbcQuerySingle {
      * @param elementType4 the element type 4
      * @param elementType5 the element type 5
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -475,7 +475,7 @@ public interface JdbcQuerySingle {
      * @param elementType5 the element type 5
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -498,7 +498,7 @@ public interface JdbcQuerySingle {
      * @param elementType5 the element type 5
      * @param elementType6 the element type 6
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     default <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
@@ -525,7 +525,7 @@ public interface JdbcQuerySingle {
      * @param elementType6 the element type 6
      * @param prefixes     the prefixes
      * @param args         the args
-     * @return the list
+     * @return LogicExpressionist
      */
     <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,

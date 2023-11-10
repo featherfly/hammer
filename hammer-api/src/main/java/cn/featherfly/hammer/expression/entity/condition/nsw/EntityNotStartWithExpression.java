@@ -4,10 +4,11 @@ package cn.featherfly.hammer.expression.entity.condition.nsw;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.nsw.NotStartWithSupplierExpression;
 
 /**
  * The Interface EntityNotStartWithExpression.
@@ -18,13 +19,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EntityNotStartWithExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends NotStartWithSupplierExpression<C, L> {
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nsw(SerializableFunction<E, String> name, String value) {
@@ -34,8 +35,20 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw(SerializableFunction<E, String> name, String value, IgnoreStrategy ignoreStrategy) {
+        return nsw(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -49,7 +62,7 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -60,49 +73,22 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
+     */
+    default L nsw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nsw(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param queryPolicy    the query policy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
      */
     L nsw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default L nsw(SerializableStringSupplier property) {
-        return nsw(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nsw(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return nsw(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param property    the property
-     * @param queryPolicy the query policy
-     * @return the l
-     */
-    L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param property       the property
-     * @param queryPolicy    the query policy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
 }

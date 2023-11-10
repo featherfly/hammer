@@ -1782,7 +1782,7 @@ public interface TplExecutor {
      * @param entityType5  the entity type 5
      * @param entityType6  the entity type 6
      * @param params       the params
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -1807,7 +1807,7 @@ public interface TplExecutor {
      * @param params       the params
      * @param offset       the offset
      * @param limit        the limit
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -1831,7 +1831,7 @@ public interface TplExecutor {
      * @param entityType6  the entity type 6
      * @param params       the params
      * @param page         the page
-     * @return the list
+     * @return LogicExpressionist
      */
     default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
@@ -1858,7 +1858,7 @@ public interface TplExecutor {
      * @param entityType5  the entity type 5
      * @param entityType6  the entity type 6
      * @param params       the params
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -1883,7 +1883,7 @@ public interface TplExecutor {
      * @param params       the params
      * @param offset       the offset
      * @param limit        the limit
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -1907,7 +1907,7 @@ public interface TplExecutor {
      * @param entityType6  the entity type 6
      * @param params       the params
      * @param page         the page
-     * @return the list
+     * @return LogicExpressionist
      */
     default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
@@ -1935,7 +1935,7 @@ public interface TplExecutor {
      * @param entityType6  the entity type 6
      * @param prefixes     the prefixes
      * @param params       the params
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -1962,7 +1962,7 @@ public interface TplExecutor {
      * @param params       the params
      * @param offset       the offset
      * @param limit        the limit
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -1988,7 +1988,7 @@ public interface TplExecutor {
      * @param prefixes     the prefixes
      * @param params       the params
      * @param page         the page
-     * @return the list
+     * @return LogicExpressionist
      */
     default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
@@ -2017,7 +2017,7 @@ public interface TplExecutor {
      * @param entityType6  the entity type 6
      * @param prefixes     the prefixes
      * @param params       the params
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -2044,7 +2044,7 @@ public interface TplExecutor {
      * @param params       the params
      * @param offset       the offset
      * @param limit        the limit
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
             Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
@@ -2070,7 +2070,7 @@ public interface TplExecutor {
      * @param prefixes     the prefixes
      * @param params       the params
      * @param page         the page
-     * @return the list
+     * @return LogicExpressionist
      */
     default <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
@@ -3116,7 +3116,7 @@ public interface TplExecutor {
      * @param params       the params
      * @param offset       the offset
      * @param limit        the limit
-     * @return the list
+     * @return LogicExpressionist
      */
     <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(TplExecuteId tplExecuteId,
             Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
@@ -3143,7 +3143,7 @@ public interface TplExecutor {
      * @param prefixes     the prefixes
      * @param params       the params
      * @param page         the page
-     * @return the list
+     * @return LogicExpressionist
      */
     default <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
             TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,

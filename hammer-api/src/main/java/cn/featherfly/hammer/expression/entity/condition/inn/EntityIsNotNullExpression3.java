@@ -45,7 +45,7 @@ public interface EntityIsNotNullExpression3<E, E2, E3, C extends ConditionExpres
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -58,7 +58,7 @@ public interface EntityIsNotNullExpression3<E, E2, E3, C extends ConditionExpres
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -109,7 +109,7 @@ public interface EntityIsNotNullExpression3<E, E2, E3, C extends ConditionExpres
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -122,7 +122,7 @@ public interface EntityIsNotNullExpression3<E, E2, E3, C extends ConditionExpres
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -174,7 +174,7 @@ public interface EntityIsNotNullExpression3<E, E2, E3, C extends ConditionExpres
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -187,7 +187,7 @@ public interface EntityIsNotNullExpression3<E, E2, E3, C extends ConditionExpres
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression

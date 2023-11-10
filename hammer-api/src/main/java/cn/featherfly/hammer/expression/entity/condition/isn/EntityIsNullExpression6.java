@@ -30,7 +30,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(Function<
@@ -45,7 +45,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -102,7 +102,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(Function<
@@ -117,7 +117,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -175,7 +175,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(Function<
@@ -190,7 +190,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -248,7 +248,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(Function<
@@ -263,7 +263,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -321,7 +321,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(Function<
@@ -336,7 +336,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -394,7 +394,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(Function<
@@ -409,7 +409,7 @@ public interface EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression

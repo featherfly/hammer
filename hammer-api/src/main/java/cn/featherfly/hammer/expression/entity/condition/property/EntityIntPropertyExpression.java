@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.property;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
 
 /**
  * The Interface EntityIntPropertyExpression.
@@ -24,6 +24,6 @@ import cn.featherfly.hammer.expression.condition.property.NumberPropertyExpressi
  */
 //ENHANCE 后续加入IntExpression<C,L>
 public interface EntityIntPropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NumberPropertyExpression<Integer, C, L> {
+        extends NumberFieldExpression<Integer, C, L> {
 
 }

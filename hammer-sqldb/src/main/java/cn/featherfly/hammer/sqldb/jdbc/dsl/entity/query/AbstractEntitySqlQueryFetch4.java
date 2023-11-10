@@ -1,14 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 
-import java.util.function.Consumer;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup4;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic4;
-import cn.featherfly.hammer.expression.api.Sortable;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression4;
+import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression4;
+import cn.featherfly.hammer.expression.query.Sortable;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
@@ -20,12 +21,12 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <E2> the generic type
  * @param <E3> the generic type
  * @param <E4> the generic type
- * @param <RS> the generic type
+ * @param <R>  the generic type
  */
-public abstract class AbstractEntitySqlQueryFetch4<E, E2, E3, E4, RS> extends AbstractEntitySqlQuery<RS> implements
-        EntityWhereExpression4<E, E2, E3, E4, EntityQueryConditionGroup4<E, E2, E3, E4, RS>,
-                EntityQueryConditionGroupLogic4<E, E2, E3, E4, RS>>,
-        Sortable<EntityQuerySortExpression4<E, E2, E3, E4, RS>> {
+public abstract class AbstractEntitySqlQueryFetch4<E, E2, E3, E4, R> extends AbstractEntitySqlQuery<R> implements
+        EntityWhereExpression4<E, E2, E3, E4, EntityQueryConditionGroup4<E, E2, E3, E4, R>,
+                EntityQueryConditionGroupLogic4<E, E2, E3, E4, R>>,
+        Sortable<EntityQuerySortExpression4<E, E2, E3, E4, R>> {
 
     /**
      * Instantiates a new abstract entity sql query fetched.
@@ -43,20 +44,40 @@ public abstract class AbstractEntitySqlQueryFetch4<E, E2, E3, E4, RS> extends Ab
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroup4<E, E2, E3, E4, RS> where() {
+    public EntityQueryConditionGroup4<E, E2, E3, E4, R> where() {
         return new EntitySqlQueryExpression4<>(factory, sqlPageFactory, queryRelation);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public EntityQueryConditionGroup4<E, E2, E3, E4, R> where(
+    //            Consumer<EntityQueryConditionGroup4<E, E2, E3, E4, R>> consumer) {
+    //        EntitySqlQueryExpression4<E, E2, E3, E4,
+    //                R> exp = new EntitySqlQueryExpression4<>(factory, sqlPageFactory, queryRelation);
+    //        if (consumer != null) {
+    //            consumer.accept(exp);
+    //        }
+    //        return exp;
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryConditionGroup4<E, E2, E3, E4, RS> where(
-            Consumer<EntityQueryConditionGroup4<E, E2, E3, E4, RS>> consumer) {
+    public EntityQueryConditionGroupLogic4<E, E2, E3, E4, R> where(
+            FourArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+                    EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
+                    LogicExpression<?, ?>> entityPropertyFuntion) {
         EntitySqlQueryExpression4<E, E2, E3, E4,
-                RS> exp = new EntitySqlQueryExpression4<>(factory, sqlPageFactory, queryRelation);
-        if (consumer != null) {
-            consumer.accept(exp);
+                R> exp = new EntitySqlQueryExpression4<>(factory, sqlPageFactory, queryRelation);
+        if (entityPropertyFuntion != null) {
+            exp.addCondition(entityPropertyFuntion.apply(
+                    new EntitySqlQueryConditionsGroupExpression<>(0, factory, queryRelation),
+                    new EntitySqlQueryConditionsGroupExpression<>(1, factory, queryRelation),
+                    new EntitySqlQueryConditionsGroupExpression<>(2, factory, queryRelation),
+                    new EntitySqlQueryConditionsGroupExpression<>(3, factory, queryRelation)));
         }
         return exp;
     }
@@ -65,7 +86,7 @@ public abstract class AbstractEntitySqlQueryFetch4<E, E2, E3, E4, RS> extends Ab
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortExpression4<E, E2, E3, E4, RS> sort() {
+    public EntityQuerySortExpression4<E, E2, E3, E4, R> sort() {
         return new EntitySqlQueryExpression4<>(factory, sqlPageFactory, queryRelation);
     }
 

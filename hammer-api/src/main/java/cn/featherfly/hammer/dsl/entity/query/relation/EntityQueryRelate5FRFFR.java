@@ -4,7 +4,7 @@ package cn.featherfly.hammer.dsl.entity.query.relation;
 import com.speedment.common.tuple.Tuple4;
 
 import cn.featherfly.hammer.dsl.entity.query.EntityQuery6;
-import cn.featherfly.hammer.expression.api.entity.QueryRelate;
+import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 
 /**
  * The Interface EntityQueryRelate5FRFFR.
@@ -18,7 +18,7 @@ import cn.featherfly.hammer.expression.api.entity.QueryRelate;
  * @param <R5> the generic type
  */
 public interface EntityQueryRelate5FRFFR<E, R1, R2, R3, R4, R5>
-        extends QueryRelate<EntityQueryRelatedFetched5FRFFF<E, R1, R2, R3, R4, R5>>,
+        extends QueryRelateExpression<EntityQueryRelatedFetched5FRFFF<E, R1, R2, R3, R4, R5>>,
         EntityQuery6<E, R1, R2, R3, R4, R5, Tuple4<E, R1, R3, R4>> {
 
 }

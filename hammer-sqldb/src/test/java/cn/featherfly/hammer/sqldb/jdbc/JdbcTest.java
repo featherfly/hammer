@@ -22,11 +22,13 @@ import java.util.function.BiConsumer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.speedment.common.tuple.MutableTuples;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuples;
+import com.speedment.common.tuple.mutable.MutableTuple3;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanPropertyValue;
@@ -550,7 +552,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testIntercepor() {
-        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
+        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
 
         jdbc.addInterceptor(new JdbcExecutionInterceptor() {
             @Override
@@ -589,7 +591,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testIntercepor2() {
-        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
+        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
 
         List<JdbcExecutionInterceptor> interceptors = new ArrayList<>();
 
@@ -1108,7 +1110,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void testCall() throws SQLException {
+    void call() throws SQLException {
         String newname = "featherfly_call" + Randoms.getInt(1000);
         Object[] params = new Object[] { 13, newname, 0 };
         int outparam = (Integer) params[2];
@@ -1121,15 +1123,48 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void testCall2() throws SQLException {
+    void call_array_args() throws SQLException {
         String qname = "name_init%";
         String newdescp = "call_update_batch_" + Randoms.getInt(1000);
-        Object[] params = new Object[] { qname, newdescp, null };
+        Object[] params = new Object[] { qname, newdescp, null }; // out参数传递null
         assertNull(params[2]);
 
         int result = jdbc.call("call_update_role_more", params);
         System.out.println("result = " + result);
         int outparam = (Integer) params[2];
+        assertTrue(outparam == 3);
+    }
+
+    //    @Test
+    //    void call_map_args() throws SQLException {
+    //        String qname = "name_init%";
+    //        String newdescp = "call_update_batch_" + Randoms.getInt(1000);
+    //        SequencedMap<String, Object> params = new LinkedHashMap<>();
+    //        params.put("q_name", qname);
+    //        params.put("u_descp", newdescp + Randoms.getInt(1000));
+    //        params.put("out_row_count", null); // out参数传递null
+    //        assertNull(params.get("out_row_count"));
+    //
+    //        int result = jdbc.call("call_update_role_more", params);
+    //        System.out.println("result = " + result);
+    //        int outparam = (Integer) params.get("out_row_count");
+    //        assertTrue(outparam == 3);
+    //    }
+
+    @Test
+    void call_tuple_args() throws SQLException {
+        String qname = "name_init%";
+        String newdescp = "call_update_batch_" + Randoms.getInt(1000);
+        MutableTuple3<String, String, Integer> params = MutableTuples.create3();
+        params.set0(qname);
+        params.set1(newdescp);
+        params.set2(null); // out参数传递null
+
+        assertNull(params.getOrNull2());
+
+        int result = jdbc.call("call_update_role_more", params);
+        System.out.println("result = " + result);
+        int outparam = params.getOrNull2();
         assertTrue(outparam == 3);
     }
 }

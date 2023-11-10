@@ -47,7 +47,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(
@@ -62,7 +62,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -118,7 +118,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(
@@ -133,7 +133,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -190,7 +190,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(
@@ -205,7 +205,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -262,7 +262,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(
@@ -277,7 +277,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression
@@ -334,7 +334,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L inn(
@@ -349,7 +349,7 @@ public interface EntityIsNotNullExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
+    //     * @param name the name
     //     * @param value    if true, is null; if false, is not null; if null, ignore
     //     *                 this operate
     //     * @return LogicExpression

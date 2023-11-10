@@ -7,8 +7,8 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup5;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic5;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractMulitiEntitySqlQueryConditionsGroupExpression5;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
-import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupExpression5;
 
 /**
  * The Class EntitySqlQueryExpression4.
@@ -22,7 +22,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryConditionGroupEx
  * @param <RS> the query result type
  */
 public class EntitySqlQueryExpression5<T1, T2, T3, T4, T5, RS> extends
-        AbstractEntitySqlQueryConditionGroupExpression5<T1, T2, T3, T4, T5, RS,
+        AbstractMulitiEntitySqlQueryConditionsGroupExpression5<T1, T2, T3, T4, T5, RS,
                 EntityQueryConditionGroup5<T1, T2, T3, T4, T5, RS>,
                 EntityQueryConditionGroupLogic5<T1, T2, T3, T4, T5, RS>>
         implements EntityQueryConditionGroup5<T1, T2, T3, T4, T5, RS>,
@@ -66,8 +66,8 @@ public class EntitySqlQueryExpression5<T1, T2, T3, T4, T5, RS> extends
      * {@inheritDoc}
      */
     @Override
-    public String build() {
-        String condition = super.build();
+    public String expression() {
+        String condition = super.expression();
         if (parent == null) {
             String result = entityRelation.buildSelectSql();
             String sort = getRootSortBuilder().build();

@@ -63,8 +63,8 @@ public class HammerBenchmark extends AbstractBenchmark {
 
         //        jdbcFactory = new JdbcFactoryImpl(dialect, sqlTypeMappingManager);
 
-        jdbc = new JdbcSpringImpl(dataSource, dialect, sqlTypeMappingManager);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 

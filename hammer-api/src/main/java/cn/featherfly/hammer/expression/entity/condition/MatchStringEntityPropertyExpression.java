@@ -15,14 +15,15 @@ import java.util.Collection;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.hammer.expression.condition.field.value.SetStringFuzzyQueryExpression;
 
 /**
  * The Interface MatchStringEntityExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  */
-public interface MatchStringEntityPropertyExpression<E> extends MatchStringEntityExpression<E> {
+public interface MatchStringEntityPropertyExpression<T> extends MatchStringEntityExpression<T> {
 
     /**
      * entity match string function property expression.
@@ -31,18 +32,18 @@ public interface MatchStringEntityPropertyExpression<E> extends MatchStringEntit
      * @param name the name
      * @return entity match string function property expression
      */
-    <R> MatchStringEntityPropertyExpression<R> property(SerializableFunction<E, R> name);
+    <R> MatchStringEntityPropertyExpression<R> property(SerializableFunction<T, R> name);
 
     /**
      * entity match string function property expression.
      *
      * @param <R>  the generic type
-     * @param <RE> the generic type
+     * @param <E>  the generic type
      * @param name the name
      * @return entity match string function property expression
      */
-    <R extends Collection<RE>,
-            RE> MatchStringEntityPropertyExpression<RE> property(SerializableToCollectionFunction<E, R, RE> name);
+    <R extends Collection<E>,
+            E> MatchStringEntityPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name);
 
     /**
      * entity match string function string property expression.
@@ -50,5 +51,5 @@ public interface MatchStringEntityPropertyExpression<E> extends MatchStringEntit
      * @param name the name
      * @return entity match string function property expression
      */
-    MatchStringEntityPropertySetValueExpression property(SerializableToStringFunction<E> name);
+    SetStringFuzzyQueryExpression property(SerializableToStringFunction<T> name);
 }

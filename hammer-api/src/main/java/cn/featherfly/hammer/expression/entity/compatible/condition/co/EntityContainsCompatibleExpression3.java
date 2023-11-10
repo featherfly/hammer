@@ -10,7 +10,7 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * The Interface EntityContainsCompatibleExpression3.
+ * entity contains compatible expression3.
  *
  * @author zhongj
  * @param <E>  the element type

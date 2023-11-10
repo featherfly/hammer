@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
+import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 
 /**
@@ -8,14 +9,16 @@ import cn.featherfly.common.structure.page.Page;
  *
  * @author zhongj
  */
-public interface QueryConditionLimit {
+public interface QueryConditionLimit<Q> {
     /**
      * limit
      *
      * @param limit limit rows
      * @return QueryExecutor
      */
-    QueryLimitExecutor limit(Integer limit);
+    default Q limit(int limit) {
+        return limit(0, limit);
+    }
 
     /**
      * limit
@@ -24,7 +27,9 @@ public interface QueryConditionLimit {
      * @param limit  limit rows
      * @return QueryExecutor
      */
-    QueryLimitExecutor limit(Integer offset, Integer limit);
+    default Q limit(int offset, int limit) {
+        return limit(new Limit(offset, limit));
+    }
 
     /**
      * limit
@@ -32,5 +37,15 @@ public interface QueryConditionLimit {
      * @param page params for pagination
      * @return QueryExecutor
      */
-    QueryLimitExecutor limit(Page page);
+    default Q limit(Page page) {
+        return limit(new Limit(page));
+    }
+
+    /**
+     * limit
+     *
+     * @param page params for pagination
+     * @return QueryExecutor
+     */
+    Q limit(Limit limit);
 }
