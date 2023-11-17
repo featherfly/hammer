@@ -21,7 +21,7 @@ public interface PropertyNotEndWithExpression<C extends ConditionExpression, L e
     /**
      * not end with value. 不以value结尾.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L newv(String value) {
@@ -55,7 +55,7 @@ public interface PropertyNotEndWithExpression<C extends ConditionExpression, L e
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L newv(String value, MatchStrategy matchStrategy);
 

@@ -6,8 +6,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsLogicExpression;
 
 /**
  * simple local date time property expression.
@@ -16,12 +16,12 @@ import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class SimpleLocalTimePropertyExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements LocalTimePropertyExpression<C, L> {
+public class SimpleLocalTimePropertyExpression<C extends RepositoryConditionsExpression<C, L>,
+        L extends RepositoryConditionsLogicExpression<C, L>> implements LocalTimePropertyExpression<C, L> {
 
     private String name;
 
-    private ConditionsExpression<C, L> expression;
+    private RepositoryConditionsExpression<C, L> expression;
 
     /**
      * Instantiates a new simple local date time property expression.
@@ -29,7 +29,7 @@ public class SimpleLocalTimePropertyExpression<C extends ConditionsExpression<C,
      * @param name       name
      * @param expression expression
      */
-    public SimpleLocalTimePropertyExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleLocalTimePropertyExpression(String name, RepositoryConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -112,7 +112,7 @@ public class SimpleLocalTimePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L in(LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return expression.in(name, value, v -> ignoreStrategy.test((LocalTime) v));
+        return expression.in(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -136,7 +136,7 @@ public class SimpleLocalTimePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L in(LocalTime[] value, Predicate<LocalTime[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((LocalTime[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -160,7 +160,7 @@ public class SimpleLocalTimePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L ni(LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((LocalTime) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -184,7 +184,7 @@ public class SimpleLocalTimePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L ni(LocalTime[] value, Predicate<LocalTime[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((LocalTime[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**

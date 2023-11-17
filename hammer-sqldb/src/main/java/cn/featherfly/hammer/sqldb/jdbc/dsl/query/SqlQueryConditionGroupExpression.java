@@ -24,9 +24,10 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
-import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
 import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -39,9 +40,9 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
  * @author zhongj
  */
 public abstract class SqlQueryConditionGroupExpression extends
-        AbstractSqlConditionGroupExpression<QueryConditionGroupExpression, QueryConditionGroupLogicExpression,
+        AbstractSqlConditionGroupExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic,
                 QueryConditionConfig>
-        implements QueryConditionGroupExpression, QueryConditionGroupLogicExpression, QuerySortExpression {
+        implements RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, QuerySortExpression {
 
     /** The sort builder. */
     private SqlSortBuilder sortBuilder = new SqlSortBuilder(dialect);

@@ -59,7 +59,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
     /**
      * List.
      *
-     * @return the list
+     * @return LogicExpressionist
      */
     public List<E> list() {
         setProperties();

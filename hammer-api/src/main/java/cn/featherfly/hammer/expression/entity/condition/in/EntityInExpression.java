@@ -36,8 +36,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in(SerializableFunction<E, R> name, R value);
@@ -56,8 +56,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in(SerializableToIntFunction<E> name, int value);
@@ -75,8 +75,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in(SerializableToLongFunction<E> name, long value);
@@ -94,8 +94,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in(SerializableToDoubleFunction<E> name, double value);
@@ -114,8 +114,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in(SerializableFunction<E, R> name, @SuppressWarnings("unchecked") R... value);
@@ -123,8 +123,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in(SerializableToIntFunction<E> name, int... value);
@@ -132,8 +132,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in(SerializableToLongFunction<E> name, long... value);
@@ -173,8 +173,8 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in(SerializableFunction<E, R> name, Collection<R> value);
@@ -238,7 +238,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * values in. 包含指定，sql中的in.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> L in(SerializableSupplier<R> property);
@@ -247,7 +247,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
      * values in. 包含指定，sql中的in.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -256,7 +256,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L in(SerializableIntSupplier property);
@@ -264,7 +264,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -273,7 +273,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L in(SerializableLongSupplier property);
@@ -281,7 +281,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -290,7 +290,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L in(SerializableDoubleSupplier property);
@@ -298,7 +298,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -307,7 +307,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -316,7 +316,7 @@ public interface EntityInExpression<E, C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

@@ -40,7 +40,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     protected AtomicInteger index;
 
     /** The expression. */
-    protected AbstractMulitiEntityConditionExpression<C, L> expression;
+    protected InternalMulitiEntityCondition<L> expression;
 
     protected JdbcMappingFactory factory;
 
@@ -57,7 +57,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param factory    the factory
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
             EntitySqlRelation<?, ?> queryRelation) {
         this(index, Lang.list(name), expression, factory, queryRelation);
     }
@@ -71,7 +71,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param factory      the factory
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
-            AbstractMulitiEntityConditionExpression<C, L> expression, JdbcMappingFactory factory,
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
             EntitySqlRelation<?, ?> queryRelation) {
         super();
         this.index = index;

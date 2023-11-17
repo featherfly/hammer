@@ -6,26 +6,26 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsLogicExpression;
 
 /**
  * simple String property expression.
  *
  * @author zhongj
  */
-public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements StringPropertyExpression<C, L> {
+public class SimpleStringPropertyExpression<C extends RepositoryConditionsExpression<C, L>,
+        L extends RepositoryConditionsLogicExpression<C, L>> implements StringPropertyExpression<C, L> {
 
     private String name;
 
-    private ConditionsExpression<C, L> expression;
+    private RepositoryConditionsExpression<C, L> expression;
 
     /**
      * @param name       name
      * @param expression expression
      */
-    public SimpleStringPropertyExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleStringPropertyExpression(String name, RepositoryConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -124,7 +124,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L in(String value, Predicate<String> ignoreStrategy) {
-        return expression.in(name, value, v -> ignoreStrategy.test((String) v));
+        return expression.in(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -148,7 +148,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L in(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.in(name, value, v -> ignoreStrategy.test((String[]) v));
+        return expression.in(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -172,7 +172,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L ni(String value, Predicate<String> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((String) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -196,7 +196,7 @@ public class SimpleStringPropertyExpression<C extends ConditionsExpression<C, L>
      */
     @Override
     public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((String[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**

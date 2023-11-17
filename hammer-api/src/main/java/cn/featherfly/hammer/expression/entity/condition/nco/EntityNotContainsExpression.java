@@ -23,8 +23,8 @@ public interface EntityNotContainsExpression<E, C extends ConditionExpression, L
     /**
      * not contains value. 不包含value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nco(SerializableFunction<E, String> name, String value) {
@@ -49,7 +49,7 @@ public interface EntityNotContainsExpression<E, C extends ConditionExpression, L
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nco(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -60,7 +60,7 @@ public interface EntityNotContainsExpression<E, C extends ConditionExpression, L
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nco(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
@@ -68,7 +68,7 @@ public interface EntityNotContainsExpression<E, C extends ConditionExpression, L
     /**
      * not contains value. 不包含value.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L nco(SerializableStringSupplier property) {
@@ -78,7 +78,7 @@ public interface EntityNotContainsExpression<E, C extends ConditionExpression, L
     /**
      * not contains value. 不包含value.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -91,7 +91,7 @@ public interface EntityNotContainsExpression<E, C extends ConditionExpression, L
      *
      * @param property    the property
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nco(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
@@ -101,7 +101,7 @@ public interface EntityNotContainsExpression<E, C extends ConditionExpression, L
      * @param property       the property
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nco(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 

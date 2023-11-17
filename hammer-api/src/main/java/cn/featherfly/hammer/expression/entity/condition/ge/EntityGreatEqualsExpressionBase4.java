@@ -45,8 +45,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ge4(SerializableToIntFunction4<T4> name, int value);
@@ -64,8 +64,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ge4(SerializableToLongFunction4<T4> name, long value);
@@ -83,8 +83,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ge4(SerializableToDoubleFunction4<T4> name, double value);
@@ -103,8 +103,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L ge4(SerializableFunction<T4, N> name, N value);
@@ -124,8 +124,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <E>   the element type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L ge4(SerializableFunction<T4, E> name, E value);
@@ -145,8 +145,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L ge4(SerializableFunction<T4, D> name, D value);
@@ -165,8 +165,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ge4(SerializableFunction<T4, LocalTime> name, LocalTime value);
@@ -184,8 +184,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ge4(SerializableFunction<T4, LocalDate> name, LocalDate value);
@@ -203,8 +203,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ge4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value);
@@ -222,8 +222,8 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ge4(SerializableFunction<T4, String> name, String value) {
@@ -267,7 +267,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ge4(SerializableIntSupplier property);
@@ -275,7 +275,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -284,7 +284,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ge4(SerializableLongSupplier property);
@@ -292,7 +292,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -301,7 +301,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ge4(SerializableDoubleSupplier property);
@@ -309,7 +309,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -319,7 +319,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L ge4(SerializableDateSupplier<R> property);
@@ -328,7 +328,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -338,7 +338,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L ge4(SerializableNumberSupplier<R> property);
@@ -347,7 +347,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -358,7 +358,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      *
      * @param <E>      the element type
      * @param index    the index
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L ge4(SerializableEnumSupplier<E> property);
@@ -367,7 +367,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
      * great and equals. 大于等于.
      *
      * @param <E>            the element type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -376,7 +376,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ge4(SerializableLocalDateSupplier property);
@@ -384,7 +384,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -393,7 +393,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ge4(SerializableLocalTimeSupplier property);
@@ -401,7 +401,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -410,7 +410,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ge4(SerializableLocalDateTimeSupplier property);
@@ -418,7 +418,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -427,7 +427,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L ge4(SerializableStringSupplier property) {
@@ -437,7 +437,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -448,7 +448,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -457,7 +457,7 @@ public interface EntityGreatEqualsExpressionBase4<T, T2, T3, T4, C extends Condi
     /**
      * great and equals. 大于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

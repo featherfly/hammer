@@ -21,16 +21,17 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  *
  * @author zhongj
  */
-public interface QueryFetch<R extends Repository, R2 extends FilterableRepository, Q extends QueryFetch<R, R2, Q, W>,
-        W extends Where<R2, C, L>, C extends ConditionExpression, L extends LogicExpression<C, L>> {
+public interface QueryFetch<R extends Repository, R2 extends FilterableRepository,
+        F extends QueryFetch<R, R2, F, W, C, L>, W extends Where<R2, C, L>, C extends ConditionExpression,
+        L extends LogicExpression<C, L>> {
 
-    Q fetch(BiConsumer<Q, R> fetcher);
+    F fetch(BiConsumer<F, R> fetcher);
 
-    Q field(Function<R, Field> fetchField);
+    F field(Function<R, Field> fetchField);
 
-    Q fields(Function<R, Field[]> fetchField);
+    F fields(Function<R, Field[]> fetchField);
 
-    Q field(Field... fetchFields);
+    F field(Field... fetchFields);
 
     W where();
 }

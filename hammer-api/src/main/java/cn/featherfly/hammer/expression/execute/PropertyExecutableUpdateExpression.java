@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.execute;
 
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
-import cn.featherfly.hammer.expression.WhereExpression;
+import cn.featherfly.hammer.expression.repository.RepositoryWhereExpression;
 
 /**
  * The Interface PropertyExecutableUpdateExpression.
@@ -19,6 +19,6 @@ public interface PropertyExecutableUpdateExpression<U extends PropertyExecutable
         L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>,
         V extends UpdateValueExpression<U, C, L, Object, V, N>,
         N extends UpdateNumberValueExpression<U, C, L, Number, V, N>>
-        extends WhereExpression<C, L>, PropertyUpdateExpression<U, C, L, V, N>, Executor {
+        extends RepositoryWhereExpression<C, L>, PropertyUpdateExpression<U, C, L, V, N>, Executor {
 
 }

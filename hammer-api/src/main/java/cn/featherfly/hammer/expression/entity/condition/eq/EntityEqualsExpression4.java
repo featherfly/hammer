@@ -92,7 +92,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -105,7 +105,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -121,7 +121,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -135,7 +135,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -249,7 +249,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -264,7 +264,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -280,7 +280,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -294,7 +294,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -408,7 +408,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -423,7 +423,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -439,7 +439,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -453,7 +453,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -567,7 +567,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -582,7 +582,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -598,7 +598,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -612,7 +612,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -657,7 +657,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     * equals. 等于.
     //     *
     //     * @param consumer the consumer
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L eq(Function<EntityEqualsExpression4<E, E2, E3, E4, C, L>, L> consumer);
 

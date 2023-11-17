@@ -31,8 +31,8 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L sw(SerializableFunction<E, String> name, String value) {
@@ -57,7 +57,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L sw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -68,14 +68,14 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param value        the value
      * @param queryPolicy  the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L sw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * start with value. 以value开始.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L sw(SerializableStringSupplier property) {
@@ -85,7 +85,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
-     * @param property     对象属性
+     * @param property  bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -98,7 +98,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      *
      * @param property    the property
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L sw(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
@@ -108,7 +108,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      * @param property     the property
      * @param queryPolicy  the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L sw(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
@@ -129,7 +129,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     //     *
     //     * @param <R>        the generic type
     //     * @param repository the repository
-    //     * @param property   对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    <R> L sw(SerializableSupplier<R> repository, SerializableFunction<R, String> property);

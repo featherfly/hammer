@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.expression.repository.condition.co;
 
-import cn.featherfly.hammer.expression.repository.condition.MatchStringRepositoryFieldExpression;
+import cn.featherfly.hammer.expression.repository.condition.MatchStringRepositoryExpression;
 
 /**
  * The Interface ContainsRepositoryExpression.
@@ -18,6 +18,6 @@ import cn.featherfly.hammer.expression.repository.condition.MatchStringRepositor
  * @author zhongj
  * @param <E> the element type
  */
-public interface ContainsRepositoryExpression extends MatchStringRepositoryFieldExpression {
+public interface ContainsRepositoryExpression extends MatchStringRepositoryExpression {
 
 }

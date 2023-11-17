@@ -31,8 +31,8 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
     /**
      * contains value. 包含value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L co(SerializableFunction<E, String> name, String value) {
@@ -57,7 +57,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -68,14 +68,14 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
     /**
      * contains value. 包含value.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L co(SerializableStringSupplier property) {
@@ -85,7 +85,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
     /**
      * contains value. 包含value.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -98,7 +98,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      *
      * @param property    the property
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L co(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
@@ -108,7 +108,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      * @param property       the property
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 

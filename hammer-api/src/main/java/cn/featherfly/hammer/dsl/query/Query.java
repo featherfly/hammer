@@ -1,22 +1,32 @@
 
 package cn.featherfly.hammer.dsl.query;
 
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
-import cn.featherfly.hammer.expression.query.QueryExpression;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 
 /**
- * dsl for query.
+ * query.
  *
  * @author zhongj
  */
-public interface Query extends
-        QueryExpression<QueryEntity, QueryEntityProperties, QueryWith, QueryWithOn, QueryWithEntity,
-                QueryConditionGroupExpression, QueryConditionGroupLogicExpression,
-                RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression
-//                ,
-//                TypeQueryEntity, TypeQueryEntityProperties, TypeQueryWith, TypeQueryWithEntity, TypeQueryConditionGroupExpression,TypeQueryConditionGroupLogicExpression,
-//                RepositoryTypeQueryConditionGroupExpression, RepositoryTypeQueryConditionGroupLogicExpression
-> {
+public interface Query {
+
+    /**
+     * start query dsl for repository.
+     *
+     * @param repository repository
+     * @return generic type of QueryEntityExpression
+     */
+    RepositoryQueryFetch find(Repository repository);
+
+    /**
+     * start query dsl for repository.
+     *
+     * @param repository repository
+     * @return generic type of QueryEntityExpression
+     */
+    RepositoryQueryFetch find(String repository);
 
     /**
      * start query dsl for entity.

@@ -80,7 +80,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(
@@ -93,7 +93,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -214,7 +214,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L lk(
@@ -227,7 +227,7 @@ public interface EntityLikeExpression2<E, E2, C extends ConditionExpression, L e
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

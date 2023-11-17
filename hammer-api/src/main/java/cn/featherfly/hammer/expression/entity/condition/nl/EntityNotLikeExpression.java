@@ -23,8 +23,8 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
     /**
      * not like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nl(SerializableFunction<E, String> name, String value) {
@@ -49,7 +49,7 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
      * @param name        the name 参数名称
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nl(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -60,7 +60,7 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nl(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
@@ -68,7 +68,7 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
     /**
      * not like value.
      *
-     * @param property 对象属性
+     * @param property bean property
      * @return LogicExpression
      */
     default L nl(SerializableStringSupplier property) {
@@ -78,7 +78,7 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
     /**
      * not like value.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -89,19 +89,19 @@ public interface EntityNotLikeExpression<E, C extends ConditionExpression, L ext
     /**
      * not like value.
      *
-     * @param property    the property 对象属性
+     * @param property    bean property
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nl(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
     /**
      * not like value.
      *
-     * @param property       the property 对象属性
+     * @param property       bean property
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 

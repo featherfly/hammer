@@ -27,7 +27,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void eq(int value) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 
@@ -36,7 +35,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void ne(int value) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 
@@ -45,7 +43,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void ge(int value) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 
@@ -54,7 +51,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void gt(int value) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 
@@ -63,7 +59,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void le(int value) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 
@@ -72,7 +67,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void lt(int value) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 
@@ -81,7 +75,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void in(int... values) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 
@@ -90,7 +83,6 @@ public class IntFieldImpl extends FieldImpl implements IntField {
      */
     @Override
     public void nin(int... values) {
-        // YUFEI_TODO Auto-generated method stub
 
     }
 

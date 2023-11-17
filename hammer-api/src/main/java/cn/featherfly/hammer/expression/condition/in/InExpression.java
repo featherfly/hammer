@@ -6,6 +6,8 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -376,7 +378,18 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
      * @param values the values
      * @return LogicExpression
      */
-    default L in(Field field, Object... values) {
+    default <R> L in(Field field, R value) {
+        return in(field, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default <R> L in(Field field, @SuppressWarnings("unchecked") R... values) {
         return in(field.name(), values);
     }
 
@@ -396,11 +409,23 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <R> L in(String name, R value) {
+        return in(name, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
      * @param name   the name
      * @param values the values
      * @return LogicExpression
      */
-    L in(String name, Object... values);
+    <R> L in(String name, @SuppressWarnings("unchecked") R... values);
 
     /**
      * values in. 包含指定，sql中的in.

@@ -33,7 +33,7 @@ public interface RepositoryIsNotNullExpression<C extends ConditionExpression, L 
      *
      * @param <T>   the generic type
      * @param <R>   the generic type
-     * @param name  参数名称
+     * @param name the name
      * @param value if true, is not null; if false, is null; if null, ignore
      *              this operate
      * @return LogicExpression

@@ -21,8 +21,8 @@ public interface NotEqualsExpression6<C extends ConditionExpression, L extends L
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ne6(Field name, Object value) {
@@ -71,8 +71,8 @@ public interface NotEqualsExpression6<C extends ConditionExpression, L extends L
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ne6(String name, Object value) {

@@ -69,7 +69,7 @@ public interface EqualsOrNotEqualsEntityExpression<T>
      * equals or not equals. 等于或者不等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> void accept(SerializableSupplier<R> property);
@@ -78,7 +78,7 @@ public interface EqualsOrNotEqualsEntityExpression<T>
      * equals or not equals. 等于或者不等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

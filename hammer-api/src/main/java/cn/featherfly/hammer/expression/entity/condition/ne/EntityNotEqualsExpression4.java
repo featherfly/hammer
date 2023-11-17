@@ -110,7 +110,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -123,7 +123,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -139,7 +139,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -153,7 +153,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -267,7 +267,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(
@@ -282,7 +282,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -298,7 +298,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -312,7 +312,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -426,7 +426,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(
@@ -441,7 +441,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -457,7 +457,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -471,7 +471,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -585,7 +585,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(
@@ -600,7 +600,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -616,7 +616,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -630,7 +630,7 @@ public interface EntityNotEqualsExpression4<E, E2, E3, E4, C extends ConditionEx
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression

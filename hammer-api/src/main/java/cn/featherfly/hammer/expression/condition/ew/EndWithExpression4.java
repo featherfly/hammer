@@ -21,8 +21,8 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ew4(Field name, String value) {
@@ -59,7 +59,7 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L ew4(Field name, String value, MatchStrategy matchStrategy) {
         return ew4(name.name(), value, matchStrategy);
@@ -72,7 +72,7 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L ew4(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return ew4(name.name(), value, matchStrategy, ignoreStrategy);
@@ -85,7 +85,7 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L ew4(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return ew4(name.name(), value, matchStrategy, ignoreStrategy);
@@ -94,8 +94,8 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ew4(String name, String value) {
@@ -132,7 +132,7 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L ew4(String name, String value, MatchStrategy matchStrategy);
 
@@ -143,7 +143,7 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L ew4(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
@@ -154,7 +154,7 @@ public interface EndWithExpression4<C extends ConditionExpression, L extends Log
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L ew4(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

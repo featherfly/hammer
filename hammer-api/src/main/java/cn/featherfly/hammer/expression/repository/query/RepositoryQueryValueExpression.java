@@ -1,0 +1,23 @@
+
+package cn.featherfly.hammer.expression.repository.query;
+
+import cn.featherfly.hammer.expression.api.Queryable;
+import cn.featherfly.hammer.expression.query.QueryCountExecutor;
+import cn.featherfly.hammer.expression.query.QueryListExecutor;
+import cn.featherfly.hammer.expression.query.QueryValueConditionLimit;
+
+/**
+ * entity query value expression.
+ *
+ * @author zhongj
+ * @param <E> the query type
+ * @param <V> the value type
+ * @param <C> the generic type
+ * @param <L> the generic type
+ * @param <S> the generic type
+ */
+public interface RepositoryQueryValueExpression<C extends RepositoryQueryValueConditionsGroupExpression<C, L, S>,
+        L extends RepositoryQueryValueConditionsGroupLogicExpression<C, L, S>,
+        S extends RepositoryQueryValueSortExpression> extends RepositoryQueryValueWhereExpression<C, L, S>,
+        QueryListExecutor, QueryCountExecutor, QueryValueConditionLimit, Queryable<S> {
+}

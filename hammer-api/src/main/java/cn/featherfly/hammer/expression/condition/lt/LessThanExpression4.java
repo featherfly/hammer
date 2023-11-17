@@ -26,8 +26,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
      * less than. 小于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default <N extends Number> L lt4(Field name, N value) {
@@ -64,8 +64,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
      * less than. 小于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L lt4(String name, N value);
@@ -98,8 +98,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
      * less than. 小于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default <D extends Date> L lt4(Field name, D value) {
@@ -136,8 +136,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
      * less than. 小于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L lt4(String name, D value);
@@ -169,8 +169,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L lt4(Field name, LocalTime value) {
@@ -204,8 +204,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(String name, LocalTime value);
@@ -235,8 +235,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L lt4(Field name, LocalDate value) {
@@ -270,8 +270,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(String name, LocalDate value);
@@ -301,8 +301,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L lt4(Field name, LocalDateTime value) {
@@ -336,8 +336,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(String name, LocalDateTime value);
@@ -367,8 +367,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L lt4(Field name, String value) {
@@ -402,8 +402,8 @@ public interface LessThanExpression4<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(String name, String value);

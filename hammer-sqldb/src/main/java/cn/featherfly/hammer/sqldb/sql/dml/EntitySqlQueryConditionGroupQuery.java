@@ -85,13 +85,13 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     /**
      * List.
      *
-     * @return the list
+     * @return LogicExpressionist
      */
     public List<R> list() {
         String sql = exp.getRoot().expression();
         Object[] params = exp.getRoot().getParams().toArray();
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.dialect, sql, limit.getOffset(),
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                     limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -120,7 +120,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         SimplePaginationResults<R> pagination = new SimplePaginationResults<>(limit);
         List<R> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.dialect, sql, limit.getOffset(),
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                     limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -184,7 +184,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         String sql = exp.getRoot().expression();
         Object[] params = exp.getRoot().getParams().toArray();
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.dialect, sql, limit.getOffset(),
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                     limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -207,7 +207,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         String sql = exp.getRoot().expression();
         Object[] params = exp.getRoot().getParams().toArray();
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.dialect, sql, limit.getOffset(),
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                     limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -257,7 +257,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     //         * @param sql        the sql
     //         * @param resultType the result type
     //         * @param params     the params
-    //         * @return the list
+    //         * @return LogicExpressionist
     //         */
     //        List<R> list(String sql, Class<R> resultType, Object[] params);
     //    }

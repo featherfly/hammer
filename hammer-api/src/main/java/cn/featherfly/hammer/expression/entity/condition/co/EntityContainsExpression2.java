@@ -80,7 +80,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * contains value. 包含value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L co(
@@ -93,7 +93,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * contains value. 包含value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -214,7 +214,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * contains value. 包含value.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L co(
@@ -227,7 +227,7 @@ public interface EntityContainsExpression2<E, E2, C extends ConditionExpression,
     //     * contains value. 包含value.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

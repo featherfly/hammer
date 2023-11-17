@@ -39,8 +39,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in3(SerializableFunction<T3, R> name, R value);
@@ -59,8 +59,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in3(SerializableToIntFunction3<T3> name, int value);
@@ -78,8 +78,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in3(SerializableToLongFunction3<T3> name, long value);
@@ -97,8 +97,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in3(SerializableToDoubleFunction<T3> name, double value);
@@ -117,8 +117,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in3(SerializableFunction<T3, R> name, @SuppressWarnings("unchecked") R... value);
@@ -126,8 +126,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in3(SerializableToIntFunction3<T3> name, int... value);
@@ -135,8 +135,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in3(SerializableToLongFunction3<T3> name, long... value);
@@ -144,8 +144,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L in3(SerializableToDoubleFunction3<T3> name, double... value);
@@ -195,8 +195,8 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
      * values in. 包含指定，sql中的in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L in3(SerializableFunction<T3, R> name, Collection<R> value);
@@ -260,7 +260,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
      * values in. 包含指定，sql中的in.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> L in3(SerializableSupplier<R> property);
@@ -269,7 +269,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
      * values in. 包含指定，sql中的in.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -278,7 +278,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L in3(SerializableIntSupplier property);
@@ -286,7 +286,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -295,7 +295,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L in3(SerializableLongSupplier property);
@@ -303,7 +303,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -312,7 +312,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L in3(SerializableDoubleSupplier property);
@@ -320,7 +320,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -329,7 +329,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -338,7 +338,7 @@ public interface EntityInExpressionBase3<T, T2, T3, C extends ConditionExpressio
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

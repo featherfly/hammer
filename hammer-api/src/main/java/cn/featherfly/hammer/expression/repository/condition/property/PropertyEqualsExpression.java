@@ -21,7 +21,7 @@ public interface PropertyEqualsExpression<C extends ConditionExpression, L exten
     /**
      * equals. 等于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L eq(V value);

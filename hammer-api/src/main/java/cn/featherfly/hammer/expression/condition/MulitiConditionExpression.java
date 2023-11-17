@@ -10,9 +10,6 @@
  */
 package cn.featherfly.hammer.expression.condition;
 
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
-
 /**
  * MulitiConditionExpression.
  *
@@ -27,23 +24,4 @@ public interface MulitiConditionExpression extends Expression {
      * @return the query alias
      */
     String getAlias(int index);
-
-    /**
-     * Gets the class mapping.
-     *
-     * @param <M>   the generic type
-     * @param <T>   the generic type
-     * @param <P>   the generic type
-     * @param index the index
-     * @return the class mapping
-     */
-    <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index);
-
-    /**
-     * Adds the condition.
-     *
-     * @param condition the condition
-     * @return the object
-     */
-    Expression addCondition(Expression condition);
 }

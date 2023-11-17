@@ -28,7 +28,7 @@ public interface NullNotNullEntityPropertyValueExpression {
     /**
      * Value.
      *
-     * @param value 参数值
+     * @param value the value
      */
     void value(Boolean value);
 }

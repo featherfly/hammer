@@ -55,8 +55,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L ne5(SerializableFunction<T5, R> name, R value);
@@ -75,8 +75,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne5(SerializableToIntFunction<T5> name, int value);
@@ -94,8 +94,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne5(SerializableToLongFunction<T5> name, long value);
@@ -113,8 +113,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne5(SerializableToDoubleFunction<T5> name, double value);
@@ -133,8 +133,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L ne5(SerializableToNumberFunction<T5, N> name, N value);
@@ -154,8 +154,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <E>   the element type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L ne5(SerializableToEnumFunction<T5, E> name, E value);
@@ -175,8 +175,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L ne5(SerializableToDateFunction<T5, D> name, D value);
@@ -195,8 +195,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne5(SerializableToLocalTimeFunction<T5> name, LocalTime value);
@@ -214,8 +214,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne5(SerializableToLocalDateFunction<T5> name, LocalDate value);
@@ -233,8 +233,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ne5(SerializableToLocalDateTimeFunction<T5> name, LocalDateTime value);
@@ -252,8 +252,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ne5(SerializableToStringFunction<T5> name, String value) {
@@ -302,7 +302,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> L ne5(SerializableSupplier<R> property);
@@ -311,7 +311,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -320,7 +320,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ne5(SerializableIntSupplier property);
@@ -328,7 +328,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -337,7 +337,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ne5(SerializableLongSupplier property);
@@ -345,7 +345,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -354,7 +354,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ne5(SerializableDoubleSupplier property);
@@ -362,7 +362,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -372,7 +372,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L ne5(SerializableDateSupplier<R> property);
@@ -381,7 +381,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -391,7 +391,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L ne5(SerializableNumberSupplier<R> property);
@@ -400,7 +400,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -410,7 +410,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <E>      the element type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> property);
@@ -419,7 +419,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
      * not equals. 不等于.
      *
      * @param <E>            the element type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -428,7 +428,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ne5(SerializableLocalDateSupplier property);
@@ -436,7 +436,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -445,7 +445,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ne5(SerializableLocalTimeSupplier property);
@@ -453,7 +453,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -462,7 +462,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ne5(SerializableLocalDateTimeSupplier property);
@@ -470,7 +470,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -479,7 +479,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L ne5(SerializableStringSupplier property) {
@@ -489,7 +489,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -500,7 +500,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -509,7 +509,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

@@ -6,6 +6,8 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -372,11 +374,23 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <R>   the generic type
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <R> L ni(Field field, R value) {
+        return ni(field, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
      * @param field  the field
      * @param values the values
      * @return LogicExpression
      */
-    default L ni(Field field, Object... values) {
+    default <R> L ni(Field field, @SuppressWarnings("unchecked") R... values) {
         return ni(field.name(), values);
     }
 
@@ -399,7 +413,18 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
      * @param values the values
      * @return LogicExpression
      */
-    L ni(String name, Object... values);
+    default <R> L ni(String name, R value) {
+        return ni(name, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param name   the name
+     * @param values the values
+     * @return LogicExpression
+     */
+    <R> L ni(String name, @SuppressWarnings("unchecked") R... values);
 
     /**
      * values not in. 不包含指定，sql中的not in.

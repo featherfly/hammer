@@ -26,8 +26,8 @@ public interface EntityContainsCompatibleExpressionBase5<E, E2, E3, E4, E5, C ex
     /**
      * contains value. 包含value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L co5(String name, String value) {

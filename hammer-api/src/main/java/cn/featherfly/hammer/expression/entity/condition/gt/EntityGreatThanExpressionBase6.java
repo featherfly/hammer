@@ -47,8 +47,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt6(SerializableToIntFunction6<T6> name, int value);
@@ -66,8 +66,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt6(SerializableToLongFunction6<T6> name, long value);
@@ -85,8 +85,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt6(SerializableToDoubleFunction6<T6> name, double value);
@@ -105,8 +105,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L gt6(SerializableFunction<T6, N> name, N value);
@@ -126,8 +126,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L gt6(SerializableFunction<T6, E> name, E value);
@@ -147,8 +147,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L gt6(SerializableFunction<T6, D> name, D value);
@@ -167,8 +167,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt6(SerializableFunction<T6, LocalTime> name, LocalTime value);
@@ -186,8 +186,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt6(SerializableFunction<T6, LocalDate> name, LocalDate value);
@@ -205,8 +205,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value);
@@ -224,8 +224,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L gt6(SerializableFunction<T6, String> name, String value) {
@@ -247,8 +247,8 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy);
@@ -267,7 +267,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt6(SerializableIntSupplier property);
@@ -275,7 +275,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -284,7 +284,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt6(SerializableLongSupplier property);
@@ -292,7 +292,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -301,7 +301,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt6(SerializableDoubleSupplier property);
@@ -309,7 +309,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -319,7 +319,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L gt6(SerializableDateSupplier<R> property);
@@ -328,7 +328,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -338,7 +338,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L gt6(SerializableNumberSupplier<R> property);
@@ -347,7 +347,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -357,7 +357,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property);
@@ -366,7 +366,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
      * great than. 大于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -375,7 +375,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt6(SerializableLocalDateSupplier property);
@@ -383,7 +383,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -392,7 +392,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt6(SerializableLocalTimeSupplier property);
@@ -400,7 +400,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -409,7 +409,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt6(SerializableLocalDateTimeSupplier property);
@@ -417,7 +417,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -426,7 +426,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L gt6(SerializableStringSupplier property) {
@@ -436,7 +436,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -447,7 +447,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt6(SerializableStringSupplier property, MatchStrategy matchStrategy);
@@ -455,7 +455,7 @@ public interface EntityGreatThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

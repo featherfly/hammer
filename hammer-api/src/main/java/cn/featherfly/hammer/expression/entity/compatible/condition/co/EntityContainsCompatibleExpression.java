@@ -20,8 +20,8 @@ public interface EntityContainsCompatibleExpression<E, C extends ConditionExpres
     //    /**
     //     * contains value. 包含value.
     //     *
-    //     * @param name  参数名称
-    //     * @param value 参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    @Override
@@ -48,7 +48,7 @@ public interface EntityContainsCompatibleExpression<E, C extends ConditionExpres
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    @Override
     //    L co(String name, String value, MatchStrategy matchStrategy);
@@ -60,7 +60,7 @@ public interface EntityContainsCompatibleExpression<E, C extends ConditionExpres
     //     * @param value          the value
     //     * @param queryPolicy    the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    @Override
     //    L co(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);

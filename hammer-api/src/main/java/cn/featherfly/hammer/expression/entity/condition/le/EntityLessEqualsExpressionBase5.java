@@ -46,8 +46,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L le5(SerializableToIntFunction5<T5> name, int value);
@@ -65,8 +65,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L le5(SerializableToLongFunction5<T5> name, long value);
@@ -84,8 +84,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L le5(SerializableToDoubleFunction5<T5> name, double value);
@@ -104,8 +104,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L le5(SerializableFunction<T5, N> name, N value);
@@ -125,8 +125,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L le5(SerializableFunction<T5, E> name, E value);
@@ -146,8 +146,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L le5(SerializableFunction<T5, D> name, D value);
@@ -166,8 +166,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L le5(SerializableFunction<T5, LocalTime> name, LocalTime value);
@@ -185,8 +185,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L le5(SerializableFunction<T5, LocalDate> name, LocalDate value);
@@ -204,8 +204,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L le5(SerializableFunction<T5, LocalDateTime> name, LocalDateTime value);
@@ -223,8 +223,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L le5(SerializableFunction<T5, String> name, String value) {
@@ -246,8 +246,8 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L le5(SerializableFunction<T5, String> name, String value, MatchStrategy matchStrategy);
@@ -266,7 +266,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L le5(SerializableIntSupplier property);
@@ -274,7 +274,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -283,7 +283,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L le5(SerializableLongSupplier property);
@@ -291,7 +291,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -300,7 +300,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L le5(SerializableDoubleSupplier property);
@@ -308,7 +308,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -318,7 +318,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L le5(SerializableDateSupplier<R> property);
@@ -327,7 +327,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -337,7 +337,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L le5(SerializableNumberSupplier<R> property);
@@ -346,7 +346,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -356,7 +356,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property);
@@ -365,7 +365,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
      * less and equals. 小于等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -374,7 +374,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L le5(SerializableLocalDateSupplier property);
@@ -382,7 +382,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -391,7 +391,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L le5(SerializableLocalTimeSupplier property);
@@ -399,7 +399,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -408,7 +408,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L le5(SerializableLocalDateTimeSupplier property);
@@ -416,7 +416,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -425,7 +425,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L le5(SerializableStringSupplier property) {
@@ -435,7 +435,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -446,7 +446,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L le5(SerializableStringSupplier property, MatchStrategy matchStrategy);
@@ -454,7 +454,7 @@ public interface EntityLessEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Co
     /**
      * less and equals. 小于等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

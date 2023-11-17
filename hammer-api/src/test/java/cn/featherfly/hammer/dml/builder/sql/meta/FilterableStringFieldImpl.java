@@ -55,7 +55,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L eq(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -64,7 +64,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -73,7 +73,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ne(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -82,7 +82,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ne(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -91,7 +91,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ne(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -100,7 +100,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ba(String min, String max) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -109,7 +109,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ba(String min, String max, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -118,7 +118,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -127,7 +127,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public String expression() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -136,7 +136,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nba(String min, String max) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -145,7 +145,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nba(String min, String max, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -154,7 +154,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -163,7 +163,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L in(String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -172,7 +172,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L in(String[] value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -181,7 +181,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L in(String value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -190,7 +190,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L in(String value, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -199,7 +199,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L in(String[] value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -208,7 +208,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L in(String[] value, Predicate<String[]> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -217,7 +217,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ni(String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -226,7 +226,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ni(String[] value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -235,7 +235,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ni(String value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -244,7 +244,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ni(String value, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -253,7 +253,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ni(String[] value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -262,7 +262,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -271,7 +271,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L le(String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -280,7 +280,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L le(String value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -289,7 +289,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L le(String value, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -298,7 +298,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L lt(String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -307,7 +307,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L lt(String value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -316,7 +316,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L lt(String value, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -325,7 +325,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ge(String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -334,7 +334,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ge(String value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -343,7 +343,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ge(String value, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -352,7 +352,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L gt(String value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -361,7 +361,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L gt(String value, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -370,7 +370,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L gt(String value, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -379,7 +379,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -388,7 +388,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -397,7 +397,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -406,7 +406,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nsw(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -415,7 +415,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nsw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -424,7 +424,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nsw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -433,7 +433,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -442,7 +442,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -451,7 +451,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -460,7 +460,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nco(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -469,7 +469,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nco(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -478,7 +478,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nco(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -487,7 +487,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -496,7 +496,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -505,7 +505,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -514,7 +514,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L newv(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -523,7 +523,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L newv(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -532,7 +532,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L newv(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -541,7 +541,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -550,7 +550,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -559,7 +559,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -568,7 +568,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nl(String value, MatchStrategy matchStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -577,7 +577,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nl(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -586,7 +586,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L nl(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -595,7 +595,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L isn(Boolean value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -604,7 +604,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L inn(Boolean value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

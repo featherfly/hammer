@@ -246,7 +246,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @param sql        the sql
      * @param resultType the result type
      * @param params     the params
-     * @return the list
+     * @return LogicExpressionist
      */
     @SuppressWarnings("unchecked")
     public <R> List<R> list(String sql, Object[] params) {

@@ -61,7 +61,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, SerializableFunction<E, String> name,
@@ -75,7 +75,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, SerializableFunction<E, String> name,
@@ -85,7 +85,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
@@ -97,7 +97,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -114,7 +114,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, SerializableStringSupplier property,
@@ -127,7 +127,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E>> entities, SerializableStringSupplier property,
@@ -204,7 +204,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name,
@@ -218,7 +218,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities, SerializableFunction2<E2, String> name,
@@ -228,7 +228,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -242,7 +242,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -259,7 +259,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property,
@@ -272,7 +272,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E2>> entities, SerializableSupplier2<String> property,
@@ -350,7 +350,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name,
@@ -364,7 +364,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities, SerializableFunction3<E3, String> name,
@@ -374,7 +374,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -388,7 +388,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -405,7 +405,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property,
@@ -418,7 +418,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E3>> entities, SerializableSupplier3<String> property,
@@ -496,7 +496,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param name        the name
     //     * @param value       the value
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities, SerializableFunction4<E4, String> name,
@@ -510,7 +510,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param value        the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities, SerializableFunction4<E4, String> name,
@@ -520,7 +520,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -534,7 +534,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -551,7 +551,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param entities    the entities
     //     * @param property    the property
     //     * @param queryPolicy the query policy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities, SerializableSupplier4<String> property,
@@ -564,7 +564,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //     * @param property     the property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L sw(Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //            QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities, SerializableSupplier4<String> property,

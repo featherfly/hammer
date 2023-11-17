@@ -3,7 +3,6 @@ package cn.featherfly.hammer.expression.repository.condition.newv;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -25,8 +24,8 @@ public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L
      * not end with value. 不以value结尾.
      *
      * @param <T>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L newv(SerializableToStringFunction<T> name, String value) {
@@ -66,7 +65,7 @@ public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
 
@@ -78,7 +77,7 @@ public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             IgnoreStrategy ignoreStrategy);
@@ -91,69 +90,8 @@ public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * not end with value. 不以value结尾.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    default L newv(SerializableStringSupplier propertyValue) {
-        return newv(propertyValue, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not end with value. 不以value结尾.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L newv(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return newv(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not end with value. 不以value结尾.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L newv(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return newv(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not end with value. 不以value结尾.
-     *
-     * @param propertyValue the property value
-     * @param matchStrategy the match strategy
-     * @return the l
-     */
-    L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * not end with value. 不以value结尾.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * not end with value. 不以value结尾.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

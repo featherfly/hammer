@@ -28,7 +28,7 @@ public interface IsNotNullExpression5<C extends ConditionExpression, L extends L
     /**
      * is not null.
      *
-     * @param name  参数名称
+     * @param name the name
      * @param value if true, is not null; if false, is null; if null, ignore
      *              this operate
      * @return LogicExpression
@@ -48,7 +48,7 @@ public interface IsNotNullExpression5<C extends ConditionExpression, L extends L
     /**
      * is not null.
      *
-     * @param name  参数名称
+     * @param name the name
      * @param value if true, is not null; if false, is null; if null, ignore
      *              this operate
      * @return LogicExpression

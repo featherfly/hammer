@@ -21,7 +21,7 @@ public interface PropertyEndWithExpression<C extends ConditionExpression, L exte
     /**
      * end with value.以value结尾.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L ew(String value) {
@@ -55,7 +55,7 @@ public interface PropertyEndWithExpression<C extends ConditionExpression, L exte
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L ew(String value, MatchStrategy matchStrategy);
 

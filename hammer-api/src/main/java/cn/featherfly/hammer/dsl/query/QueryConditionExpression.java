@@ -1,15 +1,12 @@
 
 package cn.featherfly.hammer.dsl.query;
 
-import cn.featherfly.hammer.expression.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.ConditionsExpression;
 
 /**
- * <p>
- * QueryConditionExpression
- * </p>
+ * QueryConditionExpression.
  *
  * @author zhongj
  */
-public interface QueryConditionExpression
-        extends ConditionExpression<QueryConditionExpression, QueryConditionLogic> {
+public interface QueryConditionExpression extends ConditionsExpression<QueryConditionExpression, QueryConditionLogic> {
 }

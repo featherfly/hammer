@@ -22,8 +22,8 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
     /**
      * not start with value. 不以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nsw4(Field name, String value) {
@@ -60,7 +60,7 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the query strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L nsw4(Field name, String value, MatchStrategy matchStrategy) {
         return nsw4(name.name(), value, matchStrategy);
@@ -73,7 +73,7 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L nsw4(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return nsw4(name.name(), value, matchStrategy, ignoreStrategy);
@@ -86,7 +86,7 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L nsw4(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return nsw4(name.name(), value, matchStrategy, ignoreStrategy);
@@ -95,8 +95,8 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
     /**
      * not start with value. 不以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nsw4(String name, String value) {
@@ -133,7 +133,7 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw4(String name, String value, MatchStrategy matchStrategy);
 
@@ -144,7 +144,7 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw4(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
@@ -155,7 +155,7 @@ public interface NotStartWithExpression4<C extends ConditionExpression, L extend
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw4(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

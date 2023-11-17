@@ -19,8 +19,10 @@ import cn.featherfly.hammer.dsl.query.QueryCondition;
  *
  * @author zhongj
  */
-public class UserQuery
-        implements RepositoryQuery<UserTableQueryable, UserTableFilterable, UserQueryFetch, UserTableFilterable> {
+public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableFilterable, UserQueryFetch,
+        UserTableFilterable, UserTableFilterable, UserTableLogic> {
+
+    public static final UserQuery DEFAULT = new UserQuery();
 
     UserTableQueryable queryable;
 
@@ -28,9 +30,7 @@ public class UserQuery
 
     public static final String NAME = "user";
 
-    /**
-     */
-    public UserQuery() {
+    private UserQuery() {
     }
 
     public void init(AliasManager aliasManager, QueryCondition queryCondition) {
@@ -42,14 +42,14 @@ public class UserQuery
     public static void main(String[] args) {
         Query query = null;
 
-        UserQuery userQuery = null;
+        UserQuery userQuery = new UserQuery();
 
         query.find(userQuery) //
                 .fetch((fetcher, user) -> fetcher.field( // select
                         user.name, // user0.name
                         user.password.alias("pwd")) // user0.password as pwd
                 ) // select end
-                .where();
+                .where().age.in(null);
 
         query.find(userQuery) //
                 .field(user -> user.name) // user0.name
@@ -62,6 +62,13 @@ public class UserQuery
                         user.name, // user0.name
                         user.password.alias("pwd") // user0.password as pwd
                 })// select end
+                .where();
+
+        query.find(userQuery) //
+                .field(// select
+                        userQuery.queryable.name, // user0.name
+                        userQuery.queryable.password // user0.password as pwd
+                ) // select end
                 .where();
 
         query.find(userQuery).where().name.eq("zj").and().password.eq("123").single();

@@ -24,8 +24,8 @@ public interface EntityContainsExpressionBase2<E, E2, C extends ConditionExpress
     /**
      * contains value. 包含value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L co2(SerializableFunction<E2, String> name, String value) {
@@ -68,7 +68,7 @@ public interface EntityContainsExpressionBase2<E, E2, C extends ConditionExpress
     /**
      * contains value. 包含value.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L co2(SerializableStringSupplier property) {
@@ -78,7 +78,7 @@ public interface EntityContainsExpressionBase2<E, E2, C extends ConditionExpress
     /**
      * contains value. 包含value.
      *
-     * @param property     对象属性
+     * @param property  bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

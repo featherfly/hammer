@@ -30,10 +30,13 @@ import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -46,9 +49,9 @@ import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
-import cn.featherfly.hammer.expression.ConditionGroupExpression;
-import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
+import cn.featherfly.hammer.expression.condition.ConditionsGroupExpression;
+import cn.featherfly.hammer.expression.condition.ConditionsGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
 import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
@@ -70,10 +73,10 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <L> the generic type
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGroupExpression<C, L>,
-        L extends ConditionGroupLogicExpression<C, L>, C2 extends ConditionConfig<C2>>
-        extends AbstractSqlConditionExpression<C, L> implements ConditionGroupExpression<C, L>,
-        ConditionGroupLogicExpression<C, L>, SqlBuilder, ParamedExpression, ConditionConfigureExpression<C, C2> {
+public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGroupExpression<C, L>,
+        L extends ConditionsGroupLogicExpression<C, L>, C2 extends ConditionConfig<C2>>
+        extends AbstractSqlConditionExpression<C, L> implements ConditionsGroupExpression<C, L>,
+        ConditionsGroupLogicExpression<C, L>, SqlBuilder, ParamedExpression, ConditionConfigureExpression<C, C2> {
 
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
@@ -161,7 +164,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L eq(String name, Object value, MatchStrategy matchStrategy) {
-        return eq(name, value, matchStrategy, (Predicate<Object>) getIgnoreStrategy());
+        return eq(name, value, matchStrategy, getIgnoreStrategy());
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
         //                matchStrategy, queryAlias, ignoreStrategy));
     }
@@ -170,37 +173,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy) {
-        return eq(name, value, matchStrategy, (Predicate<R>) getIgnoreStrategy()); //YUFEI_TEST 需要测试
-        //        return eq(name, value, matchStrategy, (v) -> ((Predicate<Object>) ignoreStrategy).test(v));
-        //        SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
-        //        if (value == null) {
-        //            return eq(lambdaInfo.getPropertyName(), value, matchStrategy);
-        //        }
-        //        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo, value);
-        //        L logic = null;
-        //        C condition = (C) this;
-        //        if (tuples.size() > 1) {
-        //            condition = group();
-        //        }
-        //        for (Tuple2<String, Optional<R>> tuple : tuples) {
-        //            if (logic != null) {
-        //                condition = logic.and();
-        //            }
-        //            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), matchStrategy);
-        //        }
-        //        if (tuples.size() > 1) {
-        //            logic = logic.endGroup();
-        //        }
-        //        return logic;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
-        return eq(property, matchStrategy, (Predicate<R>) getIgnoreStrategy()); //YUFEI_TEST 需要测试
+        return eq(property, matchStrategy, getIgnoreStrategy()::test); //YUFEI_TEST 需要测试
         //        return eq(property, matchStrategy, (v) -> ((Predicate<Object>) ignoreStrategy).test(v));
         //        SerializableSupplierLambdaInfo<R> lambdaInfo = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        if (property.get() == null) {
@@ -231,34 +205,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     public <R> L eq(String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
                 matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy) {
-        SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
-        if (value == null) {
-            return eq(lambdaInfo.getPropertyName(), value, matchStrategy, ignoreStrategy);
-        }
-        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo, value);
-        L logic = null;
-        C condition = (C) this;
-        if (tuples.size() > 1) {
-            condition = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (logic != null) {
-                condition = logic.and();
-            }
-            logic = condition.eq(tuple.get0(), tuple.get1().orElseGet(() -> null), matchStrategy);
-        }
-        if (tuples.size() > 1) {
-            logic = logic.endGroup();
-        }
-        return logic;
     }
 
     /**
@@ -353,7 +299,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ne(String name, Object value, MatchStrategy matchStrategy) {
-        return ne(name, value, matchStrategy, (Predicate<Object>) getIgnoreStrategy());
+        return ne(name, value, matchStrategy, getIgnoreStrategy());
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
         //                matchStrategy, queryAlias, ignoreStrategy));
     }
@@ -362,37 +308,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy) {
-        return ne(name, value, matchStrategy, (Predicate<R>) getIgnoreStrategy()); //YUFEI_TEST 需要测试
-        //        return ne(name, value, matchStrategy, (v) -> ((Predicate<Object>) ignoreStrategy).test(v));
-        //        SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
-        //        if (value == null) {
-        //            return ne(lambdaInfo.getPropertyName(), value, matchStrategy);
-        //        }
-        //        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo, value);
-        //        L l = null;
-        //        C c = (C) this;
-        //        if (tuples.size() > 1) {
-        //            c = group();
-        //        }
-        //        for (Tuple2<String, Optional<R>> tuple : tuples) {
-        //            if (l != null) {
-        //                c = l.and();
-        //            }
-        //            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), matchStrategy);
-        //        }
-        //        if (tuples.size() > 1) {
-        //            l = l.endGroup();
-        //        }
-        //        return l;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <R> L ne(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
-        return eq(property, matchStrategy, (Predicate<R>) getIgnoreStrategy()); //YUFEI_TEST 需要测试
+        return eq(property, matchStrategy, getIgnoreStrategy()::test); //YUFEI_TEST 需要测试
         //        return eq(property, matchStrategy, (v) -> ((Predicate<Object>) ignoreStrategy).test(v));
         //        SerializableSupplierLambdaInfo<R> lambdaInfo = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        if (property.get() == null) {
@@ -423,34 +340,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     public <R> L ne(String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
                 matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L ne(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy) {
-        SerializedLambdaInfo lambdaInfo = LambdaUtils.getLambdaInfo(name);
-        if (value == null) {
-            return ne(lambdaInfo.getPropertyName(), value, matchStrategy, ignoreStrategy);
-        }
-        List<Tuple2<String, Optional<R>>> tuples = supplier(lambdaInfo, value);
-        L l = null;
-        C c = (C) this;
-        if (tuples.size() > 1) {
-            c = group();
-        }
-        for (Tuple2<String, Optional<R>> tuple : tuples) {
-            if (l != null) {
-                c = l.and();
-            }
-            l = c.ne(tuple.get0(), tuple.get1().orElseGet(() -> null), matchStrategy);
-        }
-        if (tuples.size() > 1) {
-            l = l.endGroup();
-        }
-        return l;
     }
 
     /**
@@ -513,7 +402,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lk(String name, String value, MatchStrategy matchStrategy) {
-        return lk(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return lk(name, value, matchStrategy, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
         //                matchStrategy, queryAlias, ignoreStrategy));
     }
@@ -522,17 +411,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return lk(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
-        //        return lk(getPropertyName(name), value, matchStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L lk(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return lk(property, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return lk(property, matchStrategy, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return lk(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy);
     }
@@ -553,24 +433,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     public L lk(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
                 matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return lk(getPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lk(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return lk(getPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -598,15 +460,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L nl(String name, String value, MatchStrategy matchStrategy) {
-        return nl(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return nl(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return nl(name, value, matchStrategy, getIgnoreStrategy()::test);
     }
 
     /**
@@ -614,7 +468,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L nl(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nl(property, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return nl(property, matchStrategy, getIgnoreStrategy()::test);
     }
 
     /**
@@ -633,24 +487,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     public L nl(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
                 matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return nl(getPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return nl(getPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -701,7 +537,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L sw(String name, String value, MatchStrategy matchStrategy) {
-        return sw(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return sw(name, value, matchStrategy, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
         //                matchStrategy, queryAlias, ignoreStrategy));
     }
@@ -710,17 +546,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * {@inheritDoc}
      */
     @Override
-    public <T> L sw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return sw(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
-        //        return sw(getPropertyName(name), value, matchStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L sw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return sw(property, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return sw(property, matchStrategy, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy);
     }
@@ -741,24 +568,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
     public L sw(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
                 matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return sw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return sw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -812,7 +621,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L nsw(String name, String value, MatchStrategy matchStrategy) {
-        return nsw(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return nsw(name, value, matchStrategy, getIgnoreStrategy()::test);
     }
 
     /**
@@ -820,7 +629,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <T> L nsw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return nsw(name, value, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return nsw(name, value, matchStrategy, getIgnoreStrategy()::test);
     }
 
     /**
@@ -828,7 +637,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nsw(property, matchStrategy, (Predicate<String>) getIgnoreStrategy());
+        return nsw(property, matchStrategy, getIgnoreStrategy()::test);
     }
 
     /**
@@ -1249,7 +1058,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L ge(String name, N value) {
-        return ge(name, value, (Predicate<N>) getIgnoreStrategy());
+        return ge(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
         //                queryAlias, ignoreStrategy));
     }
@@ -1301,7 +1110,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L ge(SerializableNumberSupplier<N> property) {
-        return ge(property, (Predicate<N>) getIgnoreStrategy());
+        return ge(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<N> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1329,7 +1138,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L ge(String name, D value) {
-        return ge(name, value, (Predicate<D>) getIgnoreStrategy());
+        return ge(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
         //                queryAlias, ignoreStrategy));
     }
@@ -1381,7 +1190,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L ge(SerializableDateSupplier<D> property) {
-        return ge(property, (Predicate<D>) getIgnoreStrategy());
+        return ge(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<D> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1409,7 +1218,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, LocalTime value) {
-        return ge(name, value, (Predicate<LocalTime>) getIgnoreStrategy());
+        return ge(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
         //                queryAlias, ignoreStrategy));
     }
@@ -1461,7 +1270,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(SerializableLocalTimeSupplier property) {
-        return ge(property, (Predicate<LocalTime>) getIgnoreStrategy());
+        return ge(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1489,7 +1298,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, LocalDate value) {
-        return ge(name, value, (Predicate<LocalDate>) getIgnoreStrategy());
+        return ge(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
         //                queryAlias, ignoreStrategy));
     }
@@ -1541,7 +1350,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(SerializableLocalDateSupplier property) {
-        return ge(property, (Predicate<LocalDate>) getIgnoreStrategy());
+        return ge(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1569,7 +1378,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, LocalDateTime value) {
-        return ge(name, value, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return ge(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
         //                queryAlias, ignoreStrategy));
     }
@@ -1622,7 +1431,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(SerializableLocalDateTimeSupplier property) {
-        return ge(property, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return ge(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1650,7 +1459,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(String name, String value) {
-        return ge(name, value, (Predicate<String>) getIgnoreStrategy());
+        return ge(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
         //                queryAlias, ignoreStrategy));
     }
@@ -1719,7 +1528,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L ge(SerializableStringSupplier property) {
-        return ge(property, (Predicate<String>) getIgnoreStrategy());
+        return ge(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return ge(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1756,7 +1565,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L gt(String name, N value) {
-        return gt(name, value, (Predicate<N>) getIgnoreStrategy());
+        return gt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
         //                queryAlias, ignoreStrategy));
     }
@@ -1808,7 +1617,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L gt(SerializableNumberSupplier<N> property) {
-        return gt(property, (Predicate<N>) getIgnoreStrategy());
+        return gt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<N> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1836,7 +1645,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L gt(String name, D value) {
-        return gt(name, value, (Predicate<D>) getIgnoreStrategy());
+        return gt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
         //                queryAlias, ignoreStrategy));
     }
@@ -1888,7 +1697,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L gt(SerializableDateSupplier<D> property) {
-        return gt(property, (Predicate<D>) getIgnoreStrategy());
+        return gt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1916,7 +1725,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, LocalTime value) {
-        return gt(name, value, (Predicate<LocalTime>) getIgnoreStrategy());
+        return gt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
         //                queryAlias, ignoreStrategy));
     }
@@ -1968,7 +1777,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(SerializableLocalTimeSupplier property) {
-        return gt(property, (Predicate<LocalTime>) getIgnoreStrategy());
+        return gt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -1996,7 +1805,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, LocalDate value) {
-        return gt(name, value, (Predicate<LocalDate>) getIgnoreStrategy());
+        return gt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
         //                queryAlias, ignoreStrategy));
     }
@@ -2048,7 +1857,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(SerializableLocalDateSupplier property) {
-        return gt(property, (Predicate<LocalDate>) getIgnoreStrategy());
+        return gt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2076,7 +1885,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, LocalDateTime value) {
-        return gt(name, value, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return gt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
         //                queryAlias, ignoreStrategy));
     }
@@ -2129,7 +1938,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(SerializableLocalDateTimeSupplier property) {
-        return gt(property, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return gt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2157,7 +1966,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(String name, String value) {
-        return gt(name, value, (Predicate<String>) getIgnoreStrategy());
+        return gt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
         //                queryAlias, ignoreStrategy));
     }
@@ -2192,7 +2001,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L gt(SerializableStringSupplier property) {
-        return gt(property, (Predicate<String>) getIgnoreStrategy());
+        return gt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2206,60 +2015,171 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         return gt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), ignoreStrategy);
     }
 
+    // ****************************************************************************************************************
+    //	in
+    // ****************************************************************************************************************
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(String name, Object value) {
-        return in(name, value, (Predicate<Object>) getIgnoreStrategy());
-        //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.IN,
-        //                queryAlias, ignoreStrategy));
+    public L in(String name, int... values) {
+        return in(name, values, getIgnoreStrategy()::test);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableSupplier<R> property) {
-        return in(property, (Predicate<R>) getIgnoreStrategy());
-        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        return in(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    public L in(String name, int[] values, Predicate<int[]> ignoreStrategy) {
+        return in(name, (Object) values, (Predicate<Object>) v -> ignoreStrategy.test((int[]) v));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L in(SerializableFunction<T, R> name, Object value) {
-        return in(name, value, (Predicate<Object>) getIgnoreStrategy());
-        //        return in(getPropertyName(name), value);
+    public L in(String name, long... values) {
+        return in(name, values, getIgnoreStrategy()::test);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(String name, Object value, Predicate<Object> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.IN,
-                queryAlias, ignoreStrategy));
+    public L in(String name, long[] values, Predicate<long[]> ignoreStrategy) {
+        return in(name, (Object) values, (Predicate<Object>) v -> ignoreStrategy.test((long[]) v));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L in(SerializableFunction<T, R> name, Object value, Predicate<Object> ignoreStrategy) {
-        return in(getPropertyName(name), value, ignoreStrategy);
+    public L in(String name, double... values) {
+        return in(name, values, getIgnoreStrategy()::test);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L in(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(),
-                (Predicate<Object>) ignoreStrategy);
+    public L in(String name, double[] values, Predicate<double[]> ignoreStrategy) {
+        return in(name, (Object) values, (Predicate<Object>) v -> ignoreStrategy.test((double[]) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String name, String[] values, MatchStrategy matchStrategy) {
+        return in(name, values, matchStrategy, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
+                ComparisonOperator.IN, matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(String name, Object... values) {
+        return in(name, values, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L in(String name, R value, Predicate<R> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
+                ComparisonOperator.IN, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToIntFunction<T> name, int... values) {
+        return in(getPropertyName(name), values);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy) {
+        return in(getPropertyName(name), values, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToLongFunction<T> name, long... values) {
+        return in(getPropertyName(name), values);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy) {
+        return in(getPropertyName(name), values, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToDoubleFunction<T> name, double... values) {
+        return in(getPropertyName(name), values);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy) {
+        return in(getPropertyName(name), values, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy) {
+        return in(getPropertyName(name), values, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L in(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy) {
+        return in(getPropertyName(name), values, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L in(SerializableFunction<T, R> name, R... values) {
+        return in(getPropertyName(name), values);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L in(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
+        return in(getPropertyName(name), values, ignoreStrategy);
     }
 
     /**
@@ -2301,7 +2221,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L le(String name, N value) {
-        return le(name, value, (Predicate<N>) getIgnoreStrategy());
+        return le(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
         //                queryAlias, ignoreStrategy));
     }
@@ -2381,7 +2301,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L le(String name, D value) {
-        return le(name, value, (Predicate<D>) getIgnoreStrategy());
+        return le(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
         //                queryAlias, ignoreStrategy));
     }
@@ -2433,7 +2353,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L le(SerializableDateSupplier<D> property) {
-        return le(property, (Predicate<D>) getIgnoreStrategy());
+        return le(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2461,7 +2381,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, LocalTime value) {
-        return le(name, value, (Predicate<LocalTime>) getIgnoreStrategy());
+        return le(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
         //                queryAlias, ignoreStrategy));
     }
@@ -2513,7 +2433,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(SerializableLocalTimeSupplier property) {
-        return le(property, (Predicate<LocalTime>) getIgnoreStrategy());
+        return le(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2541,7 +2461,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, LocalDate value) {
-        return le(name, value, (Predicate<LocalDate>) getIgnoreStrategy());
+        return le(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
         //                queryAlias, ignoreStrategy));
     }
@@ -2593,7 +2513,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(SerializableLocalDateSupplier property) {
-        return le(property, (Predicate<LocalDate>) getIgnoreStrategy());
+        return le(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2621,7 +2541,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, LocalDateTime value) {
-        return le(name, value, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return le(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
         //                queryAlias, ignoreStrategy));
     }
@@ -2674,7 +2594,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(SerializableLocalDateTimeSupplier property) {
-        return le(property, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return le(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2704,7 +2624,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(String name, String value) {
-        return le(name, value, (Predicate<String>) getIgnoreStrategy());
+        return le(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
         //                queryAlias, ignoreStrategy));
     }
@@ -2756,7 +2676,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L le(SerializableStringSupplier property) {
-        return le(property, (Predicate<String>) getIgnoreStrategy());
+        return le(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2784,7 +2704,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L lt(String name, N value) {
-        return lt(name, value, (Predicate<N>) getIgnoreStrategy());
+        return lt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
         //                queryAlias, ignoreStrategy));
     }
@@ -2836,7 +2756,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <N extends Number> L lt(SerializableNumberSupplier<N> property) {
-        return lt(property, (Predicate<N>) getIgnoreStrategy());
+        return lt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<N> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2864,7 +2784,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L lt(String name, D value) {
-        return lt(name, value, (Predicate<D>) getIgnoreStrategy());
+        return lt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
         //                queryAlias, ignoreStrategy));
     }
@@ -2916,7 +2836,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public <D extends Date> L lt(SerializableDateSupplier<D> property) {
-        return lt(property, (Predicate<D>) getIgnoreStrategy());
+        return lt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<D> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -2944,7 +2864,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, LocalTime value) {
-        return lt(name, value, (Predicate<LocalTime>) getIgnoreStrategy());
+        return lt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
         //                queryAlias, ignoreStrategy));
     }
@@ -2996,7 +2916,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(SerializableLocalTimeSupplier property) {
-        return lt(property, (Predicate<LocalTime>) getIgnoreStrategy());
+        return lt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -3024,7 +2944,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, LocalDate value) {
-        return lt(name, value, (Predicate<LocalDate>) getIgnoreStrategy());
+        return lt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
         //                queryAlias, ignoreStrategy));
     }
@@ -3076,7 +2996,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(SerializableLocalDateSupplier property) {
-        return lt(property, (Predicate<LocalDate>) getIgnoreStrategy());
+        return lt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDate> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -3104,7 +3024,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, LocalDateTime value) {
-        return lt(name, value, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return lt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
         //                queryAlias, ignoreStrategy));
     }
@@ -3157,7 +3077,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(SerializableLocalDateTimeSupplier property) {
-        return lt(property, (Predicate<LocalDateTime>) getIgnoreStrategy());
+        return lt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -3185,7 +3105,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(String name, String value) {
-        return lt(name, value, (Predicate<String>) getIgnoreStrategy());
+        return lt(name, value, getIgnoreStrategy()::test);
         //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
         //                queryAlias, ignoreStrategy));
     }
@@ -3237,7 +3157,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      */
     @Override
     public L lt(SerializableStringSupplier property) {
-        return lt(property, (Predicate<String>) getIgnoreStrategy());
+        return lt(property, getIgnoreStrategy()::test);
         //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         //        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
     }
@@ -3260,59 +3180,171 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
         return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), ignoreStrategy);
     }
 
+    // ****************************************************************************************************************
+    //	ni
+    // ****************************************************************************************************************
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(String name, Object value) {
-        return ni(name, value, (Predicate<Object>) getIgnoreStrategy());
-        //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NIN,
-        //                queryAlias, ignoreStrategy));
+    public <T> L ni(SerializableToIntFunction<T> name, int... values) {
+        return ni(getPropertyName(name), values);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(String name, Object value, Predicate<Object> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NI,
-                queryAlias, ignoreStrategy));
+    public <T> L ni(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy) {
+        return ni(getPropertyName(name), values, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ni(SerializableFunction<T, R> name, Object value) {
-        return ni(name, value, (Predicate<Object>) getIgnoreStrategy());
+    public <T> L ni(SerializableToLongFunction<T> name, long... values) {
+        return ni(getPropertyName(name), values);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> L ni(SerializableFunction<T, R> name, Object value, Predicate<Object> ignoreStrategy) {
-        return ni(getPropertyName(name), value, ignoreStrategy);
+    public <T> L ni(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy) {
+        return ni(getPropertyName(name), values, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableSupplier<R> property) {
-        return ni(property, (Predicate<R>) getIgnoreStrategy());
-        //        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        //        return ni(info.getSerializedLambdaInfo().getPropertyName(), info.getValue());
+    public <T> L ni(SerializableToDoubleFunction<T> name, double... values) {
+        return ni(getPropertyName(name), values);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ni(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(),
-                (Predicate<Object>) ignoreStrategy);
+    public <T> L ni(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy) {
+        return ni(getPropertyName(name), values, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy) {
+        return ni(getPropertyName(name), values, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy) {
+        return ni(getPropertyName(name), values, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ni(SerializableFunction<T, R> name, R... values) {
+        return ni(getPropertyName(name), values);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> L ni(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
+        return ni(getPropertyName(name), values, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, int... values) {
+        return ni(name, values, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, int[] values, Predicate<int[]> ignoreStrategy) {
+        return ni(name, (Object) values, (Predicate<Object>) v -> ignoreStrategy.test((int[]) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, long... values) {
+        return ni(name, values, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, long[] values, Predicate<long[]> ignoreStrategy) {
+        return ni(name, (Object) values, (Predicate<Object>) v -> ignoreStrategy.test((long[]) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, double... values) {
+        return ni(name, values, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, double[] values, Predicate<double[]> ignoreStrategy) {
+        return ni(name, (Object) values, (Predicate<Object>) v -> ignoreStrategy.test((double[]) v));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, String[] values, MatchStrategy matchStrategy) {
+        return ni(name, values, matchStrategy, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
+                ComparisonOperator.NI, matchStrategy, queryAlias, ignoreStrategy));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(String name, Object... values) {
+        return ni(name, values, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ni(String name, R value, Predicate<R> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
+                ComparisonOperator.NI, queryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -4203,7 +4235,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      * @param <R>   the generic type
      * @param info  the info
      * @param value the value
-     * @return the list
+     * @return LogicExpressionist
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {
         List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
@@ -4219,7 +4251,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionGro
      *
      * @param <R>  the generic type
      * @param info the info
-     * @return the list
+     * @return LogicExpressionist
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
         return supplier(info.getSerializedLambdaInfo(), info.get());

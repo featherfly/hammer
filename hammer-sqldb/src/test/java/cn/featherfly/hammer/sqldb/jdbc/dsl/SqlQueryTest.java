@@ -181,7 +181,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
         list = query.find("user") //
                 .where() //
-                .in("id", null) //
+                .in("id", (Object) null) //
                 .list();
         long total = query.find("user").count();
         assertEquals(list.size(), total);
@@ -724,6 +724,53 @@ public class SqlQueryTest extends JdbcTestBase {
         list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
                 .property(1, "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
+    }
+
+    @Test
+    void testAvg() {
+        Integer number = query.find("user").avg("age").integer();
+        System.out.println("avg:" + number);
+        assertTrue(number > 0);
+
+        //        query.find("user").integer(); 没有使用property或各种统计方法，则无法调用返回单个参数的方法
+        //        query.find("user").where().eq("id", "id").integer(); 这里没有实现上面的逻辑
+
+        number = query.find("user").avg("age").where().eq("age", 5).integer();
+        assertTrue(number == 5);
+
+    }
+
+    @Test
+    void testSum() {
+        Long count = query.find("user").where().eq("age", 5).count();
+
+        Integer number = query.find("user").sum("age").where().eq("age", 5).integer();
+        System.out.println("sum:" + number);
+        assertTrue(number > 0);
+        assertTrue(number == count * 5);
+
+    }
+
+    @Test
+    void testMin() {
+        Integer min = query.find("user").min("age").integer();
+        System.out.println("min:" + min);
+        assertTrue(min == 5);
+
+        min = query.find("user").min("age").where().ge("age", 10).integer();
+        System.out.println("min:" + min);
+        assertTrue(min == 10);
+    }
+
+    @Test
+    void testMax() {
+        Integer max = query.find("user").max("age").integer();
+        System.out.println("max:" + max);
+        assertTrue(max == 55);
+
+        max = query.find("user").max("age").where().le("age", 10).integer();
+        System.out.println("max:" + max);
+        assertTrue(max == 10);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)

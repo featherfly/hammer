@@ -122,7 +122,7 @@
 //     * @param <T>        the generic type
 //     * @param <R>        the generic type
 //     * @param repository the repository
-//     * @param property   对象属性
+//     * @param property  bean property
 //     * @return LogicExpression
 //     */
 //    default <T, R> L eq(SerializableSupplier<T> repository, SerializableFunction<T, R> property) {
@@ -135,7 +135,7 @@
 //     * @param <T>         the generic type
 //     * @param <R>         the generic type
 //     * @param repository  the repository
-//     * @param property    对象属性
+//     * @param property  bean property
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */

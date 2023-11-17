@@ -17,6 +17,8 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryFetch;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.SqlRepositoryQueryFetchImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.SqlRepositoryQueryFetch;
 
 /**
  * SqlQuery .
@@ -89,7 +91,7 @@ public class SqlQuery implements Query {
      */
     @Override
     //    public SqlQueryEntityProperties find(Repository repository) {
-    public SqlQueryEntity find(Repository repository) {
+    public SqlRepositoryQueryFetch find(Repository repository) {
         if (repository instanceof AliasRepository) {
             return find((AliasRepository) repository);
         } else {
@@ -98,7 +100,7 @@ public class SqlQuery implements Query {
         }
     }
 
-    public SqlQueryEntity find(AliasRepository repository) {
+    public SqlRepositoryQueryFetch find(AliasRepository repository) {
         AssertIllegalArgument.isNotNull(repository, "repository");
         return find(repository.name(), repository.alias());
     }
@@ -108,11 +110,11 @@ public class SqlQuery implements Query {
      */
     @Override
     //    public SqlQueryEntityProperties find(String tableName) {
-    public SqlQueryEntity find(String tableName) {
+    public SqlRepositoryQueryFetch find(String tableName) {
         return find(tableName, null);
     }
 
-    public SqlQueryEntity find(String tableName, String tableAlias) {
+    public SqlRepositoryQueryFetch find(String tableName, String tableAlias) {
         AssertIllegalArgument.isNotNull(tableName, "tableName");
         AliasManager aliasManager = new AliasManager();
         String alias = tableAlias;
@@ -121,7 +123,7 @@ public class SqlQuery implements Query {
         } else {
             alias = aliasManager.put(tableName);
         }
-        return new SqlQueryEntityProperties(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
+        return new SqlRepositoryQueryFetchImpl(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
                 queryConfig.clone());
     }
 
@@ -138,7 +140,8 @@ public class SqlQuery implements Query {
         //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
         //        }
 
-        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(), queryConfig.clone());
+        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
+                queryConfig.clone());
         return new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
     }
 

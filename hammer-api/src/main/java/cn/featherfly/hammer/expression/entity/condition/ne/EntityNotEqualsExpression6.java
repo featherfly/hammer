@@ -120,7 +120,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(Function<
@@ -135,7 +135,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -153,7 +153,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -167,7 +167,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -293,7 +293,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(Function<
@@ -308,7 +308,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -326,7 +326,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -340,7 +340,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -466,7 +466,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(Function<
@@ -481,7 +481,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -499,7 +499,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -513,7 +513,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -639,7 +639,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(Function<
@@ -654,7 +654,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -672,7 +672,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -686,7 +686,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -812,7 +812,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(Function<
@@ -827,7 +827,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -845,7 +845,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -859,7 +859,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -985,7 +985,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(Function<
@@ -1000,7 +1000,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -1018,7 +1018,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -1032,7 +1032,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression

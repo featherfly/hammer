@@ -23,8 +23,8 @@ public interface EntityContainsCompatibleExpressionBase2<E, E2, C extends Condit
     /**
      * contains value. 包含value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L co2(String name, String value) {

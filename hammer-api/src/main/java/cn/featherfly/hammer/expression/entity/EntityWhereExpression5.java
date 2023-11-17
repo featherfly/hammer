@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity;
 
-import cn.featherfly.hammer.expression.api.Where;
+import cn.featherfly.hammer.expression.query.WhereExpression;
 
 /**
  * The Interface EntityWhereExpression5.
@@ -17,5 +17,5 @@ import cn.featherfly.hammer.expression.api.Where;
  */
 public interface EntityWhereExpression5<E, E2, E3, E4, E5,
         C extends EntityConditionGroupExpression5<E, E2, E3, E4, E5, C, L>,
-        L extends EntityConditionGroupLogicExpression5<E, E2, E3, E4, E5, C, L>> extends Where<C> {
+        L extends EntityConditionGroupLogicExpression5<E, E2, E3, E4, E5, C, L>> extends WhereExpression<C> {
 }

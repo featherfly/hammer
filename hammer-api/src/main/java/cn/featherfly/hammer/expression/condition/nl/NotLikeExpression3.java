@@ -22,8 +22,8 @@ public interface NotLikeExpression3<C extends ConditionExpression, L extends Log
     /**
      * not like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nl3(Field name, String value) {
@@ -95,8 +95,8 @@ public interface NotLikeExpression3<C extends ConditionExpression, L extends Log
     /**
      * not like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nl3(String name, String value) {

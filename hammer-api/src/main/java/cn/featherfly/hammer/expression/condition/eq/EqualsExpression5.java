@@ -21,8 +21,8 @@ public interface EqualsExpression5<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L eq5(Field name, Object value) {
@@ -71,8 +71,8 @@ public interface EqualsExpression5<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L eq5(String name, Object value) {

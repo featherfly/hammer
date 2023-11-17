@@ -1,53 +1,105 @@
 package cn.featherfly.hammer.expression.query.sort;
 
-import cn.featherfly.common.function.serializable.SerializableFunction;
+import java.util.Arrays;
+import java.util.List;
+
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.AliasField;
+import cn.featherfly.common.repository.Field;
+import cn.featherfly.hammer.expression.condition.Expression;
 
 /**
- * 排序构建接口.
+ * sort expression.
  *
  * @author zhongj
  * @param <S> the generic type
  */
-public interface SortExpression<S extends SortExpression<S>> extends SortExpressionBase<S> {
+public interface SortExpression<S extends SortedExpression<S>> extends Expression {
 
     /**
-     * 添加升序条件 .
+     * add asc field.
      *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name 名称
-     * @return this
-     */
-    <T, R> S asc(SerializableFunction<T, R> name);
-
-    /**
-     * 添加升序条件 .
-     *
-     * @param <T>   the generic type
-     * @param <R>   the generic type
      * @param names 名称
      * @return this
      */
-    <T, R> S asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names);
+    S asc(String... names);
 
     /**
-     * 添加降序条件 .
+     * add asc field.
      *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
-     * @param name 名称
-     * @return this
-     */
-    <T, R> S desc(SerializableFunction<T, R> name);
-
-    /**
-     * 添加降序条件 .
-     *
-     * @param <T>   the generic type
-     * @param <R>   the generic type
      * @param names 名称
      * @return this
      */
-    <T, R> S desc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names);
+    S asc(List<String> names);
 
+    /**
+     * add asc field.
+     *
+     * @param fields the fields
+     * @return this
+     */
+    default S asc(Field... fields) {
+        if (Lang.isEmpty(fields)) {
+            return asc(ArrayUtils.EMPTY_STRING_ARRAY);
+        }
+        return asc(Arrays.stream(fields).map(Field::name).toArray(num -> ArrayUtils.create(Field.class, num)));
+    }
+
+    /**
+     * add asc field.
+     *
+     * @param fields the fields
+     * @return this
+     */
+    default S asc(AliasField... fields) {
+        if (Lang.isEmpty(fields)) {
+            return asc(ArrayUtils.EMPTY_STRING_ARRAY);
+        }
+        return asc(Arrays.stream(fields).map(AliasField::getAliasOrName)
+                .toArray(num -> ArrayUtils.create(Field.class, num)));
+    }
+
+    /**
+     * add desc field.
+     *
+     * @param names 名称
+     * @return this
+     */
+    S desc(String... names);
+
+    /**
+     * add desc field.
+     *
+     * @param names 名称
+     * @return this
+     */
+    S desc(List<String> names);
+
+    /**
+     * add desc field.
+     *
+     * @param fields the fields
+     * @return this
+     */
+    default S desc(Field... fields) {
+        if (Lang.isEmpty(fields)) {
+            return desc(ArrayUtils.EMPTY_STRING_ARRAY);
+        }
+        return desc(Arrays.stream(fields).map(Field::name).toArray(num -> ArrayUtils.create(Field.class, num)));
+    }
+
+    /**
+     * add desc field.
+     *
+     * @param fields the fields
+     * @return this
+     */
+    default S desc(AliasField... fields) {
+        if (Lang.isEmpty(fields)) {
+            return desc(ArrayUtils.EMPTY_STRING_ARRAY);
+        }
+        return desc(Arrays.stream(fields).map(AliasField::getAliasOrName)
+                .toArray(num -> ArrayUtils.create(Field.class, num)));
+    }
 }

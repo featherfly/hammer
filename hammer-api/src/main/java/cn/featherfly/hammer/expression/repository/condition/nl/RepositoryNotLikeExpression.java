@@ -3,8 +3,8 @@ package cn.featherfly.hammer.expression.repository.condition.nl;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -25,8 +25,8 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
      * not like value.
      *
      * @param <T>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L nl(SerializableToStringFunction<T> name, String value) {
@@ -66,9 +66,11 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
      * @param name          the name 参数名称
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
-    <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
+    default <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return nl(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
+    }
 
     /**
      * Lk.
@@ -78,10 +80,12 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
-    <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy);
+    default <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nl(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * Lk.
@@ -91,69 +95,10 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
-
-    /**
-     * not like value.
-     *
-     * @param property 对象属性
      * @return LogicExpression
      */
-    default L nl(SerializableStringSupplier property) {
-        return nl(property, MatchStrategy.AUTO);
+    default <T> L nl(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nl(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * not like value.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nl(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return nl(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not like value.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nl(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return nl(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * Lk.
-     *
-     * @param property      the property 对象属性
-     * @param matchStrategy the match strategy
-     * @return the l
-     */
-    L nl(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * Lk.
-     *
-     * @param property       the property 对象属性
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * Lk.
-     *
-     * @param property       the property 对象属性
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

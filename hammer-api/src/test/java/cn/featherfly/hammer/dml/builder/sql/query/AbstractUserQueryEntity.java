@@ -446,7 +446,7 @@
 //     */
 //    @Override
 //    public Date date() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -455,7 +455,7 @@
 //     */
 //    @Override
 //    public LocalDate localDate() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -464,7 +464,7 @@
 //     */
 //    @Override
 //    public LocalDateTime localDateTime() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -473,7 +473,7 @@
 //     */
 //    @Override
 //    public LocalTime localTime() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -482,7 +482,7 @@
 //     */
 //    @Override
 //    public Timestamp timestamp() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -491,7 +491,7 @@
 //     */
 //    @Override
 //    public byte[] bytes() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -500,7 +500,7 @@
 //     */
 //    @Override
 //    public Clob clob() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -509,7 +509,7 @@
 //     */
 //    @Override
 //    public Blob blob() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -518,7 +518,7 @@
 //     */
 //    @Override
 //    public boolean bool() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return false;
 //    }
 //
@@ -527,7 +527,7 @@
 //     */
 //    @Override
 //    public byte byteValue() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return 0;
 //    }
 //
@@ -536,7 +536,7 @@
 //     */
 //    @Override
 //    public short shortValue() {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return 0;
 //    }
 //
@@ -545,7 +545,7 @@
 //     */
 //    @Override
 //    public <T> T value(Class<T> type) {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //
@@ -554,7 +554,7 @@
 //     */
 //    @Override
 //    public UserQueryConditionGroupExpression where(Consumer<UserQueryConditionGroupExpression> consumer) {
-//        // YUFEI_TODO Auto-generated method stub
+//
 //        return null;
 //    }
 //

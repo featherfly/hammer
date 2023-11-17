@@ -21,7 +21,7 @@ public interface PropertyNotStartWithExpression<C extends ConditionExpression, L
     /**
      * not start with value. 不以value开始.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L nsw(String value) {
@@ -55,7 +55,7 @@ public interface PropertyNotStartWithExpression<C extends ConditionExpression, L
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw(String value, MatchStrategy matchStrategy);
 

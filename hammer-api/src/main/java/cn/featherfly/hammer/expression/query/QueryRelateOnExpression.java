@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
-import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
@@ -17,7 +17,7 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
 public interface QueryRelateOnExpression<QW extends QueryRelateExpression<QW, QWO, QWE, C, L>,
         QWO extends QueryRelateOnExpression<QW, QWO, QWE, C, L>,
         QWE extends QueryRelateEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
-        L extends RepositoryConditionGroupLogicExpression<C, L>> {
+        L extends RepositoryConditionsGroupLogicExpression<C, L>> {
 
     /**
      * on.

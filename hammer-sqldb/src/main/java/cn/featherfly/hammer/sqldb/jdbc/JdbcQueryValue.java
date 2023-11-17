@@ -106,7 +106,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long
+     * @return LogicExpressionong
      */
     default Long queryLongWrapper(String sql, Object... args) {
         return queryValue(sql, Long.class, args);
@@ -117,7 +117,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long
+     * @return LogicExpressionong
      */
     default Long queryLongWrapper(String sql, Map<String, Object> args) {
         return queryValue(sql, Long.class, args);
@@ -284,7 +284,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long value
+     * @return LogicExpressionong value
      */
     long queryLong(String sql, Object... args);
 
@@ -293,7 +293,7 @@ public interface JdbcQueryValue {
      *
      * @param sql  the sql
      * @param args the args
-     * @return the long value
+     * @return LogicExpressionong value
      */
     long queryLong(String sql, Map<String, Object> args);
 

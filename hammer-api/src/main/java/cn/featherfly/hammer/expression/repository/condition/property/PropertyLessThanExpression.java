@@ -21,7 +21,7 @@ public interface PropertyLessThanExpression<C extends ConditionExpression, L ext
     /**
      * less than. 小于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L lt(V value);

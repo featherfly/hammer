@@ -21,7 +21,7 @@ public interface PropertyNotContainsExpression<C extends ConditionExpression, L 
     /**
      * not contains value. 不包含value.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L nco(String value) {
@@ -55,7 +55,7 @@ public interface PropertyNotContainsExpression<C extends ConditionExpression, L 
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nco(String value, MatchStrategy matchStrategy);
 

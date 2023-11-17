@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.dsl.query;
 
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.expression.query.QueryEntityPropertiesExpression;
 
 /**
@@ -11,5 +13,5 @@ import cn.featherfly.hammer.expression.query.QueryEntityPropertiesExpression;
  * @author zhongj
  */
 public interface QueryEntityProperties extends
-        QueryEntityPropertiesExpression<QueryEntityProperties, QueryWith, QueryWithOn, QueryWithEntity, QueryConditionGroupExpression, QueryConditionGroupLogicExpression, RepositoryQueryConditionGroupExpression, RepositoryQueryConditionGroupLogicExpression> {
+        QueryEntityPropertiesExpression<QueryEntityProperties, QueryWith, QueryWithOn, QueryWithEntity, QueryConditionGroupExpression, QueryConditionGroupLogicExpression, RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic> {
 }

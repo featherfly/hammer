@@ -3,7 +3,7 @@ package cn.featherfly.hammer.dsl.query;
 
 import cn.featherfly.hammer.expression.query.QueryConditionLimit;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.sort.SortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
 
 /**
  * The Interface QuerySortExpression.
@@ -11,6 +11,6 @@ import cn.featherfly.hammer.expression.query.sort.SortExpression;
  * @author zhongj
  */
 public interface QuerySortExpression
-        extends SortExpression<QuerySortExpression>, QueryConditionLimit, QueryLimitExecutor {
+        extends RepositorySortExpression<QuerySortExpression>, QueryConditionLimit, QueryLimitExecutor {
 
 }

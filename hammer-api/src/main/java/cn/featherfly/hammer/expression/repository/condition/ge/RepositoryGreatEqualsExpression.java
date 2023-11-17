@@ -7,12 +7,6 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
@@ -39,8 +33,8 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      *
      * @param <T>   the generic type
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value);
@@ -69,35 +63,6 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      */
     <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
 
-    /**
-     * great equals. 大于等于.
-     *
-     * @param <N>      the number type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <N extends Number> L ge(SerializableNumberSupplier<N> property);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param <N>            the number type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <N extends Number> L ge(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param <N>            the number type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <N extends Number> L ge(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
-
     // **************************************************************************************************************
 
     /**
@@ -105,8 +70,8 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      *
      * @param <T>   the generic type
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <T, D extends Date> L ge(SerializableToDateFunction<T, D> name, D value);
@@ -135,43 +100,14 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      */
     <T, D extends Date> L ge(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
 
-    /**
-     * great equals. 大于等于.
-     *
-     * @param <D>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    <D extends Date> L ge(SerializableDateSupplier<D> property);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param <D>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <D extends Date> L ge(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param <D>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <D extends Date> L ge(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy);
-
     // **************************************************************************************************************
 
     /**
      * great equals. 大于等于.
      *
      * @param <T>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <T> L ge(SerializableToLocalTimeFunction<T> name, LocalTime value);
@@ -198,40 +134,14 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      */
     <T> L ge(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
 
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalTimeSupplier property);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
-
     // **************************************************************************************************************
 
     /**
      * great equals. 大于等于.
      *
      * @param <T>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <T> L ge(SerializableToLocalDateFunction<T> name, LocalDate value);
@@ -258,40 +168,14 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      */
     <T> L ge(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
 
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalDateSupplier property);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
-
     // **************************************************************************************************************
 
     /**
      * great equals. 大于等于.
      *
      * @param <T>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <T> L ge(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value);
@@ -318,40 +202,14 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      */
     <T> L ge(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
-
     // **************************************************************************************************************
 
     /**
      * great equals. 大于等于.
      *
      * @param <T>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     <T> L ge(SerializableToStringFunction<T> name, String value);
@@ -377,30 +235,4 @@ public interface RepositoryGreatEqualsExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     <T> L ge(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    L ge(SerializableStringSupplier property);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(SerializableStringSupplier property, Predicate<String> ignoreStrategy);
 }

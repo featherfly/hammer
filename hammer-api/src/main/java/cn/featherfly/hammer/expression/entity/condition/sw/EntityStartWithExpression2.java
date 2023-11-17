@@ -80,7 +80,7 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -93,7 +93,7 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -214,7 +214,7 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -227,7 +227,7 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

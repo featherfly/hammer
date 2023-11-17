@@ -28,7 +28,7 @@ public interface NullNotNullRepositoryPropertyValueExpression {
     /**
      * Value.
      *
-     * @param value 参数值
+     * @param value the value
      */
     void value(Boolean value);
 }

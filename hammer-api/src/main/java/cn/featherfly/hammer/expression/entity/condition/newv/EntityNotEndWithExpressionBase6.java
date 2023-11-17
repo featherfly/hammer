@@ -28,8 +28,8 @@ public interface EntityNotEndWithExpressionBase6<E, E2, E3, E4, E5, E6, C extend
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L new6(SerializableFunction<E6, String> name, String value) {
@@ -73,7 +73,7 @@ public interface EntityNotEndWithExpressionBase6<E, E2, E3, E4, E5, E6, C extend
     /**
      * not end with value. 不以value结尾.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L new6(SerializableStringSupplier property) {
@@ -83,7 +83,7 @@ public interface EntityNotEndWithExpressionBase6<E, E2, E3, E4, E5, E6, C extend
     /**
      * not end with value. 不以value结尾.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

@@ -11,50 +11,27 @@
 package cn.featherfly.hammer.expression.repository.condition;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.hammer.expression.condition.field.MatchStringFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetStringFuzzyQueryExpression;
 
 /**
- * The Interface MatchStringRepositoryPropertyExpression.
+ * The Interface MatchStringRepositoryFieldExpression.
  *
  * @author zhongj
- * @param <T> the element type
  */
-public interface MatchStringRepositoryFieldExpression extends MatchStringRepositoryExpression {
+public interface MatchStringRepositoryFieldExpression
+        extends MatchStringFieldExpression<MatchStringRepositoryFieldExpression>, SetStringFuzzyQueryExpression {
 
     /**
-     * entity match string function property expression.
+     * match string repository field expression.
      *
+     * @param <T>  the generic type
      * @param <R>  the generic type
      * @param name the name
-     * @return entity match string function property expression
+     * @return match string repository field expression
      */
-    <T, R> MatchStringRepositoryFieldExpression property(SerializableFunction<T, R> name);
-
-    /**
-     * entity match string function property expression.
-     *
-     * @param <R>  the generic type
-     * @param name the name
-     * @return entity match string function property expression
-     */
-    <T, R> MatchStringRepositoryFieldExpression property(SerializableFunction<T, R> name);
-
-    //
-    //    /**
-    //     * entity match string function property expression.
-    //     *
-    //     * @param <R>  the generic type
-    //     * @param <E>  the generic type
-    //     * @param name the name
-    //     * @return entity match string function property expression
-    //     */
-    //    <R extends Collection<E>,
-    //            E> MatchStringRepositoryPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name);
-    //
-    //    /**
-    //     * entity match string function string property expression.
-    //     *
-    //     * @param name the name
-    //     * @return entity match string function property expression
-    //     */
-    //    MatchStringRepositoryPropertySetValueExpression property(SerializableToStringFunction<T> name);
+    default <T, R> MatchStringRepositoryFieldExpression field(SerializableFunction<T, R> name) {
+        return field(LambdaUtils.getLambdaPropertyName(name));
+    }
 }

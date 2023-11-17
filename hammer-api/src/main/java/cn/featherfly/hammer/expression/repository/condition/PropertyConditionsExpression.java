@@ -1,16 +1,12 @@
 
 package cn.featherfly.hammer.expression.repository.condition;
 
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-
 /**
- * <p>
- * PropertyConditionExpression
- * </p>
+ * PropertyConditionExpression.
  *
  * @author zhongj
  */
-public interface PropertyConditionsExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        extends PropertyExpression<C, L> {
+public interface PropertyConditionsExpression<C extends RepositoryConditionsExpression<C, L>,
+        L extends RepositoryConditionsLogicExpression<C, L>> extends PropertyExpression<C, L> {
 
 }

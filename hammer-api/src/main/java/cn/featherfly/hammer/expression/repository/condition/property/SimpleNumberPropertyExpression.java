@@ -5,8 +5,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsLogicExpression;
 
 /**
  * simple number property expression.
@@ -16,12 +16,12 @@ import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class SimpleNumberPropertyExpression<N extends Number, C extends ConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements NumberPropertyExpression<N, C, L> {
+public class SimpleNumberPropertyExpression<N extends Number, C extends RepositoryConditionsExpression<C, L>,
+        L extends RepositoryConditionsLogicExpression<C, L>> implements NumberPropertyExpression<N, C, L> {
 
     private String name;
 
-    private ConditionsExpression<C, L> expression;
+    private RepositoryConditionsExpression<C, L> expression;
 
     /**
      * Instantiates a new simple number expression.
@@ -29,7 +29,7 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
      * @param name       name
      * @param expression expression
      */
-    public SimpleNumberPropertyExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleNumberPropertyExpression(String name, RepositoryConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -110,10 +110,9 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L in(N value, Predicate<N> ignoreStrategy) {
-        return expression.in(name, value, v -> ignoreStrategy.test((N) v));
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -135,10 +134,9 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L in(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.in(name, value, v -> ignoreStrategy.test((N[]) v));
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -152,10 +150,9 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L ni(N value, Predicate<N> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((N) v));
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
@@ -185,10 +182,9 @@ public class SimpleNumberPropertyExpression<N extends Number, C extends Conditio
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L ni(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((N[]) v));
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**

@@ -34,7 +34,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public String expression() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -43,7 +43,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public UserTableFilterable logic(LogicOperator operator) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -52,7 +52,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public UserTableFilterable and() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -61,7 +61,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public UserTableLogic and(Function<UserTableFilterable, UserTableLogic> group) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -70,7 +70,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public UserTableFilterable or() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -79,7 +79,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public UserTableLogic or(Function<UserTableFilterable, UserTableLogic> group) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -88,7 +88,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public QueryLimitExecutor limit(Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -97,7 +97,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public QueryLimitExecutor limit(Integer offset, Integer limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -106,7 +106,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public QueryLimitExecutor limit(Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -115,7 +115,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public List<Map<String, Object>> list() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -124,7 +124,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -133,7 +133,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -142,7 +142,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public Map<String, Object> single() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -151,7 +151,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public Map<String, Object> unique() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -160,7 +160,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public <E> E single(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -169,7 +169,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public <E> E unique(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -178,7 +178,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public <E> E single(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -187,7 +187,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public <E> E unique(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -196,7 +196,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public String string() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -205,7 +205,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public Date date() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -214,7 +214,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public LocalDate localDate() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -223,7 +223,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public LocalDateTime localDateTime() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -232,7 +232,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public LocalTime localTime() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -241,7 +241,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public Timestamp timestamp() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -250,7 +250,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public byte[] bytes() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -259,7 +259,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public Clob clob() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -268,7 +268,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public Blob blob() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -277,7 +277,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public boolean bool() {
-        // YUFEI_TODO Auto-generated method stub
+
         return false;
     }
 
@@ -286,7 +286,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public byte byteValue() {
-        // YUFEI_TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -295,7 +295,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public short shortValue() {
-        // YUFEI_TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -304,7 +304,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public int intValue() {
-        // YUFEI_TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -313,7 +313,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public long longValue() {
-        // YUFEI_TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -322,7 +322,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public <T> T value(Class<T> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -331,7 +331,7 @@ public class UserTableLogic implements QueryConditionLogicExpression<UserTableFi
      */
     @Override
     public long count() {
-        // YUFEI_TODO Auto-generated method stub
+
         return 0;
     }
 

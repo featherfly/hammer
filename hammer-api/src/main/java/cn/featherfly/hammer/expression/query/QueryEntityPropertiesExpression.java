@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.query;
 
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
@@ -21,7 +21,7 @@ public interface QueryEntityPropertiesExpression<
         C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>,
         RC extends RepositoryConditionsGroupExpression<RC, RL>,
-        RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
+        RL extends RepositoryConditionsGroupLogicExpression<RC, RL>>
         extends QueryEntityExpression<Q, QW, QWO, QWE, C, L, RC, RL>,
-        QueryValueExecutor, QueryCountExecutor {
+        QueryValueOneExecutor, QueryCountExecutor {
 }

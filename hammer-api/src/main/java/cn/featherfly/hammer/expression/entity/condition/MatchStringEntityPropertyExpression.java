@@ -15,6 +15,7 @@ import java.util.Collection;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.hammer.expression.condition.field.value.SetStringFuzzyQueryExpression;
 
 /**
  * The Interface MatchStringEntityExpression.
@@ -50,5 +51,5 @@ public interface MatchStringEntityPropertyExpression<T> extends MatchStringEntit
      * @param name the name
      * @return entity match string function property expression
      */
-    MatchStringEntityPropertySetValueExpression property(SerializableToStringFunction<T> name);
+    SetStringFuzzyQueryExpression property(SerializableToStringFunction<T> name);
 }

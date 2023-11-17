@@ -7,35 +7,34 @@ import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
- * <p>
- * dsl for query page executor
- * </p>
+ * dsl for query page executor .
  *
  * @author zhongj
  */
 public interface QueryPageExecutor {
+
     /**
-     * query for page
+     * query for page.
      *
-     * @return list
+     * @return PaginationResults
      */
     PaginationResults<Map<String, Object>> pagination();
 
     /**
-     * query for page
+     * query for page.
      *
-     * @param <E>  wrapper type
-     * @param type wrapper type
-     * @return list
+     * @param <E>  the mapping type
+     * @param type the mapping type
+     * @return PaginationResults
      */
     <E> PaginationResults<E> pagination(Class<E> type);
 
     /**
-     * query for page
+     * query for page.
      *
-     * @param <E>       wrapper type
+     * @param <E>       the mapping type
      * @param rowMapper rowMapper
-     * @return list
+     * @return PaginationResults
      */
     <E> PaginationResults<E> pagination(RowMapper<E> rowMapper);
 }

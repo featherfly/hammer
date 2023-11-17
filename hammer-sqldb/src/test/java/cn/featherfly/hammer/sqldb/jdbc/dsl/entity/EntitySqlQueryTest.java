@@ -172,89 +172,67 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @Test
     void testCount() {
-        long number = query.find("user").count();
-        System.out.println("count:" + number);
+        long size = query.find(User.class).list().size();
+        System.out.println("user list size: " + size);
 
-        long number2 = query.find(User.class).count();
-        System.out.println("count:" + number2);
-        assertTrue(number2 > 0);
-        assertEquals(number, number2);
+        long count = query.find(User.class).count();
+        System.out.println("count: " + count);
+        assertTrue(count > 0);
+        assertEquals(count, size);
 
-        number = query.find("user").where().eq("age", 55).count();
-        assertTrue(number == 1);
+        size = query.find(User.class).where().eq(User::getAge, 55).list().size();
+        assertTrue(size == 1);
 
-        number2 = query.find(User.class).where().eq(User::getAge, 55).count();
-        assertTrue(number2 == 1);
-        assertEquals(number, number2);
+        count = query.find(User.class).where().eq(User::getAge, 55).count();
+        assertTrue(count == 1);
+        assertEquals(size, count);
 
-        number = query.find("user").fetch("id").count();
-        number2 = query.find(User.class).fetch(User::getId) //
+        size = query.find(User.class).fetch(User::getId).list().size();
+        count = query.find(User.class).fetch(User::getId) //
                 .count();
-        assertEquals(number, number2);
+        assertEquals(size, count);
     }
 
     @Test
     void testAvg() {
-        Integer number = query.find("user").avg("age").integer();
-        System.out.println("avg:" + number);
-        assertTrue(number > 0);
+        Integer avg = query.find(User.class).avg(User::getAge).single();
+        System.out.println("avg: " + avg);
+        assertTrue(avg > 0);
 
-        //        query.find("user").integer(); 没有使用property或各种统计方法，则无法调用返回单个参数的方法
-        //        query.find("user").where().eq("id", "id").integer(); 这里没有实现上面的逻辑
-
-        Integer number2 = query.find(User.class).avg(User::getAge).single();
-        System.out.println("avg:" + number2);
-        assertTrue(number2 > 0);
-        assertEquals(number, number2);
-
-        number = query.find("user").avg("age").where().eq("age", 5).integer();
-        assertTrue(number == 5);
-
-        number2 = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).single();
-        assertTrue(number2 == 5);
-        assertEquals(number, number2);
+        avg = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).single();
+        assertTrue(avg == 5);
     }
 
     @Test
     void testSum() {
-        Long count = query.find("user").where().eq("age", 5).count();
+        Long count = query.find(User.class).where().eq(User::getAge, 5).count();
 
-        Integer number = query.find("user").sum("age").where().eq("age", 5).integer();
-        System.out.println("sum:" + number);
-        assertTrue(number > 0);
-        assertTrue(number == count * 5);
-
-        Integer number2 = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).single();
-        System.out.println("avg:" + number2);
-        assertTrue(number2 > 0);
-        assertTrue(number == count * 5);
-        assertEquals(number, number2);
+        Integer sum = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).single();
+        System.out.println("sum:" + sum);
+        assertTrue(sum > 0);
+        assertTrue(sum == count * 5);
     }
 
     @Test
     void testMin() {
+        Integer min = query.find(User.class).min(User::getAge).single();
+        System.out.println("min:" + min);
+        assertTrue(min == 5);
 
-        Integer number = query.find("user").min("age").integer();
-        System.out.println("min:" + number);
-        assertTrue(number == 5);
-
-        Integer number2 = query.find(User.class).min(User::getAge).single();
-        System.out.println("min:" + number2);
-        assertTrue(number2 == 5);
-        assertEquals(number, number2);
+        min = query.find(User.class).min(User::getAge).where().ge(User::getAge, 10).single();
+        System.out.println("min:" + min);
+        assertTrue(min == 10);
     }
 
     @Test
     void testMax() {
+        Integer max = query.find(User.class).max(User::getAge).single();
+        System.out.println("max:" + max);
+        assertTrue(max == 55);
 
-        Integer number = query.find("user").max("age").integer();
-        System.out.println("min:" + number);
-        assertTrue(number == 55);
-
-        Integer number2 = query.find(User.class).max(User::getAge).single();
-        System.out.println("min:" + number2);
-        assertTrue(number2 == 55);
-        assertEquals(number, number2);
+        max = query.find(User.class).max(User::getAge).where().le(User::getAge, 10).single();
+        System.out.println("max:" + max);
+        assertTrue(max == 10);
     }
 
     @SuppressWarnings("unchecked")

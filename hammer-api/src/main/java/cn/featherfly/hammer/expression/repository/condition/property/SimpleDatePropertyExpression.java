@@ -6,8 +6,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsLogicExpression;
 
 /**
  * simple date property expression.
@@ -17,12 +17,12 @@ import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsExpression<C, L>,
-        L extends LogicExpression<C, L>> implements DatePropertyExpression<D, C, L> {
+public class SimpleDatePropertyExpression<D extends Date, C extends RepositoryConditionsExpression<C, L>,
+        L extends RepositoryConditionsLogicExpression<C, L>> implements DatePropertyExpression<D, C, L> {
 
     private String name;
 
-    private ConditionsExpression<C, L> expression;
+    private RepositoryConditionsExpression<C, L> expression;
 
     /**
      * Instantiates a new simple date property expression.
@@ -30,7 +30,7 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
      * @param name       name
      * @param expression expression
      */
-    public SimpleDatePropertyExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleDatePropertyExpression(String name, RepositoryConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -111,10 +111,9 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L in(D value, Predicate<D> ignoreStrategy) {
-        return expression.in(name, value, v -> ignoreStrategy.test((D) v));
+        return expression.in(name, value, ignoreStrategy);
     }
 
     /**
@@ -136,10 +135,9 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L in(D[] value, Predicate<D[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((D[]) v));
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**
@@ -161,10 +159,9 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L ni(D value, Predicate<D> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((D) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -186,10 +183,9 @@ public class SimpleDatePropertyExpression<D extends Date, C extends ConditionsEx
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public L ni(D[] value, Predicate<D[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((D[]) v));
+        return expression.ni(name, value, ignoreStrategy);
     }
 
     /**

@@ -24,59 +24,59 @@ import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
+import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
+import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
+import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
+import cn.featherfly.hammer.expression.condition.ew.MulitiEndWithExpression;
+import cn.featherfly.hammer.expression.condition.ge.MulitiGreatEqualsExpression;
+import cn.featherfly.hammer.expression.condition.gt.MulitiGreatThanExpression;
+import cn.featherfly.hammer.expression.condition.in.MulitiInExpression;
+import cn.featherfly.hammer.expression.condition.inn.MulitiIsNotNullExpression;
+import cn.featherfly.hammer.expression.condition.isn.MulitiIsNullExpression;
+import cn.featherfly.hammer.expression.condition.le.MulitiLessEqualsExpression;
+import cn.featherfly.hammer.expression.condition.lk.MulitiLikeExpression;
+import cn.featherfly.hammer.expression.condition.lt.MulitiLessThanExpression;
+import cn.featherfly.hammer.expression.condition.nba.MulitiNotBetweenExpression;
+import cn.featherfly.hammer.expression.condition.nco.MulitiNotContainsExpression;
+import cn.featherfly.hammer.expression.condition.ne.MulitiNotEqualsExpression;
+import cn.featherfly.hammer.expression.condition.newv.MulitiNotEndWithExpression;
+import cn.featherfly.hammer.expression.condition.ni.MulitiNotInExpression;
+import cn.featherfly.hammer.expression.condition.nl.MulitiNotLikeExpression;
+import cn.featherfly.hammer.expression.condition.nsw.MulitiNotStartWithExpression;
+import cn.featherfly.hammer.expression.condition.sw.MulitiStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.BetweenEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ba.MulitiEntityBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression6;
-import cn.featherfly.hammer.expression.entity.condition.co.MulitiEntityContainsExpression;
 import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression6;
 import cn.featherfly.hammer.expression.entity.condition.eq.EqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.eq.MulitiEntityEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpression6;
-import cn.featherfly.hammer.expression.entity.condition.ew.MulitiEntityEndWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.ge.EntityGreatEqualsExpression6;
 import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ge.MulitiEntityGreatEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.gt.EntityGreatThanExpression6;
 import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.gt.MulitiEntityGreatThanExpression;
 import cn.featherfly.hammer.expression.entity.condition.in.EntityInExpression6;
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.in.MulitiEntityInExpression;
 import cn.featherfly.hammer.expression.entity.condition.inn.EntityIsNotNullExpression6;
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.inn.MulitiEntityIsNotNullExpression;
 import cn.featherfly.hammer.expression.entity.condition.isn.EntityIsNullExpression6;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.isn.MulitiEntityIsNullExpression;
 import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpression6;
 import cn.featherfly.hammer.expression.entity.condition.le.LessEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.le.MulitiEntityLessEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpression6;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lk.MulitiEntityLikeExpression;
 import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpression6;
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lt.MulitiEntityLessThanExpression;
-import cn.featherfly.hammer.expression.entity.condition.nba.MulitiEntityNotBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.nco.MulitiEntityNotContainsExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpression6;
-import cn.featherfly.hammer.expression.entity.condition.ne.MulitiEntityNotEqualsExpression;
 import cn.featherfly.hammer.expression.entity.condition.ne.NotEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.newv.MulitiEntityNotEndWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpression6;
-import cn.featherfly.hammer.expression.entity.condition.ni.MulitiEntityNotInExpression;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.nl.MulitiEntityNotLikeExpression;
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.nsw.MulitiEntityNotStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.nsw.NotStartWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression6;
-import cn.featherfly.hammer.expression.entity.condition.sw.MulitiEntityStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression6;
@@ -86,46 +86,46 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression6
 import cn.featherfly.hammer.expression.entity.query.sort.SortEntityExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.BetweenEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ContainsEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EndWithEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EqualsEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.GreatEqualsEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.GreatThanEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.InEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.IsNotNullEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.IsNullEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.LessEqualsEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.LessThanEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.LikeEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityBetweenExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityContainsExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityEndWithExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityEqualsExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityGreatEqualsExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityGreatThanExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityInExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityIsNotNullExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityIsNullExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityLessEqualsExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityLessThanExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityLikeExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotBetweenExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotContainsExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotEndWithExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotEqualsExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotInExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotLikeExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityNotStartWithExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.MulitiEntityStartWithExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.NotBetweenEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.NotContainsEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.NotEndWithEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.NotEqualsEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.NotInEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.NotLikeEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.NotStartWithEntityExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.StartWithEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ba.BetweenEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ba.MulitiEntityBetweenExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.co.ContainsEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.co.MulitiEntityContainsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.eq.EqualsEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.eq.MulitiEntityEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ew.EndWithEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ew.MulitiEntityEndWithExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ge.GreatEqualsEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ge.MulitiEntityGreatEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.gt.GreatThanEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.gt.MulitiEntityGreatThanExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.in.InEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.in.MulitiEntityInExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.inn.IsNotNullEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.inn.MulitiEntityIsNotNullExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.isn.IsNullEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.isn.MulitiEntityIsNullExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.le.LessEqualsEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.le.MulitiEntityLessEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.lk.LikeEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.lk.MulitiEntityLikeExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.lt.LessThanEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.lt.MulitiEntityLessThanExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nba.MulitiEntityNotBetweenExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nba.NotBetweenEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nco.MulitiEntityNotContainsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nco.NotContainsEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ne.MulitiEntityNotEqualsExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ne.NotEqualsEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.newv.MulitiEntityNotEndWithExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.newv.NotEndWithEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ni.MulitiEntityNotInExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.ni.NotInEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nl.MulitiEntityNotLikeExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nl.NotLikeEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nsw.MulitiEntityNotStartWithExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.nsw.NotStartWithEntityExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.sw.MulitiEntityStartWithExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.sw.StartWithEntityExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.sort.SqlSortEntity;
 
 /**
@@ -267,7 +267,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     @Override
     public L lk(Consumer<Tuple6<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
             LikeEntityExpression<E4>, LikeEntityExpression<E5>, LikeEntityExpression<E6>>> likeEntityExpressions) {
-        MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
+        MulitiLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
         likeEntityExpressions
                 .accept(Tuples.of(new LikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new LikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -285,7 +285,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     @Override
     public L lk(SixArgusConsumer<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
             LikeEntityExpression<E4>, LikeEntityExpression<E5>, LikeEntityExpression<E6>> likeEntityExpressions) {
-        MulitiEntityLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
+        MulitiLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
         likeEntityExpressions.accept(new LikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new LikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new LikeEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -303,7 +303,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L sw(Consumer<Tuple6<StartWithEntityExpression<E>, StartWithEntityExpression<E2>,
             StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>,
             StartWithEntityExpression<E6>>> startWithEntityExpressions) {
-        MulitiEntityStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
+        MulitiStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
         startWithEntityExpressions
                 .accept(Tuples.of(new StartWithEntityExpressionImpl<>(0, expression, factory, entityRelation),
                         new StartWithEntityExpressionImpl<>(1, expression, factory, entityRelation),
@@ -322,7 +322,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L sw(SixArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>,
             StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>,
             StartWithEntityExpression<E6>> startWithEntityExpressions) {
-        MulitiEntityStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
+        MulitiStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
         startWithEntityExpressions.accept(new StartWithEntityExpressionImpl<>(0, expression, factory, entityRelation),
                 new StartWithEntityExpressionImpl<>(1, expression, factory, entityRelation),
                 new StartWithEntityExpressionImpl<>(2, expression, factory, entityRelation),
@@ -339,7 +339,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     @Override
     public L ni(Consumer<Tuple6<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
             NotInEntityExpression<E4>, NotInEntityExpression<E5>, NotInEntityExpression<E6>>> notInEntityExpressions) {
-        MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
+        MulitiNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
         notInEntityExpressions
                 .accept(Tuples.of(new NotInEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new NotInEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -357,7 +357,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     @Override
     public L ni(SixArgusConsumer<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
             NotInEntityExpression<E4>, NotInEntityExpression<E5>, NotInEntityExpression<E6>> notInEntityExpressions) {
-        MulitiEntityNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
+        MulitiNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
         notInEntityExpressions.accept(new NotInEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new NotInEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new NotInEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -375,7 +375,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ne(Consumer<Tuple6<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
             NotEqualsEntityExpression<E3>, NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>,
             NotEqualsEntityExpression<E6>>> notEqualsEntityExpressions) {
-        MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
+        MulitiNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
         notEqualsEntityExpressions
                 .accept(Tuples.of(new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -394,7 +394,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ne(SixArgusConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
             NotEqualsEntityExpression<E3>, NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>,
             NotEqualsEntityExpression<E6>> notEqualsEntityExpressions) {
-        MulitiEntityNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
+        MulitiNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
         notEqualsEntityExpressions.accept(
                 new NotEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new NotEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -413,7 +413,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L lt(Consumer<Tuple6<LessThanEntityExpression<E>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>,
             LessThanEntityExpression<E4>, LessThanEntityExpression<E5>,
             LessThanEntityExpression<E6>>> lessThanEntityExpressions) {
-        MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
+        MulitiLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
         lessThanEntityExpressions
                 .accept(Tuples.of(new LessThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new LessThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -432,7 +432,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L lt(SixArgusConsumer<LessThanEntityExpression<E>, LessThanEntityExpression<E2>,
             LessThanEntityExpression<E3>, LessThanEntityExpression<E4>, LessThanEntityExpression<E5>,
             LessThanEntityExpression<E6>> lessThanEntityExpressions) {
-        MulitiEntityLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
+        MulitiLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
         lessThanEntityExpressions.accept(
                 new LessThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new LessThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -451,7 +451,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L le(Consumer<Tuple6<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
             LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>, LessEqualsEntityExpression<E5>,
             LessEqualsEntityExpression<E6>>> lessEqualsEntityExpressions) {
-        MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
+        MulitiLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
         lessEqualsEntityExpressions
                 .accept(Tuples.of(new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -470,7 +470,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L le(SixArgusConsumer<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
             LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>, LessEqualsEntityExpression<E5>,
             LessEqualsEntityExpression<E6>> lessEqualsEntityExpressions) {
-        MulitiEntityLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
+        MulitiLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
         lessEqualsEntityExpressions.accept(
                 new LessEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new LessEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -489,7 +489,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L isn(Consumer<Tuple6<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
             IsNullEntityExpression<E4>, IsNullEntityExpression<E5>,
             IsNullEntityExpression<E6>>> isNullEntityExpressions) {
-        MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
+        MulitiIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
         isNullEntityExpressions
                 .accept(Tuples.of(new IsNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new IsNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -508,7 +508,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L isn(SixArgusConsumer<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
             IsNullEntityExpression<E4>, IsNullEntityExpression<E5>,
             IsNullEntityExpression<E6>> isNullEntityExpressions) {
-        MulitiEntityIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
+        MulitiIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
         isNullEntityExpressions.accept(new IsNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new IsNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new IsNullEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -526,7 +526,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L inn(Consumer<Tuple6<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>,
             IsNotNullEntityExpression<E3>, IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>,
             IsNotNullEntityExpression<E6>>> isNotNullEntityExpressions) {
-        MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
+        MulitiIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
         isNotNullEntityExpressions
                 .accept(Tuples.of(new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -545,7 +545,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L inn(SixArgusConsumer<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>,
             IsNotNullEntityExpression<E3>, IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>,
             IsNotNullEntityExpression<E6>> isNotNullEntityExpressions) {
-        MulitiEntityIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
+        MulitiIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
         isNotNullEntityExpressions.accept(
                 new IsNotNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new IsNotNullEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -563,7 +563,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     @Override
     public L in(Consumer<Tuple6<InEntityExpression<E>, InEntityExpression<E2>, InEntityExpression<E3>,
             InEntityExpression<E4>, InEntityExpression<E5>, InEntityExpression<E6>>> inEntityExpressions) {
-        MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
+        MulitiInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
         inEntityExpressions.accept(Tuples.of(new InEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new InEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new InEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -580,7 +580,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     @Override
     public L in(SixArgusConsumer<InEntityExpression<E>, InEntityExpression<E2>, InEntityExpression<E3>,
             InEntityExpression<E4>, InEntityExpression<E5>, InEntityExpression<E6>> inEntityExpressions) {
-        MulitiEntityInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
+        MulitiInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
         inEntityExpressions.accept(new InEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new InEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new InEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -598,7 +598,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L gt(Consumer<Tuple6<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
             GreatThanEntityExpression<E3>, GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>,
             GreatThanEntityExpression<E6>>> greatThanEntityExpressions) {
-        MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
+        MulitiGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
         greatThanEntityExpressions
                 .accept(Tuples.of(new GreatThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new GreatThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -617,7 +617,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L gt(SixArgusConsumer<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
             GreatThanEntityExpression<E3>, GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>,
             GreatThanEntityExpression<E6>> greatThanEntityExpressions) {
-        MulitiEntityGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
+        MulitiGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
         greatThanEntityExpressions.accept(
                 new GreatThanEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new GreatThanEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -636,7 +636,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ge(Consumer<Tuple6<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
             GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>, GreatEqualsEntityExpression<E5>,
             GreatEqualsEntityExpression<E6>>> greatEqualsEntityExpressions) {
-        MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
+        MulitiGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
         greatEqualsEntityExpressions
                 .accept(Tuples.of(new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -655,7 +655,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ge(SixArgusConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
             GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>, GreatEqualsEntityExpression<E5>,
             GreatEqualsEntityExpression<E6>> greatEqualsEntityExpressions) {
-        MulitiEntityGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
+        MulitiGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
         greatEqualsEntityExpressions.accept(
                 new GreatEqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new GreatEqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -674,7 +674,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L eq(Consumer<Tuple6<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
             EqualsEntityExpression<E4>, EqualsEntityExpression<E5>,
             EqualsEntityExpression<E6>>> equalsEntityExpressions) {
-        MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
+        MulitiEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
         equalsEntityExpressions
                 .accept(Tuples.of(new EqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new EqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -693,7 +693,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L eq(SixArgusConsumer<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
             EqualsEntityExpression<E4>, EqualsEntityExpression<E5>,
             EqualsEntityExpression<E6>> equalsEntityExpressions) {
-        MulitiEntityEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
+        MulitiEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
         equalsEntityExpressions.accept(new EqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new EqualsEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new EqualsEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -711,7 +711,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ew(Consumer<Tuple6<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
             EndWithEntityExpression<E4>, EndWithEntityExpression<E5>,
             EndWithEntityExpression<E6>>> endWithEntityExpressions) {
-        MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
+        MulitiEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
         endWithEntityExpressions
                 .accept(Tuples.of(new EndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new EndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -730,7 +730,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ew(SixArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
             EndWithEntityExpression<E4>, EndWithEntityExpression<E5>,
             EndWithEntityExpression<E6>> endWithEntityExpressions) {
-        MulitiEntityEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
+        MulitiEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
         endWithEntityExpressions.accept(new EndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new EndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new EndWithEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -748,8 +748,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L co(Consumer<Tuple6<ContainsEntityExpression<E>, ContainsEntityExpression<E2>, ContainsEntityExpression<E3>,
             ContainsEntityExpression<E4>, ContainsEntityExpression<E5>,
             ContainsEntityExpression<E6>>> containsEntityExpressions) {
-        MulitiEntityContainsExpression<C,
-                L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
+        MulitiContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
         containsEntityExpressions.accept(Tuples.of(
                 new ContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
                 new ContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, factory, entityRelation),
@@ -768,8 +767,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L co(SixArgusConsumer<ContainsEntityExpression<E>, ContainsEntityExpression<E2>,
             ContainsEntityExpression<E3>, ContainsEntityExpression<E4>, ContainsEntityExpression<E5>,
             ContainsEntityExpression<E6>> containsEntityExpressions) {
-        MulitiEntityContainsExpression<C,
-                L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
+        MulitiContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
         containsEntityExpressions.accept(
                 new ContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
                 new ContainsEntityExpressionImpl<>(1, mulitiEntityContainsExpression, factory, entityRelation),
@@ -788,7 +786,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ba(Consumer<Tuple6<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
             BetweenEntityExpression<E4>, BetweenEntityExpression<E5>,
             BetweenEntityExpression<E6>>> betweenEntityExpressions) {
-        MulitiEntityBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
+        MulitiBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
         betweenEntityExpressions
                 .accept(Tuples.of(new BetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new BetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -807,7 +805,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L ba(SixArgusConsumer<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
             BetweenEntityExpression<E4>, BetweenEntityExpression<E5>,
             BetweenEntityExpression<E6>> betweenEntityExpressions) {
-        MulitiEntityBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
+        MulitiBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
         betweenEntityExpressions.accept(new BetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new BetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new BetweenEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),
@@ -825,7 +823,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nba(Consumer<Tuple6<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>,
             NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>, NotBetweenEntityExpression<E5>,
             NotBetweenEntityExpression<E6>>> notBetweenEntityExpressions) {
-        MulitiEntityNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
+        MulitiNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
         notBetweenEntityExpressions
                 .accept(Tuples.of(new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -844,7 +842,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nba(SixArgusConsumer<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>,
             NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>, NotBetweenEntityExpression<E5>,
             NotBetweenEntityExpression<E6>> notBetweenEntityExpressions) {
-        MulitiEntityNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
+        MulitiNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
         notBetweenEntityExpressions.accept(
                 new NotBetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new NotBetweenEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -863,7 +861,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nco(Consumer<Tuple6<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>,
             NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>, NotContainsEntityExpression<E5>,
             NotContainsEntityExpression<E6>>> notContainsEntityExpressions) {
-        MulitiEntityNotContainsExpression<C,
+        MulitiNotContainsExpression<C,
                 L> mulitiEntityContainsExpression = new MulitiEntityNotContainsExpressionImpl<>(this);
         notContainsEntityExpressions.accept(Tuples.of(
                 new NotContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
@@ -883,7 +881,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nco(SixArgusConsumer<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>,
             NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>, NotContainsEntityExpression<E5>,
             NotContainsEntityExpression<E6>> notContainsEntityExpressions) {
-        MulitiEntityNotContainsExpression<C,
+        MulitiNotContainsExpression<C,
                 L> mulitiEntityContainsExpression = new MulitiEntityNotContainsExpressionImpl<>(this);
         notContainsEntityExpressions.accept(
                 new NotContainsEntityExpressionImpl<>(0, mulitiEntityContainsExpression, factory, entityRelation),
@@ -903,7 +901,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L newv(Consumer<Tuple6<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>,
             NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>, NotEndWithEntityExpression<E5>,
             NotEndWithEntityExpression<E6>>> notEndWithEntityExpressions) {
-        MulitiEntityNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
+        MulitiNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
         notEndWithEntityExpressions
                 .accept(Tuples.of(new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -922,7 +920,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L newv(SixArgusConsumer<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>,
             NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>, NotEndWithEntityExpression<E5>,
             NotEndWithEntityExpression<E6>> notEndWithEntityExpressions) {
-        MulitiEntityNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
+        MulitiNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
         notEndWithEntityExpressions.accept(
                 new NotEndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new NotEndWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -941,7 +939,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nsw(Consumer<Tuple6<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>,
             NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>, NotStartWithEntityExpression<E5>,
             NotStartWithEntityExpression<E6>>> notStartWithEntityExpressions) {
-        MulitiEntityNotStartWithExpression<C, L> mulitiExpression = new MulitiEntityNotStartWithExpressionImpl<>(this);
+        MulitiNotStartWithExpression<C, L> mulitiExpression = new MulitiEntityNotStartWithExpressionImpl<>(this);
         notStartWithEntityExpressions
                 .accept(Tuples.of(new NotStartWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new NotStartWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -960,7 +958,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nsw(SixArgusConsumer<NotStartWithEntityExpression<E>, NotStartWithEntityExpression<E2>,
             NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>, NotStartWithEntityExpression<E5>,
             NotStartWithEntityExpression<E6>> notStartWithEntityExpressions) {
-        MulitiEntityNotStartWithExpression<C, L> mulitiExpression = new MulitiEntityNotStartWithExpressionImpl<>(this);
+        MulitiNotStartWithExpression<C, L> mulitiExpression = new MulitiEntityNotStartWithExpressionImpl<>(this);
         notStartWithEntityExpressions.accept(
                 new NotStartWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new NotStartWithEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -979,7 +977,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nl(Consumer<Tuple6<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
             NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>,
             NotLikeEntityExpression<E6>>> notLikeEntityExpressions) {
-        MulitiEntityNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
+        MulitiNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
         notLikeEntityExpressions
                 .accept(Tuples.of(new NotLikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                         new NotLikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
@@ -998,7 +996,7 @@ public abstract class AbstractEntitySqlQueryConditionGroupExpression6<E, E2, E3,
     public L nl(SixArgusConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
             NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>,
             NotLikeEntityExpression<E6>> notLikeEntityExpressions) {
-        MulitiEntityNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
+        MulitiNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
         notLikeEntityExpressions.accept(new NotLikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
                 new NotLikeEntityExpressionImpl<>(1, mulitiExpression, factory, entityRelation),
                 new NotLikeEntityExpressionImpl<>(2, mulitiExpression, factory, entityRelation),

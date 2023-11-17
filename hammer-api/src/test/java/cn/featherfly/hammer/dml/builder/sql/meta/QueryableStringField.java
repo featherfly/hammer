@@ -8,7 +8,6 @@
  */
 package cn.featherfly.hammer.dml.builder.sql.meta;
 
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -18,5 +17,5 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @author zhongj
  */
 public interface QueryableStringField<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends Field, Aliasable<QueryableStringAliasField<C, L>> {
+        extends StringField, Aliasable<QueryableStringAliasField<C, L>> {
 }

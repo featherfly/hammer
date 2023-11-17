@@ -80,7 +80,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * end with value. 以value结尾.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L ew(
@@ -93,7 +93,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * end with value. 以value结尾.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -214,7 +214,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * end with value. 以value结尾.
     //     *
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default L ew(
@@ -227,7 +227,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     //     * end with value. 以value结尾.
     //     *
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

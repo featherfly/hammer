@@ -22,6 +22,7 @@ public interface RepositoryContainsExpression2<C extends ConditionExpression, L 
     /**
      * contains value.
      *
+     * @param containsRepositoryExpressions the contains repository expressions
      * @return the LogicExpression
      */
     L co(Consumer<Tuple2<ContainsRepositoryExpression, ContainsRepositoryExpression>> containsRepositoryExpressions);
@@ -29,6 +30,7 @@ public interface RepositoryContainsExpression2<C extends ConditionExpression, L 
     /**
      * contains value.
      *
+     * @param containsRepositoryExpressions the contains repository expressions
      * @return the LogicExpression
      */
     L co(BiConsumer<ContainsRepositoryExpression, ContainsRepositoryExpression> containsRepositoryExpressions);

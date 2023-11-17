@@ -19,9 +19,10 @@ import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.hammer.dsl.query.QueryWith;
-import cn.featherfly.hammer.dsl.query.RepositoryQueryConditionGroupExpression;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.SqlRepositoryQueryFetchImpl;
 
 /**
  * SqlQueryWith .
@@ -31,7 +32,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEntity {
 
     /** The sql query entity properties. */
-    private SqlQueryEntityProperties sqlQueryEntityProperties;
+    private SqlRepositoryQueryFetchImpl sqlQueryEntityProperties;
 
     /** The alias manager. */
     private AliasManager aliasManager;
@@ -71,7 +72,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param joinTableAlias           the join table alias
      * @param ignoreStrategy           the ignore strategy
      */
-    public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
+    public SqlQueryWith(SqlRepositoryQueryFetchImpl sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
             String joinTableAlias, Predicate<?> ignoreStrategy) {
         this(sqlQueryEntityProperties, aliasManager, sqlPageFactory, selectTableAlis, selectTableColumn, joinTableName,
@@ -91,7 +92,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param join                     the join
      * @param ignoreStrategy           the ignore strategy
      */
-    public SqlQueryWith(SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
+    public SqlQueryWith(SqlRepositoryQueryFetchImpl sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
             String joinTableAlias, Join join, Predicate<?> ignoreStrategy) {
         super();
@@ -247,7 +248,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryConditionGroupExpression where() {
+    public RepositoryQueryConditionsGroup where() {
         // IMPLSOON 后续来实现，先让编译通过
         throw new NotImplementedException();
         //        return new RepositorySqlQueryExpression(sqlQueryEntityProperties.jdbc, aliasManager,
@@ -258,7 +259,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryConditionGroupExpression where(Consumer<RepositoryQueryConditionGroupExpression> consumer) {
+    public RepositoryQueryConditionsGroup where(Consumer<RepositoryQueryConditionsGroup> consumer) {
         // IMPLSOON 后续来实现，先让编译通过
         throw new NotImplementedException();
         //        RepositorySqlQueryExpression repositorySqlQueryExpression = new RepositorySqlQueryExpression(

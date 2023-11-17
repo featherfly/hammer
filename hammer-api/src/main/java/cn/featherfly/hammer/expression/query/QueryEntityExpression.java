@@ -17,8 +17,7 @@ import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.expression.ConditionGroupExpression;
 import cn.featherfly.hammer.expression.ConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.WhereExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
@@ -39,7 +38,7 @@ public interface QueryEntityExpression<Q extends QueryEntityPropertiesExpression
         QWO extends QueryRelateOnExpression<QW, QWO, QWE, RC, RL>,
         QWE extends QueryRelateEntityExpression<QW, QWO, QWE, RC, RL>, C extends ConditionGroupExpression<C, L>,
         L extends ConditionGroupLogicExpression<C, L>, RC extends RepositoryConditionsGroupExpression<RC, RL>,
-        RL extends RepositoryConditionGroupLogicExpression<RC, RL>>
+        RL extends RepositoryConditionsGroupLogicExpression<RC, RL>>
         extends WhereExpression<C, L>, QueryListExecutor, QueryConditionLimit, QueryCountExecutor {
 
     /**

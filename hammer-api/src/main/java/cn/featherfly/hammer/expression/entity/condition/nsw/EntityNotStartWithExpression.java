@@ -23,8 +23,8 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nsw(SerializableFunction<E, String> name, String value) {
@@ -49,7 +49,7 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
      * @param name        the name
      * @param value       the value
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
 
@@ -60,7 +60,7 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
      * @param value          the value
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
@@ -68,7 +68,7 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
     /**
      * not start with value. 不以value开始.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L nsw(SerializableStringSupplier property) {
@@ -78,7 +78,7 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
     /**
      * not start with value. 不以value开始.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -91,7 +91,7 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
      *
      * @param property    the property
      * @param queryPolicy the query policy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy);
 
@@ -101,7 +101,7 @@ public interface EntityNotStartWithExpression<E, C extends ConditionExpression, 
      * @param property       the property
      * @param queryPolicy    the query policy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 

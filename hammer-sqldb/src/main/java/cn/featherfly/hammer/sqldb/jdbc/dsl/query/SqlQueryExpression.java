@@ -140,8 +140,20 @@ public class SqlQueryExpression extends SqlQueryConditionGroupExpression {
      * {@inheritDoc}
      */
     @Override
-    protected <R> QueryConditionGroupLogicExpression eq_ne(AtomicInteger index, ComparisonOperator comparisonOperator,
+    public <R> QueryConditionGroupLogicExpression eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
             PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> QueryConditionGroupLogicExpression eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
+            String name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        // YUFEI_TODO Auto-generated method stub
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

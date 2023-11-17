@@ -42,8 +42,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt(SerializableToIntFunction<T> name, int value);
@@ -61,8 +61,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt(SerializableToLongFunction<T> name, long value);
@@ -80,8 +80,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt(SerializableToDoubleFunction<T> name, double value);
@@ -100,8 +100,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L lt(SerializableFunction<T, N> name, N value);
@@ -121,8 +121,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <E>   the element type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L lt(SerializableFunction<T, E> name, E value);
@@ -142,8 +142,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L lt(SerializableFunction<T, D> name, D value);
@@ -162,8 +162,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt(SerializableFunction<T, LocalTime> name, LocalTime value);
@@ -181,8 +181,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt(SerializableFunction<T, LocalDate> name, LocalDate value);
@@ -200,8 +200,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt(SerializableFunction<T, LocalDateTime> name, LocalDateTime value);
@@ -219,8 +219,8 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L lt(SerializableFunction<T, String> name, String value) {
@@ -264,7 +264,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt(SerializableIntSupplier property);
@@ -272,7 +272,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -281,7 +281,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt(SerializableLongSupplier property);
@@ -289,7 +289,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -298,7 +298,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt(SerializableDoubleSupplier property);
@@ -306,7 +306,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -316,7 +316,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L lt(SerializableDateSupplier<R> property);
@@ -325,7 +325,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -335,7 +335,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L lt(SerializableNumberSupplier<R> property);
@@ -344,7 +344,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -354,7 +354,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L lt(SerializableEnumSupplier<E> property);
@@ -363,7 +363,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
      * less than. 小于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -372,7 +372,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt(SerializableLocalDateSupplier property);
@@ -380,7 +380,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -389,7 +389,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt(SerializableLocalTimeSupplier property);
@@ -397,7 +397,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -406,7 +406,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt(SerializableLocalDateTimeSupplier property);
@@ -414,7 +414,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -423,7 +423,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L lt(SerializableStringSupplier property) {
@@ -433,7 +433,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -444,7 +444,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -453,7 +453,7 @@ public interface EntityLessThanExpression<T, C extends ConditionExpression, L ex
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

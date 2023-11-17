@@ -10,16 +10,16 @@ package cn.featherfly.hammer.dml.builder.sql.meta.user;
 
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.hammer.dml.builder.sql.meta.FieldImpl;
+import cn.featherfly.hammer.dml.builder.sql.meta.QueryableRepository;
 
 /**
  * UserTable.
  *
  * @author zhongj
  */
-public class UserTable implements Repository {
+public class UserTable implements QueryableRepository {
 
     public final Field name = new FieldImpl("name");
     public final Field password = new FieldImpl("password");
@@ -35,9 +35,6 @@ public class UserTable implements Repository {
         return "user";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AliasRepository alias(String alias) {
         return new SimpleAliasRepository(name(), alias);

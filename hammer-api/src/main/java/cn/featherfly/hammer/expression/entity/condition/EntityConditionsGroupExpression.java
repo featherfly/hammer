@@ -1,17 +1,17 @@
 
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.GroupExpression;
+import cn.featherfly.hammer.expression.condition.GroupExpression;
 
 /**
  * The Interface EntityConditionsGroupExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityConditionsGroupExpression<E, C extends EntityConditionsGroupExpression<E, C, L>,
-        L extends LogicExpression<C, L>> extends EntityConditionsExpression<E, C, L>, GroupExpression<C, L> {
+public interface EntityConditionsGroupExpression<T, C extends EntityConditionsGroupExpression<T, C, L>,
+        L extends EntityLogicGroupExpression<T, C, L>>
+        extends EntityConditionsExpression<T, C, L>, GroupExpression<C, L> {
 }

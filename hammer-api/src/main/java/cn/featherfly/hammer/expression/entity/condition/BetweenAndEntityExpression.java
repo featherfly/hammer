@@ -39,8 +39,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToIntFunction<T> name, int min, int max);
 
@@ -48,8 +48,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToIntFunction<T> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
 
@@ -57,8 +57,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLongFunction<T> name, long min, long max);
 
@@ -66,8 +66,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLongFunction<T> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 
@@ -75,8 +75,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToDoubleFunction<T> name, double min, double max);
 
@@ -84,8 +84,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToDoubleFunction<T> name, double min, double max,
             BiPredicate<Double, Double> ignoreStrategy);
@@ -94,8 +94,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N min, N max);
 
@@ -114,8 +114,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D min, D max);
 
@@ -133,8 +133,8 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     <E extends Enum<E>> void accept(SerializableToEnumFunction<T, E> name, E min, E max);
 
@@ -152,8 +152,8 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max);
 
@@ -170,8 +170,8 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max);
 
@@ -188,8 +188,8 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max);
 
@@ -206,8 +206,8 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      */
     void accept(SerializableToStringFunction<T> name, String min, String max);
 

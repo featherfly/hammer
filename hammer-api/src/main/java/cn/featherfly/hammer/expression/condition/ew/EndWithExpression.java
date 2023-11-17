@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.ew;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -21,8 +22,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
     /**
      * end with value. 以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ew(Field name, String value) {
@@ -59,7 +60,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L ew(Field name, String value, MatchStrategy matchStrategy) {
         return ew(name.name(), value, matchStrategy);
@@ -72,7 +73,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L ew(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return ew(name.name(), value, matchStrategy, ignoreStrategy);
@@ -85,7 +86,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L ew(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return ew(name.name(), value, matchStrategy, ignoreStrategy);
@@ -94,8 +95,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
     /**
      * end with value. 以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ew(String name, String value) {
@@ -132,7 +133,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L ew(String name, String value, MatchStrategy matchStrategy);
 
@@ -143,7 +144,7 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L ew(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
@@ -154,7 +155,68 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L ew(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+
+    /**
+     * end with value. 以value结尾.
+     *
+     * @param propertyValue the property value
+     * @return LogicExpression
+     */
+    default L ew(SerializableStringSupplier propertyValue) {
+        return ew(propertyValue, MatchStrategy.AUTO);
+    }
+
+    /**
+     * end with value. 以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ew(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
+        return ew(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * end with value. 以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ew(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
+        return ew(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * end with value. 以value结尾.
+     *
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
+
+    /**
+     * end with value. 以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * end with value. 以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

@@ -6,8 +6,8 @@ import java.util.List;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlOrderByBasicBuilder;
 import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.expression.query.sort.SortExpression;
 import cn.featherfly.common.db.dialect.Dialect;
 
 /**
@@ -17,7 +17,7 @@ import cn.featherfly.common.db.dialect.Dialect;
  *
  * @author zhongj
  */
-public class SqlSortExpressionBuilder implements SortExpression<SqlSortExpressionBuilder>, SqlBuilder {
+public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSortExpressionBuilder>, SqlBuilder {
 
     private SqlOrderByBasicBuilder orderByBuilder;
 

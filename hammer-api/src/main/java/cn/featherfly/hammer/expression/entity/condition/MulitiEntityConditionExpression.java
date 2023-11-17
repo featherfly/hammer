@@ -10,14 +10,25 @@
  */
 package cn.featherfly.hammer.expression.entity.condition;
 
+import cn.featherfly.common.repository.mapping.ClassMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.condition.MulitiConditionExpression;
 
 /**
- * MulitiEntityConditionExpression.
+ * muliti entity condition expression.
  *
  * @author zhongj
  */
-// FIXME 后续也许可以删除，继承此接口的更改为继承MulitiConditionExpression
 public interface MulitiEntityConditionExpression extends MulitiConditionExpression {
 
+    /**
+     * Gets the class mapping.
+     *
+     * @param <M>   the generic type
+     * @param <T>   the generic type
+     * @param <P>   the generic type
+     * @param index the index
+     * @return the class mapping
+     */
+    <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index);
 }

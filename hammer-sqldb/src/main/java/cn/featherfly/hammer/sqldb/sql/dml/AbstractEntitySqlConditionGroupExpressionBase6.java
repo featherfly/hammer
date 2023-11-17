@@ -43,6 +43,8 @@ import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
+import cn.featherfly.hammer.expression.condition.GroupEndExpression;
+import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression6;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpressionBase6;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpressionBase6;
@@ -65,11 +67,9 @@ import cn.featherfly.hammer.expression.entity.condition.nl.EntityNotLikeExpressi
 import cn.featherfly.hammer.expression.entity.condition.nsw.EntityNotStartWithExpressionBase6;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyFunction;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpressionBase6;
-import cn.featherfly.hammer.expression.repository.condition.GroupEndExpression;
-import cn.featherfly.hammer.expression.repository.condition.GroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityPropertyFunctionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityPropertyFunctionImpl;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .

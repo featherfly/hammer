@@ -26,8 +26,8 @@ public interface EntityNotStartWithExpressionBase4<E, E2, E3, E4, C extends Cond
     /**
      * not start with value. 不以value开始.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nsw4(SerializableFunction<E4, String> name, String value) {
@@ -71,7 +71,7 @@ public interface EntityNotStartWithExpressionBase4<E, E2, E3, E4, C extends Cond
     /**
      * not start with value. 不以value开始.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L nsw4(SerializableStringSupplier property) {
@@ -81,7 +81,7 @@ public interface EntityNotStartWithExpressionBase4<E, E2, E3, E4, C extends Cond
     /**
      * not start with value. 不以value开始.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

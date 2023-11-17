@@ -21,7 +21,7 @@ public interface PropertyLikeExpression<C extends ConditionExpression, L extends
     /**
      * like value.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L lk(String value) {
@@ -55,7 +55,7 @@ public interface PropertyLikeExpression<C extends ConditionExpression, L extends
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L lk(String value, MatchStrategy matchStrategy);
 

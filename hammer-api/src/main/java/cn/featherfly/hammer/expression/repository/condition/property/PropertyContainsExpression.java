@@ -21,7 +21,7 @@ public interface PropertyContainsExpression<C extends ConditionExpression, L ext
     /**
      * contains value. 包含value.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L co(String value) {
@@ -55,7 +55,7 @@ public interface PropertyContainsExpression<C extends ConditionExpression, L ext
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co(String value, MatchStrategy matchStrategy);
 

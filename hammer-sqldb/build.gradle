@@ -16,7 +16,7 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     
-    testImplementation project(path: ":hammer-core").sourceSets.test.output    
+//    testImplementation project(path: ":hammer-core").sourceSets.test.output    
     //testImplementation project(path: ":hammer-core", configuration: 'testJar')
     //instrumentedClasspath(project(path: ":producer", configuration: 'instrumentedJars'))
     

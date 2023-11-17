@@ -116,8 +116,18 @@ public class SqlExecutableConditionGroupExpression<C extends ExecutableCondition
      * {@inheritDoc}
      */
     @Override
-    protected <R> ExecutableConditionGroupLogic<C> eq_ne(AtomicInteger index, ComparisonOperator comparisonOperator,
+    public <R> ExecutableConditionGroupLogic<C> eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
             PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> ExecutableConditionGroupLogic<C> eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
+            String name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

@@ -45,8 +45,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt4(SerializableToIntFunction4<T4> name, int value);
@@ -64,8 +64,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt4(SerializableToLongFunction4<T4> name, long value);
@@ -83,8 +83,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt4(SerializableToDoubleFunction4<T4> name, double value);
@@ -103,8 +103,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L gt4(SerializableFunction<T4, N> name, N value);
@@ -124,8 +124,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L gt4(SerializableFunction<T4, E> name, E value);
@@ -145,8 +145,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L gt4(SerializableFunction<T4, D> name, D value);
@@ -165,8 +165,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt4(SerializableFunction<T4, LocalTime> name, LocalTime value);
@@ -184,8 +184,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt4(SerializableFunction<T4, LocalDate> name, LocalDate value);
@@ -203,8 +203,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value);
@@ -222,8 +222,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L gt4(SerializableFunction<T4, String> name, String value) {
@@ -245,8 +245,8 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L gt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy);
@@ -265,7 +265,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt4(SerializableIntSupplier property);
@@ -273,7 +273,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -282,7 +282,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt4(SerializableLongSupplier property);
@@ -290,7 +290,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -299,7 +299,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt4(SerializableDoubleSupplier property);
@@ -307,7 +307,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -317,7 +317,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L gt4(SerializableDateSupplier<R> property);
@@ -326,7 +326,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -336,7 +336,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L gt4(SerializableNumberSupplier<R> property);
@@ -345,7 +345,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -355,7 +355,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L gt4(SerializableEnumSupplier<E> property);
@@ -364,7 +364,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      * great than. 大于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -373,7 +373,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt4(SerializableLocalDateSupplier property);
@@ -381,7 +381,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -390,7 +390,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt4(SerializableLocalTimeSupplier property);
@@ -398,7 +398,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -407,7 +407,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt4(SerializableLocalDateTimeSupplier property);
@@ -415,7 +415,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -424,7 +424,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L gt4(SerializableStringSupplier property) {
@@ -434,7 +434,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -445,7 +445,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L gt4(SerializableStringSupplier property, MatchStrategy matchStrategy);
@@ -453,7 +453,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

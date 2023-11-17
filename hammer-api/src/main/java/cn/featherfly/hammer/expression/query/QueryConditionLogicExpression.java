@@ -10,7 +10,7 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
  * @author zhongj
  */
 public interface QueryConditionLogicExpression<C extends ConditionExpression, L extends ConditionLogicExpression<C, L>>
-        extends QueryConditionLimit, QueryExecutor, QueryValueExecutor, QueryCountExecutor,
-        ConditionLogicExpression<C, L> {
+        extends QueryConditionLimit, QueryExecutor, QueryValueOneExecutor, QueryCountExecutor,
+        ConditionsLogicExpression<C, L> {
 
 }

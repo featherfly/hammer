@@ -9,7 +9,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
  * @author zhongj
  */
 // IMPLSOON 这个接口暂时还没有使用，没有引入DSL体系
-public interface QueryAggregateExecutor<Q extends QueryValueExecutor> extends QueryCountExecutor {
+public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends QueryCountExecutor {
 
     /**
      * Count.

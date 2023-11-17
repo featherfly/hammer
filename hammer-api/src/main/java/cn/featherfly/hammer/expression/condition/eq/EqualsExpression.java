@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.eq;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -21,8 +22,8 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L eq(Field name, Object value) {
@@ -71,8 +72,8 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L eq(String name, Object value) {
@@ -113,4 +114,48 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * @return LogicExpression
      */
     <R> L eq(String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>      the generic type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default <R> L eq(SerializableSupplier<R> property) {
+        return eq(property, MatchStrategy.AUTO);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>            the generic type
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L eq(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return eq(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>           the generic type
+     * @param property      bean property
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>            the generic type
+     * @param property       bean property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 }

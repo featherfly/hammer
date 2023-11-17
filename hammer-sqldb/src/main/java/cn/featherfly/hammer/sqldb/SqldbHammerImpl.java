@@ -37,7 +37,8 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.QueryEntity;
+import cn.featherfly.hammer.dsl.query.QueryFetch;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -631,7 +632,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public QueryEntity query(String repository) {
+    public QueryFetch query(String repository) {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
                 hammerConfig.getDslConfig().getQueryConfig());
         return query.find(repository);
@@ -641,7 +642,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public QueryEntity query(Repository repository) {
+    public RepositoryQueryFetch query(Repository repository) {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
                 hammerConfig.getDslConfig().getQueryConfig());
         return query.find(repository);
@@ -651,7 +652,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public QueryEntity query(Table table) {
+    public RepositoryQueryFetch query(Table table) {
         SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
                 hammerConfig.getDslConfig().getQueryConfig());
         return query.find(table);

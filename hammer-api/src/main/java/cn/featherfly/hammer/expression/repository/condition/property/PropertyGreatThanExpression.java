@@ -21,7 +21,7 @@ public interface PropertyGreatThanExpression<C extends ConditionExpression, L ex
     /**
      * 大于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L gt(V value);

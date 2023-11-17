@@ -22,8 +22,8 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
     /**
      * contains value. 包含value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L co3(String name, String value) {
@@ -60,7 +60,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co3(String name, String value, MatchStrategy matchStrategy);
 
@@ -71,7 +71,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co3(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
@@ -82,7 +82,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co3(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
@@ -127,7 +127,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L co3(Field name, String value, MatchStrategy matchStrategy) {
         return co3(name.name(), value, matchStrategy);
@@ -140,7 +140,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L co3(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return co3(name.name(), value, matchStrategy, ignoreStrategy);
@@ -153,7 +153,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L co3(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return co3(name.name(), value, matchStrategy, ignoreStrategy);

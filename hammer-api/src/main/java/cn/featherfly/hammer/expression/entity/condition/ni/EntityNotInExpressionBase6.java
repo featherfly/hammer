@@ -42,8 +42,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L ni6(SerializableFunction<T6, R> name, R value);
@@ -62,8 +62,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableToIntFunction6<T6> name, int value);
@@ -81,8 +81,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableToLongFunction6<T6> name, long value);
@@ -100,8 +100,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableToDoubleFunction<T6> name, double value);
@@ -120,8 +120,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L ni6(SerializableFunction<T6, R> name, @SuppressWarnings("unchecked") R... value);
@@ -129,8 +129,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableToIntFunction6<T6> name, int... value);
@@ -138,8 +138,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableToLongFunction6<T6> name, long... value);
@@ -147,8 +147,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableToDoubleFunction6<T6> name, double... value);
@@ -198,8 +198,8 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L ni6(SerializableFunction<T6, R> name, Collection<R> value);
@@ -263,7 +263,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> L ni6(SerializableSupplier<R> property);
@@ -272,7 +272,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -281,7 +281,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ni6(SerializableIntSupplier property);
@@ -289,7 +289,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -298,7 +298,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ni6(SerializableLongSupplier property);
@@ -306,7 +306,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -315,7 +315,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L ni6(SerializableDoubleSupplier property);
@@ -323,7 +323,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -332,7 +332,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -341,7 +341,7 @@ public interface EntityNotInExpressionBase6<E, T2, T3, T4, T5, T6, C extends Con
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

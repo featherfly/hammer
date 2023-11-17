@@ -20,7 +20,7 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.QueryEntity;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**
@@ -386,7 +386,7 @@ public interface Hammer extends TplExecutor {
      * @param <E>            the element type
      * @param type           the type
      * @param propertyValues the property values
-     * @return the list
+     * @return LogicExpressionist
      */
     default <E> List<E> queryList(Class<E> type, SerializableSupplier<?>... propertyValues) {
         return queryList(type, LogicOperator.AND, propertyValues);
@@ -399,7 +399,7 @@ public interface Hammer extends TplExecutor {
      * @param type           the type
      * @param operator       the operator
      * @param propertyValues the property values
-     * @return the list
+     * @return LogicExpressionist
      */
     default <E> List<E> queryList(Class<E> type, LogicOperator operator, SerializableSupplier<?>... propertyValues) {
         if (Lang.isEmpty(propertyValues)) {
@@ -430,7 +430,7 @@ public interface Hammer extends TplExecutor {
      * @param repository repository name
      * @return QueryEntity
      */
-    QueryEntity query(String repository);
+    RepositoryQueryFetch query(String repository);
 
     /**
      * create QueryEntity for repository.
@@ -438,7 +438,7 @@ public interface Hammer extends TplExecutor {
      * @param repository the repository
      * @return the query entity
      */
-    QueryEntity query(Repository repository);
+    RepositoryQueryFetch query(Repository repository);
 
     //    /**
     //     * create QueryEntity for type.

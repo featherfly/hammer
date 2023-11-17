@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.nl;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -22,8 +23,8 @@ public interface NotLikeExpression<C extends ConditionExpression, L extends Logi
     /**
      * not like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nl(Field name, String value) {
@@ -95,8 +96,8 @@ public interface NotLikeExpression<C extends ConditionExpression, L extends Logi
     /**
      * not like value.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L nl(String name, String value) {
@@ -146,7 +147,9 @@ public interface NotLikeExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nl(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L nl(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return nl(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * not like value.
@@ -159,4 +162,66 @@ public interface NotLikeExpression<C extends ConditionExpression, L extends Logi
      */
     L nl(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
+    /**
+     * not like value.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L nl(SerializableStringSupplier property) {
+        return nl(property, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
+        return nl(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return nl(property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * Lk.
+     *
+     * @param property      bean property
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L nl(SerializableStringSupplier property, MatchStrategy matchStrategy);
+
+    /**
+     * Lk.
+     *
+     * @param property       bean property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return nl(property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * Lk.
+     *
+     * @param property       bean property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

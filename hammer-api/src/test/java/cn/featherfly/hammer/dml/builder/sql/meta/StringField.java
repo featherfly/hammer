@@ -9,17 +9,14 @@
 package cn.featherfly.hammer.dml.builder.sql.meta;
 
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.hammer.expression.condition.ConditionExpression;
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
 
 /**
  * StringField.
  *
  * @author zhongj
  */
-public interface StringField<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends StringPropertyExpression<C, L>, Field, Aliasable<FilterableStringAliasField<C, L>> {
+public interface StringField extends Field {
+    // TODO 这里加入字符串处理函数
 
     //    @Override
     //    void eq(String value);

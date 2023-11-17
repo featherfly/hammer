@@ -21,7 +21,7 @@ public interface PropertyInExpression<C extends ConditionExpression, L extends L
     /**
      * 包含指定，sql中的in.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L in(V value);
@@ -29,7 +29,7 @@ public interface PropertyInExpression<C extends ConditionExpression, L extends L
     /**
      * 包含指定，sql中的in.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L in(V[] value);

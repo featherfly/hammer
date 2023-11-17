@@ -8,6 +8,9 @@
  */
 package cn.featherfly.hammer.dml.builder.sql.meta;
 
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+
 /**
  * Query.
  *
@@ -15,6 +18,7 @@ package cn.featherfly.hammer.dml.builder.sql.meta;
  */
 public interface Query {
 
-    <R extends QueryableRepository, R2 extends FilterableRepository, F extends QueryFetch<R, R2, F, W>,
-            W extends Where<R2>> F find(RepositoryQuery<R, R2, F, W> repository);
+    <R extends QueryableRepository, R2 extends FilterableRepository, F extends QueryFetch<R, R2, F, W, C, L>,
+            W extends Where<R2, C, L>, C extends ConditionExpression,
+            L extends LogicExpression<C, L>> F find(RepositoryQuery<R, R2, F, W, C, L> repository);
 }

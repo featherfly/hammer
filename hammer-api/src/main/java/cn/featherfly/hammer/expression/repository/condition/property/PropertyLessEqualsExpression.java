@@ -21,7 +21,7 @@ public interface PropertyLessEqualsExpression<C extends ConditionExpression, L e
     /**
      * less equals. 小于等于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L le(V value);
@@ -29,7 +29,7 @@ public interface PropertyLessEqualsExpression<C extends ConditionExpression, L e
     /**
      * less equals. 小于等于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L le(V value, IgnoreStrategy ignoreStrategy);
@@ -37,7 +37,7 @@ public interface PropertyLessEqualsExpression<C extends ConditionExpression, L e
     /**
      * less equals. 小于等于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L le(V value, Predicate<V> ignoreStrategy);

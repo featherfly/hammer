@@ -21,7 +21,7 @@ public interface PropertyNotEqualsExpression<C extends ConditionExpression, L ex
     /**
      * not equals. 不等于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L ne(V value);

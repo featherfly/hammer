@@ -4,8 +4,8 @@ package cn.featherfly.hammer.expression.query;
 import java.util.Collection;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.expression.RepositoryConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.RepositoryWhereExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
@@ -21,7 +21,7 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
 public interface QueryRelateEntityExpression<QW extends QueryRelateExpression<QW, QWO, QWE, C, L>,
         QWO extends QueryRelateOnExpression<QW, QWO, QWE, C, L>,
         QWE extends QueryRelateEntityExpression<QW, QWO, QWE, C, L>, C extends RepositoryConditionsGroupExpression<C, L>,
-        L extends RepositoryConditionGroupLogicExpression<C, L>>
+        L extends RepositoryConditionsGroupLogicExpression<C, L>>
         extends RepositoryWhereExpression<C, L>, QueryRelateExpression<QW, QWO, QWE, C, L> {
 
     /**

@@ -64,6 +64,7 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpression;
@@ -97,20 +98,19 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPro
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression;
-import cn.featherfly.hammer.expression.repository.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityDatePropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityDoublePropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityEnumPropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityIntPropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityLocalDatePropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityLocalDateTimePropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityLocalTimePropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityLongPropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityNumberPropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityStringPropertyExpressionImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.EntityTypePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityDatePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityDoublePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityEnumPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityIntPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityLocalDatePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityLocalDateTimePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityLocalTimePropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityLongPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityNumberPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityStringPropertyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityTypePropertyExpressionImpl;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -134,7 +134,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
         , EntityLessEqualsExpression<T, C, L>, EntityLessThanExpression<T, C, L> //
         , EntityStartWithExpression<T, C, L>, EntityNotStartWithExpression<T, C, L>//
         , EntityLikeExpression<T, C, L>, EntityNotLikeExpression<T, C, L>//
-        , EntityPropertyExpression<T, C, L>, NativeStringConditionExpression<C, L>, ConditionConfigureExpression<C, C2> {
+        , EntityPropertyExpression<T, C, L>, NativeStringConditionExpression<C, L>,
+        ConditionConfigureExpression<C, C2> {
 
     /** The factory. */
     protected JdbcMappingFactory factory;
@@ -3895,19 +3896,19 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
 
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
             IntPredicate ignoreStrategy) {
-        return eq_ne(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
             LongPredicate ignoreStrategy) {
-        return eq_ne(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
             DoublePredicate ignoreStrategy) {
-        return eq_ne(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
@@ -3918,7 +3919,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
 
     protected <R> L eq(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eq_ne(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -3934,19 +3935,19 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
 
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
             IntPredicate ignoreStrategy) {
-        return eq_ne(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
             LongPredicate ignoreStrategy) {
-        return eq_ne(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
             DoublePredicate ignoreStrategy) {
-        return eq_ne(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
@@ -3957,11 +3958,11 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
 
     protected <R> L ne(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
             MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eq_ne(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
                 queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    protected abstract <R> L eq_ne(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
+    protected abstract <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
             String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     //    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, JdbcPropertyMapping pm, R value, String queryAlias,
@@ -4714,7 +4715,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      * @param <R>   the generic type
      * @param info  the info
      * @param value the value
-     * @return the list
+     * @return LogicExpressionist
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {
         return supplier(info, value, classMapping);
@@ -4725,7 +4726,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      *
      * @param <R>  the generic type
      * @param info the info
-     * @return the list
+     * @return LogicExpressionist
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
         return supplier(info, classMapping);

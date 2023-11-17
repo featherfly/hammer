@@ -45,8 +45,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(SerializableToIntFunction4<T4> name, int value);
@@ -64,8 +64,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(SerializableToLongFunction4<T4> name, long value);
@@ -83,8 +83,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(SerializableToDoubleFunction4<T4> name, double value);
@@ -103,8 +103,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L lt4(SerializableFunction<T4, N> name, N value);
@@ -124,8 +124,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <E>   the element type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L lt4(SerializableFunction<T4, E> name, E value);
@@ -145,8 +145,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L lt4(SerializableFunction<T4, D> name, D value);
@@ -165,8 +165,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(SerializableFunction<T4, LocalTime> name, LocalTime value);
@@ -184,8 +184,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(SerializableFunction<T4, LocalDate> name, LocalDate value);
@@ -203,8 +203,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L lt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value);
@@ -222,8 +222,8 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L lt4(SerializableFunction<T4, String> name, String value) {
@@ -267,7 +267,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt4(SerializableIntSupplier property);
@@ -275,7 +275,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -284,7 +284,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt4(SerializableLongSupplier property);
@@ -292,7 +292,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -301,7 +301,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt4(SerializableDoubleSupplier property);
@@ -309,7 +309,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -319,7 +319,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L lt4(SerializableDateSupplier<R> property);
@@ -328,7 +328,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -338,7 +338,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L lt4(SerializableNumberSupplier<R> property);
@@ -347,7 +347,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -357,7 +357,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <E>      the element type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L lt4(SerializableEnumSupplier<E> property);
@@ -366,7 +366,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
      * less than. 小于.
      *
      * @param <E>            the element type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -375,7 +375,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt4(SerializableLocalDateSupplier property);
@@ -383,7 +383,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -392,7 +392,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt4(SerializableLocalTimeSupplier property);
@@ -400,7 +400,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -409,7 +409,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L lt4(SerializableLocalDateTimeSupplier property);
@@ -417,7 +417,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -426,7 +426,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L lt4(SerializableStringSupplier property) {
@@ -436,7 +436,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -447,7 +447,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -456,7 +456,7 @@ public interface EntityLessThanExpressionBase4<T, T2, T3, T4, C extends Conditio
     /**
      * less than. 小于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

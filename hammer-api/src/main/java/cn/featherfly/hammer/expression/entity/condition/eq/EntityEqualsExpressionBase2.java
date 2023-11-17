@@ -52,8 +52,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <R> L eq2(SerializableFunction<T2, R> name, R value);
@@ -72,8 +72,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq2(SerializableToIntFunction<T2> name, int value);
@@ -91,8 +91,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq2(SerializableToLongFunction<T2> name, long value);
@@ -110,8 +110,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq2(SerializableToDoubleFunction<T2> name, double value);
@@ -130,8 +130,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <N>   number type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L eq2(SerializableToNumberFunction<T2, N> name, N value);
@@ -151,8 +151,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <E>   the element type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L eq2(SerializableToEnumFunction<T2, E> name, E value);
@@ -172,8 +172,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <D>   date type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L eq2(SerializableToDateFunction<T2, D> name, D value);
@@ -192,8 +192,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq2(SerializableToLocalTimeFunction<T2> name, LocalTime value);
@@ -211,8 +211,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq2(SerializableToLocalDateFunction<T2> name, LocalDate value);
@@ -230,8 +230,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq2(SerializableToLocalDateTimeFunction<T2> name, LocalDateTime value);
@@ -249,8 +249,8 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L eq2(SerializableToStringFunction<T2> name, String value) {
@@ -299,7 +299,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R> L eq2(SerializableSupplier<R> property);
@@ -308,7 +308,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -317,7 +317,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L eq2(SerializableIntSupplier property);
@@ -325,7 +325,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -334,7 +334,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L eq2(SerializableLongSupplier property);
@@ -342,7 +342,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -351,7 +351,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L eq2(SerializableDoubleSupplier property);
@@ -359,7 +359,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -369,7 +369,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Date> L eq2(SerializableDateSupplier<R> property);
@@ -378,7 +378,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -388,7 +388,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <R>      the generic type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <R extends Number> L eq2(SerializableNumberSupplier<R> property);
@@ -397,7 +397,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -407,7 +407,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <E>      the element type
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     <E extends Enum<E>> L eq2(SerializableEnumSupplier<E> property);
@@ -416,7 +416,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
      * equals. 等于.
      *
      * @param <E>            the element type
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -425,7 +425,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L eq2(SerializableLocalDateSupplier property);
@@ -433,7 +433,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -442,7 +442,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L eq2(SerializableLocalTimeSupplier property);
@@ -450,7 +450,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -459,7 +459,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     L eq2(SerializableLocalDateTimeSupplier property);
@@ -467,7 +467,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -476,7 +476,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L eq2(SerializableStringSupplier property) {
@@ -486,7 +486,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -497,7 +497,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property      对象属性
+     * @param property  bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -506,7 +506,7 @@ public interface EntityEqualsExpressionBase2<T, T2, C extends ConditionExpressio
     /**
      * equals. 等于.
      *
-     * @param property       对象属性
+     * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

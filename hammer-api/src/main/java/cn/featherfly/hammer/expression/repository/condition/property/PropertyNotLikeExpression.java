@@ -21,7 +21,7 @@ public interface PropertyNotLikeExpression<C extends ConditionExpression, L exte
     /**
      * not like value.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L nl(String value) {
@@ -55,7 +55,7 @@ public interface PropertyNotLikeExpression<C extends ConditionExpression, L exte
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L nl(String value, MatchStrategy matchStrategy);
 

@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.newv;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -22,8 +23,8 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L newv(Field name, String value) {
@@ -60,7 +61,7 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L newv(Field name, String value, MatchStrategy matchStrategy) {
         return newv(name.name(), value, matchStrategy);
@@ -73,7 +74,7 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L newv(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return newv(name.name(), value, matchStrategy, ignoreStrategy);
@@ -86,7 +87,7 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L newv(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return newv(name.name(), value, matchStrategy, ignoreStrategy);
@@ -95,8 +96,8 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default L newv(String name, String value) {
@@ -133,7 +134,7 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L newv(String name, String value, MatchStrategy matchStrategy);
 
@@ -144,7 +145,7 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L newv(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
@@ -155,7 +156,68 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L newv(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param propertyValue the property value
+     * @return LogicExpression
+     */
+    default L newv(SerializableStringSupplier propertyValue) {
+        return newv(propertyValue, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L newv(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
+        return newv(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L newv(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
+        return newv(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param propertyValue  the property value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

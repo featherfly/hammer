@@ -2,9 +2,10 @@
 package cn.featherfly.hammer.expression.condition.isn;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.repository.AliasField;
+import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.MulitiConditionExpression;
 
 /**
  * muliti is null expression.
@@ -14,7 +15,7 @@ import cn.featherfly.hammer.expression.condition.MulitiConditionExpression;
  * @param <L> the generic type
  */
 public interface MulitiIsNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends MulitiConditionExpression {
+        extends ConditionExpression {
 
     /**
      * is null.
@@ -37,6 +38,54 @@ public interface MulitiIsNullExpression<C extends ConditionExpression, L extends
      * @return LogicExpression
      */
     L isn(int index, String name, Boolean value);
+
+    /**
+     * is null.
+     *
+     * @param index the index
+     * @param field the field
+     * @return LogicExpression
+     */
+    default L isn(int index, Field field) {
+        return isn(index, field.name());
+    }
+
+    /**
+     * is null.
+     *
+     * @param index the index
+     * @param field the field
+     * @param value if true, is null; if false, is not null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    default L isn(int index, Field field, Boolean value) {
+        return isn(index, field.name(), value);
+    }
+
+    /**
+     * is null.
+     *
+     * @param index the index
+     * @param field the field
+     * @return LogicExpression
+     */
+    default L isn(int index, AliasField field) {
+        return isn(index, field.getAliasOrName());
+    }
+
+    /**
+     * is null.
+     *
+     * @param index the index
+     * @param field the field
+     * @param value if true, is null; if false, is not null; if null, ignore
+     *              this operate
+     * @return LogicExpression
+     */
+    default L isn(int index, AliasField field, Boolean value) {
+        return isn(index, field.getAliasOrName(), value);
+    }
 
     /**
      * is null.

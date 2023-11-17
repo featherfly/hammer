@@ -21,7 +21,7 @@ public interface PropertyGreatEqualsExpression<C extends ConditionExpression, L 
     /**
      * 大于等于.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L ge(V value);

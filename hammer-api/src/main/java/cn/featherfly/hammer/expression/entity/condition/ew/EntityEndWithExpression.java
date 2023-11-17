@@ -30,8 +30,8 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
     /**
      * end with value. 以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L ew(SerializableFunction<E, String> name, String value) {
@@ -74,7 +74,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
     /**
      * end with value. 以value结尾.
      *
-     * @param property 对象属性
+     * @param property  bean property
      * @return LogicExpression
      */
     default L ew(SerializableStringSupplier property) {
@@ -84,7 +84,7 @@ public interface EntityEndWithExpression<E, C extends ConditionExpression, L ext
     /**
      * end with value. 以value结尾.
      *
-     * @param property     对象属性
+     * @param property  bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

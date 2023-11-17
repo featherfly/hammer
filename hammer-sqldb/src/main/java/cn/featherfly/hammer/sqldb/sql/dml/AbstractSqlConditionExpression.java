@@ -48,6 +48,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.AbstractMulitiEntity
  */
 public abstract class AbstractSqlConditionExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractMulitiEntityConditionExpression<C, L> implements SqlBuilder, ParamedExpression {
+    //        extends AbstractSqldbConditionExpression implements SqlBuilder, ParamedExpression {
 
     /**
      * Instantiates a new abstract sql condition expression.
@@ -57,10 +58,10 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * @param conditionConfig the condition config
      */
     protected AbstractSqlConditionExpression(L parent, Dialect dialect, ConditionConfig<?> conditionConfig) {
-        super(conditionConfig);
+        super(conditionConfig, dialect);
         //        AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         //        this.ignoreStrategy = ignoreStrategy;
-        this.dialect = dialect;
+        //        this.dialect = dialect;
         this.parent = parent;
     }
 
@@ -219,7 +220,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * @param info         the info
      * @param value        the value
      * @param classMapping the class mapping
-     * @return the list
+     * @return LogicExpressionist
      */
     @SuppressWarnings("unchecked")
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value,
@@ -254,7 +255,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * @param <R>          the generic type
      * @param info         the info
      * @param classMapping the class mapping
-     * @return the list
+     * @return LogicExpressionist
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
             JdbcClassMapping<?> classMapping) {
@@ -379,7 +380,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     protected L parent;
 
     /** The dialect. */
-    protected Dialect dialect;
+    //    protected Dialect dialect;
 
     // The conditions.
     private List<Expression> conditions = new ArrayList<>();
@@ -408,11 +409,11 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     //        return conditions;
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dialect getDialect() {
-        return dialect;
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public Dialect getDialect() {
+    //        return dialect;
+    //    }
 }

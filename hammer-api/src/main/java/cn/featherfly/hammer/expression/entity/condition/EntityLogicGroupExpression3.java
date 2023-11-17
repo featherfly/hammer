@@ -1,8 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.GroupEndExpression;
+import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 
 /**
  * The Interface EntityLogicGroupExpression3.
@@ -15,6 +14,5 @@ import cn.featherfly.hammer.expression.repository.condition.GroupEndExpression;
  * @param <L>  the generic type
  */
 public interface EntityLogicGroupExpression3<E, E2, E3, C extends EntityConditionsGroupExpression3<E, E2, E3, C, L>,
-        L extends EntityLogicGroupExpression3<E, E2, E3, C, L>>
-        extends LogicExpression<C, L>, GroupEndExpression<C, L> {
+        L extends EntityLogicGroupExpression3<E, E2, E3, C, L>> extends GroupEndExpression<C, L> {
 }

@@ -294,7 +294,8 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      *
      * @return ignoreStrategy
      */
-    public Predicate<?> getIgnorePolicy() {
+    public Predicate<Object> getIgnorePolicy() {
+        // TODO 修改方法名为 getIgnoreStrategy
         return conditionConfig.getIgnoreStrategy();
     }
 

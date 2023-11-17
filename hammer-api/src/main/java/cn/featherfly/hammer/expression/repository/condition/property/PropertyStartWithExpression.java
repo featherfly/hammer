@@ -21,7 +21,7 @@ public interface PropertyStartWithExpression<C extends ConditionExpression, L ex
     /**
      * start with value. 以value开始.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     default L sw(String value) {
@@ -55,7 +55,7 @@ public interface PropertyStartWithExpression<C extends ConditionExpression, L ex
      *
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L sw(String value, MatchStrategy matchStrategy);
 

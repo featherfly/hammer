@@ -1,6 +1,6 @@
 package cn.featherfly.hammer.expression.entity.query.sort;
 
-import cn.featherfly.hammer.expression.query.sort.SortExpressionBase;
+import cn.featherfly.hammer.expression.query.sort.SortedExpression;
 
 /**
  * 已排序排序构建接口，代表已经调用过至少一次asc（desc）方法.
@@ -10,6 +10,6 @@ import cn.featherfly.hammer.expression.query.sort.SortExpressionBase;
  * @param <S> the EntitySortExpression type
  */
 public interface EntitySortedCompatibleExpression<E, S extends EntitySortedCompatibleExpression<E, S>>
-        extends EntitySortedExpression<E, S>, SortExpressionBase<S> {
+        extends EntitySortedExpression<E, S>, SortedExpression<S> {
 
 }

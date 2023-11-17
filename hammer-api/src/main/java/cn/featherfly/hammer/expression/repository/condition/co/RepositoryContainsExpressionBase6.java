@@ -19,14 +19,14 @@ import cn.featherfly.hammer.expression.condition.co.ContainsExpression6;
  * @param <L> the generic type
  */
 public interface RepositoryContainsExpressionBase6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ContainsExpression6<C, L> {
+        extends ContainsExpression6<C, L>, RepositoryContainsExpressionBase5<C, L> {
 
     /**
      * contains value. 包含value.
      *
      * @param <T>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L co6(SerializableToStringFunction<T> name, String value) {
@@ -66,7 +66,7 @@ public interface RepositoryContainsExpressionBase6<C extends ConditionExpression
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L co6(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
 
@@ -78,7 +78,7 @@ public interface RepositoryContainsExpressionBase6<C extends ConditionExpression
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L co6(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             IgnoreStrategy ignoreStrategy);
@@ -91,7 +91,7 @@ public interface RepositoryContainsExpressionBase6<C extends ConditionExpression
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L co6(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
@@ -133,7 +133,7 @@ public interface RepositoryContainsExpressionBase6<C extends ConditionExpression
      *
      * @param propertyValue the property value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co6(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
 
@@ -143,7 +143,7 @@ public interface RepositoryContainsExpressionBase6<C extends ConditionExpression
      * @param propertyValue  the property value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co6(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
@@ -153,7 +153,7 @@ public interface RepositoryContainsExpressionBase6<C extends ConditionExpression
      * @param propertyValue  the property value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L co6(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

@@ -84,7 +84,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -98,7 +98,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -113,7 +113,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -125,7 +125,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -229,7 +229,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param property 对象属性
+    //     * @param property  bean property
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -243,7 +243,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -258,7 +258,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param property    对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -270,7 +270,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param property     对象属性
+    //     * @param property  bean property
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -311,7 +311,7 @@ public interface EntityEqualsExpression2<E, E2, C extends ConditionExpression, L
     //     * equals. 等于.
     //     *
     //     * @param consumer the consumer
-    //     * @return the l
+    //     * @return LogicExpression
     //     */
     //    L eq(Function<EntityEqualsExpression2<E, E2, C, L>, L> consumer);
     //

@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.repository.condition.eq;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -25,8 +25,8 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <T>   the generic type
      * @param <R>   the generic type
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T, R> L eq(SerializableFunction<T, R> name, R value) {
@@ -57,7 +57,9 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy);
+    default <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy) {
+        return eq(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -70,49 +72,8 @@ public interface RepositoryEqualsExpression<C extends ConditionExpression, L ext
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>      the generic type
-     * @param property 对象属性
-     * @return LogicExpression
-     */
-    default <R> L eq(SerializableSupplier<R> property) {
-        return eq(property, MatchStrategy.AUTO);
+    default <T, R> L eq(SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+        return eq(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>            the generic type
-     * @param property       对象属性
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <R> L eq(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return eq(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>           the generic type
-     * @param property      对象属性
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>            the generic type
-     * @param property       对象属性
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L eq(SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy);
 }

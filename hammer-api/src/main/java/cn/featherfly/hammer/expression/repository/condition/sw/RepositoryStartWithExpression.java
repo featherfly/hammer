@@ -3,7 +3,6 @@ package cn.featherfly.hammer.expression.repository.condition.sw;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -66,7 +65,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param propertyName  the property name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy);
 
@@ -78,10 +77,12 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
-    <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy);
+    default <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return sw(propertyName, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * start with value. 以value开始.
@@ -91,70 +92,9 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    default L sw(SerializableStringSupplier propertyValue) {
-        return sw(propertyValue, MatchStrategy.AUTO);
-    }
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L sw(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return sw(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L sw(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return sw(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param propertyValue the property value
-     * @param matchStrategy the match strategy
-     * @return the l
-     */
-    L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
 }

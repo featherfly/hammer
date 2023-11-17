@@ -106,9 +106,18 @@ public class SqlConditionGroupExpressionBuilder extends
      * {@inheritDoc}
      */
     @Override
-    protected <R> BuildableConditionGroupLogicExpression eq_ne(AtomicInteger index,
-            ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy) {
+    public <R> BuildableConditionGroupLogicExpression eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
+            PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> BuildableConditionGroupLogicExpression eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
+            String name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

@@ -21,7 +21,7 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
     /**
      * 不包含指定，sql中的not in.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L ni(V value);
@@ -29,7 +29,7 @@ public interface PropertyNotInExpression<C extends ConditionExpression, L extend
     /**
      * 不包含指定，sql中的not in.
      *
-     * @param value 参数值
+     * @param value the value
      * @return LogicExpression
      */
     L ni(V[] value);

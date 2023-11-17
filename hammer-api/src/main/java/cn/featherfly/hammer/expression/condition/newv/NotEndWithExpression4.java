@@ -22,8 +22,8 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L newv4(Field name, String value) {
@@ -60,7 +60,7 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L newv4(Field name, String value, MatchStrategy matchStrategy) {
         return newv4(name.name(), value, matchStrategy);
@@ -73,7 +73,7 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L newv4(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return newv4(name.name(), value, matchStrategy, ignoreStrategy);
@@ -86,7 +86,7 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     default L newv4(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return newv4(name.name(), value, matchStrategy, ignoreStrategy);
@@ -95,8 +95,8 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name  参数名称
-     * @param value 参数值
+     * @param name the name
+     * @param value the value
      * @return LogicExpression
      */
     default L newv4(String name, String value) {
@@ -133,7 +133,7 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return the l
+     * @return LogicExpression
      */
     L newv4(String name, String value, MatchStrategy matchStrategy);
 
@@ -144,7 +144,7 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L newv4(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
 
@@ -155,7 +155,7 @@ public interface NotEndWithExpression4<C extends ConditionExpression, L extends 
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return the l
+     * @return LogicExpression
      */
     L newv4(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

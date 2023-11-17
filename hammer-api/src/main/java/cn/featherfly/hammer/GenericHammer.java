@@ -253,7 +253,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * get entity list by id list.
      *
      * @param ids the id list
-     * @return the list
+     * @return LogicExpressionist
      */
     List<E> get(List<ID> ids);
 
@@ -277,7 +277,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      * Query list by propertyValues.
      *
      * @param propertyValues the property values
-     * @return the list
+     * @return LogicExpressionist
      */
     List<E> queryList(SerializableSupplier<?>... propertyValues);
 
@@ -286,7 +286,7 @@ public interface GenericHammer<E, ID extends Serializable> {
      *
      * @param operator       the operator
      * @param propertyValues the property values
-     * @return the list
+     * @return LogicExpressionist
      */
     List<E> queryList(LogicOperator operator, SerializableSupplier<?>... propertyValues);
 

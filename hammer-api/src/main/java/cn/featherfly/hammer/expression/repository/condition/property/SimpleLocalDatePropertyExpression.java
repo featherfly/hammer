@@ -6,8 +6,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsLogicExpression;
 
 /**
  * simple local date property expression.
@@ -16,12 +16,12 @@ import cn.featherfly.hammer.expression.repository.condition.ConditionsExpression
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class SimpleLocalDatePropertyExpression<C extends ConditionsExpression<C, L>, L extends LogicExpression<C, L>>
-        implements LocalDatePropertyExpression<C, L> {
+public class SimpleLocalDatePropertyExpression<C extends RepositoryConditionsExpression<C, L>,
+        L extends RepositoryConditionsLogicExpression<C, L>> implements LocalDatePropertyExpression<C, L> {
 
     private String name;
 
-    private ConditionsExpression<C, L> expression;
+    private RepositoryConditionsExpression<C, L> expression;
 
     /**
      * Instantiates a new simple local date property expression.
@@ -29,7 +29,7 @@ public class SimpleLocalDatePropertyExpression<C extends ConditionsExpression<C,
      * @param name       name
      * @param expression expression
      */
-    public SimpleLocalDatePropertyExpression(String name, ConditionsExpression<C, L> expression) {
+    public SimpleLocalDatePropertyExpression(String name, RepositoryConditionsExpression<C, L> expression) {
         super();
         this.name = name;
         this.expression = expression;
@@ -112,7 +112,7 @@ public class SimpleLocalDatePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L in(LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return expression.in(name, value, v -> ignoreStrategy.test((LocalDate) v));
+        return expression.in(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -136,7 +136,7 @@ public class SimpleLocalDatePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L in(LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((LocalDate[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -160,7 +160,7 @@ public class SimpleLocalDatePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L ni(LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((LocalDate) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
@@ -184,7 +184,7 @@ public class SimpleLocalDatePropertyExpression<C extends ConditionsExpression<C,
      */
     @Override
     public L ni(LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
-        return expression.ni(name, value, v -> ignoreStrategy.test((LocalDate[]) v));
+        return expression.ni(name, value, v -> ignoreStrategy.test(v));
     }
 
     /**
