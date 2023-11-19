@@ -17,8 +17,8 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryFetch;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.SqlRepositoryQueryFetchImpl;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.SqlRepositoryQueryFetch;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetchImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetch;
 
 /**
  * SqlQuery .
@@ -91,7 +91,7 @@ public class SqlQuery implements Query {
      */
     @Override
     //    public SqlQueryEntityProperties find(Repository repository) {
-    public SqlRepositoryQueryFetch find(Repository repository) {
+    public RepositorySqlQueryFetch find(Repository repository) {
         if (repository instanceof AliasRepository) {
             return find((AliasRepository) repository);
         } else {
@@ -100,7 +100,7 @@ public class SqlQuery implements Query {
         }
     }
 
-    public SqlRepositoryQueryFetch find(AliasRepository repository) {
+    public RepositorySqlQueryFetch find(AliasRepository repository) {
         AssertIllegalArgument.isNotNull(repository, "repository");
         return find(repository.name(), repository.alias());
     }
@@ -110,11 +110,11 @@ public class SqlQuery implements Query {
      */
     @Override
     //    public SqlQueryEntityProperties find(String tableName) {
-    public SqlRepositoryQueryFetch find(String tableName) {
+    public RepositorySqlQueryFetch find(String tableName) {
         return find(tableName, null);
     }
 
-    public SqlRepositoryQueryFetch find(String tableName, String tableAlias) {
+    public RepositorySqlQueryFetch find(String tableName, String tableAlias) {
         AssertIllegalArgument.isNotNull(tableName, "tableName");
         AliasManager aliasManager = new AliasManager();
         String alias = tableAlias;
@@ -123,7 +123,7 @@ public class SqlQuery implements Query {
         } else {
             alias = aliasManager.put(tableName);
         }
-        return new SqlRepositoryQueryFetchImpl(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
+        return new RepositorySqlQueryFetchImpl(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
                 queryConfig.clone());
     }
 

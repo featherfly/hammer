@@ -86,24 +86,24 @@ public class DslTest {
         query.find(data).count();
         query.find(data).property("name").number(Integer.class);
         query.find(data).fetch("name").number(Integer.class);
-        query.find(data).property("name").integer();
-        query.find(data).fetch("name").integer();
+        query.find(data).property("name").intNumber();
+        query.find(data).fetch("name").intNumber();
         query.find(data).property("sum(price)").decimal();
         query.find(data).fetch("sum(price)").decimal();
         query.find(data).property(AggregateFunction.SUM, "price").decimal();
         query.find(data).fetch(AggregateFunction.SUM, "price").decimal();
         query.find(data).sum("price").decimal();
-        query.find(data).property(AggregateFunction.COUNT, "id").integer();
-        query.find(data).fetch(AggregateFunction.COUNT, "id").integer();
-        query.find(data).count("id").integer();
-        query.find(data).property(AggregateFunction.COUNT, "id").longInt();
-        query.find(data).fetch(AggregateFunction.COUNT, "id").longInt();
-        query.find(data).count("id").longInt();
+        query.find(data).property(AggregateFunction.COUNT, "id").intNumber();
+        query.find(data).fetch(AggregateFunction.COUNT, "id").intNumber();
+        query.find(data).count("id").intNumber();
+        query.find(data).property(AggregateFunction.COUNT, "id").longNumber();
+        query.find(data).fetch(AggregateFunction.COUNT, "id").longNumber();
+        query.find(data).count("id").longNumber();
 
-        query.find(data).sum("id").longInt();
+        query.find(data).sum("id").longNumber();
 
-        query.find(data).property("count(*)").where().lt("age", 18).longInt();
-        query.find(data).property(AggregateFunction.COUNT, "id").where().lt("age", 18).longInt();
+        query.find(data).property("count(*)").where().lt("age", 18).longNumber();
+        query.find(data).property(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
 
         query.find(data).where().lt("age", 18).count();
 
@@ -164,9 +164,13 @@ public class DslTest {
         Date date = null;
 
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
+        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
         localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).single();
+        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).unique();
         localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).single();
+        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).unique();
         date = query.find(User.class).fetch(User::getDate).limit(1).single();
+        date = query.find(User.class).fetch(User::getDate).limit(1).unique();
 
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).single();
         localDate = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).single();
@@ -213,10 +217,10 @@ public class DslTest {
         query.find(User.class).fetch(User::getUserInfo); // IMPLSOON 这个方法调用后，直接关联查询
 
         // query.find(User.class).property("name").number(Integer.class);
-        // query.find(User.class).property("name").integer();
+        // query.find(User.class).property("name").intNumber();
         // query.find(User.class).property("sum(price)").decimal();
         // query.find(User.class).property("count(*)").where().lt("age",
-        // 18).longInt();
+        // 18).longNumber();
 
         // query.find("user").relate("user_role").on("user_id").relate("role").on("id",
         // "user_role", "role_id").fetch()
@@ -1052,8 +1056,7 @@ public class DslTest {
         EntityPropertyExpression<User, EntityQueryConditionGroup<User>, EntityQueryConditionGroupLogic<User>> pe = null;
         pe.property(User::getId).gt(1).and().property(User::getAge).eq(1).and().property(User::getUsername).co("yi");
 
-        EntityPropertyExpression2<User, UserInfo, EntityQueryConditionGroup2<User, UserInfo, User>,
-                EntityQueryConditionGroupLogic2<User, UserInfo, User>> pe2 = null;
+        EntityPropertyExpression2<User, UserInfo, EntityQueryConditionGroup2<User, UserInfo, User>, EntityQueryConditionGroupLogic2<User, UserInfo, User>> pe2 = null;
         pe.property(User::getId).gt(1).and().property(User::getAge).eq(1).and().property(User::getUsername).co("yi");
     }
 

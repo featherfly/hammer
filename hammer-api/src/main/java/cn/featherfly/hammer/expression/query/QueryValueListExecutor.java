@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author zhongj
  */
-public interface QueryValueListExecutor {
+public interface QueryValueListExecutor extends QueryTypeListExecutor {
 
     /**
      * query for list
@@ -18,13 +18,4 @@ public interface QueryValueListExecutor {
      * @return list
      */
     <E> List<E> list();
-
-    /**
-     * query for list
-     *
-     * @param <E>  wrapper type
-     * @param type wrapper type
-     * @return list
-     */
-    <E> List<E> list(Class<E> type);
 }

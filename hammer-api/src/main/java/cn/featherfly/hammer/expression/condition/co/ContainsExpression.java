@@ -5,13 +5,14 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
- * The Interface ContainsExpression.
+ * contains expression.
  *
  * @author zhongj
  * @param <C> the generic type
@@ -34,8 +35,8 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
     /**
      * contains value. 包含value.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -46,8 +47,8 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
     /**
      * contains value. 包含value.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -74,7 +75,9 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L co(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return co(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * contains value. 包含value.
@@ -90,74 +93,147 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
     /**
      * contains value. 包含value.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L co(Field name, String value) {
-        return co(name.name(), value);
+    default L co(Field field, String value) {
+        return co(field.name(), value);
     }
 
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L co(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return co(name.name(), value, ignoreStrategy);
+    default L co(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return co(field.name(), value, ignoreStrategy);
     }
 
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L co(Field name, String value, Predicate<String> ignoreStrategy) {
-        return co(name.name(), value, ignoreStrategy);
+    default L co(Field field, String value, Predicate<String> ignoreStrategy) {
+        return co(field.name(), value, ignoreStrategy);
     }
 
     /**
      * contains value. 包含value.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    default L co(Field name, String value, MatchStrategy matchStrategy) {
-        return co(name.name(), value, matchStrategy);
+    default L co(Field field, String value, MatchStrategy matchStrategy) {
+        return co(field.name(), value, matchStrategy);
     }
 
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L co(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return co(name.name(), value, matchStrategy, ignoreStrategy);
+    default L co(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return co(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L co(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return co(name.name(), value, matchStrategy, ignoreStrategy);
+    default L co(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return co(field.name(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L co(AliasField field, String value) {
+        return co(field.getAliasOrName(), value);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L co(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
+        return co(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L co(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return co(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L co(AliasField field, String value, MatchStrategy matchStrategy) {
+        return co(field.getAliasOrName(), value, matchStrategy);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L co(AliasField field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return co(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * contains value. 包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L co(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return co(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
     }
 
     /**

@@ -28,11 +28,11 @@ import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
-import cn.featherfly.hammer.expression.condition.ConditionExpression;
-import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.MulitiConditionExpression;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqldbConditionExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 
@@ -40,21 +40,27 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
  * abstract muliti repository condition expression.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <C>  the generic type
+ * @param <L>  the generic type
+ * @param <C2> the generic type
  */
-public abstract class AbstractMulitiRepositoryConditionExpression<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractSqldbConditionExpression
+public abstract class AbstractMulitiRepositoryConditionExpression<C extends RepositoryConditionsGroupExpression<C, L>,
+        L extends RepositoryConditionsGroupLogicExpression<C, L>, C2 extends ConditionConfig<C2>>
+        extends AbstractRepositorySqlConditionsGroupExpression<C, L, C2>
         implements InternalMulitiCondition<L>, MulitiConditionExpression {
 
     /**
      * Instantiates a new abstract muliti repository condition expression.
      *
-     * @param conditionConfig the condition config
+     * @param parent          the parent
      * @param dialect         the dialect
+     * @param aliasManager    the alias manager
+     * @param repositoryAlias the repository alias
+     * @param conditionConfig the condition config
      */
-    protected AbstractMulitiRepositoryConditionExpression(ConditionConfig<?> conditionConfig, Dialect dialect) {
-        super(conditionConfig, dialect);
+    protected AbstractMulitiRepositoryConditionExpression(L parent, Dialect dialect, AliasManager aliasManager,
+            String repositoryAlias, C2 conditionConfig) {
+        super(parent, dialect, aliasManager, repositoryAlias, conditionConfig);
     }
 
     // ****************************************************************************************************************
@@ -270,9 +276,13 @@ public abstract class AbstractMulitiRepositoryConditionExpression<C extends Cond
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
-    public abstract <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, String name, R value,
-            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
+    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, String name, R value,
+            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+                comparisonOperator, matchStrategy, getAlias(index), ignoreStrategy));
+    }
 
     // ****************************************************************************************************************
 

@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -23,74 +24,74 @@ public interface NotStartWithExpression<C extends ConditionExpression, L extends
     /**
      * not start with value. 不以value开始.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L nsw(Field name, String value) {
-        return nsw(name.name(), value);
+    default L nsw(Field field, String value) {
+        return nsw(field.name(), value);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nsw(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return nsw(name.name(), value, ignoreStrategy);
+    default L nsw(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return nsw(field.name(), value, ignoreStrategy);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nsw(Field name, String value, Predicate<String> ignoreStrategy) {
-        return nsw(name.name(), value, ignoreStrategy);
+    default L nsw(Field field, String value, Predicate<String> ignoreStrategy) {
+        return nsw(field.name(), value, ignoreStrategy);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the query strategy
      * @return LogicExpression
      */
-    default L nsw(Field name, String value, MatchStrategy matchStrategy) {
-        return nsw(name.name(), value, matchStrategy);
+    default L nsw(Field field, String value, MatchStrategy matchStrategy) {
+        return nsw(field.name(), value, matchStrategy);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nsw(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return nsw(name.name(), value, matchStrategy, ignoreStrategy);
+    default L nsw(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return nsw(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nsw(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return nsw(name.name(), value, matchStrategy, ignoreStrategy);
+    default L nsw(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nsw(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -107,8 +108,8 @@ public interface NotStartWithExpression<C extends ConditionExpression, L extends
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +120,8 @@ public interface NotStartWithExpression<C extends ConditionExpression, L extends
     /**
      * not start with value. 不以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -147,7 +148,9 @@ public interface NotStartWithExpression<C extends ConditionExpression, L extends
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nsw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L nsw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return nsw(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * not start with value. 不以value开始.
@@ -159,6 +162,79 @@ public interface NotStartWithExpression<C extends ConditionExpression, L extends
      * @return LogicExpression
      */
     L nsw(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L nsw(AliasField field, String value) {
+        return nsw(field.getAliasOrName(), value);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
+        return nsw(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return nsw(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the query strategy
+     * @return LogicExpression
+     */
+    default L nsw(AliasField field, String value, MatchStrategy matchStrategy) {
+        return nsw(field.getAliasOrName(), value, matchStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw(AliasField field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return nsw(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nsw(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
 
     /**
      * not start with value. 不以value开始.
@@ -209,7 +285,10 @@ public interface NotStartWithExpression<C extends ConditionExpression, L extends
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nsw(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * not start with value. 不以value开始.

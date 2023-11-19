@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -379,7 +380,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
      * @return LogicExpression
      */
     default <R> L in(Field field, R value) {
-        return in(field, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+        return in(field.name(), value);
     }
 
     /**
@@ -437,5 +438,220 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
      * @return LogicExpression
      */
     <R> L in(String name, R value, Predicate<R> ignoreStrategy);
+
+    // ******************************************************************************************************************************
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(AliasField field, int... values) {
+        return in(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, int value, IntPredicate ignoreStrategy) {
+        return in(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, int[] values, Predicate<int[]> ignoreStrategy) {
+        return in(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(AliasField field, long... values) {
+        return in(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, long value, LongPredicate ignoreStrategy) {
+        return in(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, long[] values, Predicate<long[]> ignoreStrategy) {
+        return in(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(AliasField field, double... values) {
+        return in(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, double value, DoublePredicate ignoreStrategy) {
+        return in(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, double[] values, Predicate<double[]> ignoreStrategy) {
+        return in(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(AliasField field, String... values) {
+        return in(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field         the field
+     * @param values        the values
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, String[] values, MatchStrategy matchStrategy) {
+        return in(field.getAliasOrName(), values, matchStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return in(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return in(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, String[] values, Predicate<String[]> ignoreStrategy) {
+        return in(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(AliasField field, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
+        return in(field.getAliasOrName(), values, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default <R> L in(AliasField field, R value) {
+        return in(field.getAliasOrName(), value);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default <R> L in(AliasField field, @SuppressWarnings("unchecked") R... values) {
+        return in(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R>            the generic type
+     * @param field          the field
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L in(AliasField field, R value, Predicate<R> ignoreStrategy) {
+        return in(field.getAliasOrName(), value, ignoreStrategy);
+    }
 
 }

@@ -193,7 +193,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public L eq(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, property.get(), ignoreStrategy);
+        return hold.eq(new AtomicInteger(index), property, property.getAsInt(), ignoreStrategy);
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public L eq(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, property.get(), ignoreStrategy);
+        return hold.eq(new AtomicInteger(index), property, property.getAsLong(), ignoreStrategy);
     }
 
     /**
@@ -209,7 +209,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public L eq(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, property.get(), ignoreStrategy);
+        return hold.eq(new AtomicInteger(index), property, property.getAsDouble(), ignoreStrategy);
     }
 
     /**
@@ -601,7 +601,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public L eq(int index, SerializableIntSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, property.get(), getIgnoreStrategy());
+        return hold.eq(new AtomicInteger(index), property, property.getAsInt(), getIgnoreStrategy());
     }
 
     /**
@@ -609,7 +609,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public L eq(int index, SerializableLongSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, property.get(), getIgnoreStrategy());
+        return hold.eq(new AtomicInteger(index), property, property.getAsLong(), getIgnoreStrategy());
     }
 
     /**
@@ -617,7 +617,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public L eq(int index, SerializableDoubleSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, property.get(), getIgnoreStrategy());
+        return hold.eq(new AtomicInteger(index), property, property.getAsDouble(), getIgnoreStrategy());
     }
 
     /**

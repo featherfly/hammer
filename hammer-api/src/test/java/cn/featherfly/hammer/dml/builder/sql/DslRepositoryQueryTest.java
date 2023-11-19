@@ -1,11 +1,14 @@
 
 package cn.featherfly.hammer.dml.builder.sql;
 
+import java.util.List;
+
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dml.builder.sql.vo.User;
 import cn.featherfly.hammer.dsl.query.Query;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValue;
 
 /**
  * dsl api invoke test
@@ -32,7 +35,10 @@ public class DslRepositoryQueryTest {
     public void testQuery() {
         Integer i;
         String s;
+        List<Integer> il;
+        List<String> sl;
         RepositoryQueryFetch queryFetch;
+        RepositoryQueryValue queryValue;
         queryFetch.list(User.class);
         queryFetch.limit(10).list(User.class);
         queryFetch.limit(1).single(User.class);
@@ -46,8 +52,8 @@ public class DslRepositoryQueryTest {
         queryFetch.field("name").limit(1).value(Integer.class);
         queryFetch.field("name").limit(1).single(Integer.class);
         queryFetch.field("name").where().eq("id", 1).single(Integer.class);
-        queryFetch.field("name").where().eq("id", 1).number(Integer.class); // FIXME 这个应该报错
-        queryFetch.where().eq("id", 1).number(Integer.class); // FIXME 这个是错误的，因为是返回多个数据
+        queryFetch.field("name").where().eq("id", 1).number(Integer.class);
+        queryFetch.where().eq("id", 1).number(Integer.class); // 这个是错误的，因为是返回多个数据
 
         queryFetch.max("age").number(Integer.class);
         // FIXME 使用了统计函数，则没有进行分组，就只有一行数据
@@ -55,29 +61,31 @@ public class DslRepositoryQueryTest {
 
         i = queryFetch.max("age").value();
         s = queryFetch.field("name").limit(1).value();
-        s = queryFetch.field("name").limit(1).value();
+
+        il = queryFetch.max("age").list();
+        sl = queryFetch.field("name").limit(1).list();
 
         queryFetch.count();
         queryFetch.field("name").number(Integer.class);
         queryFetch.fetch("name").number(Integer.class);
-        queryFetch.field("name").integer();
-        queryFetch.fetch("name").integer();
+        queryFetch.field("name").intNumber();
+        queryFetch.fetch("name").intNumber();
         queryFetch.field("sum(price)").decimal();
         queryFetch.fetch("sum(price)").decimal();
         queryFetch.field(AggregateFunction.SUM, "price").decimal();
         queryFetch.fetch(AggregateFunction.SUM, "price").decimal();
         queryFetch.sum("price").decimal();
-        queryFetch.field(AggregateFunction.COUNT, "id").integer();
-        queryFetch.fetch(AggregateFunction.COUNT, "id").integer();
-        queryFetch.count("id").integer();
-        queryFetch.field(AggregateFunction.COUNT, "id").longInt();
-        queryFetch.fetch(AggregateFunction.COUNT, "id").longInt();
-        queryFetch.count("id").longInt();
+        queryFetch.field(AggregateFunction.COUNT, "id").intNumber();
+        queryFetch.fetch(AggregateFunction.COUNT, "id").intNumber();
+        queryFetch.count("id").intNumber();
+        queryFetch.field(AggregateFunction.COUNT, "id").longNumber();
+        queryFetch.fetch(AggregateFunction.COUNT, "id").longNumber();
+        queryFetch.count("id").intNumber();
 
-        queryFetch.sum("id").longInt();
+        queryFetch.sum("id").longNumber();
 
-        queryFetch.field("count(*)").where().lt("age", 18).longInt();
-        queryFetch.field(AggregateFunction.COUNT, "id").where().lt("age", 18).longInt();
+        queryFetch.field("count(*)").where().lt("age", 18).longNumber();
+        queryFetch.field(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
 
         queryFetch.where().lt("age", 18).count();
 

@@ -1,19 +1,12 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-
 import cn.featherfly.common.exception.NotImplementedException;
-import cn.featherfly.common.operator.ComparisonOperator;
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.common.repository.mapping.ClassMapping;
-import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractMulitiRepositoryConditionExpression;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -21,8 +14,9 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
  * @author zhongj
  * @param <C> the generic type
  */
-public class SqlExecutableConditionGroupExpression<C extends ExecutableConditionConfig<C>>
-        extends AbstractSqlConditionGroupExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C>
+public class SqlExecutableConditionGroupExpression<C extends ExecutableConditionConfig<C>> extends
+        //        AbstractRepositorySqlConditionGroupExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C>
+        AbstractMulitiRepositoryConditionExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C>
         implements ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C> {
 
     /**
@@ -69,7 +63,7 @@ public class SqlExecutableConditionGroupExpression<C extends ExecutableCondition
         if (parent != null) {
             return parent.execute();
         } else {
-            String sql = build();
+            String sql = expression();
             if (sql == null) {
                 return 0;
             } else {
@@ -99,35 +93,6 @@ public class SqlExecutableConditionGroupExpression<C extends ExecutableCondition
      */
     @Override
     public String getAlias(int index) {
-        // IMPLSOON 未实现
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(int index) {
-        // IMPLSOON 未实现
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> ExecutableConditionGroupLogic<C> eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
-            PropertyMapping<?> pm, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        // IMPLSOON 未实现
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> ExecutableConditionGroupLogic<C> eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator,
-            String name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

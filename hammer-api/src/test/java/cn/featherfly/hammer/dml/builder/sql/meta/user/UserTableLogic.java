@@ -14,10 +14,12 @@ import java.util.function.Function;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.expression.query.QueryConditionLogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
 
-public class UserTableLogic implements QueryConditionLogicExpression<UserTableFilterable, UserTableLogic> {
+public class UserTableLogic implements
+        RepositoryQueryConditionsGroupLogicExpression<UserTableFilterable, UserTableLogic, RepositoryQuerySortExpression> {
 
     private UserTableFilterable query;
 

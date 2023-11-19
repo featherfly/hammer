@@ -6,8 +6,8 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
-import cn.featherfly.hammer.dsl.query.QueryEntity;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetch;
 
 /**
  * SqldbHammer.
@@ -22,7 +22,7 @@ public interface SqldbHammer extends Hammer {
      * @param table the table
      * @return the query entity
      */
-    QueryEntity query(Table table);
+    RepositorySqlQueryFetch query(Table table);
 
     /**
      * create update for table.

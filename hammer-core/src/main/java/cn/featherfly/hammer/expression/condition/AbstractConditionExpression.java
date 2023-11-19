@@ -200,4 +200,12 @@ public abstract class AbstractConditionExpression implements IgnorableExpression
     public ConditionConfig<?> getConditionConfig() {
         return conditionConfig;
     }
+
+    /**
+     * Adds the condition.
+     *
+     * @param condition the condition
+     * @return the object
+     */
+    public abstract Expression addCondition(Expression condition);
 }

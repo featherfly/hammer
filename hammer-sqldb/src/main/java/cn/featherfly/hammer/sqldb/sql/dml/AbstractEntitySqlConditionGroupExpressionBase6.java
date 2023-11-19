@@ -338,7 +338,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L eq6(SerializableDoubleSupplier property) {
-        return eq(classMapping6, property, property.get(), queryAlias6, getIgnoreStrategy());
+        return eq(classMapping6, property, property.getAsDouble(), queryAlias6, getIgnoreStrategy());
     }
 
     /**
@@ -346,7 +346,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L eq6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return eq(classMapping6, property, property.get(), queryAlias6, ignoreStrategy);
+        return eq(classMapping6, property, property.getAsDouble(), queryAlias6, ignoreStrategy);
     }
 
     /**
@@ -370,7 +370,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L eq6(SerializableIntSupplier property) {
-        return eq(classMapping6, property, property.get(), queryAlias6, getIgnoreStrategy());
+        return eq(classMapping6, property, property.getAsInt(), queryAlias6, getIgnoreStrategy());
     }
 
     /**
@@ -378,7 +378,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L eq6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return eq(classMapping6, property, property.get(), queryAlias6, ignoreStrategy);
+        return eq(classMapping6, property, property.getAsInt(), queryAlias6, ignoreStrategy);
     }
 
     /**
@@ -434,7 +434,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L eq6(SerializableLongSupplier property) {
-        return eq(classMapping6, property, property.get(), queryAlias6, getIgnoreStrategy());
+        return eq(classMapping6, property, property.getAsLong(), queryAlias6, getIgnoreStrategy());
     }
 
     /**
@@ -442,7 +442,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L eq6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return eq(classMapping6, property, property.get(), queryAlias6, ignoreStrategy);
+        return eq(classMapping6, property, property.getAsLong(), queryAlias6, ignoreStrategy);
     }
 
     /**
@@ -696,7 +696,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L ne6(SerializableDoubleSupplier property) {
-        return ne(classMapping6, property, property.get(), queryAlias6, getIgnoreStrategy());
+        return ne(classMapping6, property, property.getAsDouble(), queryAlias6, getIgnoreStrategy());
     }
 
     /**
@@ -704,7 +704,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L ne6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return ne(classMapping6, property, property.get(), queryAlias6, ignoreStrategy);
+        return ne(classMapping6, property, property.getAsDouble(), queryAlias6, ignoreStrategy);
     }
 
     /**
@@ -728,7 +728,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L ne6(SerializableIntSupplier property) {
-        return ne(classMapping6, property, property.get(), queryAlias6, getIgnoreStrategy());
+        return ne(classMapping6, property, property.getAsInt(), queryAlias6, getIgnoreStrategy());
     }
 
     /**
@@ -736,7 +736,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L ne6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return ne(classMapping6, property, property.get(), queryAlias6, ignoreStrategy);
+        return ne(classMapping6, property, property.getAsInt(), queryAlias6, ignoreStrategy);
     }
 
     /**
@@ -792,7 +792,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L ne6(SerializableLongSupplier property) {
-        return ne(classMapping6, property, property.get(), queryAlias6, getIgnoreStrategy());
+        return ne(classMapping6, property, property.getAsLong(), queryAlias6, getIgnoreStrategy());
     }
 
     /**
@@ -800,7 +800,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      */
     @Override
     public L ne6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return ne(classMapping6, property, property.get(), queryAlias6, ignoreStrategy);
+        return ne(classMapping6, property, property.getAsLong(), queryAlias6, ignoreStrategy);
     }
 
     /**
@@ -3439,9 +3439,8 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase6<T1, T2, T3,
      * {@inheritDoc}
      */
     @Override
-    public L property(SixArgusFunction<EntityPropertyFunction<T1, C, L>, EntityPropertyFunction<T2, C, L>,
-            EntityPropertyFunction<T3, C, L>, EntityPropertyFunction<T4, C, L>, EntityPropertyFunction<T5, C, L>,
-            EntityPropertyFunction<T6, C, L>, L> entitiesPropertyFunction) {
+    public L property(
+            SixArgusFunction<EntityPropertyFunction<T1, C, L>, EntityPropertyFunction<T2, C, L>, EntityPropertyFunction<T3, C, L>, EntityPropertyFunction<T4, C, L>, EntityPropertyFunction<T5, C, L>, EntityPropertyFunction<T6, C, L>, L> entitiesPropertyFunction) {
         return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<>(0, this, factory, entityRelation),
                 new EntityPropertyFunctionImpl<>(1, this, factory, entityRelation),
                 new EntityPropertyFunctionImpl<>(2, this, factory, entityRelation),

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQueryConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeStringExpression;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
@@ -18,14 +19,14 @@ public class UserSqlQueryConditionGroupExpression
     /**
      * @param queryConditionGroupExpression
      */
-    public UserSqlQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression) {
+    public UserSqlQueryConditionGroupExpression(AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression) {
         this(queryConditionGroupExpression, null);
     }
 
     /**
      * @param queryConditionGroupExpression
      */
-    public UserSqlQueryConditionGroupExpression(SqlQueryConditionGroupExpression queryConditionGroupExpression,
+    public UserSqlQueryConditionGroupExpression(AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression,
             UserSqlQueryConditionGroupExpression parent) {
         super(queryConditionGroupExpression, parent);
     }
@@ -49,7 +50,7 @@ public class UserSqlQueryConditionGroupExpression
      */
     @Override
     protected UserSqlQueryConditionGroupExpression createChild(
-            SqlQueryConditionGroupExpression queryConditionGroupExpression,
+            AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression,
             UserSqlQueryConditionGroupExpression parent) {
         return new UserSqlQueryConditionGroupExpression(queryConditionGroupExpression, this);
     }

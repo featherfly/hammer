@@ -13,6 +13,7 @@ import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFun
 import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -37,7 +38,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param value the value
      * @return LogicExpression
      */
-    <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value);
+    default <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value);
+    }
 
     /**
      * less than. 小于.
@@ -49,7 +52,10 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value, IgnoreStrategy ignoreStrategy);
+    default <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value,
+            IgnoreStrategy ignoreStrategy) {
+        return lt(name, value, (Predicate<N>) ignoreStrategy::test);
+    }
 
     /**
      * less than. 小于.
@@ -61,7 +67,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
+    default <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -74,7 +82,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param value the value
      * @return LogicExpression
      */
-    <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value);
+    default <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value);
+    }
 
     /**
      * less than. 小于.
@@ -86,7 +96,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value, IgnoreStrategy ignoreStrategy);
+    default <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value, IgnoreStrategy ignoreStrategy) {
+        return lt(name, value, (Predicate<D>) ignoreStrategy::test);
+    }
 
     /**
      * less than. 小于.
@@ -98,7 +110,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
+    default <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -110,7 +124,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param value the value
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value);
+    default <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value);
+    }
 
     /**
      * less than. 小于.
@@ -121,7 +137,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value, IgnoreStrategy ignoreStrategy);
+    default <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return lt(name, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
 
     /**
      * less than. 小于.
@@ -132,7 +150,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+    default <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -144,7 +164,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param value the value
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value);
+    default <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value);
+    }
 
     /**
      * less than. 小于.
@@ -155,7 +177,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value, IgnoreStrategy ignoreStrategy);
+    default <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return lt(name, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
 
     /**
      * less than. 小于.
@@ -166,7 +190,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+    default <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -178,7 +204,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param value the value
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value);
+    default <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value);
+    }
 
     /**
      * less than. 小于.
@@ -189,7 +217,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, IgnoreStrategy ignoreStrategy);
+    default <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return lt(name, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
 
     /**
      * less than. 小于.
@@ -200,7 +230,10 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+    default <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
+            Predicate<LocalDateTime> ignoreStrategy) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -212,7 +245,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param value the value
      * @return LogicExpression
      */
-    <T> L lt(SerializableToStringFunction<T> name, String value);
+    default <T> L lt(SerializableToStringFunction<T> name, String value) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value);
+    }
 
     /**
      * less than. 小于.
@@ -223,7 +258,9 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy);
+    default <T> L lt(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
+        return lt(name, value, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * less than. 小于.
@@ -234,6 +271,7 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L lt(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy);
-
+    default <T> L lt(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
+        return lt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
+    }
 }

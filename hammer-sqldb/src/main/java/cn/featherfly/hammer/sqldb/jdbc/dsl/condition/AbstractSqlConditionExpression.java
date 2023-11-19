@@ -17,7 +17,6 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.AbstractConditionExpression;
-import cn.featherfly.hammer.expression.condition.Expression;
 
 /**
  * abstract sqldb condition expression.
@@ -26,8 +25,8 @@ import cn.featherfly.hammer.expression.condition.Expression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractSqldbConditionExpression extends AbstractConditionExpression {
-
+public abstract class AbstractSqlConditionExpression extends AbstractConditionExpression {
+    // TODO 后续来处理和AbstractSqlConditionExpression2的关系
     protected Dialect dialect;
 
     /**
@@ -36,7 +35,7 @@ public abstract class AbstractSqldbConditionExpression extends AbstractCondition
      * @param conditionConfig the condition config
      * @param dialect         the dialect
      */
-    protected AbstractSqldbConditionExpression(ConditionConfig<?> conditionConfig, Dialect dialect) {
+    protected AbstractSqlConditionExpression(ConditionConfig<?> conditionConfig, Dialect dialect) {
         super(conditionConfig);
         this.dialect = dialect;
     }
@@ -111,14 +110,6 @@ public abstract class AbstractSqldbConditionExpression extends AbstractCondition
     // ****************************************************************************************************************
     //	property
     // ****************************************************************************************************************
-
-    /**
-     * Adds the condition.
-     *
-     * @param condition the condition
-     * @return the object
-     */
-    public abstract Expression addCondition(Expression condition);
 
     /**
      * get getDialect() value.

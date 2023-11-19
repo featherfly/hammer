@@ -23,7 +23,6 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dml.BuildableConditionGroupExpression;
 import cn.featherfly.hammer.dml.BuildableConditionGroupLogicExpression;
-import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * sql condition group builder. sql条件逻辑组构造器.
@@ -31,47 +30,42 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  */
 public class SqlConditionGroupExpressionBuilder extends
-        AbstractSqlConditionGroupExpression<BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression,
-                QueryConditionConfig>
+        AbstractSqlConditionGroupExpression<BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression, QueryConditionConfig>
         implements BuildableConditionGroupExpression, BuildableConditionGroupLogicExpression {
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
-     * @param dialect        dialect
-     * @param sqlPageFactory the sql page factory
-     * @param ignoreStrategy the ignore strategy
+     * @param dialect              dialect
+     * @param queryConditionConfig the query condition config
      */
-    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory,
-            QueryConditionConfig queryConditionConfig) {
-        this(dialect, sqlPageFactory, null, queryConditionConfig);
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, QueryConditionConfig queryConditionConfig) {
+        this(dialect, null, queryConditionConfig);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
-     * @param dialect        dialect
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param ignoreStrategy the ignore strategy
+     * @param dialect              dialect
+     * @param queryAlias           queryAlias
+     * @param queryConditionConfig the query condition config
      */
-    public SqlConditionGroupExpressionBuilder(Dialect dialect, SqlPageFactory sqlPageFactory, String queryAlias,
+    public SqlConditionGroupExpressionBuilder(Dialect dialect, String queryAlias,
             QueryConditionConfig queryConditionConfig) {
-        this(null, dialect, sqlPageFactory, queryAlias, queryConditionConfig);
+        this(null, dialect, queryAlias, queryConditionConfig);
     }
 
     /**
      * Instantiates a new sql condition group expression builder.
      *
-     * @param parent         parent group
-     * @param dialect        dialect
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param ignoreStrategy the ignore strategy
+     * @param parent               parent group
+     * @param dialect              dialect
+     * @param queryAlias           queryAlias
+     * @param queryConditionConfig the query condition config
      */
     SqlConditionGroupExpressionBuilder(BuildableConditionGroupLogicExpression parent, Dialect dialect,
-            SqlPageFactory sqlPageFactory, String queryAlias, QueryConditionConfig queryConditionConfig) {
-        super(parent, dialect, sqlPageFactory, queryAlias, queryConditionConfig);
+            String queryAlias, QueryConditionConfig queryConditionConfig) {
+        super(parent, dialect, queryAlias, queryConditionConfig);
     }
 
     /**
@@ -80,7 +74,7 @@ public class SqlConditionGroupExpressionBuilder extends
     @Override
     protected BuildableConditionGroupExpression createGroup(BuildableConditionGroupLogicExpression parent,
             String queryAlias) {
-        return new SqlConditionGroupExpressionBuilder(parent, dialect, sqlPageFactory, queryAlias,
+        return new SqlConditionGroupExpressionBuilder(parent, dialect, queryAlias,
                 (QueryConditionConfig) conditionConfig);
     }
 

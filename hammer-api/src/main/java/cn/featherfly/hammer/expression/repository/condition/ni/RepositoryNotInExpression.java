@@ -11,6 +11,7 @@ import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -35,7 +36,9 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param values the values
      * @return LogicExpression
      */
-    <T> L ni(SerializableToIntFunction<T> name, int... values);
+    default <T> L ni(SerializableToIntFunction<T> name, int... values) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -59,7 +62,9 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L ni(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy);
+    default <T> L ni(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
+    }
 
     // ****************************************************************************************************************
 
@@ -71,7 +76,9 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param values the values
      * @return LogicExpression
      */
-    <T> L ni(SerializableToLongFunction<T> name, long... values);
+    default <T> L ni(SerializableToLongFunction<T> name, long... values) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -95,7 +102,9 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L ni(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy);
+    default <T> L ni(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
+    }
 
     // ****************************************************************************************************************
 
@@ -107,7 +116,9 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param values the values
      * @return LogicExpression
      */
-    <T> L ni(SerializableToDoubleFunction<T> name, double... values);
+    default <T> L ni(SerializableToDoubleFunction<T> name, double... values) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -131,7 +142,9 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L ni(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy);
+    default <T> L ni(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
+    }
 
     // ****************************************************************************************************************
 
@@ -154,7 +167,9 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy);
+    default <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values, matchStrategy);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -203,31 +218,34 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy);
+    default <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
+            Predicate<String[]> ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values, matchStrategy, ignoreStrategy);
+    }
 
     // ****************************************************************************************************************
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>    the generic type
+     * @param <R>    the generic type
+     * @param name   the name
+     * @param values the values
      * @return LogicExpression
      */
     @SuppressWarnings("unchecked")
-    <T, R> L ni(SerializableFunction<T, R> name, R... value);
+    default <T, R> L ni(SerializableFunction<T, R> name, R... values) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <T>            the generic type
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name
+     * @param value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -241,10 +259,12 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      *
      * @param <T>            the generic type
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param values         the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, R> L ni(SerializableFunction<T, R> name, R[] value, Predicate<R[]> ignoreStrategy);
+    default <T, R> L ni(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
+    }
 }

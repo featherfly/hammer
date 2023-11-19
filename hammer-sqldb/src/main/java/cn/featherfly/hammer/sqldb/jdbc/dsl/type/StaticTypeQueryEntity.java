@@ -8,8 +8,8 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryEntity;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQueryConditionsGroupExpression;
 
 /**
  * TypeQueryEntity .
@@ -53,7 +53,7 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      */
     public C where() {
         setProperties();
-        return createCondition((SqlQueryConditionGroupExpression) queryEntity.where());
+        return createCondition((AbstractRepositorySqlQueryConditionsGroupExpression) queryEntity.where());
     }
 
     /**
@@ -116,5 +116,5 @@ public abstract class StaticTypeQueryEntity<E, C extends StaticTypeQueryConditio
      * @param queryConditionGroupExpression the query condition group expression
      * @return the c
      */
-    protected abstract C createCondition(SqlQueryConditionGroupExpression queryConditionGroupExpression);
+    protected abstract C createCondition(AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression);
 }

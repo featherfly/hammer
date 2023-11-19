@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQueryConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.type.StaticTypeQueryProperties;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
@@ -38,7 +39,7 @@ public class UserSqlQueryProperties
      */
     @Override
     protected UserSqlQueryConditionGroupExpression createCondition(
-            SqlQueryConditionGroupExpression queryConditionGroupExpression) {
+            AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression) {
         return new UserSqlQueryConditionGroupExpression(queryConditionGroupExpression);
     }
 }

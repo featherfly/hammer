@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,23 +21,12 @@ import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
-import cn.featherfly.common.function.serializable.SerializableToDateFunction;
-import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
-import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
-import cn.featherfly.common.function.serializable.SerializableToIntFunction;
-import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
-import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
-import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
-import cn.featherfly.common.function.serializable.SerializableToLongFunction;
-import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
@@ -53,24 +41,14 @@ import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.condition.ConditionsGroupExpression;
 import cn.featherfly.hammer.expression.condition.ConditionsGroupLogicExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.NumberPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.ObjectPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleDatePropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleEnumPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleNumberPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleObjectPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleStringPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
-import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <C>  the generic type
+ * @param <L>  the generic type
+ * @param <C2> the generic type
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGroupExpression<C, L>,
@@ -78,26 +56,21 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
         extends AbstractSqlConditionExpression<C, L> implements ConditionsGroupExpression<C, L>,
         ConditionsGroupLogicExpression<C, L>, SqlBuilder, ParamedExpression, ConditionConfigureExpression<C, C2> {
 
-    /** The sql page factory. */
-    protected SqlPageFactory sqlPageFactory;
-
-    /** The query alias. */
-    private String queryAlias;
+    /** The repository alias. */
+    private String repositoryAlias;
 
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param parent         parent group
-     * @param dialect        dialect
-     * @param sqlPageFactory the sql page factory
-     * @param queryAlias     queryAlias
-     * @param ignoreStrategy the ignore strategy
+     * @param parent          parent group
+     * @param dialect         dialect
+     * @param repositoryAlias the repository alias
+     * @param conditionConfig the condition config
      */
-    protected AbstractSqlConditionGroupExpression(L parent, Dialect dialect, SqlPageFactory sqlPageFactory,
-            String queryAlias, C2 conditionConfig) {
+    protected AbstractSqlConditionGroupExpression(L parent, Dialect dialect, String repositoryAlias,
+            C2 conditionConfig) {
         super(parent, dialect, conditionConfig);
-        this.queryAlias = queryAlias;
-        this.sqlPageFactory = sqlPageFactory;
+        this.repositoryAlias = repositoryAlias;
     }
 
     //    /**
@@ -204,7 +177,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <R> L eq(String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -339,7 +312,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <R> L ne(String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -423,7 +396,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lk(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -432,7 +405,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lk(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -477,7 +450,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L nl(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -486,7 +459,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L nl(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -552,14 +525,14 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
         //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
-                matchStrategy, queryAlias, ignoreStrategy));
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+    //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
+    //                matchStrategy, queryAlias, ignoreStrategy));
+    //    }
 
     /**
      * {@inheritDoc}
@@ -567,17 +540,17 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L sw(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
-        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+    //        return sw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -628,26 +601,18 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public <T> L nsw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return nsw(name, value, matchStrategy, getIgnoreStrategy()::test);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return nsw(property, matchStrategy, getIgnoreStrategy()::test);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nsw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
-                matchStrategy, queryAlias, ignoreStrategy));
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L nsw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+    //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
+    //                matchStrategy, queryAlias, ignoreStrategy));
+    //    }
 
     /**
      * {@inheritDoc}
@@ -655,35 +620,17 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L nsw(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nsw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return nsw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nsw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return nsw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
-        return nsw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+    //        return nsw(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -703,15 +650,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ew(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, queryAlias, getIgnoreStrategy()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return ew(getPropertyName(name), value, matchStrategy);
+                matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -723,14 +662,14 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
         return ew(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, queryAlias, ignoreStrategy));
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+    //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
+    //                matchStrategy, queryAlias, ignoreStrategy));
+    //    }
 
     /**
      * {@inheritDoc}
@@ -738,35 +677,17 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ew(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return ew(getPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return ew(getPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
-        return ew(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+    //        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+    //        return ew(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy, ignoreStrategy);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -786,15 +707,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L newv(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, queryAlias, getIgnoreStrategy()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return newv(getPropertyName(name), value, matchStrategy);
+                matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -812,7 +725,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L newv(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -821,25 +734,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L newv(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return newv(getPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return newv(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -893,15 +788,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L co(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, queryAlias, getIgnoreStrategy()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return co(getPropertyName(name), value, matchStrategy);
+                matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -913,14 +800,14 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
         return co(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), matchStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L co(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, queryAlias, ignoreStrategy));
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L co(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+    //        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
+    //                matchStrategy, queryAlias, ignoreStrategy));
+    //    }
 
     /**
      * {@inheritDoc}
@@ -928,25 +815,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L co(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return co(getPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return co(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -976,15 +845,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L nco(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, queryAlias, getIgnoreStrategy()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return nco(getPropertyName(name), value, matchStrategy);
+                matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -1002,7 +863,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L nco(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, queryAlias, ignoreStrategy));
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1011,25 +872,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L nco(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return nco(getPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return nco(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+                matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1069,7 +912,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L ge(String name, N value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1078,31 +921,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L ge(String name, N value, Predicate<N> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value) {
-        return ge(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value, IgnoreStrategy ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1149,7 +968,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L ge(String name, D value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1158,31 +977,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L ge(String name, D value, Predicate<D> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L ge(SerializableToDateFunction<T, D> name, D value) {
-        return ge(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L ge(SerializableToDateFunction<T, D> name, D value, IgnoreStrategy ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L ge(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1229,7 +1024,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, LocalTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1238,31 +1033,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-        return ge(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalTimeFunction<T> name, LocalTime value, IgnoreStrategy ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1309,7 +1080,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, LocalDate value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1318,31 +1089,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalDateFunction<T> name, LocalDate value) {
-        return ge(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalDateFunction<T> name, LocalDate value, IgnoreStrategy ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1389,7 +1136,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1398,32 +1145,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
-        return ge(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1470,7 +1192,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, String value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1479,7 +1201,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, String value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1488,39 +1210,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ge(String name, String value, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToStringFunction<T> name, String value) {
-        return ge(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ge(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
-        return ge(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1576,7 +1266,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L gt(String name, N value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1585,31 +1275,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L gt(String name, N value, Predicate<N> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L gt(SerializableToNumberFunction<T, N> name, N value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L gt(SerializableToNumberFunction<T, N> name, N value, IgnoreStrategy ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L gt(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1656,7 +1322,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L gt(String name, D value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1665,31 +1331,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L gt(String name, D value, Predicate<D> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L gt(SerializableToDateFunction<T, D> name, D value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L gt(SerializableToDateFunction<T, D> name, D value, IgnoreStrategy ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L gt(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1736,7 +1378,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, LocalTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1745,31 +1387,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalTimeFunction<T> name, LocalTime value, IgnoreStrategy ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1816,7 +1434,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, LocalDate value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1825,31 +1443,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalDateFunction<T> name, LocalDate value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalDateFunction<T> name, LocalDate value, IgnoreStrategy ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1896,7 +1490,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1905,32 +1499,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1977,23 +1546,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L gt(String name, String value, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToStringFunction<T> name, String value) {
-        return gt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L gt(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
-        return gt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2081,7 +1634,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L in(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
-                ComparisonOperator.IN, matchStrategy, queryAlias, ignoreStrategy));
+                ComparisonOperator.IN, matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2098,88 +1651,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <R> L in(String name, R value, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
-                ComparisonOperator.IN, queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToIntFunction<T> name, int... values) {
-        return in(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy) {
-        return in(getPropertyName(name), values, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToLongFunction<T> name, long... values) {
-        return in(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy) {
-        return in(getPropertyName(name), values, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToDoubleFunction<T> name, double... values) {
-        return in(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy) {
-        return in(getPropertyName(name), values, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy) {
-        return in(getPropertyName(name), values, matchStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L in(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
-        return in(getPropertyName(name), values, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L in(SerializableFunction<T, R> name, R... values) {
-        return in(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L in(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
-        return in(getPropertyName(name), values, ignoreStrategy);
+                ComparisonOperator.IN, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2188,15 +1660,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L inn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.INN,
-                queryAlias, getIgnoreStrategy()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L inn(SerializableFunction<T, R> name, Boolean value) {
-        return inn(getPropertyName(name), value);
+                repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -2205,15 +1669,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L isn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.ISN,
-                queryAlias, getIgnoreStrategy()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L isn(SerializableFunction<T, R> name, Boolean value) {
-        return isn(getPropertyName(name), value);
+                repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -2232,7 +1688,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L le(String name, N value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2241,31 +1697,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L le(String name, N value, Predicate<N> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L le(SerializableToNumberFunction<T, N> name, N value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L le(SerializableToNumberFunction<T, N> name, N value, IgnoreStrategy ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L le(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2312,7 +1744,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L le(String name, D value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2321,31 +1753,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L le(String name, D value, Predicate<D> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L le(SerializableToDateFunction<T, D> name, D value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L le(SerializableToDateFunction<T, D> name, D value, IgnoreStrategy ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L le(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2392,7 +1800,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, LocalTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2401,31 +1809,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalTimeFunction<T> name, LocalTime value, IgnoreStrategy ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2472,7 +1856,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, LocalDate value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2481,31 +1865,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalDateFunction<T> name, LocalDate value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalDateFunction<T> name, LocalDate value, IgnoreStrategy ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2552,7 +1912,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2561,32 +1921,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2604,8 +1939,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      */
     @Override
     public L le(SerializableLocalDateTimeSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        SerializableSupplierLambdaInfo<
-                LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils
+                .getSerializableSupplierLambdaInfo(propertyValue);
         return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), ignoreStrategy);
     }
 
@@ -2614,8 +1949,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      */
     @Override
     public L le(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy) {
-        SerializableSupplierLambdaInfo<
-                LocalDateTime> info = LambdaUtils.getSerializableSupplierLambdaInfo(propertyValue);
+        SerializableSupplierLambdaInfo<LocalDateTime> info = LambdaUtils
+                .getSerializableSupplierLambdaInfo(propertyValue);
         return le(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), ignoreStrategy);
     }
 
@@ -2635,7 +1970,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, String value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2644,31 +1979,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L le(String name, String value, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToStringFunction<T> name, String value) {
-        return le(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L le(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
-        return le(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2715,7 +2026,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L lt(String name, N value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2724,31 +2035,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <N extends Number> L lt(String name, N value, Predicate<N> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value, IgnoreStrategy ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2795,7 +2082,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L lt(String name, D value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2804,31 +2091,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <D extends Date> L lt(String name, D value, Predicate<D> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value, IgnoreStrategy ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L lt(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2875,7 +2138,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, LocalTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2884,31 +2147,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value, IgnoreStrategy ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2955,7 +2194,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, LocalDate value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -2964,31 +2203,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value, IgnoreStrategy ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -3035,7 +2250,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -3044,32 +2259,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -3116,7 +2306,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, String value, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -3125,31 +2315,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L lt(String name, String value, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                queryAlias, ignoreStrategy));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToStringFunction<T> name, String value) {
-        return lt(getPropertyName(name), value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L lt(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
-        return lt(getPropertyName(name), value, ignoreStrategy);
+                repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -3183,87 +2349,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     // ****************************************************************************************************************
     //	ni
     // ****************************************************************************************************************
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToIntFunction<T> name, int... values) {
-        return ni(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy) {
-        return ni(getPropertyName(name), values, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToLongFunction<T> name, long... values) {
-        return ni(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy) {
-        return ni(getPropertyName(name), values, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToDoubleFunction<T> name, double... values) {
-        return ni(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy) {
-        return ni(getPropertyName(name), values, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy) {
-        return ni(getPropertyName(name), values, matchStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
-        return ni(getPropertyName(name), values, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L ni(SerializableFunction<T, R> name, R... values) {
-        return ni(getPropertyName(name), values);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> L ni(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
-        return ni(getPropertyName(name), values, ignoreStrategy);
-    }
 
     /**
      * {@inheritDoc}
@@ -3327,7 +2412,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public L ni(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
-                ComparisonOperator.NI, matchStrategy, queryAlias, ignoreStrategy));
+                ComparisonOperator.NI, matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -3344,7 +2429,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     @Override
     public <R> L ni(String name, R value, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
-                ComparisonOperator.NI, queryAlias, ignoreStrategy));
+                ComparisonOperator.NI, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -3361,41 +2446,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L ba(String name, N min, N max, IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <N extends Number> L ba(String name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max) {
-        return ba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max,
-            IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
 
@@ -3411,41 +2462,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L ba(String name, D min, D max, IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <D extends Date> L ba(String name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max) {
-        return ba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max,
-            IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L ba(SerializableToDateFunction<T, D> name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
 
@@ -3461,41 +2478,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L ba(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ba(String name, LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max) {
-        return ba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
-            IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
 
@@ -3511,41 +2494,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L ba(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ba(String name, LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max) {
-        return ba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
-            IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
 
@@ -3561,41 +2510,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L ba(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max) {
-        return ba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
-            IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
@@ -3612,40 +2527,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L ba(String name, String min, String max, IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ba(String name, String min, String max, BiPredicate<String, String> ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToStringFunction<T> name, String min, String max) {
-        return ba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToStringFunction<T> name, String min, String max, IgnoreStrategy ignoreStrategy) {
-        return ba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L ba(SerializableToStringFunction<T> name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
 
@@ -3663,41 +2545,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L nba(String name, N min, N max, IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <N extends Number> L nba(String name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max) {
-        return nba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
-            IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
 
@@ -3713,41 +2561,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L nba(String name, D min, D max, IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <D extends Date> L nba(String name, D min, D max, BiPredicate<D, D> ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max) {
-        return nba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max,
-            IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
 
@@ -3763,41 +2577,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L nba(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L nba(String name, LocalTime min, LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max) {
-        return nba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
-            IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
 
@@ -3813,41 +2593,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L nba(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L nba(String name, LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max) {
-        return nba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
-            IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
 
@@ -3863,41 +2609,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L nba(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L nba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max) {
-        return nba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
-            IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
             BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
@@ -3914,56 +2626,21 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      * {@inheritDoc}
      */
     @Override
-    public L nba(String name, String min, String max, IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L nba(String name, String min, String max, BiPredicate<String, String> ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToStringFunction<T> name, String min, String max) {
-        return nba0(name, min, max, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToStringFunction<T> name, String min, String max, IgnoreStrategy ignoreStrategy) {
-        return nba0(name, min, max, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L nba(SerializableToStringFunction<T> name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    private L ba0(Serializable name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
-        return ba0(getPropertyName(name), min, max, v -> {
-            Object[] params = (Object[]) v;
-            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
-        });
-    }
-
-    private L ba0(Serializable name, Object min, Object max, Predicate<?> ignoreStrategy) {
-        return ba0(getPropertyName(name), min, max, ignoreStrategy);
-    }
-
+    /**
+     * Ba 0.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     private L ba0(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
         return ba0(name, min, max, v -> {
             Object[] params = (Object[]) v;
@@ -3971,22 +2648,29 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
         });
     }
 
+    /**
+     * Ba 0.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     private L ba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
-                ComparisonOperator.BA, queryAlias, ignoreStrategy));
+                ComparisonOperator.BA, repositoryAlias, ignoreStrategy));
     }
 
-    private L nba0(Serializable name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
-        return nba0(getPropertyName(name), min, max, v -> {
-            Object[] params = (Object[]) v;
-            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
-        });
-    }
-
-    private L nba0(Serializable name, Object min, Object max, Predicate<?> ignoreStrategy) {
-        return nba0(getPropertyName(name), min, max, ignoreStrategy);
-    }
-
+    /**
+     * Nba 0.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     private L nba0(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
         return nba0(name, min, max, v -> {
             Object[] params = (Object[]) v;
@@ -3994,9 +2678,18 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
         });
     }
 
+    /**
+     * Nba 0.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     private L nba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
-                ComparisonOperator.NBA, queryAlias, ignoreStrategy));
+                ComparisonOperator.NBA, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -4038,7 +2731,7 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
      */
     @Override
     public C group() {
-        C group = createGroup((L) this, queryAlias);
+        C group = createGroup((L) this, repositoryAlias);
         addCondition(group);
         return group;
     }
@@ -4055,9 +2748,8 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     /**
      * Creates the group.
      *
-     * @param parent          the parent
-     * @param queryAlias      the query alias
-     * @param typeQueryEntity the type query entity
+     * @param parent     the parent
+     * @param queryAlias the query alias
      * @return the c
      */
     protected abstract C createGroup(L parent, String queryAlias);
@@ -4130,90 +2822,6 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
         return or().group(group);
     }
 
-    // ********************************************************************
-    //	property
-    // ********************************************************************
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ObjectPropertyExpression<C, L> property(String name) {
-        return new SimpleObjectPropertyExpression<>(name, this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StringPropertyExpression<C, L> propertyString(String name) {
-        return new SimpleStringPropertyExpression<>(name, this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <N extends Number> NumberPropertyExpression<N, C, L> propertyNumber(String name) {
-        return new SimpleNumberPropertyExpression<>(name, this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <D extends Date> DatePropertyExpression<D, C, L> propertyDate(String name) {
-        return new SimpleDatePropertyExpression<>(name, this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> EnumPropertyExpression<E, C, L> propertyEnum(String name) {
-        return new SimpleEnumPropertyExpression<>(name, this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> ObjectPropertyExpression<C, L> property(SerializableFunction<T, R> name) {
-        return property(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> StringPropertyExpression<C, L> property(SerializableToStringFunction<T> name) {
-        return propertyString(getPropertyName(name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Number> NumberPropertyExpression<R, C, L> property(SerializableToNumberFunction<T, R> name) {
-        return new SimpleNumberPropertyExpression<>(getPropertyName(name), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Date> DatePropertyExpression<R, C, L> property(SerializableToDateFunction<T, R> name) {
-        return new SimpleDatePropertyExpression<>(getPropertyName(name), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Enum<R>> EnumPropertyExpression<R, C, L> property(SerializableToEnumFunction<T, R> name) {
-        return propertyEnum(getPropertyName(name));
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -4262,21 +2870,11 @@ public abstract class AbstractSqlConditionGroupExpression<C extends ConditionsGr
     // ********************************************************************
 
     /**
-     * 返回queryAlias.
+     * 返回repositoryAlias
      *
-     * @return queryAlias
+     * @return repositoryAlias
      */
-    public String getQueryAlias() {
-        return queryAlias;
+    public String getRepositoryAlias() {
+        return repositoryAlias;
     }
-
-    /**
-     * 设置queryAlias.
-     *
-     * @param queryAlias queryAlias
-     */
-    public void setQueryAlias(String queryAlias) {
-        this.queryAlias = queryAlias;
-    }
-
 }

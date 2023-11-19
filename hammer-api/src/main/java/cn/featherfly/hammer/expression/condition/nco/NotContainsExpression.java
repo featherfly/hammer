@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -23,74 +24,74 @@ public interface NotContainsExpression<C extends ConditionExpression, L extends 
     /**
      * not contains value. 不包含value.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L nco(Field name, String value) {
-        return nco(name.name(), value);
+    default L nco(Field field, String value) {
+        return nco(field.name(), value);
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nco(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return nco(name.name(), value, ignoreStrategy);
+    default L nco(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return nco(field.name(), value, ignoreStrategy);
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nco(Field name, String value, Predicate<String> ignoreStrategy) {
-        return nco(name.name(), value, ignoreStrategy);
+    default L nco(Field field, String value, Predicate<String> ignoreStrategy) {
+        return nco(field.name(), value, ignoreStrategy);
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    default L nco(Field name, String value, MatchStrategy matchStrategy) {
-        return nco(name.name(), value, matchStrategy);
+    default L nco(Field field, String value, MatchStrategy matchStrategy) {
+        return nco(field.name(), value, matchStrategy);
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nco(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return nco(name.name(), value, matchStrategy, ignoreStrategy);
+    default L nco(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return nco(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nco(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return nco(name.name(), value, matchStrategy, ignoreStrategy);
+    default L nco(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nco(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -107,8 +108,8 @@ public interface NotContainsExpression<C extends ConditionExpression, L extends 
     /**
      * not contains value. 不包含value.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +120,8 @@ public interface NotContainsExpression<C extends ConditionExpression, L extends 
     /**
      * not contains value. 不包含value.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -159,6 +160,79 @@ public interface NotContainsExpression<C extends ConditionExpression, L extends 
      * @return LogicExpression
      */
     L nco(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L nco(AliasField field, String value) {
+        return nco(field.getAliasOrName(), value);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
+        return nco(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return nco(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L nco(AliasField field, String value, MatchStrategy matchStrategy) {
+        return nco(field.getAliasOrName(), value, matchStrategy);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco(AliasField field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return nco(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nco(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
 
     /**
      * not contains value. 不包含value.

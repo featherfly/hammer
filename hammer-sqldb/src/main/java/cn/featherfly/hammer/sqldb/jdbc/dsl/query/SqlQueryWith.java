@@ -22,7 +22,7 @@ import cn.featherfly.hammer.dsl.query.QueryWith;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.SqlRepositoryQueryFetchImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetchImpl;
 
 /**
  * SqlQueryWith .
@@ -32,7 +32,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.SqlRepositoryQueryFe
 public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEntity {
 
     /** The sql query entity properties. */
-    private SqlRepositoryQueryFetchImpl sqlQueryEntityProperties;
+    private RepositorySqlQueryFetchImpl sqlQueryEntityProperties;
 
     /** The alias manager. */
     private AliasManager aliasManager;
@@ -72,7 +72,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param joinTableAlias           the join table alias
      * @param ignoreStrategy           the ignore strategy
      */
-    public SqlQueryWith(SqlRepositoryQueryFetchImpl sqlQueryEntityProperties, AliasManager aliasManager,
+    public SqlQueryWith(RepositorySqlQueryFetchImpl sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
             String joinTableAlias, Predicate<?> ignoreStrategy) {
         this(sqlQueryEntityProperties, aliasManager, sqlPageFactory, selectTableAlis, selectTableColumn, joinTableName,
@@ -92,7 +92,7 @@ public class SqlQueryWith implements QueryWith, SqlQueryWithOn, SqlQueryWithEnti
      * @param join                     the join
      * @param ignoreStrategy           the ignore strategy
      */
-    public SqlQueryWith(SqlRepositoryQueryFetchImpl sqlQueryEntityProperties, AliasManager aliasManager,
+    public SqlQueryWith(RepositorySqlQueryFetchImpl sqlQueryEntityProperties, AliasManager aliasManager,
             SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
             String joinTableAlias, Join join, Predicate<?> ignoreStrategy) {
         super();

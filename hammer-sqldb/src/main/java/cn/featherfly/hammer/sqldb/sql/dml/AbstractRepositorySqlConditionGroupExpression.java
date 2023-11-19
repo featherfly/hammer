@@ -1,16 +1,32 @@
 
 package cn.featherfly.hammer.sqldb.sql.dml;
 
+import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToDateFunction;
+import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
+import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
-import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.NumberPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.ObjectPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleDatePropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleEnumPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleNumberPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleObjectPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.SimpleStringPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -30,16 +46,15 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     /**
      * Instantiates a new abstract repository sql condition group expression.
      *
-     * @param parent         parent group
-     * @param dialect        dialect
-     * @param aliasManager   aliasManager
-     * @param queryAlias     queryAlias
-     * @param sqlPageFactory the sql page factory
-     * @param ignoreStrategy the ignore strategy
+     * @param parent          parent group
+     * @param dialect         dialect
+     * @param aliasManager    aliasManager
+     * @param repositoryAlias queryAlias
+     * @param conditionConfig the condition config
      */
     protected AbstractRepositorySqlConditionGroupExpression(L parent, Dialect dialect, AliasManager aliasManager,
-            String queryAlias, SqlPageFactory sqlPageFactory, C2 conditionConfig) {
-        super(parent, dialect, sqlPageFactory, queryAlias, conditionConfig);
+            String repositoryAlias, C2 conditionConfig) {
+        super(parent, dialect, repositoryAlias, conditionConfig);
         this.aliasManager = aliasManager;
     }
 
@@ -2825,22 +2840,478 @@ public abstract class AbstractRepositorySqlConditionGroupExpression<C extends Re
     //        //        return conditionResult(repository, property, classMapping, factory);
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L sw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return sw(name, value, matchStrategy, getIgnoreStrategy()::test);
-    }
+    // ----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return sw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L sw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+    //        return sw(name, value, matchStrategy, getIgnoreStrategy()::test);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
+    //            Predicate<String> ignoreStrategy) {
+    //        return sw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
+    //    }
 
     // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L nsw(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+    //        return nsw(name, value, matchStrategy, getIgnoreStrategy()::test);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L nsw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
+    //            Predicate<String> ignoreStrategy) {
+    //        return nsw(getPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+    //        return ew(getPropertyName(name), value, matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+    //            Predicate<String> ignoreStrategy) {
+    //        return ew(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+    //        return newv(getPropertyName(name), value, matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+    //            Predicate<String> ignoreStrategy) {
+    //        return newv(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+    //        return co(getPropertyName(name), value, matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+    //            Predicate<String> ignoreStrategy) {
+    //        return co(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+    //        return nco(getPropertyName(name), value, matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+    //            Predicate<String> ignoreStrategy) {
+    //        return nco(getPropertyName(name), value, matchStrategy, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToIntFunction<T> name, int... values) {
+    //        return in(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy) {
+    //        return in(getPropertyName(name), values, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToLongFunction<T> name, long... values) {
+    //        return in(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy) {
+    //        return in(getPropertyName(name), values, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToDoubleFunction<T> name, double... values) {
+    //        return in(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy) {
+    //        return in(getPropertyName(name), values, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value) {
+    //        return ge(getPropertyName(name), value);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L ge(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy) {
+    //        return ge(getPropertyName(name), value, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToIntFunction<T> name, int... values) {
+    //        return ni(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToIntFunction<T> name, int[] values, Predicate<int[]> ignoreStrategy) {
+    //        return ni(getPropertyName(name), values, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToLongFunction<T> name, long... values) {
+    //        return ni(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToLongFunction<T> name, long[] values, Predicate<long[]> ignoreStrategy) {
+    //        return ni(getPropertyName(name), values, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToDoubleFunction<T> name, double... values) {
+    //        return ni(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToDoubleFunction<T> name, double[] values, Predicate<double[]> ignoreStrategy) {
+    //        return ni(getPropertyName(name), values, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy) {
+    //        return ni(getPropertyName(name), values, matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
+    //            Predicate<String[]> ignoreStrategy) {
+    //        return ni(getPropertyName(name), values, matchStrategy, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L ni(SerializableFunction<T, R> name, R... values) {
+    //        return ni(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L ni(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
+    //        return ni(getPropertyName(name), values, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy) {
+    //        return in(getPropertyName(name), values, matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T> L in(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
+    //            Predicate<String[]> ignoreStrategy) {
+    //        return in(getPropertyName(name), values, matchStrategy, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L in(SerializableFunction<T, R> name, R... values) {
+    //        return in(getPropertyName(name), values);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, R> L in(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
+    //        return in(getPropertyName(name), values, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max) {
+    //        return ba0(name, min, max, getIgnoreStrategy());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max,
+    //            IgnoreStrategy ignoreStrategy) {
+    //        return ba0(name, min, max, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L ba(SerializableToNumberFunction<T, N> name, N min, N max,
+    //            BiPredicate<N, N> ignoreStrategy) {
+    //        return ba0(name, min, max, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max) {
+    //        return nba0(name, min, max, getIgnoreStrategy());
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
+    //            IgnoreStrategy ignoreStrategy) {
+    //        return nba0(name, min, max, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
+    //            BiPredicate<N, N> ignoreStrategy) {
+    //        return nba0(name, min, max, ignoreStrategy);
+    //    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    //    private L ba0(Serializable name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+    //        return ba0(getPropertyName(name), min, max, v -> {
+    //            Object[] params = (Object[]) v;
+    //            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+    //        });
+    //    }
+    //
+    //    private L ba0(Serializable name, Object min, Object max, Predicate<?> ignoreStrategy) {
+    //        return ba0(getPropertyName(name), min, max, ignoreStrategy);
+    //    }
+    //
+    //    private L nba0(Serializable name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+    //        return nba0(getPropertyName(name), min, max, v -> {
+    //            Object[] params = (Object[]) v;
+    //            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+    //        });
+    //    }
+    //
+    //    private L nba0(Serializable name, Object min, Object max, Predicate<?> ignoreStrategy) {
+    //        return nba0(getPropertyName(name), min, max, ignoreStrategy);
+    //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, String name, R value,
+            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, comparisonOperator,
+                matchStrategy, getRepositoryAlias(), ignoreStrategy));
+    }
+
+    // ********************************************************************
+    //  property
+    // ********************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ObjectPropertyExpression<C, L> property(String name) {
+        return new SimpleObjectPropertyExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringPropertyExpression<C, L> propertyString(String name) {
+        return new SimpleStringPropertyExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> NumberPropertyExpression<N, C, L> propertyNumber(String name) {
+        return new SimpleNumberPropertyExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> DatePropertyExpression<D, C, L> propertyDate(String name) {
+        return new SimpleDatePropertyExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> EnumPropertyExpression<E, C, L> propertyEnum(String name) {
+        return new SimpleEnumPropertyExpression<>(name, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R> ObjectPropertyExpression<C, L> property(SerializableFunction<T, R> name) {
+        return property(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> StringPropertyExpression<C, L> property(SerializableToStringFunction<T> name) {
+        return propertyString(getPropertyName(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Number> NumberPropertyExpression<R, C, L> property(SerializableToNumberFunction<T, R> name) {
+        return new SimpleNumberPropertyExpression<>(getPropertyName(name), this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Date> DatePropertyExpression<R, C, L> property(SerializableToDateFunction<T, R> name) {
+        return new SimpleDatePropertyExpression<>(getPropertyName(name), this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T, R extends Enum<R>> EnumPropertyExpression<R, C, L> property(SerializableToEnumFunction<T, R> name) {
+        return propertyEnum(getPropertyName(name));
+    }
 }

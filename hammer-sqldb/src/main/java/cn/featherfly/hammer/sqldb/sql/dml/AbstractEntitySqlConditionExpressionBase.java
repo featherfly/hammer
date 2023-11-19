@@ -162,8 +162,8 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
     protected AbstractEntitySqlConditionExpressionBase(L parent, JdbcMappingFactory factory, ER entityRelation) {
         super(parent, entityRelation.getJdbc().getDialect(), entityRelation.getConfig());
         this.factory = factory;
-        EntityRelationMapping<
-                T> erm = (EntityRelationMapping<T>) entityRelation.getEntityRelationMappingTuple().getOrNull0();
+        EntityRelationMapping<T> erm = (EntityRelationMapping<T>) entityRelation.getEntityRelationMappingTuple()
+                .getOrNull0();
         queryAlias = erm.getTableAlias();
         classMapping = erm.getClassMapping();
         aliasManager = entityRelation.getAliasManager();
@@ -387,7 +387,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L eq(SerializableIntSupplier property) {
-        return eq(classMapping, property, property.get(), queryAlias, getIgnoreStrategy());
+        return eq(classMapping, property, property.getAsInt(), queryAlias, getIgnoreStrategy());
     }
 
     /**
@@ -395,7 +395,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L eq(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return eq(classMapping, property, property.get(), queryAlias, ignoreStrategy);
+        return eq(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
     }
 
     /**
@@ -403,7 +403,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L eq(SerializableDoubleSupplier property) {
-        return eq(classMapping, property, property.get(), queryAlias, getIgnoreStrategy());
+        return eq(classMapping, property, property.getAsDouble(), queryAlias, getIgnoreStrategy());
     }
 
     /**
@@ -411,7 +411,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L eq(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return eq(classMapping, property, property.get(), queryAlias, ignoreStrategy);
+        return eq(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
     }
 
     /**
@@ -419,7 +419,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L eq(SerializableLongSupplier property) {
-        return eq(classMapping, property, property.get(), queryAlias, getIgnoreStrategy());
+        return eq(classMapping, property, property.getAsLong(), queryAlias, getIgnoreStrategy());
     }
 
     /**
@@ -427,7 +427,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L eq(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return eq(classMapping, property, property.get(), queryAlias, ignoreStrategy);
+        return eq(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
     }
 
     /**
@@ -743,7 +743,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L ne(SerializableIntSupplier property) {
-        return ne(classMapping, property, property.get(), queryAlias, getIgnoreStrategy());
+        return ne(classMapping, property, property.getAsInt(), queryAlias, getIgnoreStrategy());
     }
 
     /**
@@ -751,7 +751,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L ne(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return ne(classMapping, property, property.get(), queryAlias, ignoreStrategy);
+        return ne(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
     }
 
     /**
@@ -759,7 +759,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L ne(SerializableLongSupplier property) {
-        return ne(classMapping, property, property.get(), queryAlias, getIgnoreStrategy());
+        return ne(classMapping, property, property.getAsLong(), queryAlias, getIgnoreStrategy());
     }
 
     /**
@@ -767,7 +767,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L ne(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return ne(classMapping, property, property.get(), queryAlias, ignoreStrategy);
+        return ne(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
     }
 
     /**
@@ -775,7 +775,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L ne(SerializableDoubleSupplier property) {
-        return ne(classMapping, property, property.get(), queryAlias, getIgnoreStrategy());
+        return ne(classMapping, property, property.getAsDouble(), queryAlias, getIgnoreStrategy());
     }
 
     /**
@@ -783,7 +783,7 @@ public abstract class AbstractEntitySqlConditionExpressionBase<T, ER extends Ent
      */
     @Override
     public L ne(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return ne(classMapping, property, property.get(), queryAlias, ignoreStrategy);
+        return ne(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
     }
 
     /**

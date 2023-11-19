@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -22,51 +23,101 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L eq(Field name, Object value) {
-        return eq(name.name(), value);
+    default L eq(Field field, Object value) {
+        return eq(field.name(), value);
     }
 
     /**
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <R> L eq(Field name, R value, Predicate<R> ignoreStrategy) {
-        return eq(name.name(), value, ignoreStrategy);
+    default <R> L eq(Field field, R value, Predicate<R> ignoreStrategy) {
+        return eq(field.name(), value, ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param field         the field
+     * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    default L eq(Field name, Object value, MatchStrategy matchStrategy) {
-        return eq(name.name(), value, matchStrategy);
+    default L eq(Field field, Object value, MatchStrategy matchStrategy) {
+        return eq(field.name(), value, matchStrategy);
     }
 
     /**
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <R> L eq(Field name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
-        return eq(name.name(), value, matchStrategy, ignoreStrategy);
+    default <R> L eq(Field field, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        return eq(field.name(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L eq(AliasField field, Object value) {
+        return eq(field.getAliasOrName(), value);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>            the generic type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L eq(AliasField field, R value, Predicate<R> ignoreStrategy) {
+        return eq(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L eq(AliasField field, Object value, MatchStrategy matchStrategy) {
+        return eq(field.getAliasOrName(), value, matchStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R>            the generic type
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L eq(AliasField field, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
+        return eq(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -84,8 +135,8 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -96,8 +147,8 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
     /**
      * equals. 等于.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name          the name
+     * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -107,8 +158,8 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

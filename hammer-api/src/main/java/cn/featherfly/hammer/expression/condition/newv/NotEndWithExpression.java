@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -23,74 +24,74 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L newv(Field name, String value) {
-        return newv(name.name(), value);
+    default L newv(Field field, String value) {
+        return newv(field.name(), value);
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L newv(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return newv(name.name(), value, ignoreStrategy);
+    default L newv(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return newv(field.name(), value, ignoreStrategy);
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L newv(Field name, String value, Predicate<String> ignoreStrategy) {
-        return newv(name.name(), value, ignoreStrategy);
+    default L newv(Field field, String value, Predicate<String> ignoreStrategy) {
+        return newv(field.name(), value, ignoreStrategy);
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    default L newv(Field name, String value, MatchStrategy matchStrategy) {
-        return newv(name.name(), value, matchStrategy);
+    default L newv(Field field, String value, MatchStrategy matchStrategy) {
+        return newv(field.name(), value, matchStrategy);
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L newv(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return newv(name.name(), value, matchStrategy, ignoreStrategy);
+    default L newv(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return newv(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L newv(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return newv(name.name(), value, matchStrategy, ignoreStrategy);
+    default L newv(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return newv(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -107,8 +108,8 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +120,8 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
     /**
      * not end with value. 不以value结尾.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -159,6 +160,79 @@ public interface NotEndWithExpression<C extends ConditionExpression, L extends L
      * @return LogicExpression
      */
     L newv(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L newv(AliasField field, String value) {
+        return newv(field.getAliasOrName(), value);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L newv(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
+        return newv(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L newv(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return newv(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L newv(AliasField field, String value, MatchStrategy matchStrategy) {
+        return newv(field.getAliasOrName(), value, matchStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L newv(AliasField field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return newv(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L newv(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return newv(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
 
     /**
      * not end with value. 不以value结尾.

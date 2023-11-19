@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -23,74 +24,147 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
     /**
      * start with value. 以value开始.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L sw(Field name, String value) {
-        return sw(name.name(), value);
+    default L sw(Field field, String value) {
+        return sw(field.name(), value);
     }
 
     /**
      * start with value. 以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L sw(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return sw(name.name(), value, ignoreStrategy);
+    default L sw(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return sw(field.name(), value, ignoreStrategy);
     }
 
     /**
      * start with value. 以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L sw(Field name, String value, Predicate<String> ignoreStrategy) {
-        return sw(name.name(), value, ignoreStrategy);
+    default L sw(Field field, String value, Predicate<String> ignoreStrategy) {
+        return sw(field.name(), value, ignoreStrategy);
     }
 
     /**
      * start with value. 以value开始.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the query strategy
      * @return LogicExpression
      */
-    default L sw(Field name, String value, MatchStrategy matchStrategy) {
-        return sw(name.name(), value, matchStrategy);
+    default L sw(Field field, String value, MatchStrategy matchStrategy) {
+        return sw(field.name(), value, matchStrategy);
     }
 
     /**
      * start with value. 以value开始.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L sw(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return sw(name.name(), value, matchStrategy, ignoreStrategy);
+    default L sw(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return sw(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * start with value. 以value开始.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L sw(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return sw(name.name(), value, matchStrategy, ignoreStrategy);
+    default L sw(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return sw(field.name(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L sw(AliasField field, String value) {
+        return sw(field.getAliasOrName(), value);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L sw(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
+        return sw(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L sw(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return sw(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the query strategy
+     * @return LogicExpression
+     */
+    default L sw(AliasField field, String value, MatchStrategy matchStrategy) {
+        return sw(field.getAliasOrName(), value, matchStrategy);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L sw(AliasField field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return sw(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L sw(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return sw(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -107,8 +181,8 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
     /**
      * start with value. 以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +193,8 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
     /**
      * start with value. 以value开始.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -147,7 +221,9 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L sw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L sw(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return sw(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * start with value. 以value开始.
@@ -209,7 +285,9 @@ public interface StartWithExpression<C extends ConditionExpression, L extends Lo
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return sw(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * start with value. 以value开始.

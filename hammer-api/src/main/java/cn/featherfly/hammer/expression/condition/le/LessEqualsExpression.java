@@ -13,6 +13,7 @@ import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSuppl
 import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -32,38 +33,38 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * less equals. 小于等于.
      *
      * @param <N>   number type
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default <N extends Number> L le(Field name, N value) {
-        return le(name.name(), value);
+    default <N extends Number> L le(Field field, N value) {
+        return le(field.name(), value);
     }
 
     /**
      * less equals. 小于等于.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <N extends Number> L le(Field name, N value, IgnoreStrategy ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default <N extends Number> L le(Field field, N value, IgnoreStrategy ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <N extends Number> L le(Field name, N value, Predicate<N> ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default <N extends Number> L le(Field field, N value, Predicate<N> ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -81,18 +82,20 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      *
      * @param <N>            number type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L le(String name, N value, IgnoreStrategy ignoreStrategy);
+    default <N extends Number> L le(String name, N value, IgnoreStrategy ignoreStrategy) {
+        return le(name, value, (Predicate<N>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
      *
      * @param <N>            number type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -104,38 +107,38 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * less equals. 小于等于.
      *
      * @param <D>   date type
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default <D extends Date> L le(Field name, D value) {
-        return le(name.name(), value);
+    default <D extends Date> L le(Field field, D value) {
+        return le(field.name(), value);
     }
 
     /**
      * less equals. 小于等于.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <D extends Date> L le(Field name, D value, IgnoreStrategy ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default <D extends Date> L le(Field field, D value, IgnoreStrategy ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <D extends Date> L le(Field name, D value, Predicate<D> ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default <D extends Date> L le(Field field, D value, Predicate<D> ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -153,18 +156,20 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      *
      * @param <D>            date type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L le(String name, D value, IgnoreStrategy ignoreStrategy);
+    default <D extends Date> L le(String name, D value, IgnoreStrategy ignoreStrategy) {
+        return le(name, value, (Predicate<D>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
      *
      * @param <D>            date type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -175,36 +180,36 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     /**
      * less equals. 小于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L le(Field name, LocalTime value) {
-        return le(name.name(), value);
+    default L le(Field field, LocalTime value) {
+        return le(field.name(), value);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, LocalTime value, IgnoreStrategy ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default L le(Field field, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default L le(Field field, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -220,17 +225,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(String name, LocalTime value, IgnoreStrategy ignoreStrategy);
+    default L le(String name, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return le(name, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -241,36 +248,36 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     /**
      * less equals. 小于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L le(Field name, LocalDate value) {
-        return le(name.name(), value);
+    default L le(Field field, LocalDate value) {
+        return le(field.name(), value);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, LocalDate value, IgnoreStrategy ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default L le(Field field, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default L le(Field field, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -286,17 +293,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(String name, LocalDate value, IgnoreStrategy ignoreStrategy);
+    default L le(String name, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return le(name, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -307,36 +316,36 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     /**
      * less equals. 小于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L le(Field name, LocalDateTime value) {
-        return le(name.name(), value);
+    default L le(Field field, LocalDateTime value) {
+        return le(field.name(), value);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default L le(Field field, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return le(name.name(), value, ignoreStrategy);
+    default L le(Field field, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        return le(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -352,17 +361,19 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy);
+    default L le(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return le(name, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -373,36 +384,36 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
     /**
      * less equals. 小于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L le(Field name, String value) {
-        return le(name.name(), value);
+    default L le(Field field, String value) {
+        return le(field.name(), value);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return le(name.name(), value);
+    default L le(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return le(field.name(), value);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L le(Field name, String value, Predicate<String> ignoreStrategy) {
-        return le(name.name(), value);
+    default L le(Field field, String value, Predicate<String> ignoreStrategy) {
+        return le(field.name(), value);
     }
 
     /**
@@ -418,21 +429,243 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(String name, String value, IgnoreStrategy ignoreStrategy);
+    default L le(String name, String value, IgnoreStrategy ignoreStrategy) {
+        return le(name, value, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L le(String name, String value, Predicate<String> ignoreStrategy);
+
+    // ****************************************************************************************************************************
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <N>   number type
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <N extends Number> L le(AliasField field, N value) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <N>            number type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L le(AliasField field, N value, IgnoreStrategy ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <N>            number type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L le(AliasField field, N value, Predicate<N> ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <D>   date type
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <D extends Date> L le(AliasField field, D value) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <D>            date type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L le(AliasField field, D value, IgnoreStrategy ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <D>            date type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L le(AliasField field, D value, Predicate<D> ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalTime value) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalDate value) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalDateTime value) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        return le(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L le(AliasField field, String value) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return le(field.getAliasOrName(), value);
+    }
+
+    // ****************************************************************************************************************************
 
     /**
      * less equals. 小于等于.
@@ -451,7 +684,9 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L le(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy);
+    default <N extends Number> L le(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
+        return le(property, (Predicate<N>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
@@ -480,7 +715,9 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L le(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy);
+    default <D extends Date> L le(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy) {
+        return le(property, (Predicate<D>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
@@ -507,7 +744,9 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy);
+    default L le(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return le(property, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
@@ -533,7 +772,9 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy);
+    default L le(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy) {
+        return le(property, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
@@ -559,7 +800,9 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy);
+    default L le(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return le(property, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.
@@ -585,7 +828,9 @@ public interface LessEqualsExpression<C extends ConditionExpression, L extends L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy);
+    default L le(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
+        return le(property, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * less equals. 小于等于.

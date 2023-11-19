@@ -3,8 +3,8 @@ package cn.featherfly.hammer.expression.repository.query;
 
 import cn.featherfly.hammer.expression.api.Queryable;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
-import cn.featherfly.hammer.expression.query.QueryListExecutor;
 import cn.featherfly.hammer.expression.query.QueryValueConditionLimit;
+import cn.featherfly.hammer.expression.query.QueryValueListExecutor;
 
 /**
  * entity query value expression.
@@ -19,5 +19,5 @@ import cn.featherfly.hammer.expression.query.QueryValueConditionLimit;
 public interface RepositoryQueryValueExpression<C extends RepositoryQueryValueConditionsGroupExpression<C, L, S>,
         L extends RepositoryQueryValueConditionsGroupLogicExpression<C, L, S>,
         S extends RepositoryQueryValueSortExpression> extends RepositoryQueryValueWhereExpression<C, L, S>,
-        QueryListExecutor, QueryCountExecutor, QueryValueConditionLimit, Queryable<S> {
+        QueryValueListExecutor, QueryCountExecutor, QueryValueConditionLimit, Queryable<S> {
 }

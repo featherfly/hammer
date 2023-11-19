@@ -116,11 +116,18 @@ public interface QueryValueOneExecutor {
     long longValue();
 
     /**
+     * query for long number.
+     *
+     * @return long number
+     */
+    double doubleValue();
+
+    /**
      * query for number.
      *
      * @return Integer number
      */
-    default Byte byteInt() {
+    default Byte byteNumber() {
         return number(Byte.class);
     }
 
@@ -129,7 +136,7 @@ public interface QueryValueOneExecutor {
      *
      * @return Integer number
      */
-    default Short shortInt() {
+    default Short shortNumber() {
         return number(Short.class);
     }
 
@@ -138,7 +145,7 @@ public interface QueryValueOneExecutor {
      *
      * @return Integer number
      */
-    default Integer integer() {
+    default Integer intNumber() {
         return number(Integer.class);
     }
 
@@ -147,8 +154,17 @@ public interface QueryValueOneExecutor {
      *
      * @return Long number
      */
-    default Long longInt() {
+    default Long longNumber() {
         return number(Long.class);
+    }
+
+    /**
+     * query for number.
+     *
+     * @return Long number
+     */
+    default Double doubleNumber() {
+        return number(Double.class);
     }
 
     /**
@@ -172,19 +188,57 @@ public interface QueryValueOneExecutor {
     }
 
     /**
-     * query for value.
+     * query for value, return null when not found.
      *
      * @param <T>  the value type
      * @param type value type
      * @return value
      */
-    <T> T value(Class<T> type);
+    default <T> T value(Class<T> type) {
+        return single(type);
+    }
 
     /**
-     * query for value.
+     * query for value, return null when not found.
      *
      * @param <T> the value type
      * @return value
      */
-    <T> T value();
+    default <T> T value() {
+        return single();
+    }
+
+    /**
+     * query for single, return null when not found.
+     *
+     * @param <T> the generic type
+     * @return value
+     */
+    <T> T single();
+
+    /**
+     * query for single, return null when not found.
+     *
+     * @param <T>  the generic type
+     * @param type the type
+     * @return value
+     */
+    <T> T single(Class<T> type);
+
+    /**
+     * query for unique, throw exception when not found.
+     *
+     * @param <T> the generic type
+     * @return value
+     */
+    <T> T unique();
+
+    /**
+     * query for unique, throw exception when not found.
+     *
+     * @param <T>  the generic type
+     * @param type the type
+     * @return value
+     */
+    <T> T unique(Class<T> type);
 }

@@ -8,7 +8,7 @@ import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
  *
  * @author zhongj
  */
-public interface SqlRepositoryQueryFetch extends RepositoryQueryFetch {
+public interface RepositorySqlQueryFetch extends RepositoryQueryFetch {
 
     //    /**
     //     * Join.

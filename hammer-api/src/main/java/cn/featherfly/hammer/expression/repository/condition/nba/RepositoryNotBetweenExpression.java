@@ -13,6 +13,7 @@ import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFun
 import cn.featherfly.common.function.serializable.SerializableToLocalTimeFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -38,7 +39,9 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param max  the max
      * @return LogicExpression
      */
-    <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max);
+    default <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max);
+    }
 
     /**
      * not between and.
@@ -51,7 +54,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max, IgnoreStrategy ignoreStrategy);
+    default <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     /**
      * not between and.
@@ -64,8 +70,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy);
+    default <T, N extends Number> L nba(SerializableToNumberFunction<T, N> name, N min, N max,
+            BiPredicate<N, N> ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -79,7 +87,9 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param max  the max
      * @return LogicExpression
      */
-    <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max);
+    default <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max);
+    }
 
     /**
      * not between and.
@@ -92,7 +102,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max, IgnoreStrategy ignoreStrategy);
+    default <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     /**
      * not between and.
@@ -105,7 +118,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
+    default <T, D extends Date> L nba(SerializableToDateFunction<T, D> name, D min, D max,
+            BiPredicate<D, D> ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -118,7 +134,9 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param max  the max
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max);
+    default <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max);
+    }
 
     /**
      * not between and.
@@ -130,7 +148,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy);
+    default <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     /**
      * not between and.
@@ -142,8 +163,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy);
+    default <T> L nba(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
+            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -156,7 +179,9 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param max  the max
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max);
+    default <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max);
+    }
 
     /**
      * not between and.
@@ -168,7 +193,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy);
+    default <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     /**
      * not between and.
@@ -180,8 +208,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy);
+    default <T> L nba(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
+            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -194,7 +224,9 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param max  the max
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max);
+    default <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max);
+    }
 
     /**
      * not between and.
@@ -206,8 +238,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
-            IgnoreStrategy ignoreStrategy);
+    default <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
+            IgnoreStrategy ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     /**
      * not between and.
@@ -219,8 +253,10 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
+    default <T> L nba(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     // **************************************************************************************************************
 
@@ -233,7 +269,9 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param max  the max
      * @return LogicExpression
      */
-    <T> L nba(SerializableToStringFunction<T> name, String min, String max);
+    default <T> L nba(SerializableToStringFunction<T> name, String min, String max) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max);
+    }
 
     /**
      * not between and.
@@ -245,7 +283,9 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToStringFunction<T> name, String min, String max, IgnoreStrategy ignoreStrategy);
+    default <T> L nba(SerializableToStringFunction<T> name, String min, String max, IgnoreStrategy ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 
     /**
      * not between and.
@@ -257,6 +297,8 @@ public interface RepositoryNotBetweenExpression<C extends ConditionExpression, L
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nba(SerializableToStringFunction<T> name, String min, String max, BiPredicate<String, String> ignoreStrategy);
-
+    default <T> L nba(SerializableToStringFunction<T> name, String min, String max,
+            BiPredicate<String, String> ignoreStrategy) {
+        return nba(LambdaUtils.getLambdaPropertyName(name), min, max, ignoreStrategy);
+    }
 }

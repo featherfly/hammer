@@ -14,7 +14,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQueryExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryValueExpression;
 
 /**
  * abstract entity sql query entity properties.
@@ -127,12 +127,8 @@ public abstract class AbstractEntitySqlQuery<R>
 
     @Override
     public long count() {
-        return new SqlQueryExpression(queryRelation.getJdbc(), sqlPageFactory,
+        return new RepositorySqlQueryValueExpression(queryRelation.getJdbc(), sqlPageFactory,
                 queryRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR),
-                queryRelation.getConfig()).longInt();
+                queryRelation.getConfig()).count();
     }
-
-    //    protected String getPropertyName(Serializable property) {
-    //        return LambdaUtils.getLambdaPropertyName(property);
-    //    }
 }

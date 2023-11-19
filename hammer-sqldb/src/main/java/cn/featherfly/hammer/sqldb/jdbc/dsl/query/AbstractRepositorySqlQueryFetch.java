@@ -15,6 +15,7 @@ import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryFetchFieldExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryValueExpression;
 
 /**
  * AbstractSqlQueryEntityProperties.
@@ -22,7 +23,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  * @param <Q> the element type
  */
-public abstract class AbstractSqlQueryFetch<Q> implements RepositoryQueryFetchFieldExpression<Q> {
+public abstract class AbstractRepositorySqlQueryFetch<Q> implements RepositoryQueryFetchFieldExpression<Q> {
 
     /** The jdbc. */
     protected Jdbc jdbc;
@@ -56,7 +57,7 @@ public abstract class AbstractSqlQueryFetch<Q> implements RepositoryQueryFetchFi
      * @param aliasManager     aliasManager
      * @param ignoreStrategy   the ignore strategy
      */
-    protected AbstractSqlQueryFetch(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
+    protected AbstractRepositorySqlQueryFetch(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName, String tableAlias,
             SqlPageFactory sqlPageFactory, AliasManager aliasManager, QueryConfig queryConfig) {
         //        AssertIllegalArgument.isNotNull(queryConfig, "queryConfig");
         this.jdbc = jdbc;
@@ -166,8 +167,8 @@ public abstract class AbstractSqlQueryFetch<Q> implements RepositoryQueryFetchFi
      * @return the e
      */
     public long count() {
-        return new SqlQueryExpression(jdbc, sqlPageFactory,
-                selectBuilder.clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR), queryConfig).longInt();
+        return new RepositorySqlQueryValueExpression(jdbc, sqlPageFactory,
+                selectBuilder.clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR), queryConfig).count();
     }
 
     /**

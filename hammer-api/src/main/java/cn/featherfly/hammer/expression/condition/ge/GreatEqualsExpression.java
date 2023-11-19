@@ -13,6 +13,7 @@ import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSuppl
 import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -32,38 +33,38 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * great equals. 大于等于.
      *
      * @param <N>   number type
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default <N extends Number> L ge(Field name, N value) {
-        return ge(name.name(), value);
+    default <N extends Number> L ge(Field field, N value) {
+        return ge(field.name(), value);
     }
 
     /**
      * great equals. 大于等于.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <N extends Number> L ge(Field name, N value, IgnoreStrategy ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default <N extends Number> L ge(Field field, N value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <N extends Number> L ge(Field name, N value, Predicate<N> ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default <N extends Number> L ge(Field field, N value, Predicate<N> ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -81,18 +82,20 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      *
      * @param <N>            number type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ge(String name, N value, IgnoreStrategy ignoreStrategy);
+    default <N extends Number> L ge(String name, N value, IgnoreStrategy ignoreStrategy) {
+        return ge(name, value, (Predicate<N>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
      *
      * @param <N>            number type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -104,38 +107,38 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * great equals. 大于等于.
      *
      * @param <D>   date type
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default <D extends Date> L ge(Field name, D value) {
-        return ge(name.name(), value);
+    default <D extends Date> L ge(Field field, D value) {
+        return ge(field.name(), value);
     }
 
     /**
      * great equals. 大于等于.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <D extends Date> L ge(Field name, D value, IgnoreStrategy ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default <D extends Date> L ge(Field field, D value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <D extends Date> L ge(Field name, D value, Predicate<D> ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default <D extends Date> L ge(Field field, D value, Predicate<D> ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -153,18 +156,20 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      *
      * @param <D>            date type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ge(String name, D value, IgnoreStrategy ignoreStrategy);
+    default <D extends Date> L ge(String name, D value, IgnoreStrategy ignoreStrategy) {
+        return ge(name, value, (Predicate<D>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
      *
      * @param <D>            date type
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -175,36 +180,36 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
     /**
      * great equals. 大于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L ge(Field name, LocalTime value) {
-        return ge(name.name(), value);
+    default L ge(Field field, LocalTime value) {
+        return ge(field.name(), value);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, LocalTime value, IgnoreStrategy ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default L ge(Field field, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default L ge(Field field, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -220,17 +225,19 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(String name, LocalTime value, IgnoreStrategy ignoreStrategy);
+    default L ge(String name, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return ge(name, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -241,36 +248,36 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
     /**
      * great equals. 大于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L ge(Field name, LocalDate value) {
-        return ge(name.name(), value);
+    default L ge(Field field, LocalDate value) {
+        return ge(field.name(), value);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, LocalDate value, IgnoreStrategy ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default L ge(Field field, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default L ge(Field field, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -286,17 +293,19 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(String name, LocalDate value, IgnoreStrategy ignoreStrategy);
+    default L ge(String name, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return ge(name, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -307,36 +316,36 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
     /**
      * great equals. 大于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L ge(Field name, LocalDateTime value) {
-        return ge(name.name(), value);
+    default L ge(Field field, LocalDateTime value) {
+        return ge(field.name(), value);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default L ge(Field field, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return ge(name.name(), value, ignoreStrategy);
+    default L ge(Field field, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        return ge(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -352,17 +361,19 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy);
+    default L ge(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return ge(name, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -373,36 +384,36 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
     /**
      * great equals. 大于等于.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
-    default L ge(Field name, String value) {
-        return ge(name.name(), value);
+    default L ge(Field field, String value) {
+        return ge(field.name(), value);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return ge(name.name(), value);
+    default L ge(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.name(), value);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param field          the field
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ge(Field name, String value, Predicate<String> ignoreStrategy) {
-        return ge(name.name(), value);
+    default L ge(Field field, String value, Predicate<String> ignoreStrategy) {
+        return ge(field.name(), value);
     }
 
     /**
@@ -418,21 +429,243 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(String name, String value, IgnoreStrategy ignoreStrategy);
+    default L ge(String name, String value, IgnoreStrategy ignoreStrategy) {
+        return ge(name, value, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
      *
      * @param name           参数名称
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ge(String name, String value, Predicate<String> ignoreStrategy);
+
+    // ****************************************************************************************************************************
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <N>   number type
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <N extends Number> L ge(AliasField field, N value) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <N>            number type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L ge(AliasField field, N value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <N>            number type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L ge(AliasField field, N value, Predicate<N> ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <D>   date type
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <D extends Date> L ge(AliasField field, D value) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <D>            date type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L ge(AliasField field, D value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <D>            date type
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L ge(AliasField field, D value, Predicate<D> ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalTime value) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalDate value) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalDateTime value) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        return ge(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, String value) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return ge(field.getAliasOrName(), value);
+    }
+
+    // ****************************************************************************************************************************
 
     /**
      * great equals. 大于等于.
@@ -451,7 +684,9 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ge(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy);
+    default <N extends Number> L ge(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
+        return ge(property, (Predicate<N>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
@@ -480,7 +715,9 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ge(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy);
+    default <D extends Date> L ge(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy) {
+        return ge(property, (Predicate<D>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
@@ -507,7 +744,9 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy);
+    default L ge(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ge(property, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
@@ -533,7 +772,9 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy);
+    default L ge(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ge(property, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
@@ -559,7 +800,9 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy);
+    default L ge(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ge(property, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.
@@ -585,7 +828,9 @@ public interface GreatEqualsExpression<C extends ConditionExpression, L extends 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy);
+    default L ge(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ge(property, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * great equals. 大于等于.

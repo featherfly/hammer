@@ -528,7 +528,7 @@ public class NotEqualsEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     @Override
     public void accept(SerializableIntSupplier property) {
-        property(property).value(property.get());
+        property(property).value(property.getAsInt());
     }
 
     /**
@@ -536,7 +536,7 @@ public class NotEqualsEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     @Override
     public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        property(property).value(property.get(), ignoreStrategy);
+        property(property).value(property.getAsInt(), ignoreStrategy);
     }
 
     /**
@@ -544,7 +544,7 @@ public class NotEqualsEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     @Override
     public void accept(SerializableLongSupplier property) {
-        property(property).value(property.get());
+        property(property).value(property.getAsLong());
     }
 
     /**
@@ -552,7 +552,7 @@ public class NotEqualsEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     @Override
     public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        property(property).value(property.get(), ignoreStrategy);
+        property(property).value(property.getAsLong(), ignoreStrategy);
     }
 
     /**
@@ -560,7 +560,7 @@ public class NotEqualsEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     @Override
     public void accept(SerializableDoubleSupplier property) {
-        property(property).value(property.get());
+        property(property).value(property.getAsDouble());
     }
 
     /**
@@ -568,7 +568,7 @@ public class NotEqualsEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     @Override
     public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        property(property).value(property.get(), ignoreStrategy);
+        property(property).value(property.getAsDouble(), ignoreStrategy);
     }
 
     /**

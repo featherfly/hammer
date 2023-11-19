@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -435,5 +436,220 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
      * @return LogicExpression
      */
     <R> L ni(String name, R value, Predicate<R> ignoreStrategy);
+
+    // ******************************************************************************************************************************
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, int... values) {
+        return ni(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, int value, IntPredicate ignoreStrategy) {
+        return ni(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, int[] values, Predicate<int[]> ignoreStrategy) {
+        return ni(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, long... values) {
+        return ni(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, long value, LongPredicate ignoreStrategy) {
+        return ni(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, long[] values, Predicate<long[]> ignoreStrategy) {
+        return ni(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, double... values) {
+        return ni(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, double value, DoublePredicate ignoreStrategy) {
+        return ni(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, double[] values, Predicate<double[]> ignoreStrategy) {
+        return ni(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, String... values) {
+        return ni(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field         the field
+     * @param values        the values
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, String[] values, MatchStrategy matchStrategy) {
+        return ni(field.getAliasOrName(), values, matchStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, String value, Predicate<String> ignoreStrategy) {
+        return ni(field.getAliasOrName(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ni(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, String[] values, Predicate<String[]> ignoreStrategy) {
+        return ni(field.getAliasOrName(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(AliasField field, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
+        return ni(field.getAliasOrName(), values, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default <R> L ni(AliasField field, R value) {
+        return ni(field.getAliasOrName(), value);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default <R> L ni(AliasField field, @SuppressWarnings("unchecked") R... values) {
+        return ni(field.getAliasOrName(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R>            the generic type
+     * @param field          the field
+     * @param value          参数值
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L ni(AliasField field, R value, Predicate<R> ignoreStrategy) {
+        return ni(field.getAliasOrName(), value, ignoreStrategy);
+    }
 
 }

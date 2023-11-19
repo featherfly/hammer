@@ -1,14 +1,7 @@
 
-package cn.featherfly.hammer.sqldb.jdbc.dsl.query;
+package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,37 +11,44 @@ import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
-import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
-import cn.featherfly.hammer.sqldb.sql.dml.AbstractSqlConditionGroupExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractRepositorySqlConditionsGroupExpression;
 
 /**
  * sql query condition group expression. sql查询条件组表达式.
  *
  * @author zhongj
  */
-public abstract class SqlQueryConditionGroupExpression extends
-        AbstractSqlConditionGroupExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic,
-                QueryConditionConfig>
-        implements RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, QuerySortExpression {
+public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extends
+        AbstractRepositorySqlConditionsGroupExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, QueryConditionConfig>
+        implements RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, RepositoryQuerySortExpression,
+        RepositoryQuerySortedExpression {
 
     /** The sort builder. */
-    private SqlSortBuilder sortBuilder = new SqlSortBuilder(dialect);
+    private SqlSortBuilder sortBuilder;
 
     /** The limit. */
     private Limit limit;
+
+    /** The sql page factory. */
+    protected SqlPageFactory sqlPageFactory;
+
+    /** The jdbc. */
+    protected Jdbc jdbc;
 
     /**
      * Instantiates a new sql query condition group expression.
@@ -57,7 +57,7 @@ public abstract class SqlQueryConditionGroupExpression extends
      * @param sqlPageFactory       the sql page factory
      * @param queryConditionConfig the query condition config
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+    public AbstractRepositorySqlQueryConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
             QueryConditionConfig queryConditionConfig) {
         this(jdbc, sqlPageFactory, null, queryConditionConfig);
     }
@@ -70,8 +70,8 @@ public abstract class SqlQueryConditionGroupExpression extends
      * @param queryAlias           queryAlias
      * @param queryConditionConfig the query condition config
      */
-    public SqlQueryConditionGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            QueryConditionConfig queryConditionConfig) {
+    public AbstractRepositorySqlQueryConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+            String queryAlias, QueryConditionConfig queryConditionConfig) {
         this(null, jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
     }
 
@@ -84,18 +84,13 @@ public abstract class SqlQueryConditionGroupExpression extends
      * @param queryAlias           queryAlias
      * @param queryConditionConfig the query condition config
      */
-    SqlQueryConditionGroupExpression(QueryConditionGroupLogicExpression parent, Jdbc jdbc,
+    AbstractRepositorySqlQueryConditionsGroupExpression(RepositoryQueryConditionsGroupLogic parent, Jdbc jdbc,
             SqlPageFactory sqlPageFactory, String queryAlias, QueryConditionConfig queryConditionConfig) {
-        super(parent, jdbc.getDialect(), sqlPageFactory, queryAlias, queryConditionConfig);
+        super(parent, jdbc.getDialect(), new AliasManager(), queryAlias, queryConditionConfig);
+        this.sqlPageFactory = sqlPageFactory;
         this.jdbc = jdbc;
+        sortBuilder = new SqlSortBuilder(dialect);
     }
-
-    // ********************************************************************
-    // property
-    // ********************************************************************
-
-    /** The jdbc. */
-    protected Jdbc jdbc;
 
     //    /**
     //     * {@inheritDoc}
@@ -110,16 +105,17 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public String build() {
-        String condition = super.build();
+    public String expression() {
+        String condition = super.expression();
         if (parent == null) {
             if (Lang.isNotEmpty(condition)) {
-                return dialect.getKeywords().where() + Chars.SPACE + super.build() + Chars.SPACE + sortBuilder.build();
+                return dialect.getKeywords().where() + Chars.SPACE + super.expression() + Chars.SPACE
+                        + sortBuilder.build();
             } else {
-                return super.build() + Chars.SPACE + sortBuilder.build();
+                return super.expression() + Chars.SPACE + sortBuilder.build();
             }
         } else {
-            return super.build();
+            return super.expression();
         }
     }
     //
@@ -409,118 +405,6 @@ public abstract class SqlQueryConditionGroupExpression extends
         return jdbc.queryUnique(sql, rowMapper, params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String string() {
-        return jdbc.queryString(getRoot().expression(), getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Date date() {
-        return jdbc.queryValue(getRoot().expression(), Date.class, getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public LocalDate localDate() {
-        return jdbc.queryValue(getRoot().expression(), LocalDate.class, getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public LocalDateTime localDateTime() {
-        return jdbc.queryValue(getRoot().expression(), LocalDateTime.class, getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public LocalTime localTime() {
-        return jdbc.queryValue(getRoot().expression(), LocalTime.class, getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Timestamp timestamp() {
-        return jdbc.queryValue(getRoot().expression(), Timestamp.class, getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public byte[] bytes() {
-        return jdbc.queryBytes(getRoot().expression(), getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Clob clob() {
-        return jdbc.queryValue(getRoot().expression(), Clob.class, getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Blob blob() {
-        return jdbc.queryValue(getRoot().expression(), Blob.class, getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean bool() {
-        return jdbc.queryBool(getRoot().expression(), getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public byte byteValue() {
-        return jdbc.queryByte(getRoot().expression(), getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public short shortValue() {
-        return jdbc.queryShort(getRoot().expression(), getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int intValue() {
-        return jdbc.queryInt(getRoot().expression(), getRoot().getParams().toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long longValue() {
-        return jdbc.queryLong(getRoot().expression(), getRoot().getParams().toArray());
-    }
-
     //    /**
     //     * {@inheritDoc}
     //     */
@@ -553,14 +437,6 @@ public abstract class SqlQueryConditionGroupExpression extends
     //        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
     //    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> T value(Class<T> type) {
-        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
-    }
-
     //    /**
     //     * {@inheritDoc}
     //     */
@@ -573,7 +449,7 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QuerySortExpression sort() {
+    public RepositoryQuerySortExpression sort() {
         return this;
     }
 
@@ -581,8 +457,8 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QuerySortExpression asc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
+    public RepositoryQuerySortedExpression asc(String... names) {
+        ((AbstractRepositorySqlQueryConditionsGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -590,8 +466,8 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QuerySortExpression asc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.asc(names);
+    public RepositoryQuerySortedExpression asc(List<String> names) {
+        ((AbstractRepositorySqlQueryConditionsGroupExpression) getRoot()).sortBuilder.asc(names);
         return this;
     }
 
@@ -599,7 +475,7 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QuerySortExpression asc(SerializableFunction<T, R> name) {
+    public <T, R> RepositoryQuerySortedExpression asc(SerializableFunction<T, R> name) {
         return asc(getPropertyName(name));
     }
 
@@ -607,7 +483,8 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QuerySortExpression asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+    public <T,
+            R> RepositoryQuerySortedExpression asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return asc(nameArray);
@@ -617,8 +494,8 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QuerySortExpression desc(String... names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
+    public RepositoryQuerySortedExpression desc(String... names) {
+        ((AbstractRepositorySqlQueryConditionsGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 
@@ -626,8 +503,8 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public QuerySortExpression desc(List<String> names) {
-        ((SqlQueryConditionGroupExpression) getRoot()).sortBuilder.desc(names);
+    public RepositoryQuerySortedExpression desc(List<String> names) {
+        ((AbstractRepositorySqlQueryConditionsGroupExpression) getRoot()).sortBuilder.desc(names);
         return this;
     }
 
@@ -635,7 +512,7 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QuerySortExpression desc(SerializableFunction<T, R> name) {
+    public <T, R> RepositoryQuerySortedExpression desc(SerializableFunction<T, R> name) {
         return desc(getPropertyName(name));
     }
 
@@ -643,9 +520,23 @@ public abstract class SqlQueryConditionGroupExpression extends
      * {@inheritDoc}
      */
     @Override
-    public <T, R> QuerySortExpression desc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+    public <T, R> RepositoryQuerySortedExpression desc(
+            @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return desc(nameArray);
+    }
+
+    // ********************************************************************************************************************************
+    //	property
+    // ********************************************************************************************************************************
+
+    /**
+     * Gets the query alias.
+     *
+     * @return the query alias
+     */
+    public String getQueryAlias() {
+        return getRepositoryAlias();
     }
 }

@@ -13,20 +13,29 @@ import cn.featherfly.hammer.expression.api.entity.QueryRelate;
  * query related expression.
  *
  * @author zhongj
- * @param <J1>  the first join type
- * @param <J2>  the second join type
- * @param <QR>  the generic type
- * @param <QRF> the generic type
+ * @param <R> the generic type
+ * @param <Q> the generic type
  */
-public interface QueryRelatedExpression<QR extends QueryRelate<QRF>, QRF> {
+public interface QueryRelatedExpression<R extends QueryRelate<Q>, Q> {
     // TODO 后续来加入其他方式
+
     /**
-     * On.
+     * on.
      *
-     * @param <P>                 the generic type
-     * @param field               the field
-     * @param joinRepositoryField the join repository field
-     * @return the re
+     * @param joinRepositoryField the join repository field name (use repository
+     *                            name with method argu join(repository))
+     * @return QueryRelate
      */
-    <P> QR on(String field, String joinRepositoryField);
+    R on(String joinRepositoryField);
+
+    /**
+     * on.
+     *
+     * @param joinRepositoryField   the join repository field name (use
+     *                              repository name with method argu
+     *                              join(repository))
+     * @param sourceRepositoryField the join from repository field name
+     * @return QueryRelate
+     */
+    R on(String sourceRepositoryField, String joinRepositoryField);
 }

@@ -36,7 +36,7 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqldbConditionExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionExpression;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 
 /**
@@ -47,7 +47,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiEntityConditionExpression<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractSqldbConditionExpression
+        L extends LogicExpression<C, L>> extends AbstractSqlConditionExpression
         implements InternalMulitiEntityCondition<L>, MulitiEntityConditionExpression {
 
     /**

@@ -14,6 +14,13 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -1911,6 +1918,697 @@ public class UserQueryConditionGroupExpression
     public QuerySortExpression sort() {
 
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression co(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression nco(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ew(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression newv(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression newv(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression newv(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> QueryConditionGroupLogicExpression eq(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> QueryConditionGroupLogicExpression eq(SerializableSupplier<R> property, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> QueryConditionGroupLogicExpression ne(SerializableSupplier<R> property, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> QueryConditionGroupLogicExpression ne(SerializableSupplier<R> property, MatchStrategy matchStrategy,
+            Predicate<R> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression ge(SerializableNumberSupplier<N> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression ge(SerializableNumberSupplier<N> property,
+            Predicate<N> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression ge(SerializableDateSupplier<D> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression ge(SerializableDateSupplier<D> property,
+            Predicate<D> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableLocalTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableLocalTimeSupplier property,
+            Predicate<LocalTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableLocalDateSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableLocalDateSupplier property,
+            Predicate<LocalDate> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableLocalDateTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableLocalDateTimeSupplier property,
+            Predicate<LocalDateTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableStringSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression ge(SerializableStringSupplier property,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression gt(SerializableNumberSupplier<N> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression gt(SerializableNumberSupplier<N> property,
+            Predicate<N> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression gt(SerializableDateSupplier<D> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression gt(SerializableDateSupplier<D> property,
+            Predicate<D> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableLocalTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableLocalTimeSupplier property,
+            Predicate<LocalTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableLocalDateSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableLocalDateSupplier property,
+            Predicate<LocalDate> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableLocalDateTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableLocalDateTimeSupplier property,
+            Predicate<LocalDateTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableStringSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression gt(SerializableStringSupplier property,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression le(SerializableNumberSupplier<N> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression le(SerializableNumberSupplier<N> property,
+            Predicate<N> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression le(SerializableDateSupplier<D> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression le(SerializableDateSupplier<D> property,
+            Predicate<D> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableLocalTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableLocalTimeSupplier property,
+            Predicate<LocalTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableLocalDateSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableLocalDateSupplier property,
+            Predicate<LocalDate> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableLocalDateTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableLocalDateTimeSupplier property,
+            Predicate<LocalDateTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableStringSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression le(SerializableStringSupplier property,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression lt(SerializableNumberSupplier<N> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> QueryConditionGroupLogicExpression lt(SerializableNumberSupplier<N> property,
+            Predicate<N> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression lt(SerializableDateSupplier<D> property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> QueryConditionGroupLogicExpression lt(SerializableDateSupplier<D> property,
+            Predicate<D> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableLocalTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableLocalTimeSupplier property,
+            Predicate<LocalTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableLocalDateSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableLocalDateSupplier property,
+            Predicate<LocalDate> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableLocalDateTimeSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableLocalDateTimeSupplier property,
+            Predicate<LocalDateTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableStringSupplier property) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lt(SerializableStringSupplier property,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression sw(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression nsw(SerializableStringSupplier propertyValue,
+            MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lk(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression lk(SerializableStringSupplier property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression nl(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConditionGroupLogicExpression nl(SerializableStringSupplier property, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double doubleValue() {
+        // YUFEI_TODO Auto-generated method stub
+        return 0;
     }
 
 }

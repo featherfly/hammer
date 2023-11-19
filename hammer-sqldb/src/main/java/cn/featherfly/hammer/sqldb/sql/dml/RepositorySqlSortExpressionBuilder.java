@@ -5,29 +5,29 @@ import java.util.List;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlOrderByBasicBuilder;
+import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
-import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 
 /**
- * <p>
- * sql sort builder
- * </p>
+ * repository sql sort expression builder.
  *
  * @author zhongj
  */
-public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSortExpressionBuilder>, SqlBuilder {
+public class RepositorySqlSortExpressionBuilder implements RepositorySortExpression<RepositorySqlSortExpressionBuilder>,
+        RepositorySortedExpression<RepositorySqlSortExpressionBuilder>, SqlBuilder {
 
     private SqlOrderByBasicBuilder orderByBuilder;
 
     private String tableAlias;
 
-    public SqlSortExpressionBuilder(Dialect dialect) {
+    public RepositorySqlSortExpressionBuilder(Dialect dialect) {
         this(dialect, null);
     }
 
-    public SqlSortExpressionBuilder(Dialect dialect, String tableAlias) {
+    public RepositorySqlSortExpressionBuilder(Dialect dialect, String tableAlias) {
         orderByBuilder = new SqlOrderByBasicBuilder(dialect);
         this.tableAlias = tableAlias;
     }
@@ -36,7 +36,7 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public SqlSortExpressionBuilder asc(String... names) {
+    public RepositorySqlSortExpressionBuilder asc(String... names) {
         for (String name : names) {
             orderByBuilder.addAsc(name, tableAlias);
         }
@@ -47,7 +47,7 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public SqlSortExpressionBuilder asc(List<String> names) {
+    public RepositorySqlSortExpressionBuilder asc(List<String> names) {
         for (String name : names) {
             orderByBuilder.addAsc(name, tableAlias);
         }
@@ -58,7 +58,7 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public <T, R> SqlSortExpressionBuilder asc(SerializableFunction<T, R> name) {
+    public <T, R> RepositorySqlSortExpressionBuilder asc(SerializableFunction<T, R> name) {
         return asc(LambdaUtils.getLambdaPropertyName(name));
     }
 
@@ -66,7 +66,8 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public <T, R> SqlSortExpressionBuilder asc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+    public <T, R> RepositorySqlSortExpressionBuilder asc(
+            @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return asc(nameArray);
@@ -76,7 +77,7 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public SqlSortExpressionBuilder desc(String... names) {
+    public RepositorySqlSortExpressionBuilder desc(String... names) {
         for (String name : names) {
             orderByBuilder.addDesc(name, tableAlias);
         }
@@ -87,7 +88,7 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public SqlSortExpressionBuilder desc(List<String> names) {
+    public RepositorySqlSortExpressionBuilder desc(List<String> names) {
         for (String name : names) {
             orderByBuilder.addDesc(name, tableAlias);
         }
@@ -98,7 +99,7 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public <T, R> SqlSortExpressionBuilder desc(SerializableFunction<T, R> name) {
+    public <T, R> RepositorySqlSortExpressionBuilder desc(SerializableFunction<T, R> name) {
         return desc(LambdaUtils.getLambdaPropertyName(name));
     }
 
@@ -106,7 +107,8 @@ public class SqlSortExpressionBuilder implements RepositorySortExpression<SqlSor
      * {@inheritDoc}
      */
     @Override
-    public <T, R> SqlSortExpressionBuilder desc(@SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+    public <T, R> RepositorySqlSortExpressionBuilder desc(
+            @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
                 .toArray(value -> new String[value]);
         return desc(nameArray);

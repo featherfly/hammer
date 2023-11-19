@@ -4,6 +4,7 @@ package cn.featherfly.hammer.expression.repository.condition.ew;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -67,7 +68,9 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
+    default <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return ew(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
+    }
 
     /**
      * end with value. 以value结尾.
@@ -79,8 +82,10 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy);
+    default <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return ew(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * end with value. 以value结尾.
@@ -92,7 +97,9 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+    default <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return ew(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
 
 }

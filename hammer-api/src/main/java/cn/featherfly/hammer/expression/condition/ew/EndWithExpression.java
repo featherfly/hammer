@@ -26,8 +26,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param value the value
      * @return LogicExpression
      */
-    default L ew(Field name, String value) {
-        return ew(name.name(), value);
+    default L ew(Field field, String value) {
+        return ew(field.name(), value);
     }
 
     /**
@@ -38,8 +38,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ew(Field name, String value, IgnoreStrategy ignoreStrategy) {
-        return ew(name.name(), value, ignoreStrategy);
+    default L ew(Field field, String value, IgnoreStrategy ignoreStrategy) {
+        return ew(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -50,8 +50,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ew(Field name, String value, Predicate<String> ignoreStrategy) {
-        return ew(name.name(), value, ignoreStrategy);
+    default L ew(Field field, String value, Predicate<String> ignoreStrategy) {
+        return ew(field.name(), value, ignoreStrategy);
     }
 
     /**
@@ -62,8 +62,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    default L ew(Field name, String value, MatchStrategy matchStrategy) {
-        return ew(name.name(), value, matchStrategy);
+    default L ew(Field field, String value, MatchStrategy matchStrategy) {
+        return ew(field.name(), value, matchStrategy);
     }
 
     /**
@@ -75,8 +75,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ew(Field name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return ew(name.name(), value, matchStrategy, ignoreStrategy);
+    default L ew(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return ew(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -88,8 +88,8 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L ew(Field name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return ew(name.name(), value, matchStrategy, ignoreStrategy);
+    default L ew(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ew(field.name(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -146,7 +146,9 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L ew(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return ew(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * end with value. 以value结尾.
@@ -208,7 +210,9 @@ public interface EndWithExpression<C extends ConditionExpression, L extends Logi
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
+    default L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        return ew(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * end with value. 以value结尾.

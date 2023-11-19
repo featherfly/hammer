@@ -34,8 +34,8 @@ public class SqlDeleteExpression extends SqlExecutableConditionGroupExpression<D
      * {@inheritDoc}
      */
     @Override
-    public String build() {
-        String condition = super.build();
+    public String expression() {
+        String condition = super.expression();
         if (parent == null) {
             if (Lang.isEmpty(condition)) {
                 switch (((DeleteConditionConfig) conditionConfig).getEmptyConditionStrategy()) {

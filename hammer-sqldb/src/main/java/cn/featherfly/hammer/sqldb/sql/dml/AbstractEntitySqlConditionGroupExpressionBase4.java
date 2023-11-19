@@ -326,7 +326,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableDoubleSupplier property) {
-        return eq(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
+        return eq(classMapping4, property, property.getAsDouble(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -334,7 +334,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return eq(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, property.getAsDouble(), queryAlias4, ignoreStrategy);
     }
 
     /**
@@ -358,7 +358,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableIntSupplier property) {
-        return eq(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
+        return eq(classMapping4, property, property.getAsInt(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -366,7 +366,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return eq(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, property.getAsInt(), queryAlias4, ignoreStrategy);
     }
 
     /**
@@ -422,7 +422,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableLongSupplier property) {
-        return eq(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
+        return eq(classMapping4, property, property.getAsLong(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -430,7 +430,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L eq4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return eq(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return eq(classMapping4, property, property.getAsLong(), queryAlias4, ignoreStrategy);
     }
 
     /**
@@ -684,7 +684,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableDoubleSupplier property) {
-        return ne(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
+        return ne(classMapping4, property, property.getAsDouble(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -692,7 +692,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return ne(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, property.getAsDouble(), queryAlias4, ignoreStrategy);
     }
 
     /**
@@ -716,7 +716,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableIntSupplier property) {
-        return ne(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
+        return ne(classMapping4, property, property.getAsInt(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -724,7 +724,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return ne(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, property.getAsInt(), queryAlias4, ignoreStrategy);
     }
 
     /**
@@ -780,7 +780,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableLongSupplier property) {
-        return ne(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
+        return ne(classMapping4, property, property.getAsLong(), queryAlias4, getIgnoreStrategy());
     }
 
     /**
@@ -788,7 +788,7 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      */
     @Override
     public L ne4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return ne(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
+        return ne(classMapping4, property, property.getAsLong(), queryAlias4, ignoreStrategy);
     }
 
     /**
@@ -3427,8 +3427,8 @@ public abstract class AbstractEntitySqlConditionGroupExpressionBase4<T1, T2, T3,
      * {@inheritDoc}
      */
     @Override
-    public L property(FourArgusFunction<EntityPropertyFunction<T1, C, L>, EntityPropertyFunction<T2, C, L>,
-            EntityPropertyFunction<T3, C, L>, EntityPropertyFunction<T4, C, L>, L> entitiesPropertyFunction) {
+    public L property(
+            FourArgusFunction<EntityPropertyFunction<T1, C, L>, EntityPropertyFunction<T2, C, L>, EntityPropertyFunction<T3, C, L>, EntityPropertyFunction<T4, C, L>, L> entitiesPropertyFunction) {
         return entitiesPropertyFunction.apply(new EntityPropertyFunctionImpl<>(0, this, factory, entityRelation),
                 new EntityPropertyFunctionImpl<>(1, this, factory, entityRelation),
                 new EntityPropertyFunctionImpl<>(2, this, factory, entityRelation),
