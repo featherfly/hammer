@@ -47,7 +47,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * not between and.
      *
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -70,7 +70,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * not between and.
      *
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -93,7 +93,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * not between and.
      *
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -118,7 +118,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <N>            number type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -143,7 +143,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <D>            date type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -168,7 +168,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the enum type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -191,7 +191,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * not between and.
      *
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -214,7 +214,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * not between and.
      *
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -237,7 +237,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * not between and.
      *
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -261,7 +261,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * not between and.
      *
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -850,7 +850,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -876,7 +876,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -902,7 +902,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -930,7 +930,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * @param <E>            the element type
      * @param <N>            number type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -958,7 +958,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * @param <E>            the element type
      * @param <D>            date type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -986,7 +986,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      * @param <T>            the generic type
      * @param <E>            the enum type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -1012,7 +1012,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -1038,7 +1038,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -1064,7 +1064,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -1090,7 +1090,7 @@ public interface MulitiNotBetweenExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy

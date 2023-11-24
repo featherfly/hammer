@@ -30,7 +30,7 @@ public interface EntityIsNotNullExpressionBase3<E, E2, E3, C extends ConditionEx
      * is not null.
      *
      * @param <R>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default <R> L inn3(SerializableFunction<E3, R> name) {

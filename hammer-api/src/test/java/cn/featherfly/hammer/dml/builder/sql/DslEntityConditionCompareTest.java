@@ -31,49 +31,99 @@ public class DslEntityConditionCompareTest {
 
     public void testEntityQueryJoinConditionEq() {
         // value property
-        query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).eq(1).list();
+        query.find(UserInfo.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(UserInfo::getId).eq(1) //
+                .list();
 
         // Embedded Object property
-        query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).eq(new Email("name", "host"))
+        query.find(User.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(User::getEmail).eq(new Email("name", "host")) //
                 .list(); // use and with object all none empty property
-        query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName)
-                .eq("name").and().property(User::getEmail).property(Email::getHost).eq("host").list();
+        query.find(User.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(User::getEmail).property(Email::getName).eq("name") //
+                .and() //
+                .property(User::getEmail).property(Email::getHost).eq("host") //
+                .list();
 
         // OneToOne or ManyToOne Object property
-        query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)
-                .eq("yufei").list();
-        query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo)
-                .eq(new UserInfo(1, "yufei", 18)).list(); // use and with object all none empty property
+        query.find(User.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(User::getUserInfo).property(UserInfo::getName).eq("yufei") //
+                .list();
+        query.find(User.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(User::getUserInfo).eq(new UserInfo(1, "yufei", 18)) //
+                .list(); // use and with object all none empty property
 
         // OneToMany Object property
-        query.find(User.class).join(User::getUserInfo).where().property(User::getDevices).property(Device::getCode)
-                .eq("device-001").list();
-        query.find(User.class).join(User::getUserInfo).where()
-                .eq((e0, e1) -> e0.property(User::getDevices).property(Device::getCode).value("device-001")).list();
-        query.find(Tree.class).join(Tree::getParent).where().eq((e0, e1) -> e0.property(Tree::getChildren)
-                .property(Tree::getChildren).property(Tree::getName).value("tree-001")).list();
-        query.find(Tree.class).join(Tree::getParent).where().eq((e0, e1) -> e0.property(Tree::getChildren)
-                .property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName).value("tree-001"))
+        query.find(User.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(User::getDevices).property(Device::getCode).eq("device-001") //
+                .list();
+        query.find(User.class) //
+                .join(User::getUserInfo) //
+                .where().eq((e0, e1) -> e0.property(User::getDevices).property(Device::getCode).value("device-001")) //
+                .list();
+        query.find(Tree.class) //
+                .join(Tree::getParent) //
+                .where() //
+                .eq((e0, e1) -> e0.property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName)
+                        .value("tree-001")) //
+                .list();
+        query.find(Tree.class) //
+                .join(Tree::getParent) //
+                .where()
+                .eq((e0, e1) -> e0.property(Tree::getChildren).property(Tree::getChildren).property(Tree::getChildren)
+                        .property(Tree::getName).value("tree-001")) //
                 .list();
 
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .eq(UserInfo::getId, 1, (IntPredicate) value -> ignore).list();
-
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .eq(es -> es.get0().property(UserInfo::getId).value(1)).list();
-        query.find(UserInfo.class).join(User::getUserInfo).where().eq((e0, e1) -> e0.property(UserInfo::getId).value(1))
+        query.find(UserInfo.class) //
+                .join(User::getUserInfo) //
+                .where().eq(UserInfo::getId, 1, (IntPredicate) value -> ignore) //
                 .list();
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .eq(es -> es.get1().property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
-        query.find(UserInfo.class).join(User::getUserInfo).where()
-                .eq((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
 
-        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .eq(es -> es.get0().accept(User2::getId, 1)).and()
-                .eq(es -> es.get1().accept(UserInfo2::getName, "yufei")).list();
+        query.find(UserInfo.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .eq(es -> es.get0().property(UserInfo::getId).value(1)) //
+                .list();
+        query.find(UserInfo.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .eq((e0, e1) -> e0.property(UserInfo::getId).value(1)) //
+                .list();
+        query.find(UserInfo.class) //
+                .join(User::getUserInfo) //
+                .where().eq(es -> es.get1().property(User::getUserInfo).property(UserInfo::getId).value(1)) //
+                .list();
+        query.find(UserInfo.class) //
+                .join(User::getUserInfo) //
+                .where().eq((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getId).value(1)) //
+                .list();
 
-        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .eq((e0, e1) -> e0.accept(User2::getId, 1)).and().eq((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
+        query.find(User2.class) //
+                .join(UserInfo2.class).on(UserInfo2::getUserId).fetch() //
+                .where() //
+                .eq(es -> es.get0().accept(User2::getId, 1)) //
+                .and() //
+                .eq(es -> es.get1().accept(UserInfo2::getName, "yufei")) //
+                .list();
+
+        query.find(User2.class) //
+                .join(UserInfo2.class).on(UserInfo2::getUserId).fetch() //
+                .where() //
+                .eq((e0, e1) -> e0.accept(User2::getId, 1)) //
+                .and() //
+                .eq((e0, e1) -> e1.accept(UserInfo2::getName, "yufei")) //
                 .list();
 
         query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
@@ -139,11 +189,20 @@ public class DslEntityConditionCompareTest {
 
     public void testEntityQueryJoinConditionGe() {
         // value property
-        query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).ge("yufei").list();
+        query.find(UserInfo.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(UserInfo::getName).ge("yufei") //
+                .list();
 
         // Embedded Object property
-        query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName)
-                .ge("name").and().property(User::getEmail).property(Email::getHost).ge("host").list();
+        query.find(User.class) //
+                .join(User::getUserInfo) //
+                .where() //
+                .property(User::getEmail).property(Email::getName).ge("name") //
+                .and() //
+                .property(User::getEmail).property(Email::getHost).ge("host") //
+                .list();
 
         // OneToOne or ManyToOne Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)

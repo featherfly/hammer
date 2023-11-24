@@ -50,8 +50,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -69,8 +69,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -88,8 +88,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -107,8 +107,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -155,8 +155,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -165,8 +165,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -175,8 +175,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -185,8 +185,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -206,8 +206,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
      * values not in. 不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -216,8 +216,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -226,8 +226,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -238,8 +238,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -248,8 +248,8 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression

@@ -55,8 +55,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -78,8 +78,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -101,8 +101,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -126,8 +126,8 @@
 //     * @param <E>            the element type
 //     * @param <N>            number type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -151,8 +151,8 @@
 //     * @param <T>            the generic type
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -176,8 +176,8 @@
 //     * @param <E>            the element type
 //     * @param <D>            date type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -199,8 +199,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -222,8 +222,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -245,8 +245,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -271,8 +271,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -285,8 +285,8 @@
 //     *
 //     * @param <E>           the element type
 //     * @param index         the index
-//     * @param name          参数名称
-//     * @param value         参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param matchStrategy the match strategy
 //     * @return LogicExpression
 //     */
@@ -297,8 +297,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param matchStrategy  the match strategy
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression

@@ -24,7 +24,7 @@ public interface SetValueInOrNotInExpression<V> {
     /**
      * Value.
      *
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -41,7 +41,7 @@ public interface SetValueInOrNotInExpression<V> {
     //    /**
     //     * Value,.
     //     *
-    //     * @param value        参数值
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -58,7 +58,7 @@ public interface SetValueInOrNotInExpression<V> {
     //    /**
     //     * Value,.
     //     *
-    //     * @param value        参数值
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

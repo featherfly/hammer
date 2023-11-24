@@ -32,7 +32,7 @@ public interface EntityIsNullExpressionBase5<E, E2, E3, E4, E5, C extends Condit
      * is null.
      *
      * @param <R>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default <R> L isn5(SerializableFunction<E5, R> name) {

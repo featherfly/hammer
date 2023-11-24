@@ -13,10 +13,7 @@ import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
- * <p>
- * sql condition expression sql 条件表达式
- * </p>
- * .
+ * sql condition expression builder.
  *
  * @author zhongj
  */
@@ -64,7 +61,6 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param queryAlias         查询别名
      * @param ignoreStrategy     the ignore strategy
      */
-    @SuppressWarnings("unchecked")
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
             ComparisonOperator comparisonOperator, MatchStrategy matchStrategy, String queryAlias,
             Predicate<?> ignoreStrategy) {
@@ -72,7 +68,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
         conditionColumnElement = new ConditionColumnElement(dialect, name, value, comparisonOperator, matchStrategy,
-                queryAlias, (Predicate<Object>) ignoreStrategy);
+                queryAlias, ignoreStrategy);
     }
 
     /**

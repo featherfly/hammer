@@ -9,6 +9,8 @@ import cn.featherfly.common.db.builder.model.UpdateColumnElement.SetType;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -29,15 +31,20 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /** The update config. */
     protected UpdateConfig updateConfig;
 
+    /** The alias manager. */
+    protected AliasManager aliasManager;
+
     /**
      * Instantiates a new sql executable update.
      *
      * @param tableName    tableName
      * @param jdbc         jdbc
+     * @param aliasManager the alias manager
      * @param updateConfig the update config
      */
-    protected AbstractSqlExecutableUpdate(String tableName, Jdbc jdbc, UpdateConfig updateConfig) {
-        this(tableName, null, jdbc, updateConfig);
+    protected AbstractSqlExecutableUpdate(String tableName, Jdbc jdbc, AliasManager aliasManager,
+            UpdateConfig updateConfig) {
+        this(tableName, null, jdbc, aliasManager, updateConfig);
     }
 
     /**
@@ -46,11 +53,17 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param tableName    tableName
      * @param tableAlias   the table alias
      * @param jdbc         jdbc
+     * @param aliasManager the alias manager
      * @param updateConfig the update config
      */
-    protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, UpdateConfig updateConfig) {
+    protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
+            UpdateConfig updateConfig) {
         this.jdbc = jdbc;
+        this.aliasManager = aliasManager;
         this.updateConfig = updateConfig.clone();
+        if (Lang.isEmpty(tableAlias)) {
+            tableAlias = aliasManager.put(tableName);
+        }
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias,
                 v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
         //        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias, this::test);
@@ -73,6 +86,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
+     * @param <O>   the generic type
      * @param name  the name
      * @param value the value
      * @return the u
@@ -84,6 +98,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
+     * @param <O>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -116,10 +131,9 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Increase.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
      * @return the u
      */
     protected <N extends Number> U increase0(String name, N value) {

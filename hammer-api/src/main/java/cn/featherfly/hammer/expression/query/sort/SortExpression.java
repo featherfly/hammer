@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
@@ -31,7 +32,9 @@ public interface SortExpression<S extends SortedExpression<S>> extends Expressio
      * @param names 名称
      * @return this
      */
-    S asc(List<String> names);
+    default S asc(List<String> names) {
+        return asc(CollectionUtils.toArray(names, String.class));
+    }
 
     /**
      * add asc field.
@@ -43,7 +46,7 @@ public interface SortExpression<S extends SortedExpression<S>> extends Expressio
         if (Lang.isEmpty(fields)) {
             return asc(ArrayUtils.EMPTY_STRING_ARRAY);
         }
-        return asc(Arrays.stream(fields).map(Field::name).toArray(num -> ArrayUtils.create(Field.class, num)));
+        return asc(Arrays.stream(fields).map(Field::name).toArray(num -> ArrayUtils.create(String.class, num)));
     }
 
     /**
@@ -57,7 +60,7 @@ public interface SortExpression<S extends SortedExpression<S>> extends Expressio
             return asc(ArrayUtils.EMPTY_STRING_ARRAY);
         }
         return asc(Arrays.stream(fields).map(AliasField::getAliasOrName)
-                .toArray(num -> ArrayUtils.create(Field.class, num)));
+                .toArray(num -> ArrayUtils.create(String.class, num)));
     }
 
     /**
@@ -74,7 +77,9 @@ public interface SortExpression<S extends SortedExpression<S>> extends Expressio
      * @param names 名称
      * @return this
      */
-    S desc(List<String> names);
+    default S desc(List<String> names) {
+        return desc(CollectionUtils.toArray(names, String.class));
+    }
 
     /**
      * add desc field.
@@ -86,7 +91,7 @@ public interface SortExpression<S extends SortedExpression<S>> extends Expressio
         if (Lang.isEmpty(fields)) {
             return desc(ArrayUtils.EMPTY_STRING_ARRAY);
         }
-        return desc(Arrays.stream(fields).map(Field::name).toArray(num -> ArrayUtils.create(Field.class, num)));
+        return desc(Arrays.stream(fields).map(Field::name).toArray(num -> ArrayUtils.create(String.class, num)));
     }
 
     /**
@@ -100,6 +105,6 @@ public interface SortExpression<S extends SortedExpression<S>> extends Expressio
             return desc(ArrayUtils.EMPTY_STRING_ARRAY);
         }
         return desc(Arrays.stream(fields).map(AliasField::getAliasOrName)
-                .toArray(num -> ArrayUtils.create(Field.class, num)));
+                .toArray(num -> ArrayUtils.create(String.class, num)));
     }
 }

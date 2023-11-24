@@ -10,7 +10,7 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExp
  *
  * @author zhongj
  */
-public interface RepositoryQuerySortedExpression
-        extends RepositorySortedExpression<RepositoryQuerySortedExpression>, QueryConditionLimit, QueryLimitExecutor {
+public interface RepositoryQuerySortedExpression extends RepositorySortedExpression<RepositoryQuerySortedExpression>,
+        QueryConditionLimit<QueryLimitExecutor>, QueryLimitExecutor {
 
 }

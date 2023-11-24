@@ -196,7 +196,13 @@ public class TplExecuteConfig {
      * @return the file path
      */
     public String getFilePath() {
-        return fileDirectory + "/" + fileName;
+        final String extClass = ".class";
+        if (fileName.endsWith(extClass)) {
+            int i = fileName.length() - extClass.length();
+            return new StringBuilder(fileName.replaceAll("\\.", "/")).replace(i, i + 1, ".").toString();
+        } else {
+            return fileDirectory + "/" + fileName;
+        }
     }
 
     /**

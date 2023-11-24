@@ -23,9 +23,11 @@ import cn.featherfly.hammer.expression.condition.nsw.NotStartWithExpression;
 import cn.featherfly.hammer.expression.condition.sw.StartWithExpression;
 
 /**
- * all condition expression.
+ * all conditions expression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface ConditionsExpression<C extends ConditionsExpression<C, L>, L extends ConditionsLogicExpression<C, L>>
         extends BetweenExpression<C, L>, NotBetweenExpression<C, L> //

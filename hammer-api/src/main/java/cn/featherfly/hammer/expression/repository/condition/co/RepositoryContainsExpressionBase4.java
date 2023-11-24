@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -25,38 +26,41 @@ public interface RepositoryContainsExpressionBase4<C extends ConditionExpression
      * contains value. 包含value.
      *
      * @param <T>   the generic type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
-    default <T> L co4(SerializableToStringFunction<T> name, String value) {
-        return co4(name, value, MatchStrategy.AUTO);
+    @Override
+    default <T> L co(SerializableToStringFunction<T> name, String value) {
+        return co(name, value, MatchStrategy.AUTO);
     }
 
     /**
      * contains value. 包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <T> L co4(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
-        return co4(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    @Override
+    default <T> L co(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
+        return co(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
      * contains value. 包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <T> L co4(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
-        return co4(name, value, MatchStrategy.AUTO, ignoreStrategy);
+    @Override
+    default <T> L co(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
+        return co(name, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -68,7 +72,10 @@ public interface RepositoryContainsExpressionBase4<C extends ConditionExpression
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    <T> L co4(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
+    @Override
+    default <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return co(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
+    }
 
     /**
      * contains value. 包含value.
@@ -80,8 +87,11 @@ public interface RepositoryContainsExpressionBase4<C extends ConditionExpression
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L co4(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy);
+    @Override
+    default <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return co(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * contains value. 包含value.
@@ -93,67 +103,20 @@ public interface RepositoryContainsExpressionBase4<C extends ConditionExpression
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L co4(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    default L co4(SerializableStringSupplier propertyValue) {
-        return co4(propertyValue, MatchStrategy.AUTO);
+    @Override
+    default <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return co(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L co4(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return co4(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    @Override
+    default L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return co(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
     }
 
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L co4(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return co4(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    @Override
+    default L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return co(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue the property value
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L co4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L co4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L co4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

@@ -34,6 +34,7 @@ import cn.featherfly.hammer.expression.condition.MulitiConditionExpression;
  * internal muliti condition.
  *
  * @author zhongj
+ * @param <L> the generic type
  */
 public interface InternalMulitiCondition<L> extends MulitiConditionExpression, IgnorableExpression {
     /**

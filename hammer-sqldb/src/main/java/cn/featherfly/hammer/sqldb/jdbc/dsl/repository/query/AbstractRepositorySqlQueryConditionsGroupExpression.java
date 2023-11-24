@@ -14,7 +14,6 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
-import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
@@ -26,6 +25,7 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExp
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractRepositorySqlConditionsGroupExpression;
 
 /**
@@ -34,7 +34,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractReposito
  * @author zhongj
  */
 public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extends
-        AbstractRepositorySqlConditionsGroupExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, QueryConditionConfig>
+        AbstractRepositorySqlConditionsGroupExpression<RepositoryQueryConditionsGroup,
+                RepositoryQueryConditionsGroupLogic, QueryConditionConfig>
         implements RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, RepositoryQuerySortExpression,
         RepositoryQuerySortedExpression {
 
@@ -50,6 +51,9 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
     /** The jdbc. */
     protected Jdbc jdbc;
 
+    /** The query relation. */
+    protected RepositorySqlQueryRelation queryRelation;
+
     /**
      * Instantiates a new sql query condition group expression.
      *
@@ -57,7 +61,7 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
      * @param sqlPageFactory       the sql page factory
      * @param queryConditionConfig the query condition config
      */
-    public AbstractRepositorySqlQueryConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+    protected AbstractRepositorySqlQueryConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
             QueryConditionConfig queryConditionConfig) {
         this(jdbc, sqlPageFactory, null, queryConditionConfig);
     }
@@ -70,7 +74,7 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
      * @param queryAlias           queryAlias
      * @param queryConditionConfig the query condition config
      */
-    public AbstractRepositorySqlQueryConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+    protected AbstractRepositorySqlQueryConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
             String queryAlias, QueryConditionConfig queryConditionConfig) {
         this(null, jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
     }
@@ -86,20 +90,17 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
      */
     AbstractRepositorySqlQueryConditionsGroupExpression(RepositoryQueryConditionsGroupLogic parent, Jdbc jdbc,
             SqlPageFactory sqlPageFactory, String queryAlias, QueryConditionConfig queryConditionConfig) {
-        super(parent, jdbc.getDialect(), new AliasManager(), queryAlias, queryConditionConfig);
+        this(parent, jdbc, sqlPageFactory, new AliasManager(), queryAlias, queryConditionConfig);
+    }
+
+    private AbstractRepositorySqlQueryConditionsGroupExpression(RepositoryQueryConditionsGroupLogic parent, Jdbc jdbc,
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, String queryAlias,
+            QueryConditionConfig queryConditionConfig) {
+        super(parent, jdbc.getDialect(), aliasManager, queryAlias, queryConditionConfig);
         this.sqlPageFactory = sqlPageFactory;
         this.jdbc = jdbc;
         sortBuilder = new SqlSortBuilder(dialect);
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    protected QueryConditionGroupExpression createGroup(QueryConditionGroupLogicExpression parent, String queryAlias,
-    //            TypeQueryEntity typeQueryEntity) {
-    //        return new SqlQueryConditionGroupExpression(parent, jdbc, sqlPageFactory, queryAlias, ignoreStrategy);
-    //    }
 
     /**
      * {@inheritDoc}
@@ -133,33 +134,7 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
      * {@inheritDoc}
      */
     @Override
-    public QueryLimitExecutor limit(Integer limit) {
-        return limit(0, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Integer offset, Integer limit) {
-        return limit(new Limit(offset, limit));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Page page) {
-        return limit(new Limit(page));
-    }
-
-    /**
-     * Limit.
-     *
-     * @param limit the limit
-     * @return the query limit executor
-     */
-    private QueryLimitExecutor limit(Limit limit) {
+    public QueryLimitExecutor limit(Limit limit) {
         this.limit = limit;
         return this;
     }
@@ -176,8 +151,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, params);
     }
@@ -194,8 +167,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, type, params);
     }
@@ -212,8 +183,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, rowMapper, params);
     }
@@ -231,9 +200,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
             SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
                     params);
             List<Map<String, Object>> list = jdbc.query(pageQuery.getSql(), pageQuery.getParams());
-            //            List<Map<String, Object>> list = jdbc.query(
-            //                    dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
-            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -258,8 +224,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
             SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
                     params);
             List<E> list = jdbc.query(pageQuery.getSql(), type, pageQuery.getParams());
-            //            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), type,
-            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -284,8 +248,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
             SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
                     params);
             List<E> list = jdbc.query(pageQuery.getSql(), rowMapper, pageQuery.getParams());
-            //            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), rowMapper,
-            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -309,8 +271,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, params);
     }
@@ -327,8 +287,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.queryUnique(sql, params);
     }
@@ -345,8 +303,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, type, params);
     }
@@ -363,8 +319,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.queryUnique(sql, type, params);
     }
@@ -381,8 +335,6 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.querySingle(sql, rowMapper, params);
     }
@@ -399,51 +351,9 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.queryUnique(sql, rowMapper, params);
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Integer integer() {
-    //        return jdbc.queryInteger(getRoot().expression(), getRoot().getParams().toArray());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Long longInt() {
-    //        return jdbc.queryLongWrapper(getRoot().expression(), getRoot().getParams().toArray());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public BigDecimal decimal() {
-    //        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <N extends Number> N number(Class<N> type) {
-    //        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Long count() {
-    //        throw new UnsupportedException();
-    //    }
 
     /**
      * {@inheritDoc}
@@ -538,5 +448,14 @@ public abstract class AbstractRepositorySqlQueryConditionsGroupExpression extend
      */
     public String getQueryAlias() {
         return getRepositoryAlias();
+    }
+
+    /**
+     * Gets the limit.
+     *
+     * @return the limit
+     */
+    protected Limit getLimit() {
+        return limit;
     }
 }

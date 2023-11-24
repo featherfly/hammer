@@ -60,16 +60,16 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     @Test
     public void testSqlConditionGroupExpressionBuilder() {
         SqlExecutableConditionGroupExpression<
-                UpdateConditionConfig> builder = new SqlExecutableConditionGroupExpression<>(jdbc,
+                UpdateConditionConfig> expression = new SqlExecutableConditionGroupExpression<>(jdbc,
                         hammerConfig.getDslConfig().getUpdateConfig());
-        builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
+        expression.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
-        System.out.println(builder.build());
-        System.out.println(builder.getParams());
+        System.out.println(expression.expression());
+        System.out.println(expression.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSymbol()), builder.build());
-        assertEquals(params, builder.getParams());
+                jdbc.getDialect().getWrapSymbol()), expression.expression());
+        assertEquals(params, expression.getParams());
     }
 
     @Test
@@ -94,11 +94,11 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         builder.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age).endGroup().and()
                 .eq("mobile", mobile);
 
-        System.out.println(builder.build());
+        System.out.println(builder.expression());
         System.out.println(builder.getParams());
 
         assertEquals("`name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? ) AND `mobile` = ?".replaceAll("`",
-                jdbc.getDialect().getWrapSymbol()), builder.build());
+                jdbc.getDialect().getWrapSymbol()), builder.expression());
         assertEquals(params2, builder.getParams());
     }
 
@@ -109,11 +109,11 @@ public class SqlDslExpressionTest extends JdbcTestBase {
                 hammerConfig.getDslConfig().getDeleteConfig());
         del.eq("name", name).and().eq("pwd", pwd).and().group().eq("sex", sex).or().gt("age", age);
 
-        System.out.println(del.build());
+        System.out.println(del.expression());
         System.out.println(del.getParams());
 
         assertEquals("DELETE FROM `user` WHERE `name` = ? AND `pwd` = ? AND ( `sex` = ? OR `age` > ? )".replaceAll("`",
-                jdbc.getDialect().getWrapSymbol()), del.build());
+                jdbc.getDialect().getWrapSymbol()), del.expression());
         assertEquals(params, del.getParams());
 
     }
@@ -212,7 +212,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         params.add(pwd);
         params.add(age);
         params.add(sex);
-        SqlUpdater updater = new SqlUpdater(jdbc, hammerConfig.getDslConfig().getUpdateConfig());
+        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
         SqlExecutableConditionGroupExpression<
                 UpdateConditionConfig> e = (SqlExecutableConditionGroupExpression<UpdateConditionConfig>) updater
                         .update(new SimpleAliasRepository("user")).set("name", name).set("pwd", pwd)

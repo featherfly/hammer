@@ -18,7 +18,7 @@ public interface IsNotNullExpression2<C extends ConditionExpression, L extends L
     /**
      * is not null.
      *
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default L inn2(String name) {
@@ -38,7 +38,7 @@ public interface IsNotNullExpression2<C extends ConditionExpression, L extends L
     /**
      * is not null.
      *
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default L inn2(Field name) {

@@ -5,13 +5,10 @@ import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Updater;
-import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityExecutableUpdateExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityExecutableUpdate;
@@ -28,16 +25,6 @@ public class SqlUpdater implements Updater {
     private JdbcMappingFactory mappingFactory;
 
     private UpdateConfig updateConfig;
-
-    /**
-     * Instantiates a new sql updater.
-     *
-     * @param jdbc the jdbc
-     */
-    public SqlUpdater(Jdbc jdbc, UpdateConfig updateConfig) {
-        this.jdbc = jdbc;
-        this.updateConfig = updateConfig;
-    }
 
     /**
      * Instantiates a new sql updater.
@@ -59,7 +46,7 @@ public class SqlUpdater implements Updater {
      * @return Delete
      */
     public SqlUpdate update(Table table) {
-        return new SqlExecutableUpdate(table.getName(), jdbc, updateConfig);
+        return update(table.name());
     }
 
     /**
@@ -67,10 +54,12 @@ public class SqlUpdater implements Updater {
      */
     @Override
     public SqlUpdate update(Repository repository) {
+        AliasManager aliasManager = new AliasManager();
         if (repository instanceof AliasRepository) {
-            return new SqlExecutableUpdate((AliasRepository) repository, jdbc, updateConfig);
+            return new SqlExecutableUpdate((AliasRepository) repository, jdbc, aliasManager,
+                    mappingFactory.getMetadata(), updateConfig);
         } else {
-            return new SqlExecutableUpdate(repository, jdbc, updateConfig);
+            return new SqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(), updateConfig);
         }
     }
 
@@ -79,23 +68,19 @@ public class SqlUpdater implements Updater {
      */
     @Override
     public SqlUpdate update(String repository) {
-        return new SqlExecutableUpdate(repository, jdbc, updateConfig);
+        AliasManager aliasManager = new AliasManager();
+        return new SqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(), updateConfig);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <EUR extends EntityUpdateExpression<E, UU, UC, UL>,
-            UU extends EntityExecutableUpdateExpression<E, UU, UC, UL>,
-            UC extends EntityExecutableConditionGroupExpression<E, UC, UL, UpdateConditionConfig>,
-            UL extends EntityExecutableConditionGroupLogicExpression<E, UC, UL, UpdateConditionConfig>,
-            E> EUR update(Class<E> entityType) {
+    public <E> EntityUpdate<E> update(Class<E> entityType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return (EUR) new SqlEntityExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(entityType), mappingFactory,
+        return new SqlEntityExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(entityType), mappingFactory,
                 updateConfig);
     }
 }

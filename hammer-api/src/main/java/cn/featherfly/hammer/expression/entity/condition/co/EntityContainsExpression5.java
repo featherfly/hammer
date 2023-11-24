@@ -28,8 +28,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L co(
@@ -43,8 +43,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -144,7 +144,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L co(
@@ -174,8 +174,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L co(
@@ -189,8 +189,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -290,7 +290,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L co(
@@ -321,8 +321,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L co(
@@ -336,8 +336,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -437,7 +437,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L co(
@@ -468,8 +468,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L co(
@@ -483,8 +483,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -584,7 +584,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L co(
@@ -615,8 +615,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L co(
@@ -630,8 +630,8 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * contains value. 包含value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -731,7 +731,7 @@ public interface EntityContainsExpression5<E, E2, E3, E4, E5, C extends Conditio
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L co(

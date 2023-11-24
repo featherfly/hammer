@@ -3,62 +3,72 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
+import cn.featherfly.common.repository.QueryableField;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.RowMapper;
-import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetched1Fields;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedExpression;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
+import cn.featherfly.hammer.expression.query.FetchField;
+import cn.featherfly.hammer.expression.query.FetchFieldImpl;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
-import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.query.AbstractRepositorySqlQueryFetch;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 
 /**
  * SqlQueryProperties.
  *
  * @author zhongj
  */
-public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch<RepositoryQueryFetched1Fields>
+public class RepositorySqlQueryFetchImpl
+        extends AbstractRepositorySqlQueryFetch<RepositoryQueryFetched1Fields, RepositoryQueryFetchedFields>
         implements RepositorySqlQueryFetch {
 
     /**
      * Instantiates a new sql query entity properties.
      *
-     * @param jdbc             jdbc
-     * @param databaseMetadata the database metadata
-     * @param tableName        tableName
-     * @param sqlPageFactory   the sql page factory
-     * @param aliasManager     aliasManager
-     * @param ignoreStrategy   the ignore strategy
+     * @param repositoryRelation the repository relation
+     * @param databaseMetadata   the database metadata
+     * @param sqlPageFactory     the sql page factory
+     * @param aliasManager       aliasManager
+     * @param tableName          tableName
      */
-    public RepositorySqlQueryFetchImpl(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            SqlPageFactory sqlPageFactory, AliasManager aliasManager, QueryConfig queryConfig) {
-        this(jdbc, databaseMetadata, tableName, aliasManager.put(tableName), sqlPageFactory, aliasManager, queryConfig);
+    public RepositorySqlQueryFetchImpl(RepositorySqlQueryRelation repositoryRelation, DatabaseMetadata databaseMetadata,
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, String tableName) {
+        this(repositoryRelation, databaseMetadata, sqlPageFactory, aliasManager, tableName,
+                aliasManager.put(tableName));
     }
 
     /**
      * Instantiates a new sql query entity properties.
      *
-     * @param jdbc             jdbc
-     * @param databaseMetadata databaseMetadata
-     * @param tableName        tableName
-     * @param tableAlias       tableAlias
-     * @param sqlPageFactory   the sql page factory
-     * @param aliasManager     aliasManager
-     * @param ignoreStrategy   the ignore strategy
+     * @param repositoryRelation the repository relation
+     * @param databaseMetadata   databaseMetadata
+     * @param sqlPageFactory     the sql page factory
+     * @param aliasManager       aliasManager
+     * @param tableName          tableName
+     * @param tableAlias         tableAlias
      */
-    public RepositorySqlQueryFetchImpl(Jdbc jdbc, DatabaseMetadata databaseMetadata, String tableName,
-            String tableAlias, SqlPageFactory sqlPageFactory, AliasManager aliasManager, QueryConfig queryConfig) {
-        super(jdbc, databaseMetadata, tableName, tableAlias, sqlPageFactory, aliasManager, queryConfig);
+    public RepositorySqlQueryFetchImpl(RepositorySqlQueryRelation repositoryRelation, DatabaseMetadata databaseMetadata,
+            SqlPageFactory sqlPageFactory, AliasManager aliasManager, String tableName, String tableAlias) {
+        super(repositoryRelation, databaseMetadata, sqlPageFactory, aliasManager, tableName, tableAlias);
+        repositoryRelation.query(tableName, tableAlias).fetch(0);
     }
 
     /**
@@ -66,7 +76,7 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public RepositoryQueryConditionsGroup where() {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig);
+        return new RepositorySqlQueryExpression(repositoryRelation, sqlPageFactory, queryConfig);
     }
 
     /**
@@ -74,8 +84,7 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public RepositoryQueryConditionsGroup where(Consumer<RepositoryQueryConditionsGroup> consumer) {
-        RepositorySqlQueryExpression repositorySqlQueryExpression = new RepositorySqlQueryExpression(jdbc,
-                sqlPageFactory, selectBuilder, queryConfig);
+        RepositoryQueryConditionsGroup repositorySqlQueryExpression = where();
         if (consumer != null) {
             consumer.accept(repositorySqlQueryExpression);
         }
@@ -86,10 +95,13 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, RepositoryQuerySortExpression> configure(
-            Consumer<QueryConfig> configure) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+    public RepositoryQueryExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic,
+            RepositoryQuerySortExpression> configure(Consumer<QueryConfig> configure) {
+        if (configure == null) {
+            return this;
+        }
+        configure.accept(queryConfig);
+        return this;
     }
 
     /**
@@ -97,7 +109,7 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public List<Map<String, Object>> list() {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).list();
+        return new RepositorySqlQueryExpression(repositoryRelation, sqlPageFactory, queryConfig).list();
     }
 
     /**
@@ -105,7 +117,7 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).list(type);
+        return new RepositorySqlQueryExpression(repositoryRelation, sqlPageFactory, queryConfig).list(type);
     }
 
     /**
@@ -113,196 +125,116 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).list(rowMapper);
+        return new RepositorySqlQueryExpression(repositoryRelation, sqlPageFactory, queryConfig).list(rowMapper);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public QueryLimitExecutor limit(Integer limit) {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).limit(limit);
+    public QueryLimitExecutor limit(Limit limit) {
+        return new RepositorySqlQueryExpression(repositoryRelation, sqlPageFactory, queryConfig).limit(limit);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Integer offset, Integer limit) {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).limit(offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Page page) {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).limit(page);
-    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public String string() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).string();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Date date() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).date();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public LocalDate localDate() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).localDate();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public LocalDateTime localDateTime() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).localDateTime();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public LocalTime localTime() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).localTime();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Timestamp timestamp() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).timestamp();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public byte[] bytes() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).bytes();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Clob clob() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).clob();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Blob blob() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).blob();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public boolean bool() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).bool();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public byte byteValue() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).byteValue();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public short shortValue() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).shortValue();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public int intValue() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).intValue();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public long longValue() {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).longValue();
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> T value(Class<T> type) {
-    //        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).value(type);
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> SqlQueryWithOn join(Join join, Class<T> repositoryType) {
-    //        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
-    //        //                repositoryType, join, queryConfig);
-    //        return new SqlQueryWith(this, aliasManager, sqlPageFactory, tableAlias, getIdName(), join, queryConfig);
-    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public RepositoryQuerySortExpression sort() {
-        return new RepositorySqlQueryExpression(jdbc, sqlPageFactory, selectBuilder, queryConfig).sort();
+        return new RepositorySqlQueryExpression(repositoryRelation, sqlPageFactory, queryConfig).sort();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> RepositoryQueryRelatedExpression<?, ?> join(String repository) {
-        // IMPLSOON 后续来实现
-        return null;
+    public RepositoryQueryFetched1Fields fetch(Consumer<FetchField> consumer) {
+        FetchFieldImpl fetchField = new FetchFieldImpl();
+        consumer.accept(fetchField);
+        for (QueryableField field : fetchField.getFields()) {
+            fetch(field);
+        }
+        return new RepositorySqlQueryFetched1FieldsImpl(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> RepositoryQueryRelatedExpression<?, ?> join(Field repository) {
-        // IMPLSOON 后续来实现
+    public RepositoryQueryFetched1Fields fetch(boolean distinct, String name, String alias) {
+        selectBuilder.addColumn(distinct, name, alias);
+        return new RepositorySqlQueryFetched1FieldsImpl(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryFetched1Fields fetch(AggregateFunction aggregateFunction, boolean distinct, String name,
+            String alias) {
+        selectBuilder.addColumn(aggregateFunction, distinct, name, alias);
+        return new RepositorySqlQueryFetched1FieldsImpl(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryFetchedFields fetch(BiConsumer<RepositoryQueryFetchedFields, FetchField> consumer) {
+        RepositorySqlQueryFetchedFieldsImpl fetchedFields = new RepositorySqlQueryFetchedFieldsImpl(this);
+        fetchedFields.fetch(consumer);
+        return fetchedFields;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryFetchedFields fetch(String... fields) {
+        RepositorySqlQueryFetchedFieldsImpl fetchedFields = new RepositorySqlQueryFetchedFieldsImpl(this);
+        fetchedFields.fetch(fields);
+        return fetchedFields;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryFetchedFields fetch(Field... fields) {
+        RepositorySqlQueryFetchedFieldsImpl fetchedFields = new RepositorySqlQueryFetchedFieldsImpl(this);
+        fetchedFields.fetch(fields);
+        return fetchedFields;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryFetchedFields fetch(AliasField... fields) {
+        RepositorySqlQueryFetchedFieldsImpl fetchedFields = new RepositorySqlQueryFetchedFieldsImpl(this);
+        fetchedFields.fetch(fields);
+        return fetchedFields;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryFetchedFields fetch(SerializableFunction<?, ?>... fields) {
+        RepositorySqlQueryFetchedFieldsImpl fetchedFields = new RepositorySqlQueryFetchedFieldsImpl(this);
+        fetchedFields.fetch(fields);
+        return fetchedFields;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryRelatedExpression<RepositoryQueryRelate1R, RepositoryQueryRelatedFetched1F> join(
+            String repository) {
+        //        new RepositorySqlQueryRelated<>(new RepositorySqlQueryRelate1R(), repositoryRelation, repository, 0);
+        // IMPLSOON 后续来实现join
         return null;
     }
 
-    //    public RepositoryQueryRelatedExpression<?, ?> join(Join join, String repositoryName) {
-    //        //        return new SqlQueryWith(this, aliasManager, factory, sqlPageFactory, selectBuilder.getTableAlias(), getIdName(),
-    //        //                repositoryName, aliasManager.put(repositoryName), join, queryConfig);
-    //        //        SqlQueryEntityProperties sqlQueryEntityProperties, AliasManager aliasManager,
-    //        //        SqlPageFactory sqlPageFactory, String selectTableAlis, String selectTableColumn, String joinTableName,
-    //        //        String joinTableAlias, Join join, Predicate<?> ignoreStrategy
-    //        return new SqlQueryWith(this, aliasManager, sqlPageFactory, tableAlias, getIdName(), repositoryName,
-    //                aliasManager.put(repositoryName), join, queryConfig.getIgnoreStrategy());
-    //    }
 }

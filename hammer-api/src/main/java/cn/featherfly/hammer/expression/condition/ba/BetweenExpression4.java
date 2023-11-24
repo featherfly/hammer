@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.function.BiPredicate;
 
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -26,7 +27,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>  number type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -39,7 +40,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -53,7 +54,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -67,7 +68,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>  number type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -78,19 +79,22 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ba4(String name, N min, N max, IgnoreStrategy ignoreStrategy);
+    @SuppressWarnings("unchecked")
+    default <N extends Number> L ba4(String name, N min, N max, IgnoreStrategy ignoreStrategy) {
+        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+    }
 
     /**
      * between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -104,7 +108,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>  date type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -117,7 +121,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -131,7 +135,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -145,7 +149,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>  date type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -156,19 +160,22 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ba4(String name, D min, D max, IgnoreStrategy ignoreStrategy);
+    @SuppressWarnings("unchecked")
+    default <D extends Date> L ba4(String name, D min, D max, IgnoreStrategy ignoreStrategy) {
+        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+    }
 
     /**
      * between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -181,7 +188,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -193,7 +200,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -206,7 +213,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -219,7 +226,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -229,18 +236,20 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba4(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy);
+    default L ba4(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy) {
+        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+    }
 
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -253,7 +262,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -265,7 +274,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -278,7 +287,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -291,7 +300,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -301,18 +310,20 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba4(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy);
+    default L ba4(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
+        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+    }
 
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -325,7 +336,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -337,7 +348,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -350,7 +361,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -364,7 +375,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -374,18 +385,20 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba4(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy);
+    default L ba4(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
+        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+    }
 
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -398,7 +411,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -410,7 +423,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -423,7 +436,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -436,7 +449,7 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -446,18 +459,20 @@ public interface BetweenExpression4<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ba4(String name, String min, String max, IgnoreStrategy ignoreStrategy);
+    default L ba4(String name, String min, String max, IgnoreStrategy ignoreStrategy) {
+        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+    }
 
     /**
      * between and.
      *
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy

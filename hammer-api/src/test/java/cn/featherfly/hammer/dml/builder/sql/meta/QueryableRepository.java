@@ -9,6 +9,7 @@
 package cn.featherfly.hammer.dml.builder.sql.meta;
 
 import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.Aliasable;
 import cn.featherfly.common.repository.Repository;
 
 /**

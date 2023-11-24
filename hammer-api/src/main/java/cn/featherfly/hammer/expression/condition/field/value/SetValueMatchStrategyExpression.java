@@ -16,7 +16,7 @@ public interface SetValueMatchStrategyExpression<V> extends SetValueExpression<V
     /**
      * Value.
      *
-     * @param value       参数值
+     * @param value the value
      * @param queryPolicy the query policy
      */
     void value(V value, MatchStrategy matchStrategy);

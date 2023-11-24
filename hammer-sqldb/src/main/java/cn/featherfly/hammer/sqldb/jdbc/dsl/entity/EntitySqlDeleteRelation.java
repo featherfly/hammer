@@ -10,7 +10,7 @@ import cn.featherfly.hammer.config.dsl.DeleteConfig;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * abstract entity sql query entity properties.
+ * abstract entity sql delete relation.
  *
  * @author zhongj
  */

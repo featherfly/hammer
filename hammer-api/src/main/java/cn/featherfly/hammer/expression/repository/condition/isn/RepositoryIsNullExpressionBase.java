@@ -22,7 +22,7 @@ public interface RepositoryIsNullExpressionBase<C extends ConditionExpression, L
      *
      * @param <T>  the generic type
      * @param <R>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default <T, R> L isn(SerializableFunction<T, R> name) {

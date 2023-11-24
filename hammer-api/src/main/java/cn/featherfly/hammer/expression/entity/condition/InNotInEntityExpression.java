@@ -150,8 +150,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -160,8 +160,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -170,8 +170,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -191,8 +191,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -210,8 +210,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -229,8 +229,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -249,8 +249,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -259,8 +259,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -290,8 +290,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -300,8 +300,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -310,8 +310,8 @@ public interface InNotInEntityExpression<T> {
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -331,8 +331,8 @@ public interface InNotInEntityExpression<T> {
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

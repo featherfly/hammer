@@ -12,7 +12,7 @@ import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dml.builder.sql.meta.Query;
 import cn.featherfly.hammer.dml.builder.sql.meta.RepositoryQuery;
-import cn.featherfly.hammer.dsl.query.QueryCondition;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditions;
 
 /**
  * Query.
@@ -33,7 +33,7 @@ public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableF
     private UserQuery() {
     }
 
-    public void init(AliasManager aliasManager, QueryCondition queryCondition) {
+    public void init(AliasManager aliasManager, RepositoryQueryConditions queryCondition) {
         String alias = aliasManager.getAlias(NAME);
         queryable = new UserTableQueryable();
         filterable = new UserTableFilterable(alias, queryCondition);
@@ -42,7 +42,7 @@ public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableF
     public static void main(String[] args) {
         Query query = null;
 
-        UserQuery userQuery = new UserQuery();
+        UserQuery userQuery = UserQuery.DEFAULT;
 
         query.find(userQuery) //
                 .fetch((fetcher, user) -> fetcher.field( // select
@@ -70,6 +70,28 @@ public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableF
                         userQuery.queryable.password // user0.password as pwd
                 ) // select end
                 .where();
+
+        query.find(userQuery).where() //
+                .name.eq("zj") //
+                .and().group().name.eq("zj") //
+                .and().password.eq("123").endGroup() //
+                .list();
+        query.find(userQuery).where() //
+                .name.eq("zj")//
+                .and().group().name.eq("zj") //
+                .and().password.eq("123") //
+                .list();
+
+        query.find(userQuery).where()//
+                .name.eq("zj") //
+                .and().group(g -> g.name.eq("zj")//
+                        .and().password.eq("123"))//
+                .list();
+        query.find(userQuery).where() //
+                .name.eq("zj") //
+                .and(g -> g.name.eq("zj") //
+                        .and().password.eq("123") //
+                ).list();
 
         query.find(userQuery).where().name.eq("zj").and().password.eq("123").single();
         query.find(userQuery).where().name.eq("zj").and().password.eq("123").limit(1).single();

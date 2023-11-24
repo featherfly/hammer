@@ -15,6 +15,6 @@ import cn.featherfly.hammer.expression.query.QueryFetchFieldExpression;
  * @author zhongj
  * @param <Q> the generic type
  */
-public interface QueryFetchedFields extends QueryFetchFieldExpression<QueryFetchedFields> {
+public interface QueryFetchedFields extends QueryFetchFieldExpression<QueryFetchedFields, QueryFetchedFields> {
 
 }

@@ -5,11 +5,12 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.co.ContainsExpression5;
+import cn.featherfly.hammer.expression.condition.nco.NotContainsExpression5;
 
 /**
  * RepositoryNotContainsExpressionBase5 .
@@ -19,13 +20,12 @@ import cn.featherfly.hammer.expression.condition.co.ContainsExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryNotContainsExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ContainsExpression5<C, L>, RepositoryNotContainsExpressionBase4<C, L> {
-
+        extends NotContainsExpression5<C, L>, RepositoryNotContainsExpressionBase4<C, L> {
     /**
      * not contains value. 不包含value.
      *
      * @param <T>   the generic type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -37,8 +37,8 @@ public interface RepositoryNotContainsExpressionBase5<C extends ConditionExpress
      * not contains value. 不包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -50,8 +50,8 @@ public interface RepositoryNotContainsExpressionBase5<C extends ConditionExpress
      * not contains value. 不包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -68,7 +68,9 @@ public interface RepositoryNotContainsExpressionBase5<C extends ConditionExpress
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    <T> L nco5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
+    default <T> L nco5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
+        return nco5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
+    }
 
     /**
      * not contains value. 不包含value.
@@ -80,8 +82,10 @@ public interface RepositoryNotContainsExpressionBase5<C extends ConditionExpress
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nco5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy);
+    default <T> L nco5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            IgnoreStrategy ignoreStrategy) {
+        return nco5(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
 
     /**
      * not contains value. 不包含value.
@@ -93,67 +97,20 @@ public interface RepositoryNotContainsExpressionBase5<C extends ConditionExpress
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <T> L nco5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    default L nco5(SerializableStringSupplier propertyValue) {
-        return nco5(propertyValue, MatchStrategy.AUTO);
+    default <T> L nco5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nco5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nco5(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return nco5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    @Override
+    default L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return nco5(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
     }
 
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nco5(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return nco5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+    @Override
+    default L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nco5(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
+                ignoreStrategy);
     }
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue the property value
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

@@ -34,7 +34,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      *
      * @param <T>  the generic type
      * @param <N>  number type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -48,7 +48,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      *
      * @param <T>            the generic type
      * @param <N>            number type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -64,7 +64,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      *
      * @param <T>            the generic type
      * @param <N>            number type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -82,7 +82,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      *
      * @param <T>  the generic type
      * @param <D>  date type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -96,7 +96,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      *
      * @param <T>            the generic type
      * @param <D>            date type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -112,7 +112,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      *
      * @param <T>            the generic type
      * @param <D>            date type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -129,7 +129,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -142,7 +142,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -157,7 +157,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -174,7 +174,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -187,7 +187,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -202,7 +202,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -219,7 +219,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -232,7 +232,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -247,7 +247,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -264,7 +264,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @param min  the min
      * @param max  the max
      * @return LogicExpression
@@ -277,7 +277,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -291,7 +291,7 @@ public interface RepositoryBetweenExpression<C extends ConditionExpression, L ex
      * between and.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
+     * @param name the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy

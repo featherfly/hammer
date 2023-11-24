@@ -19,7 +19,7 @@ public interface EntitySortExpression2<E, E2, S extends EntitySortedExpression2<
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(BiConsumer<SortEntityExpression<E>, SortEntityExpression<E2>> sortEntityExpressions);
+    S asc(BiConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>> sortEntityExpressions);
 
     /**
      * desc.
@@ -27,7 +27,7 @@ public interface EntitySortExpression2<E, E2, S extends EntitySortedExpression2<
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(BiConsumer<SortEntityExpression<E>, SortEntityExpression<E2>> sortEntityExpressions);
+    S desc(BiConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>> sortEntityExpressions);
 
     //    /**
     //     * add ascending order value. 添加升序条件.

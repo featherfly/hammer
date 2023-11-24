@@ -128,8 +128,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -147,8 +147,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -166,8 +166,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -187,8 +187,8 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <N>          number type
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -208,8 +208,8 @@ public interface GreatEqualsEntityExpression<E>
     //     * great and equals. 大于等于.
     //     *
     //     * @param <D>          date type
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -227,8 +227,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -246,8 +246,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -265,8 +265,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -284,8 +284,8 @@ public interface GreatEqualsEntityExpression<E>
     //    /**
     //     * great and equals. 大于等于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

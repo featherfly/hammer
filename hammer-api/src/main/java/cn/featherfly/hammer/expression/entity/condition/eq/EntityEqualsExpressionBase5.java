@@ -10,18 +10,9 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
-import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
+import cn.featherfly.common.function.CharPredicate;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableIntSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLongSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableToCharFunction;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
@@ -35,6 +26,7 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.eq.EqualsSupplierExpression5;
 
 /**
  * The Interface EntityEqualsExpression.
@@ -49,13 +41,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityEqualsExpressionBase4<T, T2, T3, T4, C, L> {
+        L extends LogicExpression<C, L>>
+        extends EntityEqualsExpressionBase4<T, T2, T3, T4, C, L>, EqualsSupplierExpression5<C, L> {
 
     /**
      * equals. 等于.
      *
      * @param <R>   the generic type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -65,8 +58,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
      * equals. 等于.
      *
      * @param <R>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -75,7 +68,26 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name the name
+     * @param name  the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq5(SerializableToCharFunction<T5> name, char value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq5(SerializableToCharFunction<T5> name, char value, CharPredicate ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -84,8 +96,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -94,7 +106,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -103,8 +115,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -113,7 +125,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -122,8 +134,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -133,7 +145,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
      * equals. 等于.
      *
      * @param <N>   number type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -143,8 +155,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
      * equals. 等于.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -154,7 +166,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
      * equals. 等于.
      *
      * @param <E>   the element type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -164,8 +176,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
      * equals. 等于.
      *
      * @param <E>            the element type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -175,7 +187,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
      * equals. 等于.
      *
      * @param <D>   date type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -185,8 +197,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
      * equals. 等于.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -195,7 +207,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -204,8 +216,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -214,7 +226,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -223,8 +235,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -233,7 +245,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -242,8 +254,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -252,7 +264,7 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -263,8 +275,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -275,8 +287,8 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name          the name
+     * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -285,234 +297,12 @@ public interface EntityEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Condit
     /**
      * equals. 等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L eq5(SerializableToStringFunction<T5> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    // ********************************************************************
-    // object property value
-    // ********************************************************************
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>      the generic type
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    <R> L eq5(SerializableSupplier<R> property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>            the generic type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L eq5(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L eq5(SerializableIntSupplier property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L eq5(SerializableLongSupplier property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L eq5(SerializableDoubleSupplier property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>      the generic type
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    <R extends Date> L eq5(SerializableDateSupplier<R> property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>            the generic type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Date> L eq5(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>      the generic type
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    <R extends Number> L eq5(SerializableNumberSupplier<R> property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R>            the generic type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Number> L eq5(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <E>      the element type
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L eq5(SerializableEnumSupplier<E> property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <E>            the element type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L eq5(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L eq5(SerializableLocalDateSupplier property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L eq5(SerializableLocalTimeSupplier property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L eq5(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    default L eq5(SerializableStringSupplier property) {
-        return eq5(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L eq5(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return eq5(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param property  bean property
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * equals. 等于.
-     *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L eq5(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

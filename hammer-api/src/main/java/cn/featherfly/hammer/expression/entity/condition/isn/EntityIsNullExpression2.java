@@ -25,7 +25,7 @@ public interface EntityIsNullExpression2<E, E2, C extends ConditionExpression, L
     //     * is null.
     //     *
     //     * @param <R>  the generic type
-    //     * @param name 参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(
@@ -84,7 +84,7 @@ public interface EntityIsNullExpression2<E, E2, C extends ConditionExpression, L
     //     * is null.
     //     *
     //     * @param <R>  the generic type
-    //     * @param name 参数名称
+    //     * @param name the name
     //     * @return LogicExpression
     //     */
     //    default <R> L isn(

@@ -18,8 +18,8 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
-import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecutor;
 
@@ -490,7 +490,7 @@ public interface Hammer extends TplExecutor {
      * @param repository repository name
      * @return Delete
      */
-    Delete delete(String repository);
+    RepositoryDelete delete(String repository);
 
     /**
      * create delete for repository.
@@ -498,7 +498,7 @@ public interface Hammer extends TplExecutor {
      * @param repository repository name
      * @return Delete
      */
-    Delete delete(Repository repository);
+    RepositoryDelete delete(Repository repository);
 
     /**
      * create delete for entityType.

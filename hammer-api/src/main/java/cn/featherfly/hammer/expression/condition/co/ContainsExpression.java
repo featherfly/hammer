@@ -3,7 +3,6 @@ package cn.featherfly.hammer.expression.condition.co;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
@@ -19,7 +18,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface ContainsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+        extends ContainsSupplierExpression<C, L> {
 
     /**
      * contains value. 包含value.
@@ -235,65 +234,4 @@ public interface ContainsExpression<C extends ConditionExpression, L extends Log
     default L co(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return co(field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
     }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    default L co(SerializableStringSupplier propertyValue) {
-        return co(propertyValue, MatchStrategy.AUTO);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L co(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return co(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L co(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return co(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue the property value
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

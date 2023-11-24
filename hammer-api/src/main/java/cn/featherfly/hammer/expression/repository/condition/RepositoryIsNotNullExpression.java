@@ -21,7 +21,7 @@
 //     * is not null.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
+//     * @param name the name
 //     * @return LogicExpression
 //     */
 //    L inn(String repository, String name);
@@ -31,7 +31,7 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository
-//     * @param name       参数名称
+//     * @param name the name
 //     * @return LogicExpression
 //     */
 //    //    <T> L inn(Class<T> repository, String name);
@@ -40,7 +40,7 @@
 //     * is not null.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
+//     * @param name the name
 //     * @return LogicExpression
 //     */
 //    L inn(int repositoryIndex, String name);
@@ -49,7 +49,7 @@
 //     * is not null.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
+//     * @param name the name
 //     * @param value      if true, is not null; if false, is null; if null,
 //     *                   ignore this operate
 //     * @return LogicExpression
@@ -61,7 +61,7 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository
-//     * @param name       参数名称
+//     * @param name the name
 //     * @param value      if true, is not null; if false, is null; if null,
 //     *                   ignore this operate
 //     * @return LogicExpression
@@ -72,7 +72,7 @@
 //     * is not null.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
+//     * @param name the name
 //     * @param value           if true, is not null; if false, is null; if null,
 //     *                        ignore this operate
 //     * @return LogicExpression

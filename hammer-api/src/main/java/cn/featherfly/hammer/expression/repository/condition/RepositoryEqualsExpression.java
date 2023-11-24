@@ -21,8 +21,8 @@
 //     * equals. 等于.
 //     *
 //     * @param repository 存储库
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    default L eq(String repository, String name, Object value) {
@@ -33,8 +33,8 @@
 //     * equals. 等于.
 //     *
 //     * @param repository  存储库
-//     * @param name        参数名称
-//     * @param value       参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */
@@ -45,8 +45,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository 存储库
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    default <T> L eq(Class<T> repository, String name, Object value) {
@@ -58,8 +58,8 @@
 //     *
 //     * @param <T>         the generic type
 //     * @param repository  存储库
-//     * @param name        参数名称
-//     * @param value       参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */
@@ -69,8 +69,8 @@
 //     * equals. 等于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    default L eq(int repositoryIndex, String name, Object value) {
@@ -81,8 +81,8 @@
 //     * equals. 等于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy     the query policy
 //     * @return LogicExpression
 //     */
@@ -95,7 +95,7 @@
 //     * @param <R>        the generic type
 //     * @param repository the repository
 //     * @param property   the property
-//     * @param value      参数值
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    default <T, R> L eq(SerializableFunction<T, R> repository, SerializableFunction<T, R> property, R value) {
@@ -109,7 +109,7 @@
 //     * @param <R>         the generic type
 //     * @param repository  the repository
 //     * @param property    the property
-//     * @param value       参数值
+//     * @param value the value
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */

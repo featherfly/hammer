@@ -51,11 +51,11 @@ public class SqlEntityUpdateExpression<E> extends AbstractSqlEntityExecutableCon
      * {@inheritDoc}
      */
     @Override
-    public String build() {
-        String condition = super.build();
+    public String expression() {
+        String condition = super.expression();
         if (parent == null) {
             if (Lang.isEmpty(condition)) {
-                switch (((UpdateConditionConfig) conditionConfig).getEmptyConditionStrategy()) {
+                switch (conditionConfig.getEmptyConditionStrategy()) {
                     case EXCEPTION:
                         throw new SqldbHammerException("empty condition");
                     case NON_EXECUTION:

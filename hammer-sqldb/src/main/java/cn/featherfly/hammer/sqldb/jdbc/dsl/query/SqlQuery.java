@@ -17,8 +17,9 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.EntitySqlQueryFetch;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetchImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetch;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetchImpl;
 
 /**
  * SqlQuery .
@@ -123,8 +124,9 @@ public class SqlQuery implements Query {
         } else {
             alias = aliasManager.put(tableName);
         }
-        return new RepositorySqlQueryFetchImpl(jdbc, databaseMetadata, tableName, alias, sqlPageFactory, aliasManager,
-                queryConfig.clone());
+        return new RepositorySqlQueryFetchImpl(
+                new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone()),
+                databaseMetadata, sqlPageFactory, aliasManager, tableName, alias);
     }
 
     /**

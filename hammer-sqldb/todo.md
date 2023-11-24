@@ -1,5 +1,7 @@
 新功能
 
+- [ ] 预加载sql模板进行优化，把count sql在加载期预加载到count sql配置属性中（如果能够确定）
+
 - [ ] hammer加入update(entity, Predicate<BeanProperty> ignore)对在更新时需要忽略的对象属性进行帅选
 
 - [ ] TplExecutor各种方法中的TplTemplateId可以加入直接传入字符串模板的方式（用于jdk17的多行字符串），类似@Template(value = "sql template....")

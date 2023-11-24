@@ -1,7 +1,6 @@
 
 package cn.featherfly.hammer.expression.query;
 
-import cn.featherfly.hammer.expression.api.Where;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 
 /**

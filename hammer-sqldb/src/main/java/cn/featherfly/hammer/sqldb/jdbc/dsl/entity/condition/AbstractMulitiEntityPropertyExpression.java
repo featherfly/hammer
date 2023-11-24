@@ -28,8 +28,6 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  *
  * @author zhongj
  * @param <E> the element type
- * @param <P> the element type
- * @param <F> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -42,10 +40,13 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     /** The expression. */
     protected InternalMulitiEntityCondition<L> expression;
 
+    /** The factory. */
     protected JdbcMappingFactory factory;
 
+    /** The property list. */
     protected List<Serializable> propertyList = new ArrayList<>();
 
+    /** The query relation. */
     protected EntitySqlRelation<?, ?> queryRelation;
 
     /**
@@ -55,6 +56,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param name       the name
      * @param expression the expression
      * @param factory    the factory
+     * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
@@ -69,6 +71,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param propertyList the property list
      * @param expression   the expression
      * @param factory      the factory
+     * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,

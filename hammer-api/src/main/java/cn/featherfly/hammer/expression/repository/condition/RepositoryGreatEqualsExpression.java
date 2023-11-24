@@ -25,8 +25,8 @@
 //     *
 //     * @param <N>        number type
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    <N extends Number> L ge(String repository, String name, N value);
@@ -36,8 +36,8 @@
 //     *
 //     * @param <D>        date type
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    <D extends Date> L ge(String repository, String name, D value);
@@ -46,8 +46,8 @@
 //     * 大于等于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(String repository, String name, LocalTime value);
@@ -56,8 +56,8 @@
 //     * 大于等于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(String repository, String name, LocalDate value);
@@ -66,8 +66,8 @@
 //     * 大于等于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(String repository, String name, LocalDateTime value);
@@ -76,8 +76,8 @@
 //     * 大于等于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(String repository, String name, String value);
@@ -88,8 +88,8 @@
 //     * @param <N>        number type
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <N extends Number, T> L ge(Class<T> repository, String name, N value);
@@ -100,8 +100,8 @@
 //     * @param <D>        date type
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <D extends Date, T> L ge(Class<T> repository, String name, D value);
@@ -111,8 +111,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L ge(Class<T> repository, String name, LocalTime value);
@@ -122,8 +122,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L ge(Class<T> repository, String name, LocalDate value);
@@ -133,8 +133,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L ge(Class<T> repository, String name, LocalDateTime value);
@@ -144,8 +144,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L ge(Class<T> repository, String name, String value);
@@ -155,8 +155,8 @@
 //     *
 //     * @param <N>             number type
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    <N extends Number> L ge(int repositoryIndex, String name, N value);
@@ -166,8 +166,8 @@
 //     *
 //     * @param <D>             date type
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    <D extends Date> L ge(int repositoryIndex, String name, D value);
@@ -176,8 +176,8 @@
 //     * 大于等于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(int repositoryIndex, String name, LocalTime value);
@@ -186,8 +186,8 @@
 //     * 大于等于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(int repositoryIndex, String name, LocalDate value);
@@ -196,8 +196,8 @@
 //     * 大于等于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(int repositoryIndex, String name, LocalDateTime value);
@@ -206,8 +206,8 @@
 //     * 大于等于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L ge(int repositoryIndex, String name, String value);

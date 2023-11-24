@@ -22,43 +22,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface NotInExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L ni(Field field, int... values) {
-        return ni(field.name(), values);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, int value, IntPredicate ignoreStrategy) {
-        return ni(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, int[] values, Predicate<int[]> ignoreStrategy) {
-        return ni(field.name(), values, ignoreStrategy);
-    }
-
+        extends NotInSupplierExpression<C, L> {
     /**
      * values not in. 不包含指定，sql中的not in.
      *
@@ -91,41 +55,6 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     L ni(String name, int[] values, Predicate<int[]> ignoreStrategy);
 
     // ****************************************************************************************************************
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L ni(Field field, long... values) {
-        return ni(field.name(), values);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, long value, LongPredicate ignoreStrategy) {
-        return ni(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, long[] values, Predicate<long[]> ignoreStrategy) {
-        return ni(field.name(), values, ignoreStrategy);
-    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -163,41 +92,6 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L ni(Field field, double... values) {
-        return ni(field.name(), values);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, double value, DoublePredicate ignoreStrategy) {
-        return ni(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, double[] values, Predicate<double[]> ignoreStrategy) {
-        return ni(field.name(), values, ignoreStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
      * @param name   the name
      * @param values the values
      * @return LogicExpression
@@ -227,79 +121,6 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     L ni(String name, double[] values, Predicate<double[]> ignoreStrategy);
 
     // ****************************************************************************************************************
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L ni(Field field, String... values) {
-        return ni(field.name(), values);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field         the field
-     * @param values        the values
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, String[] values, MatchStrategy matchStrategy) {
-        return ni(field.name(), values, matchStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, String value, Predicate<String> ignoreStrategy) {
-        return ni(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return ni(field.name(), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, String[] values, Predicate<String[]> ignoreStrategy) {
-        return ni(field.name(), values, ignoreStrategy);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ni(Field field, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
-        return ni(field.name(), values, matchStrategy, ignoreStrategy);
-    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -375,13 +196,12 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
-     * @param field the field
-     * @param value the value
+     * @param field  the field
+     * @param values the values
      * @return LogicExpression
      */
     default <R> L ni(Field field, R value) {
-        return ni(field, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+        return ni(field.name(), value);
     }
 
     /**
@@ -398,8 +218,9 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <R>            the generic type
      * @param field          the field
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -410,8 +231,9 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name   the name
-     * @param values the values
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <R> L ni(String name, R value) {
@@ -430,14 +252,195 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <R> L ni(String name, R value, Predicate<R> ignoreStrategy);
 
     // ******************************************************************************************************************************
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(Field field, int... values) {
+        return ni(field.name(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, int value, IntPredicate ignoreStrategy) {
+        return ni(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, int[] values, Predicate<int[]> ignoreStrategy) {
+        return ni(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(Field field, long... values) {
+        return ni(field.name(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, long value, LongPredicate ignoreStrategy) {
+        return ni(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, long[] values, Predicate<long[]> ignoreStrategy) {
+        return ni(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(Field field, double... values) {
+        return ni(field.name(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, double value, DoublePredicate ignoreStrategy) {
+        return ni(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, double[] values, Predicate<double[]> ignoreStrategy) {
+        return ni(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L ni(Field field, String... values) {
+        return ni(field.name(), values);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field         the field
+     * @param values        the values
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, String[] values, MatchStrategy matchStrategy) {
+        return ni(field.name(), values, matchStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, String value, Predicate<String> ignoreStrategy) {
+        return ni(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ni(field.name(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, String[] values, Predicate<String[]> ignoreStrategy) {
+        return ni(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni(Field field, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
+        return ni(field.name(), values, matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -644,12 +647,11 @@ public interface NotInExpression<C extends ConditionExpression, L extends LogicE
      *
      * @param <R>            the generic type
      * @param field          the field
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <R> L ni(AliasField field, R value, Predicate<R> ignoreStrategy) {
         return ni(field.getAliasOrName(), value, ignoreStrategy);
     }
-
 }

@@ -8,7 +8,7 @@
  */
 package cn.featherfly.hammer.dsl.repository.query;
 
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelateBase;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryFetchFieldExpression;
 
 /**
@@ -16,7 +16,7 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQueryFetchFiel
  *
  * @author zhongj
  */
-public interface RepositoryQueryFetch extends RepositoryQuery, RepositoryQueryRelateBase,
-        RepositoryQueryFetchFieldExpression<RepositoryQueryFetched1Fields> {
+public interface RepositoryQueryFetch extends RepositoryQuery, RepositoryQueryRelate,
+        RepositoryQueryFetchFieldExpression<RepositoryQueryFetched1Fields, RepositoryQueryFetchedFields> {
 
 }

@@ -28,8 +28,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -44,8 +44,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -61,8 +61,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -76,8 +76,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -153,7 +153,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L eq(
@@ -185,8 +185,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -201,8 +201,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -218,8 +218,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -233,8 +233,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -312,7 +312,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L eq(
@@ -344,8 +344,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -360,8 +360,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -377,8 +377,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -392,8 +392,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -471,7 +471,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L eq(
@@ -503,8 +503,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L eq(
@@ -519,8 +519,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -536,8 +536,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -551,8 +551,8 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -630,7 +630,7 @@ public interface EntityEqualsExpression4<E, E2, E3, E4, C extends ConditionExpre
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L eq(

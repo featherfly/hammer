@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity;
 
-import cn.featherfly.hammer.expression.entity.condition.EntityLogicGroupExpression9;
+import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupLogicExpression9;
 
 /**
  * The Interface EntityConditionGroupLogicExpression9.
@@ -22,6 +22,6 @@ import cn.featherfly.hammer.expression.entity.condition.EntityLogicGroupExpressi
 public interface EntityConditionGroupLogicExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9,
         C extends EntityConditionGroupExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L>,
         L extends EntityConditionGroupLogicExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L>>
-        extends EntityLogicGroupExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L> {
+        extends EntityConditionsGroupLogicExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, C, L> {
 
 }

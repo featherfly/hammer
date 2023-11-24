@@ -30,7 +30,7 @@ import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
- * abstract entity sql query entity properties.
+ * abstract entity sql relation.
  *
  * @author zhongj
  * @param <R> the generic type
@@ -171,8 +171,9 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
             return join(sourceIndex, propertyName, joinClassMapping,
                     joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), returnType);
         }
-        throw new SqldbHammerException(Strings.format("only support one privary key, but {0} has ",
-                joinClassMapping.getPrivaryKeyPropertyMappings().size()));
+        throw new SqldbHammerException(
+                Strings.format("only support one privary key, but more than one privary key found {0}",
+                        joinClassMapping.getPrivaryKeyPropertyMappings().size()));
     }
 
     /**

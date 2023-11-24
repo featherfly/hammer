@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition.ew;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -12,7 +13,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ew.EndWithExpression;
 
 /**
- * RepositoryEndWithExpression .
+ * repository end with expression .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -37,8 +38,8 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * end with value. 以value结尾.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -50,8 +51,8 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * end with value. 以value结尾.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -102,4 +103,14 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
         return ew(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    @Override
+    default L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return ew(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    }
+
+    @Override
+    default L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return ew(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
 }

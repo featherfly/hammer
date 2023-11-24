@@ -26,8 +26,8 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -39,8 +39,8 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -134,7 +134,7 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(
@@ -164,8 +164,8 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -177,8 +177,8 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -274,7 +274,7 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(
@@ -305,8 +305,8 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * like value.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L lk(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
@@ -318,8 +318,8 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * like value.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -415,7 +415,7 @@ public interface EntityLikeExpression3<E, E2, E3, C extends ConditionExpression,
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L lk(

@@ -1,0 +1,161 @@
+
+package cn.featherfly.hammer.dsl.repository.query.relation;
+
+import java.util.function.Function;
+
+import com.speedment.common.tuple.Tuple5;
+
+import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery5;
+import cn.featherfly.hammer.expression.query.QueryLimitExecutor5;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression5;
+
+/**
+ * The Interface RepositoryQueryRelatedFetched4FFFF.
+ *
+ * @author zhongj
+ */
+public interface RepositoryQueryRelatedFetched4FFFF
+        extends RepositoryQuery5<RepositoryQuerySortExpression5<QueryLimitExecutor5>, QueryLimitExecutor5>,
+        QueryLimitExecutor5 {
+
+    /**
+     * Join.
+     *
+     * @param repositories the repositories
+     * @param repository   the repository
+     * @return EntityQueryRelatedExpression
+     */
+    RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join(
+            Function<Tuple5<String, String, String, String, String>, String> repositories, String repository);
+
+    /**
+     * Join.
+     *
+     * @param repositories the repositories
+     * @param repository   the repository
+     * @return EntityQueryRelatedExpression
+     */
+    default RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join(
+            Function<Tuple5<String, String, String, String, String>, String> repositories, Repository repository) {
+        return join(repositories, repository.name());
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join(
+            String repository);
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    default RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join(
+            Repository repository) {
+        return join(repository.name());
+    }
+
+    // ****************************************************************************************************************
+    // join 2
+    // ****************************************************************************************************************
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join2(
+            String repository);
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    default RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join2(
+            Repository repository) {
+        return join(repository.name());
+    }
+
+    // ****************************************************************************************************************
+    // join 3
+    // ****************************************************************************************************************
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join3(
+            String repository);
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    default RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join3(
+            Repository repository) {
+        return join(repository.name());
+    }
+
+    // ****************************************************************************************************************
+    // join 4
+    // ****************************************************************************************************************
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join4(
+            String repository);
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    default RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join4(
+            Repository repository) {
+        return join(repository.name());
+    }
+
+    // ****************************************************************************************************************
+    // join 4
+    // ****************************************************************************************************************
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join5(
+            String repository);
+
+    /**
+     * Join.
+     *
+     * @param repository the repository
+     * @return EntityQueryRelatedExpression
+     */
+    default RepositoryQueryRelatedExpression<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join5(
+            Repository repository) {
+        return join(repository.name());
+    }
+}

@@ -15,14 +15,12 @@ import java.util.Map;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
-import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
-import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
@@ -42,7 +40,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractReposito
  * @author zhongj
  */
 public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression extends
-        AbstractRepositorySqlConditionsGroupExpression<RepositoryQueryValueConditionsGroup, RepositoryQueryValueConditionsGroupLogic, QueryConditionConfig>
+        AbstractRepositorySqlConditionsGroupExpression<RepositoryQueryValueConditionsGroup,
+                RepositoryQueryValueConditionsGroupLogic, QueryConditionConfig>
         implements RepositoryQueryValueConditionsGroup, RepositoryQueryValueConditionsGroupLogic,
         RepositoryQueryValueSortExpression, RepositoryQueryValueSortedExpression, QueryValueLimitExecutor {
 
@@ -65,7 +64,7 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
      * @param sqlPageFactory       the sql page factory
      * @param queryConditionConfig the query condition config
      */
-    public AbstractRepositorySqlQueryValueConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+    protected AbstractRepositorySqlQueryValueConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
             QueryConditionConfig queryConditionConfig) {
         this(jdbc, sqlPageFactory, null, queryConditionConfig);
     }
@@ -78,7 +77,7 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
      * @param queryAlias           queryAlias
      * @param queryConditionConfig the query condition config
      */
-    public AbstractRepositorySqlQueryValueConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+    protected AbstractRepositorySqlQueryValueConditionsGroupExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
             String queryAlias, QueryConditionConfig queryConditionConfig) {
         this(null, jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
     }
@@ -130,33 +129,7 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
      * {@inheritDoc}
      */
     @Override
-    public QueryValueLimitExecutor limit(Integer limit) {
-        return limit(0, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryValueLimitExecutor limit(Integer offset, Integer limit) {
-        return limit(new Limit(offset, limit));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryValueLimitExecutor limit(Page page) {
-        return limit(new Limit(page));
-    }
-
-    /**
-     * Limit.
-     *
-     * @param limit the limit
-     * @return the query limit executor
-     */
-    private QueryValueLimitExecutor limit(Limit limit) {
+    public QueryValueLimitExecutor limit(Limit limit) {
         this.limit = limit;
         return this;
     }
@@ -164,21 +137,10 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <E> List<E> list() {
-        // IMPLSOON 未实现
-        throw new NotImplementedException();
-        //        String sql = getRoot().expression();
-        //        Object[] params = getRoot().getParams().toArray();
-        //        if (limit != null) {
-        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-        //                    params);
-        //            sql = pageQuery.getSql();
-        //            params = pageQuery.getParams();
-        //            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-        //            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
-        //        }
-        //        return jdbc.query(sql, params);
+        return (List<E>) list(Object.class);
     }
 
     /**
@@ -193,8 +155,6 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
                     params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
-            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
         }
         return jdbc.query(sql, type, params);
     }
@@ -212,9 +172,6 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
             SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
                     params);
             List<Map<String, Object>> list = jdbc.query(pageQuery.getSql(), pageQuery.getParams());
-            //            List<Map<String, Object>> list = jdbc.query(
-            //                    dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
-            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -239,8 +196,6 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
             SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
                     params);
             List<E> list = jdbc.query(pageQuery.getSql(), type, pageQuery.getParams());
-            //            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), type,
-            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -265,8 +220,6 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
             SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
                     params);
             List<E> list = jdbc.query(pageQuery.getSql(), rowMapper, pageQuery.getParams());
-            //            List<E> list = jdbc.query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()), rowMapper,
-            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
@@ -398,38 +351,6 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
         return jdbc.queryDouble(getRoot().expression(), getRoot().getParams().toArray());
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Integer integer() {
-    //        return jdbc.queryInteger(getRoot().expression(), getRoot().getParams().toArray());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Long longInt() {
-    //        return jdbc.queryLongWrapper(getRoot().expression(), getRoot().getParams().toArray());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public BigDecimal decimal() {
-    //        return jdbc.queryBigDecimal(getRoot().expression(), getRoot().getParams().toArray());
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <N extends Number> N number(Class<N> type) {
-    //        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
-    //    }
-
     /**
      * {@inheritDoc}
      */
@@ -441,10 +362,9 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T value() {
-        return (T) jdbc.queryValue(getRoot().expression(), Object.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), getRoot().getParams().toArray());
     }
 
     /**
@@ -480,14 +400,6 @@ public abstract class AbstractRepositorySqlQueryValueConditionsGroupExpression e
     public <T> T unique() {
         return (T) unique(Object.class);
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Long count() {
-    //        throw new UnsupportedException();
-    //    }
 
     /**
      * {@inheritDoc}

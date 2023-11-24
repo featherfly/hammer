@@ -1,14 +1,16 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.junit.Assert.assertFalse;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.testng.annotations.BeforeMethod;
@@ -171,6 +173,35 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void testFetch() {
+        Consumer<User> assertUser = user -> {
+            assertNotNull(user.getId());
+            assertNotNull(user.getAge());
+            assertNull(user.getUsername());
+            assertNull(user.getMobileNo());
+            assertNull(user.getPwd());
+        };
+        @SuppressWarnings("unchecked")
+        List<User> users = query.find(User.class).fetch(User::getId, User::getAge).list();
+        for (User user : users) {
+            assertUser.accept(user);
+        }
+        users = query.find(User.class).fetch(User::getId).fetch(User::getAge).list();
+        for (User user : users) {
+            assertUser.accept(user);
+        }
+
+        @SuppressWarnings("unchecked")
+        User user = query.find(User.class).fetch(User::getId, User::getAge) //
+                .limit(1).single();
+        assertUser.accept(user);
+        user = query.find(User.class).fetch(User::getId) //
+                .fetch(User::getAge) //
+                .limit(1).single();
+        assertUser.accept(user);
+    }
+
+    @Test
     void testCount() {
         long size = query.find(User.class).list().size();
         System.out.println("user list size: " + size);
@@ -195,11 +226,11 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @Test
     void testAvg() {
-        Integer avg = query.find(User.class).avg(User::getAge).single();
+        Integer avg = query.find(User.class).avg(User::getAge).value();
         System.out.println("avg: " + avg);
         assertTrue(avg > 0);
 
-        avg = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).single();
+        avg = query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).value();
         assertTrue(avg == 5);
     }
 
@@ -207,7 +238,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testSum() {
         Long count = query.find(User.class).where().eq(User::getAge, 5).count();
 
-        Integer sum = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).single();
+        Integer sum = query.find(User.class).sum(User::getAge).where().eq(User::getAge, 5).value();
         System.out.println("sum:" + sum);
         assertTrue(sum > 0);
         assertTrue(sum == count * 5);
@@ -215,22 +246,22 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @Test
     void testMin() {
-        Integer min = query.find(User.class).min(User::getAge).single();
+        Integer min = query.find(User.class).min(User::getAge).value();
         System.out.println("min:" + min);
         assertTrue(min == 5);
 
-        min = query.find(User.class).min(User::getAge).where().ge(User::getAge, 10).single();
+        min = query.find(User.class).min(User::getAge).where().ge(User::getAge, 10).value();
         System.out.println("min:" + min);
         assertTrue(min == 10);
     }
 
     @Test
     void testMax() {
-        Integer max = query.find(User.class).max(User::getAge).single();
+        Integer max = query.find(User.class).max(User::getAge).value();
         System.out.println("max:" + max);
         assertTrue(max == 55);
 
-        max = query.find(User.class).max(User::getAge).where().le(User::getAge, 10).single();
+        max = query.find(User.class).max(User::getAge).where().le(User::getAge, 10).value();
         System.out.println("max:" + max);
         assertTrue(max == 10);
     }
@@ -1205,7 +1236,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     void testCoverage() {
         EntitySqlQueryExpression<User> q = (EntitySqlQueryExpression<User>) query.find(User.class).where();
         String sql = q.toString();
-        String sql2 = q.build();
+        String sql2 = q.expression();
         assertNotNull(sql);
         assertNotNull(sql2);
         assertEquals(sql, sql2);

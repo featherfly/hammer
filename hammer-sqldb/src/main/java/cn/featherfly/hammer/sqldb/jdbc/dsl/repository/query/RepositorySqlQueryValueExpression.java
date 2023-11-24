@@ -44,44 +44,43 @@ public class RepositorySqlQueryValueExpression extends AbstractRepositorySqlQuer
      * @param queryAlias           the query alias
      * @param queryConditionConfig the query condition config
      */
-    RepositorySqlQueryValueExpression(RepositoryQueryValueConditionsGroupLogic parent, Jdbc jdbc,
+    private RepositorySqlQueryValueExpression(RepositoryQueryValueConditionsGroupLogic parent, Jdbc jdbc,
             SqlPageFactory sqlPageFactory, String queryAlias, QueryConditionConfig queryConditionConfig) {
         super(parent, jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
     }
 
-    /**
-     * Instantiates a new sql query expression.
-     *
-     * @param jdbc                 the jdbc
-     * @param sqlPageFactory       the sql page factory
-     * @param queryAlias           the query alias
-     * @param queryConditionConfig the query condition config
-     */
-    public RepositorySqlQueryValueExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
-            QueryConditionConfig queryConditionConfig) {
-        super(jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
-    }
-
-    /**
-     * Instantiates a new sql query expression.
-     *
-     * @param jdbc                 jdbc
-     * @param sqlPageFactory       the sql page factory
-     * @param queryConditionConfig the query condition config
-     */
-    public RepositorySqlQueryValueExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
-            QueryConditionConfig queryConditionConfig) {
-        super(jdbc, sqlPageFactory, queryConditionConfig);
-    }
+    //    /**
+    //     * Instantiates a new sql query expression.
+    //     *
+    //     * @param jdbc                 the jdbc
+    //     * @param sqlPageFactory       the sql page factory
+    //     * @param queryAlias           the query alias
+    //     * @param queryConditionConfig the query condition config
+    //     */
+    //    RepositorySqlQueryValueExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory, String queryAlias,
+    //            QueryConditionConfig queryConditionConfig) {
+    //        this(null, jdbc, sqlPageFactory, queryAlias, queryConditionConfig);
+    //    }
+    //
+    //    /**
+    //     * Instantiates a new sql query expression.
+    //     *
+    //     * @param jdbc                 jdbc
+    //     * @param sqlPageFactory       the sql page factory
+    //     * @param queryConditionConfig the query condition config
+    //     */
+    //    RepositorySqlQueryValueExpression(Jdbc jdbc, SqlPageFactory sqlPageFactory,
+    //            QueryConditionConfig queryConditionConfig) {
+    //        this(jdbc, sqlPageFactory, (String) null, queryConditionConfig);
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected RepositoryQueryValueConditionsGroup createGroup(RepositoryQueryValueConditionsGroupLogic parent,
-            String queryAlias) {
-        return new RepositorySqlQueryValueExpression(parent, jdbc, sqlPageFactory, queryAlias,
-                (QueryConditionConfig) conditionConfig);
+    protected RepositoryQueryValueConditionsGroup createGroup(RepositoryQueryValueConditionsGroupLogic parent) {
+        return new RepositorySqlQueryValueExpression(parent, jdbc, sqlPageFactory, getRepositoryAlias(),
+                conditionConfig);
     }
 
     /**

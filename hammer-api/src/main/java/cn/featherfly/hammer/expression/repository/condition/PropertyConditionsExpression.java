@@ -7,6 +7,6 @@ package cn.featherfly.hammer.expression.repository.condition;
  * @author zhongj
  */
 public interface PropertyConditionsExpression<C extends RepositoryConditionsExpression<C, L>,
-        L extends RepositoryConditionsLogicExpression<C, L>> extends PropertyExpression<C, L> {
+        L extends RepositoryConditionsLogicExpression<C, L>> extends RepositoryFieldExpression<C, L> {
 
 }

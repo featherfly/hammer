@@ -54,8 +54,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -75,8 +75,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -96,8 +96,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +119,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <N>            number type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -142,8 +142,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -165,8 +165,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <D>            date type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -186,8 +186,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -207,8 +207,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -228,8 +228,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -251,8 +251,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -264,8 +264,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -275,8 +275,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * great and equals. 大于等于.
      *
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -302,7 +302,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -327,7 +327,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -352,7 +352,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -379,7 +379,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <N>            number type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -406,7 +406,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -433,7 +433,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <D>            date type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -458,7 +458,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -483,7 +483,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -508,7 +508,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -533,7 +533,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -546,7 +546,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -559,7 +559,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -588,7 +588,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -613,7 +613,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -638,7 +638,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -665,7 +665,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <N>            number type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -692,7 +692,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -719,7 +719,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <D>            date type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -744,7 +744,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -769,7 +769,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -794,7 +794,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -819,7 +819,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -832,7 +832,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -845,7 +845,7 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -873,8 +873,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -896,8 +896,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -919,8 +919,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -944,8 +944,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <E>            the element type
      * @param <N>            number type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -969,8 +969,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <T>            the generic type
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -994,8 +994,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      * @param <E>            the element type
      * @param <D>            date type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1017,8 +1017,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1040,8 +1040,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1063,8 +1063,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1089,8 +1089,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1103,8 +1103,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -1115,8 +1115,8 @@ public interface MulitiGreatEqualsExpression<C extends ConditionExpression, L ex
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression

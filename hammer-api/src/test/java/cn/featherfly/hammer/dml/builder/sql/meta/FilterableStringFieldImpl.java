@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.dsl.query.QueryCondition;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditions;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -25,19 +25,19 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public class FilterableStringFieldImpl<C extends ConditionExpression, L extends LogicExpression<C, L>> extends FieldImpl
         implements FilterableStringField<C, L>, FilterableStringAliasField<C, L> {
 
-    private QueryCondition queryCondition;
+    private RepositoryQueryConditions queryCondition;
 
     /**
      * @param name
      */
-    public FilterableStringFieldImpl(String name, QueryCondition queryCondition) {
+    public FilterableStringFieldImpl(String name, RepositoryQueryConditions queryCondition) {
         this(name, null, queryCondition);
     }
 
     /**
      * @param name
      */
-    public FilterableStringFieldImpl(String name, String alias, QueryCondition queryCondition) {
+    public FilterableStringFieldImpl(String name, String alias, RepositoryQueryConditions queryCondition) {
         super(name, alias);
         this.queryCondition = queryCondition;
     }

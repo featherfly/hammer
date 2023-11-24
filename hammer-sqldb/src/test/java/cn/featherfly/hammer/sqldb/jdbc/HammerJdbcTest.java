@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -28,6 +29,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.expression.query.FetchField;
 import cn.featherfly.hammer.sqldb.SqldbHammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
@@ -1137,9 +1139,30 @@ public class HammerJdbcTest extends JdbcTestBase {
 
     @Test
     public void testQuery() {
-        List<Map<String, Object>> list = hammer.query("user").property("username", "password", "age").sort().asc("age")
+        List<Map<String, Object>> list = hammer.query("user") //
+                .field(f -> {
+                    f.name("username");
+                })//
+                .field((Consumer<FetchField>) f -> f.name("password")) //
+                .field(f -> {
+                    f.name("age");
+                })
+                //                .field("username", "password", "age")
+                .sort().asc("age") //
                 .list();
         int age = Integer.MIN_VALUE;
+        for (Map<String, Object> map : list) {
+            Integer a = (Integer) map.get("age");
+            System.err.println(age + "    " + a);
+            assertTrue(age <= a);
+            age = a;
+        }
+
+        age = Integer.MIN_VALUE;
+        list = hammer.query("user")
+                .field((q, f) -> q.field(f.name("username")).field(f.name("password")).field(f.name("age"))) //
+                .sort().asc("age") //
+                .list();
         for (Map<String, Object> map : list) {
             Integer a = (Integer) map.get("age");
             System.err.println(age + "    " + a);

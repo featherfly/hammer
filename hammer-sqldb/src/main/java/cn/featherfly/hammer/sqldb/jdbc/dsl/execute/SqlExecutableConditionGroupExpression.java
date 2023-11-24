@@ -1,12 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.execute;
 
+import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractMulitiRepositoryConditionExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractMulitiRepositorySqlConditionsGroupExpression;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -14,19 +16,21 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.AbstractMulitiRe
  * @author zhongj
  * @param <C> the generic type
  */
-public class SqlExecutableConditionGroupExpression<C extends ExecutableConditionConfig<C>> extends
+public abstract class SqlExecutableConditionGroupExpression<C extends ExecutableConditionConfig<C>,
+        R extends RepositorySqlRelation<R, B>, B extends SqlBuilder> extends
         //        AbstractRepositorySqlConditionGroupExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C>
-        AbstractMulitiRepositoryConditionExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C>
+        AbstractMulitiRepositorySqlConditionsGroupExpression<ExecutableConditionGroup<C>,
+                ExecutableConditionGroupLogic<C>, C, R, B>
         implements ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C> {
-
+    // FIXME 使用AbstractMulitiRepositorySqlConditionExpression代替AbstractMulitiRepositorySqlConditionsGroupExpression
     /**
      * Instantiates a new sql condition group expression.
      *
      * @param jdbc            jdbc
      * @param conditionConfig the condition config
      */
-    public SqlExecutableConditionGroupExpression(Jdbc jdbc, C conditionConfig) {
-        this(jdbc, null, conditionConfig);
+    public SqlExecutableConditionGroupExpression(Jdbc jdbc, R repositoryRelation, C conditionConfig) {
+        this(jdbc, null, repositoryRelation, conditionConfig);
     }
 
     /**
@@ -36,8 +40,9 @@ public class SqlExecutableConditionGroupExpression<C extends ExecutableCondition
      * @param queryAlias      queryAlias
      * @param conditionConfig the condition config
      */
-    public SqlExecutableConditionGroupExpression(Jdbc jdbc, String queryAlias, C conditionConfig) {
-        this(null, jdbc, queryAlias, conditionConfig);
+    public SqlExecutableConditionGroupExpression(Jdbc jdbc, String queryAlias, R repositoryRelation,
+            C conditionConfig) {
+        this(null, jdbc, queryAlias, repositoryRelation, conditionConfig);
     }
 
     /**
@@ -49,9 +54,9 @@ public class SqlExecutableConditionGroupExpression<C extends ExecutableCondition
      * @param conditionConfig the condition config
      */
     SqlExecutableConditionGroupExpression(ExecutableConditionGroupLogic<C> parent, Jdbc jdbc, String queryAlias,
-            C conditionConfig) {
+            R repositoryRelation, C conditionConfig) {
         // 删除，和更新不需要分页
-        super(parent, jdbc.getDialect(), null, queryAlias, conditionConfig);
+        super(parent, jdbc.getDialect(), queryAlias, repositoryRelation, conditionConfig);
         this.jdbc = jdbc;
     }
 
@@ -78,15 +83,6 @@ public class SqlExecutableConditionGroupExpression<C extends ExecutableCondition
 
     /** The jdbc. */
     protected Jdbc jdbc;
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected ExecutableConditionGroup<C> createGroup(ExecutableConditionGroupLogic<C> parent, String queryAlias) {
-        return new SqlExecutableConditionGroupExpression<>(parent, jdbc, queryAlias, (C) conditionConfig);
-    }
 
     /**
      * {@inheritDoc}

@@ -9,8 +9,8 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroupLogic
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortedExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractMulitiEntitySqlQueryValueConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
-import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryValueConditionGroupExpression;
 
 /**
  * EntitySqlQueryValueExpression .
@@ -19,7 +19,7 @@ import cn.featherfly.hammer.sqldb.sql.dml.AbstractEntitySqlQueryValueConditionGr
  * @param <E> the element type
  */
 public class EntitySqlQueryValueExpression<E, V> extends
-        AbstractEntitySqlQueryValueConditionGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>,
+        AbstractMulitiEntitySqlQueryValueConditionsGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>,
                 EntityQueryValueConditionGroupLogic<E, V>>
         implements EntityQueryValueConditionGroup<E, V>, EntityQueryValueConditionGroupLogic<E, V>,
         EntityQueryValueSortExpression<E, V>, EntityQueryValueSortedExpression<E, V> {
@@ -61,7 +61,7 @@ public class EntitySqlQueryValueExpression<E, V> extends
      * {@inheritDoc}
      */
     @Override
-    public String build() {
+    public String expression() {
         //        String result = entityRelation.buildSelectSql();
         //        String condition = super.build();
         //        if (Lang.isNotEmpty(condition)) {
@@ -69,7 +69,7 @@ public class EntitySqlQueryValueExpression<E, V> extends
         //        }
         //        return result;
         String result = entityRelation.buildSelectSql();
-        String condition = super.build();
+        String condition = super.expression();
         if (parent == null) {
             if (Lang.isEmpty(condition)) {
                 return result;

@@ -13,6 +13,6 @@ import cn.featherfly.hammer.expression.condition.GroupExpression;
  * @param <L>  the generic type
  */
 public interface EntityConditionsGroupExpression2<T, T2, C extends EntityConditionsGroupExpression2<T, T2, C, L>,
-        L extends EntityLogicGroupExpression2<T, T2, C, L>>
+        L extends EntityConditionsGroupLogicExpression2<T, T2, C, L>>
         extends EntityConditionsExpression2<T, T2, C, L>, GroupExpression<C, L> {
 }

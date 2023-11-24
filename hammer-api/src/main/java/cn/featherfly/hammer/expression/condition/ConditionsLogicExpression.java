@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.condition;
 
 /**
- * repository conditions logic expression.
+ * conditions logic expression.
  *
  * @author zhongj
  * @param <C> the generic type

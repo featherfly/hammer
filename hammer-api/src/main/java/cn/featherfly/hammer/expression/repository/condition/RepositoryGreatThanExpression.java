@@ -24,8 +24,8 @@
 //     *
 //     * @param <N>        number type
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -36,8 +36,8 @@
 //     *
 //     * @param <D>        date type
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -47,8 +47,8 @@
 //     * 大于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -58,8 +58,8 @@
 //     * 大于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -69,8 +69,8 @@
 //     * 大于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -80,8 +80,8 @@
 //     * 大于.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    L gt(String repository, String name, String value);
@@ -92,8 +92,8 @@
 //     * @param <N>        number type
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <N extends Number, T> L gt(Class<T> repository, String name, N value);
@@ -104,8 +104,8 @@
 //     * @param <D>        date type
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <D extends Date, T> L gt(Class<T> repository, String name, D value);
@@ -115,8 +115,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L gt(Class<T> repository, String name, LocalTime value);
@@ -126,8 +126,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L gt(Class<T> repository, String name, LocalDate value);
@@ -137,8 +137,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L gt(Class<T> repository, String name, LocalDateTime value);
@@ -148,8 +148,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository type
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    <T> L gt(Class<T> repository, String name, String value);
@@ -159,8 +159,8 @@
 //     *
 //     * @param <N>             number type
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -171,8 +171,8 @@
 //     *
 //     * @param <D>             date type
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -182,8 +182,8 @@
 //     * 大于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -193,8 +193,8 @@
 //     * 大于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -204,8 +204,8 @@
 //     * 大于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //
@@ -215,8 +215,8 @@
 //     * 大于.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //

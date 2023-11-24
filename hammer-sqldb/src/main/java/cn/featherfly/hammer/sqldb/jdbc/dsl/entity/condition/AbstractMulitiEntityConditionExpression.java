@@ -46,8 +46,9 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractMulitiEntityConditionExpression<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractSqlConditionExpression
+public abstract class AbstractMulitiEntityConditionExpression<E, C extends ConditionExpression,
+        L extends LogicExpression<C, L>, C2 extends ConditionConfig<C2>>
+        extends AbstractSqlConditionExpression<C, L, C2>
         implements InternalMulitiEntityCondition<L>, MulitiEntityConditionExpression {
 
     /**
@@ -56,76 +57,9 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
      * @param conditionConfig the condition config
      * @param dialect         the dialect
      */
-    protected AbstractMulitiEntityConditionExpression(ConditionConfig<?> conditionConfig, Dialect dialect) {
-        super(conditionConfig, dialect);
+    protected AbstractMulitiEntityConditionExpression(L parent, Dialect dialect, C2 conditionConfig) {
+        super(parent, dialect, conditionConfig);
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Object getInParam(PropertyMapping<?> pm, Object value) {
-    //        Object param = null;
-    //        if (value != null) {
-    //            if (value.getClass().isArray()) {
-    //                int length = Array.getLength(value);
-    //                param = Array.newInstance(FieldValueOperator.class, length);
-    //                for (int i = 0; i < length; i++) {
-    //                    Array.set(param, i, getFieldValueOperator(pm, Array.get(value, i)));
-    //                }
-    //            } else if (value instanceof Collection) {
-    //                param = ((Collection<?>) value).stream().map(op -> getFieldValueOperator(pm, op))
-    //                        .collect(Collectors.toList());
-    //                //                Collection<FieldValueOperator<?>> paramCollection = new ArrayList<>();
-    //                //                for (Object op : (Collection<?>) value) {
-    //                //                    paramCollection.add(getFieldValueOperator(pm, op));
-    //                //                }
-    //                //                param = paramCollection;
-    //            } else if (value instanceof FieldValueOperator) {
-    //                param = value;
-    //            } else {
-    //                param = getFieldValueOperator(pm, value);
-    //            }
-    //        }
-    //        return param;
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Object getInParam(Object value) {
-    //        return getInParam(null, value);
-    //    }
-    //
-    //    /**
-    //     * Gets the field value operator.
-    //     *
-    //     * @param <R>   the generic type
-    //     * @param pm    the pm
-    //     * @param value the value
-    //     * @return the field value operator
-    //     */
-    //    @Override
-    //    public <R> FieldValueOperator<R> getFieldValueOperator(PropertyMapping<?> pm, R value) {
-    //        if (pm == null) {
-    //            return getFieldValueOperator(value);
-    //        }
-    //        return FieldValueOperator.create((JdbcPropertyMapping) pm, value);
-    //    }
-    //
-    //    /**
-    //     * Gets the field value operator.
-    //     *
-    //     * @param <R>   the generic type
-    //     * @param pm    the pm
-    //     * @param value the value
-    //     * @return the field value operator
-    //     */
-    //    @Override
-    //    public <R> FieldValueOperator<R> getFieldValueOperator(R value) {
-    //        return FieldValueOperator.create(value);
-    //    }
 
     // ********************************************************************
 
@@ -1667,13 +1601,13 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     /**
      * Gets the class mapping.
      *
-     * @param <CM>  the generic type
+     * @param <M>   the generic type
      * @param <T>   the generic type
      * @param <P>   the generic type
      * @param index the index
      * @return the class mapping
      */
-    protected <CM extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> CM getClassMapping(AtomicInteger index) {
+    protected <M extends ClassMapping<T, P>, T, P extends PropertyMapping<P>> M getClassMapping(AtomicInteger index) {
         return getClassMapping(index.get());
     }
 

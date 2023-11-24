@@ -35,8 +35,8 @@ import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
-import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
@@ -44,6 +44,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleter;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlUpdater;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetch;
 import cn.featherfly.hammer.sqldb.jdbc.operate.DeleteOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.GetOperate;
 import cn.featherfly.hammer.sqldb.jdbc.operate.InsertOperate;
@@ -97,6 +98,12 @@ public class SqldbHammerImpl implements SqldbHammer {
 
     /** The merge operates. */
     private Map<Class<?>, MergeOperate<?>> mergeOperates = new HashMap<>();
+
+    private final SqlQuery query;
+
+    private final SqlUpdater updater;
+
+    private final SqlDeleter deleter;
 
     /**
      * Instantiates a new hammer jdbc impl.
@@ -193,6 +200,10 @@ public class SqldbHammerImpl implements SqldbHammer {
         this.hammerConfig = hammerConfig;
         sqlTplExecutor = new SqlTplExecutor(configFactory, templateEngine, jdbc, mappingFactory, sqlPageFacotry,
                 transverterManager);
+        query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
+                hammerConfig.getDslConfig().getQueryConfig());
+        updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
+        deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
     }
 
     /**
@@ -632,8 +643,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public RepositoryQueryFetch query(String repository) {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
-                hammerConfig.getDslConfig().getQueryConfig());
+        //        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
+        //                hammerConfig.getDslConfig().getQueryConfig());
         return query.find(repository);
     }
 
@@ -642,8 +653,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public RepositoryQueryFetch query(Repository repository) {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
-                hammerConfig.getDslConfig().getQueryConfig());
+        //        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
+        //                hammerConfig.getDslConfig().getQueryConfig());
         return query.find(repository);
     }
 
@@ -651,9 +662,9 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryFetch query(Table table) {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
-                hammerConfig.getDslConfig().getQueryConfig());
+    public RepositorySqlQueryFetch query(Table table) {
+        //        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
+        //                hammerConfig.getDslConfig().getQueryConfig());
         return query.find(table);
     }
 
@@ -662,8 +673,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> EntityQueryFetch<E> query(Class<E> entityType) {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
-                hammerConfig.getDslConfig().getQueryConfig());
+        //        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
+        //                hammerConfig.getDslConfig().getQueryConfig());
         return query.find(entityType);
     }
 
@@ -672,7 +683,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> EntityUpdate<E> update(Class<E> entityType) {
-        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
+        //        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
         return updater.update(entityType);
     }
 
@@ -681,7 +692,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public Update update(String repository) {
-        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
+        //        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
         return updater.update(repository);
     }
 
@@ -690,7 +701,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public Update update(Repository repository) {
-        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
+        //        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
         return updater.update(repository);
     }
 
@@ -699,7 +710,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public Update update(Table table) {
-        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
+        //        SqlUpdater updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
         return updater.update(table);
     }
 
@@ -707,8 +718,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public Delete delete(String repository) {
-        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
+    public RepositoryDelete delete(String repository) {
+        //        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
         return deleter.delete(repository);
     }
 
@@ -716,8 +727,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public Delete delete(Repository repository) {
-        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
+    public RepositoryDelete delete(Repository repository) {
+        //        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
         return deleter.delete(repository);
     }
 
@@ -725,8 +736,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public Delete delete(Table table) {
-        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
+    public RepositoryDelete delete(Table table) {
+        //        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
         return deleter.delete(table);
     }
 
@@ -735,7 +746,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> EntityDelete<E> delete(Class<E> entityType) {
-        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
+        //        SqlDeleter deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
         return deleter.delete(entityType);
     }
 

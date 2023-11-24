@@ -25,6 +25,26 @@ public interface JdbcQueryValue {
     /**
      * Query value.
      *
+     * @param <T>  the generic type
+     * @param sql  the sql
+     * @param args the args
+     * @return the t
+     */
+    <T> T queryValue(String sql, Object... args);
+
+    /**
+     * Query value.
+     *
+     * @param <T>  the generic type
+     * @param sql  the sql
+     * @param args the args
+     * @return the t
+     */
+    <T> T queryValue(String sql, Map<String, Object> args);
+
+    /**
+     * Query value.
+     *
      * @param <T>       the generic type
      * @param sql       the sql
      * @param valueType the value type

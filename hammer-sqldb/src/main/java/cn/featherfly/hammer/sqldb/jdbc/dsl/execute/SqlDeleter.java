@@ -5,15 +5,13 @@ import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
+import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.execute.Deleter;
-import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityDelete;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.RepositorySqlDelete;
 
 /**
  * SqlDeleter.
@@ -29,16 +27,11 @@ public class SqlDeleter implements Deleter {
     private DeleteConfig deleteConfig;
 
     /**
-     * @param jdbc jdbc
-     */
-    public SqlDeleter(Jdbc jdbc, DeleteConfig deleteConfig) {
-        this.jdbc = jdbc;
-        this.deleteConfig = deleteConfig;
-    }
-
-    /**
+     * Instantiates a new sql deleter.
+     *
      * @param jdbc           jdbc
      * @param mappingFactory mappingFactory
+     * @param deleteConfig   the delete config
      */
     public SqlDeleter(Jdbc jdbc, JdbcMappingFactory mappingFactory, DeleteConfig deleteConfig) {
         this.jdbc = jdbc;
@@ -52,19 +45,20 @@ public class SqlDeleter implements Deleter {
      * @param table the table
      * @return SqlDelete
      */
-    public SqlDelete delete(Table table) {
-        return new SqlDelete(jdbc, table.getName(), deleteConfig);
+    public RepositorySqlDelete delete(Table table) {
+        return delete(table.getName());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SqlDelete delete(Repository repository) {
+    public RepositorySqlDelete delete(Repository repository) {
         if (repository instanceof AliasRepository) {
-            return new SqlDelete(jdbc, (AliasRepository) repository, deleteConfig);
+            return new RepositorySqlDelete(jdbc, (AliasRepository) repository, mappingFactory.getMetadata(),
+                    deleteConfig);
         } else {
-            return new SqlDelete(jdbc, repository, deleteConfig);
+            return new RepositorySqlDelete(jdbc, repository, mappingFactory.getMetadata(), deleteConfig);
         }
     }
 
@@ -72,24 +66,19 @@ public class SqlDeleter implements Deleter {
      * {@inheritDoc}
      */
     @Override
-    public SqlDelete delete(String repository) {
-        return new SqlDelete(jdbc, repository, deleteConfig);
+    public RepositorySqlDelete delete(String repository) {
+        return new RepositorySqlDelete(jdbc, repository, mappingFactory.getMetadata(), deleteConfig);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <EDR extends EntityDeleteExpression<E, DC, DL>,
-            DC extends EntityExecutableConditionGroupExpression<E, DC, DL, DeleteConditionConfig>,
-            DL extends EntityExecutableConditionGroupLogicExpression<E, DC, DL, DeleteConditionConfig>,
-            E> EDR delete(Class<E> entityType) {
+    public <E> EntityDelete<E> delete(Class<E> entityType) {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
         // ENHANCE 删除暂时没有支持别名
-        return (EDR) new SqlEntityDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(entityType),
-                deleteConfig);
+        return new SqlEntityDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(entityType), deleteConfig);
     }
 }

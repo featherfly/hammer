@@ -8,9 +8,10 @@
  */
 package cn.featherfly.hammer.dml.builder.sql.meta;
 
+import cn.featherfly.common.repository.Aliasable;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
+import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 
 /**
  * StringField.
@@ -18,7 +19,7 @@ import cn.featherfly.hammer.expression.repository.condition.property.StringPrope
  * @author zhongj
  */
 public interface FilterableStringField<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends StringPropertyExpression<C, L>, StringField, Aliasable<FilterableStringAliasField<C, L>> {
+        extends StringFieldExpression<C, L>, StringField, Aliasable<FilterableStringAliasField<C, L>> {
 
     //    @Override
     //    void eq(String value);

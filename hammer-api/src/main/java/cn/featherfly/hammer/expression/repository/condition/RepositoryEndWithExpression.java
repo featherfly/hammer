@@ -19,8 +19,8 @@
 //     * end with value. 以value结尾.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    default L ew(String repository, String name, String value) {
@@ -31,8 +31,8 @@
 //     * end with value. 以value结尾.
 //     *
 //     * @param repository  repository
-//     * @param name        参数名称
-//     * @param value       参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */
@@ -43,8 +43,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    default <T> L ew(Class<T> repository, String name, String value) {
@@ -56,8 +56,8 @@
 //     *
 //     * @param <T>         the generic type
 //     * @param repository  repository
-//     * @param name        参数名称
-//     * @param value       参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */
@@ -67,8 +67,8 @@
 //     * end with value. 以value结尾.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    default L ew(int repositoryIndex, String name, String value) {
@@ -79,8 +79,8 @@
 //     * end with value. 以value结尾.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy     the query policy
 //     * @return LogicExpression
 //     */

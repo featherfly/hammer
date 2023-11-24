@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition.co;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -37,8 +38,8 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * contains value. 包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -50,8 +51,8 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * contains value. 包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -101,4 +102,16 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
             Predicate<String> ignoreStrategy) {
         return co(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
+
+    @Override
+    default L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return co(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    }
+
+    @Override
+    default L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return co(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
 }

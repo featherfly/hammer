@@ -46,8 +46,8 @@
 //     *
 //     * @param <E>            the element type
 //     * @param index          the index
-//     * @param name           参数名称
-//     * @param value          参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param ignoreStrategy the ignore strategy
 //     * @return LogicExpression
 //     */
@@ -132,7 +132,7 @@
 //    //     * @param <R>        the generic type
 //    //     * @param repository the repository
 //    //     * @param property   the property
-//    //     * @param value      参数值
+//    //     * @param value the value
 //    //     * @return LogicExpression
 //    //     */
 //    //    <R> L sw(int index, SerializableFunction<E, R> repository, SerializableFunction<R, String> property, String value);

@@ -28,18 +28,6 @@ public class MappingDebugMessage extends AbstractDebugMessage<MappingDebugMessag
         addColumn(columnTitle, columnAsTitle, propertyTitle, propertyTypeTitle);
     }
 
-    //    /**
-    //     * Adds the mapping.
-    //     *
-    //     * @param column           the column
-    //     * @param property         the property
-    //     * @param propertyTypeName the property type name
-    //     * @return the mapping debug message
-    //     */
-    //    public MappingDebugMessage addMapping(String column, String property, String propertyTypeName) {
-    //        return addMapping(column, column, property, propertyTypeName);
-    //    }
-
     /**
      * Adds the mapping.
      *

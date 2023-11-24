@@ -6,7 +6,12 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableIntSupplier;
+import cn.featherfly.common.function.serializable.SerializableLongSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
@@ -266,5 +271,85 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      */
     default <T, R> L ni(SerializableFunction<T, R> name, R[] values, Predicate<R[]> ignoreStrategy) {
         return ni(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default <R> L ni(SerializableSupplier<R> property) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default <R> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableIntSupplier property) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableLongSupplier property) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableDoubleSupplier property) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L ni(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ni(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy, ignoreStrategy);
     }
 }

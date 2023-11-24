@@ -88,7 +88,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      */
     @SuppressWarnings("unchecked")
     default <N extends Number> L ba(String name, N min, N max, IgnoreStrategy ignoreStrategy) {
-        return ba(name, min, max, (i, a) -> ignoreStrategy.test(Lang.array(i, a)));
+        return ba(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
@@ -169,7 +169,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      */
     @SuppressWarnings("unchecked")
     default <D extends Date> L ba(String name, D min, D max, IgnoreStrategy ignoreStrategy) {
-        return ba(name, min, max, (i, a) -> ignoreStrategy.test(Lang.array(i, a)));
+        return ba(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
@@ -244,7 +244,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default L ba(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy) {
-        return ba(name, min, max, (i, a) -> ignoreStrategy.test(Lang.array(i, a)));
+        return ba(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
@@ -318,7 +318,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default L ba(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
-        return ba(name, min, max, (i, a) -> ignoreStrategy.test(Lang.array(i, a)));
+        return ba(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
@@ -393,7 +393,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default L ba(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
-        return ba(name, min, max, (i, a) -> ignoreStrategy.test(Lang.array(i, a)));
+        return ba(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
@@ -467,7 +467,7 @@ public interface BetweenExpression<C extends ConditionExpression, L extends Logi
      * @return LogicExpression
      */
     default L ba(String name, String min, String max, IgnoreStrategy ignoreStrategy) {
-        return ba(name, min, max, (i, a) -> ignoreStrategy.test(Lang.array(i, a)));
+        return ba(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**

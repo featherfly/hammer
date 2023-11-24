@@ -103,7 +103,7 @@ public class NewDslApi {
         query.find(UserInfo.class).where().eq(userInfos.get(0)::getDescp);
         query.find(UserInfo.class).where().eq(userInfo::getDescp);
 
-        query.find("user").property(AggregateFunction.SUM, true, "age").integer();
+        query.find("user").field(AggregateFunction.SUM, true, "age").intNumber();
 
         Function<FindAndFetchManager<Tuple2<EntityRepository<UserInfo>, EntityRepository<UserInfo>>>,
                 Repository> f = (find) -> {

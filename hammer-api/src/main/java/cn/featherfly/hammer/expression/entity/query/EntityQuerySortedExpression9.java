@@ -21,6 +21,6 @@ import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression9
 public interface EntityQuerySortedExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, R> extends
         EntitySortedExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9,
                 EntityQuerySortedExpression9<E, E2, E3, E4, E5, E6, E7, E8, E9, R>>,
-        EntityQueryConditionLimit<R>, EntityQueryLimitExecutor<R> {
+        EntityQueryConditionLimit<EntityQueryLimitExecutor<R>>, EntityQueryLimitExecutor<R> {
 
 }

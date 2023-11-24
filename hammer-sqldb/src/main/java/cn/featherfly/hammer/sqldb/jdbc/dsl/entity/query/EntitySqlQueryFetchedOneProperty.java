@@ -1,6 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -11,6 +14,7 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
@@ -22,9 +26,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <E> the element type
  * @param <V> the value type
  */
-public class EntitySqlQueryFetchedOneProperty<E, V>
-        extends AbstractEntitySqlQueryFetchedProperties<E, V, EntityQueryFetchedProperties<E>>
+public class EntitySqlQueryFetchedOneProperty<E, V> extends
+        AbstractEntitySqlQueryFetchedProperties<E, EntityQueryFetchedProperties<E>, EntityQueryValueLimitExecutor<E, V>>
         implements EntityQueryOneFetchedProperty<E, V> {
+    private final Class<V> valueType;
 
     /**
      * Instantiates a new entity sql query fetched property.
@@ -67,7 +72,7 @@ public class EntitySqlQueryFetchedOneProperty<E, V>
     public EntitySqlQueryFetchedOneProperty(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation, AggregateFunction aggregateFunction, boolean distinct,
             SerializableFunction<E, V> property) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation, null); // 下面手动设置valueType
+        super(factory, sqlPageFactory, entitySqlQueryRelation);
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(property);
         if (aggregateFunction != null) {
             property(aggregateFunction, distinct, property);
@@ -75,6 +80,92 @@ public class EntitySqlQueryFetchedOneProperty<E, V>
             property(distinct, property);
         }
         valueType = (Class<V>) info.getPropertyType();
+    }
+
+    /**
+     * Property.
+     *
+     * @param propertyNames the property names
+     * @return the e
+     */
+    @Override
+    public EntityQueryFetchedProperties<E> property(String... propertyNames) {
+        return new EntitySqlQueryFetchedProperties<E>(factory, sqlPageFactory, queryRelation).property(propertyNames);
+    }
+
+    /**
+     * Property.
+     *
+     * @param propertyNames the property names
+     * @return the e
+     */
+    @Override
+    public EntityQueryFetchedProperties<E> property(Collection<String> propertyNames) {
+        return new EntitySqlQueryFetchedProperties<E>(factory, sqlPageFactory, queryRelation).property(propertyNames);
+    }
+
+    /**
+     * Property.
+     *
+     * @param distinct     the distinct
+     * @param propertyName the property name
+     * @return the e
+     */
+    @Override
+    public EntityQueryFetchedProperties<E> property(boolean distinct, String propertyName) {
+        return new EntitySqlQueryFetchedProperties<E>(factory, sqlPageFactory, queryRelation).property(distinct,
+                propertyName);
+    }
+
+    /**
+     * Property.
+     *
+     * @param aggregateFunction the aggregate function
+     * @param distinct          the distinct
+     * @param propertyName      the property name
+     * @return the e
+     */
+    @Override
+    public EntityQueryFetchedProperties<E> property(AggregateFunction aggregateFunction, boolean distinct,
+            String propertyName) {
+        return new EntitySqlQueryFetchedProperties<E>(factory, sqlPageFactory, queryRelation)
+                .property(aggregateFunction, distinct, propertyName);
+    }
+
+    /**
+     * Property alias.
+     *
+     * @param columnName the column name
+     * @param alias      the alias
+     * @return the e
+     */
+    @Override
+    public EntityQueryFetchedProperties<E> propertyAlias(String columnName, String alias) {
+        return new EntitySqlQueryFetchedProperties<E>(factory, sqlPageFactory, queryRelation).propertyAlias(columnName,
+                alias);
+    }
+
+    /**
+     * Property alias.
+     *
+     * @param columnNameMap the column name map
+     * @return the e
+     */
+    @Override
+    public EntityQueryFetchedProperties<E> propertyAlias(Map<String, String> columnNameMap) {
+        return new EntitySqlQueryFetchedProperties<E>(factory, sqlPageFactory, queryRelation)
+                .propertyAlias(columnNameMap);
+    }
+
+    /**
+     * Id.
+     *
+     * @param propertyName the property name
+     * @return the e
+     */
+    @Override
+    public EntityQueryFetchedProperties<E> id(String propertyName) {
+        return new EntitySqlQueryFetchedProperties<E>(factory, sqlPageFactory, queryRelation).id(propertyName);
     }
 
     /**
@@ -104,5 +195,21 @@ public class EntitySqlQueryFetchedOneProperty<E, V>
     @Override
     public EntityQueryValueSortExpression<E, V> sort() {
         return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public V value() {
+        return new EntitySqlQueryValueExpression<E, V>(factory, sqlPageFactory, queryRelation, valueType).value();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<V> valueList() {
+        return new EntitySqlQueryValueExpression<E, V>(factory, sqlPageFactory, queryRelation, valueType).valueList();
     }
 }

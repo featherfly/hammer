@@ -1,10 +1,10 @@
 
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.api.Queryable;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.QueryValueConditionLimit;
 import cn.featherfly.hammer.expression.query.QueryValueListExecutor;
+import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
  * entity query value expression.

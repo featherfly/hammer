@@ -7,8 +7,6 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
-import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 
 /**
@@ -21,6 +19,6 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
  */
 public interface RepositoryQueryConditionsGroupExpression<C extends RepositoryQueryConditionsGroupExpression<C, L, S>,
         L extends RepositoryQueryConditionsGroupLogicExpression<C, L, S>, S extends RepositoryQuerySortExpression>
-        extends RepositoryConditionsGroupExpression<C, L>, ConditionConfigureExpression<C, QueryConditionConfig> {
+        extends RepositoryQueryConditionsExpression<C, L, S>, RepositoryConditionsGroupExpression<C, L> {
 
 }

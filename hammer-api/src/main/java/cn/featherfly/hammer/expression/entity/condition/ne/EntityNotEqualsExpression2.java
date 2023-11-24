@@ -42,8 +42,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(
@@ -57,8 +57,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -73,8 +73,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -86,8 +86,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -157,7 +157,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L ne(
@@ -187,8 +187,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>      the generic type
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default <R> L ne(
@@ -202,8 +202,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -218,8 +218,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>         the generic type
     //     * @param entities    the entities
-    //     * @param name        参数名称
-    //     * @param value       参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
@@ -231,8 +231,8 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     *
     //     * @param <R>          the generic type
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param queryPolicy  the query policy
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
@@ -302,7 +302,7 @@ public interface EntityNotEqualsExpression2<E, E2, C extends ConditionExpression
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <T, V> L ne(

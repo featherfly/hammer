@@ -10,6 +10,6 @@ import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
  * @param <E> the element type
  */
 public interface EntityQuerySortedExpression<E> extends EntitySortedExpression<E, EntityQuerySortedExpression<E>>,
-        EntityQueryConditionLimit<E>, EntityQueryLimitExecutor<E> {
+        EntityQueryConditionLimit<EntityQueryLimitExecutor<E>>, EntityQueryLimitExecutor<E> {
 
 }

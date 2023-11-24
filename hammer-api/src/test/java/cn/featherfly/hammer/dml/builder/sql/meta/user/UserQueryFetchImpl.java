@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
+import cn.featherfly.hammer.dsl.query.QueryFetchedFields;
 
 /**
  * UserQueryFetchImpl.
@@ -21,7 +21,7 @@ import cn.featherfly.hammer.dsl.query.QueryEntityProperties;
  */
 public class UserQueryFetchImpl implements UserQueryFetch {
 
-    private QueryEntityProperties queryEntityProperties;
+    private QueryFetchedFields queryFetchedFields;
 
     private UserTableQueryable userTableQueryable;
 
@@ -30,7 +30,7 @@ public class UserQueryFetchImpl implements UserQueryFetch {
      */
     @Override
     public UserQueryFetch field(Function<UserTableQueryable, Field> fetchField) {
-        queryEntityProperties.fetch(fetchField.apply(userTableQueryable));
+        queryFetchedFields.fetch(fetchField.apply(userTableQueryable));
         return null;
     }
 
@@ -39,7 +39,7 @@ public class UserQueryFetchImpl implements UserQueryFetch {
      */
     @Override
     public UserQueryFetch fields(Function<UserTableQueryable, Field[]> fetchField) {
-        queryEntityProperties.fetch(fetchField.apply(userTableQueryable));
+        queryFetchedFields.fields(fetchField.apply(userTableQueryable));
         return null;
     }
 

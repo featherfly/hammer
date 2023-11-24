@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition.sw;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -26,7 +27,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      *
      * @param <T>          the generic type
      * @param propertyName the property name
-     * @param value        参数值
+     * @param value        the value
      * @return LogicExpression
      */
     default <T> L sw(SerializableToStringFunction<T> propertyName, String value) {
@@ -38,7 +39,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      *
      * @param <T>            the generic type
      * @param propertyName   the property name
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,7 +52,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      *
      * @param <T>            the generic type
      * @param propertyName   the property name
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -100,6 +101,17 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     default <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return sw(LambdaUtils.getLambdaPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    default L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return sw(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    }
+
+    @Override
+    default L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return sw(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 
 }

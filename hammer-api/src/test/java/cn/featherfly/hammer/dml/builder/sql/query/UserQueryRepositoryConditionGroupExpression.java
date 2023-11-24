@@ -7,9 +7,13 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.function.DoublePredicate;
 import java.util.function.Function;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.CharPredicate;
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
@@ -17,7 +21,6 @@ import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSuppl
 import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
@@ -31,13 +34,13 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
+import cn.featherfly.hammer.expression.condition.field.DateFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.EnumFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.ObjectFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.NumberPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.ObjectPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
 
 /**
  * The Class UserQueryRepositoryConditionGroupExpression.
@@ -61,9 +64,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the string expression
      */
-    public StringPropertyExpression<UserQueryRepositoryConditionGroupExpression,
+    public StringFieldExpression<UserQueryRepositoryConditionGroupExpression,
             UserQueryRepositoryConditionGroupExpression> name() {
-        return propertyString("name");
+        return fieldAsString("name");
     }
 
     /**
@@ -71,9 +74,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the number expression
      */
-    public NumberPropertyExpression<Number, UserQueryRepositoryConditionGroupExpression,
+    public NumberFieldExpression<Number, UserQueryRepositoryConditionGroupExpression,
             UserQueryRepositoryConditionGroupExpression> age() {
-        return propertyNumber("age");
+        return fieldAsNumber("age");
     }
 
     /**
@@ -81,9 +84,9 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the string expression
      */
-    public StringPropertyExpression<UserQueryRepositoryConditionGroupExpression,
+    public StringFieldExpression<UserQueryRepositoryConditionGroupExpression,
             UserQueryRepositoryConditionGroupExpression> pwd() {
-        return propertyString("pwd");
+        return fieldAsString("pwd");
     }
 
     /**
@@ -462,35 +465,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression ne(String name, Object value, MatchStrategy matchStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression ne(SerializableFunction<T, R> name, R value,
-            MatchStrategy matchStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> UserQueryRepositoryConditionGroupExpression ne(SerializableSupplier<R> property,
-            MatchStrategy matchStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UserQueryRepositoryConditionGroupExpression sw(String name, String value, MatchStrategy matchStrategy) {
 
         return null;
@@ -549,8 +523,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public ObjectPropertyExpression<UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> property(String name) {
+    public ObjectFieldExpression<UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> field(String name) {
 
         return null;
     }
@@ -559,8 +533,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public StringPropertyExpression<UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> propertyString(String name) {
+    public StringFieldExpression<UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> fieldAsString(String name) {
 
         return null;
     }
@@ -569,8 +543,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> NumberPropertyExpression<N, UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> propertyNumber(String name) {
+    public <N extends Number> NumberFieldExpression<N, UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> fieldAsNumber(String name) {
 
         return null;
     }
@@ -579,8 +553,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> DatePropertyExpression<D, UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> propertyDate(String name) {
+    public <D extends Date> DateFieldExpression<D, UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> fieldAsDate(String name) {
 
         return null;
     }
@@ -589,8 +563,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> EnumPropertyExpression<R, UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> propertyEnum(String name) {
+    public <R extends Enum<R>> EnumFieldExpression<R, UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> fieldAsEnum(String name) {
 
         return null;
     }
@@ -599,8 +573,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R> ObjectPropertyExpression<UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> property(SerializableFunction<T, R> name) {
+    public <T, R> ObjectFieldExpression<UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> field(SerializableFunction<T, R> name) {
 
         return null;
     }
@@ -609,8 +583,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T> StringPropertyExpression<UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> property(SerializableToStringFunction<T> name) {
+    public <T> StringFieldExpression<UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> field(SerializableToStringFunction<T> name) {
 
         return null;
     }
@@ -619,8 +593,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> NumberPropertyExpression<R, UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> property(SerializableToNumberFunction<T, R> name) {
+    public <T, R extends Number> NumberFieldExpression<R, UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> field(SerializableToNumberFunction<T, R> name) {
 
         return null;
     }
@@ -629,8 +603,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Date> DatePropertyExpression<R, UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> property(SerializableToDateFunction<T, R> name) {
+    public <T, R extends Date> DateFieldExpression<R, UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> field(SerializableToDateFunction<T, R> name) {
 
         return null;
     }
@@ -639,8 +613,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Enum<R>> EnumPropertyExpression<R, UserQueryRepositoryConditionGroupExpression,
-            UserQueryRepositoryConditionGroupExpression> property(SerializableToEnumFunction<T, R> name) {
+    public <T, R extends Enum<R>> EnumFieldExpression<R, UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> field(SerializableToEnumFunction<T, R> name) {
 
         return null;
     }
@@ -794,36 +768,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public UserQueryRepositoryConditionGroupExpression ew(SerializableStringSupplier propertyValue,
             MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> UserQueryRepositoryConditionGroupExpression eq(String name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableFunction<T, R> name, R value,
-            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> UserQueryRepositoryConditionGroupExpression eq(SerializableSupplier<R> property,
-            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -1003,36 +947,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableStringSupplier propertyValue,
             Predicate<String> ignoreStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> UserQueryRepositoryConditionGroupExpression ne(String name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression ne(SerializableFunction<T, R> name, R value,
-            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> UserQueryRepositoryConditionGroupExpression ne(SerializableSupplier<R> property,
-            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -3919,15 +3833,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression eq(String name, Object value, MatchStrategy matchStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ge(String name, N value) {
 
         return null;
@@ -4065,26 +3970,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ew(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R> UserQueryRepositoryConditionGroupExpression eq(SerializableFunction<T, R> name, R value,
-            MatchStrategy matchStrategy) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> UserQueryRepositoryConditionGroupExpression eq(SerializableSupplier<R> property,
             MatchStrategy matchStrategy) {
 
         return null;
@@ -4330,6 +4215,610 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, R> UserQueryRepositoryConditionGroupExpression isn(SerializableFunction<T, R> name, Boolean value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, boolean value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, char value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, char value, CharPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, int value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, int value, IntPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, long value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, long value, LongPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, double value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, double value, DoublePredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, String value, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, Object value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryRepositoryConditionGroupExpression eq(String name, R value, Predicate<R> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, boolean value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, char value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, char value, CharPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, int value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, int value, IntPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, long value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, long value, LongPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, double value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, double value, DoublePredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, String value, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ne(String name, Object value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> UserQueryRepositoryConditionGroupExpression ne(String name, R value, Predicate<R> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, int value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, int value, IntPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, long value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, long value, LongPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, double value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, double value, DoublePredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression ge(String name, E value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression ge(String name, E value,
+            Predicate<E> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, String value, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ge(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, int value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, int value, IntPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, long value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, long value, LongPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, double value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, double value, DoublePredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression gt(String name, E value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression gt(String name, E value,
+            Predicate<E> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, String value, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression gt(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, int value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, int value, IntPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, long value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, long value, LongPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, double value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, double value, DoublePredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression le(String name, E value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression le(String name, E value,
+            Predicate<E> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, String value, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression le(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, int value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, int value, IntPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, long value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, long value, LongPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, double value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, double value, DoublePredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression lt(String name, E value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression lt(String name, E value,
+            Predicate<E> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, String value, MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression lt(String name, String value, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
 
         return null;
     }

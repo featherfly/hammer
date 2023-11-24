@@ -400,7 +400,6 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * @see java.sql.ResultSetMetaData
      */
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
-        //        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
         T mappedObject = mapperObjectFactory.create(rs);
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
@@ -475,7 +474,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                         populatedProperties.add(mapping.propertyDescriptor.getName());
                     }
                 } else {
-                    logger.debug("No property found for column '" + column + "' mapped to field '" + field + "'");
+                    logger.debug("No property found for column '{}' mapped to field '{}'", column, field);
                 }
             }
 

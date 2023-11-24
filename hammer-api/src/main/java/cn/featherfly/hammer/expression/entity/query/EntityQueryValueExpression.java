@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.api.Queryable;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
+import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
  * entity query value expression.
@@ -16,6 +16,7 @@ import cn.featherfly.hammer.expression.query.QueryCountExecutor;
  */
 public interface EntityQueryValueExpression<E, V, C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
         L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
-        S extends EntityQueryValueSortExpression<E, V>> extends EntityQueryValueWhereExpression<E, V, C, L, S>,
-        EntityQueryListExecutor<V>, QueryCountExecutor, EntityQueryConditionLimit<V>, Queryable<S> {
+        S extends EntityQueryValueSortExpression<E, V>>
+        extends EntityQueryValueWhereExpression<E, V, C, L, S>, EntityQueryListExecutor<E>, EntityQueryValueExecutor<V>,
+        QueryCountExecutor, EntityQueryConditionLimit<EntityQueryValueLimitExecutor<E, V>>, Queryable<S> {
 }

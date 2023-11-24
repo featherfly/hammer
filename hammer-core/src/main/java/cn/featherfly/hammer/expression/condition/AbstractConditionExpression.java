@@ -31,17 +31,17 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
  *
  * @author zhongj
  */
-public abstract class AbstractConditionExpression implements IgnorableExpression {
+public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> implements IgnorableExpression {
 
     /** The condition config. */
-    protected ConditionConfig<?> conditionConfig;
+    protected final C conditionConfig;
 
     /**
      * Instantiates a new abstract muliti condition expression.
      *
      * @param conditionConfig the condition config
      */
-    protected AbstractConditionExpression(ConditionConfig<?> conditionConfig) {
+    protected AbstractConditionExpression(C conditionConfig) {
         AssertIllegalArgument.isNotNull(conditionConfig, "conditionConfig");
         this.conditionConfig = conditionConfig;
     }
@@ -197,7 +197,7 @@ public abstract class AbstractConditionExpression implements IgnorableExpression
      *
      * @return the condition config
      */
-    public ConditionConfig<?> getConditionConfig() {
+    public C getConditionConfig() {
         return conditionConfig;
     }
 

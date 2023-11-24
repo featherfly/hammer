@@ -105,8 +105,8 @@ public interface EntityNotBetweenExpression<T, C extends ConditionExpression, L 
      * not between and.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -126,8 +126,8 @@ public interface EntityNotBetweenExpression<T, C extends ConditionExpression, L 
      * not between and.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -147,8 +147,8 @@ public interface EntityNotBetweenExpression<T, C extends ConditionExpression, L 
      * between and.
      *
      * @param <E>            enum type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -166,8 +166,8 @@ public interface EntityNotBetweenExpression<T, C extends ConditionExpression, L 
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -186,8 +186,8 @@ public interface EntityNotBetweenExpression<T, C extends ConditionExpression, L 
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -206,8 +206,8 @@ public interface EntityNotBetweenExpression<T, C extends ConditionExpression, L 
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -226,8 +226,8 @@ public interface EntityNotBetweenExpression<T, C extends ConditionExpression, L 
     /**
      * not between and.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

@@ -12,7 +12,6 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperty;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
@@ -76,15 +75,15 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
     @Override
     public EntityQueryFetchedProperties<E> property(
             @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
-        return new EntitySqlQueryFetchedProperties<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryFetchedProperties<>(factory, sqlPageFactory, queryRelation, propertyNames);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <V> EntityQueryFetchedProperty<E, V> property(boolean distinct, SerializableFunction<E, V> propertyName) {
-        return new EntitySqlQueryFetchedProperty<>(factory, sqlPageFactory, queryRelation, distinct, propertyName);
+    public <V> EntityQueryOneFetchedProperty<E, V> property(boolean distinct, SerializableFunction<E, V> propertyName) {
+        return new EntitySqlQueryFetchedOneProperty<>(factory, sqlPageFactory, queryRelation, distinct, propertyName);
     }
 
     /**

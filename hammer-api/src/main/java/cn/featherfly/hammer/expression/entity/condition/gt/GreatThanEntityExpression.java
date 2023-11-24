@@ -32,8 +32,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //    /**
     //     * great than. 大于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -51,8 +51,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //    /**
     //     * great than. 大于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -70,8 +70,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //    /**
     //     * great than. 大于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -91,8 +91,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * great than. 大于.
     //     *
     //     * @param <N>          number type
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -112,8 +112,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //     * great than. 大于.
     //     *
     //     * @param <D>          date type
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -131,8 +131,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //    /**
     //     * great than. 大于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -150,8 +150,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //    /**
     //     * great than. 大于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -169,8 +169,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //    /**
     //     * great than. 大于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -188,8 +188,8 @@ public interface GreatThanEntityExpression<E> extends CompareEntityExpression<E>
     //    /**
     //     * great than. 大于.
     //     *
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */

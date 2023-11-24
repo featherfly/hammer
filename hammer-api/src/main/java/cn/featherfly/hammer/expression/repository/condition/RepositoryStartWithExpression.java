@@ -19,8 +19,8 @@
 //     * start with value. 以value开始.
 //     *
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    default L sw(String repository, String name, String value) {
@@ -31,8 +31,8 @@
 //     * start with value. 以value开始.
 //     *
 //     * @param repository  repository
-//     * @param name        参数名称
-//     * @param value       参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */
@@ -43,8 +43,8 @@
 //     *
 //     * @param <T>        the generic type
 //     * @param repository repository
-//     * @param name       参数名称
-//     * @param value      参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    //    default <T> L sw(Class<T> repository, String name, String value) {
@@ -56,8 +56,8 @@
 //     *
 //     * @param <T>         the generic type
 //     * @param repository  repository
-//     * @param name        参数名称
-//     * @param value       参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy the query policy
 //     * @return LogicExpression
 //     */
@@ -67,8 +67,8 @@
 //     * start with value. 以value开始.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @return LogicExpression
 //     */
 //    default L sw(int repositoryIndex, String name, String value) {
@@ -79,8 +79,8 @@
 //     * start with value. 以value开始.
 //     *
 //     * @param repositoryIndex repository index
-//     * @param name            参数名称
-//     * @param value           参数值
+//     * @param name the name
+//     * @param value the value
 //     * @param queryPolicy     the query policy
 //     * @return LogicExpression
 //     */

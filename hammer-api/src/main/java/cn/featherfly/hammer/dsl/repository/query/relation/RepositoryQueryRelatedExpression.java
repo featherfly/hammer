@@ -8,27 +8,45 @@
 package cn.featherfly.hammer.dsl.repository.query.relation;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.hammer.dsl.query.relation.QueryRelatedExpression;
-import cn.featherfly.hammer.expression.api.entity.QueryRelate;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 
 /**
  * repository query related expression.
  *
  * @author zhongj
- * @param <J1> the first join type
- * @param <J2> the second join type
- * @param <Q>  the generic type
- * @param <F>  the generic type
+ * @param <Q> the generic type
+ * @param <F> the generic type
  */
-public interface RepositoryQueryRelatedExpression<Q extends QueryRelate<F>, F> extends QueryRelatedExpression<Q, F> {
+public interface RepositoryQueryRelatedExpression<Q extends RepositoryQueryRelateExpression<F>, F>
+        extends QueryRelatedExpression<Q, F> {
     // TODO 后续来加入其他方式
+    //    /**
+    //     * On.
+    //     *
+    //     * @param <T2>                the generic type
+    //     * @param <R>                 the generic type
+    //     * @param joinRepositoryField the join repository field
+    //     * @return the re
+    //     */
+    //    default <T2, R> Q on(SerializableFunction<T2, R> joinRepositoryField) {
+    //        return on(LambdaUtils.getLambdaPropertyName(joinRepositoryField));
+    //    }
+
     /**
      * On.
      *
-     * @param <P>                 the generic type
-     * @param field               the field
+     * @param <T>                 the generic type
+     * @param <T2>                the generic type
+     * @param <R>                 the generic type
      * @param joinRepositoryField the join repository field
+     * @param field               the field
      * @return the re
      */
-    <T, T2, R> Q on(SerializableFunction<T, R> field, SerializableFunction<T2, R> joinRepositoryField);
+    default <T, T2, R> Q on(SerializableFunction<T2, R> joinRepositoryField,
+            SerializableFunction<T, R> sourceRepositoryField) {
+        return on(LambdaUtils.getLambdaPropertyName(joinRepositoryField),
+                LambdaUtils.getLambdaPropertyName(sourceRepositoryField));
+    }
 }

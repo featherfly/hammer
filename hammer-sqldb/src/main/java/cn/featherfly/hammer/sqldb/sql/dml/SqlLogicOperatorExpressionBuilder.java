@@ -6,9 +6,7 @@ import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.expression.condition.LogicOperatorExpression;
 
 /**
- * <p>
- * sql logic expression
- * </p>
+ * sql logic operator expression builder.
  *
  * @author zhongj
  */

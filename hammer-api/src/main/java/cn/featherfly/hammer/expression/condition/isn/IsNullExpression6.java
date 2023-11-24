@@ -18,7 +18,7 @@ public interface IsNullExpression6<C extends ConditionExpression, L extends Logi
     /**
      * is null.
      *
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default L isn6(String name) {
@@ -38,7 +38,7 @@ public interface IsNullExpression6<C extends ConditionExpression, L extends Logi
     /**
      * is null.
      *
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default L isn6(Field name) {

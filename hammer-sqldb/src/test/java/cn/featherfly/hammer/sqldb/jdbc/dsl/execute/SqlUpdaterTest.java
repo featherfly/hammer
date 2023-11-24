@@ -53,7 +53,7 @@ public class SqlUpdaterTest extends HammerJdbcTestBase {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     public void testException() {
-        new SqlUpdater(jdbc, hammerConfig.getDslConfig().getUpdateConfig()).update(User.class);
+        new SqlUpdater(jdbc, metadata, hammerConfig.getDslConfig().getUpdateConfig()).update(User.class);
     }
 
     @Test

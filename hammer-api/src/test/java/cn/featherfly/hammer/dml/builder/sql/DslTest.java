@@ -34,6 +34,7 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.dsl.query.Query;
@@ -46,6 +47,8 @@ import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression
  * @author zhongj
  */
 public class DslTest {
+
+    private EntityQueryFetch<User> entityQueryFetch;
 
     Query query = null;
 
@@ -70,13 +73,13 @@ public class DslTest {
         query.find("user").sort();
 
         // FIXME 没有进行条件帅选就能进行唯一值返回是错误的
-        query.find(data).property("name").number(Integer.class);
-        query.find(data).property("name").intValue();
+        query.find(data).field("name").number(Integer.class);
+        query.find(data).field("name").intValue();
         //        query.find(data).property("name").limit(1).number(Integer.class);
-        query.find(data).property("name").limit(1).intValue();
-        query.find(data).property("name").limit(1).single(Integer.class);
-        query.find(data).property("name").where().eq("id", 1).single(Integer.class);
-        query.find(data).property("name").where().eq("id", 1).number(Integer.class); // FIXME 这个应该报错
+        query.find(data).field("name").limit(1).intValue();
+        query.find(data).field("name").limit(1).single(Integer.class);
+        query.find(data).field("name").where().eq("id", 1).single(Integer.class);
+        query.find(data).field("name").where().eq("id", 1).number(Integer.class); // FIXME 这个应该报错
         query.find(data).where().eq("id", 1).number(Integer.class); // FIXME 这个是错误的，因为是返回多个数据
 
         query.find(data).max("age").number(Integer.class);
@@ -84,42 +87,42 @@ public class DslTest {
         query.find(data).max("age").list(Integer.class);
 
         query.find(data).count();
-        query.find(data).property("name").number(Integer.class);
+        query.find(data).field("name").number(Integer.class);
         query.find(data).fetch("name").number(Integer.class);
-        query.find(data).property("name").intNumber();
+        query.find(data).field("name").intNumber();
         query.find(data).fetch("name").intNumber();
-        query.find(data).property("sum(price)").decimal();
+        query.find(data).field("sum(price)").decimal();
         query.find(data).fetch("sum(price)").decimal();
-        query.find(data).property(AggregateFunction.SUM, "price").decimal();
+        query.find(data).field(AggregateFunction.SUM, "price").decimal();
         query.find(data).fetch(AggregateFunction.SUM, "price").decimal();
         query.find(data).sum("price").decimal();
-        query.find(data).property(AggregateFunction.COUNT, "id").intNumber();
+        query.find(data).field(AggregateFunction.COUNT, "id").intNumber();
         query.find(data).fetch(AggregateFunction.COUNT, "id").intNumber();
         query.find(data).count("id").intNumber();
-        query.find(data).property(AggregateFunction.COUNT, "id").longNumber();
+        query.find(data).field(AggregateFunction.COUNT, "id").longNumber();
         query.find(data).fetch(AggregateFunction.COUNT, "id").longNumber();
         query.find(data).count("id").longNumber();
 
         query.find(data).sum("id").longNumber();
 
-        query.find(data).property("count(*)").where().lt("age", 18).longNumber();
-        query.find(data).property(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
+        query.find(data).field("count(*)").where().lt("age", 18).longNumber();
+        query.find(data).field(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
 
         query.find(data).where().lt("age", 18).count();
 
-        query.find(data).property("name").where().eq("", 1).and().lt("age", 18).and().group(t -> t.gt("score", 80))
+        query.find(data).field("name").where().eq("", 1).and().lt("age", 18).and().group(t -> t.gt("score", 80))
                 .limit(11, 10).list(User.class);
 
-        query.find(data).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
-                .limit(11, 10).list(User.class);
+        query.find(data).field("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
+                .list(User.class);
 
         query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).single(User.class);
 
-        query.find(data).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
-                .limit(11, 10).list(User.class);
+        query.find(data).field("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
+                .list(User.class);
 
-        query.find(data).property("name").where().property("").eq(1).and().property("age").lt(18).and().group()
-                .property("score").gt(80).limit(11, 10).list(User.class);
+        query.find(data).field("name").where().field("").eq(1).and().field("age").lt(18).and().group().field("score")
+                .gt(80).limit(11, 10).list(User.class);
 
         query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")
                 .list(User.class);
@@ -131,23 +134,23 @@ public class DslTest {
                 .limit(1).<@Enhance User>single(User.class);
     }
 
-    public void testQueryJoin() {
-        query.find("user").relate("user_info").on("user_id").fetch().relate("role").on("id", "user_role", "role_id")
-                .fetch();
-        query.find("user").relate("user_info").on("user_id").relate("role").on("id", "user_role", "role_id").fetch();
-
-        query.find("user").relate("user_info").on("user_id").where();
-        query.find("user").relate("user_info").on("user_id").fetch().where();
-        query.find("user").relate("user_info").on("user_id").relate("user_role").on("user_id", "id").relate("role")
-                .on("id", "user_role", "role_id").fetch();
-
-        query.find("user").relate("user_info").on("user_id").fetch("name").fetch();
-
-        query.find("user").relate("user_info").on("user_id").fetch("name").relate("user_role").on("user_id", "id")
-                .relate("role").on("id", "user_role", "role_id").fetch();
-
-        query.find("user").relate("user_info").on("user_id").where().eq("id", 1).intValue();
-    }
+    //    public void testQueryJoin() {
+    //        query.find("user").relate("user_info").on("user_id").fetch().relate("role").on("id", "user_role", "role_id")
+    //                .fetch();
+    //        query.find("user").relate("user_info").on("user_id").relate("role").on("id", "user_role", "role_id").fetch();
+    //
+    //        query.find("user").relate("user_info").on("user_id").where();
+    //        query.find("user").relate("user_info").on("user_id").fetch().where();
+    //        query.find("user").relate("user_info").on("user_id").relate("user_role").on("user_id", "id").relate("role")
+    //                .on("id", "user_role", "role_id").fetch();
+    //
+    //        query.find("user").relate("user_info").on("user_id").fetch("name").fetch();
+    //
+    //        query.find("user").relate("user_info").on("user_id").fetch("name").relate("user_role").on("user_id", "id")
+    //                .relate("role").on("id", "user_role", "role_id").fetch();
+    //
+    //        query.find("user").relate("user_info").on("user_id").where().eq("id", 1).intValue();
+    //    }
 
     public void testEntityQuery() {
         query.find(User.class).list();
@@ -163,35 +166,41 @@ public class DslTest {
         LocalTime localTime = null;
         Date date = null;
 
-        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
-        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
-        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).single();
-        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).unique();
-        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).single();
-        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).unique();
-        date = query.find(User.class).fetch(User::getDate).limit(1).single();
-        date = query.find(User.class).fetch(User::getDate).limit(1).unique();
+        //        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
+        //        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
+        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).value();
+        //        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).single();
+        //        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).unique();
+        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).value();
+        //        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).single();
+        //        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).unique();
+        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).value();
+        //        date = query.find(User.class).fetch(User::getDate).limit(1).single();
+        //        date = query.find(User.class).fetch(User::getDate).limit(1).unique();
+        date = query.find(User.class).fetch(User::getDate).limit(1).value();
 
-        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).single();
-        localDate = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).single();
-        localTime = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).single();
-        date = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).single();
+        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).value();
+        localDate = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).value();
+        localTime = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).value();
+        date = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).value();
 
-        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
-        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).unique();
-        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).unique();
-        date = query.find(User.class).fetch(User::getDate).limit(1).unique();
-        PaginationResults<Date> pagination = query.find(User.class).fetch(User::getDate).limit(1).pagination();
+        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).value();
+        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).value();
+        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).value();
+        date = query.find(User.class).fetch(User::getDate).limit(1).value();
+        PaginationResults<Date> pagination = query.find(User.class).fetch(User::getDate).limit(1).valuePagination();
 
-        List<LocalDateTime> localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).list();
-        List<LocalDate> localDateList = query.find(User.class).fetch(User::getLocalDate).list();
-        List<LocalTime> localTimeList = query.find(User.class).fetch(User::getLocalTime).list();
-        List<Date> dateList = query.find(User.class).fetch(User::getDate).list();
+        List<LocalDateTime> localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).valueList();
+        List<LocalDate> localDateList = query.find(User.class).fetch(User::getLocalDate).valueList();
+        List<LocalTime> localTimeList = query.find(User.class).fetch(User::getLocalTime).valueList();
+        List<Date> dateList = query.find(User.class).fetch(User::getDate).valueList();
+        //        dateList = query.find(User.class).fetch(User::getDate).list();
 
-        localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).list();
-        localDateList = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).list();
-        localTimeList = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).list();
-        dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).list();
+        localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).valueList();
+        localDateList = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).valueList();
+        localTimeList = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).valueList();
+        dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).valueList();
+        //        dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).list();
 
         query.find(User.class).where().eq(User::getAge, 5).count();
 
@@ -199,13 +208,15 @@ public class DslTest {
 
         query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).single();
 
-        query.find(User.class).avg(User::getAge).single();
-        query.find(User.class).sum(User::getAge).single();
-        query.find(User.class).min(User::getAge).single();
-        query.find(User.class).max(User::getAge).single();
-        query.find(User.class).count(User::getAge).single();
-        query.find(User.class).fetch(AggregateFunction.AVG, User::getAge).single();
-        query.find(User.class).property(AggregateFunction.SUM, User::getAge).single();
+        query.find(User.class).fetch(User::getAge).value();
+        // YUFEI_TODO 后续区实现使用了分组函数才能使用.value()返回一条数据，相当于分组函数的作用和limit一样（用于筛选就能调用返回一条数据的方法）
+        query.find(User.class).avg(User::getAge).value();
+        query.find(User.class).sum(User::getAge).value();
+        query.find(User.class).min(User::getAge).value();
+        query.find(User.class).max(User::getAge).value();
+        query.find(User.class).count(User::getAge).value();
+        query.find(User.class).fetch(AggregateFunction.AVG, User::getAge).value();
+        query.find(User.class).property(AggregateFunction.SUM, User::getAge).value();
 
         // sort
         query.find(User.class).sort().asc(User::getAge);
@@ -612,7 +623,7 @@ public class DslTest {
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).where().eq(User2::getId, 1).single();
 
-        String username = query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).single();
+        String username = query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).value();
 
         // 多查询对象，使用property IMPLSOON 未实现
         ui = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId, User2::getId).where()
@@ -636,18 +647,18 @@ public class DslTest {
 
         //        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get0(), User2::getAge);
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort()
-                .asc((e1, e2) -> e1.apply(User2::getAge));
+                .asc((e1, e2) -> e1.property(User2::getAge));
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(User2::getAge);
 
         //        query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc(es -> es.get1(), UserInfo2::getAge);
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort()
-                .asc((e1, e2) -> e2.apply(UserInfo2::getAge));
+                .asc((e1, e2) -> e2.property(UserInfo2::getAge));
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).sort().asc2(UserInfo2::getAge);
 
         //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
         //        .asc(Student2::getId).asc(qs -> qs.get1(), User::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc(Student2::getId).asc((e1, e2, e3) -> e3.apply(UserInfo::getAge));
+                .asc(Student2::getId).asc((e1, e2, e3) -> e3.property(UserInfo::getAge));
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc2(User::getAge);
 
@@ -656,11 +667,11 @@ public class DslTest {
         //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
         //                .asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc(Student2::getId).asc((e1, e2, e3) -> e3.apply(UserInfo::getAge));
+                .asc(Student2::getId).asc((e1, e2, e3) -> e3.property(UserInfo::getAge));
         //        query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
         //                .sort().asc(Student2::getId).asc(qs -> qs.get2(), UserInfo::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
-                .sort().asc(Student2::getId).asc((e1, e2, e3) -> e3.apply(UserInfo::getAge));
+                .sort().asc(Student2::getId).asc((e1, e2, e3) -> e3.property(UserInfo::getAge));
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc(Student2::getId).asc3(UserInfo::getAge);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).fetch().join2(User::getUserInfo).fetch()
@@ -669,29 +680,29 @@ public class DslTest {
         //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
         //                .asc(qs -> qs.get2(), UserInfo::getAge).asc(Student2::getId);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc((e1, e2, e3) -> e3.apply(UserInfo::getAge)).asc(Student2::getId);
+                .asc((e1, e2, e3) -> e3.property(UserInfo::getAge)).asc(Student2::getId);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
                 .asc3(UserInfo::getAge).asc(Student2::getId);
 
         //        query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
         //                .asc(qs -> qs.get2(), UserInfo::getAge, UserInfo::getName).asc(Student2::getId);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc((e1, e2, e3) -> e3.apply(UserInfo::getAge, UserInfo::getName)).asc(Student2::getId);
+                .asc((e1, e2, e3) -> e3.property(UserInfo::getAge, UserInfo::getName)).asc(Student2::getId);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).join2(User::getUserInfo).sort()
-                .asc((e1, e2, e3) -> e3.apply(UserInfo::getAge).apply(UserInfo::getName)).asc(Student2::getId);
+                .asc((e1, e2, e3) -> e3.property(UserInfo::getAge).property(UserInfo::getName)).asc(Student2::getId);
 
         //        query.find(Student2.class).join(User.class).on(Student2::getUserId).sort().asc(qs -> qs.get1(), User::getId)
-        //                .asc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
-        //                .desc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
+        //                .asc((e0, e1) -> e0.property(Student2::getId).property(Student2::getName, Student2::getTeacherId))
+        //                .desc((e0, e1) -> e0.property(Student2::getId).property(Student2::getName, Student2::getTeacherId))
         //                .asc2(User::getUsername);
         query.find(Student2.class).join(User.class).on(Student2::getUserId).sort()
-                .asc((e1, e2) -> e2.apply(User::getId))
-                .asc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
-                .desc((e0, e1) -> e0.apply(Student2::getId).apply(Student2::getName, Student2::getTeacherId))
+                .asc((e1, e2) -> e2.property(User::getId))
+                .asc((e0, e1) -> e0.property(Student2::getId).property(Student2::getName, Student2::getTeacherId))
+                .desc((e0, e1) -> e0.property(Student2::getId).property(Student2::getName, Student2::getTeacherId))
                 .asc2(User::getUsername);
 
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
-                .sort().asc((e0, e1, e2, e3, e4) -> e0.apply(Tree::getId)).asc5(Tree::getName);
+                .sort().asc((e0, e1, e2, e3, e4) -> e0.property(Tree::getId)).asc5(Tree::getName);
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch() //
                 .where() //
@@ -1056,7 +1067,8 @@ public class DslTest {
         EntityPropertyExpression<User, EntityQueryConditionGroup<User>, EntityQueryConditionGroupLogic<User>> pe = null;
         pe.property(User::getId).gt(1).and().property(User::getAge).eq(1).and().property(User::getUsername).co("yi");
 
-        EntityPropertyExpression2<User, UserInfo, EntityQueryConditionGroup2<User, UserInfo, User>, EntityQueryConditionGroupLogic2<User, UserInfo, User>> pe2 = null;
+        EntityPropertyExpression2<User, UserInfo, EntityQueryConditionGroup2<User, UserInfo, User>,
+                EntityQueryConditionGroupLogic2<User, UserInfo, User>> pe2 = null;
         pe.property(User::getId).gt(1).and().property(User::getAge).eq(1).and().property(User::getUsername).co("yi");
     }
 

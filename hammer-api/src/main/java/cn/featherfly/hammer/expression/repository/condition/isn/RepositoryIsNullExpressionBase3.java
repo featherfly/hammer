@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.expression.repository.condition.isn;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.isn.IsNullExpression3;
@@ -21,7 +22,7 @@ public interface RepositoryIsNullExpressionBase3<C extends ConditionExpression, 
      *
      * @param <T>  the generic type
      * @param <R>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default <T, R> L isn3(SerializableFunction<T, R> name) {
@@ -33,10 +34,12 @@ public interface RepositoryIsNullExpressionBase3<C extends ConditionExpression, 
      *
      * @param <T>   the generic type
      * @param <R>   the generic type
-     * @param name the name
+     * @param name  the name
      * @param value if true, is null; if false, is not null; if null, ignore
      *              this operate
      * @return LogicExpression
      */
-    <T, R> L isn3(SerializableFunction<T, R> name, Boolean value);
+    default <T, R> L isn3(SerializableFunction<T, R> name, Boolean value) {
+        return isn3(LambdaUtils.getLambdaPropertyName(name), value);
+    }
 }

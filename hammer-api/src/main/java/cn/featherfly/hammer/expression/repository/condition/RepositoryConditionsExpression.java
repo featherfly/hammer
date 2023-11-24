@@ -24,7 +24,7 @@ import cn.featherfly.hammer.expression.repository.condition.nsw.RepositoryNotSta
 import cn.featherfly.hammer.expression.repository.condition.sw.RepositoryStartWithExpression;
 
 /**
- * all repository condition expression.
+ * all repository conditions expression.
  *
  * @author zhongj
  */

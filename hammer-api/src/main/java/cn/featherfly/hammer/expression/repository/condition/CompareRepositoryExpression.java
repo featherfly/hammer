@@ -54,8 +54,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy);
@@ -73,8 +73,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy);
@@ -92,8 +92,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy);
@@ -113,8 +113,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
      * compare. 比较
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T, N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
@@ -134,8 +134,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
      * compare. 比较
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T, D extends Date> void accept(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
@@ -153,8 +153,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
@@ -172,8 +172,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
@@ -191,8 +191,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
@@ -211,8 +211,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
@@ -232,8 +232,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,

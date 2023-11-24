@@ -22,13 +22,14 @@ import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.dsl.query.QueryConditionGroupExpression;
-import cn.featherfly.hammer.dsl.query.QueryConditionGroupLogicExpression;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
  * SqlQueryTest.
@@ -56,52 +57,53 @@ public class SqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testFunction() {
-
+    void testAggregateFunction() {
         Object result = null;
 
-        List<Map<String, Object>> ages = query.find("user").property("age").list();
+        //        List<Map<String, Object>> ages = query.find("user").field("age").list();
+        List<Integer> ages = query.find("user").field("age").list();
 
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         int sum = 0;
-        for (Map<String, Object> m : ages) {
-            int i = (int) m.get("age");
-            sum += i;
-            if (i > max) {
-                max = i;
+        //        for (Map<String, Object> m : ages) {
+        //        int i = (int) m.get("age");
+        for (Integer age : ages) {
+            sum += age;
+            if (age > max) {
+                max = age;
             }
-            if (i < min) {
-                min = i;
+            if (age < min) {
+                min = age;
             }
         }
+        int avg = sum / ages.size();
 
-        result = query.find("user").min("age").integer();
+        result = query.find("user").min("age").intNumber();
         System.out.println("min = " + result);
         assertEquals(result, min);
 
-        result = query.find("user").max("age").integer();
+        result = query.find("user").max("age").intNumber();
         System.out.println("max = " + result);
         assertEquals(result, max);
 
-        result = query.find("user").avg("age").integer();
+        result = query.find("user").avg("age").intNumber();
         System.out.println("avg = " + result);
-        assertEquals(result, sum / ages.size());
+        assertEquals(result, avg);
 
-        result = query.find("user").sum("age").integer();
+        result = query.find("user").sum("age").intNumber();
         System.out.println("sum = " + result);
         assertEquals(result, sum);
 
-        result = query.find("user").count("age").integer();
+        result = query.find("user").count("age").intNumber();
         System.out.println("count = " + result);
         assertEquals(result, ages.size());
-
     }
 
     @Test
     void test0() {
 
-        List<Map<String, Object>> list = query.find("user").property("username", "password", "age").sort().asc("age")
+        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age").sort().asc("age")
                 .list();
         int age = Integer.MIN_VALUE;
         for (Map<String, Object> map : list) {
@@ -134,19 +136,19 @@ public class SqlQueryTest extends JdbcTestBase {
     void test1() {
 
         query.find("user").list(User.class);
-        query.find("user").property("username", "password", "age").list(User.class);
-        query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
+        query.find("user").fields("username", "password", "age").list(User.class);
+        query.find("user").fields("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
-        query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
+        query.find("user").fields("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group(g -> g.gt("age", 18).and().lt("age", 60)).list(User.class);
-        query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
+        query.find("user").fields("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and(g -> g.gt("age", 18).and().lt("age", 60)).list(User.class);
     }
 
     @Test
     void test2() {
 
-        query.find("user").property("username", "password", "age").where().eq("username", "yufei").and()
+        query.find("user").fields("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
     }
 
@@ -159,15 +161,31 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void test4() {
-
-        query.find(new SimpleAliasRepository("user", "u")).property("username", "password", "age").where()
+        query.find(new SimpleAliasRepository("user", "u")).fields("username", "password", "age").where()
                 .eq("username", "yufei").and().eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60)
                 .list(User.class);
 
         Repository repository = new SimpleAliasRepository("user", "u");
 
-        query.find(repository).property("username", "password", "age").where().eq("username", "yufei").and()
+        query.find(repository).fields("username", "password", "age").where().eq("username", "yufei").and()
                 .eq("password", "123456").and().group().gt("age", 18).and().lt("age", 60).list(User.class);
+    }
+
+    @Test
+    void test4_value() {
+        int age = query.find("user").field("age").where().eq("id", 7).value();
+        assertEquals(age, 55);
+    }
+
+    @Test
+    void testCondition_field() {
+        List<Map<String, Object>> list = null;
+        list = query.find("user").fields("username", "password", "age").where().field("username").eq("yufei").list();
+        assertEquals(list.size(), 1);
+
+        list = query.find("user").fields("username", "password", "age").where().fieldAsString("username").eq("yufei")
+                .list();
+        assertEquals(list.size(), 1);
     }
 
     @Test
@@ -196,7 +214,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_eq() {
         int id = 1;
-        int userId = query.find("user").property("id") //
+        int userId = query.find("user").field("id") //
                 .where() //
                 .eq("id", id) //
                 .intValue();
@@ -224,7 +242,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_ne() {
         int id = 1;
-        List<Integer> userIds = query.find("user").property("id") //
+        List<Integer> userIds = query.find("user").field("id") //
                 .where() //
                 .ne("id", id) //
                 .list(Integer.class);
@@ -254,7 +272,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_sw() {
         String sw = "yufei";
-        List<String> usernames = query.find("user").property("username") //
+        List<String> usernames = query.find("user").field("username") //
                 .where() //
                 .sw("username", sw) //
                 .list(String.class);
@@ -291,7 +309,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_ew() {
         String ew = "55";
-        List<String> usernames = query.find("user").property("username") //
+        List<String> usernames = query.find("user").field("username") //
                 .where() //
                 .ew("username", ew) //
                 .list(String.class);
@@ -328,7 +346,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_co() {
         String co = "uf";
-        List<String> usernames = query.find("user").property("username") //
+        List<String> usernames = query.find("user").field("username") //
                 .where() //
                 .co("username", co) //
                 .list(String.class);
@@ -365,14 +383,14 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_lk() {
         String yufei = "yufei";
-        String un = query.find("user").property("username") //
+        String un = query.find("user").field("username") //
                 .where() //
                 .lk("username", yufei) //
                 .string();
         assertEquals(un, yufei);
 
         String sw = "yufei";
-        List<String> usernames = query.find("user").property("username") //
+        List<String> usernames = query.find("user").field("username") //
                 .where() //
                 .sw("username", sw + "%") //
                 .list(String.class);
@@ -381,7 +399,7 @@ public class SqlQueryTest extends JdbcTestBase {
         }
 
         String ew = "55";
-        usernames = query.find("user").property("username") //
+        usernames = query.find("user").field("username") //
                 .where() //
                 .ew("username", "%" + ew) //
                 .list(String.class);
@@ -390,7 +408,7 @@ public class SqlQueryTest extends JdbcTestBase {
         }
 
         String co = "uf";
-        usernames = query.find("user").property("username") //
+        usernames = query.find("user").field("username") //
                 .where() //
                 .co("username", "%" + co + "%") //
                 .list(String.class);
@@ -427,7 +445,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_gt() {
         int ageValue = 40;
-        List<Integer> ages = query.find("user").property("age") //
+        List<Integer> ages = query.find("user").field("age") //
                 .where() //
                 .gt("age", ageValue) //
                 .list(Integer.class);
@@ -470,7 +488,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_ge() {
         int ageValue = 40;
-        List<Integer> ages = query.find("user").property("age") //
+        List<Integer> ages = query.find("user").field("age") //
                 .where() //
                 .ge("age", ageValue) //
                 .list(Integer.class);
@@ -513,7 +531,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_lt() {
         int ageValue = 40;
-        List<Integer> ages = query.find("user").property("age") //
+        List<Integer> ages = query.find("user").field("age") //
                 .where() //
                 .lt("age", ageValue) //
                 .list(Integer.class);
@@ -556,7 +574,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void testCondition_le() {
         int ageValue = 40;
-        List<Integer> ages = query.find("user").property("age") //
+        List<Integer> ages = query.find("user").field("age") //
                 .where() //
                 .le("age", ageValue) //
                 .list(Integer.class);
@@ -598,24 +616,21 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test(expectedExceptions = BuilderException.class)
     void testConditionException() {
-
-        QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
+        RepositoryQueryConditionsGroup condition = query.find(new SimpleAliasRepository("user", "u")).where();
         condition.eq("id", 1);
         condition.eq("id", 2).list();
     }
 
     @Test(expectedExceptions = BuilderException.class)
     void testConditionException2() {
-
-        QueryConditionGroupExpression condition = query.find(new SimpleAliasRepository("user", "u")).where();
-        QueryConditionGroupLogicExpression logic = condition.eq("id", 1);
+        RepositoryQueryConditionsGroup condition = query.find(new SimpleAliasRepository("user", "u")).where();
+        RepositoryQueryConditionsGroupLogic logic = condition.eq("id", 1);
         logic.and();
         logic.list();
     }
 
     @Test
     void testCount() {
-
         Long number = query.find("user").count();
         System.out.println("count:" + number);
         assertTrue(number > 0);
@@ -623,10 +638,57 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void testCount2() {
-        long number = query.find("user").property("id") //
+        long number = query.find("user").field("id") //
                 .count();
         System.out.println("count:" + number);
         assertTrue(number > 0);
+    }
+
+    @Test
+    void testAvg() {
+        Integer number = query.find("user").avg("age").intNumber();
+        System.out.println("avg:" + number);
+        assertTrue(number > 0);
+
+        //        query.find("user").intNumber(); 没有使用property或各种统计方法，则无法调用返回单个参数的方法
+        //        query.find("user").where().eq("id", "id").intNumber(); 这里没有实现上面的逻辑
+
+        number = query.find("user").avg("age").where().eq("age", 5).intNumber();
+        assertTrue(number == 5);
+
+    }
+
+    @Test
+    void testSum() {
+        Long count = query.find("user").where().eq("age", 5).count();
+
+        Integer number = query.find("user").sum("age").where().eq("age", 5).intNumber();
+        System.out.println("sum:" + number);
+        assertTrue(number > 0);
+        assertTrue(number == count * 5);
+
+    }
+
+    @Test
+    void testMin() {
+        Integer min = query.find("user").min("age").intNumber();
+        System.out.println("min:" + min);
+        assertTrue(min == 5);
+
+        min = query.find("user").min("age").where().ge("age", 10).intNumber();
+        System.out.println("min:" + min);
+        assertTrue(min == 10);
+    }
+
+    @Test
+    void testMax() {
+        Integer max = query.find("user").max("age").intNumber();
+        System.out.println("max:" + max);
+        assertTrue(max == 55);
+
+        max = query.find("user").max("age").where().le("age", 10).intNumber();
+        System.out.println("max:" + max);
+        assertTrue(max == 10);
     }
 
     @Test
@@ -667,110 +729,89 @@ public class SqlQueryTest extends JdbcTestBase {
 
         // query.find("user") 返回 SqlQueryEntity
         // query.find("user").property("username") 返回 QueryEntityProperties，应该返回SqlQueryEntity
-        query.find("user").property("username", "password", "age") //
+        query.find("user").fields("username", "password", "age") //
                 .join("user_info") //
                 .on("user_id") //
                 .list();
 
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").join("user_info")
+        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").join("user_info")
                 .on("user_id").list();
 
         // ENHANCE 后续加入省略on方法的形式，通过database metadata 自动获取join的table的id
         //  query.find("user").property("username", "password", "age").join("user_info").list();
 
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name").list();
+        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch("name").list();
 
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch().list();
+        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch().list();
 
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name").list();
+        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch("name").list();
 
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name").fetch()
+        //        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch("name").fetch()
+        //                .list();
+
+        //        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch("name")
+        //        .fetch("descp").list();
+        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch("name", "descp")
                 .list();
 
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch("name")
-                .fetch("descp").list();
+        //        query.find("user").fields("username", "password", "age").join("user_role").on("user_id").join("role")
+        //                .on("id", "user_role", "role_id").fetch().list();
+        query.find("user").fields("username", "password", "age") //
+                .join("user_role").on("user_id") //
+                .join2("role").on("id", "role_id").fetch() //
+                .list();
+        query.find("user").fields("username", "password", "age") //
+                .join("user_role").on("user_id") //
+                .join(ts -> ts.get1()).on("id", "role_id").fetch() //
+                .list();
 
-        query.find("user").property("username", "password", "age").join("user_role").on("user_id").join("role")
-                .on("id", "user_role", "role_id").fetch().list();
+        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").list();
 
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").list();
-
-        query.find("user").property("username", "password", "age").join("user_info").on("user_id").fetch().list();
+        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch().list();
 
         query.find("tree").join("tree").on("parent_id").list();
 
         query.find("tree").join("tree").on("parent_id").join("tree").on("parent_id").list();
 
-        query.find("user_info").join("user").on("id", "user_id").fetchAlias("password", "pwd").fetch().list();
+        query.find("user_info").join("user").on("id", "user_id").fetch((r, f) -> f.name("password").as("pwd")).list();
+        query.find("user_info").join("user").on("id", "user_id").fetchAlias("password", "pwd").list();
     }
 
     @Test
     void testJoinCondition() {
-
-        List<Map<String, Object>> list = query.find("user").property("username", "password", "age") //
+        //        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
+        //                .join("user_info").on("user_id") //
+        //                .where().eq("user_info", "name", "羽飞") //
+        //                .list();
+        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
                 .join("user_info").on("user_id") //
-                .where().eq("user_info", "name", "羽飞") //
+                .where().eq2("name", "羽飞") //
                 .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
-                .eq(1, "name", "羽飞").list();
+        //        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        //                .eq(1, "name", "羽飞").list();
+        list = query.find("user").fields("username", "password", "age") //
+                .join("user_info").on("user_id") //
+                .where() //
+                .eq2(UserInfo::getName, "羽飞") //
+                .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+                .eq((r1, r2) -> r2.accept("name", "羽飞")).list();
+        assertEquals(list.size(), 1);
+        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+                .eq((r1, r2) -> r2.field("name").value("羽飞")).list();
+        assertEquals(list.size(), 1);
+
+        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
                 .property("user_info", "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").property("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
                 .property(1, "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
-    }
-
-    @Test
-    void testAvg() {
-        Integer number = query.find("user").avg("age").integer();
-        System.out.println("avg:" + number);
-        assertTrue(number > 0);
-
-        //        query.find("user").integer(); 没有使用property或各种统计方法，则无法调用返回单个参数的方法
-        //        query.find("user").where().eq("id", "id").integer(); 这里没有实现上面的逻辑
-
-        number = query.find("user").avg("age").where().eq("age", 5).integer();
-        assertTrue(number == 5);
-
-    }
-
-    @Test
-    void testSum() {
-        Long count = query.find("user").where().eq("age", 5).count();
-
-        Integer number = query.find("user").sum("age").where().eq("age", 5).integer();
-        System.out.println("sum:" + number);
-        assertTrue(number > 0);
-        assertTrue(number == count * 5);
-
-    }
-
-    @Test
-    void testMin() {
-        Integer min = query.find("user").min("age").integer();
-        System.out.println("min:" + min);
-        assertTrue(min == 5);
-
-        min = query.find("user").min("age").where().ge("age", 10).integer();
-        System.out.println("min:" + min);
-        assertTrue(min == 10);
-    }
-
-    @Test
-    void testMax() {
-        Integer max = query.find("user").max("age").integer();
-        System.out.println("max:" + max);
-        assertTrue(max == 55);
-
-        max = query.find("user").max("age").where().le("age", 10).integer();
-        System.out.println("max:" + max);
-        assertTrue(max == 10);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)

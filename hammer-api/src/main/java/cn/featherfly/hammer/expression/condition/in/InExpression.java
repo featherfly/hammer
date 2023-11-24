@@ -22,43 +22,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface InExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L in(Field field, int... values) {
-        return in(field.name(), values);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, int value, IntPredicate ignoreStrategy) {
-        return in(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, int[] values, Predicate<int[]> ignoreStrategy) {
-        return in(field.name(), values, ignoreStrategy);
-    }
-
+        extends InSupplierExpression<C, L> {
     /**
      * values in. 包含指定，sql中的in.
      *
@@ -91,41 +55,6 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     L in(String name, int[] values, Predicate<int[]> ignoreStrategy);
 
     // ****************************************************************************************************************
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L in(Field field, long... values) {
-        return in(field.name(), values);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, long value, LongPredicate ignoreStrategy) {
-        return in(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, long[] values, Predicate<long[]> ignoreStrategy) {
-        return in(field.name(), values, ignoreStrategy);
-    }
 
     /**
      * values in. 包含指定，sql中的in.
@@ -163,41 +92,6 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L in(Field field, double... values) {
-        return in(field.name(), values);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, double value, DoublePredicate ignoreStrategy) {
-        return in(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, double[] values, Predicate<double[]> ignoreStrategy) {
-        return in(field.name(), values, ignoreStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
      * @param name   the name
      * @param values the values
      * @return LogicExpression
@@ -227,79 +121,6 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     L in(String name, double[] values, Predicate<double[]> ignoreStrategy);
 
     // ****************************************************************************************************************
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field  the field
-     * @param values the values
-     * @return LogicExpression
-     */
-    default L in(Field field, String... values) {
-        return in(field.name(), values);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field         the field
-     * @param values        the values
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, String[] values, MatchStrategy matchStrategy) {
-        return in(field.name(), values, matchStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, String value, Predicate<String> ignoreStrategy) {
-        return in(field.name(), value, ignoreStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return in(field.name(), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, String[] values, Predicate<String[]> ignoreStrategy) {
-        return in(field.name(), values, ignoreStrategy);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field          the field
-     * @param values         the values
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L in(Field field, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
-        return in(field.name(), values, matchStrategy, ignoreStrategy);
-    }
 
     /**
      * values in. 包含指定，sql中的in.
@@ -399,7 +220,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
      *
      * @param <R>            the generic type
      * @param field          the field
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -440,6 +261,186 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     <R> L in(String name, R value, Predicate<R> ignoreStrategy);
 
     // ******************************************************************************************************************************
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(Field field, int... values) {
+        return in(field.name(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, int value, IntPredicate ignoreStrategy) {
+        return in(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, int[] values, Predicate<int[]> ignoreStrategy) {
+        return in(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(Field field, long... values) {
+        return in(field.name(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, long value, LongPredicate ignoreStrategy) {
+        return in(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, long[] values, Predicate<long[]> ignoreStrategy) {
+        return in(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(Field field, double... values) {
+        return in(field.name(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, double value, DoublePredicate ignoreStrategy) {
+        return in(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, double[] values, Predicate<double[]> ignoreStrategy) {
+        return in(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field  the field
+     * @param values the values
+     * @return LogicExpression
+     */
+    default L in(Field field, String... values) {
+        return in(field.name(), values);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field         the field
+     * @param values        the values
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, String[] values, MatchStrategy matchStrategy) {
+        return in(field.name(), values, matchStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, String value, Predicate<String> ignoreStrategy) {
+        return in(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return in(field.name(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, String[] values, Predicate<String[]> ignoreStrategy) {
+        return in(field.name(), values, ignoreStrategy);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param field          the field
+     * @param values         the values
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L in(Field field, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
+        return in(field.name(), values, matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
 
     /**
      * values in. 包含指定，sql中的in.
@@ -646,7 +647,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
      *
      * @param <R>            the generic type
      * @param field          the field
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

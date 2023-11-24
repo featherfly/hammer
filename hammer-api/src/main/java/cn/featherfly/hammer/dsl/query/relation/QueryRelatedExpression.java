@@ -7,17 +7,32 @@
  */
 package cn.featherfly.hammer.dsl.query.relation;
 
-import cn.featherfly.hammer.expression.api.entity.QueryRelate;
+import java.util.function.Consumer;
+
+import cn.featherfly.common.repository.Field;
+import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 
 /**
  * query related expression.
  *
  * @author zhongj
- * @param <R> the generic type
  * @param <Q> the generic type
+ * @param <F> the generic type
  */
-public interface QueryRelatedExpression<R extends QueryRelate<Q>, Q> {
+public interface QueryRelatedExpression<Q extends QueryRelateExpression<F>, F> {
     // TODO 后续来加入其他方式
+
+    /**
+     * on.
+     *
+     * @param consumer the consumer
+     * @return QueryRelate
+     */
+    default Q on(Consumer<OnFieldBuilder> consumer) {
+        OnFieldBuilderImpl onFields = new OnFieldBuilderImpl();
+        consumer.accept(onFields);
+        return on(onFields.getJoinField(), onFields.getSourceField());
+    }
 
     /**
      * on.
@@ -26,7 +41,20 @@ public interface QueryRelatedExpression<R extends QueryRelate<Q>, Q> {
      *                            name with method argu join(repository))
      * @return QueryRelate
      */
-    R on(String joinRepositoryField);
+    default Q on(String joinRepositoryField) {
+        return on(joinRepositoryField, null);
+    }
+
+    /**
+     * on.
+     *
+     * @param joinRepositoryField the join repository field name (use repository
+     *                            name with method argu join(repository))
+     * @return QueryRelate
+     */
+    default Q on(Field joinRepositoryField) {
+        return on(joinRepositoryField.name());
+    }
 
     /**
      * on.
@@ -37,5 +65,18 @@ public interface QueryRelatedExpression<R extends QueryRelate<Q>, Q> {
      * @param sourceRepositoryField the join from repository field name
      * @return QueryRelate
      */
-    R on(String sourceRepositoryField, String joinRepositoryField);
+    Q on(String joinRepositoryField, String sourceRepositoryField);
+
+    /**
+     * on.
+     *
+     * @param joinRepositoryField   the join repository field name (use
+     *                              repository name with method argu
+     *                              join(repository))
+     * @param sourceRepositoryField the join from repository field name
+     * @return QueryRelate
+     */
+    default Q on(Field joinRepositoryField, Field sourceRepositoryField) {
+        return on(joinRepositoryField.name(), sourceRepositoryField.name());
+    }
 }

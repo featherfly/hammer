@@ -6,9 +6,9 @@ import java.util.function.Consumer;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup3;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic3;
-import cn.featherfly.hammer.expression.api.Sortable;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression3;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression3;
+import cn.featherfly.hammer.expression.query.Sortable;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 

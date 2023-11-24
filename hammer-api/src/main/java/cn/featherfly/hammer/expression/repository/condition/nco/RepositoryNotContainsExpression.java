@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition.nco;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -37,8 +38,8 @@ public interface RepositoryNotContainsExpression<C extends ConditionExpression, 
      * not contains value. 不包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -50,8 +51,8 @@ public interface RepositoryNotContainsExpression<C extends ConditionExpression, 
      * not contains value. 不包含value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -100,6 +101,18 @@ public interface RepositoryNotContainsExpression<C extends ConditionExpression, 
     default <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nco(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    default L nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return nco(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    }
+
+    @Override
+    default L nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nco(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
+                ignoreStrategy);
     }
 
 }

@@ -4,26 +4,27 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition;
 import java.util.Date;
 
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableToDateFunction;
-import cn.featherfly.common.function.serializable.SerializableToEnumFunction;
-import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
+import cn.featherfly.hammer.expression.condition.field.DateFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.EnumFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.LocalDateFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.LocalDateTimeFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.LocalTimeFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.ObjectFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.DatePropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.EnumPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.NumberPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.ObjectPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleDatePropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleEnumPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleNumberPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleObjectPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.SimpleStringPropertyExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsGroupExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.DateFieldExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.EnumFieldExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.LocalDateFieldExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.LocalDateTimeFieldExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.LocalTimeFieldExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.NumberFieldExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.ObjectFieldExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.StringFieldExpressionImpl;
 
 /**
  * sql condition group builder sql条件逻辑组构造器 .
@@ -32,9 +33,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsGroupE
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractRepositorySqlConditionsGroupExpression<C extends RepositoryConditionsGroupExpression<C, L>,
-        L extends RepositoryConditionsGroupLogicExpression<C, L>, C2 extends ConditionConfig<C2>>
-        extends AbstractSqlConditionsGroupExpression<C, L, C2>
+public abstract class AbstractRepositorySqlConditionsGroupExpression<
+        C extends RepositoryConditionsGroupExpression<C, L>, L extends RepositoryConditionsGroupLogicExpression<C, L>,
+        C2 extends ConditionConfig<C2>> extends AbstractSqlConditionsGroupExpression<C, L, C2>
         implements RepositoryConditionsGroupExpression<C, L>, RepositoryConditionsGroupLogicExpression<C, L> {
 
     /** The alias manager. */
@@ -3236,79 +3237,63 @@ public abstract class AbstractRepositorySqlConditionsGroupExpression<C extends R
      * {@inheritDoc}
      */
     @Override
-    public ObjectPropertyExpression<C, L> property(String name) {
-        return new SimpleObjectPropertyExpression<>(name, this);
+    public ObjectFieldExpression<C, L> field(String name) {
+        return new ObjectFieldExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public StringPropertyExpression<C, L> propertyString(String name) {
-        return new SimpleStringPropertyExpression<>(name, this);
+    public StringFieldExpression<C, L> fieldAsString(String name) {
+        return new StringFieldExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> NumberPropertyExpression<N, C, L> propertyNumber(String name) {
-        return new SimpleNumberPropertyExpression<>(name, this);
+    public <N extends Number> NumberFieldExpression<N, C, L> fieldAsNumber(String name) {
+        return new NumberFieldExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> DatePropertyExpression<D, C, L> propertyDate(String name) {
-        return new SimpleDatePropertyExpression<>(name, this);
+    public <D extends Date> DateFieldExpression<D, C, L> fieldAsDate(String name) {
+        return new DateFieldExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> EnumPropertyExpression<E, C, L> propertyEnum(String name) {
-        return new SimpleEnumPropertyExpression<>(name, this);
+    public <E extends Enum<E>> EnumFieldExpression<E, C, L> fieldAsEnum(String name) {
+        return new EnumFieldExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R> ObjectPropertyExpression<C, L> property(SerializableFunction<T, R> name) {
-        return property(getPropertyName(name));
+    public LocalDateFieldExpression<C, L> fieldAsLocalDate(String name) {
+        return new LocalDateFieldExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> StringPropertyExpression<C, L> property(SerializableToStringFunction<T> name) {
-        return propertyString(getPropertyName(name));
+    public LocalDateTimeFieldExpression<C, L> fieldAsLocalDateTime(String name) {
+        return new LocalDateTimeFieldExpressionImpl<>(name, this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T, R extends Number> NumberPropertyExpression<R, C, L> property(SerializableToNumberFunction<T, R> name) {
-        return new SimpleNumberPropertyExpression<>(getPropertyName(name), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Date> DatePropertyExpression<R, C, L> property(SerializableToDateFunction<T, R> name) {
-        return new SimpleDatePropertyExpression<>(getPropertyName(name), this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T, R extends Enum<R>> EnumPropertyExpression<R, C, L> property(SerializableToEnumFunction<T, R> name) {
-        return propertyEnum(getPropertyName(name));
+    public LocalTimeFieldExpression<C, L> fieldAsLocalTime(String name) {
+        return new LocalTimeFieldExpressionImpl<>(name, this);
     }
 }

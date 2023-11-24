@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition.nl;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -37,8 +38,8 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
      * not like value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -50,8 +51,8 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
      * not like value.
      *
      * @param <T>            the generic type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -101,4 +102,15 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
             Predicate<String> ignoreStrategy) {
         return nl(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
+
+    @Override
+    default L nl(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return nl(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy);
+    }
+
+    @Override
+    default L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return nl(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy, ignoreStrategy);
+    }
+
 }

@@ -58,8 +58,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy);
@@ -75,8 +75,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy);
@@ -92,8 +92,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy);
@@ -111,8 +111,8 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
@@ -130,8 +130,8 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
@@ -147,8 +147,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
@@ -164,8 +164,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
@@ -181,8 +181,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
@@ -199,8 +199,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy);
@@ -216,8 +216,8 @@ public interface CompareEntityExpression<T> {
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,

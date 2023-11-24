@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.debug.TplConfigDebugMessage;
 import cn.featherfly.hammer.tpl.TemplateEngine;
 import cn.featherfly.hammer.tpl.TemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
@@ -37,25 +38,30 @@ public abstract class AbstractFreemarkerTemplateEngine<
     private Configuration cfg;
 
     /**
+     * Instantiates a new abstract freemarker template engine.
+     *
      * @param configFactory TplConfigFactory
      */
-    public AbstractFreemarkerTemplateEngine(TplConfigFactory configFactory) {
+    protected AbstractFreemarkerTemplateEngine(TplConfigFactory configFactory) {
         cfg = new Configuration(Configuration.VERSION_2_3_28);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
-        StringBuilder debugMessage = new StringBuilder();
-        if (logger.isDebugEnabled()) {
-            debugMessage.append("\n---------- template loader load template start ----------\n");
-        }
+        TplConfigDebugMessage configDebugMessage = new TplConfigDebugMessage(logger.isDebugEnabled());
+        //        StringBuilder debugMessage = new StringBuilder();
+        //        if (logger.isDebugEnabled()) {
+        //            debugMessage.append("\n---------- template loader load template start ----------\n");
+        //        }
         Map<String, TplExecuteConfig> templateMap = new HashMap<>();
         configFactory.getAllConfigs().forEach(configs -> {
             configs.values().forEach(c -> {
                 TplExecuteConfig config = (TplExecuteConfig) c;
-                if (logger.isDebugEnabled()) {
-                    debugMessage.append("  template name: " + config.getTplName() + "\n");
-                }
+                //                if (logger.isDebugEnabled()) {
+                //                    debugMessage.append("  template name: " + config.getTplName() + "\n");
+                //                }
+                configDebugMessage.addConfig(config.getTplName(), config.getExecuteId(), config.getNamespace(),
+                        config.getFilePath());
                 TplExecuteConfig tplConfig = templateMap.get(config.getTplName());
                 if (tplConfig != null) {
                     throw new HammerException(Strings.format("duplicate template name {0} with {1} , {1}",
@@ -65,10 +71,11 @@ public abstract class AbstractFreemarkerTemplateEngine<
                 templateLoader.putTemplate(config.getTplName(), config.getQuery());
             });
         });
-        if (logger.isDebugEnabled()) {
-            debugMessage.append("---------- template loader load template end ----------");
-            logger.debug(debugMessage.toString());
-        }
+        //        if (logger.isDebugEnabled()) {
+        //            debugMessage.append("---------- template loader load template end ----------");
+        //            logger.debug(debugMessage.toString());
+        //        }
+        logger.debug("\n{}", configDebugMessage);
         cfg.setTemplateLoader(templateLoader);
     }
 

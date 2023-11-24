@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition.nsw;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -12,7 +13,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.nsw.NotStartWithExpression;
 
 /**
- * repository start with expression .
+ * repository not start with expression .
  *
  * @author zhongj
  * @param <C> the generic type
@@ -26,7 +27,7 @@ public interface RepositoryNotStartWithExpression<C extends ConditionExpression,
      *
      * @param <T>          the generic type
      * @param propertyName the property name
-     * @param value        参数值
+     * @param value        the value
      * @return LogicExpression
      */
     default <T> L nsw(SerializableToStringFunction<T> propertyName, String value) {
@@ -38,7 +39,7 @@ public interface RepositoryNotStartWithExpression<C extends ConditionExpression,
      *
      * @param <T>            the generic type
      * @param propertyName   the property name
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,7 +52,7 @@ public interface RepositoryNotStartWithExpression<C extends ConditionExpression,
      *
      * @param <T>            the generic type
      * @param propertyName   the property name
-     * @param value          参数值
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -100,6 +101,18 @@ public interface RepositoryNotStartWithExpression<C extends ConditionExpression,
     default <T> L nsw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy) {
         return nsw(LambdaUtils.getLambdaPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
+    }
+
+    @Override
+    default L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return nsw(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    }
+
+    @Override
+    default L nsw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+            Predicate<String> ignoreStrategy) {
+        return nsw(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
+                ignoreStrategy);
     }
 
 }

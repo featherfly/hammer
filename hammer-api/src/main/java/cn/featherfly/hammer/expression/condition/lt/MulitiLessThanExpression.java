@@ -54,8 +54,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -75,8 +75,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -96,8 +96,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +119,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <N>            number type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -142,8 +142,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -165,8 +165,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <D>            date type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -188,8 +188,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -211,8 +211,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -234,8 +234,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -259,8 +259,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -273,8 +273,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -285,8 +285,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -312,7 +312,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -337,7 +337,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -362,7 +362,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -389,7 +389,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <N>            number type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -416,7 +416,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -443,7 +443,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <D>            date type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -470,7 +470,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -497,7 +497,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -524,7 +524,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -551,7 +551,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -565,7 +565,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -579,7 +579,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -608,7 +608,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -633,7 +633,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -658,7 +658,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -685,7 +685,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <N>            number type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -712,7 +712,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -739,7 +739,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <D>            date type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -766,7 +766,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -793,7 +793,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -820,7 +820,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -847,7 +847,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value          参数值
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -861,7 +861,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -875,7 +875,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value             参数值
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -903,8 +903,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -926,8 +926,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -949,8 +949,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -974,8 +974,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param <N>            number type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -999,8 +999,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <T>            the generic type
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1024,8 +1024,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * @param <E>            the element type
      * @param <D>            date type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1047,8 +1047,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1070,8 +1070,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1093,8 +1093,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1119,8 +1119,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1133,8 +1133,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -1145,8 +1145,8 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name              参数名称
-     * @param value             参数值
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression

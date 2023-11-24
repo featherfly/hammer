@@ -10,7 +10,7 @@ import cn.featherfly.common.structure.page.Page;
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntityQueryConditionLimit<E> {
+public interface EntityQueryConditionLimit<T> {
 
     /**
      * limit.
@@ -18,7 +18,7 @@ public interface EntityQueryConditionLimit<E> {
      * @param limit limit rows
      * @return EntityQueryLimitExecutor
      */
-    default EntityQueryLimitExecutor<E> limit(Integer limit) {
+    default T limit(Integer limit) {
         return limit(0, limit);
     }
 
@@ -29,7 +29,7 @@ public interface EntityQueryConditionLimit<E> {
      * @param limit  limit rows
      * @return EntityQueryLimitExecutor
      */
-    default EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit) {
+    default T limit(Integer offset, Integer limit) {
         return limit(new Limit(offset, limit));
     }
 
@@ -39,7 +39,7 @@ public interface EntityQueryConditionLimit<E> {
      * @param page params for pagination
      * @return EntityQueryLimitExecutor
      */
-    default EntityQueryLimitExecutor<E> limit(Page page) {
+    default T limit(Page page) {
         return limit(new Limit(page));
     }
 
@@ -49,5 +49,48 @@ public interface EntityQueryConditionLimit<E> {
      * @param limit the limit
      * @return EntityQueryLimitExecutor
      */
-    EntityQueryLimitExecutor<E> limit(Limit limit);
+    T limit(Limit limit);
+
+    //    /**
+    //     * limit.
+    //     *
+    //     * @param limit limit rows
+    //     * @return EntityQueryLimitExecutor
+    //     */
+    //    @Override
+    //    default EntityQueryLimitExecutor<E> limit(Integer limit) {
+    //        return limit(0, limit);
+    //    }
+    //
+    //    /**
+    //     * limit.
+    //     *
+    //     * @param offset start index offset
+    //     * @param limit  limit rows
+    //     * @return EntityQueryLimitExecutor
+    //     */
+    //    @Override
+    //    default EntityQueryLimitExecutor<E> limit(Integer offset, Integer limit) {
+    //        return limit(new Limit(offset, limit));
+    //    }
+    //
+    //    /**
+    //     * limit.
+    //     *
+    //     * @param page params for pagination
+    //     * @return EntityQueryLimitExecutor
+    //     */
+    //    @Override
+    //    default EntityQueryLimitExecutor<E> limit(Page page) {
+    //        return limit(new Limit(page));
+    //    }
+    //
+    //    /**
+    //     * Limit.
+    //     *
+    //     * @param limit the limit
+    //     * @return EntityQueryLimitExecutor
+    //     */
+    //    @Override
+    //    EntityQueryLimitExecutor<E> limit(Limit limit);
 }

@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.dsl.entity.query.relation;
 
 import cn.featherfly.hammer.dsl.entity.query.EntityQuery6;
-import cn.featherfly.hammer.expression.api.entity.QueryRelate;
+import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 
 /**
  * @author zhongj
@@ -14,6 +14,6 @@ import cn.featherfly.hammer.expression.api.entity.QueryRelate;
  * @param <R5> the generic type
  */
 public interface EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> extends
-        QueryRelate<EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>>, EntityQuery6<E, R1, R2, R3, R4, R5, E> {
+        QueryRelateExpression<EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>>, EntityQuery6<E, R1, R2, R3, R4, R5, E> {
 
 }

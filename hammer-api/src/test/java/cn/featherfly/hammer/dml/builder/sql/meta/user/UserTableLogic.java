@@ -1,25 +1,23 @@
 package cn.featherfly.hammer.dml.builder.sql.meta.user;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
+import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.expression.condition.GroupEndExpression;
+import cn.featherfly.hammer.expression.query.QueryConditionLimit;
+import cn.featherfly.hammer.expression.query.QueryExecutor;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression;
-import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
 
 public class UserTableLogic implements
-        RepositoryQueryConditionsGroupLogicExpression<UserTableFilterable, UserTableLogic, RepositoryQuerySortExpression> {
+        //RepositoryQueryConditionsGroupLogicExpression<UserTableFilterable, UserTableLogic, RepositoryQuerySortExpression>
+        GroupEndExpression<UserTableFilterable, UserTableLogic>, QueryExecutor, QueryLimitExecutor,
+        QueryConditionLimit<QueryLimitExecutor> {
 
     private UserTableFilterable query;
 
@@ -89,26 +87,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public QueryLimitExecutor limit(Integer limit) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Integer offset, Integer limit) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Page page) {
-
+    public UserTableLogic endGroup() {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -117,16 +97,7 @@ public class UserTableLogic implements
      */
     @Override
     public List<Map<String, Object>> list() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(Class<E> type) {
-
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -135,7 +106,16 @@ public class UserTableLogic implements
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> List<E> list(Class<E> type) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -144,7 +124,7 @@ public class UserTableLogic implements
      */
     @Override
     public Map<String, Object> single() {
-
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -153,7 +133,7 @@ public class UserTableLogic implements
      */
     @Override
     public Map<String, Object> unique() {
-
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -162,7 +142,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E single(Class<E> type) {
-
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -171,7 +151,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E unique(Class<E> type) {
-
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -180,7 +160,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E single(RowMapper<E> rowMapper) {
-
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -189,7 +169,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E unique(RowMapper<E> rowMapper) {
-
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -197,8 +177,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public String string() {
-
+    public PaginationResults<Map<String, Object>> pagination() {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -206,8 +186,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public Date date() {
-
+    public <E> PaginationResults<E> pagination(Class<E> type) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -215,8 +195,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public LocalDate localDate() {
-
+    public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -224,8 +204,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public LocalDateTime localDateTime() {
-
+    public QueryLimitExecutor limit(Integer limit) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -233,8 +213,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public LocalTime localTime() {
-
+    public QueryLimitExecutor limit(Integer offset, Integer limit) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -242,8 +222,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public Timestamp timestamp() {
-
+    public QueryLimitExecutor limit(Page page) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -251,90 +231,8 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public byte[] bytes() {
-
+    public QueryLimitExecutor limit(Limit limit) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Clob clob() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Blob blob() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean bool() {
-
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public byte byteValue() {
-
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public short shortValue() {
-
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int intValue() {
-
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long longValue() {
-
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> T value(Class<T> type) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long count() {
-
-        return 0;
-    }
-
 }

@@ -73,7 +73,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     public SqlEntityExecutableUpdate(Jdbc jdbc, JdbcClassMapping<E> classMapping, JdbcMappingFactory factory,
             UpdateConfig updateConfig, AliasManager aliasManager) {
-        super(classMapping.getRepositoryName(), jdbc, updateConfig);
+        super(classMapping.getRepositoryName(), jdbc, aliasManager, updateConfig);
         this.classMapping = classMapping;
         this.factory = factory;
         // 使用 this.updateConfig 是因为是在父类中设置的已经是克隆的副本（用于configure()单独配置当前表达式生效）

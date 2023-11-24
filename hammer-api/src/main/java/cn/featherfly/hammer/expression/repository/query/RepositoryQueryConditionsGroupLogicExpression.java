@@ -7,10 +7,6 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.api.Queryable;
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression;
 
 /**
@@ -24,7 +20,5 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
 public interface RepositoryQueryConditionsGroupLogicExpression<
         C extends RepositoryQueryConditionsGroupExpression<C, L, S>,
         L extends RepositoryQueryConditionsGroupLogicExpression<C, L, S>, S extends RepositoryQuerySortExpression>
-        extends RepositoryConditionsGroupLogicExpression<C, L>, Queryable<S>, QueryConditionLimit, QueryLimitExecutor,
-        QueryCountExecutor {
-
+        extends RepositoryQueryConditionsLogicExpression<C, L, S>, RepositoryConditionsGroupLogicExpression<C, L> {
 }

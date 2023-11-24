@@ -35,8 +35,8 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
-import cn.featherfly.hammer.dsl.execute.Delete;
 import cn.featherfly.hammer.dsl.execute.Update;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
@@ -538,7 +538,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public Delete delete(String repository) {
+            public RepositoryDelete delete(String repository) {
 
                 return null;
             }
@@ -580,7 +580,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public Delete delete(Repository repository) {
+            public RepositoryDelete delete(Repository repository) {
 
                 return null;
             }

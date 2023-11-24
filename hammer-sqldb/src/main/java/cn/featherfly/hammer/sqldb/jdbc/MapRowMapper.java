@@ -10,8 +10,11 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
@@ -58,8 +61,24 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapping.Row
         }
     }
 
+    private final Map<String, Class<?>> mappingMap = new LinkedHashMap<>();
+
     public Map<String, Object> mapRow(ResultSet res, int rowNum) throws SQLException {
-        return JdbcUtils.getResultSetMap(res, manager);
+        if (rowNum == 0) {
+            ResultSetMetaData metaData = res.getMetaData();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                mappingMap.put(JdbcUtils.lookupColumnName(metaData, i, true),
+                        manager.getJavaType(JdbcUtils.getResultSetType(res, i)));
+            }
+        }
+        int columnIndex = 1;
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        for (Entry<String, Class<?>> entry : mappingMap.entrySet()) {
+            resultMap.put(entry.getKey(), manager.get(res, columnIndex, entry.getValue()));
+            columnIndex++;
+        }
+        return resultMap;
+        //        return JdbcUtils.getResultSetMap(res, manager);
     }
 
 }

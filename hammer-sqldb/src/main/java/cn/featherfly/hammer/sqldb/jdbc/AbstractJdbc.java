@@ -76,8 +76,6 @@ public abstract class AbstractJdbc implements Jdbc {
 
     private SqlTypeMappingManager manager;
 
-    private MapRowMapper mapRowMapper;
-
     /**
      * Instantiates a new abstract jdbc.
      *
@@ -89,7 +87,6 @@ public abstract class AbstractJdbc implements Jdbc {
         super();
         this.dialect = dialect;
         this.manager = manager;
-        mapRowMapper = new MapRowMapper(manager);
     }
     //    /**
     //     * Instantiates a new abstract jdbc.
@@ -433,7 +430,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> query(String sql, Map<String, Object> args) {
-        return query(sql, mapRowMapper, args);
+        return query(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -441,7 +438,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> query(String sql, Object... args) {
-        return query(sql, mapRowMapper, args);
+        return query(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -881,7 +878,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Map<String, Object> args) {
-        return querySingle(sql, mapRowMapper, args);
+        return querySingle(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -889,7 +886,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> querySingle(String sql, Object... args) {
-        return querySingle(sql, mapRowMapper, args);
+        return querySingle(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1058,7 +1055,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> queryUnique(String sql, Map<String, Object> args) {
-        return queryUnique(sql, mapRowMapper, args);
+        return queryUnique(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1066,7 +1063,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> queryUnique(String sql, Object... args) {
-        return queryUnique(sql, mapRowMapper, args);
+        return queryUnique(sql, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1334,6 +1331,24 @@ public abstract class AbstractJdbc implements Jdbc {
             Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
         return nullableSingleResult(query(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
                 elementType6, prefixes, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T queryValue(String sql, Map<String, Object> args) {
+        return (T) queryValue(sql, Object.class, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T queryValue(String sql, Object... args) {
+        return (T) queryValue(sql, Object.class, args);
     }
 
     /**
@@ -1748,7 +1763,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public List<Map<String, Object>> callQuery(String name, Object... args) {
-        return callQuery(name, mapRowMapper, args);
+        return callQuery(name, new MapRowMapper(manager), args);
     }
 
     /**
@@ -1843,7 +1858,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public Map<String, Object> callQuerySingle(String name, Object... args) {
-        return callQuerySingle(name, mapRowMapper, args);
+        return callQuerySingle(name, new MapRowMapper(manager), args);
     }
 
     /**
@@ -2190,8 +2205,11 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T> RowMapper<T> getTypeMapper(Class<T> elementType) {
-        return Lang.ifNotEmpty(manager.getSqlType(elementType), () -> new SingleColumnRowMapper<>(elementType, manager),
+        return Lang.ifTrue(elementType == Object.class || manager.getSqlType(elementType) != null,
+                () -> new SingleColumnRowMapper<>(elementType, manager),
                 () -> new NestedBeanPropertyRowMapper<>(elementType, manager));
+        //        return Lang.ifNotEmpty(manager.getSqlType(elementType), () -> new SingleColumnRowMapper<>(elementType, manager),
+        //                () -> new NestedBeanPropertyRowMapper<>(elementType, manager));
     }
 
     /**

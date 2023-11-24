@@ -8,9 +8,10 @@
  */
 package cn.featherfly.hammer.dml.builder.sql.meta;
 
+import cn.featherfly.common.repository.Alias;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.repository.condition.property.StringPropertyExpression;
+import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 
 /**
  * FilterableStringAliasField.
@@ -18,6 +19,6 @@ import cn.featherfly.hammer.expression.repository.condition.property.StringPrope
  * @author zhongj
  */
 public interface FilterableStringAliasField<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends StringPropertyExpression<C, L>, StringField {
+        extends StringFieldExpression<C, L>, StringField, Alias {
 
 }

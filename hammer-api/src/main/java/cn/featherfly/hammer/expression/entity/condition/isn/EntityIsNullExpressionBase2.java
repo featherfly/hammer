@@ -29,7 +29,7 @@ public interface EntityIsNullExpressionBase2<E, E2, C extends ConditionExpressio
      * is null.
      *
      * @param <R>  the generic type
-     * @param name 参数名称
+     * @param name the name
      * @return LogicExpression
      */
     default <R> L isn2(SerializableFunction<E2, R> name) {

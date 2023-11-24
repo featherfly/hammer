@@ -28,8 +28,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -43,8 +43,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -144,7 +144,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L sw(
@@ -174,8 +174,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -189,8 +189,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -290,7 +290,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L sw(
@@ -321,8 +321,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -336,8 +336,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -437,7 +437,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L sw(
@@ -468,8 +468,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -483,8 +483,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -584,7 +584,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L sw(
@@ -615,8 +615,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -630,8 +630,8 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -731,7 +731,7 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L sw(

@@ -8,7 +8,7 @@ import java.util.function.Function;
  *
  * @author zhongj
  */
-public interface GroupExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+public interface GroupExpression<C extends ConditionExpression, L extends GroupEndExpression<C, L>>
         extends ConditionExpression {
 
     /**

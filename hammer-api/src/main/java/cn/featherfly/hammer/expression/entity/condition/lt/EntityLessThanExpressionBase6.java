@@ -10,23 +10,14 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
-import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableIntSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLongSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction6;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction6;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction6;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.lt.LessThanSupplierExpression6;
 
 /**
  * The Interface EntityLessThanExpressionBase6.
@@ -42,12 +33,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityLessThanExpressionBase5<T, T2, T3, T4, T5, C, L> {
+        L extends LogicExpression<C, L>>
+        extends EntityLessThanExpressionBase5<T, T2, T3, T4, T5, C, L>, LessThanSupplierExpression6<C, L> {
 
     /**
      * less than. 小于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -56,8 +48,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -66,7 +58,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -75,8 +67,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -85,7 +77,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -94,8 +86,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -105,7 +97,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
      * less than. 小于.
      *
      * @param <N>   number type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -115,8 +107,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
      * less than. 小于.
      *
      * @param <N>            number type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -126,7 +118,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
      * less than. 小于.
      *
      * @param <E>   the element type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -136,8 +128,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
      * less than. 小于.
      *
      * @param <E>            the element type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -147,7 +139,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
      * less than. 小于.
      *
      * @param <D>   date type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -157,8 +149,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
      * less than. 小于.
      *
      * @param <D>            date type
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -167,7 +159,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -176,8 +168,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -186,7 +178,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -195,8 +187,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -205,7 +197,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -214,8 +206,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -224,7 +216,7 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return LogicExpression
      */
@@ -235,8 +227,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -247,8 +239,8 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name          参数名称
-     * @param value         参数值
+     * @param name          the name
+     * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -257,212 +249,12 @@ public interface EntityLessThanExpressionBase6<T, T2, T3, T4, T5, T6, C extends 
     /**
      * less than. 小于.
      *
-     * @param name           参数名称
-     * @param value          参数值
+     * @param name           the name
+     * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L lt6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L lt6(SerializableIntSupplier property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L lt6(SerializableLongSupplier property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L lt6(SerializableDoubleSupplier property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param <R>      the generic type
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    <R extends Date> L lt6(SerializableDateSupplier<R> property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param <R>            the generic type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Date> L lt6(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param <R>      the generic type
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    <R extends Number> L lt6(SerializableNumberSupplier<R> property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param <R>            the generic type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Number> L lt6(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param <E>      the element type
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L lt6(SerializableEnumSupplier<E> property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param <E>            the element type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L lt6(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L lt6(SerializableLocalDateSupplier property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L lt6(SerializableLocalTimeSupplier property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    L lt6(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @return LogicExpression
-     */
-    default L lt6(SerializableStringSupplier property) {
-        return lt6(property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L lt6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return lt6(property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * less than. 小于.
-     *
-     * @param property  bean property
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * less than. 小于.
-     *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
 }

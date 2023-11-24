@@ -25,8 +25,8 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -39,8 +39,8 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -133,7 +133,7 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L sw(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E>> entities,
@@ -159,8 +159,8 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities the entities
-    //     * @param name     参数名称
-    //     * @param value    参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    default L sw(
@@ -173,8 +173,8 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * start with value. 以value开始.
     //     *
     //     * @param entities     the entities
-    //     * @param name         参数名称
-    //     * @param value        参数值
+    //     * @param name the name
+    //     * @param value the value
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
@@ -267,7 +267,7 @@ public interface EntityStartWithExpression2<E, E2, C extends ConditionExpression
     //     * @param entities            the entities
     //     * @param fetchEntity         the fetch entity
     //     * @param fetchEntityProperty the fetch entity property
-    //     * @param value               参数值
+    //     * @param value the value
     //     * @return LogicExpression
     //     */
     //    <R> L sw(Function<Tuple2<QueryEntityRepository<E>, QueryEntityRepository<E2>>, QueryEntityRepository<E2>> entities,

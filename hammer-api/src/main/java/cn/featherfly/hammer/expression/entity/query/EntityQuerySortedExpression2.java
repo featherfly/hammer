@@ -12,7 +12,7 @@ import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression2
  * @param <R>  the generic type
  */
 public interface EntityQuerySortedExpression2<E, E2, R>
-        extends EntitySortedExpression2<E, E2, EntityQuerySortedExpression2<E, E2, R>>, EntityQueryConditionLimit<R>,
+        extends EntitySortedExpression2<E, E2, EntityQuerySortedExpression2<E, E2, R>>, EntityQueryConditionLimit<EntityQueryLimitExecutor<R>>,
         EntityQueryLimitExecutor<R> {
 
 }
