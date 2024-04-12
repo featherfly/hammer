@@ -2,6 +2,9 @@ apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
 tasks.withType(JavaCompile) {
+    sourceCompatibility = sourceVersion  
+    targetCompatibility = targetVersion
+    
     options.encoding = "UTF-8"
     options.compilerArgs << "-parameters"
     options.compilerArgs << "-verbose"
