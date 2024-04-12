@@ -1,4 +1,23 @@
 rootProject.name = 'hammer-build'
-includeFlat 'hammer-api'
-includeFlat 'hammer-core'
-includeFlat 'hammer-sqldb'
+
+ext {
+    modules = [
+        'hammer-api'
+        //, 'hammer-api-dsl/hammer-api-dsl'
+        //, 'hammer-api-dsl/hammer-api-entity-dsl'
+        //, 'hammer-api-dsl/hammer-api-repository-dsl'
+        , 'hammer-core'
+        , 'hammer-sqldb'
+    ] 
+}
+
+//includeFlat 'hammer-api'
+//includeFlat 'hammer-core'
+//includeFlat 'hammer-sqldb'
+
+modules.each{ m ->
+    int last = m.lastIndexOf("/")
+    String name = m.substring(last + 1 , m.length());
+    includeFlat "${name}"
+    project(":${name}").projectDir = file("../" + m)
+}
