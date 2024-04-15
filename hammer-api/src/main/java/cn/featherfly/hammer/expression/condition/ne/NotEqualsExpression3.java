@@ -22,8 +22,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotEqualsExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotEqualsExpression2<C, L>, NotEqualsSupplierExpression3<C, L> {
+public interface NotEqualsExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>> {
     /**
      * not equals. 不等于.
      *

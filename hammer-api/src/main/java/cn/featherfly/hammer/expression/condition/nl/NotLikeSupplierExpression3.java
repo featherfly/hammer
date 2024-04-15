@@ -16,8 +16,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotLikeSupplierExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotLikeSupplierExpression2<C, L> {
+public interface NotLikeSupplierExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not like value.

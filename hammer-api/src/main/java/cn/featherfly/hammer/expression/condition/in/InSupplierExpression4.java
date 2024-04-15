@@ -24,8 +24,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface InSupplierExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends InSupplierExpression3<C, L> {
+public interface InSupplierExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * values in. 包含指定，sql中的in.

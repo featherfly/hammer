@@ -21,8 +21,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type ConditionExpression
  * @param <L> the generic type LogicExpression
  */
-public interface NotBetweenExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotBetweenExpression2<C, L> {
+public interface NotBetweenExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not between and.
@@ -369,7 +368,7 @@ public interface NotBetweenExpression3<C extends ConditionExpression, L extends 
      * @return LogicExpression
      */
     default L nba3(Field name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba3(name.name(), min, max, ignoreStrategy);
     }
 
@@ -676,7 +675,7 @@ public interface NotBetweenExpression3<C extends ConditionExpression, L extends 
      * @return LogicExpression
      */
     default L nba3(AliasField field, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba3(field.getAliasOrName(), min, max, ignoreStrategy);
     }
 

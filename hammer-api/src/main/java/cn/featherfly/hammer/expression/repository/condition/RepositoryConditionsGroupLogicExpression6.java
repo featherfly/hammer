@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository.condition;
 
-import cn.featherfly.hammer.expression.condition.ConditionsGroupLogicExpression6;
+import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 
 /**
  * repository conditions group logic expression6.
@@ -11,7 +11,7 @@ import cn.featherfly.hammer.expression.condition.ConditionsGroupLogicExpression6
  * @param <L> the generic type
  */
 public interface RepositoryConditionsGroupLogicExpression6<C extends RepositoryConditionsGroupExpression6<C, L>,
-        L extends RepositoryConditionsGroupLogicExpression6<C, L>>
-        extends RepositoryConditionsLogicExpression6<C, L>, ConditionsGroupLogicExpression6<C, L> {
+    L extends RepositoryConditionsGroupLogicExpression6<C, L>>
+    extends RepositoryConditionsLogicExpression6<C, L>, GroupEndExpression<C, L> {
 
 }

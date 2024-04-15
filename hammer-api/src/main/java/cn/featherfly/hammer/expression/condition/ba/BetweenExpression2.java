@@ -20,8 +20,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type ConditionExpression
  * @param <L> the generic type LogicExpression
  */
-public interface BetweenExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends BetweenExpression<C, L> {
+public interface BetweenExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * between and.
@@ -40,7 +39,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -54,7 +53,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -79,7 +78,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -94,7 +93,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -121,7 +120,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -135,7 +134,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -160,7 +159,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -175,7 +174,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -200,7 +199,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -213,7 +212,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -236,7 +235,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -249,7 +248,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -274,7 +273,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -287,7 +286,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -310,7 +309,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -323,7 +322,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -348,7 +347,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -361,14 +360,14 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ba2(Field name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba2(name.name(), min, max, ignoreStrategy);
     }
 
@@ -385,7 +384,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -398,7 +397,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -423,7 +422,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -436,7 +435,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -459,7 +458,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -472,7 +471,7 @@ public interface BetweenExpression2<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy

@@ -17,8 +17,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotStartWithExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotStartWithExpression3<C, L>, NotStartWithSupplierExpression4<C, L> {
+public interface NotStartWithExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>> {
     /**
      * not start with value. 不以value开始.
      *

@@ -23,8 +23,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends EqualsSupplierExpression<C, L> {
+public interface EqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>> {
     /**
      * equals. 等于.
      *

@@ -16,7 +16,7 @@ import cn.featherfly.hammer.dml.builder.sql.meta.FilterableStringFieldImpl;
 import cn.featherfly.hammer.dml.builder.sql.meta.IntField;
 import cn.featherfly.hammer.dml.builder.sql.meta.IntFieldImpl;
 import cn.featherfly.hammer.dml.builder.sql.meta.Where;
-import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditions;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 
 /**
@@ -25,8 +25,8 @@ import cn.featherfly.hammer.expression.condition.GroupExpression;
  * @author zhongj
  */
 public class UserTableFilterable
-        implements FilterableRepository, Where<UserTableFilterable, UserTableFilterable, UserTableLogic>,
-        GroupExpression<UserTableFilterable, UserTableLogic> {
+    implements FilterableRepository, Where<UserTableFilterable, UserTableFilterable, UserTableLogic>,
+    GroupExpression<UserTableFilterable, UserTableLogic> {
 
     public static void main(String[] args) {
         UserTableFilterable user = null;
@@ -50,13 +50,13 @@ public class UserTableFilterable
 
     public final IntField age;
 
-    private RepositoryQueryConditions queryCondition;
+    private RepositoryQueryConditionsGroup queryCondition;
 
     /**
      * @param alias
      * @param queryCondition
      */
-    UserTableFilterable(String alias, RepositoryQueryConditions queryCondition) {
+    UserTableFilterable(String alias, RepositoryQueryConditionsGroup queryCondition) {
         super();
         this.alias = alias;
         name = new FilterableStringFieldImpl<>("name", queryCondition);

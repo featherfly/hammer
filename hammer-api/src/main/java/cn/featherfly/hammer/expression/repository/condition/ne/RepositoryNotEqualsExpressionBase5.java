@@ -36,6 +36,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ne.NotEqualsExpression5;
+import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression5;
 
 /**
  * RepositoryNotEqualsExpressionBase5.
@@ -45,7 +46,7 @@ import cn.featherfly.hammer.expression.condition.ne.NotEqualsExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryNotEqualsExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotEqualsExpression5<C, L>, RepositoryNotEqualsExpressionBase4<C, L> {
+    extends RepositoryNotEqualsExpressionBase4<C, L>, NotEqualsExpression5<C, L>, NotEqualsSupplierExpression5<C, L> {
 
     /**
      * not equals. 不等于.
@@ -254,7 +255,7 @@ public interface RepositoryNotEqualsExpressionBase5<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L ne5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -269,7 +270,7 @@ public interface RepositoryNotEqualsExpressionBase5<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L ne5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ne5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -470,9 +471,9 @@ public interface RepositoryNotEqualsExpressionBase5<C extends ConditionExpressio
      */
     @Override
     default L ne5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ne5(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
     /**

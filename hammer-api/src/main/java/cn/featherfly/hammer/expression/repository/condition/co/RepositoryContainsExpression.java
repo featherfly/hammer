@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.co.ContainsExpression;
+import cn.featherfly.hammer.expression.condition.co.ContainsSupplierExpression;
 
 /**
  * RepositoryContainsExpression .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.co.ContainsExpression;
  * @param <L> the generic type
  */
 public interface RepositoryContainsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ContainsExpression<C, L> {
+    extends ContainsExpression<C, L>, ContainsSupplierExpression<C, L> {
 
     /**
      * contains value. 包含value.
@@ -84,7 +85,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return co(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <T> L co(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return co(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,7 +111,7 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
 
     @Override
     default L co(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return co(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 

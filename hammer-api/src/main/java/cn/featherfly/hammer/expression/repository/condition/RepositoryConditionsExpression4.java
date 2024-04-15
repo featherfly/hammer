@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository.condition;
 
-import cn.featherfly.hammer.expression.condition.ConditionsExpression4;
+import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.repository.condition.ba.RepositoryBetweenExpression4;
 import cn.featherfly.hammer.expression.repository.condition.co.RepositoryContainsExpression4;
 import cn.featherfly.hammer.expression.repository.condition.eq.RepositoryEqualsExpression4;
@@ -29,16 +29,17 @@ import cn.featherfly.hammer.expression.repository.condition.sw.RepositoryStartWi
  * @author zhongj
  */
 public interface RepositoryConditionsExpression4<C extends RepositoryConditionsExpression4<C, L>,
-        L extends RepositoryConditionsLogicExpression4<C, L>> extends ConditionsExpression4<C, L>, //
-        RepositoryBetweenExpression4<C, L>, RepositoryNotBetweenExpression4<C, L> //
-        , RepositoryContainsExpression4<C, L>, RepositoryNotContainsExpression4<C, L> //
-        , RepositoryEndWithExpression4<C, L>, RepositoryNotEndWithExpression4<C, L> //
-        , RepositoryEqualsExpression4<C, L>, RepositoryNotEqualsExpression4<C, L> //
-        , RepositoryGreatEqualsExpression4<C, L>, RepositoryGreatThanExpression4<C, L> //
-        , RepositoryInExpression4<C, L>, RepositoryNotInExpression4<C, L> //
-        , RepositoryIsNotNullExpression4<C, L>, RepositoryIsNullExpression4<C, L> //
-        , RepositoryLessEqualsExpression4<C, L>, RepositoryLessThanExpression4<C, L>//
-        , RepositoryStartWithExpression4<C, L>, RepositoryNotStartWithExpression4<C, L>//
-        , RepositoryLikeExpression4<C, L>, RepositoryNotLikeExpression4<C, L> //
-        , RepositoryFieldExpression4<C, L> {
+    L extends RepositoryConditionsLogicExpression4<C, L>>
+    extends RepositoryBetweenExpression4<C, L>, RepositoryNotBetweenExpression4<C, L> //
+    , RepositoryContainsExpression4<C, L>, RepositoryNotContainsExpression4<C, L> //
+    , RepositoryEndWithExpression4<C, L>, RepositoryNotEndWithExpression4<C, L> //
+    , RepositoryEqualsExpression4<C, L>, RepositoryNotEqualsExpression4<C, L> //
+    , RepositoryGreatEqualsExpression4<C, L>, RepositoryGreatThanExpression4<C, L> //
+    , RepositoryInExpression4<C, L>, RepositoryNotInExpression4<C, L> //
+    , RepositoryIsNotNullExpression4<C, L>, RepositoryIsNullExpression4<C, L> //
+    , RepositoryLessEqualsExpression4<C, L>, RepositoryLessThanExpression4<C, L>//
+    , RepositoryStartWithExpression4<C, L>, RepositoryNotStartWithExpression4<C, L>//
+    , RepositoryLikeExpression4<C, L>, RepositoryNotLikeExpression4<C, L> //
+    , RepositoryFieldExpression4<C, L>, //
+    NativeStringConditionExpression<C, L> {
 }

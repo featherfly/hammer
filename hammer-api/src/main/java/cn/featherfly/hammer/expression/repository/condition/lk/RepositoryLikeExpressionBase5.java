@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.lk.LikeExpression5;
+import cn.featherfly.hammer.expression.condition.lk.LikeSupplierExpression5;
 
 /**
  * repository like expression5.
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.lk.LikeExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryLikeExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryLikeExpressionBase4<C, L>, LikeExpression5<C, L> {
+    extends RepositoryLikeExpressionBase4<C, L>, LikeExpression5<C, L>, LikeSupplierExpression5<C, L> {
 
     /**
      * like value.
@@ -84,7 +85,7 @@ public interface RepositoryLikeExpressionBase5<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L lk5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return lk5(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryLikeExpressionBase5<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L lk5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lk5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 

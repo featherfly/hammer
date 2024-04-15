@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.co.ContainsExpression3;
+import cn.featherfly.hammer.expression.condition.co.ContainsSupplierExpression3;
 
 /**
  * RepositoryContainsExpressionBase3 .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.co.ContainsExpression3;
  * @param <L> the generic type
  */
 public interface RepositoryContainsExpressionBase3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ContainsExpression3<C, L>, RepositoryContainsExpressionBase2<C, L> {
+    extends RepositoryContainsExpressionBase2<C, L>, ContainsExpression3<C, L>, ContainsSupplierExpression3<C, L> {
 
     /**
      * contains value. 包含value.
@@ -84,7 +85,7 @@ public interface RepositoryContainsExpressionBase3<C extends ConditionExpression
      * @return LogicExpression
      */
     default <T> L co3(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return co3(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryContainsExpressionBase3<C extends ConditionExpression
      * @return LogicExpression
      */
     default <T> L co3(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return co3(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,8 +111,8 @@ public interface RepositoryContainsExpressionBase3<C extends ConditionExpression
 
     @Override
     default L co3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return co3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 }

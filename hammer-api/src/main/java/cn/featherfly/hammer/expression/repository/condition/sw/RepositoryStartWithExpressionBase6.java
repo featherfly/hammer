@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.sw.StartWithExpression6;
+import cn.featherfly.hammer.expression.condition.sw.StartWithSupplierExpression6;
 
 /**
  * repository start with expression6 .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.sw.StartWithExpression6;
  * @param <L> the generic type
  */
 public interface RepositoryStartWithExpressionBase6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryStartWithExpressionBase5<C, L>, StartWithExpression6<C, L> {
+    extends RepositoryStartWithExpressionBase5<C, L>, StartWithExpression6<C, L>, StartWithSupplierExpression6<C, L> {
 
     /**
      * start with value. 以value开始.
@@ -84,7 +85,7 @@ public interface RepositoryStartWithExpressionBase6<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L sw6(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return sw6(propertyName, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryStartWithExpressionBase6<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L sw6(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return sw6(LambdaUtils.getLambdaPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,9 +111,9 @@ public interface RepositoryStartWithExpressionBase6<C extends ConditionExpressio
 
     @Override
     default L sw6(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return sw6(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
 }

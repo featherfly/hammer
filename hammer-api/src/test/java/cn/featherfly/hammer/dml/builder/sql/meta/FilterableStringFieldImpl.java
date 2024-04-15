@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditions;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -24,21 +24,21 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @author zhongj
  */
 public class FilterableStringFieldImpl<C extends ConditionExpression, L extends LogicExpression<C, L>> extends FieldImpl
-        implements FilterableStringField<C, L>, FilterableStringAliasField<C, L> {
+    implements FilterableStringField<C, L>, FilterableStringAliasField<C, L> {
 
-    private RepositoryQueryConditions queryCondition;
+    private RepositoryQueryConditionsGroup queryCondition;
 
     /**
      * @param name
      */
-    public FilterableStringFieldImpl(String name, RepositoryQueryConditions queryCondition) {
+    public FilterableStringFieldImpl(String name, RepositoryQueryConditionsGroup queryCondition) {
         this(name, null, queryCondition);
     }
 
     /**
      * @param name
      */
-    public FilterableStringFieldImpl(String name, String alias, RepositoryQueryConditions queryCondition) {
+    public FilterableStringFieldImpl(String name, String alias, RepositoryQueryConditionsGroup queryCondition) {
         super(name, alias);
         this.queryCondition = queryCondition;
     }

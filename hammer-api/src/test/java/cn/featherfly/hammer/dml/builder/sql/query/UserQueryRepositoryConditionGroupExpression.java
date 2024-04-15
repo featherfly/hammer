@@ -51,8 +51,10 @@ import cn.featherfly.hammer.expression.repository.condition.field.RepositoryStri
  * @author zhongj
  */
 public class UserQueryRepositoryConditionGroupExpression implements
-        RepositoryConditionsGroupExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression>,
-        RepositoryConditionsGroupLogicExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> {
+    RepositoryConditionsGroupExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression>,
+    RepositoryConditionsGroupLogicExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> {
 
     /**
      * Instantiates a new user query repository condition group expression.
@@ -65,7 +67,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the string expression
      */
-    public StringFieldExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> name() {
+    public StringFieldExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> name() {
         return fieldAsString("name");
     }
 
@@ -74,7 +77,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the number expression
      */
-    public NumberFieldExpression<Number, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> age() {
+    public NumberFieldExpression<Number, UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> age() {
         return fieldAsNumber("age");
     }
 
@@ -83,7 +87,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      *
      * @return the string expression
      */
-    public StringFieldExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> pwd() {
+    public StringFieldExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> pwd() {
         return fieldAsString("pwd");
     }
 
@@ -101,7 +106,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression co(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -111,7 +116,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression co(SerializableStringSupplier property,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -139,7 +144,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression le(SerializableToNumberFunction<T, N> name,
-            N value) {
+        N value) {
 
         return null;
     }
@@ -158,7 +163,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression le(SerializableToDateFunction<T, D> name,
-            D value) {
+        D value) {
 
         return null;
     }
@@ -177,7 +182,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalTimeFunction<T> name,
-            LocalTime value) {
+        LocalTime value) {
 
         return null;
     }
@@ -196,7 +201,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateFunction<T> name,
-            LocalDate value) {
+        LocalDate value) {
 
         return null;
     }
@@ -215,7 +220,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value) {
+        LocalDateTime value) {
 
         return null;
     }
@@ -306,7 +311,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression lt(SerializableToNumberFunction<T, N> name,
-            N value) {
+        N value) {
 
         return null;
     }
@@ -325,7 +330,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression lt(SerializableToDateFunction<T, D> name,
-            D value) {
+        D value) {
 
         return null;
     }
@@ -344,7 +349,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalTimeFunction<T> name,
-            LocalTime value) {
+        LocalTime value) {
 
         return null;
     }
@@ -363,7 +368,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateFunction<T> name,
-            LocalDate value) {
+        LocalDate value) {
 
         return null;
     }
@@ -382,7 +387,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value) {
+        LocalDateTime value) {
 
         return null;
     }
@@ -473,7 +478,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression sw(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -483,7 +488,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression sw(SerializableStringSupplier property,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -502,7 +507,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lk(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -512,7 +517,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lk(SerializableStringSupplier property,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -549,7 +554,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression group(
-            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
+        Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
 
         return null;
     }
@@ -586,7 +591,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression and(
-            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
+        Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
 
         return null;
     }
@@ -605,7 +610,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression or(
-            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
+        Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
 
         return null;
     }
@@ -615,7 +620,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression co(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -625,7 +630,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression co(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -635,7 +640,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression co(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -645,7 +650,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ew(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -655,7 +660,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ew(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -665,7 +670,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ew(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -675,7 +680,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression le(String name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -685,7 +690,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression le(SerializableToNumberFunction<T, N> name,
-            N value, Predicate<N> ignoreStrategy) {
+        N value, Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -695,7 +700,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression le(String name, D value,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -705,7 +710,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression le(SerializableToDateFunction<T, D> name,
-            D value, Predicate<D> ignoreStrategy) {
+        D value, Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -715,7 +720,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(String name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -725,7 +730,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -735,7 +740,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(String name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -745,7 +750,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateFunction<T> name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -755,7 +760,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(String name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -765,7 +770,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -784,7 +789,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToStringFunction<T> name, String value,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -794,7 +799,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Date> UserQueryRepositoryConditionGroupExpression le(SerializableDateSupplier<R> propertyValue,
-            Predicate<R> ignoreStrategy) {
+        Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -804,7 +809,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Number> UserQueryRepositoryConditionGroupExpression le(
-            SerializableNumberSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
+        SerializableNumberSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -814,7 +819,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableLocalDateSupplier propertyValue,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -824,7 +829,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableLocalTimeSupplier propertyValue,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -834,7 +839,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableLocalDateTimeSupplier propertyValue,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -844,7 +849,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableStringSupplier propertyValue,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -854,7 +859,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression sw(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -864,7 +869,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression sw(SerializableToStringFunction<T> propertyName,
-            String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -874,7 +879,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression sw(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -884,7 +889,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lk(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -894,7 +899,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lk(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -904,7 +909,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lk(SerializableStringSupplier property,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -914,7 +919,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression co(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -924,7 +929,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression co(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -934,7 +939,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression co(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -944,7 +949,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ew(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -954,7 +959,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ew(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -964,7 +969,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ew(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -974,7 +979,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ge(String name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -984,7 +989,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ge(String name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -994,7 +999,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ge(SerializableToNumberFunction<T, N> name,
-            N value, IgnoreStrategy ignoreStrategy) {
+        N value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1004,7 +1009,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ge(SerializableToNumberFunction<T, N> name,
-            N value, Predicate<N> ignoreStrategy) {
+        N value, Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1014,7 +1019,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ge(SerializableNumberSupplier<N> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1024,7 +1029,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ge(SerializableNumberSupplier<N> property,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1034,7 +1039,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ge(String name, D value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1044,7 +1049,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ge(String name, D value,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1054,7 +1059,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ge(SerializableToDateFunction<T, D> name,
-            D value, IgnoreStrategy ignoreStrategy) {
+        D value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1064,7 +1069,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ge(SerializableToDateFunction<T, D> name,
-            D value, Predicate<D> ignoreStrategy) {
+        D value, Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1074,7 +1079,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ge(SerializableDateSupplier<D> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1084,7 +1089,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ge(SerializableDateSupplier<D> property,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1103,7 +1108,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(String name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -1113,7 +1118,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1123,7 +1128,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -1133,7 +1138,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1143,7 +1148,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalTimeSupplier property,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -1162,7 +1167,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(String name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -1172,7 +1177,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalDateFunction<T> name, LocalDate value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1182,7 +1187,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalDateFunction<T> name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -1192,7 +1197,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalDateSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1202,7 +1207,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalDateSupplier property,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -1212,7 +1217,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(String name, LocalDateTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1222,7 +1227,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(String name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -1232,7 +1237,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        LocalDateTime value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1242,7 +1247,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -1252,7 +1257,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalDateTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1262,7 +1267,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableLocalDateTimeSupplier property,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -1290,7 +1295,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToStringFunction<T> name, String value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1300,7 +1305,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ge(SerializableToStringFunction<T> name, String value,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -1310,7 +1315,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableStringSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1320,7 +1325,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(SerializableStringSupplier property,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -1330,7 +1335,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression gt(String name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1340,7 +1345,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression gt(String name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1350,7 +1355,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression gt(SerializableToNumberFunction<T, N> name,
-            N value, IgnoreStrategy ignoreStrategy) {
+        N value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1360,7 +1365,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression gt(SerializableToNumberFunction<T, N> name,
-            N value, Predicate<N> ignoreStrategy) {
+        N value, Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1370,7 +1375,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression gt(SerializableNumberSupplier<N> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1380,7 +1385,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression gt(SerializableNumberSupplier<N> property,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1390,7 +1395,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression gt(String name, D value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1400,7 +1405,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression gt(String name, D value,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1410,7 +1415,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression gt(SerializableToDateFunction<T, D> name,
-            D value, IgnoreStrategy ignoreStrategy) {
+        D value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1420,7 +1425,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression gt(SerializableToDateFunction<T, D> name,
-            D value, Predicate<D> ignoreStrategy) {
+        D value, Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1430,7 +1435,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression gt(SerializableDateSupplier<D> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1440,7 +1445,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression gt(SerializableDateSupplier<D> property,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1459,7 +1464,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(String name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -1469,7 +1474,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1479,7 +1484,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -1489,7 +1494,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1499,7 +1504,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalTimeSupplier property,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -1518,7 +1523,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(String name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -1528,7 +1533,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalDateFunction<T> name, LocalDate value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1538,7 +1543,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalDateFunction<T> name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -1548,7 +1553,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalDateSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1558,7 +1563,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalDateSupplier property,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -1568,7 +1573,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(String name, LocalDateTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1578,7 +1583,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(String name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -1588,7 +1593,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        LocalDateTime value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1598,7 +1603,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -1608,7 +1613,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalDateTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1618,7 +1623,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableLocalDateTimeSupplier property,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -1646,7 +1651,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToStringFunction<T> name, String value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1656,7 +1661,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression gt(SerializableToStringFunction<T> name, String value,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -1666,7 +1671,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableStringSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1676,7 +1681,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(SerializableStringSupplier property,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -1686,7 +1691,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression le(String name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1696,7 +1701,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression le(SerializableToNumberFunction<T, N> name,
-            N value, IgnoreStrategy ignoreStrategy) {
+        N value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1706,7 +1711,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression le(SerializableNumberSupplier<N> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1716,7 +1721,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression le(String name, D value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1726,7 +1731,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression le(SerializableToDateFunction<T, D> name,
-            D value, IgnoreStrategy ignoreStrategy) {
+        D value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1736,7 +1741,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression le(SerializableDateSupplier<D> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1755,7 +1760,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1765,7 +1770,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableLocalTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1784,7 +1789,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateFunction<T> name, LocalDate value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1794,7 +1799,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableLocalDateSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1804,7 +1809,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(String name, LocalDateTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1814,7 +1819,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        LocalDateTime value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1824,7 +1829,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableLocalDateTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1843,7 +1848,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression le(SerializableToStringFunction<T> name, String value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1853,7 +1858,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(SerializableStringSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1863,7 +1868,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression lt(String name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1873,7 +1878,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression lt(String name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1883,7 +1888,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression lt(SerializableToNumberFunction<T, N> name,
-            N value, IgnoreStrategy ignoreStrategy) {
+        N value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1893,7 +1898,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression lt(SerializableToNumberFunction<T, N> name,
-            N value, Predicate<N> ignoreStrategy) {
+        N value, Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1903,7 +1908,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression lt(SerializableNumberSupplier<N> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1913,7 +1918,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression lt(SerializableNumberSupplier<N> property,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
 
         return null;
     }
@@ -1923,7 +1928,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression lt(String name, D value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1933,7 +1938,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression lt(String name, D value,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1943,7 +1948,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression lt(SerializableToDateFunction<T, D> name,
-            D value, IgnoreStrategy ignoreStrategy) {
+        D value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1953,7 +1958,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression lt(SerializableToDateFunction<T, D> name,
-            D value, Predicate<D> ignoreStrategy) {
+        D value, Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1963,7 +1968,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression lt(SerializableDateSupplier<D> property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -1973,7 +1978,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression lt(SerializableDateSupplier<D> property,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
 
         return null;
     }
@@ -1992,7 +1997,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(String name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -2002,7 +2007,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2012,7 +2017,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalTimeFunction<T> name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -2022,7 +2027,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2032,7 +2037,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalTimeSupplier property,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -2051,7 +2056,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(String name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -2061,7 +2066,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateFunction<T> name, LocalDate value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2071,7 +2076,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateFunction<T> name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -2081,7 +2086,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalDateSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2091,7 +2096,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalDateSupplier property,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -2101,7 +2106,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(String name, LocalDateTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2111,7 +2116,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(String name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -2121,7 +2126,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        LocalDateTime value, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2131,7 +2136,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+        LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -2141,7 +2146,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalDateTimeSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2151,7 +2156,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableLocalDateTimeSupplier property,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -2179,7 +2184,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToStringFunction<T> name, String value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2189,7 +2194,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lt(SerializableToStringFunction<T> name, String value,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -2199,7 +2204,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableStringSupplier property,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2209,7 +2214,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(SerializableStringSupplier property,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -2219,7 +2224,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression sw(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2229,7 +2234,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression sw(SerializableToStringFunction<T> propertyName,
-            String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2239,7 +2244,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression sw(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2249,7 +2254,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lk(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2259,7 +2264,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression lk(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2269,7 +2274,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lk(SerializableStringSupplier property,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2288,7 +2293,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ba(String name, N min, N max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2298,7 +2303,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ba(String name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
+        BiPredicate<N, N> ignoreStrategy) {
 
         return null;
     }
@@ -2308,7 +2313,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ba(SerializableToNumberFunction<T, N> name,
-            N min, N max) {
+        N min, N max) {
 
         return null;
     }
@@ -2318,7 +2323,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ba(SerializableToNumberFunction<T, N> name,
-            N min, N max, IgnoreStrategy ignoreStrategy) {
+        N min, N max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2328,7 +2333,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression ba(SerializableToNumberFunction<T, N> name,
-            N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        N min, N max, BiPredicate<N, N> ignoreStrategy) {
 
         return null;
     }
@@ -2347,7 +2352,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ba(String name, D min, D max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2357,7 +2362,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ba(String name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
+        BiPredicate<D, D> ignoreStrategy) {
 
         return null;
     }
@@ -2367,7 +2372,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ba(SerializableToDateFunction<T, D> name,
-            D min, D max) {
+        D min, D max) {
 
         return null;
     }
@@ -2377,7 +2382,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ba(SerializableToDateFunction<T, D> name,
-            D min, D max, IgnoreStrategy ignoreStrategy) {
+        D min, D max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2387,7 +2392,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression ba(SerializableToDateFunction<T, D> name,
-            D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        D min, D max, BiPredicate<D, D> ignoreStrategy) {
 
         return null;
     }
@@ -2406,7 +2411,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, LocalTime min, LocalTime max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2416,7 +2421,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -2426,7 +2431,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalTimeFunction<T> name, LocalTime min,
-            LocalTime max) {
+        LocalTime max) {
 
         return null;
     }
@@ -2436,7 +2441,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalTimeFunction<T> name, LocalTime min,
-            LocalTime max, IgnoreStrategy ignoreStrategy) {
+        LocalTime max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2446,7 +2451,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalTimeFunction<T> name, LocalTime min,
-            LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -2465,7 +2470,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDate min, LocalDate max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2475,7 +2480,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -2485,7 +2490,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateFunction<T> name, LocalDate min,
-            LocalDate max) {
+        LocalDate max) {
 
         return null;
     }
@@ -2495,7 +2500,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateFunction<T> name, LocalDate min,
-            LocalDate max, IgnoreStrategy ignoreStrategy) {
+        LocalDate max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2505,7 +2510,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateFunction<T> name, LocalDate min,
-            LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -2524,7 +2529,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDateTime min, LocalDateTime max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2534,7 +2539,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -2544,7 +2549,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime min, LocalDateTime max) {
+        LocalDateTime min, LocalDateTime max) {
 
         return null;
     }
@@ -2554,7 +2559,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
+        LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2564,7 +2569,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -2583,7 +2588,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, String min, String max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2593,7 +2598,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ba(String name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
+        BiPredicate<String, String> ignoreStrategy) {
 
         return null;
     }
@@ -2603,7 +2608,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToStringFunction<T> name, String min,
-            String max) {
+        String max) {
 
         return null;
     }
@@ -2613,7 +2618,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToStringFunction<T> name, String min,
-            String max, IgnoreStrategy ignoreStrategy) {
+        String max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2623,7 +2628,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression ba(SerializableToStringFunction<T> name, String min,
-            String max, BiPredicate<String, String> ignoreStrategy) {
+        String max, BiPredicate<String, String> ignoreStrategy) {
 
         return null;
     }
@@ -2642,7 +2647,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression nba(String name, N min, N max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2652,7 +2657,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression nba(String name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
+        BiPredicate<N, N> ignoreStrategy) {
 
         return null;
     }
@@ -2662,7 +2667,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression nba(
-            SerializableToNumberFunction<T, N> name, N min, N max) {
+        SerializableToNumberFunction<T, N> name, N min, N max) {
 
         return null;
     }
@@ -2672,7 +2677,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression nba(
-            SerializableToNumberFunction<T, N> name, N min, N max, IgnoreStrategy ignoreStrategy) {
+        SerializableToNumberFunction<T, N> name, N min, N max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2682,7 +2687,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, N extends Number> UserQueryRepositoryConditionGroupExpression nba(
-            SerializableToNumberFunction<T, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        SerializableToNumberFunction<T, N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
 
         return null;
     }
@@ -2701,7 +2706,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression nba(String name, D min, D max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2711,7 +2716,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression nba(String name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
+        BiPredicate<D, D> ignoreStrategy) {
 
         return null;
     }
@@ -2721,7 +2726,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression nba(SerializableToDateFunction<T, D> name,
-            D min, D max) {
+        D min, D max) {
 
         return null;
     }
@@ -2731,7 +2736,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression nba(SerializableToDateFunction<T, D> name,
-            D min, D max, IgnoreStrategy ignoreStrategy) {
+        D min, D max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2741,7 +2746,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T, D extends Date> UserQueryRepositoryConditionGroupExpression nba(SerializableToDateFunction<T, D> name,
-            D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        D min, D max, BiPredicate<D, D> ignoreStrategy) {
 
         return null;
     }
@@ -2760,7 +2765,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, LocalTime min, LocalTime max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2770,7 +2775,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -2780,7 +2785,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalTimeFunction<T> name, LocalTime min,
-            LocalTime max) {
+        LocalTime max) {
 
         return null;
     }
@@ -2790,7 +2795,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalTimeFunction<T> name, LocalTime min,
-            LocalTime max, IgnoreStrategy ignoreStrategy) {
+        LocalTime max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2800,7 +2805,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalTimeFunction<T> name, LocalTime min,
-            LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        LocalTime max, BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
 
         return null;
     }
@@ -2819,7 +2824,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDate min, LocalDate max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2829,7 +2834,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -2839,7 +2844,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateFunction<T> name, LocalDate min,
-            LocalDate max) {
+        LocalDate max) {
 
         return null;
     }
@@ -2849,7 +2854,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateFunction<T> name, LocalDate min,
-            LocalDate max, IgnoreStrategy ignoreStrategy) {
+        LocalDate max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2859,7 +2864,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateFunction<T> name, LocalDate min,
-            LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
 
         return null;
     }
@@ -2878,7 +2883,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDateTime min, LocalDateTime max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2888,7 +2893,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -2898,7 +2903,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime min, LocalDateTime max) {
+        LocalDateTime min, LocalDateTime max) {
 
         return null;
     }
@@ -2908,7 +2913,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
+        LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2918,7 +2923,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToLocalDateTimeFunction<T> name,
-            LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
 
         return null;
     }
@@ -2937,7 +2942,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, String min, String max,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2947,7 +2952,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nba(String name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
+        BiPredicate<String, String> ignoreStrategy) {
 
         return null;
     }
@@ -2957,7 +2962,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToStringFunction<T> name, String min,
-            String max) {
+        String max) {
 
         return null;
     }
@@ -2967,7 +2972,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToStringFunction<T> name, String min,
-            String max, IgnoreStrategy ignoreStrategy) {
+        String max, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -2977,7 +2982,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nba(SerializableToStringFunction<T> name, String min,
-            String max, BiPredicate<String, String> ignoreStrategy) {
+        String max, BiPredicate<String, String> ignoreStrategy) {
 
         return null;
     }
@@ -2987,7 +2992,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nco(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -2997,7 +3002,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nco(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3007,7 +3012,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nco(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3017,7 +3022,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nco(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -3027,7 +3032,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nco(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3037,7 +3042,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nco(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3056,7 +3061,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nco(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3066,7 +3071,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nco(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3076,7 +3081,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression newv(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -3086,7 +3091,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression newv(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3096,7 +3101,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression newv(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3106,7 +3111,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression newv(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -3116,7 +3121,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression newv(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3126,7 +3131,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression newv(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3145,7 +3150,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression newv(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3155,7 +3160,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression newv(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3165,7 +3170,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nsw(SerializableToStringFunction<T> propertyName,
-            String value, MatchStrategy matchStrategy) {
+        String value, MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -3175,7 +3180,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nsw(SerializableToStringFunction<T> propertyName,
-            String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3185,7 +3190,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nsw(SerializableToStringFunction<T> propertyName,
-            String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3195,7 +3200,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nsw(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -3205,7 +3210,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nsw(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3215,7 +3220,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nsw(SerializableStringSupplier propertyValue,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3234,7 +3239,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nsw(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3244,7 +3249,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nsw(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3254,7 +3259,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nl(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -3264,7 +3269,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nl(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3274,7 +3279,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <T> UserQueryRepositoryConditionGroupExpression nl(SerializableToStringFunction<T> name, String value,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3284,7 +3289,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property,
-            MatchStrategy matchStrategy) {
+        MatchStrategy matchStrategy) {
 
         return null;
     }
@@ -3294,7 +3299,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property,
-            MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
+        MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3304,7 +3309,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property,
-            MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3323,7 +3328,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nl(String name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
 
         return null;
     }
@@ -3333,7 +3338,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression nl(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3370,7 +3375,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression in(String name, long[] values,
-            Predicate<long[]> ignoreStrategy) {
+        Predicate<long[]> ignoreStrategy) {
 
         return null;
     }
@@ -3389,7 +3394,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression in(String name, double[] values,
-            Predicate<double[]> ignoreStrategy) {
+        Predicate<double[]> ignoreStrategy) {
 
         return null;
     }
@@ -3408,7 +3413,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression in(String name, String[] values, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
 
         return null;
     }
@@ -3526,7 +3531,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression eq(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3545,7 +3550,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Serializable> UserQueryRepositoryConditionGroupExpression eq(String name, R value,
-            Predicate<R> ignoreStrategy) {
+        Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -3645,7 +3650,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ne(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3664,7 +3669,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Serializable> UserQueryRepositoryConditionGroupExpression ne(String name, R value,
-            Predicate<R> ignoreStrategy) {
+        Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -3737,7 +3742,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression ge(String name, E value,
-            Predicate<E> ignoreStrategy) {
+        Predicate<E> ignoreStrategy) {
 
         return null;
     }
@@ -3801,7 +3806,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ge(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3874,7 +3879,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression gt(String name, E value,
-            Predicate<E> ignoreStrategy) {
+        Predicate<E> ignoreStrategy) {
 
         return null;
     }
@@ -3938,7 +3943,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression gt(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -3948,7 +3953,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Serializable> UserQueryRepositoryConditionGroupExpression in(String name,
-            @SuppressWarnings("unchecked") R... values) {
+        @SuppressWarnings("unchecked") R... values) {
 
         return null;
     }
@@ -3958,7 +3963,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Serializable> UserQueryRepositoryConditionGroupExpression in(String name, R value,
-            Predicate<R> ignoreStrategy) {
+        Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -3995,7 +4000,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ni(String name, long[] values,
-            Predicate<long[]> ignoreStrategy) {
+        Predicate<long[]> ignoreStrategy) {
 
         return null;
     }
@@ -4014,7 +4019,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ni(String name, double[] values,
-            Predicate<double[]> ignoreStrategy) {
+        Predicate<double[]> ignoreStrategy) {
 
         return null;
     }
@@ -4033,7 +4038,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ni(String name, String[] values, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
 
         return null;
     }
@@ -4043,7 +4048,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Serializable> UserQueryRepositoryConditionGroupExpression ni(String name,
-            @SuppressWarnings("unchecked") R... values) {
+        @SuppressWarnings("unchecked") R... values) {
 
         return null;
     }
@@ -4053,7 +4058,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <R extends Serializable> UserQueryRepositoryConditionGroupExpression ni(String name, R value,
-            Predicate<R> ignoreStrategy) {
+        Predicate<R> ignoreStrategy) {
 
         return null;
     }
@@ -4144,7 +4149,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression le(String name, E value,
-            Predicate<E> ignoreStrategy) {
+        Predicate<E> ignoreStrategy) {
 
         return null;
     }
@@ -4163,7 +4168,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression le(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -4236,7 +4241,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression lt(String name, E value,
-            Predicate<E> ignoreStrategy) {
+        Predicate<E> ignoreStrategy) {
 
         return null;
     }
@@ -4255,7 +4260,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression lt(String name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
 
         return null;
     }
@@ -4265,7 +4270,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression logic(LogicOperator operator,
-            LogicExpression<?, ?> logicExpression) {
+        LogicExpression<?, ?> logicExpression) {
 
         return null;
     }
@@ -4275,7 +4280,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression logic(LogicOperator operator,
-            Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
+        Function<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> group) {
 
         return null;
     }
@@ -4302,8 +4307,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public RepositoryLocalDateTimeFieldExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> fieldAsLocalDateTime(
-            String name) {
+    public RepositoryLocalDateTimeFieldExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> fieldAsLocalDateTime(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -4312,8 +4317,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public RepositoryLocalTimeFieldExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> fieldAsLocalTime(
-            String name) {
+    public RepositoryLocalTimeFieldExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> fieldAsLocalTime(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -4322,8 +4327,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public RepositoryLocalDateFieldExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> fieldAsLocalDate(
-            String name) {
+    public RepositoryLocalDateFieldExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> fieldAsLocalDate(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -4332,8 +4337,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public RepositorySerializableFieldExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> field(
-            String name) {
+    public RepositorySerializableFieldExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> field(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -4342,8 +4347,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public RepositoryStringFieldExpression<UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> fieldAsString(
-            String name) {
+    public RepositoryStringFieldExpression<UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> fieldAsString(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -4352,8 +4357,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositoryNumberFieldExpression<N, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> fieldAsNumber(
-            String name) {
+    public <N extends Number> RepositoryNumberFieldExpression<N, UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> fieldAsNumber(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -4362,8 +4367,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> RepositoryEnumFieldExpression<R, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> fieldAsEnum(
-            String name) {
+    public <R extends Enum<R>> RepositoryEnumFieldExpression<R, UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> fieldAsEnum(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -4372,8 +4377,8 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> RepositoryDateFieldExpression<D, UserQueryRepositoryConditionGroupExpression, UserQueryRepositoryConditionGroupExpression> fieldAsDate(
-            String name) {
+    public <D extends Date> RepositoryDateFieldExpression<D, UserQueryRepositoryConditionGroupExpression,
+        UserQueryRepositoryConditionGroupExpression> fieldAsDate(String name) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

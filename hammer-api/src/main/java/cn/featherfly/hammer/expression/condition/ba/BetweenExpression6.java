@@ -20,8 +20,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type ConditionExpression
  * @param <L> the generic type LogicExpression
  */
-public interface BetweenExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends BetweenExpression5<C, L> {
+public interface BetweenExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * between and.
@@ -40,7 +39,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -54,7 +53,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -79,7 +78,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -87,14 +86,14 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      */
     @SuppressWarnings("unchecked")
     default <N extends Number> L ba6(String name, N min, N max, IgnoreStrategy ignoreStrategy) {
-        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+        return ba6(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -121,7 +120,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -135,7 +134,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -160,7 +159,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -168,14 +167,14 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
      */
     @SuppressWarnings("unchecked")
     default <D extends Date> L ba6(String name, D min, D max, IgnoreStrategy ignoreStrategy) {
-        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+        return ba6(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -200,7 +199,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -213,7 +212,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -236,20 +235,20 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ba6(String name, LocalTime min, LocalTime max, IgnoreStrategy ignoreStrategy) {
-        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+        return ba6(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -274,7 +273,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -287,7 +286,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -310,20 +309,20 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ba6(String name, LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
-        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+        return ba6(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -348,7 +347,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -361,14 +360,14 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ba6(Field name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba6(name.name(), min, max, ignoreStrategy);
     }
 
@@ -385,20 +384,20 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ba6(String name, LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
-        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+        return ba6(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -423,7 +422,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -436,7 +435,7 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -459,20 +458,20 @@ public interface BetweenExpression6<C extends ConditionExpression, L extends Log
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ba6(String name, String min, String max, IgnoreStrategy ignoreStrategy) {
-        return ba2(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
+        return ba6(name, min, max, (v1, v2) -> ignoreStrategy.test(Lang.array(v1, v2)));
     }
 
     /**
      * between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy

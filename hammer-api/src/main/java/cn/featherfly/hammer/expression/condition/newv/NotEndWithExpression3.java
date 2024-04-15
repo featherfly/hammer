@@ -17,8 +17,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotEndWithExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotEndWithExpression2<C, L>, NotEndWithSupplierExpression3<C, L> {
+public interface NotEndWithExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not end with value. 不以value结尾.

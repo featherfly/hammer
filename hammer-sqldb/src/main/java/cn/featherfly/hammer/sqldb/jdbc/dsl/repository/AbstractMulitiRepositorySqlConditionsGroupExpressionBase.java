@@ -32,7 +32,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C
     L extends GroupEndExpression<C, L>, T extends Tuple, C2 extends ConditionConfig<C2>,
     S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
     extends AbstractMulitiRepositorySqlConditionsExpressionBase<C, L, T, C2, S, B>
-    implements LogicExpression<C, L>, GroupExpression<C, L>, GroupEndExpression<C, L> {
+    implements GroupExpression<C, L>, GroupEndExpression<C, L> {
 
     /**
      * Instantiates a new abstract sql condition group expression.

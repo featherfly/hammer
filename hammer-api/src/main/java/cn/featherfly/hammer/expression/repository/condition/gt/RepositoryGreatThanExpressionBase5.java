@@ -36,6 +36,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.gt.GreatThanExpression5;
+import cn.featherfly.hammer.expression.condition.gt.GreatThanSupplierExpression5;
 
 /**
  * repository great than expression5 .
@@ -45,7 +46,7 @@ import cn.featherfly.hammer.expression.condition.gt.GreatThanExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryGreatThanExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryGreatThanExpressionBase4<C, L>, GreatThanExpression5<C, L> {
+    extends RepositoryGreatThanExpressionBase4<C, L>, GreatThanExpression5<C, L>, GreatThanSupplierExpression5<C, L> {
     /**
      * great than. 大于.
      *
@@ -145,7 +146,7 @@ public interface RepositoryGreatThanExpressionBase5<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T, E extends Enum<E>> L gt5(SerializableToEnumFunction<T, E> name, E value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return gt5(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -187,7 +188,7 @@ public interface RepositoryGreatThanExpressionBase5<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T, N extends Number> L gt5(SerializableToNumberFunction<T, N> name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return gt5(name, value, (Predicate<N>) ignoreStrategy::test);
     }
 
@@ -365,7 +366,7 @@ public interface RepositoryGreatThanExpressionBase5<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L gt5(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return gt5(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -433,7 +434,7 @@ public interface RepositoryGreatThanExpressionBase5<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L gt5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return gt5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -448,7 +449,7 @@ public interface RepositoryGreatThanExpressionBase5<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L gt5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return gt5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 

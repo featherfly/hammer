@@ -36,6 +36,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.le.LessEqualsExpression6;
+import cn.featherfly.hammer.expression.condition.le.LessEqualsSupplierExpression6;
 
 /**
  * repository less equals expression6 .
@@ -45,7 +46,8 @@ import cn.featherfly.hammer.expression.condition.le.LessEqualsExpression6;
  * @param <L> the generic type LogicExpression
  */
 public interface RepositoryLessEqualsExpressionBase6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryLessEqualsExpressionBase5<C, L>, LessEqualsExpression6<C, L> {
+    extends RepositoryLessEqualsExpressionBase5<C, L>, LessEqualsExpression6<C, L>,
+    LessEqualsSupplierExpression6<C, L> {
     /**
      * less equals. 小于等于.
      *
@@ -145,7 +147,7 @@ public interface RepositoryLessEqualsExpressionBase6<C extends ConditionExpressi
      * @return LogicExpression
      */
     default <T, E extends Enum<E>> L le6(SerializableToEnumFunction<T, E> name, E value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return le6(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -187,7 +189,7 @@ public interface RepositoryLessEqualsExpressionBase6<C extends ConditionExpressi
      * @return LogicExpression
      */
     default <T, N extends Number> L le6(SerializableToNumberFunction<T, N> name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return le6(name, value, (Predicate<N>) ignoreStrategy::test);
     }
 
@@ -365,7 +367,7 @@ public interface RepositoryLessEqualsExpressionBase6<C extends ConditionExpressi
      * @return LogicExpression
      */
     default <T> L le6(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return le6(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -433,7 +435,7 @@ public interface RepositoryLessEqualsExpressionBase6<C extends ConditionExpressi
      * @return LogicExpression
      */
     default <T> L le6(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return le6(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -448,7 +450,7 @@ public interface RepositoryLessEqualsExpressionBase6<C extends ConditionExpressi
      * @return LogicExpression
      */
     default <T> L le6(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return le6(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 

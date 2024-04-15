@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.newv.NotEndWithExpression;
+import cn.featherfly.hammer.expression.condition.newv.NotEndWithSupplierExpression;
 
 /**
  * repository not end with expression .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.newv.NotEndWithExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotEndWithExpression<C, L> {
+    extends NotEndWithExpression<C, L>, NotEndWithSupplierExpression<C, L> {
 
     /**
      * not end with value. 不以value结尾.
@@ -84,7 +85,7 @@ public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L
      * @return LogicExpression
      */
     default <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return newv(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L
      * @return LogicExpression
      */
     default <T> L newv(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return newv(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
     }
 
@@ -110,9 +111,9 @@ public interface RepositoryNotEndWithExpression<C extends ConditionExpression, L
 
     @Override
     default L newv(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return newv(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
 }

@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ew.EndWithExpression;
+import cn.featherfly.hammer.expression.condition.ew.EndWithSupplierExpression;
 
 /**
  * repository end with expression .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.ew.EndWithExpression;
  * @param <L> the generic type
  */
 public interface RepositoryEndWithExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EndWithExpression<C, L> {
+    extends EndWithExpression<C, L>, EndWithSupplierExpression<C, L> {
 
     /**
      * end with value. 以value结尾.
@@ -84,7 +85,7 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ew(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default <T> L ew(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ew(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,7 +111,7 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
 
     @Override
     default L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ew(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 }

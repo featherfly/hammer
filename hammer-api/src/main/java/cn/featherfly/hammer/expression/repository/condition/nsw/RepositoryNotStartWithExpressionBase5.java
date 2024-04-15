@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.nsw.NotStartWithExpression5;
+import cn.featherfly.hammer.expression.condition.nsw.NotStartWithSupplierExpression5;
 
 /**
  * repository not start with expression5 .
@@ -20,7 +21,8 @@ import cn.featherfly.hammer.expression.condition.nsw.NotStartWithExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryNotStartWithExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryNotStartWithExpressionBase4<C, L>, NotStartWithExpression5<C, L> {
+    extends RepositoryNotStartWithExpressionBase4<C, L>, NotStartWithExpression5<C, L>,
+    NotStartWithSupplierExpression5<C, L> {
 
     /**
      * not start with value. 不以value开始.
@@ -84,7 +86,7 @@ public interface RepositoryNotStartWithExpressionBase5<C extends ConditionExpres
      * @return LogicExpression
      */
     default <T> L nsw5(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nsw5(propertyName, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +101,7 @@ public interface RepositoryNotStartWithExpressionBase5<C extends ConditionExpres
      * @return LogicExpression
      */
     default <T> L nsw5(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nsw5(LambdaUtils.getLambdaPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,9 +112,9 @@ public interface RepositoryNotStartWithExpressionBase5<C extends ConditionExpres
 
     @Override
     default L nsw5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nsw5(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
 }

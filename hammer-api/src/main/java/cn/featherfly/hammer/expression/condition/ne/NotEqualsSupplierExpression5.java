@@ -38,8 +38,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotEqualsSupplierExpression5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotEqualsSupplierExpression4<C, L> {
+public interface NotEqualsSupplierExpression5<C extends ConditionExpression, L extends LogicExpression<C, L>> {
     /**
      * not equals. 不等于.
      *
@@ -371,7 +370,7 @@ public interface NotEqualsSupplierExpression5<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default L ne5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne5(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 

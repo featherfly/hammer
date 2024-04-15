@@ -21,8 +21,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type ConditionExpression
  * @param <L> the generic type LogicExpression
  */
-public interface NotBetweenExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+public interface NotBetweenExpression<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not between and.
@@ -41,7 +40,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -55,7 +54,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -80,7 +79,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -95,7 +94,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <N>            number type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -122,7 +121,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -136,7 +135,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -161,7 +160,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -176,7 +175,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * not between and.
      *
      * @param <D>            date type
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -201,7 +200,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -214,7 +213,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -237,7 +236,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -250,7 +249,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -275,7 +274,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -288,7 +287,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -311,7 +310,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -324,7 +323,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -349,7 +348,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -362,14 +361,14 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L nba(Field name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba(name.name(), min, max, ignoreStrategy);
     }
 
@@ -386,7 +385,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -399,7 +398,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -424,7 +423,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -437,7 +436,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -460,7 +459,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -473,7 +472,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
     /**
      * not between and.
      *
-     * @param name the name
+     * @param name           the name
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -676,7 +675,7 @@ public interface NotBetweenExpression<C extends ConditionExpression, L extends L
      * @return LogicExpression
      */
     default L nba(AliasField field, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba(field.getAliasOrName(), min, max, ignoreStrategy);
     }
 

@@ -13,8 +13,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface IsNotNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+public interface IsNotNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * is not null.

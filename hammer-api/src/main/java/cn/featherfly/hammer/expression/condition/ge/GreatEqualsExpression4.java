@@ -24,8 +24,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface GreatEqualsExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends GreatEqualsExpression3<C, L>, GreatEqualsSupplierExpression4<C, L> {
+public interface GreatEqualsExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>> {
     /**
      * great equals. 大于等于.
      *

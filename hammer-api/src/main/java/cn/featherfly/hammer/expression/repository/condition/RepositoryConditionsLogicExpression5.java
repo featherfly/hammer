@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository.condition;
 
-import cn.featherfly.hammer.expression.condition.ConditionsLogicExpression5;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * repository conditions logic expression5.
@@ -11,6 +11,6 @@ import cn.featherfly.hammer.expression.condition.ConditionsLogicExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryConditionsLogicExpression5<C extends RepositoryConditionsExpression5<C, L>,
-        L extends RepositoryConditionsLogicExpression5<C, L>> extends ConditionsLogicExpression5<C, L> {
+    L extends RepositoryConditionsLogicExpression5<C, L>> extends LogicExpression<C, L> {
 
 }

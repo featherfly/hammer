@@ -12,8 +12,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface IsNotNullExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends IsNotNullExpression5<C, L> {
+public interface IsNotNullExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * is not null.
@@ -28,7 +27,7 @@ public interface IsNotNullExpression6<C extends ConditionExpression, L extends L
     /**
      * is not null.
      *
-     * @param name the name
+     * @param name  the name
      * @param value if true, is not null; if false, is null; if null, ignore
      *              this operate
      * @return LogicExpression
@@ -48,7 +47,7 @@ public interface IsNotNullExpression6<C extends ConditionExpression, L extends L
     /**
      * is not null.
      *
-     * @param name the name
+     * @param name  the name
      * @param value if true, is not null; if false, is null; if null, ignore
      *              this operate
      * @return LogicExpression

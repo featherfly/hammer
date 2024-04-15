@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.nco.NotContainsExpression;
+import cn.featherfly.hammer.expression.condition.nco.NotContainsSupplierExpression;
 
 /**
  * repository not contains expression .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.nco.NotContainsExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotContainsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotContainsExpression<C, L> {
+    extends NotContainsExpression<C, L>, NotContainsSupplierExpression<C, L> {
 
     /**
      * not contains value. 不包含value.
@@ -84,7 +85,7 @@ public interface RepositoryNotContainsExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nco(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryNotContainsExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default <T> L nco(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nco(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,9 +111,9 @@ public interface RepositoryNotContainsExpression<C extends ConditionExpression, 
 
     @Override
     default L nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nco(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
 }

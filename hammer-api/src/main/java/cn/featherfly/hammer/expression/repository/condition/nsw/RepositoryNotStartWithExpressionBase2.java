@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.nsw.NotStartWithExpression2;
+import cn.featherfly.hammer.expression.condition.nsw.NotStartWithSupplierExpression2;
 
 /**
  * repository not start with expression .
@@ -20,7 +21,8 @@ import cn.featherfly.hammer.expression.condition.nsw.NotStartWithExpression2;
  * @param <L> the generic type
  */
 public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryNotStartWithExpression<C, L>, NotStartWithExpression2<C, L> {
+    extends RepositoryNotStartWithExpression<C, L>, NotStartWithExpression2<C, L>,
+    NotStartWithSupplierExpression2<C, L> {
 
     /**
      * not start with value. 不以value开始.
@@ -84,7 +86,7 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
      * @return LogicExpression
      */
     default <T> L nsw2(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nsw2(propertyName, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +101,7 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
      * @return LogicExpression
      */
     default <T> L nsw2(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nsw2(LambdaUtils.getLambdaPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,9 +112,9 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
 
     @Override
     default L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nsw2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
 }

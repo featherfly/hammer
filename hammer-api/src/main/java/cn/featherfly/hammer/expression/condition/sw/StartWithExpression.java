@@ -22,8 +22,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface StartWithExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends StartWithSupplierExpression<C, L> {
+public interface StartWithExpression<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * start with value. 以value开始.

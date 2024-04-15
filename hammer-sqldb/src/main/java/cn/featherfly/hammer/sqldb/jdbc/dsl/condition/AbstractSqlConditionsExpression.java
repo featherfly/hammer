@@ -29,9 +29,7 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.function.CharPredicate;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.operator.ComparisonOperator;
@@ -78,19 +76,19 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlLogicOperatorExpressionBuilder;
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractSqlConditionsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>,
-        C2 extends ConditionConfig<C2>> extends AbstractSqlConditionExpression<C, L, C2>
-        implements ConditionExpression, LogicExpression<C, L>, ConditionConfigureExpression<C, C2> //
-        , BetweenExpression<C, L>, NotBetweenExpression<C, L> //
-        , ContainsExpression<C, L>, NotContainsExpression<C, L> //
-        , EndWithExpression<C, L>, NotEndWithExpression<C, L> //
-        , EqualsExpression<C, L>, NotEqualsExpression<C, L> //
-        , GreatEqualsExpression<C, L>, GreatThanExpression<C, L> //
-        , InExpression<C, L>, NotInExpression<C, L> //
-        , IsNotNullExpression<C, L>, IsNullExpression<C, L> //
-        , LessEqualsExpression<C, L>, LessThanExpression<C, L>//
-        , StartWithExpression<C, L>, NotStartWithExpression<C, L>//
-        , LikeExpression<C, L>, NotLikeExpression<C, L> //
-        , NativeStringConditionExpression<C, L> {
+    C2 extends ConditionConfig<C2>> extends AbstractSqlConditionExpression<C, L, C2>
+    implements ConditionExpression, LogicExpression<C, L>, ConditionConfigureExpression<C, C2> //
+    , BetweenExpression<C, L>, NotBetweenExpression<C, L> //
+    , ContainsExpression<C, L>, NotContainsExpression<C, L> //
+    , EndWithExpression<C, L>, NotEndWithExpression<C, L> //
+    , EqualsExpression<C, L>, NotEqualsExpression<C, L> //
+    , GreatEqualsExpression<C, L>, GreatThanExpression<C, L> //
+    , InExpression<C, L>, NotInExpression<C, L> //
+    , IsNotNullExpression<C, L>, IsNullExpression<C, L> //
+    , LessEqualsExpression<C, L>, LessThanExpression<C, L>//
+    , StartWithExpression<C, L>, NotStartWithExpression<C, L>//
+    , LikeExpression<C, L>, NotLikeExpression<C, L> //
+    , NativeStringConditionExpression<C, L> {
 
     private String repositoryAlias;
 
@@ -111,7 +109,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, Field value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -120,7 +118,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, v -> getIgnoreStrategy().test(v)));
+            repositoryAlias, v -> getIgnoreStrategy().test(v)));
     }
 
     /**
@@ -129,7 +127,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, char value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -138,7 +136,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, char value, CharPredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, v -> ignoreStrategy.test((char) v)));
+            repositoryAlias, v -> ignoreStrategy.test((char) v)));
     }
 
     /**
@@ -147,7 +145,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, int value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -156,7 +154,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, int value, IntPredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, v -> ignoreStrategy.test((int) v)));
+            repositoryAlias, v -> ignoreStrategy.test((int) v)));
     }
 
     /**
@@ -165,7 +163,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, long value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -174,7 +172,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, long value, LongPredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, v -> ignoreStrategy.test((long) v)));
+            repositoryAlias, v -> ignoreStrategy.test((long) v)));
     }
 
     /**
@@ -191,7 +189,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, double value, DoublePredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, v -> ignoreStrategy.test((double) v)));
+            repositoryAlias, v -> ignoreStrategy.test((double) v)));
     }
 
     /**
@@ -200,7 +198,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                matchStrategy, repositoryAlias, getIgnoreStrategy()));
+            matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -209,7 +207,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L eq(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -226,7 +224,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public <R extends Serializable> L eq(String name, R value, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, ignoreStrategy));
+            repositoryAlias, ignoreStrategy));
     }
 
     //    /**
@@ -264,7 +262,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                repositoryAlias, v -> getIgnoreStrategy().test(v)));
+            repositoryAlias, v -> getIgnoreStrategy().test(v)));
     }
 
     /**
@@ -273,7 +271,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, char value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -282,7 +280,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, char value, CharPredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                repositoryAlias, v -> ignoreStrategy.test((char) v)));
+            repositoryAlias, v -> ignoreStrategy.test((char) v)));
     }
 
     /**
@@ -291,7 +289,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, int value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -300,7 +298,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, int value, IntPredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                repositoryAlias, v -> ignoreStrategy.test((int) v)));
+            repositoryAlias, v -> ignoreStrategy.test((int) v)));
     }
 
     /**
@@ -309,7 +307,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, long value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -318,7 +316,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, long value, LongPredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                repositoryAlias, v -> ignoreStrategy.test((long) v)));
+            repositoryAlias, v -> ignoreStrategy.test((long) v)));
     }
 
     /**
@@ -335,7 +333,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, double value, DoublePredicate ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, v -> ignoreStrategy.test((double) v)));
+            repositoryAlias, v -> ignoreStrategy.test((double) v)));
     }
 
     /**
@@ -352,7 +350,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public <R extends Serializable> L ne(String name, R value, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                repositoryAlias, ignoreStrategy));
+            repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -369,7 +367,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ne(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     //    /**
@@ -413,7 +411,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L lk(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -422,7 +420,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L lk(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -441,7 +439,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L nl(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -450,7 +448,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L nl(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -467,7 +465,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L sw(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -486,7 +484,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L nsw(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -497,7 +495,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ew(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, repositoryAlias, getIgnoreStrategy()));
+            matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -506,7 +504,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ew(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -517,7 +515,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L newv(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, repositoryAlias, getIgnoreStrategy()));
+            matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -526,7 +524,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L newv(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -535,7 +533,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L newv(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -544,7 +542,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L co(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, repositoryAlias, getIgnoreStrategy()));
+            matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -553,7 +551,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L co(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -564,7 +562,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L nco(String name, String value, MatchStrategy matchStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, repositoryAlias, getIgnoreStrategy()));
+            matchStrategy, repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -573,7 +571,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L nco(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -582,7 +580,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L nco(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -601,7 +599,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public <N extends Number> L ge(String name, N value, Predicate<N> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                repositoryAlias, ignoreStrategy));
+            repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -976,7 +974,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L in(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
-                ComparisonOperator.IN, matchStrategy, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.IN, matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -993,7 +991,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public <R extends Serializable> L in(String name, R value, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
-                ComparisonOperator.IN, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.IN, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1002,7 +1000,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L inn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.INN,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -1011,7 +1009,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L isn(String name, Boolean value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.ISN,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1354,15 +1352,6 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
         return lt0(name, value, matchStrategy, ignoreStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        SerializableSupplierLambdaInfo<String> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return lt(info.getSerializedLambdaInfo().getPropertyName(), info.getValue(), ignoreStrategy);
-    }
-
     // ****************************************************************************************************************
     //  ni
     // ****************************************************************************************************************
@@ -1429,7 +1418,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public L ni(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
-                ComparisonOperator.NI, matchStrategy, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.NI, matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1446,7 +1435,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
     @Override
     public <R extends Serializable> L ni(String name, R value, Predicate<R> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
-                ComparisonOperator.NI, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.NI, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -1528,7 +1517,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
      */
     @Override
     public L ba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
 
@@ -1627,7 +1616,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
      */
     @Override
     public L nba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
 
@@ -1655,7 +1644,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
 
     private L ge0(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     public L gt0(String name, Object value, Predicate<?> ignoreStrategy) {
@@ -1664,7 +1653,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
 
     private L gt0(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     public L le0(String name, Object value, Predicate<?> ignoreStrategy) {
@@ -1673,7 +1662,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
 
     private L le0(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     public L lt0(String name, Object value, Predicate<?> ignoreStrategy) {
@@ -1682,7 +1671,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
 
     private L lt0(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1714,7 +1703,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
      */
     private L ba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
-                ComparisonOperator.BA, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.BA, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -1744,7 +1733,7 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
      */
     private L nba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
-                ComparisonOperator.NBA, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.NBA, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
