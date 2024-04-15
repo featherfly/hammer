@@ -36,6 +36,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ge.GreatEqualsExpression3;
+import cn.featherfly.hammer.expression.condition.ge.GreatEqualsSupplierExpression3;
 
 /**
  * repository great equals expression3 .
@@ -45,7 +46,8 @@ import cn.featherfly.hammer.expression.condition.ge.GreatEqualsExpression3;
  * @param <L> the generic type
  */
 public interface RepositoryGreatEqualsExpressionBase3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryGreatEqualsExpressionBase2<C, L>, GreatEqualsExpression3<C, L> {
+    extends RepositoryGreatEqualsExpressionBase2<C, L>, GreatEqualsExpression3<C, L>,
+    GreatEqualsSupplierExpression3<C, L> {
     /**
      * great equals. 大于等于.
      *
@@ -145,7 +147,7 @@ public interface RepositoryGreatEqualsExpressionBase3<C extends ConditionExpress
      * @return LogicExpression
      */
     default <T, E extends Enum<E>> L ge3(SerializableToEnumFunction<T, E> name, E value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ge3(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -187,7 +189,7 @@ public interface RepositoryGreatEqualsExpressionBase3<C extends ConditionExpress
      * @return LogicExpression
      */
     default <T, N extends Number> L ge3(SerializableToNumberFunction<T, N> name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ge3(name, value, (Predicate<N>) ignoreStrategy::test);
     }
 
@@ -365,7 +367,7 @@ public interface RepositoryGreatEqualsExpressionBase3<C extends ConditionExpress
      * @return LogicExpression
      */
     default <T> L ge3(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return ge3(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -433,7 +435,7 @@ public interface RepositoryGreatEqualsExpressionBase3<C extends ConditionExpress
      * @return LogicExpression
      */
     default <T> L ge3(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ge3(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -448,7 +450,7 @@ public interface RepositoryGreatEqualsExpressionBase3<C extends ConditionExpress
      * @return LogicExpression
      */
     default <T> L ge3(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ge3(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 

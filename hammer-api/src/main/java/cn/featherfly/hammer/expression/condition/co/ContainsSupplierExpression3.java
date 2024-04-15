@@ -16,8 +16,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface ContainsSupplierExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ContainsSupplierExpression2<C, L> {
+public interface ContainsSupplierExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * contains value. 包含value.
@@ -69,7 +68,7 @@ public interface ContainsSupplierExpression3<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default L co3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return co3(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 

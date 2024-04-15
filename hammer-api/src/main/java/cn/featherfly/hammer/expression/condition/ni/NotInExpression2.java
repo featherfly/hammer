@@ -22,8 +22,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotInExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotInExpression<C, L>, NotInSupplierExpression2<C, L> {
+public interface NotInExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>> {
     /**
      * values not in. 不包含指定，sql中的not in.
      *

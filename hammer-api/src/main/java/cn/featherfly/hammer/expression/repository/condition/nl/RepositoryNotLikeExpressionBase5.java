@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.nl.NotLikeExpression5;
+import cn.featherfly.hammer.expression.condition.nl.NotLikeSupplierExpression5;
 
 /**
  * repository not like expression5.
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.nl.NotLikeExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryNotLikeExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryNotLikeExpressionBase4<C, L>, NotLikeExpression5<C, L> {
+    extends RepositoryNotLikeExpressionBase4<C, L>, NotLikeExpression5<C, L>, NotLikeSupplierExpression5<C, L> {
 
     /**
      * not like value.
@@ -84,7 +85,7 @@ public interface RepositoryNotLikeExpressionBase5<C extends ConditionExpression,
      * @return LogicExpression
      */
     default <T> L nl5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nl5(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryNotLikeExpressionBase5<C extends ConditionExpression,
      * @return LogicExpression
      */
     default <T> L nl5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nl5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 

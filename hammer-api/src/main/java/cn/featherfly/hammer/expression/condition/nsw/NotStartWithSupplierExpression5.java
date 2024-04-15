@@ -16,8 +16,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotStartWithSupplierExpression5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotStartWithSupplierExpression4<C, L> {
+public interface NotStartWithSupplierExpression5<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not start with value. 不以value开始.
@@ -69,7 +68,7 @@ public interface NotStartWithSupplierExpression5<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default L nsw5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nsw5(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 

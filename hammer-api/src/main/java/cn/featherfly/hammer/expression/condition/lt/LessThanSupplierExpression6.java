@@ -32,8 +32,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface LessThanSupplierExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends LessThanSupplierExpression5<C, L> {
+public interface LessThanSupplierExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>> {
     /**
      * less than. 小于.
      *

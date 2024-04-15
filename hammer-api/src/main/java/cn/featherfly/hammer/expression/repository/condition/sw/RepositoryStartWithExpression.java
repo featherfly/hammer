@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.sw.StartWithExpression;
+import cn.featherfly.hammer.expression.condition.sw.StartWithSupplierExpression;
 
 /**
  * repository start with expression .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.sw.StartWithExpression;
  * @param <L> the generic type
  */
 public interface RepositoryStartWithExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends StartWithExpression<C, L> {
+    extends StartWithExpression<C, L>, StartWithSupplierExpression<C, L> {
 
     /**
      * start with value. 以value开始.
@@ -84,7 +85,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return sw(propertyName, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L sw(SerializableToStringFunction<T> propertyName, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return sw(LambdaUtils.getLambdaPropertyName(propertyName), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,7 +111,7 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
 
     @Override
     default L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return sw(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 

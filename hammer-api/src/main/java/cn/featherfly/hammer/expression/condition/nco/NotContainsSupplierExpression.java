@@ -16,8 +16,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotContainsSupplierExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+public interface NotContainsSupplierExpression<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not contains value. 不包含value.
@@ -69,7 +68,7 @@ public interface NotContainsSupplierExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L nco(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nco(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 

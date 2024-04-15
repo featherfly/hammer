@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository.condition;
 
-import cn.featherfly.hammer.expression.condition.ConditionsExpression6;
+import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.repository.condition.ba.RepositoryBetweenExpression6;
 import cn.featherfly.hammer.expression.repository.condition.co.RepositoryContainsExpression6;
 import cn.featherfly.hammer.expression.repository.condition.eq.RepositoryEqualsExpression6;
@@ -29,16 +29,17 @@ import cn.featherfly.hammer.expression.repository.condition.sw.RepositoryStartWi
  * @author zhongj
  */
 public interface RepositoryConditionsExpression6<C extends RepositoryConditionsExpression6<C, L>,
-        L extends RepositoryConditionsLogicExpression6<C, L>> extends ConditionsExpression6<C, L>, //
-        RepositoryBetweenExpression6<C, L>, RepositoryNotBetweenExpression6<C, L> //
-        , RepositoryContainsExpression6<C, L>, RepositoryNotContainsExpression6<C, L> //
-        , RepositoryEndWithExpression6<C, L>, RepositoryNotEndWithExpression6<C, L> //
-        , RepositoryEqualsExpression6<C, L>, RepositoryNotEqualsExpression6<C, L> //
-        , RepositoryGreatEqualsExpression6<C, L>, RepositoryGreatThanExpression6<C, L> //
-        , RepositoryInExpression6<C, L>, RepositoryNotInExpression6<C, L> //
-        , RepositoryIsNotNullExpression6<C, L>, RepositoryIsNullExpression6<C, L> //
-        , RepositoryLessEqualsExpression6<C, L>, RepositoryLessThanExpression6<C, L>//
-        , RepositoryStartWithExpression6<C, L>, RepositoryNotStartWithExpression6<C, L>//
-        , RepositoryLikeExpression6<C, L>, RepositoryNotLikeExpression6<C, L> //
-        , RepositoryFieldExpression6<C, L> {
+    L extends RepositoryConditionsLogicExpression6<C, L>>
+    extends RepositoryBetweenExpression6<C, L>, RepositoryNotBetweenExpression6<C, L> //
+    , RepositoryContainsExpression6<C, L>, RepositoryNotContainsExpression6<C, L> //
+    , RepositoryEndWithExpression6<C, L>, RepositoryNotEndWithExpression6<C, L> //
+    , RepositoryEqualsExpression6<C, L>, RepositoryNotEqualsExpression6<C, L> //
+    , RepositoryGreatEqualsExpression6<C, L>, RepositoryGreatThanExpression6<C, L> //
+    , RepositoryInExpression6<C, L>, RepositoryNotInExpression6<C, L> //
+    , RepositoryIsNotNullExpression6<C, L>, RepositoryIsNullExpression6<C, L> //
+    , RepositoryLessEqualsExpression6<C, L>, RepositoryLessThanExpression6<C, L>//
+    , RepositoryStartWithExpression6<C, L>, RepositoryNotStartWithExpression6<C, L>//
+    , RepositoryLikeExpression6<C, L>, RepositoryNotLikeExpression6<C, L> //
+    , RepositoryFieldExpression6<C, L>, //
+    NativeStringConditionExpression<C, L> {
 }

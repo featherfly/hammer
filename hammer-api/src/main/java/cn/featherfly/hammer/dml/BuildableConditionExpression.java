@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dml;
 
-import cn.featherfly.hammer.expression.condition.ConditionsExpression;
+import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsExpression;
 
 /**
  * BuildableConditionExpression.
@@ -9,5 +9,5 @@ import cn.featherfly.hammer.expression.condition.ConditionsExpression;
  * @author zhongj
  */
 public interface BuildableConditionExpression
-        extends ConditionsExpression<BuildableConditionExpression, BuildableConditionLogicExpression> {
+    extends RepositoryConditionsExpression<BuildableConditionExpression, BuildableConditionLogicExpression> {
 }

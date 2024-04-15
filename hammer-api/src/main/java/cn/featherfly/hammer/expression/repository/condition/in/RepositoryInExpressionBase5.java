@@ -23,6 +23,7 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.in.InExpression5;
+import cn.featherfly.hammer.expression.condition.in.InSupplierExpression5;
 
 /**
  * repository in expression5 .
@@ -32,7 +33,7 @@ import cn.featherfly.hammer.expression.condition.in.InExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryInExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryInExpressionBase4<C, L>, InExpression5<C, L> {
+    extends RepositoryInExpressionBase4<C, L>, InExpression5<C, L>, InSupplierExpression5<C, L> {
 
     /**
      * values in. 包含指定，sql中的in.
@@ -203,7 +204,7 @@ public interface RepositoryInExpressionBase5<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default <T> L in5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return in5(name, new String[] { value }, matchStrategy, v -> ignoreStrategy.test(v[0]));
     }
 
@@ -231,7 +232,7 @@ public interface RepositoryInExpressionBase5<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default <T> L in5(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return in5(LambdaUtils.getLambdaPropertyName(name), values, matchStrategy, ignoreStrategy);
     }
 
@@ -277,7 +278,7 @@ public interface RepositoryInExpressionBase5<C extends ConditionExpression, L ex
      * @return LogicExpression
      */
     default <T, R extends Serializable> L in5(SerializableFunction<T, R> name, R[] values,
-            Predicate<R[]> ignoreStrategy) {
+        Predicate<R[]> ignoreStrategy) {
         return in5(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
     }
 

@@ -36,6 +36,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.gt.GreatThanExpression;
+import cn.featherfly.hammer.expression.condition.gt.GreatThanSupplierExpression;
 
 /**
  * repository great than expression .
@@ -45,7 +46,7 @@ import cn.featherfly.hammer.expression.condition.gt.GreatThanExpression;
  * @param <L> the generic type
  */
 public interface RepositoryGreatThanExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends GreatThanExpression<C, L> {
+    extends GreatThanExpression<C, L>, GreatThanSupplierExpression<C, L> {
     /**
      * great than. 大于.
      *
@@ -186,7 +187,7 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T, N extends Number> L gt(SerializableToNumberFunction<T, N> name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return gt(name, value, (Predicate<N>) ignoreStrategy::test);
     }
 
@@ -364,7 +365,7 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L gt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return gt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -432,7 +433,7 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L gt(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return gt(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -447,7 +448,7 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L gt(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return gt(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 

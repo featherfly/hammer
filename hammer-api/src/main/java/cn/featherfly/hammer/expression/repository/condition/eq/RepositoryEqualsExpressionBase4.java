@@ -32,6 +32,7 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.eq.EqualsExpression4;
+import cn.featherfly.hammer.expression.condition.eq.EqualsSupplierExpression4;
 
 /**
  * RepositoryEqualsExpressionBase4.
@@ -41,7 +42,7 @@ import cn.featherfly.hammer.expression.condition.eq.EqualsExpression4;
  * @param <L> the generic type
  */
 public interface RepositoryEqualsExpressionBase4<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EqualsExpression4<C, L>, RepositoryEqualsExpressionBase3<C, L> {
+    extends RepositoryEqualsExpressionBase3<C, L>, EqualsExpression4<C, L>, EqualsSupplierExpression4<C, L> {
 
     /**
      * equals. 等于.
@@ -267,9 +268,9 @@ public interface RepositoryEqualsExpressionBase4<C extends ConditionExpression, 
      */
     @Override
     default L eq4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return eq4(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
     /**

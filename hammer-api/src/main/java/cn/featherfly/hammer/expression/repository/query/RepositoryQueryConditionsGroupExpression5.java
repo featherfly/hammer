@@ -7,6 +7,8 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression5;
 
@@ -20,9 +22,8 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
  * @param <Q> the generic type
  */
 public interface RepositoryQueryConditionsGroupExpression5<
-        C extends RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,
-        L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>,
-        S extends RepositoryQuerySortExpression5<Q>, Q extends QueryLimitExecutor>
-        extends RepositoryQueryConditionsExpression5<C, L, S, Q>, RepositoryConditionsGroupExpression5<C, L> {
-
+    C extends RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>, S extends RepositoryQuerySortExpression5<Q>,
+    Q extends QueryLimitExecutor>
+    extends RepositoryConditionsGroupExpression5<C, L>, ConditionConfigureExpression<C, QueryConditionConfig> {
 }

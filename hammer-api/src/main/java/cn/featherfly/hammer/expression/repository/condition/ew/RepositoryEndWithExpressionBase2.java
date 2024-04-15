@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ew.EndWithExpression2;
+import cn.featherfly.hammer.expression.condition.ew.EndWithSupplierExpression2;
 
 /**
  * repository end with expression2 .
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.expression.condition.ew.EndWithExpression2;
  * @param <L> the generic type
  */
 public interface RepositoryEndWithExpressionBase2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryEndWithExpression<C, L>, EndWithExpression2<C, L> {
+    extends RepositoryEndWithExpression<C, L>, EndWithExpression2<C, L>, EndWithSupplierExpression2<C, L> {
 
     /**
      * end with value. 以value结尾.
@@ -84,7 +85,7 @@ public interface RepositoryEndWithExpressionBase2<C extends ConditionExpression,
      * @return LogicExpression
      */
     default <T> L ew2(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ew2(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +100,7 @@ public interface RepositoryEndWithExpressionBase2<C extends ConditionExpression,
      * @return LogicExpression
      */
     default <T> L ew2(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ew2(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,9 +111,9 @@ public interface RepositoryEndWithExpressionBase2<C extends ConditionExpression,
 
     @Override
     default L ew2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ew2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 
 }

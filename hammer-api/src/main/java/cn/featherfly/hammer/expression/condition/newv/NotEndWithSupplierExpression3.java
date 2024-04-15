@@ -16,8 +16,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotEndWithSupplierExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotEndWithSupplierExpression2<C, L> {
+public interface NotEndWithSupplierExpression3<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not end with value. 不以value结尾.
@@ -69,7 +68,7 @@ public interface NotEndWithSupplierExpression3<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L new3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return new3(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 

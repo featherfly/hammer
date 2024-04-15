@@ -11,6 +11,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.nco.NotContainsExpression3;
+import cn.featherfly.hammer.expression.condition.nco.NotContainsSupplierExpression3;
 
 /**
  * RepositoryNotContainsExpressionBase3 .
@@ -20,7 +21,8 @@ import cn.featherfly.hammer.expression.condition.nco.NotContainsExpression3;
  * @param <L> the generic type
  */
 public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotContainsExpression3<C, L>, RepositoryNotContainsExpressionBase2<C, L> {
+    extends RepositoryNotContainsExpressionBase2<C, L>, NotContainsExpression3<C, L>,
+    NotContainsSupplierExpression3<C, L> {
 
     /**
      * not contains value. 不包含value.
@@ -84,7 +86,7 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
      * @return LogicExpression
      */
     default <T> L nco3(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nco3(name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
@@ -99,7 +101,7 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
      * @return LogicExpression
      */
     default <T> L nco3(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nco3(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -110,8 +112,8 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
 
     @Override
     default L nco3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nco3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+            ignoreStrategy);
     }
 }

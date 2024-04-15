@@ -17,8 +17,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface NotContainsExpression5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotContainsExpression4<C, L>, NotContainsSupplierExpression5<C, L> {
+public interface NotContainsExpression5<C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * not contains value. 不包含value.

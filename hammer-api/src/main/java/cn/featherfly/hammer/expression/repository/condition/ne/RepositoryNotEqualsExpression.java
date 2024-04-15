@@ -36,6 +36,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ne.NotEqualsExpression;
+import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression;
 
 /**
  * repository not equals expression .
@@ -45,7 +46,7 @@ import cn.featherfly.hammer.expression.condition.ne.NotEqualsExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotEqualsExpression<C, L> {
+    extends NotEqualsExpression<C, L>, NotEqualsSupplierExpression<C, L> {
 
     /**
      * not equals. 不等于.
@@ -254,7 +255,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L ne(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -269,7 +270,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L ne(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ne(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -470,7 +471,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      */
     @Override
     default L ne(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ne(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 

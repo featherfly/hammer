@@ -23,6 +23,7 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ni.NotInExpression;
+import cn.featherfly.hammer.expression.condition.ni.NotInSupplierExpression;
 
 /**
  * repository not in expression .
@@ -32,7 +33,7 @@ import cn.featherfly.hammer.expression.condition.ni.NotInExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotInExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NotInExpression<C, L> {
+    extends NotInExpression<C, L>, NotInSupplierExpression<C, L> {
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -199,7 +200,7 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @return LogicExpression
      */
     default <T> L ni(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ni(name, new String[] { value }, matchStrategy, v -> ignoreStrategy.test(v[0]));
     }
 
@@ -225,7 +226,7 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @return LogicExpression
      */
     default <T> L ni(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return ni(LambdaUtils.getLambdaPropertyName(name), values, matchStrategy, ignoreStrategy);
     }
 
@@ -271,7 +272,7 @@ public interface RepositoryNotInExpression<C extends ConditionExpression, L exte
      * @return LogicExpression
      */
     default <T, R extends Serializable> L ni(SerializableFunction<T, R> name, R[] values,
-            Predicate<R[]> ignoreStrategy) {
+        Predicate<R[]> ignoreStrategy) {
         return ni(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
     }
 

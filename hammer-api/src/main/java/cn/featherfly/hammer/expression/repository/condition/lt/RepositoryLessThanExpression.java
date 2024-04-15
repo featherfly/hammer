@@ -36,6 +36,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.lt.LessThanExpression;
+import cn.featherfly.hammer.expression.condition.lt.LessThanSupplierExpression;
 
 /**
  * repository less than expression .
@@ -45,7 +46,7 @@ import cn.featherfly.hammer.expression.condition.lt.LessThanExpression;
  * @param <L> the generic type
  */
 public interface RepositoryLessThanExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends LessThanExpression<C, L> {
+    extends LessThanExpression<C, L>, LessThanSupplierExpression<C, L> {
     /**
      * less than. 小于.
      *
@@ -186,7 +187,7 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <T, N extends Number> L lt(SerializableToNumberFunction<T, N> name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return lt(name, value, (Predicate<N>) ignoreStrategy::test);
     }
 
@@ -364,7 +365,7 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <T> L lt(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return lt(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
     }
 
@@ -432,7 +433,7 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <T> L lt(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return lt(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -447,7 +448,7 @@ public interface RepositoryLessThanExpression<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default <T> L lt(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lt(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
