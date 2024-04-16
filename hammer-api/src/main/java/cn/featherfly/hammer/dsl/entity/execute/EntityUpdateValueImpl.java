@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.dsl.entity.execute;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
@@ -44,9 +45,17 @@ public class EntityUpdateValueImpl<E, T> implements EntityUpdateValue<E, T> {
      * {@inheritDoc}
      */
     @Override
+    public EntityExecutableUpdate<E> set(T value, Predicate<T> ignoreStrategy) {
+        return update.set(property, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public EntityExecutableUpdate<E> set(Consumer<EntityUpdateValueExpression<E, T, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
+        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
         consumer.accept(this);
         return update;
     }
