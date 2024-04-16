@@ -1097,6 +1097,42 @@ public class HammerJdbcTest extends JdbcTestBase {
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName2);
 
+        // ----------------------------------------------------------------------------------------------------------------
+
+        final String setNewName3 = "name_updater_" + Randoms.getInt(90);
+        hammer.update(Role.class).property(Role::getName).set(setNewName3, (n) -> true) //
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), setNewName2);
+
+        hammer.update(Role.class).property(Role::getName).set(setNewName3, (n) -> false) //
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), setNewName3);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        final String setNewName4 = "";
+        hammer.update(Role.class).property(Role::getName).set(setNewName4, IgnoreStrategy.EMPTY) //
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), setNewName3);
+
+        hammer.update(Role.class).property(Role::getName).set(null, IgnoreStrategy.NULL) //
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), setNewName3);
+
+        hammer.update(Role.class).property(Role::getName).set(setNewName4, IgnoreStrategy.NONE) //
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
+        role = hammer.get(id, Role.class);
+        assertEquals(role.getName(), setNewName4);
+
     }
 
     //    @Test

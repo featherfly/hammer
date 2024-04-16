@@ -2,7 +2,9 @@
 package cn.featherfly.hammer.expression.entity.execute;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 
 /**
@@ -16,8 +18,8 @@ import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
  * @param <L> the generic type
  */
 public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecutableUpdateExpression<E, U, C, L>,
-        C extends EntityExecutableConditionGroupExpression<E, C, L, UpdateConditionConfig>,
-        L extends EntityExecutableConditionGroupLogicExpression<E, C, L, UpdateConditionConfig>> {
+    C extends EntityExecutableConditionGroupExpression<E, C, L, UpdateConditionConfig>,
+    L extends EntityExecutableConditionGroupLogicExpression<E, C, L, UpdateConditionConfig>> {
 
     /**
      * Sets the.
@@ -26,6 +28,26 @@ public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecu
      * @return the u
      */
     U set(T value);
+
+    /**
+     * Sets the.
+     *
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the u
+     */
+    default U set(T value, IgnoreStrategy ignoreStrategy) {
+        return set(value, ignoreStrategy::test);
+    }
+
+    /**
+     * Sets the.
+     *
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the u
+     */
+    U set(T value, Predicate<T> ignoreStrategy);
 
     /**
      * Sets the.
