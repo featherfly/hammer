@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.speedment.common.tuple.Tuple3;
 
+import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3FFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3FFF;
@@ -19,7 +20,9 @@ import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpre
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate3FFR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2FF;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched3FFF;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor3;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression3;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQuery3;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryExpression3FFF;
@@ -68,6 +71,16 @@ public class RepositorySqlQueryRelatedFetched2FF extends
     @Override
     public RepositoryQueryConditionsGroup3FFF where() {
         return new RepositorySqlQueryExpression3FFF(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic3FFF where(
+        ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression3FFF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
     /**

@@ -8,9 +8,6 @@
  */
 package cn.featherfly.hammer.expression.repository.condition.field;
 
-import cn.featherfly.common.repository.AliasRepository;
-import cn.featherfly.common.repository.FieldAware;
-import cn.featherfly.common.repository.RepositoryAwareField;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.field.LocalDateFieldExpression;
@@ -23,6 +20,6 @@ import cn.featherfly.hammer.expression.condition.field.LocalDateFieldExpression;
  * @param <L> the generic type
  */
 public interface RepositoryLocalDateFieldExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends LocalDateFieldExpression<C, L>, FieldAware<RepositoryAwareField<AliasRepository>> {
+    extends LocalDateFieldExpression<C, L> {
 
 }

@@ -60,7 +60,7 @@ public class EqualsEntityExpressionImpl<T, C extends ConditionExpression, L exte
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new equals entity expression impl.
@@ -71,7 +71,7 @@ public class EqualsEntityExpressionImpl<T, C extends ConditionExpression, L exte
      * @param queryRelation the query relation
      */
     public EqualsEntityExpressionImpl(int index, MulitiEqualsExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

@@ -5,16 +5,16 @@ import java.util.List;
 
 import com.speedment.common.tuple.Tuple6;
 
-import cn.featherfly.common.lang.Console;
-import cn.featherfly.common.lang.Timer;
+import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup6FFFFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic6FFFFFF;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor6;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression6;
-import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 
@@ -56,21 +56,33 @@ public abstract class AbstractRepositorySqlQuery6FFFFFF<R extends RepositoryQuer
      */
     @Override
     public RepositoryQueryConditionsGroup6FFFFFF where() {
-        // YUFEI_TEST 测试代码，后续删除, RepositorySqlQueryExpression6FFFFFF实例化太慢
-        Timer timer = Timer.start();
-        if (Constants.DEBUG) {
-            Console.log("create RepositorySqlQueryExpression6FFFFFF start {}", System.currentTimeMillis());
-        }
-        RepositoryQueryConditionsGroup6FFFFFF where = new RepositorySqlQueryExpression6FFFFFF(queryRelation,
-            sqlPageFactory);
-        if (Constants.DEBUG) {
-            Console.log("where use time {}", timer.stop());
-            Console.log("create RepositorySqlQueryExpression6FFFFFF end {}", System.currentTimeMillis());
+        return new RepositorySqlQueryExpression6FFFFFF(queryRelation, sqlPageFactory);
+        //        // YUFEI_TEST 测试代码，后续删除, RepositorySqlQueryExpression6FFFFFF实例化太慢
+        //        Timer timer = Timer.start();
+        //        if (Constants.DEBUG) {
+        //            Console.log("create RepositorySqlQueryExpression6FFFFFF start {}", System.currentTimeMillis());
+        //        }
+        //        RepositoryQueryConditionsGroup6FFFFFF where = new RepositorySqlQueryExpression6FFFFFF(queryRelation,
+        //            sqlPageFactory);
+        //        if (Constants.DEBUG) {
+        //            Console.log("where use time {}", timer.stop());
+        //            Console.log("create RepositorySqlQueryExpression6FFFFFF end {}", System.currentTimeMillis());
+        //
+        //            Console.log("{} end at time {}", this.getClass().getName(), System.currentTimeMillis());
+        //        }
+        //        return where;
+    }
 
-            Console.log("{} end at time {}", this.getClass().getName(), System.currentTimeMillis());
-        }
-
-        return where;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic6FFFFFF where(
+        SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression6FFFFFF(queryRelation, sqlPageFactory),
+            repositoriesCondtionFuntion);
     }
 
     /**

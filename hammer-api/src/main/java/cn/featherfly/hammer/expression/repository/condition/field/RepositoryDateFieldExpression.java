@@ -10,9 +10,6 @@ package cn.featherfly.hammer.expression.repository.condition.field;
 
 import java.util.Date;
 
-import cn.featherfly.common.repository.AliasRepository;
-import cn.featherfly.common.repository.FieldAware;
-import cn.featherfly.common.repository.RepositoryAwareField;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.field.DateFieldExpression;
@@ -26,7 +23,6 @@ import cn.featherfly.hammer.expression.condition.field.DateFieldExpression;
  * @param <L> the generic type
  */
 public interface RepositoryDateFieldExpression<D extends Date, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends DateFieldExpression<D, C, L>, FieldAware<RepositoryAwareField<AliasRepository>> {
+    L extends LogicExpression<C, L>> extends DateFieldExpression<D, C, L> {
 
 }

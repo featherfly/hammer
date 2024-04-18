@@ -13,7 +13,6 @@ import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.AbstractMulitiRepositorySqlConditionsGroupExpressionBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
 
@@ -28,10 +27,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
  * @param <B>  the generic type
  */
 public class InternalMulitiRepositoryConditionImpl<C2 extends ConditionConfig<C2>,
-    S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
-    AbstractMulitiRepositorySqlConditionsGroupExpressionBase<InternalMulitiRepositoryConditionImpl<C2, S, B>,
-        InternalMulitiRepositoryConditionImpl<C2, S, B>, Tuple1<Integer>, C2, S, B>
-    implements InternalMulitiCondition<InternalMulitiRepositoryConditionImpl<C2, S, B>> {
+    S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
+    extends AbstractMulitiRepositorySqlConditionsGroupExpressionBase<InternalMulitiRepositoryConditionImpl<C2, S, B>,
+        InternalMulitiRepositoryConditionImpl<C2, S, B>, Tuple1<Integer>, C2, S, B> {
 
     /**
      * Instantiates a new internal muliti repository condition impl.

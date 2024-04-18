@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.speedment.common.tuple.Tuple4;
 
+import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup4FFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic4FFFF;
@@ -19,7 +20,9 @@ import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpre
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate4FFFR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched3FFF;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched4FFFF;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor4;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression4;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQuery4;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryExpression4FFFF;
@@ -68,6 +71,16 @@ public class RepositorySqlQueryRelatedFetched3FFF extends
     @Override
     public RepositoryQueryConditionsGroup4FFFF where() {
         return new RepositorySqlQueryExpression4FFFF(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic4FFFF where(
+        FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression4FFFF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
     /**

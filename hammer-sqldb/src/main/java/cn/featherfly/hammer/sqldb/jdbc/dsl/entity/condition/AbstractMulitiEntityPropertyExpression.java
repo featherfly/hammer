@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -22,6 +23,7 @@ import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
@@ -34,7 +36,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiEntityPropertyExpression<E, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> implements Expression {
+    L extends LogicExpression<C, L>> implements Expression {
 
     /** The index. */
     protected AtomicInteger index;
@@ -61,8 +63,8 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         this(index, Lang.list(name), expression, factory, queryRelation);
     }
 
@@ -76,8 +78,8 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super();
         this.index = index;
         this.expression = expression;
@@ -90,12 +92,21 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
         return expression.eq(index, getPropertyMapping(field), field, expression.getIgnoreStrategy());
     }
 
+    public L eq(FieldExpression expr) {
+        return expression.eq(index, getPropertyMapping(expr), expr, expression.getIgnoreStrategy());
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String expression() {
-        return expression.expression();
+        String expr = expression.expression();
+        if (Lang.isEmpty(expr) && !propertyList.isEmpty()) {
+            return new ColumnElement(expression.getJdbc().getDialect(),
+                getPropertyMapping(this).getRepositoryFieldName(), expression.getAlias(index.intValue())).toSql();
+        }
+        return expr;
     }
 
     /**
@@ -112,7 +123,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
         } else if (propertyList.size() == 2) {
             ClassMapping<?, JdbcPropertyMapping> classMapping = expression.getClassMapping(index);
             JdbcPropertyMapping pm = classMapping
-                    .getPropertyMapping(LambdaUtils.getLambdaPropertyName(propertyList.get(0)));
+                .getPropertyMapping(LambdaUtils.getLambdaPropertyName(propertyList.get(0)));
             if (value == null) {
                 // ENHANCE 这个查询值为null则直接返回对象映射的逻辑后续考虑是否合理
                 return pm;
@@ -124,7 +135,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
                 JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
                 if (spm == null) {
                     throw new SqldbHammerException(Strings.format("no property mapping found for {0}.{1}.{2}",
-                            classMapping.getType().getSimpleName(), pm.getPropertyFullName(), pn));
+                        classMapping.getType().getSimpleName(), pm.getPropertyFullName(), pn));
                 }
                 return spm;
             } else if (Mode.MANY_TO_ONE == pm.getMode() || Mode.MANY_TO_ONE == pm.getMode()) {
@@ -144,8 +155,8 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
                         //                        index++;
                         return spm;
                     } else {
-                        throw new SqldbHammerException(Strings.format("no property mapping found for {0}.{1}",
-                                cm.getType().getSimpleName(), pn));
+                        throw new SqldbHammerException(
+                            Strings.format("no property mapping found for {0}.{1}", cm.getType().getSimpleName(), pn));
                     }
                 }
             } else if (pm.getMode() == Mode.ONE_TO_MANY) {

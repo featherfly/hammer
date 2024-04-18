@@ -13,7 +13,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EnumFieldExpression<E extends Enum<E>, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends FieldEqualsExpression<C, L, E>, FieldNotEqualsExpression<C, L, E>, FieldInExpression<C, L, E>,
-        FieldNotInExpression<C, L, E>, FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L> {
+    extends FieldEqualsExpression<C, L, E>, FieldNotEqualsExpression<C, L, E>, FieldInExpression<C, L, E>,
+    FieldNotInExpression<C, L, E>, FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L>, FieldExpression {
 
 }

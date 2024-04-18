@@ -9,6 +9,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 import com.speedment.common.tuple.Tuple2;
 
@@ -19,7 +20,9 @@ import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpre
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2FR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2FF;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQuery2;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryExpression2FF;
@@ -68,6 +71,15 @@ public class RepositorySqlQueryRelatedFetched1F extends
     @Override
     public RepositoryQueryConditionsGroup2FF where() {
         return new RepositorySqlQueryExpression2FF(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic2FF where(BiFunction<RepositoryFieldOnlyExpression,
+        RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression2FF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
     /**

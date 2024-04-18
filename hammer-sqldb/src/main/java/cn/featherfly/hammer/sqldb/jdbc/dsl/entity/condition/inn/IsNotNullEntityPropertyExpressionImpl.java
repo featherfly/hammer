@@ -44,7 +44,7 @@ public class IsNotNullEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     public IsNotNullEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -59,7 +59,7 @@ public class IsNotNullEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     public IsNotNullEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -74,7 +74,7 @@ public class IsNotNullEntityPropertyExpressionImpl<V, C extends ConditionExpress
      */
     public IsNotNullEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 

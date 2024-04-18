@@ -70,7 +70,7 @@ public class GreatThanEntityExpressionImpl<T, C extends ConditionExpression, L e
     private JdbcMappingFactory factory;
 
     /** The query relation. */
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new great than entity expression impl.
@@ -81,7 +81,7 @@ public class GreatThanEntityExpressionImpl<T, C extends ConditionExpression, L e
      * @param queryRelation the query relation
      */
     public GreatThanEntityExpressionImpl(int index, MulitiGreatThanExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

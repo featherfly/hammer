@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -71,21 +73,12 @@ public class DslTest {
     //        query.find("user").relate("user_info").on("user_id").where().eq("id", 1).intValue();
     //    }
 
-    public void testEntityQuery() {
-        query.find(User.class).list();
-        query.find(User.class).count();
-        query.find(User.class).limit(10).list();
-        query.find(User.class).limit(1).single();
-        //        query.find(User.class).where().lt("age", 18).count();
-
-        query.find(User.class).sort();
-
+    public void entityQueryFetchOne() {
         LocalDateTime localDateTime = null;
         LocalDate localDate = null;
         LocalTime localTime = null;
         Date date = null;
-
-        //        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
+        //      localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
         //        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).value();
         //        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).single();
@@ -120,6 +113,26 @@ public class DslTest {
         localTimeList = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).valueList();
         dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).valueList();
         //        dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).list();
+    }
+
+    public void entityQueryFetchMoreThanOne() {
+        Object[] values = null;
+        Tuple2<LocalDateTime, Integer> valuesTuple = null;
+
+        // IMPLSOON value array
+        //        values = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).values();
+        // IMPLSOON value tuple
+        //        valuesTuple = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).tuple();
+    }
+
+    public void testEntityQuery() {
+        query.find(User.class).list();
+        query.find(User.class).count();
+        query.find(User.class).limit(10).list();
+        query.find(User.class).limit(1).single();
+        //        query.find(User.class).where().lt("age", 18).count();
+
+        query.find(User.class).sort();
 
         query.find(User.class).where().eq(User::getAge, 5).count();
 

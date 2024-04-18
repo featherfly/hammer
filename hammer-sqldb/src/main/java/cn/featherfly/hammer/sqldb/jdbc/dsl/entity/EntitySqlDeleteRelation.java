@@ -1,12 +1,17 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
+import java.util.function.Supplier;
+
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
+import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBasicBuilder2;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.NotImplementedException;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -28,6 +33,24 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     public EntitySqlDeleteRelation(Jdbc jdbc, AliasManager aliasManager, DeleteConfig deleteConfig) {
         super(jdbc, aliasManager, deleteConfig);
         //        enableTableAlias = false;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+    /**
+     * Join.
+     *
+     * @param joinClassMapping the join class mapping
+     * @param onExpression     the on expression
+     * @return the EntitySqlDeleteRelation
+     */
+    @Override
+    public <T> EntitySqlDeleteRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
+        AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
+        addFilterable(joinClassMapping);
+        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+        deleteBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), joinClassMapping.getRepositoryName(),
+            jerm.getTableAlias(), onExpression.get().expression()));
+        return this;
     }
 
     // ****************************************************************************************************************

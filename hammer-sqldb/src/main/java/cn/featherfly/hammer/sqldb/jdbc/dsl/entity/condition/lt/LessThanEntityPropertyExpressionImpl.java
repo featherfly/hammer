@@ -96,7 +96,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      */
     public LessThanEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -111,7 +111,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      */
     public LessThanEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -126,7 +126,7 @@ public class LessThanEntityPropertyExpressionImpl<V, C extends ConditionExpressi
      */
     public LessThanEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 

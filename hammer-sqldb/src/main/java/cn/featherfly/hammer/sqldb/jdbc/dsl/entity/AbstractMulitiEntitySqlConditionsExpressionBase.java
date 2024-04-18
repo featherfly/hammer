@@ -103,6 +103,7 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPro
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression;
+import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.AbstractMulitiEntityConditionExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityDatePropertyExpressionImpl;
@@ -5191,4 +5192,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<T, ER exte
     // property
     // ********************************************************************
 
+    /**
+     * Gets the entity relation.
+     *
+     * @return the entity relation
+     */
+    public ER getEntityRelation() {
+        return entityRelation;
+    }
+
+    @Override
+    public Jdbc getJdbc() {
+        return entityRelation.getJdbc();
+    }
 }

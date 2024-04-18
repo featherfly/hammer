@@ -9,7 +9,9 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression1;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
+import cn.featherfly.hammer.dsl.entity.execute.EntityDelete2;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -18,6 +20,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlDeleteRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn1;
 
 /**
  * entity sql delete .
@@ -67,6 +70,18 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
         // addFilterable 初始化builder
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <J> EntityOnExpression1<E, J, EntityDelete2<E, J>> join(Class<J> joinType) {
+        return new EntitySqlOn1<>(joinType, new SqlEntityDelete2<>(factory, relation), factory, relation);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -83,10 +98,8 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
         Function<EntityConditionsGroupExpression<E, ?, ?>, LogicExpression<?, ?>> function) {
         SqlEntityDeleteExpression<E> sqlDeleteExpression = createSqlDeleteExpression();
         if (function != null) {
-            if (function != null) {
-                sqlDeleteExpression
-                    .addCondition(function.apply(new EntitySqlConditionsGroupExpression<>(0, factory, relation)));
-            }
+            sqlDeleteExpression
+                .addCondition(function.apply(new EntitySqlConditionsGroupExpression<>(0, factory, relation)));
         }
         return sqlDeleteExpression;
     }
@@ -110,4 +123,5 @@ public class SqlEntityDelete<E> implements EntityDelete<E> {
         }
         return this;
     }
+
 }

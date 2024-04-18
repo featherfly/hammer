@@ -1,13 +1,13 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field;
 
-import cn.featherfly.common.repository.AliasRepository;
-import cn.featherfly.common.repository.FieldAware;
-import cn.featherfly.common.repository.RepositoryAwareField;
-import cn.featherfly.common.repository.RepositoryAwareFieldImpl;
-import cn.featherfly.common.repository.SimpleAliasRepository;
+import cn.featherfly.common.db.builder.model.ColumnElement;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpression;
 
 /**
@@ -18,12 +18,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public abstract class AbstractRepositoryFieldExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        implements FieldAware<RepositoryAwareField<AliasRepository>> {
+    implements Expression {
 
     /** The name. */
     protected final String name;
-
-    protected final RepositoryAwareField<AliasRepository> field;
 
     /** The expression. */
     protected final AbstractSqlConditionsExpression<C, L, ?> expression;
@@ -38,12 +36,25 @@ public abstract class AbstractRepositoryFieldExpression<C extends ConditionExpre
     protected AbstractRepositoryFieldExpression(String name, AbstractSqlConditionsExpression<C, L, ?> expression) {
         this.name = name;
         this.expression = expression;
-        field = new RepositoryAwareFieldImpl<>(name, new SimpleAliasRepository(null, expression.getRepositoryAlias()));
     }
 
+    public L eq(Field field) {
+        return expression.eq(name, field);
+    }
+
+    public L eq(FieldExpression expression) {
+        return this.expression.eq(name, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public RepositoryAwareField<AliasRepository> field() {
-        return field;
+    public String expression() {
+        String expr = expression.expression();
+        if (Lang.isEmpty(expr) && name != null) {
+            return new ColumnElement(expression.getDialect(), name, expression.getRepositoryAlias()).toSql();
+        }
+        return expr;
     }
-
 }

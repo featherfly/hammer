@@ -16,7 +16,6 @@ import static org.testng.Assert.assertNull;
 import java.io.Serializable;
 import java.util.List;
 
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.model.SimpleTable;
@@ -25,27 +24,17 @@ import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.common.repository.SimpleRepository;
 import cn.featherfly.hammer.config.dsl.EmptyConditionStrategy;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
-import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
 /**
  * The Class SqlDeleterTest.
  *
  * @author zhongj
  */
-public class SqlDeleterTest extends HammerJdbcTestBase {
-
-    /** The deleter. */
-    SqlDeleter deleter;
-
-    /**
-     * Setup.
-     */
-    @BeforeClass
-    void setup() {
-        deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
-    }
+public class SqlDeleterTest extends AbstractDeleterTest {
 
     //    /**
     //     * Test exception.
@@ -56,7 +45,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     //    }
 
     @Test
-    public void testDelete() {
+    public void repositoryDelete() {
         Role role = role();
 
         hammer.save(role);
@@ -74,7 +63,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDelete1() {
+    public void repositoryDelete1() {
         Role role = role();
 
         hammer.save(role);
@@ -95,7 +84,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDelete2() {
+    public void repositoryDelete2() {
         Role role = role();
 
         hammer.save(role);
@@ -113,7 +102,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDelete3() {
+    public void repositoryDelete3() {
         Role role = role();
 
         hammer.save(role);
@@ -132,7 +121,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDeleteNoCondition_default() {
+    public void repositoryDeleteNoCondition_default() {
         int result = deleter.delete("user_role")
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
                 .setEmptyConditionStrategy(EmptyConditionStrategy.NON_EXECUTION)) //
@@ -156,7 +145,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testDeleteNoCondition_exeception() {
+    public void repositoryDeleteNoCondition_exeception() {
         deleter.delete("user_role")
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
                 .setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION))
@@ -164,14 +153,14 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testDeleteNoCondition_exeception2() {
+    public void repositoryDeleteNoCondition_exeception2() {
         deleter.delete("user_role").where().configure(
             c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY).setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION))
             .eq("user_id", (Serializable) null).execute();
     }
 
     @Test
-    public void testDeleteNoCondition_execute() {
+    public void repositoryDeleteNoCondition_execute() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
         int result = deleter.delete("user_role").where().configure(
@@ -191,7 +180,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDeleteEntity() {
+    public void entityDelete() {
         Role role = role();
 
         hammer.save(role);
@@ -209,7 +198,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDeleteEntity2() {
+    public void entityDelete2() {
         final Role role = role();
 
         hammer.save(role);
@@ -227,7 +216,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDeleteEntity3() {
+    public void entityDelete3() {
         Role role = role();
 
         hammer.save(role);
@@ -246,7 +235,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testDeleteEntityNoCondition_exception() {
+    public void entityDeleteNoCondition_exception() {
         deleter.delete(UserRole.class)
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
                 .setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION))
@@ -255,7 +244,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testDeleteEntityNoCondition_exception2() {
+    public void entityDeleteNoCondition_exception2() {
         deleter.delete(UserRole.class).where()
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
                 .setEmptyConditionStrategy(EmptyConditionStrategy.EXCEPTION))
@@ -264,7 +253,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDeleteEntityNoCondition_default() {
+    public void entityDeleteNoCondition_default() {
         //  没有参数，返回的0
         int result = deleter.delete(UserRole.class)
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)
@@ -292,7 +281,7 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
     }
 
     @Test
-    public void testDeleteEntityNoCondition_execute() {
+    public void entityDeleteNoCondition_execute() {
         List<UserRole> urs = hammer.query(UserRole.class).list();
 
         int result = deleter.delete(UserRole.class)
@@ -312,5 +301,34 @@ public class SqlDeleterTest extends HammerJdbcTestBase {
         assertEquals(result, urs.size());
 
         hammer.save(urs);
+    }
+
+    @Test
+    public void entityDeleteJoin() {
+        Integer uid = 10;
+        User user = hammer.get(uid, User.class);
+
+        assertEquals(user.getId(), uid);
+
+        UserInfo2 ui = userInfo2();
+        ui.setUserId(uid);
+        hammer.save(ui);
+
+        UserInfo2 load = hammer.get(ui);
+
+        assertEquals(load.getId(), ui.getId());
+        assertEquals(load.getName(), ui.getName());
+
+        int result = deleter.delete(UserInfo2.class) //
+            .join(User.class).on((e1, e2) -> //
+            e1.property(UserInfo2::getUserId) //
+                .eq(e2.property(User::getId))) //
+            .where() //
+            .eq2(user::getUsername) //
+            .execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(ui);
+        assertNull(load);
     }
 }

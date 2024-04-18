@@ -6,7 +6,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -21,7 +20,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiRepositoryFieldExpression<C, L> implements RepositoryStringFieldExpression<C, L> {
+    extends AbstractMulitiRepositoryFieldExpression<C, L> implements RepositoryStringFieldExpression<C, L> {
 
     /**
      * Instantiates a new simple string property expression.
@@ -31,7 +30,7 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
      * @param expression the expression
      */
     public StringFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
-            InternalMulitiCondition<L> expression) {
+        InternalMulitiCondition<L> expression) {
         super(index, name, expression);
     }
 
@@ -44,14 +43,6 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
      */
     public StringFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {
         super(index, name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(index, name, field, expression.getIgnoreStrategy());
     }
 
     /**
@@ -84,14 +75,6 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
     @Override
     public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return expression.eq(index, name, value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

@@ -63,7 +63,7 @@ public class EntityPropertyExpressionImpl<E, C extends ConditionExpression, L ex
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new entity property function impl.
@@ -73,7 +73,7 @@ public class EntityPropertyExpressionImpl<E, C extends ConditionExpression, L ex
      * @param factory    the factory
      */
     public EntityPropertyExpressionImpl(int index, InternalMulitiEntityCondition<L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         this.index = index;
         this.expression = expression;
         this.factory = factory;

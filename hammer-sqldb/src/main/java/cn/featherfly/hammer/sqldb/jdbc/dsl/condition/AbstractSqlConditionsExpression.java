@@ -48,6 +48,7 @@ import cn.featherfly.hammer.expression.condition.ba.BetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.ContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.EqualsExpression;
 import cn.featherfly.hammer.expression.condition.ew.EndWithExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 import cn.featherfly.hammer.expression.condition.ge.GreatEqualsExpression;
 import cn.featherfly.hammer.expression.condition.gt.GreatThanExpression;
 import cn.featherfly.hammer.expression.condition.in.InExpression;
@@ -108,6 +109,15 @@ public abstract class AbstractSqlConditionsExpression<C extends ConditionExpress
      */
     @Override
     public L eq(String name, Field value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
+            repositoryAlias, getIgnoreStrategy()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String name, FieldExpression value) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
             repositoryAlias, getIgnoreStrategy()));
     }

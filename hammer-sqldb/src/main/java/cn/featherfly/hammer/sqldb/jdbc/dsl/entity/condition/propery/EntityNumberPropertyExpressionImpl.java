@@ -28,9 +28,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.InternalMulitiEntity
  * @param <L> the generic type
  */
 public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityGenericPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
-        implements EntityNumberPropertyExpression<E, N, C, L> {
+    L extends LogicExpression<C, L>>
+    extends AbstractMulitiEntityGenericPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
+    implements EntityNumberPropertyExpression<E, N, C, L> {
 
     /**
      * Instantiates a new entity number property expression impl.
@@ -42,8 +42,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -57,8 +57,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -72,8 +72,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(int index, SerializableFunction<E, N> name,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -284,6 +284,14 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
     public L inn(Boolean value) {
         return expression.inn(index, getPropertyMapping(value), value);
     }
+
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L eq(FieldExpression expr) {
+    //        return expression.eq(index, getPropertyMapping(expr), expr, expression.getIgnoreStrategy());
+    //    }
 
     /**
      * {@inheritDoc}

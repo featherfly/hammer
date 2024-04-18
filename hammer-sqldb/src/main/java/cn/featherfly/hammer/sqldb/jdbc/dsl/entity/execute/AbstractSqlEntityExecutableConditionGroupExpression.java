@@ -6,7 +6,6 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractEntitySqlExecutableConditionGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
@@ -19,9 +18,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  * @param <C> the generic type
  */
 public abstract class AbstractSqlEntityExecutableConditionGroupExpression<T, R extends EntitySqlRelation<R, B>,
-        B extends SqlBuilder, C extends ExecutableConditionConfig<C>> extends
-        AbstractEntitySqlExecutableConditionGroupExpression<T, R, B, EntityExecutableConditionGroupLogic<T, C>, C>
-        implements EntityExecutableConditionGroup<T, C>, EntityExecutableConditionGroupLogic<T, C> {
+    B extends SqlBuilder, C extends ExecutableConditionConfig<C>>
+    extends AbstractEntitySqlExecutableConditionGroupExpression<T, R, B, EntityExecutableConditionGroupLogic<T, C>, C>
+    implements EntityExecutableConditionGroup<T, C>, EntityExecutableConditionGroupLogic<T, C> {
 
     /**
      * Instantiates a new sql entity condition group expression.
@@ -31,7 +30,7 @@ public abstract class AbstractSqlEntityExecutableConditionGroupExpression<T, R e
      * @param entityRelation the entity relation
      */
     protected AbstractSqlEntityExecutableConditionGroupExpression(EntityExecutableConditionGroupLogic<T, C> parent,
-            JdbcMappingFactory factory, R entityRelation) {
+        JdbcMappingFactory factory, R entityRelation) {
         // 删除，和更新不需要分页
         super(parent, factory, entityRelation);
     }

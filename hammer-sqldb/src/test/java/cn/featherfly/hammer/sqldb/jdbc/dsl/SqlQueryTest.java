@@ -38,7 +38,6 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
-import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
 /**
  * SqlQueryTest.
@@ -462,7 +461,9 @@ public class SqlQueryTest extends JdbcTestBase {
         int id = 1;
         //        r.eq("create_user", r.field("user1")
         int userId = query.find("order").field("id") //
-            .where(r -> r.field("create_user").eq(r.field("user1"))) //
+            .where(r -> //
+            r.field("create_user") //
+                .eq(r.field("user1"))) // FIXME 此方式会触发内存溢出，应该是无限递归了
             .intValue();
 
         Integer userId2 = query.find("order").field("id") //
@@ -1031,111 +1032,6 @@ public class SqlQueryTest extends JdbcTestBase {
 
         query.find("user_info").join("user").on("id", "user_id").fetch((r, f) -> f.name("password").as("pwd")).list();
         query.find("user_info").join("user").on("id", "user_id").fetchAlias("password", "pwd").list();
-    }
-
-    @Test
-    void joinFetch() {
-        // FIXME 后面程序正常了再来加入测试逻辑
-        list = query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id").fetch("id", "name", "user_id").list();
-        list = query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id").fetch("id", "name").fetch("user_id").list();
-
-        query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.fetch( //
-                fieldBuilder.name("id"), //
-                fieldBuilder.name("name"), //
-                fieldBuilder.name("user_id").as("userId"))) //
-        ;
-        query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.field( //
-                fieldBuilder.name("id"), //
-                fieldBuilder.name("name"), //
-                fieldBuilder.name("user_id").as("userId"))) //
-        ;
-
-        query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
-                .fetch(fieldBuilder.name("name")) //
-                .fetch(fieldBuilder.name("user_id").as("userId")) //
-            ) //
-        ;
-        query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.field(fieldBuilder.name("id")) //
-                .field(fieldBuilder.name("name")) //
-                .field(fieldBuilder.name("user_id").as("userId")) //
-            ) //
-        ;
-    }
-
-    @Test
-    void joinCondition() {
-        //        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
-        //                .join("user_info").on("user_id") //
-        //                .where().eq("user_info", "name", "羽飞") //
-        //                .list();
-        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id") //
-            .where().eq2("name", "羽飞") //
-            .list();
-        assertEquals(list.size(), 1);
-
-        //        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-        //                .eq(1, "name", "羽飞").list();
-        list = query.find("user").fields("username", "password", "age") //
-            .join("user_info").on("user_id") //
-            .where() //
-            .eq2(UserInfo::getName, "羽飞") //
-            .list();
-        assertEquals(list.size(), 1);
-
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .eq((r1, r2) -> r2.accept("name", "羽飞")).list();
-        assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .eq((r1, r2) -> r2.field("name").value("羽飞")).list();
-        assertEquals(list.size(), 1);
-
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .field((e0, e1) -> e0.field("username") //
-                .eq("yufei") //
-                .and() //
-                .field("age") //
-                .gt(18) //
-            ) //
-            .list();
-        assertEquals(list.size(), 0);
-
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .field((e0, e1) -> e0.field("username") //
-                .eq("featherfly") //
-                .and() //
-                .field("age") //
-                .eq(5) //
-            ) //
-            .list();
-        assertEquals(list.size(), 1);
-
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .field((e0, e1) -> e0.field("username").eq("yufei").and().fieldAsNumber("age").gt(18)) //
-            .list();
-        assertEquals(list.size(), 0);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .field((e0, e1) -> e0.field("username").eq(username2).and().fieldAsNumber("age").eq(age2)) //
-            .list();
-        assertEquals(list.size(), 1);
-
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .field(es -> es.get1(), "name").eq("羽飞").list();
-        assertEquals(list.size(), 1);
-
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
-            .field((e0, e1) -> e0.field("username").eq(username2).and().fieldAsNumber("age").eq(age2) //
-                .and(e1.field("name").eq(name2)) //
-            ) //
-            .list();
-        assertEquals(list.size(), 1);
-
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)

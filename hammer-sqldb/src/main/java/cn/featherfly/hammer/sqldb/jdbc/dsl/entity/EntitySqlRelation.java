@@ -14,6 +14,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.speedment.common.tuple.MutableTuples;
 import com.speedment.common.tuple.mutable.MutableTuple9;
@@ -26,6 +27,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlRelation;
@@ -245,6 +247,16 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
         }
         return (R) this;
     }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex    the source index
+     * @param joinRepository the join repository
+     * @return the r
+     */
+    public abstract <T> EntitySqlRelation<?, ?> join(JdbcClassMapping<T> joinClassMapping,
+        Supplier<Expression> onExpression);
 
     /**
      * Join 0.

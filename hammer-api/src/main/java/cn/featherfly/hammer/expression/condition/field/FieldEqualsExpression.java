@@ -4,7 +4,6 @@ package cn.featherfly.hammer.expression.condition.field;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.common.repository.FieldAware;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -18,7 +17,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <V> the value type
  */
 public interface FieldEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>, V>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
      * equals. 等于.
@@ -59,11 +58,8 @@ public interface FieldEqualsExpression<C extends ConditionExpression, L extends 
     /**
      * equals. 等于.
      *
-     * @param <F>        the generic type
-     * @param fieldAware the field aware
+     * @param field the field
      * @return LogicExpression
      */
-    default <F extends Field> L eq(FieldAware<F> fieldAware) {
-        return eq(fieldAware.field());
-    }
+    L eq(FieldExpression expression);
 }

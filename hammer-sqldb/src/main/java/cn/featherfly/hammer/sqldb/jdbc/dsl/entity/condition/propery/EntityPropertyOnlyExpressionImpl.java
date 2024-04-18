@@ -9,7 +9,10 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery;
 
+import java.util.function.Function;
+
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyLogicExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
@@ -24,8 +27,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.InternalMulitiEntity
  * @param <L> the generic type
  */
 public class EntityPropertyOnlyExpressionImpl<E>
-        extends EntityPropertyExpressionImpl<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>
-        implements EntityPropertyOnlyExpression<E> {
+    extends EntityPropertyExpressionImpl<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>
+    implements EntityPropertyOnlyExpression<E> {
 
     /**
      * Instantiates a new entity property function impl.
@@ -37,8 +40,27 @@ public class EntityPropertyOnlyExpressionImpl<E>
      */
     @SuppressWarnings("unchecked")
     public EntityPropertyOnlyExpressionImpl(int index, InternalMulitiEntityCondition<?> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, (InternalMulitiEntityCondition<EntityPropertyOnlyLogicExpression<E>>) expression, factory,
-                queryRelation);
+            queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityPropertyOnlyExpression<E> group() {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityPropertyOnlyLogicExpression<E> group(
+        Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> group) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 }

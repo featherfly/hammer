@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition.property;
 
+import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 
 /**
@@ -19,5 +20,6 @@ import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression
  * @param <E> the element type
  */
 public interface EntityPropertyOnlyExpression<E>
-        extends EntityPropertyExpression<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> {
+    extends EntityPropertyExpression<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>,
+    GroupExpression<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> {
 }

@@ -68,7 +68,7 @@ public class GreatEqualsEntityExpressionImpl<T, C extends ConditionExpression, L
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new great equals entity expression impl.
@@ -79,7 +79,7 @@ public class GreatEqualsEntityExpressionImpl<T, C extends ConditionExpression, L
      * @param queryRelation the query relation
      */
     public GreatEqualsEntityExpressionImpl(int index, MulitiGreatEqualsExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

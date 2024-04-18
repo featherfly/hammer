@@ -3,13 +3,13 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import cn.featherfly.common.repository.AliasRepository;
-import cn.featherfly.common.repository.FieldAware;
-import cn.featherfly.common.repository.RepositoryAwareField;
-import cn.featherfly.common.repository.RepositoryAwareFieldImpl;
-import cn.featherfly.common.repository.SimpleAliasRepository;
+import cn.featherfly.common.db.builder.model.ColumnElement;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
 
 /**
@@ -20,7 +20,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiRepositoryFieldExpression<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> implements FieldAware<RepositoryAwareField<AliasRepository>> {
+    L extends LogicExpression<C, L>> implements Expression {
 
     /** The index. */
     protected AtomicInteger index;
@@ -30,8 +30,6 @@ public abstract class AbstractMulitiRepositoryFieldExpression<C extends Conditio
 
     /** The expression. */
     protected InternalMulitiCondition<L> expression;
-
-    protected final RepositoryAwareField<AliasRepository> field;
 
     //    /** The repository relation. */
     //    protected RepositorySqlRelation<?, ?> repositoryRelation;
@@ -55,19 +53,30 @@ public abstract class AbstractMulitiRepositoryFieldExpression<C extends Conditio
      * @param expression the expression
      */
     protected AbstractMulitiRepositoryFieldExpression(AtomicInteger index, String name,
-            InternalMulitiCondition<L> expression) {
+        InternalMulitiCondition<L> expression) {
         this.index = index;
         this.name = name;
         this.expression = expression;
-        field = new RepositoryAwareFieldImpl<>(name,
-                new SimpleAliasRepository(null, expression.getAlias(index.intValue())));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public RepositoryAwareField<AliasRepository> field() {
-        return field;
+    public String expression() {
+        String expr = expression.expression();
+        if (Lang.isEmpty(expr) && name != null) {
+            return new ColumnElement(expression.getJdbc().getDialect(), name, expression.getAlias(index.intValue()))
+                .toSql();
+        }
+        return expr;
+    }
+
+    public L eq(Field field) {
+        return expression.eq(index, name, field, expression.getIgnoreStrategy());
+    }
+
+    public L eq(FieldExpression fieldExpression) {
+        return expression.eq(index, name, fieldExpression, expression.getIgnoreStrategy());
     }
 }

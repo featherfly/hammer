@@ -42,7 +42,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     public EntityLocalTimePropertyExpressionImpl(int index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -57,7 +57,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     public EntityLocalTimePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -72,7 +72,7 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
      */
     public EntityLocalTimePropertyExpressionImpl(int index, SerializableFunction<E, LocalTime> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 

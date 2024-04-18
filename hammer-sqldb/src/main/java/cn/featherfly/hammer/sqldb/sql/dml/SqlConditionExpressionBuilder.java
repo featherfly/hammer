@@ -15,6 +15,7 @@ import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.RepositoryAwareField;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
 
 /**
@@ -36,7 +37,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param ignoreStrategy     the ignore strategy
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
-            ComparisonOperator comparisonOperator, Predicate<?> ignoreStrategy) {
+        ComparisonOperator comparisonOperator, Predicate<?> ignoreStrategy) {
         this(dialect, name, value, comparisonOperator, null, ignoreStrategy);
     }
 
@@ -51,7 +52,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param ignoreStrategy     the ignore strategy
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
-            ComparisonOperator comparisonOperator, String queryAlias, Predicate<?> ignoreStrategy) {
+        ComparisonOperator comparisonOperator, String queryAlias, Predicate<?> ignoreStrategy) {
         this(dialect, name, value, comparisonOperator, MatchStrategy.AUTO, queryAlias, ignoreStrategy);
     }
 
@@ -67,8 +68,13 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param ignoreStrategy     the ignore strategy
      */
     public SqlConditionExpressionBuilder(Dialect dialect, String name, Object value,
-            ComparisonOperator comparisonOperator, MatchStrategy matchStrategy, String queryAlias,
-            Predicate<?> ignoreStrategy) {
+        ComparisonOperator comparisonOperator, MatchStrategy matchStrategy, String queryAlias,
+        Predicate<?> ignoreStrategy) {
+        init(dialect, name, value, comparisonOperator, matchStrategy, queryAlias, ignoreStrategy);
+    }
+
+    private void init(Dialect dialect, String name, Object value, ComparisonOperator comparisonOperator,
+        MatchStrategy matchStrategy, String queryAlias, Predicate<?> ignoreStrategy) {
         if (comparisonOperator == null) {
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
         }
@@ -78,15 +84,23 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
             AliasRepository r = f.repository();
             SqlElement se = new ColumnElement(dialect, f.name(), r.alias());
             conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
-                    queryAlias, ignoreStrategy);
+                queryAlias, ignoreStrategy);
         } else if (value instanceof Field) {
             Field f = (Field) value;
             SqlElement se = new ColumnElement(dialect, f.name());
             conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
-                    queryAlias, ignoreStrategy);
+                queryAlias, ignoreStrategy);
+        } else if (value instanceof Expression) {
+            SqlElement se = () -> ((Expression) value).expression();
+            //            if (value instanceof ParamedExpression) {
+            //                // YUFEI_TODO 还未实现带参数的情况
+            //                Object param = ((ParamedExpression) value).getParam();
+            //            }
+            conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
+                queryAlias, ignoreStrategy);
         } else {
             conditionColumnElement = new ConditionColumnElement(dialect, name, value, comparisonOperator, matchStrategy,
-                    queryAlias, ignoreStrategy);
+                queryAlias, ignoreStrategy);
         }
     }
 

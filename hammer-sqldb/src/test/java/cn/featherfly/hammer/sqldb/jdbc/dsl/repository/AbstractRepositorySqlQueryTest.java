@@ -10,9 +10,11 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository;
 
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -32,9 +34,13 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.order.OrderInfo;
  *
  * @author zhongj
  */
-public class AbstractRepositorySqlQueryTest extends HammerJdbcTestBase {
+public abstract class AbstractRepositorySqlQueryTest extends HammerJdbcTestBase {
 
     SqlQuery query;
+
+    List<Map<String, Object>> list = null;
+
+    Map<String, Object> map = null;
 
     static final String ORDER_REPO = "order";
     static final Repository ORDER_REPO2 = new SimpleRepository(ORDER_REPO);
@@ -82,6 +88,24 @@ public class AbstractRepositorySqlQueryTest extends HammerJdbcTestBase {
             assertNotNull(tree.getParent().getName());
         } else {
             assertNull(tree.getParent().getName());
+        }
+    }
+
+    void assertFields(Map<String, Object> data, String[]... fields) {
+        for (String[] fs : fields) {
+            for (String field : fs) {
+                assertTrue(data.containsKey(field));
+            }
+        }
+    }
+
+    void assertFields(List<Map<String, Object>> list, String[]... fields) {
+        for (String[] fs : fields) {
+            for (String field : fs) {
+                for (Map<String, Object> data : list) {
+                    assertTrue(data.containsKey(field));
+                }
+            }
         }
     }
 }

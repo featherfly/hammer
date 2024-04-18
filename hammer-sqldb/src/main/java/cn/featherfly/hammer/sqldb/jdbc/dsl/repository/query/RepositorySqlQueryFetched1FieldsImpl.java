@@ -13,11 +13,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroupLogic;
@@ -27,10 +29,11 @@ import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelated
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.FetchField;
 import cn.featherfly.hammer.expression.query.QueryValueLimitExecutor;
-import cn.featherfly.hammer.expression.repository.condition.RepositoryFieldExpression;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryValueSortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 
 /**
  * SqlQueryProperties.
@@ -74,12 +77,14 @@ public class RepositorySqlQueryFetched1FieldsImpl
      */
     @Override
     public RepositoryQueryValueConditionsGroupLogic where(
-        Function<RepositoryFieldExpression<?, ?>, LogicExpression<?, ?>> function) {
-        RepositorySqlQueryValueExpression exp = new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory);
+        Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> function) {
+        RepositorySqlQueryValueExpression expr = new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory);
+        RepositoryFieldOnlyExpression field = new RepositoryFieldOnlyExpressionImpl<QueryConditionConfig,
+            RepositorySqlQueryRelation, SqlSelectBasicBuilder>(0, queryRelation);
         if (function != null) {
-            function.apply(exp);
+            expr.addCondition(function.apply(field));
         }
-        return exp;
+        return expr;
     }
 
     /**

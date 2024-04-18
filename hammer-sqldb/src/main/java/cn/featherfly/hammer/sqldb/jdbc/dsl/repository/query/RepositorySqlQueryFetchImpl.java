@@ -21,11 +21,12 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.FetchField;
 import cn.featherfly.hammer.expression.query.FetchFieldImpl;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.repository.condition.RepositoryFieldExpression;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation.RepositorySqlQueryOn1;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation.RepositorySqlQueryRelate1R;
 
@@ -61,12 +62,13 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public RepositoryQueryConditionsGroupLogic where(
-        Function<RepositoryFieldExpression<?, ?>, LogicExpression<?, ?>> function) {
-        RepositorySqlQueryExpression exp = new RepositorySqlQueryExpression(queryRelation, sqlPageFactory);
+        Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> function) {
+        RepositorySqlQueryExpression expr = new RepositorySqlQueryExpression(queryRelation, sqlPageFactory);
         if (function != null) {
-            function.apply(exp);
+            // function.apply(expr);
+            expr.addCondition(function.apply(new RepositoryFieldOnlyExpressionImpl<>(0, queryRelation)));
         }
-        return exp;
+        return expr;
     }
 
     /**

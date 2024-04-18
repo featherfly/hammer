@@ -8,7 +8,7 @@
  * @date: 2023-07-31 18:29:31
  * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
+package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute;
 
 import java.util.function.Consumer;
 
@@ -17,6 +17,8 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractMulitiEntitySqlConditionsGroupExpressionBase;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
  * AbstractEntitySqlExecutionConditionGroupExpression.
@@ -29,11 +31,11 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLog
  * @param <C> the generic type
  */
 public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, R extends EntitySqlRelation<R, B>,
-        B extends SqlBuilder, L extends EntityExecutableConditionGroupLogic<E, C>,
-        C extends ExecutableConditionConfig<C>> extends
-        AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, R, B, EntityExecutableConditionGroup<E, C>,
-                EntityExecutableConditionGroupLogic<E, C>, C>
-        implements EntityExecutableConditionGroup<E, C>, EntityExecutableConditionGroupLogic<E, C> {
+    B extends SqlBuilder, L extends EntityExecutableConditionGroupLogic<E, C>, C extends ExecutableConditionConfig<C>>
+    extends
+    AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, R, B, EntityExecutableConditionGroup<E, C>,
+        EntityExecutableConditionGroupLogic<E, C>, C>
+    implements EntityExecutableConditionGroup<E, C>, EntityExecutableConditionGroupLogic<E, C> {
 
     /**
      * Instantiates a new abstract entity sql executable condition group
@@ -44,7 +46,7 @@ public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, R e
      * @param entitySqlRelation the entity sql relation
      */
     protected AbstractEntitySqlExecutableConditionGroupExpression(L parent, JdbcMappingFactory factory,
-            R entitySqlRelation) {
+        R entitySqlRelation) {
         super(parent, factory, entitySqlRelation);
     }
 

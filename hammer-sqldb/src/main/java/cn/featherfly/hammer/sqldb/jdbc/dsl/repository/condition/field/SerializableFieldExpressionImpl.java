@@ -16,7 +16,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -31,7 +30,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public class SerializableFieldExpressionImpl<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractRepositoryFieldExpression<C, L> implements RepositorySerializableFieldExpression<C, L> {
+    extends AbstractRepositoryFieldExpression<C, L> implements RepositorySerializableFieldExpression<C, L> {
 
     /**
      * Instantiates a new object field expression impl.
@@ -41,14 +40,6 @@ public class SerializableFieldExpressionImpl<C extends ConditionExpression, L ex
      */
     public SerializableFieldExpressionImpl(String name, AbstractSqlConditionsExpression<C, L, ?> expression) {
         super(name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(name, field);
     }
 
     /**
@@ -73,14 +64,6 @@ public class SerializableFieldExpressionImpl<C extends ConditionExpression, L ex
     @Override
     public L eq(Serializable value, Predicate<Serializable> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

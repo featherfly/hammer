@@ -41,6 +41,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.MulitiRepositoryFieldExpression;
 import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.ba.RepositoryBetweenExpression;
 import cn.featherfly.hammer.expression.repository.condition.co.RepositoryContainsExpression;
@@ -126,6 +127,14 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     }
 
     // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(String name, FieldExpression value) {
+        return eq(name, value, getIgnoreStrategy(), repositoryAlias);
+    }
 
     /**
      * {@inheritDoc}

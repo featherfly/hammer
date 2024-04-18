@@ -1,12 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
+import java.util.function.Supplier;
+
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -40,6 +43,17 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
         super(jdbc, aliasManager, updateConfig);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> EntitySqlUpdateRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
+        // IMPLSOON update还未实现join
+        throw new NotImplementedException();
+    }
+
     // ****************************************************************************************************************
     //	protected method
     // ****************************************************************************************************************
@@ -49,7 +63,7 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
      */
     @Override
     protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
-            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
+        JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
         // IMPLSOON update还未实现join
         throw new NotImplementedException();
     }
@@ -60,7 +74,7 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     @Override
     protected void initBuilder(EntityRelationMapping<?> erm) {
         updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-                erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
+            erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
     }
 
     /**

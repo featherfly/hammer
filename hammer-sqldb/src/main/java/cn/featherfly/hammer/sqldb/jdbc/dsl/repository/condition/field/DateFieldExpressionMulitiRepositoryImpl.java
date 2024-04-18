@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -23,8 +22,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.InternalMulitiEntity
  * @param <L> the generic type
  */
 public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
-        implements RepositoryDateFieldExpression<D, C, L> {
+    L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
+    implements RepositoryDateFieldExpression<D, C, L> {
 
     /**
      * Instantiates a new date field expression impl.
@@ -45,16 +44,8 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
      * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
-            InternalMulitiEntityCondition<L> expression) {
+        InternalMulitiEntityCondition<L> expression) {
         super(index, name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(index, name, field, expression.getIgnoreStrategy());
     }
 
     /**
@@ -79,14 +70,6 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     @Override
     public L eq(D value, Predicate<D> ignoreStrategy) {
         return expression.eq(index, name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**
@@ -312,7 +295,7 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     @Override
     public L ba(D min, D max) {
         return expression.ba(index, name, min, max,
-                (m1, m2) -> expression.getIgnoreStrategy().test(new Object[] { m1, m2 }));
+            (m1, m2) -> expression.getIgnoreStrategy().test(new Object[] { m1, m2 }));
     }
 
     /**
@@ -337,7 +320,7 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     @Override
     public L nba(D min, D max) {
         return expression.nba(index, name, min, max,
-                (m1, m2) -> expression.getIgnoreStrategy().test(new Object[] { m1, m2 }));
+            (m1, m2) -> expression.getIgnoreStrategy().test(new Object[] { m1, m2 }));
     }
 
     /**

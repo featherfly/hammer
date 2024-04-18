@@ -432,7 +432,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     }
 
     protected Object prepareFieldValue(Object value) {
-        if (value instanceof Field || value instanceof SqlElement) {
+        if (value instanceof Field || value instanceof SqlElement || value instanceof Expression) {
             return value;
         } else {
             return getFieldValueOperator(value);

@@ -15,7 +15,6 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyLogicExpression;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.AbstractMulitiRepositorySqlConditionsGroupExpressionBase;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
 
@@ -33,8 +32,7 @@ public class InternalMulitiRepositoryFieldOnlyConditionImpl<C2 extends Condition
     S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
     AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryFieldOnlyExpression,
         RepositoryFieldOnlyLogicExpression, Tuple1<Integer>, C2, S, B>
-    implements InternalMulitiCondition<RepositoryFieldOnlyLogicExpression>, RepositoryFieldOnlyExpression,
-    RepositoryFieldOnlyLogicExpression {
+    implements RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression {
 
     /**
      * Instantiates a new internal muliti repository condition impl.

@@ -67,7 +67,7 @@ public class NotEqualsEntityExpressionImpl<T, C extends ConditionExpression, L e
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
@@ -78,7 +78,7 @@ public class NotEqualsEntityExpressionImpl<T, C extends ConditionExpression, L e
      * @param queryRelation the query relation
      */
     public NotEqualsEntityExpressionImpl(int index, MulitiNotEqualsExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

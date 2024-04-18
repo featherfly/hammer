@@ -11,6 +11,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
+import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup4F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic4F;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression4;
@@ -18,7 +19,9 @@ import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate3
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate4RRRR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched3RRF;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched4RRRF;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression4;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
@@ -68,6 +71,16 @@ public class RepositorySqlQueryRelate3RRR extends
     @Override
     public RepositoryQueryConditionsGroup4F where() {
         return new RepositorySqlQueryExpression4F(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic4F where(
+        FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression4F(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
     /**

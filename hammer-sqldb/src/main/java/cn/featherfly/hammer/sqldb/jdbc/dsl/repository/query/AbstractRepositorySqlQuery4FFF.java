@@ -5,11 +5,14 @@ import java.util.List;
 
 import com.speedment.common.tuple.Tuple3;
 
+import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery4;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup4FFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic4FFF;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor3;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression4;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -53,6 +56,16 @@ public abstract class AbstractRepositorySqlQuery4FFF<R extends RepositoryQueryRe
     @Override
     public RepositoryQueryConditionsGroup4FFF where() {
         return new RepositorySqlQueryExpression4FFF(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic4FFF where(
+        FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression4FFF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
     /**

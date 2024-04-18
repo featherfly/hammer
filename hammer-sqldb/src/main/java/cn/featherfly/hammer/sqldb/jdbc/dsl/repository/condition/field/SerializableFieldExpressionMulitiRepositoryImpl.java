@@ -7,7 +7,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -22,8 +21,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public class SerializableFieldExpressionMulitiRepositoryImpl<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
-        implements RepositorySerializableFieldExpression<C, L> {
+    L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
+    implements RepositorySerializableFieldExpression<C, L> {
 
     /**
      * Instantiates a new simple object property expression.
@@ -34,7 +33,7 @@ public class SerializableFieldExpressionMulitiRepositoryImpl<C extends Condition
      * @param repositoryRelation the repository relation
      */
     public SerializableFieldExpressionMulitiRepositoryImpl(int index, String name,
-            InternalMulitiCondition<L> expression) {
+        InternalMulitiCondition<L> expression) {
         super(new AtomicInteger(index), name, expression);
     }
 
@@ -47,16 +46,8 @@ public class SerializableFieldExpressionMulitiRepositoryImpl<C extends Condition
      * @param repositoryRelation the repository relation
      */
     public SerializableFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
-            InternalMulitiCondition<L> expression) {
+        InternalMulitiCondition<L> expression) {
         super(index, name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(index, name, field, expression.getIgnoreStrategy());
     }
 
     /**
@@ -81,14 +72,6 @@ public class SerializableFieldExpressionMulitiRepositoryImpl<C extends Condition
     @Override
     public L eq(Serializable value, Predicate<Serializable> ignoreStrategy) {
         return expression.eq(index, name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

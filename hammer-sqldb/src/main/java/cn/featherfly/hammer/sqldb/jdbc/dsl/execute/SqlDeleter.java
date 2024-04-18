@@ -12,7 +12,7 @@ import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityDelete;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.SqlRepositoryDelete;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.RepositorySqlDelete;
 
 /**
  * SqlDeleter.
@@ -56,10 +56,10 @@ public class SqlDeleter implements Deleter {
     @Override
     public RepositoryDelete delete(Repository repository) {
         if (repository instanceof AliasRepository) {
-            return new SqlRepositoryDelete(jdbc, (AliasRepository) repository, mappingFactory.getMetadata(),
+            return new RepositorySqlDelete(jdbc, (AliasRepository) repository, mappingFactory.getMetadata(),
                     deleteConfig);
         } else {
-            return new SqlRepositoryDelete(jdbc, repository, mappingFactory.getMetadata(), deleteConfig);
+            return new RepositorySqlDelete(jdbc, repository, mappingFactory.getMetadata(), deleteConfig);
         }
     }
 
@@ -68,7 +68,7 @@ public class SqlDeleter implements Deleter {
      */
     @Override
     public RepositoryDelete delete(String repository) {
-        return new SqlRepositoryDelete(jdbc, repository, mappingFactory.getMetadata(), deleteConfig);
+        return new RepositorySqlDelete(jdbc, repository, mappingFactory.getMetadata(), deleteConfig);
     }
 
     /**

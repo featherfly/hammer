@@ -1,17 +1,23 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query;
 
+import java.util.function.BiFunction;
+
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery2;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression2;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression2;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 
 /**
  * AbstractRepositorySqlQuery2.
@@ -24,10 +30,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQuery2<R extends RepositoryQueryRelateExpression<R>,
-        C extends RepositoryQueryConditionsGroupExpression2<C, L, S, Q>,
-        L extends RepositoryQueryConditionsGroupLogicExpression2<C, L, S, Q>,
-        S extends RepositoryQuerySortExpression2<Q>, Q extends QueryLimitExecutor>
-        extends AbstractRepositorySqlQueryJoin<R, C, Q> implements RepositoryQuery2<C, L, S, Q> {
+    C extends RepositoryQueryConditionsGroupExpression2<C, L, S, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression2<C, L, S, Q>, S extends RepositoryQuerySortExpression2<Q>,
+    Q extends QueryLimitExecutor> extends AbstractRepositorySqlQueryJoin<R, C, Q>
+    implements RepositoryQuery2<C, L, S, Q> {
 
     protected static final Tuple2<Integer, Integer> RELATIONS_TUPLE = Tuples.of(0, 1);
 
@@ -48,5 +54,16 @@ public abstract class AbstractRepositorySqlQuery2<R extends RepositoryQueryRelat
      */
     protected AbstractRepositorySqlQuery2(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(1, queryRelation, sqlPageFactory);
+    }
+
+    protected <E extends AbstractSqlConditionExpression<?, ?, ?>> E where(E conditions,
+        BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        if (repositoriesCondtionFuntion != null) {
+            conditions.addCondition(
+                repositoriesCondtionFuntion.apply(new RepositoryFieldOnlyExpressionImpl<>(0, queryRelation),
+                    new RepositoryFieldOnlyExpressionImpl<>(1, queryRelation)));
+        }
+        return conditions;
     }
 }
