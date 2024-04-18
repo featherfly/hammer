@@ -39,7 +39,7 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
@@ -50,7 +50,7 @@ public class LikeEntityExpressionImpl<E, C extends ConditionExpression, L extend
      * @param queryRelation the query relation
      */
     public LikeEntityExpressionImpl(int index, MulitiLikeExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

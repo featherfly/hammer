@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -20,7 +19,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public class LocalDateTimeFieldExpressionImpl<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractRepositoryFieldExpression<C, L> implements RepositoryLocalDateTimeFieldExpression<C, L> {
+    extends AbstractRepositoryFieldExpression<C, L> implements RepositoryLocalDateTimeFieldExpression<C, L> {
 
     /**
      * Instantiates a new local date time field expression impl.
@@ -30,14 +29,6 @@ public class LocalDateTimeFieldExpressionImpl<C extends ConditionExpression, L e
      */
     public LocalDateTimeFieldExpressionImpl(String name, AbstractSqlConditionsExpression<C, L, ?> expression) {
         super(name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(name, field);
     }
 
     /**
@@ -62,14 +53,6 @@ public class LocalDateTimeFieldExpressionImpl<C extends ConditionExpression, L e
     @Override
     public L eq(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

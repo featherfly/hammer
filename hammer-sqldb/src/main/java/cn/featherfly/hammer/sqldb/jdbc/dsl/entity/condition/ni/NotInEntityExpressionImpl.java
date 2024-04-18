@@ -68,7 +68,7 @@ public class NotInEntityExpressionImpl<T, C extends ConditionExpression, L exten
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new not in entity expression impl.
@@ -79,7 +79,7 @@ public class NotInEntityExpressionImpl<T, C extends ConditionExpression, L exten
      * @param queryRelation the query relation
      */
     public NotInEntityExpressionImpl(int index, MulitiNotInExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

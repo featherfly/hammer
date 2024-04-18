@@ -32,6 +32,7 @@ import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
 import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression;
@@ -3431,15 +3432,6 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression eq(String name, Field value) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UserQueryRepositoryConditionGroupExpression eq(String name, boolean value) {
 
         return null;
@@ -4379,6 +4371,24 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <D extends Date> RepositoryDateFieldExpression<D, UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsDate(String name) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, FieldExpression value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(String name, Field value) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

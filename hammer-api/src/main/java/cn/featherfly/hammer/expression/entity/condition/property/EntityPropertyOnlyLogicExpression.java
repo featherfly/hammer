@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition.property;
 
+import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
@@ -17,6 +18,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <E> the element type
  */
 public interface EntityPropertyOnlyLogicExpression<E>
-        extends LogicExpression<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> {
+    extends LogicExpression<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>,
+    GroupEndExpression<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> {
 
 }

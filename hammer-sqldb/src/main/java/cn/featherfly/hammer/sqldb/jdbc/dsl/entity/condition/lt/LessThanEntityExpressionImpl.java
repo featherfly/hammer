@@ -68,7 +68,7 @@ public class LessThanEntityExpressionImpl<T, C extends ConditionExpression, L ex
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new less than entity expression impl.
@@ -79,7 +79,7 @@ public class LessThanEntityExpressionImpl<T, C extends ConditionExpression, L ex
      * @param queryRelation the query relation
      */
     public LessThanEntityExpressionImpl(int index, MulitiLessThanExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

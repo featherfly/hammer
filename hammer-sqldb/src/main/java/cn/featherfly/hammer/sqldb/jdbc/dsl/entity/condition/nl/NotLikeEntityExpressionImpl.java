@@ -41,7 +41,7 @@ public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L ext
     private JdbcMappingFactory factory;
 
     /** The query relation. */
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
@@ -53,7 +53,7 @@ public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * @param queryRelation  the query relation
      */
     public NotLikeEntityExpressionImpl(int index, MulitiNotLikeExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

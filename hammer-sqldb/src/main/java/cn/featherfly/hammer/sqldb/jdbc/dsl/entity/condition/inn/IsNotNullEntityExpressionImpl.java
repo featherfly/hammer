@@ -33,7 +33,7 @@ public class IsNotNullEntityExpressionImpl<E, C extends ConditionExpression, L e
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new checks if is null entity expression impl.
@@ -44,7 +44,7 @@ public class IsNotNullEntityExpressionImpl<E, C extends ConditionExpression, L e
      * @param queryRelation the query relation
      */
     public IsNotNullEntityExpressionImpl(int index, MulitiIsNotNullExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

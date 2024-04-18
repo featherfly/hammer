@@ -115,7 +115,8 @@ INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `
 INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (3, 3, '飞', '飞描述', '四川', '成都', '武侯', '天府三街', 88);
 INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (4, 4, '张三', '张三描述', '四川', '成都', '武侯', '天府三街', 99);
 INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (5, 5, '李四', '李四描述', '四川', '成都', '青羊', '红星路一段', null);
-
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (6, 3, 'yufei15', 'yufei15描述', '四川', '成都', '金牛', '沙湾路', 66);
+INSERT INTO `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`, `street`, `street_no`) VALUES (7, 4, 'yufei25', 'yufei25描述', '广东', '深圳', '罗湖', '测试地址', 112);
 
 
 DROP TABLE IF EXISTS `cms_article`;

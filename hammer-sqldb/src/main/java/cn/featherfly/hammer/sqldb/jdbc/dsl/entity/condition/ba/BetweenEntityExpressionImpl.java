@@ -64,7 +64,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  * @param <L> the generic type
  */
 public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractBetweenEntityExpression<T, C, L> implements BetweenEntityExpression<T> {
+    extends AbstractBetweenEntityExpression<T, C, L> implements BetweenEntityExpression<T> {
 
     private JdbcMappingFactory factory;
 
@@ -79,7 +79,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
      * @param queryRelation the query relation
      */
     public BetweenEntityExpressionImpl(int index, MulitiBetweenExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;
@@ -91,7 +91,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public <R> BetweenEntityPropertyExpression<R> property(SerializableFunction<T, R> name) {
         return new BetweenEntityPropertyExpressionImpl<>(index, name,
-                ((MulitiEntityBetweenExpressionImpl<C, L>) expression).getHold(), factory, queryRelation);
+            ((MulitiEntityBetweenExpressionImpl<C, L>) expression).getHold(), factory, queryRelation);
     }
 
     /**
@@ -99,7 +99,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
      */
     @Override
     public <R extends Collection<E>,
-            E> BetweenEntityPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name) {
+        E> BetweenEntityPropertyExpression<E> property(SerializableToCollectionFunction<T, R, E> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
@@ -110,7 +110,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public SetIntExpression2 property(SerializableToIntFunction<T> name) {
         return new SetIntExpression2Impl(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -119,7 +119,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public SetLongExpression2 property(SerializableToLongFunction<T> name) {
         return new SetLongExpression2Impl(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -128,7 +128,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public SetDoubleExpression2 property(SerializableToDoubleFunction<T> name) {
         return new SetDoubleExpression2Impl(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -137,7 +137,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public <D extends Date> SetDateExpression2<D> property(SerializableToDateFunction<T, D> name) {
         return new SetDateExpression2Impl<>(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -146,7 +146,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public SetLocalDateExpression2 property(SerializableToLocalDateFunction<T> name) {
         return new SetLocalDateExpression2Impl(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -155,7 +155,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public SetLocalTimeExpression2 property(SerializableToLocalTimeFunction<T> name) {
         return new SetLocalTimeExpression2Impl(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -164,7 +164,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public SetLocalDateTimeExpression2 property(SerializableToLocalDateTimeFunction<T> name) {
         return new SetLocalDateTimeExpression2Impl(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -173,7 +173,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public <N extends Number> SetNumberExpression2<N> property(SerializableToNumberFunction<T, N> name) {
         return new SetNumberExpression2Impl<>(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -182,7 +182,7 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public <R extends Enum<R>> SetEnumExpression2<R> property(SerializableToEnumFunction<T, R> name) {
         return new SetEnumExpression2Impl<>(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 
     /**
@@ -191,6 +191,6 @@ public class BetweenEntityExpressionImpl<T, C extends ConditionExpression, L ext
     @Override
     public SetStringExpression2 property(SerializableToStringFunction<T> name) {
         return new SetStringExpression2Impl(v -> null, ignoreStrategy,
-                (min, max, ignore, pm) -> accept(name, min, max, ignore));
+            (min, max, ignore, pm) -> accept(name, min, max, ignore));
     }
 }

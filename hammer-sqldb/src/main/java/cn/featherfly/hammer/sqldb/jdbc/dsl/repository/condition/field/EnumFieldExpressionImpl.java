@@ -3,7 +3,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -19,7 +18,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public class EnumFieldExpressionImpl<E extends Enum<E>, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractRepositoryFieldExpression<C, L> implements RepositoryEnumFieldExpression<E, C, L> {
+    extends AbstractRepositoryFieldExpression<C, L> implements RepositoryEnumFieldExpression<E, C, L> {
 
     /**
      * Instantiates a new enum field expression impl.
@@ -29,14 +28,6 @@ public class EnumFieldExpressionImpl<E extends Enum<E>, C extends ConditionExpre
      */
     public EnumFieldExpressionImpl(String name, AbstractSqlConditionsExpression<C, L, ?> expression) {
         super(name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(name, field);
     }
 
     /**
@@ -61,14 +52,6 @@ public class EnumFieldExpressionImpl<E extends Enum<E>, C extends ConditionExpre
     @Override
     public L eq(E value, Predicate<E> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

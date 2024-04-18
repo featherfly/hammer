@@ -5,11 +5,14 @@ import java.util.List;
 
 import com.speedment.common.tuple.Tuple4;
 
+import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup6FFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic6FFFF;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor4;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression6;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -53,6 +56,17 @@ public abstract class AbstractRepositorySqlQuery6FFFF<R extends RepositoryQueryR
     @Override
     public RepositoryQueryConditionsGroup6FFFF where() {
         return new RepositorySqlQueryExpression6FFFF(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic6FFFF where(
+        SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression6FFFF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
     /**

@@ -16,15 +16,15 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface StringFieldExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends FieldBetweenExpression<C, L, String>, FieldNotBetweenExpression<C, L, String> //
-        , FieldEqualsExpression<C, L, String>, FieldNotEqualsExpression<C, L, String>, FieldInExpression<C, L, String>,
-        FieldNotInExpression<C, L, String>, FieldLessEqualsExpression<C, L, String>,
-        FiledLessThanExpression<C, L, String>, FieldGreatEqualsExpression<C, L, String>,
-        FieldGreatThanExpression<C, L, String>, FieldStartWithExpression<C, L>, FieldNotStartWithExpression<C, L>//
-        , FieldContainsExpression<C, L>, FieldNotContainsExpression<C, L>//
-        , FieldEndWithExpression<C, L>, FieldNotEndWithExpression<C, L>//
-        , FieldLikeExpression<C, L>, FieldNotLikeExpression<C, L>//
-        , FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L> {
+    extends FieldBetweenExpression<C, L, String>, FieldNotBetweenExpression<C, L, String> //
+    , FieldEqualsExpression<C, L, String>, FieldNotEqualsExpression<C, L, String>, FieldInExpression<C, L, String>,
+    FieldNotInExpression<C, L, String>, FieldLessEqualsExpression<C, L, String>, FiledLessThanExpression<C, L, String>,
+    FieldGreatEqualsExpression<C, L, String>, FieldGreatThanExpression<C, L, String>, FieldStartWithExpression<C, L>,
+    FieldNotStartWithExpression<C, L>//
+    , FieldContainsExpression<C, L>, FieldNotContainsExpression<C, L>//
+    , FieldEndWithExpression<C, L>, FieldNotEndWithExpression<C, L>//
+    , FieldLikeExpression<C, L>, FieldNotLikeExpression<C, L>//
+    , FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L>, FieldExpression {
 
     /**
      * {@inheritDoc}

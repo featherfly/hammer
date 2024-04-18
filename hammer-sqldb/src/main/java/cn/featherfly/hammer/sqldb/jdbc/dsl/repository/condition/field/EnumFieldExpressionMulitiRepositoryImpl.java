@@ -4,7 +4,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -20,8 +19,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
-        implements RepositoryEnumFieldExpression<E, C, L> {
+    L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
+    implements RepositoryEnumFieldExpression<E, C, L> {
 
     /**
      * Instantiates a new simple enum property expression.
@@ -42,16 +41,8 @@ public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extend
      * @param expression the expression
      */
     public EnumFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
-            InternalMulitiCondition<L> expression) {
+        InternalMulitiCondition<L> expression) {
         super(index, name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(index, name, field, expression.getIgnoreStrategy());
     }
 
     /**
@@ -76,14 +67,6 @@ public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extend
     @Override
     public L eq(E value, Predicate<E> ignoreStrategy) {
         return expression.eq(index, name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

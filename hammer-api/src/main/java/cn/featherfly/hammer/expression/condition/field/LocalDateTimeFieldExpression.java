@@ -14,11 +14,11 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface LocalDateTimeFieldExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends FieldBetweenExpression<C, L, LocalDateTime>, FieldNotBetweenExpression<C, L, LocalDateTime> //
-        , FieldEqualsExpression<C, L, LocalDateTime>, FieldNotEqualsExpression<C, L, LocalDateTime>,
-        FieldInExpression<C, L, LocalDateTime>, FieldNotInExpression<C, L, LocalDateTime>,
-        FieldLessEqualsExpression<C, L, LocalDateTime>, FiledLessThanExpression<C, L, LocalDateTime>,
-        FieldGreatEqualsExpression<C, L, LocalDateTime>, FieldGreatThanExpression<C, L, LocalDateTime>,
-        FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L> {
+    extends FieldBetweenExpression<C, L, LocalDateTime>, FieldNotBetweenExpression<C, L, LocalDateTime> //
+    , FieldEqualsExpression<C, L, LocalDateTime>, FieldNotEqualsExpression<C, L, LocalDateTime>,
+    FieldInExpression<C, L, LocalDateTime>, FieldNotInExpression<C, L, LocalDateTime>,
+    FieldLessEqualsExpression<C, L, LocalDateTime>, FiledLessThanExpression<C, L, LocalDateTime>,
+    FieldGreatEqualsExpression<C, L, LocalDateTime>, FieldGreatThanExpression<C, L, LocalDateTime>,
+    FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L>, FieldExpression {
 
 }

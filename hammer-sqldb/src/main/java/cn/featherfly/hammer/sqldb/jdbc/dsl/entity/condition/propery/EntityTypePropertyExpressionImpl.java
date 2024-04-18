@@ -67,7 +67,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * @param queryRelation the query relation
      */
     public EntityTypePropertyExpressionImpl(int index, F name, InternalMulitiEntityCondition<L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -82,7 +82,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     public EntityTypePropertyExpressionImpl(int index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -97,7 +97,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      */
     public EntityTypePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 

@@ -39,7 +39,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new contains entity expression impl.
@@ -50,7 +50,7 @@ public class ContainsEntityExpressionImpl<E, C extends ConditionExpression, L ex
      * @param queryRelation the query relation
      */
     public ContainsEntityExpressionImpl(int index, MulitiContainsExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

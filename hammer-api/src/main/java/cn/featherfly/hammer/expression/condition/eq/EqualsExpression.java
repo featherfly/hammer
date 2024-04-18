@@ -11,10 +11,10 @@ import cn.featherfly.common.function.CharPredicate;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.common.repository.FieldAware;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 
 /**
  * equals expression.
@@ -24,6 +24,38 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>> {
+
+    /**
+     * equals. 等于.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(String name, FieldExpression value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L eq(Field field, FieldExpression value) {
+        return eq(field.name(), value);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param field the field
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L eq(AliasField field, FieldExpression value) {
+        return eq(field.getAliasOrName(), value);
+    }
+
     /**
      * equals. 等于.
      *
@@ -53,42 +85,6 @@ public interface EqualsExpression<C extends ConditionExpression, L extends Logic
      */
     default L eq(AliasField field, Field value) {
         return eq(field.getAliasOrName(), value);
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param <F>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <F extends Field> L eq(String name, FieldAware<F> value) {
-        return eq(name, value.field());
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param <F>   the generic type
-     * @param field the field
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <F extends Field> L eq(Field field, FieldAware<F> value) {
-        return eq(field, value.field());
-    }
-
-    /**
-     * equals. 等于.
-     *
-     * @param <F>   the generic type
-     * @param field the field
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <F extends Field> L eq(AliasField field, FieldAware<F> value) {
-        return eq(field, value.field());
     }
 
     // ----------------------------------------------------------------------------------------------------------------

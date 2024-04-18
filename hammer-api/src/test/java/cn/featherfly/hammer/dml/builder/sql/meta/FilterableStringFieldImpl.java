@@ -17,6 +17,7 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 
 /**
  * StringFieldImpl.
@@ -619,6 +620,15 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L eq(Field field) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(FieldExpression expression) {
+        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 }

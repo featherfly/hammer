@@ -41,7 +41,7 @@ public class NotStartWithEntityExpressionImpl<E, C extends ConditionExpression, 
     private JdbcMappingFactory factory;
 
     /** The query relation. */
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new start with entity expression impl.
@@ -52,7 +52,7 @@ public class NotStartWithEntityExpressionImpl<E, C extends ConditionExpression, 
      * @param queryRelation the query relation
      */
     public NotStartWithEntityExpressionImpl(int index, MulitiNotStartWithExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

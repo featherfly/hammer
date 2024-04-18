@@ -41,7 +41,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     public EntityEnumPropertyExpressionImpl(int index, SerializableFunction<E, T> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -56,7 +56,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     public EntityEnumPropertyExpressionImpl(int index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -71,7 +71,7 @@ public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends Co
      */
     public EntityEnumPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 

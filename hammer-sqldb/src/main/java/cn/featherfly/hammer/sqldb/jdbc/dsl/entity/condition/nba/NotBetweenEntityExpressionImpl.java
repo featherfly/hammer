@@ -68,7 +68,7 @@ public class NotBetweenEntityExpressionImpl<T, C extends ConditionExpression, L 
 
     private JdbcMappingFactory factory;
 
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new not between entity expression impl.
@@ -79,7 +79,7 @@ public class NotBetweenEntityExpressionImpl<T, C extends ConditionExpression, L 
      * @param queryRelation the query relation
      */
     public NotBetweenEntityExpressionImpl(int index, MulitiNotBetweenExpression<C, L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

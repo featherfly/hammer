@@ -8,6 +8,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlDeleteRelation;
 
@@ -18,7 +19,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlDeleteRelation;
  * @param <E> the element type
  */
 public class SqlEntityDeleteExpression<E> extends AbstractSqlEntityExecutableConditionGroupExpression<E,
-        EntitySqlDeleteRelation, SqlDeleteFromBasicBuilder, DeleteConditionConfig> {
+    EntitySqlDeleteRelation, SqlDeleteFromBasicBuilder, DeleteConditionConfig> {
 
     /**
      * Instantiates a new entity sql delete expression.
@@ -39,7 +40,7 @@ public class SqlEntityDeleteExpression<E> extends AbstractSqlEntityExecutableCon
      * @param entityRelation the entity relation
      */
     SqlEntityDeleteExpression(EntityExecutableConditionGroupLogic<E, DeleteConditionConfig> parent,
-            JdbcMappingFactory factory, EntitySqlDeleteRelation entityRelation) {
+        JdbcMappingFactory factory, EntitySqlDeleteRelation entityRelation) {
         super(parent, factory, entityRelation);
     }
 
@@ -48,28 +49,30 @@ public class SqlEntityDeleteExpression<E> extends AbstractSqlEntityExecutableCon
      */
     @Override
     public String expression() {
-        // TODO 后续加入设置参数，是否允许无条件筛选参数的删除操作（因为无条件帅选参数删除是危险操作），默认为不允许
-        // 当前没有参数返回的0
-        String condition = super.expression();
-        if (parent == null) {
-            if (Lang.isEmpty(condition)) {
-                switch (conditionConfig.getEmptyConditionStrategy()) {
-                    case EXCEPTION:
-                        throw new SqldbHammerException("empty condition");
-                    case NON_EXECUTION:
-                        return null;
-                    case EXECUTION:
-                        return entityRelation.getBuilder().build();
-                    default:
-                        return entityRelation.getBuilder().build();
-                }
-            } else {
-                return entityRelation.getBuilder().build() + Chars.SPACE
-                        + entityRelation.getJdbc().getDialect().getKeywords().where() + Chars.SPACE + condition;
-            }
-        } else {
-            return condition;
-        }
+        return expression(super.expression(), parent, entityRelation, conditionConfig);
+        //        // TODO 后续加入设置参数，是否允许无条件筛选参数的删除操作（因为无条件帅选参数删除是危险操作），默认为不允许
+        //        // 当前没有参数返回的0
+        //        String condition = super.expression();
+        //        if (parent == null) {
+        //            if (Lang.isEmpty(condition)) {
+        //                switch (conditionConfig.getEmptyConditionStrategy()) {
+        //                    case EXCEPTION:
+        //                        throw new SqldbHammerException("empty condition");
+        //                    case NON_EXECUTION:
+        //                        return null;
+        //                    case EXECUTION:
+        //                        return entityRelation.getBuilder().build();
+        //                    default:
+        //                        return entityRelation.getBuilder().build();
+        //                }
+        //            } else {
+        //                return entityRelation.getBuilder().build() + Chars.SPACE
+        //                    + entityRelation.getJdbc().getDialect().getKeywords().where() + Chars.SPACE + condition;
+        //            }
+        //        } else {
+        //            return condition;
+        //        }
+
         //        String condition = super.build();
         //        if (Strings.isEmpty(condition)) {
         //            return entityRelation.getBuilder().build();
@@ -85,7 +88,32 @@ public class SqlEntityDeleteExpression<E> extends AbstractSqlEntityExecutableCon
      */
     @Override
     protected EntityExecutableConditionGroup<E, DeleteConditionConfig> createGroup(
-            EntityExecutableConditionGroupLogic<E, DeleteConditionConfig> parent) {
+        EntityExecutableConditionGroupLogic<E, DeleteConditionConfig> parent) {
         return new SqlEntityDeleteExpression<>(parent, factory, entityRelation);
+    }
+
+    static String expression(String condition, LogicExpression<?, ?> parent, EntitySqlDeleteRelation entityRelation,
+        DeleteConditionConfig conditionConfig) {
+        // TODO 后续加入设置参数，是否允许无条件筛选参数的删除操作（因为无条件帅选参数删除是危险操作），默认为不允许
+        // 当前没有参数返回的0
+        if (parent == null) {
+            if (Lang.isEmpty(condition)) {
+                switch (conditionConfig.getEmptyConditionStrategy()) {
+                    case EXCEPTION:
+                        throw new SqldbHammerException("empty condition");
+                    case NON_EXECUTION:
+                        return null;
+                    case EXECUTION:
+                        return entityRelation.getBuilder().build();
+                    default:
+                        return entityRelation.getBuilder().build();
+                }
+            } else {
+                return entityRelation.getBuilder().build() + Chars.SPACE
+                    + entityRelation.getJdbc().getDialect().getKeywords().where() + Chars.SPACE + condition;
+            }
+        } else {
+            return condition;
+        }
     }
 }

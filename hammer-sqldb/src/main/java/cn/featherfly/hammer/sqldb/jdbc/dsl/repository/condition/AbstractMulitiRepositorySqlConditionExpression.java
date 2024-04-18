@@ -35,6 +35,7 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.MulitiRepositoryExpression;
 import cn.featherfly.hammer.sqldb.Constants;
+import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
@@ -1269,6 +1270,11 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @Override
     public String getAlias(int index) {
         return repositoryRelation.getRepositoryRelation(index).getRepositoryAlias();
+    }
+
+    @Override
+    public Jdbc getJdbc() {
+        return repositoryRelation.getJdbc();
     }
 
 }

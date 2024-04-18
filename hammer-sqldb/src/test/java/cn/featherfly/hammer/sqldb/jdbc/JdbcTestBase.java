@@ -39,6 +39,8 @@ import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
@@ -91,13 +93,13 @@ public class JdbcTestBase extends TestBase {
         basePackages.add("cn.featherfly.hammer");
 
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
-                new FreemarkerTemplatePreProcessor());
+            new FreemarkerTemplatePreProcessor());
 
         jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager);
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl();
         hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-                .buildValidatorFactory().getValidator());
+            .buildValidatorFactory().getValidator());
         hammerConfig = hammerConfigImpl;
     }
 
@@ -206,7 +208,7 @@ public class JdbcTestBase extends TestBase {
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(JdbcTestBase.class.getResource("/").getFile(), "hammer.sqlite3.db"))
-                .getPath();
+            .getPath();
         System.out.println(path);
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName("org.sqlite.JDBC");
@@ -235,6 +237,20 @@ public class JdbcTestBase extends TestBase {
         r.setName("n_" + Randoms.getInt(100));
         r.setDescp("descp_" + Randoms.getInt(100));
         return r;
+    }
+
+    protected Order2 order2() {
+        Order2 o = new Order2();
+        o.setAppId("appId_" + Randoms.getInt(100));
+        o.setNo("no_" + System.currentTimeMillis());
+        return o;
+    }
+
+    protected UserInfo2 userInfo2() {
+        UserInfo2 ui = new UserInfo2();
+        ui.setName("name_" + Randoms.getInt(100));
+        ui.setDescp("descp_" + Randoms.getInt(100));
+        return ui;
     }
 
     protected List<Role> roles(int size) {

@@ -91,7 +91,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityProper
  * @param <L>  the generic type
  */
 public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<T1, T2, T3, T4,
-        ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder, C extends GroupExpression<C, L>,
+        ER extends EntitySqlRelation<ER,B>, B extends SqlBuilder, C extends GroupExpression<C, L>,
         L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>>
         extends AbstractMulitiEntitySqlConditionsGroupExpressionBase3<T1, T2, T3, ER, B, C, L, C2> implements
         EntityBetweenExpressionBase4<T1, T2, T3, T4, C, L>, EntityNotBetweenExpressionBase4<T1, T2, T3, T4, C, L> //

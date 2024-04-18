@@ -70,7 +70,7 @@ public class InEntityExpressionImpl<T, C extends ConditionExpression, L extends 
     private JdbcMappingFactory factory;
 
     /** The query relation. */
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new in entity expression impl.
@@ -81,7 +81,7 @@ public class InEntityExpressionImpl<T, C extends ConditionExpression, L extends 
      * @param queryRelation the query relation
      */
     public InEntityExpressionImpl(int index, MulitiInExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

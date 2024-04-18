@@ -27,7 +27,6 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
  * @author zhongj
  */
 public interface InternalMulitiEntityCondition<L> extends InternalMulitiCondition<L>, MulitiEntityConditionExpression {
-
     /**
      * between and.
      *
@@ -141,7 +140,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <R> L eq(AtomicInteger index, PropertyMapping<?> pm, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -202,7 +201,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <R> L ne(AtomicInteger index, PropertyMapping<?> pm, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * equals or not equals.
@@ -217,7 +216,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
-            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -232,7 +231,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L sw(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not start with value.
@@ -245,7 +244,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L nsw(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -260,7 +259,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L co(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not contains value.
@@ -273,7 +272,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L nco(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -288,7 +287,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L ew(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not end with value.
@@ -301,7 +300,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L newv(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -316,7 +315,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L lk(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not like.
@@ -329,7 +328,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     L nl(AtomicInteger index, PropertyMapping<?> pm, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -390,7 +389,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <R> L in(AtomicInteger index, PropertyMapping<?> pm, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -451,7 +450,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <R> L ni(AtomicInteger index, PropertyMapping<?> pm, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -534,7 +533,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <V> L ge(AtomicInteger index, PropertyMapping<?> pm, V value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -595,7 +594,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <V> L gt(AtomicInteger index, PropertyMapping<?> pm, V value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -656,7 +655,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <V> L le(AtomicInteger index, PropertyMapping<?> pm, V value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -717,5 +716,5 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <V> L lt(AtomicInteger index, PropertyMapping<?> pm, V value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 }

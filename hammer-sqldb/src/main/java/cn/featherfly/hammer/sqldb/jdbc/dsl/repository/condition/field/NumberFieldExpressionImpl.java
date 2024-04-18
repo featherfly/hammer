@@ -4,7 +4,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -20,7 +19,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public class NumberFieldExpressionImpl<N extends Number, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractRepositoryFieldExpression<C, L> implements RepositoryNumberFieldExpression<N, C, L> {
+    extends AbstractRepositoryFieldExpression<C, L> implements RepositoryNumberFieldExpression<N, C, L> {
 
     /**
      * @param name
@@ -30,13 +29,13 @@ public class NumberFieldExpressionImpl<N extends Number, C extends ConditionExpr
         super(name, expression);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(name, field);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L eq(FieldExpression expression) {
+    //        return this.expression.eq(name, expression);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -60,14 +59,6 @@ public class NumberFieldExpressionImpl<N extends Number, C extends ConditionExpr
     @Override
     public L eq(N value, Predicate<N> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

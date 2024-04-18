@@ -44,7 +44,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     public EntityDatePropertyExpressionImpl(int index, SerializableFunction<E, D> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -59,7 +59,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     public EntityDatePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 

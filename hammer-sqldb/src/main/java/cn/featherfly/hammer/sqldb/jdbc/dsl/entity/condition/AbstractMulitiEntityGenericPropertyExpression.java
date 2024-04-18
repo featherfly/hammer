@@ -22,8 +22,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F extends SerializableFunction<E, P>,
-        C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<E, C, L> {
+    C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends AbstractMulitiEntityPropertyExpression<E, C, L> {
 
     /**
      * Instantiates a new entity property type expression impl.
@@ -35,8 +35,8 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
      * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, F name,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, name, expression, factory, queryRelation);
     }
 
@@ -50,8 +50,8 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
      * @param queryRelation the query relation
      */
     public AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 }

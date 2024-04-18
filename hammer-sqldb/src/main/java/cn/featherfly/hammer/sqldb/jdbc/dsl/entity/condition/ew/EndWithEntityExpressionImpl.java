@@ -41,7 +41,7 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
     private JdbcMappingFactory factory;
 
     /** The query relation. */
-    private EntitySqlRelation<?, ?> queryRelation;
+    private EntitySqlRelation<?,?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
@@ -52,7 +52,7 @@ public class EndWithEntityExpressionImpl<E, C extends ConditionExpression, L ext
      * @param queryRelation the query relation
      */
     public EndWithEntityExpressionImpl(int index, MulitiEndWithExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

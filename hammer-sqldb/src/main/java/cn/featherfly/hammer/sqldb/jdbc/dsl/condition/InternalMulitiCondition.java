@@ -27,8 +27,10 @@ import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.IgnorableExpression;
 import cn.featherfly.hammer.expression.condition.MulitiRepositoryExpression;
+import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
  * internal muliti condition.
@@ -37,15 +39,30 @@ import cn.featherfly.hammer.expression.condition.MulitiRepositoryExpression;
  * @param <L> the generic type
  */
 public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, IgnorableExpression {
+
+    /**
+     * Gets the jdbc.
+     *
+     * @return the jdbc
+     */
+    Jdbc getJdbc();
+
+    /**
+     * Adds the condition.
+     *
+     * @param condition the condition
+     * @return the expression
+     */
+    Expression addCondition(Expression condition);
+
     /**
      * between and.
      *
-     * @param <V>            the value type
-     * @param index          the index
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
-     * @param ignoreStrategy the ignore strategy
+     * @param <V>   the value type
+     * @param index the index
+     * @param name  the name
+     * @param min   the min
+     * @param max   the max
      * @return LogicExpression
      */
     default <V> L ba(AtomicInteger index, Serializable name, V min, V max) {
@@ -182,7 +199,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <R> L eq(AtomicInteger index, SerializableSupplier<R> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * equals.
@@ -241,7 +258,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <R> L eq(AtomicInteger index, Serializable property, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * equals.
@@ -325,7 +342,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <R> L ne(AtomicInteger index, SerializableSupplier<R> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not equals.
@@ -384,7 +401,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <R> L ne(AtomicInteger index, Serializable property, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not equals.
@@ -457,7 +474,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, String name, R value,
-            MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
 
@@ -471,7 +488,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L sw(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * start with value.
@@ -484,7 +501,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L sw(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * start with value.
@@ -510,7 +527,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L nsw(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not start with value.
@@ -523,7 +540,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L nsw(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not start with value.
@@ -549,7 +566,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L co(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * contains value.
@@ -562,7 +579,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L co(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * contains value.
@@ -588,7 +605,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L nco(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not contains value.
@@ -601,7 +618,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L nco(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not contains value.
@@ -627,7 +644,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L ew(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * end with value.
@@ -640,7 +657,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L ew(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * end with value.
@@ -666,7 +683,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L newv(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not end with value.
@@ -679,7 +696,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L newv(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not end with value.
@@ -705,7 +722,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L lk(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * like.
@@ -718,7 +735,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L lk(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * like.
@@ -744,7 +761,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L nl(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not like.
@@ -757,7 +774,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L nl(AtomicInteger index, Serializable property, String value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not like.
@@ -854,7 +871,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L in(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * in.
@@ -866,7 +883,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L in(AtomicInteger index, SerializableArraySupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * in.
@@ -903,7 +920,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <T> L in(AtomicInteger index, SerializableToDoubleFunction<T> property, double value,
-            DoublePredicate ignoreStrategy);
+        DoublePredicate ignoreStrategy);
 
     /**
      * in.
@@ -929,7 +946,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <R> L in(AtomicInteger index, Serializable property, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * in.
@@ -1097,7 +1114,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <T> L ni(AtomicInteger index, SerializableToDoubleFunction<T> property, double value,
-            DoublePredicate ignoreStrategy);
+        DoublePredicate ignoreStrategy);
 
     /**
      * not in.
@@ -1123,7 +1140,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     <R> L ni(AtomicInteger index, Serializable property, R value, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * not in.
@@ -1308,7 +1325,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L ge(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * great equals.
@@ -1509,7 +1526,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L gt(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * great than.
@@ -1712,7 +1729,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L le(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * less equals.
@@ -1913,7 +1930,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @return LogicExpression
      */
     L lt(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<?> ignoreStrategy);
+        Predicate<?> ignoreStrategy);
 
     /**
      * less than.

@@ -93,30 +93,29 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityProper
  * @param <L>  the generic type
  */
 public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, T2, T3, T4, T5, T6,
-        ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder, C extends GroupExpression<C, L>,
-        L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>>
-        extends AbstractMulitiEntitySqlConditionsGroupExpressionBase5<T1, T2, T3, T4, T5, ER, B, C, L, C2>
-        implements EntityBetweenExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityNotBetweenExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityContainsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityNotContainsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityEndWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityNotEndWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityNotEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityGreatEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityGreatThanExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityInExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityNotInExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityIsNotNullExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityIsNullExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityLessEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityLessThanExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityStartWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityNotStartWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityLikeExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
-        EntityNotLikeExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
-        , EntityPropertyExpression6<T1, T2, T3, T4, T5, T6, C, L> {
+    ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder, C extends GroupExpression<C, L>,
+    L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>>
+    extends AbstractMulitiEntitySqlConditionsGroupExpressionBase5<T1, T2, T3, T4, T5, ER, B, C, L, C2>
+    implements EntityBetweenExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityNotBetweenExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityContainsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityNotContainsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityEndWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityNotEndWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityNotEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityGreatEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityGreatThanExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityInExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>, EntityNotInExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityIsNotNullExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityIsNullExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityLessEqualsExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityLessThanExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityStartWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityNotStartWithExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityLikeExpressionBase6<T1, T2, T3, T4, T5, T6, C, L>,
+    EntityNotLikeExpressionBase6<T1, T2, T3, T4, T5, T6, C, L> //
+    , EntityPropertyExpression6<T1, T2, T3, T4, T5, T6, C, L> {
 
     /** The class mapping. */
     protected JdbcClassMapping<T6> classMapping6;
@@ -133,7 +132,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @SuppressWarnings("unchecked")
     protected AbstractMulitiEntitySqlConditionsGroupExpressionBase6(L parent, JdbcMappingFactory factory,
-            ER entitySqlRelation) {
+        ER entitySqlRelation) {
         super(parent, factory, entitySqlRelation);
 
         EntityRelationMapping<?> erm = entitySqlRelation.getEntityRelationMappingTuple().getOrNull5();
@@ -270,7 +269,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L eq6(SerializableToLocalDateTimeFunction<T6> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return eq(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -335,7 +334,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L eq6(SerializableToStringFunction<T6> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return eq(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -668,7 +667,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ne6(SerializableToLocalDateTimeFunction<T6> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return ne(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -733,7 +732,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ne6(SerializableToStringFunction<T6> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ne(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -968,7 +967,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L lk6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lk(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1003,7 +1002,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nl6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nl(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1038,7 +1037,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L sw6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return sw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1073,7 +1072,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nsw6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nsw(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1108,7 +1107,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ew6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ew(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1143,7 +1142,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L new6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return newv(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1178,7 +1177,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L co6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return co(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1213,7 +1212,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nco6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nco(classMapping6, name, value, queryAlias6, matchStrategy, ignoreStrategy);
     }
 
@@ -1280,7 +1279,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ge6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ge(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -1377,7 +1376,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ge6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return ge(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1636,7 +1635,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L gt6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return gt(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -1733,7 +1732,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L gt6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return gt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -1992,7 +1991,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L le6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return le(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -2089,7 +2088,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L le6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return le(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -2348,7 +2347,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L lt6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lt(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -2445,7 +2444,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L lt6(SerializableFunction<T6, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return lt(classMapping6, name, value, queryAlias6, ignoreStrategy);
     }
 
@@ -2832,7 +2831,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L in6(SerializableToStringFunction<T6> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return in(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -2849,7 +2848,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L in6(SerializableToStringFunction<T6> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return in(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -3092,7 +3091,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ni6(SerializableToStringFunction<T6> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ni(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -3109,7 +3108,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ni6(SerializableToStringFunction<T6> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return ni(classMapping6, name, value, matchStrategy, queryAlias6, ignoreStrategy);
     }
 
@@ -3242,7 +3241,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ba6(SerializableToDoubleFunction<T6> name, double min, double max,
-            BiPredicate<Double, Double> ignoreStrategy) {
+        BiPredicate<Double, Double> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3259,7 +3258,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public <N extends Number> L ba6(SerializableToNumberFunction<T6, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
+        BiPredicate<N, N> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3276,7 +3275,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public <D extends Date> L ba6(SerializableToDateFunction<T6, D> name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
+        BiPredicate<D, D> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3293,7 +3292,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public <E extends Enum<E>> L ba6(SerializableToEnumFunction<T6, E> name, E min, E max,
-            BiPredicate<E, E> ignoreStrategy) {
+        BiPredicate<E, E> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3310,7 +3309,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ba6(SerializableToLocalTimeFunction<T6> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3327,7 +3326,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ba6(SerializableToLocalDateFunction<T6> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3344,7 +3343,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ba6(SerializableToLocalDateTimeFunction<T6> name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3361,7 +3360,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L ba6(SerializableToStringFunction<T6> name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
+        BiPredicate<String, String> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3412,7 +3411,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nba6(SerializableToDoubleFunction<T6> name, double min, double max,
-            BiPredicate<Double, Double> ignoreStrategy) {
+        BiPredicate<Double, Double> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3429,7 +3428,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public <N extends Number> L nba6(SerializableToNumberFunction<T6, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
+        BiPredicate<N, N> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3446,7 +3445,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public <D extends Date> L nba6(SerializableToDateFunction<T6, D> name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
+        BiPredicate<D, D> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3463,7 +3462,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public <E extends Enum<E>> L nba6(SerializableToEnumFunction<T6, E> name, E min, E max,
-            BiPredicate<E, E> ignoreStrategy) {
+        BiPredicate<E, E> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3480,7 +3479,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nba6(SerializableToLocalTimeFunction<T6> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3497,7 +3496,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nba6(SerializableToLocalDateFunction<T6> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3514,7 +3513,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nba6(SerializableToLocalDateTimeFunction<T6> name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3531,7 +3530,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L nba6(SerializableToStringFunction<T6> name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
+        BiPredicate<String, String> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias6, ignoreStrategy);
     }
 
@@ -3543,15 +3542,15 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase6<T1, 
      */
     @Override
     public L property(SixArgusFunction<EntityPropertyOnlyExpression<T1>, EntityPropertyOnlyExpression<T2>,
-            EntityPropertyOnlyExpression<T3>, EntityPropertyOnlyExpression<T4>, EntityPropertyOnlyExpression<T5>,
-            EntityPropertyOnlyExpression<T6>, LogicExpression<?, ?>> entityPropertyConsumer) {
+        EntityPropertyOnlyExpression<T3>, EntityPropertyOnlyExpression<T4>, EntityPropertyOnlyExpression<T5>,
+        EntityPropertyOnlyExpression<T6>, LogicExpression<?, ?>> entityPropertyConsumer) {
         return (L) entityPropertyConsumer.apply(
-                new EntityPropertyOnlyExpressionImpl<>(0, this, factory, entityRelation),
-                new EntityPropertyOnlyExpressionImpl<>(1, this, factory, entityRelation),
-                new EntityPropertyOnlyExpressionImpl<>(2, this, factory, entityRelation),
-                new EntityPropertyOnlyExpressionImpl<>(3, this, factory, entityRelation),
-                new EntityPropertyOnlyExpressionImpl<>(4, this, factory, entityRelation),
-                new EntityPropertyOnlyExpressionImpl<>(5, this, factory, entityRelation));
+            new EntityPropertyOnlyExpressionImpl<>(0, this, factory, entityRelation),
+            new EntityPropertyOnlyExpressionImpl<>(1, this, factory, entityRelation),
+            new EntityPropertyOnlyExpressionImpl<>(2, this, factory, entityRelation),
+            new EntityPropertyOnlyExpressionImpl<>(3, this, factory, entityRelation),
+            new EntityPropertyOnlyExpressionImpl<>(4, this, factory, entityRelation),
+            new EntityPropertyOnlyExpressionImpl<>(5, this, factory, entityRelation));
     }
     // ********************************************************************
     // private method

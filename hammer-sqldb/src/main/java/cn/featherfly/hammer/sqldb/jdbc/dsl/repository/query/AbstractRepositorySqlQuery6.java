@@ -4,14 +4,19 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query;
 import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression6;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression6;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression6;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 
 /**
  * AbstractRepositorySqlQuery6.
@@ -24,13 +29,13 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQuery6<R extends RepositoryQueryRelateExpression<R>,
-        C extends RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,
-        L extends RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>,
-        S extends RepositoryQuerySortExpression6<Q>, Q extends QueryLimitExecutor>
-        extends AbstractRepositorySqlQueryJoin<R, C, Q> implements RepositoryQuery6<C, L, S, Q> {
+    C extends RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>, S extends RepositoryQuerySortExpression6<Q>,
+    Q extends QueryLimitExecutor> extends AbstractRepositorySqlQueryJoin<R, C, Q>
+    implements RepositoryQuery6<C, L, S, Q> {
 
     protected static final Tuple6<Integer, Integer, Integer, Integer, Integer,
-            Integer> RELATIONS_TUPLE = Tuples.of(0, 1, 2, 3, 4, 5);
+        Integer> RELATIONS_TUPLE = Tuples.of(0, 1, 2, 3, 4, 5);
 
     /**
      * Instantiates a new abstract repository sql query 6.
@@ -49,5 +54,21 @@ public abstract class AbstractRepositorySqlQuery6<R extends RepositoryQueryRelat
      */
     protected AbstractRepositorySqlQuery6(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(5, queryRelation, sqlPageFactory);
+    }
+
+    protected <E extends AbstractSqlConditionExpression<?, ?, ?>> E where(E conditions,
+        SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        if (repositoriesCondtionFuntion != null) {
+            conditions.addCondition(
+                repositoriesCondtionFuntion.apply(new RepositoryFieldOnlyExpressionImpl<>(0, queryRelation),
+                    new RepositoryFieldOnlyExpressionImpl<>(1, queryRelation),
+                    new RepositoryFieldOnlyExpressionImpl<>(2, queryRelation),
+                    new RepositoryFieldOnlyExpressionImpl<>(3, queryRelation),
+                    new RepositoryFieldOnlyExpressionImpl<>(4, queryRelation),
+                    new RepositoryFieldOnlyExpressionImpl<>(5, queryRelation)));
+        }
+        return conditions;
     }
 }

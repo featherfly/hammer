@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -21,7 +20,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public class DateFieldExpressionImpl<D extends Date, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractRepositoryFieldExpression<C, L> implements RepositoryDateFieldExpression<D, C, L> {
+    extends AbstractRepositoryFieldExpression<C, L> implements RepositoryDateFieldExpression<D, C, L> {
 
     /**
      * Instantiates a new date field expression impl.
@@ -31,14 +30,6 @@ public class DateFieldExpressionImpl<D extends Date, C extends ConditionExpressi
      */
     public DateFieldExpressionImpl(String name, AbstractSqlConditionsExpression<C, L, ?> expression) {
         super(name, expression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L eq(Field field) {
-        return expression.eq(name, field);
     }
 
     /**
@@ -63,14 +54,6 @@ public class DateFieldExpressionImpl<D extends Date, C extends ConditionExpressi
     @Override
     public L eq(D value, Predicate<D> ignoreStrategy) {
         return expression.eq(name, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String expression() {
-        return expression.expression();
     }
 
     /**

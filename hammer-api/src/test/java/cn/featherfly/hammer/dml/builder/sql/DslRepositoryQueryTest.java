@@ -264,6 +264,10 @@ public class DslRepositoryQueryTest {
             .join("user_info").on("user_id") //
             .join("role").on((r1, r2, j) -> j.field("id").eq(r2.field("role_id")));
 
+        query.find("user") //
+            .join("user_info").on("user_id") //
+            .join("role").on((r1, r2, j) -> j.field("id").eq(r2.field("role_id")));
+
         //        query.find("user") //
         //                .join("user_info").on("user_id") //
         //                .join2("role").on("id", "role_id");

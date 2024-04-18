@@ -82,7 +82,7 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
      */
     public BetweenEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -96,7 +96,7 @@ public class BetweenEntityPropertyExpressionImpl<V, C extends ConditionExpressio
      */
     public BetweenEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+            EntitySqlRelation<?,?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
