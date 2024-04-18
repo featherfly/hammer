@@ -3,10 +3,12 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
 import java.util.function.Supplier;
 
+import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBasicBuilder2;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.NotImplementedException;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
 import cn.featherfly.hammer.expression.condition.Expression;
@@ -50,8 +52,12 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
      */
     @Override
     public <T> EntitySqlUpdateRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
-        // IMPLSOON update还未实现join
-        throw new NotImplementedException();
+        AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
+        addFilterable(joinClassMapping);
+        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+        updateBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), joinClassMapping.getRepositoryName(),
+            jerm.getTableAlias(), onExpression.get().expression()));
+        return this;
     }
 
     // ****************************************************************************************************************

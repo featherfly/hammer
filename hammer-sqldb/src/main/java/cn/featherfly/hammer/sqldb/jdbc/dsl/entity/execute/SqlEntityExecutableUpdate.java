@@ -21,9 +21,11 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression1;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableUpdate;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate2;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
@@ -35,6 +37,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlConditionsGroupExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn1;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlUpdateRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.AbstractSqlExecutableUpdate;
 
@@ -47,11 +50,11 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.AbstractSqlExecutableUpdate;
 public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<SqlEntityExecutableUpdate<E>>
     implements SqlEntityUpdate<E>, EntityExecutableUpdate<E> {
 
-    private JdbcClassMapping<E> classMapping;
+    JdbcClassMapping<E> classMapping;
 
-    private JdbcMappingFactory factory;
+    JdbcMappingFactory factory;
 
-    private EntitySqlUpdateRelation relation;
+    EntitySqlUpdateRelation relation;
 
     /**
      * Instantiates a new sql entity executable update.
@@ -262,7 +265,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityUpdateValueExpression<E, R, EntityExecutableUpdate<E>,
+    public <R> EntityUpdateValueExpression<R, EntityExecutableUpdate<E>,
         EntityExecutableConditionGroup<E, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, R> property) {
         return new EntityUpdateValueImpl<>(property, this);
@@ -272,11 +275,11 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R,
-        O> EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>,
+    public <P,
+        V> EntityUpdateValueExpression<V, EntityExecutableUpdate<E>,
             EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, R> property,
-                SerializableFunction<R, O> nestedProperty) {
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, P> property,
+                SerializableFunction<P, V> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
     }
 
@@ -284,11 +287,11 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityUpdateNumberValueExpression<E, N, EntityExecutableUpdate<E>,
+    public <N extends Number> EntityUpdateNumberValueExpression<N, EntityExecutableUpdate<E>,
         EntityExecutableConditionGroup<E, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
-            SerializableToNumberFunction<E, N> name) {
-        return new EntityUpdateNumberValueImpl<>(name, this);
+            SerializableToNumberFunction<E, N> property) {
+        return new EntityUpdateNumberValueImpl<>(property, this);
     }
 
     /**
@@ -317,9 +320,32 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
+    public EntityUpdateExpression<E, EntityExecutableUpdate<E>,
+        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
+        if (configure != null) {
+            configure.accept(updateConfig);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int execute() {
         return createSqlUpdateExpression().execute();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <J> EntityOnExpression1<E, J, EntityUpdate2<E, J>> join(Class<J> joinType) {
+        return new EntitySqlOn1<>(joinType, new SqlEntityExecutableUpdate2<>(this), factory, relation);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
 
     private <R> EntityExecutableUpdate<E> set0(Serializable name, R value, Predicate<R> ignoreStrategy) {
         builder.setIgnoreStrategy(ignoreStrategy);
@@ -506,18 +532,4 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
     private String getPropertyName(Serializable name) {
         return LambdaUtils.getLambdaPropertyName(name);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityUpdateExpression<E, EntityExecutableUpdate<E>,
-        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
-        if (configure != null) {
-            configure.accept(updateConfig);
-        }
-        return this;
-    }
-
 }

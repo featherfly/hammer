@@ -7,7 +7,8 @@ import java.util.function.Predicate;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * EntityUpdateSetExpression.
@@ -18,9 +19,7 @@ import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutableExpression<E, U, C, L>,
-        C extends EntityExecutableConditionGroupExpression<E, C, L, UpdateConditionConfig>,
-        L extends EntityExecutableConditionGroupLogicExpression<E, C, L, UpdateConditionConfig>> {
+public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * Sets the.
@@ -88,7 +87,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     <R, O> U set(SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty, O value,
-            Predicate<O> ignoreStrategy);
+        Predicate<O> ignoreStrategy);
 
     /**
      * set value for property.
@@ -102,7 +101,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     default <R, O> U set(SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty, O value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return set(property, nestedProperty, value, ignoreStrategy::test);
     }
 
@@ -159,7 +158,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     <R, O> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty,
-            Predicate<O> ignoreStrategy);
+        Predicate<O> ignoreStrategy);
 
     /**
      * set value for property.
@@ -172,7 +171,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     default <R, O> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return set(property, nestedProperty, ignoreStrategy::test);
     }
 
@@ -221,7 +220,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     <R, N extends Number> U increase(SerializableFunction<E, R> property, SerializableFunction<R, N> nestedProperty,
-            N value);
+        N value);
 
     /**
      * increase value for property.
@@ -235,7 +234,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     <R, N extends Number> U increase(SerializableFunction<E, R> property, SerializableFunction<R, N> nestedProperty,
-            N value, Predicate<N> ignoreStrategy);
+        N value, Predicate<N> ignoreStrategy);
 
     /**
      * increase value for property.
@@ -249,7 +248,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     default <R, N extends Number> U increase(SerializableFunction<E, R> property,
-            SerializableFunction<R, N> nestedProperty, N value, IgnoreStrategy ignoreStrategy) {
+        SerializableFunction<R, N> nestedProperty, N value, IgnoreStrategy ignoreStrategy) {
         return increase(property, nestedProperty, value, ignoreStrategy::test);
     }
 
@@ -306,7 +305,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     <R, N extends Number> U increase(SerializableSupplier<R> property, SerializableFunction<R, N> nestedProperty,
-            Predicate<N> ignoreStrategy);
+        Predicate<N> ignoreStrategy);
 
     /**
      * increase value for property.
@@ -319,7 +318,7 @@ public interface EntityUpdateSetExpression<E, U extends EntityUpdateSetExecutabl
      * @return Update
      */
     default <R, N extends Number> U increase(SerializableSupplier<R> property,
-            SerializableFunction<R, N> nestedProperty, IgnoreStrategy ignoreStrategy) {
+        SerializableFunction<R, N> nestedProperty, IgnoreStrategy ignoreStrategy) {
         return increase(property, nestedProperty, ignoreStrategy::test);
     }
 }

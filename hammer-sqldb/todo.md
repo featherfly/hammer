@@ -81,12 +81,15 @@
 
 - [x] 加入upsert支持
 
-- [ ] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
+- [x] 加入一次交互完成锁查询、修改，并返回修改后的结果的功能
 
-    hammer加入getLockUpdate(updateFetch)、getLockSaveOrUpdate(saveOrUpdateFetch)锁记录，修改，并返回修改后的信息
+    hammer加入updateFetch、~~saveOrUpdateFetch~~锁记录，修改，并返回修改后的信息
 
-    updateSaveFetch的原理，可以参见Java的Result Sets中检索和修改值的相关内容。只是当JDBC driver不支持ResultSet的并发更新时，框架需要一些降级的支持方法。
-    看的挺深的，updatesavefetch有降级方法，就是常规的锁load拿过来判断，产生两次交互
+    updateFetch的原理:  
+
+    默认使用Result Sets中检索和修改值的相关内容。
+
+    当JDBC driver不支持ResultSet的并发更新时，可以根据参数使用数据库行锁或者自定义锁(如redis lock)锁定,然后再加载,最后进行更新(产生两次交互)
     数据数据库（sql数据库一般都支持行锁）不支持（如elasticsearch, mongodb等暂时不确定这两是否有行锁，做相应实现时再查询期特性），使用内置的locker来实现
 
 - [ ] 加入@Execution|@Dsl（@Sql）注解，用于非模板执行字符串（sql，json等）的直接运行，并去掉@Template的isTemplate方法（需要处理字节码动态加载）
@@ -130,7 +133,7 @@
 
 - [x] dsl api 更新操作集成update(String, BeanPropertyValue<?>...)用于完善自定义属性映射
 
-- [x] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
+- [ ] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
 
 - [x] dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）
 
@@ -239,6 +242,16 @@
         );
     
     find(UserTableMetadata)
+        .join(UserInfoTableMetadata).on((e1,e2) -> e1.id.eq(e2.userId))
+        .where()
+        .username.eq("username")
+        .and().r2.age.ge(18)     				// 这里大概率要用下面这种方式，因为r2类型是join时动态确定的，只能用方法+泛型来动态约束
+        .and().r2().age.ge(18).and().age.le(60) // r(x)切换后的表达式主题都是r(x)
+        .and().r1().username.eq("username")     // 要使用另外一个主题就调用r(x)进行切换
+        ;
+    
+    
+    find(UserTableMetadata)
         // 省略 fetch，查询所有
     	.join(UserInfoTableMetadata).on((e1,e2) -> e1.id.eq(e2.userId))
         // 省略 fetch，查询所有
@@ -272,6 +285,16 @@
         .where((e1,e2) -> e2.username.eq("username")
     				    .and(e2).age.ge(18);
         );
+    
+    find(UserEntityMetadata.class)
+        .join(UserInfoEntityMetadata.class).on((e1,e2) -> e1.id.eq(e2.userId))
+        .where()
+        .username.eq("username")
+        .and().e2.age.ge(18)     				// 这里大概率要用下面这种方式，因为e2类型是join时动态确定的，只能用方法+泛型来动态约束
+        .and().e2().age.ge(18).and().age.le(60) // e(x)切换后的表达式主题都是e(x)
+        .and().e1().username.eq("username")     // 要使用另外一个主题就调用e(x)进行切换
+        ;
+    
     
     find(UserEntityMetadata.class)
         .join(UserInfoEntityMetadata.class).on((e1,e2) -> e1.id.eq(e2.userId))

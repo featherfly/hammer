@@ -343,6 +343,10 @@ public class DslTest {
         updater.update(User.class).set(User::getUsername, "yufei").set(User::getPwd, "123456")
             .increase(User::getAge, 10).execute();
 
+        updater.update(User.class).set(User::getUsername, "yufei").where();
+
+        updater.update(User.class).property(User::getUsername).set("yufei").where();
+
         updater.update(User.class).set(User::getUsername, "yufei").set(User::getPwd, "123456")
             .increase(User::getAge, 10).where().property(User::getId).eq(1);
 
@@ -368,6 +372,8 @@ public class DslTest {
         updater.update(User.class).increase(User::getAge, 1, v -> v == null).execute();
         updater.update(User.class).increase(User::getAge, 1).where().eq(User::getId, 1).execute();
         updater.update(User.class).increase(User::getAge, 1, v -> v == null).where().eq(User::getId, 1).execute();
+
+        updater.update(User.class).property(User::getUserInfo, UserInfo::getAge).set(18);
     }
 
     public void testDelete() {

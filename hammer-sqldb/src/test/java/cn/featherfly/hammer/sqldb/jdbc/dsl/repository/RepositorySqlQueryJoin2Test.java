@@ -272,7 +272,7 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
     void joinCondition2_EqColumn() {
         List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
             .join("user_info").on("user_id") //
-            .join("order").on("user1") //
+            .join("order").on("user3") //
             .where((r1, r2, r3) -> r1.field("username").eq(r2.field("name"))) //
             .list();
         assertEquals(list.size(), 1);

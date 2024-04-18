@@ -21,6 +21,7 @@ import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.sqldb.TestConstants;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
@@ -51,7 +52,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void setup() {
         TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl");
         executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
-                mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
+            mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
     }
 
     @Test
@@ -145,7 +146,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         assertTrue(avg.doubleValue() > 40);
 
         avg = executor.numberBigDecimal(new TplExecuteIdFileImpl("selectAvg2"),
-                new ChainMapImpl<String, Object>().putChain("age", 40));
+            new ChainMapImpl<String, Object>().putChain("age", 40));
         System.out.println("avg(age) = " + avg);
         assertTrue(avg.doubleValue() > 40);
     }
@@ -166,18 +167,18 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         String username = "yufei";
         String password = "123456";
         User u1 = executor.single("user@selectByUsername", User.class,
-                new ChainMapImpl<String, Object>().putChain("username", username));
+            new ChainMapImpl<String, Object>().putChain("username", username));
 
         assertEquals(u1.getUsername(), username);
 
         User u2 = executor.single("user@selectByUsernameAndPassword", User.class,
-                new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
+            new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
 
         assertEquals(u2.getUsername(), username);
         assertEquals(u2.getPwd(), password);
 
         u2 = executor.single("selectByUsernameAndPassword", User.class,
-                new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
+            new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
 
         assertEquals(u2.getUsername(), username);
         assertEquals(u2.getPwd(), password);
@@ -186,7 +187,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         //                new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
         // 加入多prefix、suffix支持后的获取
         u2 = executor.single("user@selectByUsernameAndPassword", User.class,
-                new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
+            new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
 
         assertEquals(u2.getUsername(), username);
         assertEquals(u2.getPwd(), password);
@@ -214,7 +215,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         assertTrue(users.size() > 0);
 
         users = executor.list("user@selectConditions", User.class, new ChainMapImpl<String, Object>()
-                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
+            .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -222,7 +223,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         });
 
         users = executor.list("user@selectConditions", User.class, new ChainMapImpl<String, Object>()
-                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
+            .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -230,7 +231,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         });
 
         users = executor.list("user@selectConditions", User.class, new ChainMapImpl<String, Object>()
-                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("password", password + "%"));
+            .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("password", password + "%"));
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -238,7 +239,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         });
 
         users = executor.list("user@selectConditions", User.class, new ChainMapImpl<String, Object>()
-                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("password", "%" + password));
+            .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("password", "%" + password));
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -254,9 +255,10 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         List<User> users = executor.list("user@selectConditions", User.class, new ChainMapImpl<>(), start, limit);
         assertTrue(users.size() == 3);
 
-        users = executor.list(
+        users = executor
+            .list(
                 "user@selectConditions", User.class, new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
+                    .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
                 new SimplePagination(start, limit));
         final int size = users.size();
         users.forEach(u -> {
@@ -266,9 +268,10 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         });
         assertTrue(size == 3);
 
-        List<Map<String, Object>> userList = executor.list(
+        List<
+            Map<String, Object>> userList = executor.list(
                 "user@selectConditions", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
+                    .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
                 new SimplePagination(start, limit));
         final int size2 = userList.size();
         userList.forEach(u -> {
@@ -286,12 +289,13 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         Integer start = 0;
 
         PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class,
-                new ChainMapImpl<>(), start, limit);
+            new ChainMapImpl<>(), start, limit);
         assertTrue(userPaginationResults.getResultSize() == 3);
 
-        userPaginationResults = executor.pagination(
+        userPaginationResults = executor
+            .pagination(
                 "user@selectConditions", User.class, new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
+                    .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
                 new SimplePagination(start, limit));
         final int size = userPaginationResults.getResultSize();
         assertTrue(userPaginationResults.getTotal() == 4);
@@ -303,9 +307,10 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         });
         assertTrue(size == 3);
 
-        PaginationResults<Map<String, Object>> userPage = executor.pagination(
+        PaginationResults<
+            Map<String, Object>> userPage = executor.pagination(
                 "user@selectConditions", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
+                    .putChain("maxAge", maxAge).putChain("username", username1 + "%"),
                 new SimplePagination(start, limit));
         final int size2 = userPage.getResultSize();
         userPage.getPageResults().forEach(u -> {
@@ -317,8 +322,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         assertTrue(size2 == 3);
 
         userPage = executor.pagination("user@selectConditions", new ChainMapImpl<String, Object>()
-                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), start,
-                limit);
+            .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), start, limit);
         userPage.getPageResults().forEach(u -> {
             int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
             assertTrue(age >= minAge);
@@ -331,13 +335,13 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testRoleList() {
         List<Role> roles = executor.list("role@selectByName", Role.class,
-                new ChainMapImpl<String, Object>().putChain("name", "name%"));
+            new ChainMapImpl<String, Object>().putChain("name", "name%"));
         assertTrue(roles.size() > 0);
         roles.forEach(r -> {
             assertTrue(r.getName().startsWith("name"));
         });
         List<Role> roles2 = executor.list("role@selectByName", Role.class,
-                new ChainMapImpl<String, Object>().putChain("name", null));
+            new ChainMapImpl<String, Object>().putChain("name", null));
         assertTrue(roles2.size() > roles.size());
     }
 
@@ -357,7 +361,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
         if (sql != null) {
             List<Map<String, Object>> roles = executor.list(sql,
-                    new ChainMapImpl<String, Object>().putChain("name", "name%").putChain("dateFormat", dateFormat));
+                new ChainMapImpl<String, Object>().putChain("name", "name%").putChain("dateFormat", dateFormat));
             assertTrue(roles.size() > 0);
             roles.forEach(r -> {
                 if (r.get("") != null) {
@@ -366,7 +370,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
                 assertTrue(r.get("name").toString().startsWith("name"));
             });
             List<Map<String, Object>> roles2 = executor.list(sql,
-                    new ChainMapImpl<String, Object>().putChain("name", null).putChain("dateFormat", dateFormat));
+                new ChainMapImpl<String, Object>().putChain("name", null).putChain("dateFormat", dateFormat));
             assertTrue(roles2.size() > roles.size());
             roles.forEach(r -> {
                 if (r.get("") != null) {
@@ -397,7 +401,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testWithTemplate() {
         PaginationResults<
-                Role> uis = executor.pagination("role@selectWithTemplate", Role.class, new ChainMapImpl<>(), 0, 10);
+            Role> uis = executor.pagination("role@selectWithTemplate", Role.class, new ChainMapImpl<>(), 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {
@@ -408,7 +412,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testWithTemplate2() {
         PaginationResults<
-                Role> uis = executor.pagination("role@selectWithTemplate2", Role.class, new ChainMapImpl<>(), 0, 10);
+            Role> uis = executor.pagination("role@selectWithTemplate2", Role.class, new ChainMapImpl<>(), 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {
@@ -419,7 +423,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testWithTemplate3() {
         PaginationResults<
-                Role> uis = executor.pagination("role@selectWithTemplate3", Role.class, new ChainMapImpl<>(), 0, 10);
+            Role> uis = executor.pagination("role@selectWithTemplate3", Role.class, new ChainMapImpl<>(), 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {
@@ -429,8 +433,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testWithTemplate4() {
-        PaginationResults<Map<String, Object>> result = executor.pagination("role@selectWithTemplate4",
-                new ChainMapImpl<>(), 0, 10);
+        PaginationResults<
+            Map<String, Object>> result = executor.pagination("role@selectWithTemplate4", new ChainMapImpl<>(), 0, 10);
         assertTrue(result.getResultSize() > 0);
         System.out.println("result size:" + result.getResultSize());
         result.getPageResults().forEach(ui -> {
@@ -440,8 +444,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
     @Test
     void testMap() {
-        Map<String, Object> uis = executor.single("user_info@selectById",
-                new ChainMapImpl<String, Object>().putChain("id", 1));
+        Map<String,
+            Object> uis = executor.single("user_info@selectById", new ChainMapImpl<String, Object>().putChain("id", 1));
         assertEquals(uis.get("id").toString(), "1");
         //        assertEquals(uis.get("ID").toString(), "1");
         System.out.println(uis);
@@ -482,7 +486,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         String name = "name_insert_" + Randoms.getString(6);
         String descp = "descp_" + Randoms.getString(6);
         int i = executor.execute("insertRole",
-                new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp));
+            new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp));
         assertTrue(i == 1);
 
         Role role = executor.single("getByName", Role.class, new ChainMapImpl<String, Object>().putChain("name", name));
@@ -491,7 +495,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
         descp = "descp_" + Randoms.getString(6);
         i = executor.execute("updateRoleByName",
-                new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp));
+            new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp));
         assertTrue(i == 1);
 
         role = executor.single("getByName", Role.class, new ChainMapImpl<String, Object>().putChain("name", name));
@@ -508,10 +512,10 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testPrivileType() {
         int i = executor.value("countUserInfo", int.class, new ChainMapImpl<>());
-        assertEquals(i, 5);
+        assertEquals(i, TestConstants.USER_INFO_INIT_ROWS);
 
         i = executor.value(new TplExecuteIdFileImpl("countUserInfo"), int.class, new ChainMapImpl<>());
-        assertEquals(i, 5);
+        assertEquals(i, TestConstants.USER_INFO_INIT_ROWS);
     }
 
     @Test
@@ -543,7 +547,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
         // single
         User user = executor.single("selectInSingle", User.class,
-                new ChainMapImpl<String, Object>().putChain("ids", new Long[] { 1L, -1L }));
+            new ChainMapImpl<String, Object>().putChain("ids", new Long[] { 1L, -1L }));
         assertEquals(user.getId(), Integer.valueOf(1));
 
     }
@@ -568,7 +572,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         Integer userId = 1;
         // list
         Tuple2<UserInfo, User> tuple2 = executor.single("selectUserInfoByUserId", UserInfo.class, User.class,
-                Tuples.of("ui.", "u."), new ChainMapImpl<String, Object>().putChain("userId", userId));
+            Tuples.of("ui.", "u."), new ChainMapImpl<String, Object>().putChain("userId", userId));
 
         System.out.println(tuple2.get0());
         System.out.println(tuple2.get1());
@@ -582,7 +586,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         Integer userId = 1;
         // list
         Tuple2<UserInfo, User> tuple2 = executor.single("selectUserInfoByUserId", UserInfo.class, User.class,
-                new ChainMapImpl<String, Object>().putChain("userId", userId));
+            new ChainMapImpl<String, Object>().putChain("userId", userId));
 
         System.out.println(tuple2.get0());
         System.out.println(tuple2.get1());
@@ -595,8 +599,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void testSingleTuple2List() {
         // list
         List<Tuple2<UserInfo, User>> list = executor.list("selectUserInfoAndUserList", UserInfo.class, User.class,
-                Tuples.of("ui.", "u."), new ChainMapImpl<>());
-        assertEquals(list.size(), 5);
+            Tuples.of("ui.", "u."), new ChainMapImpl<>());
+        assertEquals(list.size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
             System.out.println(tuple2.get0());
@@ -606,7 +610,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         }
 
         list = executor.list("selectUserInfoAndUserList", UserInfo.class, User.class, Tuples.of("ui.", "u."),
-                new ChainMapImpl<>(), 0, 1);
+            new ChainMapImpl<>(), 0, 1);
         assertEquals(list.size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
@@ -621,8 +625,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void testSingleTuple2List_2() {
         // list
         List<Tuple2<UserInfo, User>> list = executor.list("selectUserInfoAndUserList", UserInfo.class, User.class,
-                new ChainMapImpl<>());
-        assertEquals(list.size(), 5);
+            new ChainMapImpl<>());
+        assertEquals(list.size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
             System.out.println(tuple2.get0());
@@ -645,9 +649,9 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @Test
     void testSingleTuple2Page() {
         PaginationResults<Tuple2<UserInfo, User>> page = executor.pagination("selectUserInfoAndUserList",
-                UserInfo.class, User.class, Tuples.of("ui.", "u."), new ChainMapImpl<>(), 0, 10);
-        assertEquals(page.getTotal(), Integer.valueOf(5));
-        assertEquals(page.getPageResults().size(), 5);
+            UserInfo.class, User.class, Tuples.of("ui.", "u."), new ChainMapImpl<>(), 0, 10);
+        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
             System.out.println(tuple2.get0());
@@ -657,8 +661,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         }
 
         page = executor.pagination("selectUserInfoAndUserList", UserInfo.class, User.class, Tuples.of("ui.", "u."),
-                new ChainMapImpl<>(), 0, 1);
-        assertEquals(page.getTotal(), Integer.valueOf(5));
+            new ChainMapImpl<>(), 0, 1);
+        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -673,9 +677,9 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     void testSingleTuple2Page_2() {
         int pageSize = 2;
         PaginationResults<Tuple2<UserInfo, User>> page = executor.pagination("selectUserInfoAndUserList",
-                UserInfo.class, User.class, new ChainMapImpl<>(), 0, pageSize);
-        assertEquals(page.getTotal(), Integer.valueOf(5));
-        assertEquals(page.getPageResults().size(), 2);
+            UserInfo.class, User.class, new ChainMapImpl<>(), 0, pageSize);
+        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getPageResults().size(), pageSize);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
             System.out.println(tuple2.get0());

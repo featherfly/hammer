@@ -8,8 +8,10 @@ import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionG
  * entity executable condition group.
  *
  * @author zhongj
+ * @param <E> the element type
+ * @param <C> the generic type
  */
 public interface EntityExecutableConditionGroup<E, C extends ExecutableConditionConfig<C>>
-        extends EntityExecutableConditionGroupExpression<E, EntityExecutableConditionGroup<E, C>,
-                EntityExecutableConditionGroupLogic<E, C>, C> {
+    extends EntityExecutableConditionGroupExpression<E, EntityExecutableConditionGroup<E, C>,
+        EntityExecutableConditionGroupLogic<E, C>, C> {
 }

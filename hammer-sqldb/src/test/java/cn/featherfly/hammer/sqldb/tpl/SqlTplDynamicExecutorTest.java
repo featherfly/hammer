@@ -15,6 +15,7 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
+import cn.featherfly.hammer.sqldb.TestConstants;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
@@ -93,7 +94,7 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
     void testMapperListMap() {
         List<Map<String, Object>> us = userMapper.select2();
         System.out.println(us);
-        assertEquals(us.size(), 5);
+        assertEquals(us.size(), TestConstants.USER_INFO_INIT_ROWS);
 
         us = userMapper.selectById2(1);
         System.out.println(us);

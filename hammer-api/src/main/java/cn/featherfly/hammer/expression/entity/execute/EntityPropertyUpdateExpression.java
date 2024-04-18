@@ -3,7 +3,8 @@ package cn.featherfly.hammer.expression.entity.execute;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * EntityPropertyUpdateExpression.
@@ -14,9 +15,7 @@ import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityPropertyUpdateExpression<E, U extends EntityPropertyExecutableUpdateExpression<E, U, C, L>,
-        C extends EntityExecutableConditionGroupExpression<E, C, L, UpdateConditionConfig>,
-        L extends EntityExecutableConditionGroupLogicExpression<E, C, L, UpdateConditionConfig>> {
+public interface EntityPropertyUpdateExpression<E, U, C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * Property.
@@ -25,7 +24,7 @@ public interface EntityPropertyUpdateExpression<E, U extends EntityPropertyExecu
      * @param property the property
      * @return the entity update value expression
      */
-    <R> EntityUpdateValueExpression<E, R, U, C, L> property(SerializableFunction<E, R> property);
+    <R> EntityUpdateValueExpression<R, U, C, L> property(SerializableFunction<E, R> property);
 
     /**
      * Property.
@@ -36,16 +35,16 @@ public interface EntityPropertyUpdateExpression<E, U extends EntityPropertyExecu
      * @param nestedProperty the nested property
      * @return the entity update value expression
      */
-    <R, O> EntityUpdateValueExpression<E, O, U, C, L> property(SerializableFunction<E, R> property,
-            SerializableFunction<R, O> nestedProperty);
+    <R, O> EntityUpdateValueExpression<O, U, C, L> property(SerializableFunction<E, R> property,
+        SerializableFunction<R, O> nestedProperty);
 
     /**
      * Property.
      *
-     * @param <R>           the generic type
-     * @param propertyValue the property value
+     * @param <R>      the generic type
+     * @param property the property
      * @return the entity update number value expression
      */
-    <R extends Number> EntityUpdateNumberValueExpression<E, R, U, C, L> property(
-            SerializableToNumberFunction<E, R> propertyValue);
+    <R extends Number> EntityUpdateNumberValueExpression<R, U, C, L> property(
+        SerializableToNumberFunction<E, R> property);
 }
