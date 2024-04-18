@@ -20,6 +20,7 @@ import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
+import cn.featherfly.hammer.sqldb.TestConstants;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
@@ -58,7 +59,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl();
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-                .buildValidatorFactory().getValidator());
+            .buildValidatorFactory().getValidator());
 
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
@@ -155,7 +156,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     void testMapperListMap() {
         List<Map<String, Object>> us = userMapper.select2();
         System.out.println(us);
-        assertEquals(us.size(), 5);
+        assertEquals(us.size(), TestConstants.USER_INFO_INIT_ROWS);
 
         us = userMapper.selectById2(1);
         System.out.println(us);

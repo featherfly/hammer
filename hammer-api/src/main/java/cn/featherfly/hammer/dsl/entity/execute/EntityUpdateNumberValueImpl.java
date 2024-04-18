@@ -5,7 +5,10 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
 
 /**
@@ -13,13 +16,17 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpressio
  *
  * @author zhongj
  * @param <E> the element type
- * @param <T> the generic type
+ * @param <N> the number type
+ * @param <U> the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public class EntityUpdateNumberValueImpl<E, T extends Number> implements EntityUpdateNumberValue<E, T> {
+public class EntityUpdateNumberValueImpl<E, N extends Number, U, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> implements EntityUpdateNumberValueExpression<N, U, C, L> {
 
-    private SerializableFunction<E, T> property;
+    private SerializableFunction<E, N> property;
 
-    private EntityExecutableUpdate<E> update;
+    private EntityUpdateSetExpression<E, U, C, L> update;
 
     /**
      * Instantiates a new entity update value impl.
@@ -27,7 +34,8 @@ public class EntityUpdateNumberValueImpl<E, T extends Number> implements EntityU
      * @param property the property
      * @param update   the update
      */
-    public EntityUpdateNumberValueImpl(SerializableFunction<E, T> property, EntityExecutableUpdate<E> update) {
+    public EntityUpdateNumberValueImpl(SerializableFunction<E, N> property,
+        EntityUpdateSetExpression<E, U, C, L> update) {
         super();
         this.property = property;
         this.update = update;
@@ -37,7 +45,7 @@ public class EntityUpdateNumberValueImpl<E, T extends Number> implements EntityU
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(T value) {
+    public U set(N value) {
         return update.set(property, value);
     }
 
@@ -45,7 +53,7 @@ public class EntityUpdateNumberValueImpl<E, T extends Number> implements EntityU
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(T value, Predicate<T> ignoreStrategy) {
+    public U set(N value, Predicate<N> ignoreStrategy) {
         return update.set(property, value, ignoreStrategy);
     }
 
@@ -53,7 +61,7 @@ public class EntityUpdateNumberValueImpl<E, T extends Number> implements EntityU
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> increase(T value) {
+    public U increase(N value) {
         return update.increase(property, value);
     }
 
@@ -61,10 +69,17 @@ public class EntityUpdateNumberValueImpl<E, T extends Number> implements EntityU
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(Consumer<EntityUpdateValueExpression<E, T, EntityExecutableUpdate<E>,
-        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
+    public U increase(N value, Predicate<N> ignoreStrategy) {
+        return update.increase(property, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public U set(Consumer<EntityUpdateValueExpression<N, U, C, L>> consumer) {
         consumer.accept(this);
-        return update;
+        return (U) update;
     }
 }

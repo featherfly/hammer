@@ -17,6 +17,7 @@ import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
+import cn.featherfly.hammer.sqldb.TestConstants;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 
@@ -50,7 +51,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     @Test
     void testListTuple2() {
         List<Tuple2<UserInfo, User>> list = tupleMapper.selectUserInfoAndUserList();
-        assertEquals(list.size(), 5);
+        assertEquals(list.size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
             System.out.println(tuple2.get0());
@@ -86,9 +87,9 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     @Test
     void testPaginationTuple2() {
         PaginationResults<
-                Tuple2<UserInfo, User>> page = tupleMapper.selectUserInfoAndUserPage(new SimplePagination(0, 10));
-        assertEquals(page.getTotal(), Integer.valueOf(5));
-        assertEquals(page.getPageResults().size(), 5);
+            Tuple2<UserInfo, User>> page = tupleMapper.selectUserInfoAndUserPage(new SimplePagination(0, 10));
+        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
             System.out.println(tuple2.get0());
@@ -98,7 +99,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
         }
 
         page = tupleMapper.selectUserInfoAndUserPage(new SimplePagination(0, 1));
-        assertEquals(page.getTotal(), Integer.valueOf(5));
+        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -112,8 +113,8 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     @Test
     void testPaginationLimitTuple2() {
         PaginationResults<Tuple2<UserInfo, User>> page = tupleMapper.selectUserInfoAndUserPage(0, 10);
-        assertEquals(page.getTotal(), Integer.valueOf(5));
-        assertEquals(page.getPageResults().size(), 5);
+        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
             System.out.println(tuple2.get0());
@@ -123,7 +124,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
         }
 
         page = tupleMapper.selectUserInfoAndUserPage(0, 1);
-        assertEquals(page.getTotal(), Integer.valueOf(5));
+        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {

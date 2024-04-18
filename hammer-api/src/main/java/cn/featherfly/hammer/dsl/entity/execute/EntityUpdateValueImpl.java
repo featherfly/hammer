@@ -5,7 +5,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
 
 /**
@@ -14,12 +16,16 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpressio
  * @author zhongj
  * @param <E> the element type
  * @param <T> the generic type
+ * @param <U> the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public class EntityUpdateValueImpl<E, T> implements EntityUpdateValue<E, T> {
+public class EntityUpdateValueImpl<E, T, U, C extends ConditionExpression, L extends LogicExpression<C, L>>
+    implements EntityUpdateValueExpression<T, U, C, L> {
 
     private SerializableFunction<E, T> property;
 
-    private EntityExecutableUpdate<E> update;
+    private EntityUpdateSetExpression<E, U, C, L> update;
 
     /**
      * Instantiates a new entity update value impl.
@@ -27,7 +33,7 @@ public class EntityUpdateValueImpl<E, T> implements EntityUpdateValue<E, T> {
      * @param property the property
      * @param update   the update
      */
-    public EntityUpdateValueImpl(SerializableFunction<E, T> property, EntityExecutableUpdate<E> update) {
+    public EntityUpdateValueImpl(SerializableFunction<E, T> property, EntityUpdateSetExpression<E, U, C, L> update) {
         super();
         this.property = property;
         this.update = update;
@@ -37,7 +43,7 @@ public class EntityUpdateValueImpl<E, T> implements EntityUpdateValue<E, T> {
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(T value) {
+    public U set(T value) {
         return update.set(property, value);
     }
 
@@ -45,19 +51,18 @@ public class EntityUpdateValueImpl<E, T> implements EntityUpdateValue<E, T> {
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(T value, Predicate<T> ignoreStrategy) {
+    public U set(T value, Predicate<T> ignoreStrategy) {
         return update.set(property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public EntityExecutableUpdate<E> set(Consumer<EntityUpdateValueExpression<E, T, EntityExecutableUpdate<E>,
-        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
+    public U set(Consumer<EntityUpdateValueExpression<T, U, C, L>> consumer) {
         consumer.accept(this);
-        return update;
+        return (U) update;
     }
 
 }

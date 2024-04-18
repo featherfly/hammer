@@ -5,24 +5,30 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
 
 /**
- * EntityUpdateValueImpl.
+ * EntityUpdateNestedValueImpl.
  *
  * @author zhongj
  * @param <E> the element type
- * @param <T> the generic type
- * @param <O> the generic type
+ * @param <O> the element property type
+ * @param <V> the value type
+ * @param <U> the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public class EntityUpdateNestedValueImpl<E, T, O> implements EntityUpdateValue<E, O> {
+public class EntityUpdateNestedValueImpl<E, O, V, U, C extends ConditionExpression, L extends LogicExpression<C, L>>
+    implements EntityUpdateValueExpression<V, U, C, L> {
 
-    private SerializableFunction<E, T> property;
+    private SerializableFunction<E, O> property;
 
-    private SerializableFunction<T, O> nestedProperty;
+    private SerializableFunction<O, V> nestedProperty;
 
-    private EntityExecutableUpdate<E> update;
+    private EntityUpdateSetExpression<E, U, C, L> update;
 
     /**
      * Instantiates a new entity update value impl.
@@ -31,8 +37,8 @@ public class EntityUpdateNestedValueImpl<E, T, O> implements EntityUpdateValue<E
      * @param nestedProperty the nested property
      * @param update         the update
      */
-    public EntityUpdateNestedValueImpl(SerializableFunction<E, T> property, SerializableFunction<T, O> nestedProperty,
-        EntityExecutableUpdate<E> update) {
+    public EntityUpdateNestedValueImpl(SerializableFunction<E, O> property, SerializableFunction<O, V> nestedProperty,
+        EntityUpdateSetExpression<E, U, C, L> update) {
         super();
         this.property = property;
         this.nestedProperty = nestedProperty;
@@ -43,7 +49,7 @@ public class EntityUpdateNestedValueImpl<E, T, O> implements EntityUpdateValue<E
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(O value) {
+    public U set(V value) {
         return update.set(property, nestedProperty, value);
     }
 
@@ -51,19 +57,17 @@ public class EntityUpdateNestedValueImpl<E, T, O> implements EntityUpdateValue<E
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate<E> set(O value, Predicate<O> ignoreStrategy) {
+    public U set(V value, Predicate<V> ignoreStrategy) {
         return update.set(property, nestedProperty, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public EntityExecutableUpdate<E> set(Consumer<EntityUpdateValueExpression<E, O, EntityExecutableUpdate<E>,
-        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
+    public U set(Consumer<EntityUpdateValueExpression<V, U, C, L>> consumer) {
         consumer.accept(this);
-        return update;
+        return (U) update;
     }
-
 }

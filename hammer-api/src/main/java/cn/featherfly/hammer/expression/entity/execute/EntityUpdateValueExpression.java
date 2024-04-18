@@ -5,24 +5,22 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * EntityUpdateValueExpression .
  *
  * @author zhongj
- * @param <E> the element type
  * @param <T> the generic type
  * @param <U> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecutableUpdateExpression<E, U, C, L>,
-    C extends EntityExecutableConditionGroupExpression<E, C, L, UpdateConditionConfig>,
-    L extends EntityExecutableConditionGroupLogicExpression<E, C, L, UpdateConditionConfig>> {
+public interface EntityUpdateValueExpression<T, U, C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
-     * Sets the.
+     * set value.
      *
      * @param value the value
      * @return the u
@@ -30,7 +28,7 @@ public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecu
     U set(T value);
 
     /**
-     * Sets the.
+     * set value.
      *
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -41,7 +39,7 @@ public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecu
     }
 
     /**
-     * Sets the.
+     * set value.
      *
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -50,10 +48,10 @@ public interface EntityUpdateValueExpression<E, T, U extends EntityPropertyExecu
     U set(T value, Predicate<T> ignoreStrategy);
 
     /**
-     * Sets the.
+     * set value.
      *
      * @param consumer the consumer
      * @return the u
      */
-    U set(Consumer<EntityUpdateValueExpression<E, T, U, C, L>> consumer);
+    U set(Consumer<EntityUpdateValueExpression<T, U, C, L>> consumer);
 }
