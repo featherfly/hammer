@@ -77,8 +77,8 @@ public class RepositorySqlQueryRelation
     @Override
     protected SqlSelectJoinOnBasicBuilder join0(String sourceTableAlias, String sourceColumn, String joinTable,
         String joinTableAlias, String joinTableColumn) {
-        return getBuilder().join(Join.INNER_JOIN, sourceTableAlias, sourceColumn, joinTable, joinTableAlias,
-            joinTableColumn);
+        return getBuilder().join(Join.INNER_JOIN, metadata.getTable(joinTable), joinTableAlias, joinTableColumn,
+            sourceTableAlias, sourceColumn);
     }
 
     /**
@@ -86,7 +86,7 @@ public class RepositorySqlQueryRelation
      */
     @Override
     protected SqlSelectJoinOnBasicBuilder join0(String joinTable, String joinTableAlias, String onSql) {
-        return getBuilder().join(Join.INNER_JOIN, joinTable, joinTableAlias, onSql);
+        return getBuilder().join(Join.INNER_JOIN, metadata.getTable(joinTable), joinTableAlias, onSql);
     }
 
     /**
@@ -276,7 +276,8 @@ public class RepositorySqlQueryRelation
      */
     @Override
     protected void initBuilder(RepositoryRelation erm) {
-        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), erm.getRepository(), erm.getRepositoryAlias());
+        selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), metadata.getTable(erm.getRepository()),
+            erm.getRepositoryAlias());
     }
 
     /**

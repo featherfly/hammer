@@ -28,7 +28,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation.Repo
  * @param <F> the generic type
  */
 public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpression<F>, F>
-        implements RepositoryQueryOnExpression<Q, F> {
+    implements RepositoryQueryOnExpression<Q, F> {
 
     /** The query relate. */
     protected final Q queryRelate;
@@ -50,7 +50,7 @@ public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpress
      * @param joinRepository the repository
      */
     public AbstractRepositorySqlQueryOn(Q queryRelate, RepositorySqlQueryRelation queryRelation,
-            String joinRepository) {
+        String joinRepository) {
         this(queryRelate, queryRelation, joinRepository, null);
     }
 
@@ -63,7 +63,7 @@ public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpress
      * @param onConsumer     the on consumer
      */
     public AbstractRepositorySqlQueryOn(Q queryRelate, RepositorySqlQueryRelation queryRelation, String joinRepository,
-            Consumer<Q> onConsumer) {
+        Consumer<Q> onConsumer) {
         this.queryRelation = queryRelation;
         this.queryRelate = queryRelate;
         this.joinRepository = joinRepository;
@@ -87,8 +87,8 @@ public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpress
             if (pkList.size() == 1) {
                 return on(joinRepositoryField, pkList.get(0).getName());
             }
-            throw new SqldbHammerException(Strings
-                    .format("only support one primary key, but more than one primary key found {0}", pkList.size()));
+            throw new SqldbHammerException(
+                Strings.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
         } else {
             queryRelation.join(0, sourceRepositoryField, joinRepository, joinRepositoryField);
             onConsumer.accept(queryRelate);
