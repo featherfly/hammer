@@ -30,7 +30,7 @@ import cn.featherfly.common.lang.Lang;
  * @since 0.7.0
  */
 public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
-        implements cn.featherfly.common.repository.mapping.RowMapper<T> {
+    implements cn.featherfly.common.repository.mapping.RowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -61,7 +61,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
      * @param manager       the manager
      */
     public TupleNestedBeanPropertyRowMapper(List<Class<?>> mappedClasses, Tuple prefixes,
-            SqlTypeMappingManager manager) {
+        SqlTypeMappingManager manager) {
         this(mappedClasses, prefixes, manager, false);
     }
 
@@ -74,7 +74,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
      * @param checkFullyPopulated the check fully populated
      */
     public TupleNestedBeanPropertyRowMapper(List<Class<?>> mappedClasses, Tuple prefixes, SqlTypeMappingManager manager,
-            boolean checkFullyPopulated) {
+        boolean checkFullyPopulated) {
         rowMappers = new ArrayList<>(mappedClasses.size());
         if (prefixes != null) {
             Lang.each(mappedClasses, (mappedClass, index) -> {
@@ -89,7 +89,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                 //                }
                 // IMPLSOON 后续来实现对象映射和值映射的混合模式
                 rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClass, manager, (String) prefixes.get(index),
-                        checkFullyPopulated));
+                    checkFullyPopulated));
             });
         } else {
             this.mappedClasses = mappedClasses;
@@ -111,6 +111,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
             for (NestedBeanPropertyRowMapper<?> rowMapper : rowMappers) {
                 results.add(rowMapper.mapRow(res, rowNum));
             }
+            return (T) Tuples.ofArray(results.toArray());
         } else {
             ResultSet rs = null;
             if (res instanceof SqlResultSet) {
@@ -127,7 +128,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
 
                 Set<String> prefixes = new LinkedHashSet<>();
                 for (int index = 1; index <= columnCount; index++) {
-                    String fieldName = JdbcUtils.getColumnName(rs, index);
+                    String fieldName = JdbcUtils.lookupColumnName(rsmd, index, true);
                     String[] names = fieldName.split("\\.");
                     if (names.length > 1) {
                         prefixes.add(names[0]);
@@ -138,17 +139,21 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                     throw new JdbcException("prefixes is empty");
                 }
 
+                // ENHANCE 后续让优化每一个对象对应的mapper获取对应的字段
+                // 因为不同prefix已经定义好了映射的对象
+                // new NestedBeanPropertyRowMapper(.... , new int[]{field1Index, fieldXIndex});
+                // 可以定义一个元数据对象，包含name, alias, index 等信息，在MAPPER中直接循环此元数据数组就行了
+                // 不需要再从ResultSetMetaData中去读元数据，因为这里已经读取并分配好了
                 Lang.each(prefixes, (prefix, index) -> {
                     rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClasses.get(index), manager, prefix + ".",
-                            checkFullyPopulated));
+                        checkFullyPopulated));
                 });
 
                 // rowMappers 初始化完成，重新进行mapRow
-                mapRow(res, rowNum);
+                return mapRow(res, rowNum);
             } catch (SQLException e) {
                 throw new JdbcException(e);
             }
         }
-        return (T) Tuples.ofArray(results.toArray());
     }
 }
