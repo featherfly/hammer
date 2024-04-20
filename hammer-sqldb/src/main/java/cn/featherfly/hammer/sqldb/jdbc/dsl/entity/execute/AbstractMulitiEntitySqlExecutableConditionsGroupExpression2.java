@@ -32,37 +32,23 @@ import cn.featherfly.hammer.expression.condition.nsw.MulitiNotStartWithExpressio
 import cn.featherfly.hammer.expression.condition.sw.MulitiStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.BetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression2;
-import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression2;
 import cn.featherfly.hammer.expression.entity.condition.eq.EqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpression2;
-import cn.featherfly.hammer.expression.entity.condition.ge.EntityGreatEqualsExpression2;
 import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.gt.EntityGreatThanExpression2;
 import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.in.EntityInExpression2;
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.inn.EntityIsNotNullExpression2;
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.isn.EntityIsNullExpression2;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpression2;
 import cn.featherfly.hammer.expression.entity.condition.le.LessEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpression2;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpression2;
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpression2;
 import cn.featherfly.hammer.expression.entity.condition.ne.NotEqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpression2;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nsw.NotStartWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression2;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression2;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression2;
@@ -127,13 +113,7 @@ public abstract class AbstractMulitiEntitySqlExecutableConditionsGroupExpression
     L extends EntityExecutableConditionGroupLogicExpression2<E1, E2, C, L, C2>>
     extends AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, E2, ER, B, C, L, C2>
     implements EntityExecutableConditionGroupExpression2<E1, E2, C, L, C2>,
-    EntityExecutableConditionGroupLogicExpression2<E1, E2, C, L, C2>, EntityContainsExpression2<E1, E2, C, L>,
-    EntityEndWithExpression2<E1, E2, C, L>, EntityEqualsExpression2<E1, E2, C, L>,
-    EntityGreatEqualsExpression2<E1, E2, C, L>, EntityGreatThanExpression2<E1, E2, C, L>,
-    EntityInExpression2<E1, E2, C, L>, EntityIsNotNullExpression2<E1, E2, C, L>, EntityIsNullExpression2<E1, E2, C, L>,
-    EntityLessEqualsExpression2<E1, E2, C, L>, EntityLessThanExpression2<E1, E2, C, L>,
-    EntityNotEqualsExpression2<E1, E2, C, L>, EntityNotInExpression2<E1, E2, C, L>,
-    EntityStartWithExpression2<E1, E2, C, L>, EntityLikeExpression2<E1, E2, C, L> {
+    EntityExecutableConditionGroupLogicExpression2<E1, E2, C, L, C2> {
 
     /**
      * Instantiates a new abstract entity sql condition group expression 2.

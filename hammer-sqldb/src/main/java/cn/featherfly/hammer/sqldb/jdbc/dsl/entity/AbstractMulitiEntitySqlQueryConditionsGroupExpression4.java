@@ -44,37 +44,23 @@ import cn.featherfly.hammer.expression.condition.nsw.MulitiNotStartWithExpressio
 import cn.featherfly.hammer.expression.condition.sw.MulitiStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.BetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression4;
-import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression4;
 import cn.featherfly.hammer.expression.entity.condition.eq.EqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpression4;
-import cn.featherfly.hammer.expression.entity.condition.ge.EntityGreatEqualsExpression4;
 import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.gt.EntityGreatThanExpression4;
 import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.in.EntityInExpression4;
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.inn.EntityIsNotNullExpression4;
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.isn.EntityIsNullExpression4;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpression4;
 import cn.featherfly.hammer.expression.entity.condition.le.LessEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpression4;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpression4;
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpression4;
 import cn.featherfly.hammer.expression.entity.condition.ne.NotEqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpression4;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nsw.NotStartWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression4;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression4;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression4;
@@ -148,13 +134,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E, 
     implements
     EntityQueryConditionGroupExpression4<E, E2, E3, E4, C, L, EntityQuerySortExpression4<E, E2, E3, E4, RS>, RS>,
     EntityQueryConditionGroupLogicExpression4<E, E2, E3, E4, C, L, EntityQuerySortExpression4<E, E2, E3, E4, RS>, RS>,
-    EntityContainsExpression4<E, E2, E3, E4, C, L>, EntityEndWithExpression4<E, E2, E3, E4, C, L>,
-    EntityEqualsExpression4<E, E2, E3, E4, C, L>, EntityGreatEqualsExpression4<E, E2, E3, E4, C, L>,
-    EntityGreatThanExpression4<E, E2, E3, E4, C, L>, EntityInExpression4<E, E2, E3, E4, C, L>,
-    EntityIsNotNullExpression4<E, E2, E3, E4, C, L>, EntityIsNullExpression4<E, E2, E3, E4, C, L>,
-    EntityLessEqualsExpression4<E, E2, E3, E4, C, L>, EntityLessThanExpression4<E, E2, E3, E4, C, L>,
-    EntityNotEqualsExpression4<E, E2, E3, E4, C, L>, EntityNotInExpression4<E, E2, E3, E4, C, L>,
-    EntityStartWithExpression4<E, E2, E3, E4, C, L>, EntityLikeExpression4<E, E2, E3, E4, C, L>,
     EntityQuerySortExpression4<E, E2, E3, E4, RS>, EntityQuerySortedExpression4<E, E2, E3, E4, RS> {
 
     private SqlSortBuilder sortBuilder;

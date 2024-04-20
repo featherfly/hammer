@@ -3,6 +3,8 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query;
 
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2F;
+import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 
@@ -11,7 +13,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation
  *
  * @author zhongj
  */
-public class RepositorySqlQueryExpression2 extends AbstractMulitiRepositorySqlQueryConditionsGroupExpression2F {
+public class RepositorySqlQueryExpression2 extends
+    AbstractMulitiRepositorySqlQueryConditionsGroupExpression2<RepositoryQueryConditionsGroup2F,
+        RepositoryQueryConditionsGroupLogic2F, RepositoryQuerySortExpression2<QueryLimitExecutor>, QueryLimitExecutor>
+    implements RepositoryQueryConditionsGroup2F, RepositoryQueryConditionsGroupLogic2F {
 
     /**
      * Instantiates a new sql query expression.
