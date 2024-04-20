@@ -19,8 +19,8 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
-import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
+import cn.featherfly.hammer.dsl.repository.execute.Update;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecutor;
 

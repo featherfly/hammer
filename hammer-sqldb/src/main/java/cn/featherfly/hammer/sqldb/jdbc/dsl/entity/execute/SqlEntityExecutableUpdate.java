@@ -32,9 +32,9 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
+import cn.featherfly.hammer.expression.execute.UpdateNumberValueExpression;
+import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn1;
@@ -265,9 +265,10 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityUpdateValueExpression<R, EntityExecutableUpdate<E>,
-        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, R> property) {
+    public <
+        R> UpdateValueExpression<R, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
+                SerializableFunction<E, R> property) {
         return new EntityUpdateValueImpl<>(property, this);
     }
 
@@ -276,8 +277,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      */
     @Override
     public <P,
-        V> EntityUpdateValueExpression<V, EntityExecutableUpdate<E>,
-            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        V> UpdateValueExpression<V, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E, UpdateConditionConfig>,
             EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, P> property,
                 SerializableFunction<P, V> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
@@ -287,7 +287,7 @@ public class SqlEntityExecutableUpdate<E> extends AbstractSqlExecutableUpdate<Sq
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityUpdateNumberValueExpression<N, EntityExecutableUpdate<E>,
+    public <N extends Number> UpdateNumberValueExpression<N, EntityExecutableUpdate<E>,
         EntityExecutableConditionGroup<E, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
             SerializableToNumberFunction<E, N> property) {

@@ -144,7 +144,6 @@ public class SqlDeleterJoin1Test extends AbstractDeleterTest {
     @Test
     public void entityDeleteJoin2_2() {
         User createUser = assertUserExist(createUserId);
-        User updateUser = assertUserExist(updateUserId);
 
         Order2 order = order2();
         order.setCreateUser(createUserId);

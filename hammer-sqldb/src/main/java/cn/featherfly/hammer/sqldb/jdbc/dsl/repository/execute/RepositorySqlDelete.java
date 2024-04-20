@@ -11,14 +11,13 @@ import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogic;
+import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroup;
+import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroupLogic;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.execute.RepositoryDeleteExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.execute.SqlDeleteExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlDeleteRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 

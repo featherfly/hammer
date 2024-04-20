@@ -4,8 +4,6 @@ package cn.featherfly.hammer.expression.repository.execute;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
 import cn.featherfly.hammer.expression.ConfigureExpression;
-import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupExpression;
-import cn.featherfly.hammer.expression.execute.ExecutableConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.repository.RepositoryWhereExpression;
 
 /**

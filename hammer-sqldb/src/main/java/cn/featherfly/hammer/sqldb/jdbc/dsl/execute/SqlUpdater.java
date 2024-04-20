@@ -12,6 +12,8 @@ import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityExecutableUpdate;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.SqlExecutableUpdate;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.SqlUpdate;
 
 /**
  * SqlUpdater .

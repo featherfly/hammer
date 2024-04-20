@@ -5,32 +5,30 @@ import java.util.List;
 
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.structure.page.Page;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQueryConditionsGroupExpression;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractMulitiRepositorySqlQueryConditionsGroupExpression;
 
 /**
- * <p>
- * TypeQueryConditionGroupExpression
- * </p>
+ * StaticTypeQueryConditionGroupExpression.
  *
  * @author zhongj
  */
 public abstract class StaticTypeQueryConditionGroupExpression<E,
-        Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
+    Q extends StaticTypeQueryConditionGroupExpression<E, Q>> {
 
     private Q parent;
 
     protected Class<E> type;
 
-    protected AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression;
+    protected AbstractMulitiRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression;
 
     /**
      * @param queryConditionGroupExpression queryConditionGroupExpression
      * @param parent                        parent
      */
-    public StaticTypeQueryConditionGroupExpression(AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression,
-            Q parent) {
+    public StaticTypeQueryConditionGroupExpression(
+        AbstractMulitiRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression, Q parent) {
         super();
-        this.type = ClassUtils.getSuperClassGenericType(this.getClass());
+        type = ClassUtils.getSuperClassGenericType(this.getClass());
         this.queryConditionGroupExpression = queryConditionGroupExpression;
         this.parent = parent;
     }
@@ -94,5 +92,6 @@ public abstract class StaticTypeQueryConditionGroupExpression<E,
         return new StaticTypeQueryExecutor<>(type, queryConditionGroupExpression.limit(page));
     }
 
-    protected abstract Q createChild(AbstractRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression, Q parent);
+    protected abstract Q createChild(
+        AbstractMulitiRepositorySqlQueryConditionsGroupExpression queryConditionGroupExpression, Q parent);
 }

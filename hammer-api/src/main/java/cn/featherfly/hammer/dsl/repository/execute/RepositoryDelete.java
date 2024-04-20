@@ -2,8 +2,6 @@
 package cn.featherfly.hammer.dsl.repository.execute;
 
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroup;
-import cn.featherfly.hammer.dsl.execute.ExecutableConditionGroupLogic;
 import cn.featherfly.hammer.expression.repository.execute.RepositoryDeleteExpression;
 
 /**

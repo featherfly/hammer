@@ -5,6 +5,8 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.execute.UpdateNumberValueExpression;
+import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
 /**
  * EntityPropertyUpdateExpression.
@@ -24,7 +26,7 @@ public interface EntityPropertyUpdateExpression<E, U, C extends ConditionExpress
      * @param property the property
      * @return the entity update value expression
      */
-    <R> EntityUpdateValueExpression<R, U, C, L> property(SerializableFunction<E, R> property);
+    <R> UpdateValueExpression<R, U, C, L> property(SerializableFunction<E, R> property);
 
     /**
      * Property.
@@ -35,7 +37,7 @@ public interface EntityPropertyUpdateExpression<E, U, C extends ConditionExpress
      * @param nestedProperty the nested property
      * @return the entity update value expression
      */
-    <R, O> EntityUpdateValueExpression<O, U, C, L> property(SerializableFunction<E, R> property,
+    <R, O> UpdateValueExpression<O, U, C, L> property(SerializableFunction<E, R> property,
         SerializableFunction<R, O> nestedProperty);
 
     /**
@@ -45,6 +47,5 @@ public interface EntityPropertyUpdateExpression<E, U, C extends ConditionExpress
      * @param property the property
      * @return the entity update number value expression
      */
-    <R extends Number> EntityUpdateNumberValueExpression<R, U, C, L> property(
-        SerializableToNumberFunction<E, R> property);
+    <R extends Number> UpdateNumberValueExpression<R, U, C, L> property(SerializableToNumberFunction<E, R> property);
 }

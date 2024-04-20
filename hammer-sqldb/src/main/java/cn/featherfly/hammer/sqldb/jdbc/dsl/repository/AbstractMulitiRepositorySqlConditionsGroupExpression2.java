@@ -12,7 +12,6 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
@@ -127,11 +126,11 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression2<
     C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
     extends AbstractMulitiRepositorySqlConditionsGroupExpressionBase2<C, L, Tuple2<Integer, Integer>, C2, S, B>
     implements RepositoryConditionsGroupExpression2<C, L>, RepositoryConditionsGroupLogicExpression2<C, L>,
-    ParamedExpression, RepositoryContainsExpression2<C, L>, RepositoryEndWithExpression2<C, L>,
-    RepositoryEqualsExpression2<C, L>, RepositoryGreatEqualsExpression2<C, L>, RepositoryGreatThanExpression2<C, L>,
-    RepositoryInExpression2<C, L>, RepositoryIsNotNullExpression2<C, L>, RepositoryIsNullExpression2<C, L>,
-    RepositoryLessEqualsExpression2<C, L>, RepositoryLessThanExpression2<C, L>, RepositoryNotEqualsExpression2<C, L>,
-    RepositoryNotInExpression2<C, L>, RepositoryStartWithExpression2<C, L>, RepositoryLikeExpression2<C, L> {
+    RepositoryContainsExpression2<C, L>, RepositoryEndWithExpression2<C, L>, RepositoryEqualsExpression2<C, L>,
+    RepositoryGreatEqualsExpression2<C, L>, RepositoryGreatThanExpression2<C, L>, RepositoryInExpression2<C, L>,
+    RepositoryIsNotNullExpression2<C, L>, RepositoryIsNullExpression2<C, L>, RepositoryLessEqualsExpression2<C, L>,
+    RepositoryLessThanExpression2<C, L>, RepositoryNotEqualsExpression2<C, L>, RepositoryNotInExpression2<C, L>,
+    RepositoryStartWithExpression2<C, L>, RepositoryLikeExpression2<C, L> {
 
     /**
      * Instantiates a new abstract muliti repository sql conditions group

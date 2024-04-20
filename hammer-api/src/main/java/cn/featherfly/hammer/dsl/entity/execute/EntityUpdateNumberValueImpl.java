@@ -7,9 +7,8 @@ import java.util.function.Predicate;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
+import cn.featherfly.hammer.expression.execute.UpdateNumberValueExpression;
 
 /**
  * EntityUpdateNumberValueImpl.
@@ -22,7 +21,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpressio
  * @param <L> the generic type
  */
 public class EntityUpdateNumberValueImpl<E, N extends Number, U, C extends ConditionExpression,
-    L extends LogicExpression<C, L>> implements EntityUpdateNumberValueExpression<N, U, C, L> {
+    L extends LogicExpression<C, L>> implements UpdateNumberValueExpression<N, U, C, L> {
 
     private SerializableFunction<E, N> property;
 
@@ -78,7 +77,17 @@ public class EntityUpdateNumberValueImpl<E, N extends Number, U, C extends Condi
      */
     @SuppressWarnings("unchecked")
     @Override
-    public U set(Consumer<EntityUpdateValueExpression<N, U, C, L>> consumer) {
+    public U increase(Consumer<UpdateNumberValueExpression<N, U, C, L>> consumer) {
+        consumer.accept(this);
+        return (U) update;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public U set(Consumer<UpdateNumberValueExpression<N, U, C, L>> consumer) {
         consumer.accept(this);
         return (U) update;
     }

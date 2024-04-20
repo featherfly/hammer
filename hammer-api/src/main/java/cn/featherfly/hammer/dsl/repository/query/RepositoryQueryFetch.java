@@ -17,5 +17,5 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQueryFetchFiel
  * @author zhongj
  */
 public interface RepositoryQueryFetch extends RepositoryQuery, RepositoryQueryRelate0,
-        RepositoryQueryFetchFieldExpression<RepositoryQueryFetched1Fields, RepositoryQueryFetchedFields> {
+        RepositoryQueryFetchFieldExpression<RepositoryQueryFetched1Field, RepositoryQueryFetchedFields> {
 }

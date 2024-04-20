@@ -1,9 +1,15 @@
 
 package cn.featherfly.hammer.dsl.query;
 
+import java.util.function.Function;
+
+import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
+import cn.featherfly.common.repository.SimpleAliasRepository;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
+import cn.featherfly.hammer.expression.query.NamedRepository;
+import cn.featherfly.hammer.expression.query.RepositoryFetcher;
 
 /**
  * query.
@@ -19,6 +25,26 @@ public interface Query {
      * @return generic type of QueryEntityExpression
      */
     RepositoryQueryFetch find(Repository repository);
+
+    /**
+     * start query dsl for repository.
+     *
+     * @param repositoryFunction the repository function
+     * @return generic type of QueryEntityExpression
+     */
+    default RepositoryQueryFetch find(Function<RepositoryFetcher, Repository> fetchRepositoryFunction) {
+        return find(fetchRepositoryFunction.apply(name -> new NamedRepository() {
+            @Override
+            public AliasRepository alias(String alias) {
+                return new SimpleAliasRepository(name, alias);
+            }
+
+            @Override
+            public String name() {
+                return name;
+            }
+        }));
+    }
 
     /**
      * start query dsl for repository.

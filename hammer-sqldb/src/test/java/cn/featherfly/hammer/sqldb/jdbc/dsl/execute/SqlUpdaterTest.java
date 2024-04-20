@@ -164,7 +164,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         hammer.save(user);
 
         int setAge = 18;
-        updater.update("user").property(User::getAge).set(setAge).where().eq("id", user.getId()).execute();
+        updater.update("user").field(User::getAge).set(setAge).where().eq("id", user.getId()).execute();
         User load = hammer.get(user);
         assertEquals(load.getAge().intValue(), setAge);
 
@@ -176,7 +176,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         User user = user();
         hammer.save(user);
 
-        updater.update("user").propertyNumber(User::getAge).increase(1).where().eq("id", user.getId()).execute();
+        updater.update("user").fieldAsNumber(User::getAge).increase(1).where().eq("id", user.getId()).execute();
 
         User load = hammer.get(user);
         assertEquals(load.getAge().intValue(), 19);

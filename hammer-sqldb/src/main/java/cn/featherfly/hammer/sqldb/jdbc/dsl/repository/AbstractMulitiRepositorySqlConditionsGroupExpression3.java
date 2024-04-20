@@ -12,7 +12,6 @@ import cn.featherfly.common.function.ThreeArgusConsumer;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
@@ -127,11 +126,11 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression3<
     C3 extends ConditionConfig<C3>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
     extends AbstractMulitiRepositorySqlConditionsGroupExpressionBase3<C, L, Tuple3<Integer, Integer, Integer>, C3, S, B>
     implements RepositoryConditionsGroupExpression3<C, L>, RepositoryConditionsGroupLogicExpression3<C, L>,
-    ParamedExpression, RepositoryContainsExpression3<C, L>, RepositoryEndWithExpression3<C, L>,
-    RepositoryEqualsExpression3<C, L>, RepositoryGreatEqualsExpression3<C, L>, RepositoryGreatThanExpression3<C, L>,
-    RepositoryInExpression3<C, L>, RepositoryIsNotNullExpression3<C, L>, RepositoryIsNullExpression3<C, L>,
-    RepositoryLessEqualsExpression3<C, L>, RepositoryLessThanExpression3<C, L>, RepositoryNotEqualsExpression3<C, L>,
-    RepositoryNotInExpression3<C, L>, RepositoryStartWithExpression3<C, L>, RepositoryLikeExpression3<C, L> {
+    RepositoryContainsExpression3<C, L>, RepositoryEndWithExpression3<C, L>, RepositoryEqualsExpression3<C, L>,
+    RepositoryGreatEqualsExpression3<C, L>, RepositoryGreatThanExpression3<C, L>, RepositoryInExpression3<C, L>,
+    RepositoryIsNotNullExpression3<C, L>, RepositoryIsNullExpression3<C, L>, RepositoryLessEqualsExpression3<C, L>,
+    RepositoryLessThanExpression3<C, L>, RepositoryNotEqualsExpression3<C, L>, RepositoryNotInExpression3<C, L>,
+    RepositoryStartWithExpression3<C, L>, RepositoryLikeExpression3<C, L> {
 
     /**
      * Instantiates a new abstract muliti repository sql conditions group

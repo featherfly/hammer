@@ -12,7 +12,6 @@ import cn.featherfly.common.function.FourArgusConsumer;
 import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
@@ -128,11 +127,11 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression4<
     AbstractMulitiRepositorySqlConditionsGroupExpressionBase4<C, L, Tuple4<Integer, Integer, Integer, Integer>, C4, S,
         B>
     implements RepositoryConditionsGroupExpression4<C, L>, RepositoryConditionsGroupLogicExpression4<C, L>,
-    ParamedExpression, RepositoryContainsExpression4<C, L>, RepositoryEndWithExpression4<C, L>,
-    RepositoryEqualsExpression4<C, L>, RepositoryGreatEqualsExpression4<C, L>, RepositoryGreatThanExpression4<C, L>,
-    RepositoryInExpression4<C, L>, RepositoryIsNotNullExpression4<C, L>, RepositoryIsNullExpression4<C, L>,
-    RepositoryLessEqualsExpression4<C, L>, RepositoryLessThanExpression4<C, L>, RepositoryNotEqualsExpression4<C, L>,
-    RepositoryNotInExpression4<C, L>, RepositoryStartWithExpression4<C, L>, RepositoryLikeExpression4<C, L> {
+    RepositoryContainsExpression4<C, L>, RepositoryEndWithExpression4<C, L>, RepositoryEqualsExpression4<C, L>,
+    RepositoryGreatEqualsExpression4<C, L>, RepositoryGreatThanExpression4<C, L>, RepositoryInExpression4<C, L>,
+    RepositoryIsNotNullExpression4<C, L>, RepositoryIsNullExpression4<C, L>, RepositoryLessEqualsExpression4<C, L>,
+    RepositoryLessThanExpression4<C, L>, RepositoryNotEqualsExpression4<C, L>, RepositoryNotInExpression4<C, L>,
+    RepositoryStartWithExpression4<C, L>, RepositoryLikeExpression4<C, L> {
 
     /**
      * Instantiates a new abstract muliti repository sql conditions group

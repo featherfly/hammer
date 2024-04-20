@@ -1,9 +1,11 @@
 
 package cn.featherfly.hammer.expression.execute;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 
 /**
  * update number value .
@@ -12,30 +14,43 @@ import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
  * @param <U> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
- * @param <T> the generic type
+ * @param <N> the generic type
  * @param <V> the value type
  * @param <N> the number value type
  */
-public interface UpdateNumberValueExpression<U extends PropertyExecutableUpdateExpression<U, C, L, V, N>,
-        C extends ExecutableConditionGroupExpression<C, L, UpdateConditionConfig>,
-        L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>, T extends Number,
-        V extends UpdateValueExpression<U, C, L, Object, V, N>,
-        N extends UpdateNumberValueExpression<U, C, L, Number, V, N>> extends UpdateValueExpression<U, C, L, T, V, N> {
+public interface UpdateNumberValueExpression<N extends Number, U, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> extends UpdateValueExpressionBase<N, U, C, L> {
 
     /**
-     * Increase.
+     * increase value.
      *
      * @param value the value
      * @return the PropertyExecutableUpdateExpression
      */
-    U increase(T value);
+    U increase(N value);
 
     /**
-     * Increase.
+     * increase value.
      *
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return the PropertyExecutableUpdateExpression
      */
-    U increase(T value, Predicate<T> ignoreStrategy);
+    U increase(N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * increase value.
+     *
+     * @param consumer the consumer
+     * @return the u
+     */
+    U increase(Consumer<UpdateNumberValueExpression<N, U, C, L>> consumer);
+
+    /**
+     * set value.
+     *
+     * @param consumer the consumer
+     * @return the u
+     */
+    U set(Consumer<UpdateNumberValueExpression<N, U, C, L>> consumer);
 }
