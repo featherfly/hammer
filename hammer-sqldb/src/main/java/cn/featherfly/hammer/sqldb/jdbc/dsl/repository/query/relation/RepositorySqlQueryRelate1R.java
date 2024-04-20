@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
 import java.util.function.BiFunction;
 
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2F;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression2;
@@ -66,7 +67,7 @@ public class RepositorySqlQueryRelate1R extends
      */
     @Override
     public RepositoryQueryOnExpression2<RepositoryQueryRelate2RR, RepositoryQueryRelatedFetched2RF> join(
-        String repository) {
+        Repository repository) {
         return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2RR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate2RR) relate).setIdName());
     }

@@ -8,13 +8,13 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query;
 
-import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetched1Fields;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetched1Field;
 
 /**
- * RepositorySqlQueryFetched1Fields.
+ * RepositorySqlQueryFetched1Field.
  *
  * @author zhongj
  */
-public interface RepositorySqlQueryFetched1Fields extends RepositoryQueryFetched1Fields {
+public interface RepositorySqlQueryFetched1Field extends RepositoryQueryFetched1Field {
 
 }

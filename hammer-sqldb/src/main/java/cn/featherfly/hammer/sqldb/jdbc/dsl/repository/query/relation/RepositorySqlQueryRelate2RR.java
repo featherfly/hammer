@@ -12,6 +12,7 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
 import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3F;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression3;
@@ -96,7 +97,7 @@ public class RepositorySqlQueryRelate2RR extends
      */
     @Override
     public RepositoryQueryOnExpression3<RepositoryQueryRelate3RRR, RepositoryQueryRelatedFetched3RRF> join(
-        String repository) {
+        Repository repository) {
         return new RepositorySqlQueryOn3<>(new RepositorySqlQueryRelate3RRR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate3RRR) relate).setIdName());
     }

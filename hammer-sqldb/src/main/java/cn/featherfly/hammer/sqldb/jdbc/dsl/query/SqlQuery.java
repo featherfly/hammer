@@ -51,7 +51,7 @@ public class SqlQuery implements Query {
      * @param queryConfig      the query config
      */
     public SqlQuery(Jdbc jdbc, DatabaseMetadata databaseMetadata, SqlPageFactory sqlPageFactory,
-            QueryConfig queryConfig) {
+        QueryConfig queryConfig) {
         super();
         this.jdbc = jdbc;
         this.databaseMetadata = databaseMetadata;
@@ -67,7 +67,7 @@ public class SqlQuery implements Query {
      * @param sqlPageFactory the sql page factory
      */
     public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory,
-            QueryConfig queryConfig) {
+        QueryConfig queryConfig) {
         super();
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
@@ -124,9 +124,9 @@ public class SqlQuery implements Query {
             tableAlias = aliasManager.put(tableName);
         }
         return new RepositorySqlQueryFetchImpl(
-                new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone())
-                        .query(tableName, tableAlias).fetch(0),
-                sqlPageFactory);
+            new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone())
+                .query(tableName, tableAlias).fetch(0),
+            sqlPageFactory);
     }
 
     /**
@@ -143,7 +143,7 @@ public class SqlQuery implements Query {
         //        }
 
         EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
-                queryConfig.clone());
+            queryConfig.clone());
         return new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
     }
 

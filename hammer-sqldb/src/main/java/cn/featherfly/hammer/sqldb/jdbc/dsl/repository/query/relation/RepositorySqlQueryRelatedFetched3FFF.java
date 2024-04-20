@@ -13,6 +13,7 @@ import java.util.List;
 import com.speedment.common.tuple.Tuple4;
 
 import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup4FFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic4FFFF;
@@ -52,7 +53,7 @@ public class RepositorySqlQueryRelatedFetched3FFF extends
      */
     @Override
     public RepositoryQueryOnExpression4<RepositoryQueryRelate4FFFR, RepositoryQueryRelatedFetched4FFFF> join(
-        String repository) {
+        Repository repository) {
         return new RepositorySqlQueryOn4<>(new RepositorySqlQueryRelate4FFFR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate4FFFR) relate).setIdName());
     }

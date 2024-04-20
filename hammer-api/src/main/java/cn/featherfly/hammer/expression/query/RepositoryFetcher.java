@@ -9,11 +9,11 @@
 package cn.featherfly.hammer.expression.query;
 
 /**
- * FetchRepository.
+ * repository builder.
  *
  * @author zhongj
  */
-public interface FetchRepository {
+public interface RepositoryFetcher {
 
     /**
      * Name.

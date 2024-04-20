@@ -10,6 +10,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression3;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
@@ -26,6 +27,33 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.Repository
  */
 public class RepositorySqlQueryOn3<Q extends RepositoryQueryRelateExpression<F>, F>
     extends AbstractRepositorySqlQueryOn<Q, F> implements RepositoryQueryOnExpression3<Q, F> {
+
+    /**
+     * Instantiates a new repository sql query on 3.
+     *
+     * @param queryRelate   the query relate
+     * @param queryRelation the query relation
+     * @param repository    the repository
+     * @param onConsumer    the on consumer
+     */
+    public RepositorySqlQueryOn3(Q queryRelate, RepositorySqlQueryRelation queryRelation, Repository repository,
+        Consumer<Q> onConsumer) {
+        super(queryRelate, queryRelation, repository, onConsumer);
+    }
+
+    /**
+     * Instantiates a new repository sql query on 3.
+     *
+     * @param queryRelate         the query relate
+     * @param queryRelation       the query relation
+     * @param joinRepository      the join repository
+     * @param joinRepositoryAlias the join repository alias
+     * @param onConsumer          the on consumer
+     */
+    public RepositorySqlQueryOn3(Q queryRelate, RepositorySqlQueryRelation queryRelation, String joinRepository,
+        String joinRepositoryAlias, Consumer<Q> onConsumer) {
+        super(queryRelate, queryRelation, joinRepository, joinRepositoryAlias, onConsumer);
+    }
 
     /**
      * Instantiates a new entity sql query related.

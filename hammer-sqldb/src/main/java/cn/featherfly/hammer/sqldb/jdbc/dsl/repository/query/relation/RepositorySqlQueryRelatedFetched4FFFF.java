@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression5;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate5FFFFR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched4FFFF;
@@ -45,18 +46,7 @@ public class RepositorySqlQueryRelatedFetched4FFFF extends
      */
     @Override
     public RepositoryQueryOnExpression5<RepositoryQueryRelate5FFFFR, RepositoryQueryRelatedFetched5FFFFF> join(
-        String repository) {
-        //        Timer timer = Timer.start();
-        //        Timer timer2 = Timer.start();
-        //        // YUFEI_TEST 测试代码，后续删除
-        //        RepositoryQueryRelate5FFFFR r = new RepositorySqlQueryRelate5FFFFR(queryRelation, sqlPageFactory);
-        //        System.out.println(Strings.format("new query relate use time {}", timer2.stop()));
-        //        RepositoryQueryOnExpression5<RepositoryQueryRelate5FFFFR,
-        //            RepositoryQueryRelatedFetched5FFFFF> on = new RepositorySqlQueryOn5<>(r, queryRelation, repository,
-        //                relate -> ( //
-        //                (RepositorySqlQueryRelate5FFFFR) relate).setIdName());
-        //        System.out.println(Strings.format("join use time {}", timer.stop()));
-        //        return on;
+        Repository repository) {
         return new RepositorySqlQueryOn5<>(new RepositorySqlQueryRelate5FFFFR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate5FFFFR) relate).setIdName());
     }

@@ -14,6 +14,8 @@ import cn.featherfly.common.db.Column;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.repository.AliasRepository;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -38,6 +40,9 @@ public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpress
 
     /** The join repository. */
     protected final String joinRepository;
+
+    /** The join repository alias. */
+    protected final String joinRepositoryAlias;
 
     /** The on consumer. */
     protected final Consumer<Q> onConsumer;
@@ -64,9 +69,38 @@ public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpress
      */
     public AbstractRepositorySqlQueryOn(Q queryRelate, RepositorySqlQueryRelation queryRelation, String joinRepository,
         Consumer<Q> onConsumer) {
+        this(queryRelate, queryRelation, joinRepository, null, onConsumer);
+    }
+
+    /**
+     * Instantiates a new entity sql query related.
+     *
+     * @param queryRelate   the query relate
+     * @param queryRelation the query relation
+     * @param repository    the repository
+     * @param onConsumer    the on consumer
+     */
+    public AbstractRepositorySqlQueryOn(Q queryRelate, RepositorySqlQueryRelation queryRelation, Repository repository,
+        Consumer<Q> onConsumer) {
+        this(queryRelate, queryRelation, repository.name(),
+            repository instanceof AliasRepository ? ((AliasRepository) repository).alias() : null, onConsumer);
+    }
+
+    /**
+     * Instantiates a new entity sql query related.
+     *
+     * @param queryRelate         the query relate
+     * @param queryRelation       the query relation
+     * @param joinRepository      the repository
+     * @param joinRepositoryAlias the join repository alias
+     * @param onConsumer          the on consumer
+     */
+    public AbstractRepositorySqlQueryOn(Q queryRelate, RepositorySqlQueryRelation queryRelation, String joinRepository,
+        String joinRepositoryAlias, Consumer<Q> onConsumer) {
         this.queryRelation = queryRelation;
         this.queryRelate = queryRelate;
         this.joinRepository = joinRepository;
+        this.joinRepositoryAlias = joinRepositoryAlias;
         if (onConsumer == null) {
             this.onConsumer = q -> {
             };
@@ -90,7 +124,7 @@ public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpress
             throw new SqldbHammerException(
                 Strings.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
         } else {
-            queryRelation.join(0, sourceRepositoryField, joinRepository, joinRepositoryField);
+            queryRelation.join(0, sourceRepositoryField, joinRepository, joinRepositoryAlias, joinRepositoryField);
             onConsumer.accept(queryRelate);
         }
         return queryRelate;

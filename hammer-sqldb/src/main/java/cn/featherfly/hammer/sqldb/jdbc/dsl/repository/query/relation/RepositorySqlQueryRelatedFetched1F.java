@@ -13,6 +13,7 @@ import java.util.function.BiFunction;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2FF;
@@ -60,7 +61,7 @@ public class RepositorySqlQueryRelatedFetched1F extends
      */
     @Override
     public RepositoryQueryOnExpression2<RepositoryQueryRelate2FR, RepositoryQueryRelatedFetched2FF> join(
-        String repository) {
+        Repository repository) {
         return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2FR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate2FR) relate).setIdName());
     }
