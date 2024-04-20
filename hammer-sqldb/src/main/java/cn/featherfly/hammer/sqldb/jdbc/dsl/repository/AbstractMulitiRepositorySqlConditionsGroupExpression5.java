@@ -36,38 +36,24 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression5;
 import cn.featherfly.hammer.expression.repository.condition.ba.BetweenRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.co.ContainsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.co.RepositoryContainsExpression5;
 import cn.featherfly.hammer.expression.repository.condition.eq.EqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.eq.RepositoryEqualsExpression5;
 import cn.featherfly.hammer.expression.repository.condition.ew.EndWithRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ew.RepositoryEndWithExpression5;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.condition.ge.GreatEqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ge.RepositoryGreatEqualsExpression5;
 import cn.featherfly.hammer.expression.repository.condition.gt.GreatThanRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.gt.RepositoryGreatThanExpression5;
 import cn.featherfly.hammer.expression.repository.condition.in.InRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.in.RepositoryInExpression5;
 import cn.featherfly.hammer.expression.repository.condition.inn.IsNotNullRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.inn.RepositoryIsNotNullExpression5;
 import cn.featherfly.hammer.expression.repository.condition.isn.IsNullRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.isn.RepositoryIsNullExpression5;
 import cn.featherfly.hammer.expression.repository.condition.le.LessEqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.le.RepositoryLessEqualsExpression5;
 import cn.featherfly.hammer.expression.repository.condition.lk.LikeRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.lk.RepositoryLikeExpression5;
 import cn.featherfly.hammer.expression.repository.condition.lt.LessThanRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.lt.RepositoryLessThanExpression5;
 import cn.featherfly.hammer.expression.repository.condition.nba.NotBetweenRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.nco.NotContainsRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.ne.NotEqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ne.RepositoryNotEqualsExpression5;
 import cn.featherfly.hammer.expression.repository.condition.newv.NotEndWithRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.ni.NotInRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ni.RepositoryNotInExpression5;
 import cn.featherfly.hammer.expression.repository.condition.nl.NotLikeRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.nsw.NotStartWithRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.sw.RepositoryStartWithExpression5;
 import cn.featherfly.hammer.expression.repository.condition.sw.StartWithRepositoryExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.ba.BetweenRepositoryExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.ba.MulitiRepositoryBetweenExpressionImpl;
@@ -126,12 +112,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     C5 extends ConditionConfig<C5>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
     AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<C, L, Tuple5<Integer, Integer, Integer, Integer, Integer>,
         C5, S, B>
-    implements RepositoryConditionsGroupExpression5<C, L>, RepositoryConditionsGroupLogicExpression5<C, L>,
-    RepositoryContainsExpression5<C, L>, RepositoryEndWithExpression5<C, L>, RepositoryEqualsExpression5<C, L>,
-    RepositoryGreatEqualsExpression5<C, L>, RepositoryGreatThanExpression5<C, L>, RepositoryInExpression5<C, L>,
-    RepositoryIsNotNullExpression5<C, L>, RepositoryIsNullExpression5<C, L>, RepositoryLessEqualsExpression5<C, L>,
-    RepositoryLessThanExpression5<C, L>, RepositoryNotEqualsExpression5<C, L>, RepositoryNotInExpression5<C, L>,
-    RepositoryStartWithExpression5<C, L>, RepositoryLikeExpression5<C, L> {
+    implements RepositoryConditionsGroupExpression5<C, L>, RepositoryConditionsGroupLogicExpression5<C, L> {
 
     /**
      * Instantiates a new abstract muliti repository sql conditions group

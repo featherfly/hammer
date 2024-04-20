@@ -44,37 +44,23 @@ import cn.featherfly.hammer.expression.condition.nsw.MulitiNotStartWithExpressio
 import cn.featherfly.hammer.expression.condition.sw.MulitiStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.BetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression5;
-import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression5;
 import cn.featherfly.hammer.expression.entity.condition.eq.EqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpression5;
-import cn.featherfly.hammer.expression.entity.condition.ge.EntityGreatEqualsExpression5;
 import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.gt.EntityGreatThanExpression5;
 import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.in.EntityInExpression5;
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.inn.EntityIsNotNullExpression5;
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.isn.EntityIsNullExpression5;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpression5;
 import cn.featherfly.hammer.expression.entity.condition.le.LessEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpression5;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpression5;
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpression5;
 import cn.featherfly.hammer.expression.entity.condition.ne.NotEqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpression5;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nsw.NotStartWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression5;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression5;
@@ -150,13 +136,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E, 
         RS>,
     EntityQueryConditionGroupLogicExpression5<E, E2, E3, E4, E5, C, L,
         EntityQuerySortExpression5<E, E2, E3, E4, E5, RS>, RS>,
-    EntityContainsExpression5<E, E2, E3, E4, E5, C, L>, EntityEndWithExpression5<E, E2, E3, E4, E5, C, L>,
-    EntityEqualsExpression5<E, E2, E3, E4, E5, C, L>, EntityGreatEqualsExpression5<E, E2, E3, E4, E5, C, L>,
-    EntityGreatThanExpression5<E, E2, E3, E4, E5, C, L>, EntityInExpression5<E, E2, E3, E4, E5, C, L>,
-    EntityIsNotNullExpression5<E, E2, E3, E4, E5, C, L>, EntityIsNullExpression5<E, E2, E3, E4, E5, C, L>,
-    EntityLessEqualsExpression5<E, E2, E3, E4, E5, C, L>, EntityLessThanExpression5<E, E2, E3, E4, E5, C, L>,
-    EntityNotEqualsExpression5<E, E2, E3, E4, E5, C, L>, EntityNotInExpression5<E, E2, E3, E4, E5, C, L>,
-    EntityStartWithExpression5<E, E2, E3, E4, E5, C, L>, EntityLikeExpression5<E, E2, E3, E4, E5, C, L>,
     EntityQuerySortExpression5<E, E2, E3, E4, E5, RS>, EntityQuerySortedExpression5<E, E2, E3, E4, E5, RS> {
 
     private SqlSortBuilder sortBuilder;

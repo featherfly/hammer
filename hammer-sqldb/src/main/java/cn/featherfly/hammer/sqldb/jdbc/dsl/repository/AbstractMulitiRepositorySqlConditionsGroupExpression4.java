@@ -36,38 +36,24 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression4;
 import cn.featherfly.hammer.expression.repository.condition.ba.BetweenRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.co.ContainsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.co.RepositoryContainsExpression4;
 import cn.featherfly.hammer.expression.repository.condition.eq.EqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.eq.RepositoryEqualsExpression4;
 import cn.featherfly.hammer.expression.repository.condition.ew.EndWithRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ew.RepositoryEndWithExpression4;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.condition.ge.GreatEqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ge.RepositoryGreatEqualsExpression4;
 import cn.featherfly.hammer.expression.repository.condition.gt.GreatThanRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.gt.RepositoryGreatThanExpression4;
 import cn.featherfly.hammer.expression.repository.condition.in.InRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.in.RepositoryInExpression4;
 import cn.featherfly.hammer.expression.repository.condition.inn.IsNotNullRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.inn.RepositoryIsNotNullExpression4;
 import cn.featherfly.hammer.expression.repository.condition.isn.IsNullRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.isn.RepositoryIsNullExpression4;
 import cn.featherfly.hammer.expression.repository.condition.le.LessEqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.le.RepositoryLessEqualsExpression4;
 import cn.featherfly.hammer.expression.repository.condition.lk.LikeRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.lk.RepositoryLikeExpression4;
 import cn.featherfly.hammer.expression.repository.condition.lt.LessThanRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.lt.RepositoryLessThanExpression4;
 import cn.featherfly.hammer.expression.repository.condition.nba.NotBetweenRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.nco.NotContainsRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.ne.NotEqualsRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ne.RepositoryNotEqualsExpression4;
 import cn.featherfly.hammer.expression.repository.condition.newv.NotEndWithRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.ni.NotInRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.ni.RepositoryNotInExpression4;
 import cn.featherfly.hammer.expression.repository.condition.nl.NotLikeRepositoryExpression;
 import cn.featherfly.hammer.expression.repository.condition.nsw.NotStartWithRepositoryExpression;
-import cn.featherfly.hammer.expression.repository.condition.sw.RepositoryStartWithExpression4;
 import cn.featherfly.hammer.expression.repository.condition.sw.StartWithRepositoryExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.ba.BetweenRepositoryExpressionImpl;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.ba.MulitiRepositoryBetweenExpressionImpl;
@@ -123,15 +109,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.sw.StartWithRepo
  */
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression4<
     C extends RepositoryConditionsGroupExpression4<C, L>, L extends RepositoryConditionsGroupLogicExpression4<C, L>,
-    C4 extends ConditionConfig<C4>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
-    AbstractMulitiRepositorySqlConditionsGroupExpressionBase4<C, L, Tuple4<Integer, Integer, Integer, Integer>, C4, S,
-        B>
-    implements RepositoryConditionsGroupExpression4<C, L>, RepositoryConditionsGroupLogicExpression4<C, L>,
-    RepositoryContainsExpression4<C, L>, RepositoryEndWithExpression4<C, L>, RepositoryEqualsExpression4<C, L>,
-    RepositoryGreatEqualsExpression4<C, L>, RepositoryGreatThanExpression4<C, L>, RepositoryInExpression4<C, L>,
-    RepositoryIsNotNullExpression4<C, L>, RepositoryIsNullExpression4<C, L>, RepositoryLessEqualsExpression4<C, L>,
-    RepositoryLessThanExpression4<C, L>, RepositoryNotEqualsExpression4<C, L>, RepositoryNotInExpression4<C, L>,
-    RepositoryStartWithExpression4<C, L>, RepositoryLikeExpression4<C, L> {
+    C4 extends ConditionConfig<C4>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
+    extends AbstractMulitiRepositorySqlConditionsGroupExpressionBase4<C, L, Tuple4<Integer, Integer, Integer, Integer>,
+        C4, S, B>
+    implements RepositoryConditionsGroupExpression4<C, L>, RepositoryConditionsGroupLogicExpression4<C, L> {
 
     /**
      * Instantiates a new abstract muliti repository sql conditions group

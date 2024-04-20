@@ -32,37 +32,23 @@ import cn.featherfly.hammer.expression.condition.nsw.MulitiNotStartWithExpressio
 import cn.featherfly.hammer.expression.condition.sw.MulitiStartWithExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.BetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression6;
-import cn.featherfly.hammer.expression.entity.condition.eq.EntityEqualsExpression6;
 import cn.featherfly.hammer.expression.entity.condition.eq.EqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.ew.EndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ew.EntityEndWithExpression6;
-import cn.featherfly.hammer.expression.entity.condition.ge.EntityGreatEqualsExpression6;
 import cn.featherfly.hammer.expression.entity.condition.ge.GreatEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.gt.EntityGreatThanExpression6;
 import cn.featherfly.hammer.expression.entity.condition.gt.GreatThanEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.in.EntityInExpression6;
 import cn.featherfly.hammer.expression.entity.condition.in.InEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.inn.EntityIsNotNullExpression6;
 import cn.featherfly.hammer.expression.entity.condition.inn.IsNotNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.isn.EntityIsNullExpression6;
 import cn.featherfly.hammer.expression.entity.condition.isn.IsNullEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.le.EntityLessEqualsExpression6;
 import cn.featherfly.hammer.expression.entity.condition.le.LessEqualsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lk.EntityLikeExpression6;
 import cn.featherfly.hammer.expression.entity.condition.lk.LikeEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.lt.EntityLessThanExpression6;
 import cn.featherfly.hammer.expression.entity.condition.lt.LessThanEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nba.NotBetweenEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nco.NotContainsEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ne.EntityNotEqualsExpression6;
 import cn.featherfly.hammer.expression.entity.condition.ne.NotEqualsEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.newv.NotEndWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.ni.EntityNotInExpression6;
 import cn.featherfly.hammer.expression.entity.condition.ni.NotInEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nl.NotLikeEntityExpression;
 import cn.featherfly.hammer.expression.entity.condition.nsw.NotStartWithEntityExpression;
-import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression6;
 import cn.featherfly.hammer.expression.entity.condition.sw.StartWithEntityExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupExpression6;
 import cn.featherfly.hammer.expression.entity.execute.EntityExecutableConditionGroupLogicExpression6;
@@ -131,14 +117,7 @@ public abstract class AbstractMulitiEntitySqlExecutableConditionsGroupExpression
     L extends EntityExecutableConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L, C2>>
     extends AbstractMulitiEntitySqlConditionsGroupExpressionBase6<E1, E2, E3, E4, E5, E6, ER, B, C, L, C2>
     implements EntityExecutableConditionGroupExpression6<E1, E2, E3, E4, E5, E6, C, L, C2>,
-    EntityExecutableConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L, C2>,
-    EntityContainsExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityEndWithExpression6<E1, E2, E3, E4, E5, E6, C, L>,
-    EntityEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityGreatEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>,
-    EntityGreatThanExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityInExpression6<E1, E2, E3, E4, E5, E6, C, L>,
-    EntityIsNotNullExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityIsNullExpression6<E1, E2, E3, E4, E5, E6, C, L>,
-    EntityLessEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityLessThanExpression6<E1, E2, E3, E4, E5, E6, C, L>,
-    EntityNotEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityNotInExpression6<E1, E2, E3, E4, E5, E6, C, L>,
-    EntityStartWithExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityLikeExpression6<E1, E2, E3, E4, E5, E6, C, L> {
+    EntityExecutableConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L, C2> {
 
     /**
      * Instantiates a new abstract entity sql condition group expression 2.

@@ -16,7 +16,10 @@ import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
+import cn.featherfly.hammer.expression.query.QueryConditionLimit;
+import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.query.Queryable;
 import cn.featherfly.hammer.expression.query.sort.SetSortFieldExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression2;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression2;
@@ -38,14 +41,14 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.sort.SetSqlSortField
  * @param <Q> the generic type
  */
 public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2<
-        C extends RepositoryQueryConditionsGroupExpression2<C, L, S, Q>,
-        L extends RepositoryQueryConditionsGroupLogicExpression2<C, L, S, Q>,
-        S extends RepositoryQuerySortExpression2<Q>, Q extends QueryLimitExecutor> extends
-        AbstractMulitiRepositorySqlConditionsGroupExpression2<C, L, QueryConditionConfig, RepositorySqlQueryRelation,
-                SqlSelectBasicBuilder>
-        implements RepositoryQueryConditionsGroupExpression2<C, L, S, Q>,
-        RepositoryQueryConditionsGroupLogicExpression2<C, L, S, Q>, RepositoryQuerySortExpression2<Q>,
-        RepositoryQuerySortedExpression2<Q> {
+    C extends RepositoryQueryConditionsGroupExpression2<C, L, S, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression2<C, L, S, Q>, S extends RepositoryQuerySortExpression2<Q>,
+    Q extends QueryLimitExecutor> extends
+    AbstractMulitiRepositorySqlConditionsGroupExpression2<C, L, QueryConditionConfig, RepositorySqlQueryRelation,
+        SqlSelectBasicBuilder>
+    implements Queryable<S>, QueryCountExecutor, QueryConditionLimit<Q>, QueryLimitExecutor, //
+    //    ,RepositoryQueryConditionsGroupExpression2<C, L, S, Q>, RepositoryQueryConditionsGroupLogicExpression2<C, L, S, Q> //
+    RepositoryQuerySortExpression2<Q>, RepositoryQuerySortedExpression2<Q> {
 
     private SqlSortBuilder sortBuilder;
 
@@ -65,7 +68,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryConditionsGroupExpression2(L parent, int index,
-            RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
+        RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(parent, index, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         if (parent == null) {
@@ -73,7 +76,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
             sortBuilder = new SqlSortBuilder(dialect, repositoryAlias);
         }
         repositorySqlQueryConditionGroupQuery = new RepositorySqlQueryConditionGroupQuery(this, sqlPageFactory,
-                queryRelation);
+            queryRelation);
     }
 
     // ****************************************************************************************************************
@@ -239,9 +242,9 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
      */
     @Override
     public RepositoryQuerySortedExpression2<Q> asc(
-            BiConsumer<SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+        BiConsumer<SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.ASC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC));
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC));
         return this;
     }
 
@@ -268,9 +271,9 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
      */
     @Override
     public RepositoryQuerySortedExpression2<Q> desc(
-            BiConsumer<SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+        BiConsumer<SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.DESC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC));
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC));
         return this;
     }
 
@@ -305,7 +308,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
                 return result + Chars.SPACE + sort;
             } else {
                 return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort;
+                    + sort;
             }
         } else {
             return condition;

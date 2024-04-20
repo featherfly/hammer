@@ -16,7 +16,10 @@ import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
+import cn.featherfly.hammer.expression.query.QueryConditionLimit;
+import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import cn.featherfly.hammer.expression.query.Queryable;
 import cn.featherfly.hammer.expression.query.sort.SetSortFieldExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression5;
@@ -37,14 +40,14 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.sort.SetSqlSortField
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5<
-        C extends RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,
-        L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>,
-        S extends RepositoryQuerySortExpression5<Q>, Q extends QueryLimitExecutor> extends
-        AbstractMulitiRepositorySqlConditionsGroupExpression5<C, L, QueryConditionConfig, RepositorySqlQueryRelation,
-                SqlSelectBasicBuilder>
-        implements RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,
-        RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>, RepositoryQuerySortExpression5<Q>,
-        RepositoryQuerySortedExpression5<Q> {
+    C extends RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>, S extends RepositoryQuerySortExpression5<Q>,
+    Q extends QueryLimitExecutor> extends
+    AbstractMulitiRepositorySqlConditionsGroupExpression5<C, L, QueryConditionConfig, RepositorySqlQueryRelation,
+        SqlSelectBasicBuilder>
+    implements Queryable<S>, QueryCountExecutor, QueryConditionLimit<Q>, QueryLimitExecutor, // 
+    //        RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>, 
+    RepositoryQuerySortExpression5<Q>, RepositoryQuerySortedExpression5<Q> {
 
     private SqlSortBuilder sortBuilder;
 
@@ -63,7 +66,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryConditionsGroupExpression5(L parent, int index,
-            RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
+        RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(parent, index, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         if (parent == null) {
@@ -71,7 +74,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
             sortBuilder = new SqlSortBuilder(dialect, repositoryAlias);
         }
         repositorySqlQueryConditionGroupQuery = new RepositorySqlQueryConditionGroupQuery(this, sqlPageFactory,
-                queryRelation);
+            queryRelation);
     }
 
     @SuppressWarnings("unchecked")
@@ -243,12 +246,12 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
      */
     @Override
     public RepositoryQuerySortedExpression5<Q> asc(FiveArgusConsumer<SetSortFieldExpression, SetSortFieldExpression,
-            SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+        SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.ASC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.ASC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.ASC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.ASC));
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC),
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.ASC),
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.ASC),
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.ASC));
         return this;
     }
 
@@ -302,12 +305,12 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
      */
     @Override
     public RepositoryQuerySortedExpression5<Q> desc(FiveArgusConsumer<SetSortFieldExpression, SetSortFieldExpression,
-            SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+        SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.DESC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.DESC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.DESC),
-                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.DESC));
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC),
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.DESC),
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.DESC),
+            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.DESC));
         return this;
     }
 
@@ -333,7 +336,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
                 return result + Chars.SPACE + sort;
             } else {
                 return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort;
+                    + sort;
             }
         } else {
             return condition;

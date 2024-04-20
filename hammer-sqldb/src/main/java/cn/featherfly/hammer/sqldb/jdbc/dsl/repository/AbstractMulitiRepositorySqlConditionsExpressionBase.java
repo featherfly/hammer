@@ -110,7 +110,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     , RepositoryStartWithExpression<C, L>, RepositoryNotStartWithExpression<C, L>//
     , RepositoryLikeExpression<C, L>, RepositoryNotLikeExpression<C, L>//
     , NativeStringConditionExpression<C, L> //
-    , RepositoryFieldExpression<C, L>, MulitiRepositoryFieldExpression<T, C, L> {
+    , RepositoryFieldExpression<C, L>, MulitiRepositoryFieldExpression<T, C, L> //
+{
 
     /**
      * Instantiates a new abstract muliti repository condition expression.
