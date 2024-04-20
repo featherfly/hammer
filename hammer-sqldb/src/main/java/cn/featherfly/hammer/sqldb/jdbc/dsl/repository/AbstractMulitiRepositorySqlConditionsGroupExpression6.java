@@ -13,7 +13,6 @@ import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
@@ -130,11 +129,11 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
     AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<C, L,
         Tuple6<Integer, Integer, Integer, Integer, Integer, Integer>, C6, S, B>
     implements RepositoryConditionsGroupExpression6<C, L>, RepositoryConditionsGroupLogicExpression6<C, L>,
-    ParamedExpression, RepositoryContainsExpression6<C, L>, RepositoryEndWithExpression6<C, L>,
-    RepositoryEqualsExpression6<C, L>, RepositoryGreatEqualsExpression6<C, L>, RepositoryGreatThanExpression6<C, L>,
-    RepositoryInExpression6<C, L>, RepositoryIsNotNullExpression6<C, L>, RepositoryIsNullExpression6<C, L>,
-    RepositoryLessEqualsExpression6<C, L>, RepositoryLessThanExpression6<C, L>, RepositoryNotEqualsExpression6<C, L>,
-    RepositoryNotInExpression6<C, L>, RepositoryStartWithExpression6<C, L>, RepositoryLikeExpression6<C, L> {
+    RepositoryContainsExpression6<C, L>, RepositoryEndWithExpression6<C, L>, RepositoryEqualsExpression6<C, L>,
+    RepositoryGreatEqualsExpression6<C, L>, RepositoryGreatThanExpression6<C, L>, RepositoryInExpression6<C, L>,
+    RepositoryIsNotNullExpression6<C, L>, RepositoryIsNullExpression6<C, L>, RepositoryLessEqualsExpression6<C, L>,
+    RepositoryLessThanExpression6<C, L>, RepositoryNotEqualsExpression6<C, L>, RepositoryNotInExpression6<C, L>,
+    RepositoryStartWithExpression6<C, L>, RepositoryLikeExpression6<C, L> {
 
     /**
      * Instantiates a new abstract muliti repository sql conditions group

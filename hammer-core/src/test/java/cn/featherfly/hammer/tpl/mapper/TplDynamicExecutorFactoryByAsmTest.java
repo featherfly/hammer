@@ -36,8 +36,8 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
-import cn.featherfly.hammer.dsl.execute.Update;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
+import cn.featherfly.hammer.dsl.repository.execute.Update;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 

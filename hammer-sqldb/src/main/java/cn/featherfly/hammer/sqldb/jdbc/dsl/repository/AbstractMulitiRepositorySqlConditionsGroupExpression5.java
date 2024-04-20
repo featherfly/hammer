@@ -12,7 +12,6 @@ import cn.featherfly.common.function.FiveArgusConsumer;
 import cn.featherfly.common.function.FiveArgusFunction;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
@@ -128,11 +127,11 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<C, L, Tuple5<Integer, Integer, Integer, Integer, Integer>,
         C5, S, B>
     implements RepositoryConditionsGroupExpression5<C, L>, RepositoryConditionsGroupLogicExpression5<C, L>,
-    ParamedExpression, RepositoryContainsExpression5<C, L>, RepositoryEndWithExpression5<C, L>,
-    RepositoryEqualsExpression5<C, L>, RepositoryGreatEqualsExpression5<C, L>, RepositoryGreatThanExpression5<C, L>,
-    RepositoryInExpression5<C, L>, RepositoryIsNotNullExpression5<C, L>, RepositoryIsNullExpression5<C, L>,
-    RepositoryLessEqualsExpression5<C, L>, RepositoryLessThanExpression5<C, L>, RepositoryNotEqualsExpression5<C, L>,
-    RepositoryNotInExpression5<C, L>, RepositoryStartWithExpression5<C, L>, RepositoryLikeExpression5<C, L> {
+    RepositoryContainsExpression5<C, L>, RepositoryEndWithExpression5<C, L>, RepositoryEqualsExpression5<C, L>,
+    RepositoryGreatEqualsExpression5<C, L>, RepositoryGreatThanExpression5<C, L>, RepositoryInExpression5<C, L>,
+    RepositoryIsNotNullExpression5<C, L>, RepositoryIsNullExpression5<C, L>, RepositoryLessEqualsExpression5<C, L>,
+    RepositoryLessThanExpression5<C, L>, RepositoryNotEqualsExpression5<C, L>, RepositoryNotInExpression5<C, L>,
+    RepositoryStartWithExpression5<C, L>, RepositoryLikeExpression5<C, L> {
 
     /**
      * Instantiates a new abstract muliti repository sql conditions group

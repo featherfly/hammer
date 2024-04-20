@@ -104,6 +104,12 @@ public abstract class AbstractRepositorySqlQueryTest extends HammerJdbcTestBase 
             for (String field : fs) {
                 for (Map<String, Object> data : list) {
                     assertTrue(data.containsKey(field));
+                    //                    if (field.contains(".")) {
+                    //                        String[] tokens = field.split(".");
+                    //                        assertTrue(data.containsKey(tokens[tokens.length - 1]));
+                    //                    } else {
+                    //                        assertTrue(data.containsKey(field));
+                    //                    }
                 }
             }
         }

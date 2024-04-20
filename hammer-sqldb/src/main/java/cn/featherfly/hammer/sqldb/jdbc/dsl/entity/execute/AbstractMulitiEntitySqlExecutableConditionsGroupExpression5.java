@@ -10,7 +10,6 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.FiveArgusConsumer;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
-import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
@@ -131,7 +130,7 @@ public abstract class AbstractMulitiEntitySqlExecutableConditionsGroupExpression
     L extends EntityExecutableConditionGroupLogicExpression5<E1, E2, E3, E4, E5, C, L, C2>>
     extends AbstractMulitiEntitySqlConditionsGroupExpressionBase5<E1, E2, E3, E4, E5, ER, B, C, L, C2>
     implements EntityExecutableConditionGroupExpression5<E1, E2, E3, E4, E5, C, L, C2>,
-    EntityExecutableConditionGroupLogicExpression5<E1, E2, E3, E4, E5, C, L, C2>, ParamedExpression,
+    EntityExecutableConditionGroupLogicExpression5<E1, E2, E3, E4, E5, C, L, C2>,
     EntityContainsExpression5<E1, E2, E3, E4, E5, C, L>, EntityEndWithExpression5<E1, E2, E3, E4, E5, C, L>,
     EntityEqualsExpression5<E1, E2, E3, E4, E5, C, L>, EntityGreatEqualsExpression5<E1, E2, E3, E4, E5, C, L>,
     EntityGreatThanExpression5<E1, E2, E3, E4, E5, C, L>, EntityInExpression5<E1, E2, E3, E4, E5, C, L>,

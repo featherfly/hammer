@@ -10,6 +10,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -46,21 +47,28 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void joinFetch() {
-        // FIXME 后面程序正常了再来加入测试逻辑
         String[] fields = Lang.array("username", "password", "age");
         String[] joinFields = Lang.array("id", "name", "user_id");
         String[] join2Fields = Lang.array("no", "app_id");
+        String queryTableAlias = "_user0";
+        String joinTableAlias = "_user_info0";
+        String joinTableAlias2 = "_order0";
+        // AliasManger with default alias generetor
         list = query.find("user").fields(fields) //
             .join("user_info").on("user_id").fetch(joinFields) //
             .join("order").on("user1").fetch(join2Fields) //
             .list();
-        assertFields(list, fields, joinFields, join2Fields);
+        assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(joinFields).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(join2Fields).map(f -> joinTableAlias2 + "." + f).toArray(num -> new String[num]));
 
         list = query.find("user").fields("username", "password").field("age") //
             .join("user_info").on("user_id").fetch("id", "name").fetch("user_id") //
             .join("order").on("user1").fetch("no").fetch("app_id") //
             .list();
-        assertFields(list, fields, joinFields, join2Fields);
+        assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(joinFields).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(join2Fields).map(f -> joinTableAlias2 + "." + f).toArray(num -> new String[num]));
 
         String[] joinFields2 = Lang.array("id", "name", "userId");
         String[] join2Fields2 = Lang.array("no", "appId");
@@ -73,7 +81,9 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
                 fieldBuilder.name("no"), //
                 fieldBuilder.name("app_id").as("appId"))) //
             .list();
-        assertFields(list, fields, joinFields2, join2Fields2);
+        assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(join2Fields2).map(f -> joinTableAlias2 + "." + f).toArray(num -> new String[num]));
 
         list = query.find("user").fields(fields) //
             .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.field( //
@@ -84,7 +94,9 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
                 fieldBuilder.name("no"), //
                 fieldBuilder.name("app_id").as("appId"))) //
             .list();
-        assertFields(list, fields, joinFields2, join2Fields2);
+        assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(join2Fields2).map(f -> joinTableAlias2 + "." + f).toArray(num -> new String[num]));
 
         list = query.find("user").fields(fields) //
             .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
@@ -95,7 +107,9 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
                 .fetch(fieldBuilder.name("app_id").as("appId")) //
             ) //
             .list();
-        assertFields(list, fields, joinFields2, join2Fields2);
+        assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(join2Fields2).map(f -> joinTableAlias2 + "." + f).toArray(num -> new String[num]));
 
         list = query.find("user").fields(fields) //
             .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.field(fieldBuilder.name("id")) //
@@ -106,7 +120,9 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
                 .field(fieldBuilder.name("app_id").as("appId")) //
             ) //
             .list();
-        assertFields(list, fields, joinFields2, join2Fields2);
+        assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]),
+            Arrays.stream(join2Fields2).map(f -> joinTableAlias2 + "." + f).toArray(num -> new String[num]));
     }
 
     @Test

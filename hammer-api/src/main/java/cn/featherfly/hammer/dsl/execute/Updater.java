@@ -3,6 +3,7 @@ package cn.featherfly.hammer.dsl.execute;
 
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
+import cn.featherfly.hammer.dsl.repository.execute.Update;
 
 /**
  * Updater.

@@ -21,9 +21,9 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
+import cn.featherfly.hammer.expression.execute.UpdateNumberValueExpression;
+import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn2;
 
@@ -53,7 +53,7 @@ public class SqlEntityExecutableUpdate2<E, J1> implements SqlEntityUpdate2<E, J1
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityUpdateValueExpression<R, EntityExecutableUpdate2<E, J1>,
+    public <R> UpdateValueExpression<R, EntityExecutableUpdate2<E, J1>,
         EntityExecutableConditionGroup2<E, J1, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic2<E, J1, UpdateConditionConfig>> property(
             SerializableFunction<E, R> property) {
@@ -65,7 +65,7 @@ public class SqlEntityExecutableUpdate2<E, J1> implements SqlEntityUpdate2<E, J1
      */
     @Override
     public <R,
-        O> EntityUpdateValueExpression<O, EntityExecutableUpdate2<E, J1>,
+        O> UpdateValueExpression<O, EntityExecutableUpdate2<E, J1>,
             EntityExecutableConditionGroup2<E, J1, UpdateConditionConfig>,
             EntityExecutableConditionGroupLogic2<E, J1, UpdateConditionConfig>> property(
                 SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
@@ -76,7 +76,7 @@ public class SqlEntityExecutableUpdate2<E, J1> implements SqlEntityUpdate2<E, J1
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> EntityUpdateNumberValueExpression<R, EntityExecutableUpdate2<E, J1>,
+    public <R extends Number> UpdateNumberValueExpression<R, EntityExecutableUpdate2<E, J1>,
         EntityExecutableConditionGroup2<E, J1, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic2<E, J1, UpdateConditionConfig>> property(
             SerializableToNumberFunction<E, R> property) {

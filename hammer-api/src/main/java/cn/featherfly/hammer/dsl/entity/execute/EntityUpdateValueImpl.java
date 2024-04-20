@@ -8,7 +8,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
-import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpression;
+import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
 /**
  * EntityUpdateValueImpl.
@@ -21,7 +21,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateValueExpressio
  * @param <L> the generic type
  */
 public class EntityUpdateValueImpl<E, T, U, C extends ConditionExpression, L extends LogicExpression<C, L>>
-    implements EntityUpdateValueExpression<T, U, C, L> {
+    implements UpdateValueExpression<T, U, C, L> {
 
     private SerializableFunction<E, T> property;
 
@@ -60,7 +60,7 @@ public class EntityUpdateValueImpl<E, T, U, C extends ConditionExpression, L ext
      */
     @SuppressWarnings("unchecked")
     @Override
-    public U set(Consumer<EntityUpdateValueExpression<T, U, C, L>> consumer) {
+    public U set(Consumer<UpdateValueExpression<T, U, C, L>> consumer) {
         consumer.accept(this);
         return (U) update;
     }

@@ -28,15 +28,15 @@ public class DslRepositoryTest {
 
     public void testPropertyUpdate() {
         updater.update(strRepo) //
-                .property("name").set("yufei") //
-                .property("pwd").set("123456") //
-                .propertyNumber("score").increase(10) //
+                .field("name").set("yufei") //
+                .field("pwd").set("123456") //
+                .fieldAsNumber("score").increase(10) //
                 .execute();
 
         updater.update(repo) //
-                .property("name").set("yufei", v -> !v.equals("yufei")) //
-                .property("pwd").set("123456") //
-                .propertyNumber("score").increase(10, v -> v == null) //
+                .field("name").set("yufei", v -> !v.equals("yufei")) //
+                .field("pwd").set("123456") //
+                .fieldAsNumber("score").increase(10, v -> v == null) //
                 .execute();
     }
 

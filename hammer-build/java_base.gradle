@@ -7,7 +7,7 @@ tasks.withType(JavaCompile) {
     
     options.encoding = "UTF-8"
     options.compilerArgs << "-parameters"
-    //options.compilerArgs << "-verbose"
+    options.compilerArgs << "-verbose"
 }
 tasks.withType(Javadoc) {
     options.encoding = "UTF-8"

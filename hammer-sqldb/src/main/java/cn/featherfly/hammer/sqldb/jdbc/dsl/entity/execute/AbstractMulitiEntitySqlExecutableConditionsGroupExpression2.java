@@ -10,7 +10,6 @@ import com.speedment.common.tuple.Tuples;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
-import cn.featherfly.hammer.expression.condition.ParamedExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
 import cn.featherfly.hammer.expression.condition.eq.MulitiEqualsExpression;
@@ -128,11 +127,10 @@ public abstract class AbstractMulitiEntitySqlExecutableConditionsGroupExpression
     L extends EntityExecutableConditionGroupLogicExpression2<E1, E2, C, L, C2>>
     extends AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, E2, ER, B, C, L, C2>
     implements EntityExecutableConditionGroupExpression2<E1, E2, C, L, C2>,
-    EntityExecutableConditionGroupLogicExpression2<E1, E2, C, L, C2>, ParamedExpression,
-    EntityContainsExpression2<E1, E2, C, L>, EntityEndWithExpression2<E1, E2, C, L>,
-    EntityEqualsExpression2<E1, E2, C, L>, EntityGreatEqualsExpression2<E1, E2, C, L>,
-    EntityGreatThanExpression2<E1, E2, C, L>, EntityInExpression2<E1, E2, C, L>,
-    EntityIsNotNullExpression2<E1, E2, C, L>, EntityIsNullExpression2<E1, E2, C, L>,
+    EntityExecutableConditionGroupLogicExpression2<E1, E2, C, L, C2>, EntityContainsExpression2<E1, E2, C, L>,
+    EntityEndWithExpression2<E1, E2, C, L>, EntityEqualsExpression2<E1, E2, C, L>,
+    EntityGreatEqualsExpression2<E1, E2, C, L>, EntityGreatThanExpression2<E1, E2, C, L>,
+    EntityInExpression2<E1, E2, C, L>, EntityIsNotNullExpression2<E1, E2, C, L>, EntityIsNullExpression2<E1, E2, C, L>,
     EntityLessEqualsExpression2<E1, E2, C, L>, EntityLessThanExpression2<E1, E2, C, L>,
     EntityNotEqualsExpression2<E1, E2, C, L>, EntityNotInExpression2<E1, E2, C, L>,
     EntityStartWithExpression2<E1, E2, C, L>, EntityLikeExpression2<E1, E2, C, L> {
