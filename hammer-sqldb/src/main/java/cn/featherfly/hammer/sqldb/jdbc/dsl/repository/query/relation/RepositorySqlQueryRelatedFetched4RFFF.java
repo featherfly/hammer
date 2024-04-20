@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression5;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate5RFFFR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched4RFFF;
@@ -45,7 +46,7 @@ public class RepositorySqlQueryRelatedFetched4RFFF extends
      */
     @Override
     public RepositoryQueryOnExpression5<RepositoryQueryRelate5RFFFR, RepositoryQueryRelatedFetched5RFFFF> join(
-        String repository) {
+        Repository repository) {
         return new RepositorySqlQueryOn5<>(new RepositorySqlQueryRelate5RFFFR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate5RFFFR) relate).setIdName());
     }

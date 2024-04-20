@@ -222,14 +222,29 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      * @param joinField      the join field
      * @return the r
      */
-    @SuppressWarnings("unchecked")
     public R join(int sourceIndex, String sourceField, String joinRepository, String joinField) {
+        return join(sourceIndex, sourceField, joinRepository, null, joinField);
+    }
+
+    /**
+     * Join.
+     *
+     * @param sourceIndex         the source index
+     * @param sourceField         the source field
+     * @param joinRepository      the join repository
+     * @param joinRepositoryAlias the join repository alias
+     * @param joinField           the join field
+     * @return the r
+     */
+    @SuppressWarnings("unchecked")
+    public R join(int sourceIndex, String sourceField, String joinRepository, String joinRepositoryAlias,
+        String joinField) {
         AssertIllegalArgument.isNotNull(sourceField, "sourceField");
         AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
         AssertIllegalArgument.isNotNull(joinField, "joinField");
         RepositoryRelation erm = getRepositoryRelation(sourceIndex);
 
-        addFilterable(sourceIndex, sourceField, joinRepository, joinField);
+        addFilterable(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField);
 
         RepositoryRelation jerm = getRepositoryRelation(index - 1);
 
@@ -243,8 +258,8 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
     /**
      * Join.
      *
-     * @param sourceIndex    the source index
      * @param joinRepository the join repository
+     * @param onExpression   the on expression
      * @return the r
      */
     @SuppressWarnings("unchecked")

@@ -14,10 +14,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Field;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
@@ -34,15 +34,17 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQueryValueSort
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation.RepositorySqlQueryOn1;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation.RepositorySqlQueryRelate1R;
 
 /**
  * SqlQueryProperties.
  *
  * @author zhongj
  */
-public class RepositorySqlQueryFetched1FieldsImpl
+public class RepositorySqlQueryFetched1FieldImpl
     extends AbstractRepositorySqlQueryBase<RepositoryQueryValueConditionsGroup, QueryValueLimitExecutor>
-    implements RepositorySqlQueryFetched1Fields {
+    implements RepositorySqlQueryFetched1Field {
 
     /**
      * Instantiates a new sql query entity properties.
@@ -50,7 +52,7 @@ public class RepositorySqlQueryFetched1FieldsImpl
      * @param queryRelation  the repository relation
      * @param sqlPageFactory the sql page factory
      */
-    public RepositorySqlQueryFetched1FieldsImpl(RepositorySqlQueryRelation queryRelation,
+    public RepositorySqlQueryFetched1FieldImpl(RepositorySqlQueryRelation queryRelation,
         SqlPageFactory sqlPageFactory) {
         super(0, queryRelation, sqlPageFactory);
     }
@@ -60,7 +62,7 @@ public class RepositorySqlQueryFetched1FieldsImpl
      *
      * @param repositorySqlQueryFetch the repository sql query fetch
      */
-    RepositorySqlQueryFetched1FieldsImpl(AbstractRepositorySqlQueryFetch<?, ?, ?, ?> repositorySqlQueryFetch) {
+    RepositorySqlQueryFetched1FieldImpl(AbstractRepositorySqlQueryFetch<?, ?, ?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
     }
 
@@ -347,8 +349,9 @@ public class RepositorySqlQueryFetched1FieldsImpl
      */
     @Override
     public RepositoryQueryOnExpression1<RepositoryQueryRelate1R, RepositoryQueryRelatedFetched1F> join(
-        String repository) {
-        // IMPLSOON 后续来实现
-        throw new NotImplementedException();
+        Repository repository) {
+        // ENHANCE 目前Fetch1Field在join后和其他的一样，后续考虑是否特化
+        return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1R(queryRelation, sqlPageFactory), queryRelation,
+            repository, relate -> ((RepositorySqlQueryRelate1R) relate).setIdName());
     }
 }

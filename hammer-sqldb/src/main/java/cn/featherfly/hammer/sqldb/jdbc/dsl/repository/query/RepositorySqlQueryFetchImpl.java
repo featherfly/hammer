@@ -9,10 +9,11 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.QueryableField;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
-import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetched1Fields;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetched1Field;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
@@ -35,7 +36,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation.RepositoryS
  *
  * @author zhongj
  */
-public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch<RepositoryQueryFetched1Fields,
+public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch<RepositoryQueryFetched1Field,
     RepositoryQueryFetchedFields, RepositoryQueryConditionsGroup, QueryLimitExecutor>
     implements RepositorySqlQueryFetch {
 
@@ -104,32 +105,32 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryFetched1Fields fetch(Consumer<FetchField> consumer) {
+    public RepositoryQueryFetched1Field fetch(Consumer<FetchField> consumer) {
         FetchFieldImpl fetchField = new FetchFieldImpl();
         consumer.accept(fetchField);
         for (QueryableField field : fetchField.getFields()) {
             fetch(field);
         }
-        return new RepositorySqlQueryFetched1FieldsImpl(this);
+        return new RepositorySqlQueryFetched1FieldImpl(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryFetched1Fields fetch(boolean distinct, String name, String alias) {
+    public RepositoryQueryFetched1Field fetch(boolean distinct, String name, String alias) {
         queryRelation.getBuilder().addColumn(distinct, name, alias);
-        return new RepositorySqlQueryFetched1FieldsImpl(this);
+        return new RepositorySqlQueryFetched1FieldImpl(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryFetched1Fields fetch(AggregateFunction aggregateFunction, boolean distinct, String name,
+    public RepositoryQueryFetched1Field fetch(AggregateFunction aggregateFunction, boolean distinct, String name,
         String alias) {
         queryRelation.getBuilder().addColumn(aggregateFunction, distinct, name, alias);
-        return new RepositorySqlQueryFetched1FieldsImpl(this);
+        return new RepositorySqlQueryFetched1FieldImpl(this);
     }
 
     /**
@@ -177,7 +178,7 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public RepositoryQueryOnExpression1<RepositoryQueryRelate1R, RepositoryQueryRelatedFetched1F> join(
-        String repository) {
+        Repository repository) {
         return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1R(queryRelation, sqlPageFactory), queryRelation,
             repository, relate -> ((RepositorySqlQueryRelate1R) relate).setIdName());
     }

@@ -13,6 +13,7 @@ import java.util.List;
 import com.speedment.common.tuple.Tuple3;
 
 import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3FFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3FFF;
@@ -60,7 +61,7 @@ public class RepositorySqlQueryRelatedFetched2FF extends
      */
     @Override
     public RepositoryQueryOnExpression3<RepositoryQueryRelate3FFR, RepositoryQueryRelatedFetched3FFF> join(
-        String repository) {
+        Repository repository) {
         return new RepositorySqlQueryOn3<>(new RepositorySqlQueryRelate3FFR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate3FFR) relate).setIdName());
     }
