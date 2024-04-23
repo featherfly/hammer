@@ -33,11 +33,14 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation
  * @author zhongj
  */
 public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression extends
-        AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryQueryConditionsGroup,
-                RepositoryQueryConditionsGroupLogic, Tuple1<Integer>, QueryConditionConfig, RepositorySqlQueryRelation,
-                SqlSelectBasicBuilder>
-        implements RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, RepositoryQuerySortExpression,
-        RepositoryQuerySortedExpression {
+    AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryQueryConditionsGroup,
+        RepositoryQueryConditionsGroupLogic, Tuple1<Integer>, QueryConditionConfig, RepositorySqlQueryRelation,
+        SqlSelectBasicBuilder>
+    implements
+    //    RepositoryQueryableExpression<RepositoryQuerySortExpression, QueryLimitExecutor>, //
+    //    ConditionConfigureExpression<RepositoryQuery, QueryConditionConfig>, //
+    RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, //
+    RepositoryQuerySortExpression, RepositoryQuerySortedExpression {
 
     private SqlSortBuilder sortBuilder;
 
@@ -56,7 +59,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryConditionsGroupExpression(RepositoryQueryConditionsGroupLogic parent,
-            int index, RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
+        int index, RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(parent, index, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         if (parent == null) {
@@ -64,7 +67,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
             sortBuilder = new SqlSortBuilder(dialect, repositoryAlias);
         }
         repositorySqlQueryConditionGroupQuery = new RepositorySqlQueryConditionGroupQuery(this, sqlPageFactory,
-                queryRelation);
+            queryRelation);
     }
 
     /**
@@ -245,7 +248,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
                 return result + Chars.SPACE + sort;
             } else {
                 return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort;
+                    + sort;
             }
         } else {
             return condition;

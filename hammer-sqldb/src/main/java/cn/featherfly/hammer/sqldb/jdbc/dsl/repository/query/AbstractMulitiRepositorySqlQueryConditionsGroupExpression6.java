@@ -17,15 +17,13 @@ import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.Queryable;
 import cn.featherfly.hammer.expression.query.sort.SetSortFieldExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression6;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression6;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression6;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression6;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQueryableExpression;
 import cn.featherfly.hammer.sqldb.Constants;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.AbstractMulitiRepositorySqlConditionsGroupExpression6;
@@ -47,7 +45,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
     Q extends QueryLimitExecutor> extends
     AbstractMulitiRepositorySqlConditionsGroupExpression6<C, L, QueryConditionConfig, RepositorySqlQueryRelation,
         SqlSelectBasicBuilder>
-    implements Queryable<S>, QueryCountExecutor, QueryConditionLimit<Q>, QueryLimitExecutor, // 
+    implements RepositoryQueryableExpression<S, Q>, //
     //    RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>,
     RepositoryQuerySortExpression6<Q>, RepositoryQuerySortedExpression6<Q> {
 

@@ -25,8 +25,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQueryJoin<R extends RepositoryQueryRelateExpression<R>,
-        C extends ConditionExpression, Q> extends AbstractRepositorySqlQuery<C, Q>
-        implements RepositoryQueryRelateExpression<R> {
+    C extends ConditionExpression, Q> extends AbstractRepositorySqlQuery<C, Q>
+    implements RepositoryQueryRelateExpression<R> {
     /**
      * Instantiates a new abstract sql query entity properties.
      *
@@ -35,7 +35,7 @@ public abstract class AbstractRepositorySqlQueryJoin<R extends RepositoryQueryRe
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQueryJoin(int index, RepositorySqlQueryRelation queryRelation,
-            SqlPageFactory sqlPageFactory) {
+        SqlPageFactory sqlPageFactory) {
         super(index, queryRelation, sqlPageFactory);
     }
 
