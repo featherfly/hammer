@@ -42,23 +42,23 @@ public class DslEntityConditionOtherTest {
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).isn().list(); // use and with object all none empty property
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).isn(true).list(); // use and with object all none empty property
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName).isn()
-                .and().property(User::getEmail).property(Email::getHost).isn().list();
+            .and().property(User::getEmail).property(Email::getHost).isn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName)
-                .isn(true).and().property(User::getEmail).property(Email::getHost).isn(true).list();
+            .isn(true).and().property(User::getEmail).property(Email::getHost).isn(true).list();
 
         // OneToOne or ManyToOne Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)
-                .isn().list();
+            .isn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)
-                .isn(true).list();
+            .isn(true).list();
         // use property mapping with foreign key
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).isn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).isn(true).list();
         // 上面和下面是一样的效果
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getId)
-                .isn().list();
+            .isn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getId)
-                .isn(true).list();
+            .isn(true).list();
 
         // OneToMany Object property YUFEI_TODO 暂时还未想到功能逻辑
         //        query.find(User.class).join(User::getUserInfo).where().property(User::getDevices).property(Device::getCode)
@@ -72,17 +72,17 @@ public class DslEntityConditionOtherTest {
         //                .list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where() //
-                //        .isn(es -> es.get0().property(UserInfo::getName).value())  // 这样（eclipse）编译报错
-                .isn(es -> {
-                    es.get0().property(UserInfo::getName).value();
-                }).list();
+            //        .isn(es -> es.get0().property(UserInfo::getName).value())  // 这样（eclipse）编译报错
+            .isn(es -> {
+                es.get0().property(UserInfo::getName).value();
+            }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .isn((e0, e1) -> e0.property(UserInfo::getName).value()).list();
+            .isn((e0, e1) -> e0.property(UserInfo::getName).value()).list();
         query.find(UserInfo.class).join(User::getUserInfo).where().isn(es -> {
             es.get1().property(User::getUserInfo).property(UserInfo::getName).value(true);
         }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .isn((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
+            .isn((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where().isn(UserInfo::getId).list();
 
@@ -93,14 +93,13 @@ public class DslEntityConditionOtherTest {
         }).list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .isn((e0, e1) -> e0.accept(User2::getUsername)).and().isn((e0, e1) -> e1.accept(UserInfo2::getName))
-                .list();
+            .isn((e0, e1) -> e0.accept(User2::getUsername)).and().isn((e0, e1) -> e1.accept(UserInfo2::getName)).list();
 
         query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().isn(es -> {
-                    es.get0().accept(Tree2::getName);
-                }).and().isn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().isn(es -> {
+                es.get0().accept(Tree2::getName);
+            }).and().isn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
 
     public void testEntityQueryJoinConditionInn() {
@@ -112,23 +111,23 @@ public class DslEntityConditionOtherTest {
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).inn().list(); // use and with object all none empty property
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).inn(true).list(); // use and with object all none empty property
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName).inn()
-                .and().property(User::getEmail).property(Email::getHost).inn().list();
+            .and().property(User::getEmail).property(Email::getHost).inn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName)
-                .inn(true).and().property(User::getEmail).property(Email::getHost).inn(true).list();
+            .inn(true).and().property(User::getEmail).property(Email::getHost).inn(true).list();
 
         // OneToOne or ManyToOne Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)
-                .inn().list();
+            .inn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)
-                .inn(true).list();
+            .inn(true).list();
         // use property mapping with foreign key
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).inn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).inn(true).list();
         // 上面和下面是一样的效果
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getId)
-                .inn().list();
+            .inn().list();
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getId)
-                .inn(true).list();
+            .inn(true).list();
 
         // OneToMany Object property YUFEI_TODO 暂时还未想到功能逻辑
         //        query.find(User.class).join(User::getUserInfo).where().property(User::getDevices).property(Device::getCode)
@@ -145,12 +144,12 @@ public class DslEntityConditionOtherTest {
             es.get0().property(UserInfo::getName).value();
         }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .inn((e0, e1) -> e0.property(UserInfo::getName).value()).list();
+            .inn((e0, e1) -> e0.property(UserInfo::getName).value()).list();
         query.find(UserInfo.class).join(User::getUserInfo).where().inn(es -> {
             es.get1().property(User::getUserInfo).property(UserInfo::getName).value(true);
         }).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .inn((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
+            .inn((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getName).value(true)).list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where().inn(es -> {
             es.get0().accept(User2::getUsername);
@@ -159,14 +158,13 @@ public class DslEntityConditionOtherTest {
         }).list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .inn((e0, e1) -> e0.accept(User2::getUsername)).and().inn((e0, e1) -> e1.accept(UserInfo2::getName))
-                .list();
+            .inn((e0, e1) -> e0.accept(User2::getUsername)).and().inn((e0, e1) -> e1.accept(UserInfo2::getName)).list();
 
         query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().inn(es -> {
-                    es.get0().accept(Tree2::getName);
-                }).and().inn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().inn(es -> {
+                es.get0().accept(Tree2::getName);
+            }).and().inn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
 
     public void testEntityQueryJoinConditionIn() {
@@ -175,31 +173,32 @@ public class DslEntityConditionOtherTest {
 
         // Embedded Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName)
-                .in("name").and().property(User::getEmail).property(Email::getHost).in("host").list();
+            .in("name").and().property(User::getEmail).property(Email::getHost).in("host").list();
 
         // OneToOne or ManyToOne Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)
-                .in("yufei").list();
+            .in("yufei").list();
 
         // OneToMany Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getDevices).property(Device::getCode)
-                .in("device-001").list();
+            .in("device-001").list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in((e0, e1) -> e0.property(User::getDevices).property(Device::getCode).value("device-001")).list();
+            .in((e0, e1) -> e0.property(User::getDevices).property(Device::getCode).value("device-001")).list();
         query.find(Tree.class).join(Tree::getParent).where().in((e0, e1) -> e0.property(Tree::getChildren)
-                .property(Tree::getChildren).property(Tree::getName).value("tree-001")).list();
-        query.find(Tree.class).join(Tree::getParent).where().in((e0, e1) -> e0.property(Tree::getChildren)
+            .property(Tree::getChildren).property(Tree::getName).value("tree-001")).list();
+        query
+            .find(Tree.class).join(Tree::getParent).where().in((e0, e1) -> e0.property(Tree::getChildren)
                 .property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName).value("tree-001"))
-                .list();
+            .list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).in(1).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getUser).property(User::getId)
-                .in(1).list();
+            .in(1).list();
 
-        query.find(User.class).join(User::getUserInfo).where().in(User::getAge, new Integer(18)).list();
-        query.find(User.class).join(User::getUserInfo).where().in(User::getAge, new Integer(18), value -> ignore)
-                .list();
+        query.find(User.class).join(User::getUserInfo).where().in(User::getAge, Integer.valueOf(18)).list();
+        query.find(User.class).join(User::getUserInfo).where().in(User::getAge, Integer.valueOf(18), value -> ignore)
+            .list();
         query.find(User.class).join(User::getUserInfo).where().in(User::getAge, 18).list();
         query.find(User.class).join(User::getUserInfo).where().in(User::getAge, (Integer) 18).list();
         //        query.find(User.class).join(User::getUserInfo).where().in(User::getAge, 18, value -> ignore).list();// 编译报错
@@ -207,93 +206,93 @@ public class DslEntityConditionOtherTest {
 
         query.find(UserInfo.class).join(User::getUserInfo).where().in(UserInfo::getId, 1).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in((SerializableToIntFunction<UserInfo>) UserInfo::getId, 1, value -> ignore).list();
+            .in((SerializableToIntFunction<UserInfo>) UserInfo::getId, 1, value -> ignore).list();
         query.find(UserInfo.class).join(User::getUserInfo).where().in(UserInfo::getId, (Integer) 1, value -> ignore)
-                .list();
+            .list();
 
         query.find(User.class).join(User::getUserInfo).where().in(User::getId, 1, 2).list();
         query.find(User.class).join(User::getUserInfo).where().in(User::getId, new int[] { 1, 2 }, value -> ignore)
-                .list();
+            .list();
 
         query.find(User.class).join(User::getUserInfo).where().in(User::getAge, 1, 2).list();
         query.find(User.class).join(User::getUserInfo).where().in(User::getAge, Integer.valueOf(1), Integer.valueOf(2))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in((SerializableFunction<User, Integer>) User::getAge, 1, 2).list();
+            .in((SerializableFunction<User, Integer>) User::getAge, 1, 2).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in((SerializableFunction<User, Integer>) User::getAge, new Integer[] { 1, 2 }).list();
+            .in((SerializableFunction<User, Integer>) User::getAge, new Integer[] { 1, 2 }).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(User::getAge, new Integer[] { 1, 2 }, (Integer[] value) -> ignore).list();
+            .in(User::getAge, new Integer[] { 1, 2 }, (Integer[] value) -> ignore).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(1)).list();
+            .in(es -> es.get0().property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(1, value -> ignore)).list();
+            .in(es -> es.get0().property(UserInfo::getId).value(1, value -> ignore)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(1, 2)).list();
+            .in(es -> es.get0().property(UserInfo::getId).value(1, 2)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 })).list();
+            .in(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 })).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 }, value -> ignore)).list();
+            .in(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 }, value -> ignore)).list();
 
         query.find(User.class).join(User::getUserInfo).where().in(es -> es.get0().property(User::getId).value(1))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where().in(es -> es.get0().property(User::getId).value(1, 2))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where().in(es -> es.get0().property(User::getAge).value(1))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where().in(es -> es.get0().property(User::getAge).value(1, 2))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getDate).value(new Date())).list();
+            .in(es -> es.get0().property(User::getDate).value(new Date())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getDate).value(new Date(), new Date())).list();
+            .in(es -> es.get0().property(User::getDate).value(new Date(), new Date())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getUsername).value("yufei")).list();
+            .in(es -> es.get0().property(User::getUsername).value("yufei")).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getUsername).value("yufei", "featherfly")).list();
+            .in(es -> es.get0().property(User::getUsername).value("yufei", "featherfly")).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now())).list();
+            .in(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now(), LocalDateTime.now()))
-                .list();
+            .in(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now(), LocalDateTime.now()))
+            .list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getLocalDate).value(LocalDate.now())).list();
+            .in(es -> es.get0().property(User::getLocalDate).value(LocalDate.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getLocalDate).value(LocalDate.now(), LocalDate.now())).list();
+            .in(es -> es.get0().property(User::getLocalDate).value(LocalDate.now(), LocalDate.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getLocalTime).value(LocalTime.now())).list();
+            .in(es -> es.get0().property(User::getLocalTime).value(LocalTime.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(User::getLocalTime).value(LocalTime.now(), LocalTime.now())).list();
+            .in(es -> es.get0().property(User::getLocalTime).value(LocalTime.now(), LocalTime.now())).list();
 
         //        query.find(User.class).join(User::getUserInfo).where()
         //                .in(es -> es.get0().property(UserInfo::getId).value(new Integer[] { 1, 2 }, value -> ignore)).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(1)).list();
+            .in(es -> es.get0().property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get0().property(UserInfo::getId).value(1)).list();
+            .in(es -> es.get0().property(UserInfo::getId).value(1)).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where().in((e0, e1) -> e0.property(UserInfo::getId).value(1))
-                .list();
+            .list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in(es -> es.get1().property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
+            .in(es -> es.get1().property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .in((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
+            .in((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .in(es -> es.get0().accept(User2::getId, 1)).and()
-                .in(es -> es.get1().accept(UserInfo2::getName, "yufei")).list();
+            .in(es -> es.get0().accept(User2::getId, 1)).and().in(es -> es.get1().accept(UserInfo2::getName, "yufei"))
+            .list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .in((e0, e1) -> e0.accept(User2::getId, 1)).and().in((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
-                .list();
+            .in((e0, e1) -> e0.accept(User2::getId, 1)).and().in((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
+            .list();
 
         query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
-                .in(es -> es.get0().accept(Tree2::getId, 1)).and().in((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1))
-                .list();
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
+            .in(es -> es.get0().accept(Tree2::getId, 1)).and().in((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1))
+            .list();
     }
 
     public void testEntityQueryJoinConditionNin() {
@@ -302,31 +301,32 @@ public class DslEntityConditionOtherTest {
 
         // Embedded Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getEmail).property(Email::getName)
-                .ni("name").and().property(User::getEmail).property(Email::getHost).ni("host").list();
+            .ni("name").and().property(User::getEmail).property(Email::getHost).ni("host").list();
 
         // OneToOne or ManyToOne Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getUserInfo).property(UserInfo::getName)
-                .ni("yufei").list();
+            .ni("yufei").list();
 
         // OneToMany Object property
         query.find(User.class).join(User::getUserInfo).where().property(User::getDevices).property(Device::getCode)
-                .ni("device-001").list();
+            .ni("device-001").list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni((e0, e1) -> e0.property(User::getDevices).property(Device::getCode).value("device-001")).list();
+            .ni((e0, e1) -> e0.property(User::getDevices).property(Device::getCode).value("device-001")).list();
         query.find(Tree.class).join(Tree::getParent).where().ni((e0, e1) -> e0.property(Tree::getChildren)
-                .property(Tree::getChildren).property(Tree::getName).value("tree-001")).list();
-        query.find(Tree.class).join(Tree::getParent).where().ni((e0, e1) -> e0.property(Tree::getChildren)
+            .property(Tree::getChildren).property(Tree::getName).value("tree-001")).list();
+        query
+            .find(Tree.class).join(Tree::getParent).where().ni((e0, e1) -> e0.property(Tree::getChildren)
                 .property(Tree::getChildren).property(Tree::getChildren).property(Tree::getName).value("tree-001"))
-                .list();
+            .list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).ni(1).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getUser).property(User::getId)
-                .ni(1).list();
+            .ni(1).list();
 
-        query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, new Integer(18)).list();
-        query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, new Integer(18), value -> ignore)
-                .list();
+        query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, Integer.valueOf(18)).list();
+        query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, Integer.valueOf(18), value -> ignore)
+            .list();
         query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, 18).list();
         query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, (Integer) 18).list();
         //        query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, 18, value -> ignore).list();// 编译报错
@@ -334,93 +334,93 @@ public class DslEntityConditionOtherTest {
 
         query.find(UserInfo.class).join(User::getUserInfo).where().ni(UserInfo::getId, 1).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni((SerializableToIntFunction<UserInfo>) UserInfo::getId, 1, value -> ignore).list();
+            .ni((SerializableToIntFunction<UserInfo>) UserInfo::getId, 1, value -> ignore).list();
         query.find(UserInfo.class).join(User::getUserInfo).where().ni(UserInfo::getId, (Integer) 1, value -> ignore)
-                .list();
+            .list();
 
         query.find(User.class).join(User::getUserInfo).where().ni(User::getId, 1, 2).list();
         query.find(User.class).join(User::getUserInfo).where().ni(User::getId, new int[] { 1, 2 }, value -> ignore)
-                .list();
+            .list();
 
         query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, 1, 2).list();
         query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, Integer.valueOf(1), Integer.valueOf(2))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni((SerializableFunction<User, Integer>) User::getAge, 1, 2).list();
+            .ni((SerializableFunction<User, Integer>) User::getAge, 1, 2).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni((SerializableFunction<User, Integer>) User::getAge, new Integer[] { 1, 2 }).list();
+            .ni((SerializableFunction<User, Integer>) User::getAge, new Integer[] { 1, 2 }).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(User::getAge, new Integer[] { 1, 2 }, (Integer[] value) -> ignore).list();
+            .ni(User::getAge, new Integer[] { 1, 2 }, (Integer[] value) -> ignore).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(1)).list();
+            .ni(es -> es.get0().property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(1, value -> ignore)).list();
+            .ni(es -> es.get0().property(UserInfo::getId).value(1, value -> ignore)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(1, 2)).list();
+            .ni(es -> es.get0().property(UserInfo::getId).value(1, 2)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 })).list();
+            .ni(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 })).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 }, value -> ignore)).list();
+            .ni(es -> es.get0().property(UserInfo::getId).value(new int[] { 1, 2 }, value -> ignore)).list();
 
         query.find(User.class).join(User::getUserInfo).where().ni(es -> es.get0().property(User::getId).value(1))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where().ni(es -> es.get0().property(User::getId).value(1, 2))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where().ni(es -> es.get0().property(User::getAge).value(1))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where().ni(es -> es.get0().property(User::getAge).value(1, 2))
-                .list();
+            .list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getDate).value(new Date())).list();
+            .ni(es -> es.get0().property(User::getDate).value(new Date())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getDate).value(new Date(), new Date())).list();
+            .ni(es -> es.get0().property(User::getDate).value(new Date(), new Date())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getUsername).value("yufei")).list();
+            .ni(es -> es.get0().property(User::getUsername).value("yufei")).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getUsername).value("yufei", "featherfly")).list();
+            .ni(es -> es.get0().property(User::getUsername).value("yufei", "featherfly")).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now())).list();
+            .ni(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now(), LocalDateTime.now()))
-                .list();
+            .ni(es -> es.get0().property(User::getLocalDateTime).value(LocalDateTime.now(), LocalDateTime.now()))
+            .list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getLocalDate).value(LocalDate.now())).list();
+            .ni(es -> es.get0().property(User::getLocalDate).value(LocalDate.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getLocalDate).value(LocalDate.now(), LocalDate.now())).list();
+            .ni(es -> es.get0().property(User::getLocalDate).value(LocalDate.now(), LocalDate.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getLocalTime).value(LocalTime.now())).list();
+            .ni(es -> es.get0().property(User::getLocalTime).value(LocalTime.now())).list();
         query.find(User.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(User::getLocalTime).value(LocalTime.now(), LocalTime.now())).list();
+            .ni(es -> es.get0().property(User::getLocalTime).value(LocalTime.now(), LocalTime.now())).list();
 
         //        query.find(User.class).join(User::getUserInfo).where()
         //                .ni(es -> es.get0().property(UserInfo::getId).value(new Integer[] { 1, 2 }, value -> ignore)).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(1)).list();
+            .ni(es -> es.get0().property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get0().property(UserInfo::getId).value(1)).list();
+            .ni(es -> es.get0().property(UserInfo::getId).value(1)).list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where().ni((e0, e1) -> e0.property(UserInfo::getId).value(1))
-                .list();
+            .list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni(es -> es.get1().property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
+            .ni(es -> es.get1().property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
         query.find(UserInfo.class).join(User::getUserInfo).where()
-                .ni((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
+            .ni((e0, e1) -> e1.property(User::getUserInfo).property(UserInfo::getId).value(1)).list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .ni(es -> es.get0().accept(User2::getId, 1)).and()
-                .ni(es -> es.get1().accept(UserInfo2::getName, "yufei")).list();
+            .ni(es -> es.get0().accept(User2::getId, 1)).and().ni(es -> es.get1().accept(UserInfo2::getName, "yufei"))
+            .list();
 
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
-                .ni((e0, e1) -> e0.accept(User2::getId, 1)).and().ni((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
-                .list();
+            .ni((e0, e1) -> e0.accept(User2::getId, 1)).and().ni((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
+            .list();
 
         query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-                .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
-                .ni(es -> es.get0().accept(Tree2::getId, 1)).and().ni((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1))
-                .list();
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
+            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
+            .ni(es -> es.get0().accept(Tree2::getId, 1)).and().ni((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1))
+            .list();
     }
 
 }
