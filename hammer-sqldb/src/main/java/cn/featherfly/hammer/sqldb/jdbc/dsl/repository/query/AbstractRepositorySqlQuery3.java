@@ -1,16 +1,20 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query;
 
+import java.util.function.Consumer;
+
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.hammer.config.dsl.QueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery3;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression3;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression3;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression3;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression3;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -65,5 +69,14 @@ public abstract class AbstractRepositorySqlQuery3<R extends RepositoryQueryRelat
                     new RepositoryFieldOnlyExpressionImpl<>(2, queryRelation)));
         }
         return conditions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryExpression3<C, L, S, Q> configure(Consumer<QueryConfig> configure) {
+        configure.accept(queryRelation.getConfig());
+        return this;
     }
 }

@@ -16,15 +16,13 @@ import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.Queryable;
 import cn.featherfly.hammer.expression.query.sort.SetSortFieldExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression5;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQueryableExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.AbstractMulitiRepositorySqlConditionsGroupExpression5;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryConditionGroupQuery;
@@ -45,8 +43,8 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
     Q extends QueryLimitExecutor> extends
     AbstractMulitiRepositorySqlConditionsGroupExpression5<C, L, QueryConditionConfig, RepositorySqlQueryRelation,
         SqlSelectBasicBuilder>
-    implements Queryable<S>, QueryCountExecutor, QueryConditionLimit<Q>, QueryLimitExecutor, // 
-    //        RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>, 
+    implements RepositoryQueryableExpression<S, Q>, //
+    //        RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>,
     RepositoryQuerySortExpression5<Q>, RepositoryQuerySortedExpression5<Q> {
 
     private SqlSortBuilder sortBuilder;
