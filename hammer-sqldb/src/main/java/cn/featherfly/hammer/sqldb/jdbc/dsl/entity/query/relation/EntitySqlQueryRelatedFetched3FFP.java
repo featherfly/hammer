@@ -16,11 +16,10 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression4;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4FFRP;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4FFRR;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched3FFP;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched4FFRF;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFetch4;
@@ -30,13 +29,13 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFe
  *
  * @author zhongj
  * @param <E>  the element type
- * @param <R1> the generic type
- * @param <R2> the generic type
- * @param <R3> the generic type
+ * @param <R1> query or joined type
+ * @param <R2> query or joined type
+ * @param <R3> query or joined type
  */
 public class EntitySqlQueryRelatedFetched3FFP<E, R1, R2, R3>
-        extends AbstractEntitySqlQueryFetch4<E, R1, R2, R3, Tuple3<E, R1, R2>>
-        implements EntityQueryRelatedFetched3FFP<E, R1, R2, R3> {
+    extends AbstractEntitySqlQueryFetch4<E, R1, R2, R3, Tuple3<E, R1, R2>>
+    implements EntityQueryRelatedFetched3FFP<E, R1, R2, R3> {
 
     private EntitySqlQueryRelate3FFP<E, R1, R2, R3> proxy;
 
@@ -49,7 +48,7 @@ public class EntitySqlQueryRelatedFetched3FFP<E, R1, R2, R3>
      * @param entitySqlQueryRelation the entity sql query relation
      */
     public EntitySqlQueryRelatedFetched3FFP(EntitySqlQueryRelate3FFP<E, R1, R2, R3> entitySqlQueryRelate,
-            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
         proxy = entitySqlQueryRelate;
     }
@@ -58,8 +57,7 @@ public class EntitySqlQueryRelatedFetched3FFP<E, R1, R2, R3>
      * {@inheritDoc}
      */
     @Override
-    public <R4> EntityQueryRelatedExpression<E, R4, EntityQueryRelate4FFRR<E, R1, R2, R3, R4>,
-            EntityQueryRelatedFetched4FFRF<E, R1, R2, R3, R4>> join(Class<R4> joinType) {
+    public <J> EntityOnExpression4<E, R1, R2, R3, J, EntityQueryRelate4FFRR<E, R1, R2, R3, J>> join(Class<J> joinType) {
         return proxy.join(joinType);
     }
 
@@ -91,15 +89,6 @@ public class EntitySqlQueryRelatedFetched3FFP<E, R1, R2, R3>
      * {@inheritDoc}
      */
     @Override
-    public <R4> EntityQueryRelatedExpression<R1, R4, EntityQueryRelate4FFRR<E, R1, R2, R3, R4>,
-            EntityQueryRelatedFetched4FFRF<E, R1, R2, R3, R4>> join2(Class<R4> joinType) {
-        return proxy.join2(joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <R4> EntityQueryRelate4FFRR<E, R1, R2, R3, R4> join2(SerializableFunction2<R4, R1> propertyName) {
         return proxy.join2(propertyName);
     }
@@ -124,15 +113,6 @@ public class EntitySqlQueryRelatedFetched3FFP<E, R1, R2, R3>
      * {@inheritDoc}
      */
     @Override
-    public <R4> EntityQueryRelatedExpression<R2, R4, EntityQueryRelate4FFRR<E, R1, R2, R3, R4>,
-            EntityQueryRelatedFetched4FFRF<E, R1, R2, R3, R4>> join3(Class<R4> joinType) {
-        return proxy.join3(joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public <R4> EntityQueryRelate4FFRR<E, R1, R2, R3, R4> join3(SerializableFunction2<R4, R2> propertyName) {
         return proxy.join3(propertyName);
     }
@@ -151,15 +131,6 @@ public class EntitySqlQueryRelatedFetched3FFP<E, R1, R2, R3>
     @Override
     public EntityQueryRelate4FFRP<E, R1, R2, R3, R2> join3(SerializableUnaryOperator1<R2> propertyName) {
         return proxy.join3(propertyName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R4> EntityQueryRelatedExpression<R3, R4, EntityQueryRelate4FFRR<E, R1, R2, R3, R4>,
-            EntityQueryRelatedFetched4FFRF<E, R1, R2, R3, R4>> join4(Class<R4> joinType) {
-        return proxy.join4(joinType);
     }
 
     /**

@@ -15,47 +15,32 @@ import com.speedment.common.tuple.Tuple2;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression3;
 import cn.featherfly.hammer.dsl.entity.query.EntityQuery3;
 
 /**
  * The Interface EntityQueryRelatedFetched2RF.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <R1> the generic type
- * @param <R2> the generic type
+ * @author zhongj
+ * @param <E>  query type
+ * @param <R1> query or joined type
+ * @param <R2> query or joined type
  */
 public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E, R1, R2, Tuple2<E, R2>> {
 
     /**
      * join.
      *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R3>     the generic type
+     * @param <J>      join type
      * @param joinType the join type
      * @return EntityQueryRelatedExpression
      */
-    <R3> EntityQueryRelatedExpression<E, R3, EntityQueryRelate3RFR<E, R1, R2, R3>,
-            EntityQueryRelatedFetched3RFF<E, R1, R2, R3>> join(Class<R3> joinType);
+    <J> EntityOnExpression3<E, R1, R2, J, EntityQueryRelate3RFR<E, R1, R2, J>> join(Class<J> joinType);
 
     /**
      * join on.
      *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param <R3>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFR
@@ -65,14 +50,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param <R3>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFP
@@ -82,14 +59,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFP
      */
@@ -102,32 +71,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R3>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R3> EntityQueryRelatedExpression<R1, R3, EntityQueryRelate3RFR<E, R1, R2, R3>,
-            EntityQueryRelatedFetched3RFF<E, R1, R2, R3>> join2(Class<R3> joinType);
-
-    /**
-     * join on.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param <R3>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFR
@@ -137,14 +80,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param <R3>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFP
@@ -154,14 +89,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFP
      */
@@ -174,32 +101,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <QR>     the generic type
-     * @param <RC>     the generic type
-     * @param <RL>     the generic type
-     * @param <RS>     the generic type
-     * @param <QRF>    the generic type
-     * @param <QRC>    the generic type
-     * @param <QRL>    the generic type
-     * @param <QRS>    the generic type
-     * @param <R3>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R3> EntityQueryRelatedExpression<R2, R3, EntityQueryRelate3RFR<E, R1, R2, R3>,
-            EntityQueryRelatedFetched3RFF<E, R1, R2, R3>> join3(Class<R3> joinType);
-
-    /**
-     * join on.
-     *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param <R3>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFR
@@ -209,14 +110,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param <R3>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFP
@@ -226,14 +119,6 @@ public interface EntityQueryRelatedFetched2RF<E, R1, R2> extends EntityQuery3<E,
     /**
      * join on.
      *
-     * @param <RE>         the generic type
-     * @param <RC>         the generic type
-     * @param <RL>         the generic type
-     * @param <RS>         the generic type
-     * @param <QR>         the generic type
-     * @param <QRC>        the generic type
-     * @param <QRL>        the generic type
-     * @param <QRS>        the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate3RFP
      */

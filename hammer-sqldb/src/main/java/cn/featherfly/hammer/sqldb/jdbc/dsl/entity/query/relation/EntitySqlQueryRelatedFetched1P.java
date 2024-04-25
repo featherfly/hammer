@@ -14,11 +14,10 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression2;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate2RP;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate2RR;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched1P;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched2RF;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFetch2;
@@ -28,10 +27,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFe
  *
  * @author zhongj
  * @param <E>  the element type
- * @param <R1> the generic type
+ * @param <R1> query or joined type
  */
 public class EntitySqlQueryRelatedFetched1P<E, R1> extends AbstractEntitySqlQueryFetch2<E, R1, E>
-        implements EntityQueryRelatedFetched1P<E, R1> {
+    implements EntityQueryRelatedFetched1P<E, R1> {
 
     private EntitySqlQueryRelate1P<E, R1> proxy;
 
@@ -44,7 +43,7 @@ public class EntitySqlQueryRelatedFetched1P<E, R1> extends AbstractEntitySqlQuer
      * @param entitySqlQueryRelation the entity sql query relation
      */
     public EntitySqlQueryRelatedFetched1P(EntitySqlQueryRelate1P<E, R1> entitySqlQueryRelate,
-            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
         proxy = entitySqlQueryRelate;
     }
@@ -53,8 +52,7 @@ public class EntitySqlQueryRelatedFetched1P<E, R1> extends AbstractEntitySqlQuer
      * {@inheritDoc}
      */
     @Override
-    public <R2> EntityQueryRelatedExpression<E, R2, EntityQueryRelate2RR<E, R1, R2>,
-            EntityQueryRelatedFetched2RF<E, R1, R2>> join(Class<R2> joinType) {
+    public <J> EntityOnExpression2<E, R1, J, EntityQueryRelate2RR<E, R1, J>> join(Class<J> joinType) {
         return proxy.join(joinType);
     }
 
@@ -83,15 +81,6 @@ public class EntitySqlQueryRelatedFetched1P<E, R1> extends AbstractEntitySqlQuer
     }
 
     // ****************************************************************************************************************
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R2> EntityQueryRelatedExpression<R1, R2, EntityQueryRelate2RR<E, R1, R2>,
-            EntityQueryRelatedFetched2RF<E, R1, R2>> join2(Class<R2> joinType) {
-        return proxy.join2(joinType);
-    }
 
     /**
      * {@inheritDoc}

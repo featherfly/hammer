@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
@@ -72,9 +72,9 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         assertNotNull(userInfo.getUser().getUsername());
 
         user = query.find(User.class) //
-                .join(UserInfo::getUser) //
-                .join(UserRole2::getUser) //
-                .where().eq(User::getId, uid).single();
+            .join(UserInfo::getUser) //
+            .join(UserRole2::getUser) //
+            .where().eq(User::getId, uid).single();
         System.err.println(user);
         assertEquals(user.getId(), uid);
 
@@ -94,12 +94,12 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         user = query.find(User.class).join(UserInfo::getUser).where().eq2(UserInfo::getId, 1).single();
 
         Tuple2<User, UserInfo> userUserInfo = query.find(User.class).join(UserInfo::getUser).fetch().where()
-                .eq2(UserInfo::getId, id).single();
+            .eq2(UserInfo::getId, id).single();
         assertEquals(userUserInfo.get1().getId(), id);
         assertEquals(userUserInfo.get1().getUser().getId(), userUserInfo.get0().getId());
 
         List<UserInfo> list = query.find(UserInfo.class).join(UserInfo::getUser).join2(UserRole2::getUser)
-                .join3(UserRole2::getRole).list();
+            .join3(UserRole2::getRole).list();
         System.out.println(list.size());
 
         query.find(Tree.class).join(Tree::getParent).list();
@@ -117,7 +117,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         User u = query.find(User.class).where().eq(User::getUsername, username).single();
 
         List<UserInfo> list = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getUsername)
-                .eq(username).list();
+            .eq(username).list();
         for (UserInfo ui : list) {
             assertEquals(ui.getUser().getId(), u.getId());
         }
@@ -134,7 +134,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         List<UserInfo> list = null;
 
         list = query.find(UserInfo.class).where().property(UserInfo::getUser) //
-                .eq(user).list();
+            .eq(user).list();
         for (UserInfo ui : list) {
             assertEquals(ui.getUser().getId(), u.getId());
         }
@@ -156,7 +156,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         List<UserInfo> list = null;
 
         list = query.find(UserInfo.class).where().property(UserInfo::getUser) //
-                .eq(user).list();
+            .eq(user).list();
         for (UserInfo ui : list) {
             assertEquals(ui.getUser().getId(), u.getId());
         }
@@ -180,7 +180,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         assertEquals(user.getId(), userId);
 
         user = query.find(User.class).join(UserInfo::getUser).where()
-                .property((e1, e2) -> e2.property(UserInfo::getId).eq(userInfoId)).single();
+            .property((e1, e2) -> e2.property(UserInfo::getId).eq(userInfoId)).single();
         assertEquals(user.getId(), userId);
     }
 
@@ -193,7 +193,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         userInfo.setUser(user);
 
         List<UserInfo> userInfos = query.find(UserInfo.class).join(UserInfo::getUser).where() //
-                .property(UserInfo::getUser).property(User::getUsername).eq(userInfo.getUser().getUsername()).list();
+            .property(UserInfo::getUser).property(User::getUsername).eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
     }
@@ -210,61 +210,61 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
         //        List<UserInfo> userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).list();
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
-                .property(User::getMobileNo).eq(userInfo.getUser().getMobileNo()).list();
+            .property(User::getMobileNo).eq(userInfo.getUser().getMobileNo()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).list();
+            .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().lt(UserInfo::getUser, User::getAge, 10).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
-                .property(User::getAge).lt(userInfo.getUser().getAge()).list();
+            .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
+            .property(User::getAge).lt(userInfo.getUser().getAge()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(UserInfo::getId, 2).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().eq(UserInfo::getId, 2).list();
+            .eq(userInfo.getUser().getMobileNo()).and().eq(UserInfo::getId, 2).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getId).and().ge(UserInfo::getUser, User::getAge, 10).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
-                .property(User::getAge).ge(1000).list();
+            .eq(userInfo.getUser().getMobileNo()).and().eq(userInfo::getId).and().property(UserInfo::getUser)
+            .property(User::getAge).ge(1000).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
-                .eq(userInfo.getUser().getUsername()).list();
+            .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
+            .eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).and().eq(userInfo::getId).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
-                .eq(userInfo.getUser().getUsername()).and().eq(userInfo::getId).list();
+            .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
+            .eq(userInfo.getUser().getUsername()).and().eq(userInfo::getId).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 1);
 
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
-                .eq(userInfo.getUser().getUsername()).and().eq(UserInfo::getId, 2).list();
+            .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
+            .eq(userInfo.getUser().getUsername()).and().eq(UserInfo::getId, 2).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
 
         user.setUsername("yufei1111");
         //        userInfos = query.find(UserInfo.class).where().eq(userInfo::getUser, User::getPwd).and().eq(userInfo::getUser, User::getUsername).list();
         userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getMobileNo)
-                .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
-                .eq(userInfo.getUser().getUsername()).list();
+            .eq(userInfo.getUser().getMobileNo()).and().property(UserInfo::getUser).property(User::getUsername)
+            .eq(userInfo.getUser().getUsername()).list();
         System.out.println(userInfos.size());
         assertTrue(userInfos.size() == 0);
     }
@@ -289,8 +289,8 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         assertTrue(list1.size() > list2.size());
 
         List<Tuple2<Tree2, Tree2>> listTuple2 = query.find(Tree2.class) //
-                .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
-                .list();
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
+            .list();
         listTuple2.forEach(v -> {
             assertEquals(v.get0().getParentId(), v.get1().getId());
         });
@@ -311,9 +311,11 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         });
 
         List<Tuple3<Tree2, Tree2, Tree2>> listTuple3 = query.find(Tree2.class) //
-                .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
-                .join2(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
-                .list();
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch()
+            //                .join2(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
+            .join(Tree2.class).on((e1, e2, j) -> j.property(Tree2::getId).eq(e2.property(Tree2::getParentId))) //
+            .fetch() //
+            .list();
         listTuple3.forEach(v -> {
             assertEquals(v.get0().getParentId(), v.get1().getId());
             assertEquals(v.get1().getParentId(), v.get2().getId());
@@ -335,9 +337,9 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
         List<Tuple2<UserInfo, UserRole2>> listTuple2 = null;
         listTuple2 = query.find(UserInfo.class) //
-                .join(UserInfo::getUser).fetch() //
-                .join2(UserRole2::getUser).fetch() //
-                .join3(UserRole2::getRole).list();
+            .join(UserInfo::getUser).fetch() //
+            .join2(UserRole2::getUser).fetch() //
+            .join3(UserRole2::getRole).list();
         listTuple2.forEach(t -> {
             assertNotNull(t.get0().getUser().getId());
             assertNotNull(t.get0().getUser().getUsername());
@@ -347,10 +349,10 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         });
 
         listTuple2 = query.find(UserInfo.class) //
-                .join(UserInfo::getUser).fetch() //
-                .join2(UserRole2::getUser).fetch() //
-                .join3(UserRole2::getRole).fetch() //
-                .list();
+            .join(UserInfo::getUser).fetch() //
+            .join2(UserRole2::getUser).fetch() //
+            .join3(UserRole2::getRole).fetch() //
+            .list();
 
         listTuple2.forEach(t -> {
             assertNotNull(t.get0().getUser().getId());

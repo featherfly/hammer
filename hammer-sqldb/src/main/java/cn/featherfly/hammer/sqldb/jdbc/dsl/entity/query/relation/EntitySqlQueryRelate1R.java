@@ -22,7 +22,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  *
  * @author zhongj
  * @param <E>  the element type
- * @param <R1> the generic type
+ * @param <R1> query or joined type
  */
 public class EntitySqlQueryRelate1R<E, R1> extends AbstractEntitySqlQueryRelate1X<E, R1>
         implements EntityQueryRelate1R<E, R1> {

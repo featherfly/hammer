@@ -6,30 +6,31 @@ import com.speedment.common.tuple.Tuple4;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression5;
 import cn.featherfly.hammer.dsl.entity.query.EntityQuery5;
 
 /**
  * The Interface EntityQueryRelatedFetched4FFRF.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <R1> the generic type
- * @param <R2> the generic type
- * @param <R3> the generic type
- * @param <R4> the generic type
+ * @param <E>  query type
+ * @param <R1> query or joined type
+ * @param <R2> query or joined type
+ * @param <R3> query or joined type
+ * @param <R4> query or joined type
  */
 public interface EntityQueryRelatedFetched4RFFF<E, R1, R2, R3, R4>
-        extends EntityQuery5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>> {
+    extends EntityQuery5<E, R1, R2, R3, R4, Tuple4<E, R2, R3, R4>> {
 
     /**
      * join.
      *
-     * @param <R5>     the generic type
+     * @param <J>      join type
      * @param joinType the join type
      * @return EntityQueryRelatedExpression
      */
-    <R5> EntityQueryRelatedExpression<E, R5, EntityQueryRelate5RFFFR<E, R1, R2, R3, R4, R5>,
-            EntityQueryRelatedFetched5RFFFF<E, R1, R2, R3, R4, R5>> join(Class<R5> joinType);
+    <J> EntityOnExpression5<E, R1, R2, R3, R4, J, EntityQueryRelate5RFFFR<E, R1, R2, R3, R4, J>> join(
+        Class<J> joinType);
 
     /**
      * join on.
@@ -62,16 +63,6 @@ public interface EntityQueryRelatedFetched4RFFF<E, R1, R2, R3, R4>
     // ********************************************************************
 
     /**
-     * join.
-     *
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R5> EntityQueryRelatedExpression<R1, R5, EntityQueryRelate5RFFFR<E, R1, R2, R3, R4, R5>,
-            EntityQueryRelatedFetched5RFFFF<E, R1, R2, R3, R4, R5>> join2(Class<R5> joinType);
-
-    /**
      * join on.
      *
      * @param <R5>         the generic type
@@ -100,16 +91,6 @@ public interface EntityQueryRelatedFetched4RFFF<E, R1, R2, R3, R4>
     // ********************************************************************
     // 3
     // ********************************************************************
-
-    /**
-     * join.
-     *
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R5> EntityQueryRelatedExpression<R2, R5, EntityQueryRelate5RFFFR<E, R1, R2, R3, R4, R5>,
-            EntityQueryRelatedFetched5RFFFF<E, R1, R2, R3, R4, R5>> join3(Class<R5> joinType);
 
     /**
      * join on.
@@ -142,16 +123,6 @@ public interface EntityQueryRelatedFetched4RFFF<E, R1, R2, R3, R4>
     // ********************************************************************
 
     /**
-     * join.
-     *
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R5> EntityQueryRelatedExpression<R3, R5, EntityQueryRelate5RFFFR<E, R1, R2, R3, R4, R5>,
-            EntityQueryRelatedFetched5RFFFF<E, R1, R2, R3, R4, R5>> join4(Class<R5> joinType);
-
-    /**
      * join on.
      *
      * @param <R5>         the generic type
@@ -180,16 +151,6 @@ public interface EntityQueryRelatedFetched4RFFF<E, R1, R2, R3, R4>
     // ********************************************************************
     // 5
     // ********************************************************************
-
-    /**
-     * join.
-     *
-     * @param <R5>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R5> EntityQueryRelatedExpression<R4, R5, EntityQueryRelate5RFFFR<E, R1, R2, R3, R4, R5>,
-            EntityQueryRelatedFetched5RFFFF<E, R1, R2, R3, R4, R5>> join5(Class<R5> joinType);
 
     /**
      * join on.

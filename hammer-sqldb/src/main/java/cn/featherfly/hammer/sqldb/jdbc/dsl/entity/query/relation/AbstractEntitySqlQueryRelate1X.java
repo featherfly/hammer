@@ -8,12 +8,12 @@ import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression2;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate1XBase;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate2RP;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate2RR;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched2RF;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn2;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFetch2;
 
@@ -22,10 +22,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFe
  *
  * @author zhongj
  * @param <E>  the element type
- * @param <R1> the generic type
+ * @param <R1> query or joined type
  */
 public abstract class AbstractEntitySqlQueryRelate1X<E, R1> extends AbstractEntitySqlQueryFetch2<E, R1, E>
-        implements EntityQueryRelate1XBase<E, R1> {
+    implements EntityQueryRelate1XBase<E, R1> {
 
     /**
      * Instantiates a new abstract entity sql query relate 1 X.
@@ -35,7 +35,7 @@ public abstract class AbstractEntitySqlQueryRelate1X<E, R1> extends AbstractEnti
      * @param entitySqlQueryRelation the entity sql query relation
      */
     protected AbstractEntitySqlQueryRelate1X(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
+        EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
@@ -45,15 +45,14 @@ public abstract class AbstractEntitySqlQueryRelate1X<E, R1> extends AbstractEnti
      * Join.
      *
      * @param <Q>      the generic type
-     * @param <R2>     the generic type
+     * @param <J>      the generic type
      * @param joinType the join type
      * @return the entity query related expression
      */
     @Override
-    public <R2> EntityQueryRelatedExpression<E, R2, EntityQueryRelate2RR<E, R1, R2>,
-            EntityQueryRelatedFetched2RF<E, R1, R2>> join(Class<R2> joinType) {
-        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate2RR<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 0);
+    public <J> EntityOnExpression2<E, R1, J, EntityQueryRelate2RR<E, R1, J>> join(Class<J> joinType) {
+        return new EntitySqlOn2<>(joinType, new EntitySqlQueryRelate2RR<>(factory, sqlPageFactory, queryRelation),
+            factory, queryRelation);
     }
 
     /**
@@ -81,7 +80,7 @@ public abstract class AbstractEntitySqlQueryRelate1X<E, R1> extends AbstractEnti
     public <R2> EntityQueryRelate2RR<E, R1, R2> join(SerializableFunction2<R2, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
-                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate2RR<>(factory, sqlPageFactory, queryRelation);
     }
 
@@ -105,21 +104,6 @@ public abstract class AbstractEntitySqlQueryRelate1X<E, R1> extends AbstractEnti
     /**
      * Join 2.
      *
-     * @param <Q>      the generic type
-     * @param <R2>     the generic type
-     * @param joinType the join type
-     * @return the entity query related expression
-     */
-    @Override
-    public <R2> EntityQueryRelatedExpression<R1, R2, EntityQueryRelate2RR<E, R1, R2>,
-            EntityQueryRelatedFetched2RF<E, R1, R2>> join2(Class<R2> joinType) {
-        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate2RR<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 1);
-    }
-
-    /**
-     * Join 2.
-     *
      * @param <Q>          the generic type
      * @param <R2>         the generic type
      * @param propertyName the property name
@@ -128,7 +112,7 @@ public abstract class AbstractEntitySqlQueryRelate1X<E, R1> extends AbstractEnti
     public <R2> EntityQueryRelate2RR<E, R1, R2> join2(SerializableFunction2<R2, R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(1, queryRelation.getEntityRelationMapping(0).getIdName(),
-                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate2RR<>(factory, sqlPageFactory, queryRelation);
     }
 

@@ -14,7 +14,7 @@ import cn.featherfly.hammer.expression.condition.newv.NotEndWithSupplierExpressi
  * The Interface EntityNotEndWithExpression.
  *
  * @author zhongj
- * @param <E> the generic type
+ * @param <E> query type
  * @param <C> the generic type
  * @param <L> the generic type
  */

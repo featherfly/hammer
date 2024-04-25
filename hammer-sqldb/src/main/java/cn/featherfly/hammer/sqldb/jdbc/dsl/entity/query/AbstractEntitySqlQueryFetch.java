@@ -8,16 +8,15 @@ import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression1;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate1P;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate1R;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched1F;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn1;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate1P;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate1R;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelated;
 
 /**
  * The Class AbstractEntitySqlQueryFetch.
@@ -27,7 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryR
  * @param <T> the return mapping type
  */
 public abstract class AbstractEntitySqlQueryFetch<E> extends AbstractEntitySqlQuery<E>
-        implements EntityQueryRelateBase<E> {
+    implements EntityQueryRelateBase<E> {
 
     /**
      * Instantiates a new abstract entity sql query fetched.
@@ -37,7 +36,7 @@ public abstract class AbstractEntitySqlQueryFetch<E> extends AbstractEntitySqlQu
      * @param entitySqlQueryRelation the entity sql query relation
      */
     protected AbstractEntitySqlQueryFetch(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
+        EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
@@ -45,10 +44,9 @@ public abstract class AbstractEntitySqlQueryFetch<E> extends AbstractEntitySqlQu
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityQueryRelatedExpression<E, R, EntityQueryRelate1R<E, R>, EntityQueryRelatedFetched1F<E, R>> join(
-            Class<R> joinType) {
-        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 0);
+    public <J> EntityOnExpression1<E, J, EntityQueryRelate1R<E, J>> join(Class<J> joinType) {
+        return new EntitySqlOn1<>(joinType, new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation),
+            factory, queryRelation);
     }
 
     /**
@@ -68,7 +66,7 @@ public abstract class AbstractEntitySqlQueryFetch<E> extends AbstractEntitySqlQu
     public <R> EntityQueryRelate1R<E, R> join(SerializableFunction2<R, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
-                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation);
     }
 

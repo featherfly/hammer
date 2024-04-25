@@ -4,30 +4,29 @@ package cn.featherfly.hammer.dsl.entity.query.relation;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression2;
 
 /**
  * The Interface EntityQueryRelate1XBase.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <R1> the generic type
+ * @param <E>  query type
+ * @param <R1> query or joined type
  */
 public interface EntityQueryRelate1XBase<E, R1> {
 
     /**
      * Join.
      *
-     * @param <R2>     the generic type
+     * @param <J>      join type
      * @param joinType the join type
      * @return EntityQueryRelatedExpression
      */
-    <R2> EntityQueryRelatedExpression<E, R2, EntityQueryRelate2RR<E, R1, R2>,
-            EntityQueryRelatedFetched2RF<E, R1, R2>> join(Class<R2> joinType);
+    <J> EntityOnExpression2<E, R1, J, EntityQueryRelate2RR<E, R1, J>> join(Class<J> joinType);
 
     /**
      * join on.
      *
-     * @param <Q>          the generic type
      * @param <R2>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate2RR
@@ -37,7 +36,6 @@ public interface EntityQueryRelate1XBase<E, R1> {
     /**
      * join on.
      *
-     * @param <Q>          the generic type
      * @param <R2>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate2RP
@@ -47,7 +45,6 @@ public interface EntityQueryRelate1XBase<E, R1> {
     /**
      * join on.
      *
-     * @param <Q>          the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate2RP
      */
@@ -58,19 +55,8 @@ public interface EntityQueryRelate1XBase<E, R1> {
     // ********************************************************************
 
     /**
-     * Join.
-     *
-     * @param <R2>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R2> EntityQueryRelatedExpression<R1, R2, EntityQueryRelate2RR<E, R1, R2>,
-            EntityQueryRelatedFetched2RF<E, R1, R2>> join2(Class<R2> joinType);
-
-    /**
      * join on.
      *
-     * @param <RE>         the generic type
      * @param <R2>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate2RR
@@ -80,7 +66,6 @@ public interface EntityQueryRelate1XBase<E, R1> {
     /**
      * join on.
      *
-     * @param <RE>         the generic type
      * @param <R2>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate2RP
@@ -90,7 +75,6 @@ public interface EntityQueryRelate1XBase<E, R1> {
     /**
      * join on.
      *
-     * @param <RE>         the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelate2RP
      */

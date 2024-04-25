@@ -7,7 +7,6 @@ import java.time.LocalTime;
 import java.util.Date;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dml.builder.sql.vo.Device;
@@ -95,9 +94,17 @@ public class DslEntityConditionOtherTest {
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
             .isn((e0, e1) -> e0.accept(User2::getUsername)).and().isn((e0, e1) -> e1.accept(UserInfo2::getName)).list();
 
-        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().isn(es -> {
+        //        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+        //            .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+        //            .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+        //            .where().isn(es -> {
+        //                es.get0().accept(Tree2::getName);
+        //            }).and().isn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
+        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+            .join(Tree2.class).on((e1, e2, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId))).fetch() //
+            .join(Tree2.class).on((e1, e2, e3, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId)))
+            .fetch() //
+            .where().isn(es -> {
                 es.get0().accept(Tree2::getName);
             }).and().isn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
@@ -160,9 +167,16 @@ public class DslEntityConditionOtherTest {
         query.find(User2.class).join(UserInfo2.class).on(UserInfo2::getUserId).fetch().where()
             .inn((e0, e1) -> e0.accept(User2::getUsername)).and().inn((e0, e1) -> e1.accept(UserInfo2::getName)).list();
 
-        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().inn(es -> {
+        //        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
+        //            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
+        //            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where().inn(es -> {
+        //                es.get0().accept(Tree2::getName);
+        //            }).and().inn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
+        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+            .join(Tree2.class).on((e1, e2, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId))).fetch() //
+            .join(Tree2.class).on((e1, e2, e3, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId)))
+            .fetch() //
+            .where().inn(es -> {
                 es.get0().accept(Tree2::getName);
             }).and().inn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
@@ -288,11 +302,17 @@ public class DslEntityConditionOtherTest {
             .in((e0, e1) -> e0.accept(User2::getId, 1)).and().in((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
             .list();
 
-        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
-            .in(es -> es.get0().accept(Tree2::getId, 1)).and().in((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1))
-            .list();
+        //        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+        //            .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+        //            .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+        //            .where().in(es -> es.get0().accept(Tree2::getId, 1)).and()
+        //            .in((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
+        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+            .join(Tree2.class).on((e1, e2, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId))).fetch() //
+            .join(Tree2.class).on((e1, e2, e3, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId)))
+            .fetch() //
+            .where().in(es -> es.get0().accept(Tree2::getId, 1)).and()
+            .in((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
     public void testEntityQueryJoinConditionNin() {
@@ -416,11 +436,17 @@ public class DslEntityConditionOtherTest {
             .ni((e0, e1) -> e0.accept(User2::getId, 1)).and().ni((e0, e1) -> e1.accept(UserInfo2::getName, "yufei"))
             .list();
 
-        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().join2(Tree2.class)
-            .on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch().where()
-            .ni(es -> es.get0().accept(Tree2::getId, 1)).and().ni((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1))
-            .list();
+        //        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+        //            .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+        //            .join2(Tree2.class).on((SerializableFunction2<Tree2, Integer>) Tree2::getParentId).fetch() //
+        //            .where().ni(es -> es.get0().accept(Tree2::getId, 1)).and()
+        //            .ni((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
+        query.find(Tree2.class).join(Tree2.class).on(Tree2::getId, Tree2::getParentId).fetch() //
+            .join(Tree2.class).on((e1, e2, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId))).fetch() //
+            .join(Tree2.class).on((e1, e2, e3, j) -> e2.property(Tree2::getId).eq(j.property(Tree2::getParentId)))
+            .fetch() //
+            .where().ni(es -> es.get0().accept(Tree2::getId, 1)).and()
+            .ni((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
 }

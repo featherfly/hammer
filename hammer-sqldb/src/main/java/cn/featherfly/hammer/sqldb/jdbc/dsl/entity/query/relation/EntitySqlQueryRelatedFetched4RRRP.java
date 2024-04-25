@@ -18,12 +18,11 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 /**
  * The Class EntitySqlQueryRelatedFetched4RRRP.
  *
- * @author zhongj
- * @param <E>  the element type
- * @param <R1> the generic type
- * @param <R2> the generic type
- * @param <R3> the generic type
- * @param <R4> the generic type
+ * @param <E>  query type
+ * @param <R1> query or joined type
+ * @param <R2> query or joined type
+ * @param <R3> query or joined type
+ * @param <R4> query or joined type
  */
 public class EntitySqlQueryRelatedFetched4RRRP<E, R1, R2, R3, R4>
         extends AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4>
