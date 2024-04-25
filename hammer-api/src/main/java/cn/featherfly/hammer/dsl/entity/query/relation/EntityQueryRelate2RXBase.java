@@ -4,29 +4,26 @@ package cn.featherfly.hammer.dsl.entity.query.relation;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression3;
 
 /**
  * The Interface EntityQueryRelate2RXBase.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <R1> the generic type
- * @param <R2> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <S>  the generic type
+ * @param <E>  query type
+ * @param <R1> query or joined type
+ * @param <R2> query or joined type
  */
 public interface EntityQueryRelate2RXBase<E, R1, R2> {
 
     /**
      * join.
      *
-     * @param <R3>     the generic type
+     * @param <J>      join type
      * @param joinType the join type
      * @return EntityQueryRelatedExpression
      */
-    <R3> EntityQueryRelatedExpression<E, R3, EntityQueryRelate3RRR<E, R1, R2, R3>,
-            EntityQueryRelatedFetched3RRF<E, R1, R2, R3>> join(Class<R3> joinType);
+    <J> EntityOnExpression3<E, R1, R2, J, EntityQueryRelate3RRR<E, R1, R2, J>> join(Class<J> joinType);
 
     /**
      * join on.
@@ -59,16 +56,6 @@ public interface EntityQueryRelate2RXBase<E, R1, R2> {
     // ****************************************************************************************************************
 
     /**
-     * join.
-     *
-     * @param <R3>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R3> EntityQueryRelatedExpression<R1, R3, EntityQueryRelate3RRR<E, R1, R2, R3>,
-            EntityQueryRelatedFetched3RRF<E, R1, R2, R3>> join2(Class<R3> joinType);
-
-    /**
      * join on.
      *
      * @param <R3>         the generic type
@@ -97,16 +84,6 @@ public interface EntityQueryRelate2RXBase<E, R1, R2> {
     // ********************************************************************
     // join 3
     // ********************************************************************
-
-    /**
-     * join.
-     *
-     * @param <R3>     the generic type
-     * @param joinType the join type
-     * @return EntityQueryRelatedExpression
-     */
-    <R3> EntityQueryRelatedExpression<R2, R3, EntityQueryRelate3RRR<E, R1, R2, R3>,
-            EntityQueryRelatedFetched3RRF<E, R1, R2, R3>> join3(Class<R3> joinType);
 
     /**
      * join on.

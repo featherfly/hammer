@@ -5,13 +5,12 @@ import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 
 /**
- * The Interface EntityOnExpression.
+ * entity join on expression.
  *
  * @author zhongj
  * @param <E> the query type
  * @param <J> the join type
- * @param <R> the generic type
- * @param <F> the generic type
+ * @param <R> the after on expression type
  */
 public interface EntityOnExpression<E, J, R> {
 

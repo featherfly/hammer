@@ -7,17 +7,17 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
 
 /**
- * The Interface EntityOnExpression.
+ * entity first time join on expression.
  *
  * @author zhongj
- * @param <E1> the query entity type
- * @param <E2> the join entity type
- * @param <R>  the generic type
+ * @param <E1> query type
+ * @param <J>  join type
+ * @param <R>  after on expression type
  */
-public interface EntityOnExpression1<E1, E2, R> extends EntityOnExpression<E1, E2, R> {
+public interface EntityOnExpression1<E1, J, R> extends EntityOnExpression<E1, J, R> {
 
     /**
-     * On.
+     * on expression.
      *
      * @param onExpression the on expression. <br/>
      *                     <ol>
@@ -27,6 +27,6 @@ public interface EntityOnExpression1<E1, E2, R> extends EntityOnExpression<E1, E
      *                     </ol>
      * @return the RepositoryQueryRelateExpression
      */
-    R on(BiFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
+    R on(BiFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<J>,
         LogicExpression<?, ?>> onExpression);
 }

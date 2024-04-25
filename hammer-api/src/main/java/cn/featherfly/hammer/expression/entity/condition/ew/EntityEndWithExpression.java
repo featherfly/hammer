@@ -13,7 +13,7 @@ import cn.featherfly.hammer.expression.condition.ew.EndWithSupplierExpression;
  * The Interface EntityEndWithExpression.
  *
  * @author zhongj
- * @param <E> the generic type
+ * @param <E> query type
  * @param <C> the generic type
  * @param <L> the generic type
  */

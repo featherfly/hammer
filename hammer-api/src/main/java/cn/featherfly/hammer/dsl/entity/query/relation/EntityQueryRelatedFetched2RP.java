@@ -16,11 +16,11 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQuery3;
  * The Interface EntityQueryRelatedFetched2RP.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <R1> the generic type
- * @param <R2> the generic type
+ * @param <E>  query type
+ * @param <R1> query or joined type
+ * @param <R2> query or joined type
  */
 public interface EntityQueryRelatedFetched2RP<E, R1, R2>
-        extends EntityQuery3<E, R1, R2, E>, EntityQueryRelate2RXBase<E, R1, R2> {
+    extends EntityQuery3<E, R1, R2, E>, EntityQueryRelate2RXBase<E, R1, R2> {
 
 }

@@ -19,7 +19,7 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
  * set enum expression implements.
  *
  * @author zhongj
- * @param <E> the generic type
+ * @param <E> query type
  */
 public class SetEnumExpressionImpl<E extends Enum<E>> extends SetValueExpressionImpl<E>
         implements SetEnumExpression<E> {

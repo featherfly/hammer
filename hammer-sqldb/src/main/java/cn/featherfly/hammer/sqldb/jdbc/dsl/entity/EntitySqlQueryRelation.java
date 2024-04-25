@@ -73,7 +73,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         addFilterable(joinClassMapping);
         EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
-        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = getBuilder().join(joinClassMapping.getRepositoryName(),
+        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = getBuilder().join2(joinClassMapping,
             jerm.getTableAlias(), onExpression.get().expression());
         jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
         return this;

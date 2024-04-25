@@ -6,20 +6,19 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
 
 /**
- * The Interface EntityOnExpression5.
+ * entity third time join on expression.
  *
  * @author zhongj
- * @param <E1> the query type
- * @param <E2> the join type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <E5> the generic type
- * @param <R>  the generic type
+ * @param <E1> query type
+ * @param <E2> query or joined type
+ * @param <E3> query or joined type
+ * @param <J>  join type
+ * @param <R>  after on expression type
  */
-public interface EntityOnExpression3<E1, E2, E3, E4, R> extends EntityOnExpression<E1, E4, R> {
+public interface EntityOnExpression3<E1, E2, E3, J, R> extends EntityOnExpression<E1, J, R> {
 
     /**
-     * On.
+     * on expression.
      *
      * @param onExpression the on expression. <br/>
      *                     <ol>
@@ -32,5 +31,5 @@ public interface EntityOnExpression3<E1, E2, E3, E4, R> extends EntityOnExpressi
      * @return the RepositoryQueryRelateExpression
      */
     R on(FourArgusFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
-        EntityPropertyOnlyExpression<E3>, EntityPropertyOnlyExpression<E4>, LogicExpression<?, ?>> onExpression);
+        EntityPropertyOnlyExpression<E3>, EntityPropertyOnlyExpression<J>, LogicExpression<?, ?>> onExpression);
 }

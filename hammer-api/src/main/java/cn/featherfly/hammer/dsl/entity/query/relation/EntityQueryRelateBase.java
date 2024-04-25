@@ -4,6 +4,7 @@ package cn.featherfly.hammer.dsl.entity.query.relation;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression1;
 
 /**
  * The Interface EntityQueryRelateBase.
@@ -20,8 +21,7 @@ public interface EntityQueryRelateBase<E> {
      * @param joinType the join type
      * @return the entity query related expression
      */
-    <R> EntityQueryRelatedExpression<E, R, EntityQueryRelate1R<E, R>, EntityQueryRelatedFetched1F<E, R>> join(
-            Class<R> joinType);
+    <R> EntityOnExpression1<E, R, EntityQueryRelate1R<E, R>> join(Class<R> joinType);
 
     /**
      * join on.

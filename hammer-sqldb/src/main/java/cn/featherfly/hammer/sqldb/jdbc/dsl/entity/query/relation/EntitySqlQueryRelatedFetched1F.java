@@ -19,12 +19,12 @@ import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
+import cn.featherfly.hammer.dsl.entity.EntityOnExpression2;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate2FP;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate2FR;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedExpression;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched1F;
-import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched2FF;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn2;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFetch2;
 
@@ -33,10 +33,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFe
  *
  * @author zhongj
  * @param <E>  the element type
- * @param <R1> the generic type
+ * @param <R1> query or joined type
  */
 public class EntitySqlQueryRelatedFetched1F<E, R1> extends AbstractEntitySqlQueryFetch2<E, R1, Tuple2<E, R1>>
-        implements EntityQueryRelatedFetched1F<E, R1> {
+    implements EntityQueryRelatedFetched1F<E, R1> {
 
     /**
      * Instantiates a new entity sql query related fetched 1 F.
@@ -46,7 +46,7 @@ public class EntitySqlQueryRelatedFetched1F<E, R1> extends AbstractEntitySqlQuer
      * @param entitySqlQueryRelation the entity sql query relation
      */
     public EntitySqlQueryRelatedFetched1F(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
+        EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
@@ -54,10 +54,9 @@ public class EntitySqlQueryRelatedFetched1F<E, R1> extends AbstractEntitySqlQuer
      * {@inheritDoc}
      */
     @Override
-    public <R2> EntityQueryRelatedExpression<E, R2, EntityQueryRelate2FR<E, R1, R2>,
-            EntityQueryRelatedFetched2FF<E, R1, R2>> join(Class<R2> joinType) {
-        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate2FR<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 0);
+    public <J> EntityOnExpression2<E, R1, J, EntityQueryRelate2FR<E, R1, J>> join(Class<J> joinType) {
+        return new EntitySqlOn2<>(joinType, new EntitySqlQueryRelate2FR<>(factory, sqlPageFactory, queryRelation),
+            factory, queryRelation);
     }
 
     /**
@@ -68,7 +67,7 @@ public class EntitySqlQueryRelatedFetched1F<E, R1> extends AbstractEntitySqlQuer
     public <Q extends EntityQueryRelate2FR<E, R1, R2>, R2> Q join(SerializableFunction2<R2, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
-                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return (Q) new EntitySqlQueryRelate2FR<>(factory, sqlPageFactory, queryRelation);
     }
 
@@ -101,22 +100,12 @@ public class EntitySqlQueryRelatedFetched1F<E, R1> extends AbstractEntitySqlQuer
     /**
      * {@inheritDoc}
      */
-    @Override
-    public <R2> EntityQueryRelatedExpression<R1, R2, EntityQueryRelate2FR<E, R1, R2>,
-            EntityQueryRelatedFetched2FF<E, R1, R2>> join2(Class<R2> joinType) {
-        return new EntitySqlQueryRelated<>(new EntitySqlQueryRelate2FR<>(factory, sqlPageFactory, queryRelation),
-                factory, queryRelation, joinType, 1);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     @Override
     public <Q extends EntityQueryRelate2FR<E, R1, R2>, R2> Q join2(SerializableFunction2<R2, R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(1, queryRelation.getEntityRelationMapping(0).getIdName(),
-                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return (Q) new EntitySqlQueryRelate2FR<>(factory, sqlPageFactory, queryRelation);
     }
 

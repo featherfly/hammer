@@ -8,9 +8,9 @@ import cn.featherfly.hammer.expression.query.QueryRelateExpression;
  * The Interface EntityQueryRelate1P.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <R1> the generic type
+ * @param <E>  query type
+ * @param <R1> query or joined type
  */
 public interface EntityQueryRelate1P<E, R1> extends EntityQueryRelate1XBase<E, R1>,
-        QueryRelateExpression<EntityQueryRelatedFetched1P<E, R1>>, EntityQuery2<E, R1, E> {
+    QueryRelateExpression<EntityQueryRelatedFetched1P<E, R1>>, EntityQuery2<E, R1, E> {
 }
