@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -162,7 +163,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq("username", username) //
             .and() //
             .eq("password", password) //
-            .and(g -> g.gt("age", min).and().lt("age", max)) //
+            .and((Function<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic>) g -> g.gt("age", min).and().lt("age", max)) //
             .list(User.class);
         assertUser2.accept(list);
 

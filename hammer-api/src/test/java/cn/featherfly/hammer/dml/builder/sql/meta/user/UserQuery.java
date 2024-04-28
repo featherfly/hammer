@@ -14,6 +14,8 @@ import cn.featherfly.hammer.dml.builder.sql.meta.Query;
 import cn.featherfly.hammer.dml.builder.sql.meta.RepositoryQuery;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 
+import java.util.function.Function;
+
 /**
  * Query.
  *
@@ -89,7 +91,7 @@ public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableF
             .list();
         query.find(userQuery).where() //
             .name.eq("zj") //
-            .and(g -> g.name.eq("zj") //
+            .and((Function<UserTableFilterable, UserTableLogic>) g -> g.name.eq("zj") //
                 .and().password.eq("123") //
             ).list();
 

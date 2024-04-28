@@ -103,22 +103,22 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
         }
     }
 
-    @Override
-    public C logic(LogicOperator operator) {
-        AssertIllegalArgument.isNotNull(operator, "operator");
-        return (C) addCondition(new SqlLogicOperatorExpressionBuilder(operator));
-    }
-
-    @Override
-    public L logic(LogicOperator operator, LogicExpression<?, ?> logicExpression) {
-        logic(operator);
-        return (L) addCondition(logicExpression);
-    }
-
-    @Override
-    public L logic(LogicOperator operator, Function<C, L> group) {
-        return logic(operator).group(group);
-    }
+    //    @Override
+    //    public C logic(LogicOperator operator) {
+    //        AssertIllegalArgument.isNotNull(operator, "operator");
+    //        return (C) addCondition(new SqlLogicOperatorExpressionBuilder(operator));
+    //    }
+    //
+    //    @Override
+    //    public L logic(LogicOperator operator, LogicExpression<?, ?> logicExpression) {
+    //        logic(operator);
+    //        return (L) addCondition(logicExpression);
+    //    }
+    //
+    //    @Override
+    //    public L logic(LogicOperator operator, Function<C, L> group) {
+    //        return logic(operator).group(group);
+    //    }
 
     @Override
     public C and() {

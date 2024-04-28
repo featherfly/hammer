@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.dml.builder.sql;
 
 import java.util.List;
+import java.util.function.Function;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuple3;
@@ -16,6 +17,8 @@ import cn.featherfly.hammer.dml.builder.sql.vo.User;
 import cn.featherfly.hammer.dml.builder.sql.vo.User2;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo2;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.query.Query;
 
@@ -426,10 +429,6 @@ public class DslEntityJoinTest {
 
         // TODO 后续实现on的其他条件判断（如a<>b, a<b and c>d）
         //        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId,  Tree2::getParentId)
-
-        // TODO 后续把join(Class).on()的api定义修改为
-        //        on((j, e1, e2, e3) -> j.property("user").eq(e3.property("id")));
-        //        on((j, es) -> j.property("user").eq(es.get2().property("id")));
     }
 
     public void testEntityQueryJoin2() {
@@ -604,6 +603,74 @@ public class DslEntityJoinTest {
             .ne((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
             .and() //
             .ne((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+            .list();
+
+        // ----------------------------------------------------------------------------------------------------------------
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+            .eq((e0, e1) -> e1.accept(User::getUsername, "")) //
+            .and() //
+            .eq((e0, e1) -> e1.property(User::getUsername).value("")) //
+            .and().group(c -> c.eq((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                .and().eq((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+            ) //
+            .and() //
+            .eq((e0, e1) -> e0.property(UserInfo::getUser).value(new User(1))) //
+            .list();
+        query.find(UserInfo.class).join(UserInfo::getUser).where() //
+            .eq((e0, e1) -> e1.accept(User::getUsername, "")) //
+            .and() //
+            .eq((e0, e1) -> e1.property(User::getUsername).value("")) //
+            .and((Function<EntityQueryConditionGroup2<UserInfo, User, UserInfo>,
+                EntityQueryConditionGroupLogic2<UserInfo, User, UserInfo>>) g -> g
+                    .eq((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+                    .and().eq((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value("")) //
+            ) //
+            //          ENHANCE 这里必须进行强制类型转换
+            //          .and(c -> c.eq((e0, e1) -> e0.property(UserInfo::getUser).accept(User::getUsername, "")) //
+            //              .and().eq((e0, e1) -> e0.property(UserInfo::getUser).property(User::getUsername).value(""))
+            //          ) //
+            .and() //
+            .eq((e0, e1) -> e0.property(UserInfo::getUser).value(new User(1))) //
+            .list();
+        // ----------------------------------------------------------------------------------------------------------------
+        query.find(UserInfo.class).join(UserInfo::getUser) //
+            .where((e0, e1) -> e1.eq(User::getUsername, "") //
+                .and(e1.property(User::getUsername).eq("")) //
+                .and(e0.property(UserInfo::getUser).property(User::getUsername).eq("")) //
+                .and(e0.property(UserInfo::getUser).eq(new User(1))) //
+            ) //
+            .list();
+
+        //        query.find(UserInfo.class).join(UserInfo::getUser) //
+        //            .where((e0, e1) -> e1.eq(User::getUsername, "") //
+        //                .and(e1.property(User::getUsername).eq("")) //
+        //               YUFEI_TODO  后续来考虑group(Function) and(Function) or(Function)的逻辑优化问题
+        //                .and(c -> c.eq(e0.property(UserInfo::getUser).value(new User(1)))
+        //                    .and().eq(e0.property(UserInfo::getUser).property(User::getUsername).value(""))
+        //                    );
+        //               ENHANCE 或者使用和where(Function<E1,E2...>)的模式
+        //               .and((g0, g1) -> g0.property(UserInfo::getUser).eq(new User(1))
+        //                    .and(e0.property(UserInfo::getUser).property(User::getUsername).value(""))
+        //                    );
+        //            ) //
+        //            .list();
+
+        //        query.find(UserInfo.class).join(UserInfo::getUser) //
+        //            YUFEI_TODO 后续来考虑加入新的where(Function<C,E1,E2...>)
+        //            .where((c, e0, e1) -> c.eq(e1.property(User::getUsername), "") //
+        //                .and().property(e1.property(User::getUsername)).eq("") //
+        //                .and((g, g0,g1) -> g.eq(e0.property(UserInfo::getUser), new User(1)) //
+        //                .and().eq(g1.property(UserInfo::getUser).property(User::getUsername), value("")) //
+        //                 )
+        //            ) //
+        //            .list();
+
+        query.find(UserInfo.class).join(UserInfo::getUser) //
+            .where((e0, e1) -> e1.eq(User::getUsername, "") //
+                .and().property(User::getUsername).eq("") //
+                .and(e0).eq(UserInfo::getUser, new User(1)) //
+                .and().property(UserInfo::getUser).property(User::getUsername).eq("") //
+            ) //
             .list();
     }
 

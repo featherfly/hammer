@@ -45,25 +45,23 @@ TODO dsl实体查询加入以下（EntityQuery）
     // 使用详情参考JdbcTransactionTest.java
     ```
     
-12. where支持多实体条件查询
+12. EntityQuery支持多实体（muliti entity）查询（基于join），实现支持多实体条件过滤，实现多实体排序
 
-13. 实现多实体排序
+    where().property(Xx:Yy).property(Yy::Name).[eq|ne|...] 如果需要join会自动加入join
 
-14. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
+    where().eq()方法支持@Embeddable,@ManyToOne（传入是映射对象，对非空值使用and连接，如果是连表查询条件会自动join）
 
-15. Jdbc实现queryStream，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
-    
-16. 加入配置`HammerConfig`，实现update、delete、query等表达式的配置（configure方法）
+    fetch一次，数据返回加入T value()（单条）和 List<T> listValue()（多条列表），还原single和unique方法为原来的返回查询实体对象
 
-17. EntityQuery where().property(Xx:Yy).property(Yy::Name).[eq|ne|...] 如果需要join会自动加入
+13. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
 
-18. EntityQuery where().eq()方法支持@Embeddable,@ManyToOne（传入是映射对象，对非空值使用and连接，如果是连表查询条件会自动join）
+14. Jdbc实现queryStream，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
 
-19. EntityQuery  fetch一次，数据返回加入T value()（单条）和 List<T> listValue()（多条列表），还原single和unique方法为原来的返回查询实体对象
+15. 加入配置`HammerConfig`，实现update、delete、query等表达式的配置（configure方法）
 
-20. 完成RepositoryQuery（包含join）
+16. RepositoryQuery支持多存储|表（muliti repository）查询（基于join），实现支持多存储|表条件过滤，实现多存储|表排序
 
-21. 
+17. EntityUpdate,EntityDelete支持join进行多实体条件过滤
 
 # 0.6.7 2023-04-18
 1. 修复eq参数为空时报错的问题

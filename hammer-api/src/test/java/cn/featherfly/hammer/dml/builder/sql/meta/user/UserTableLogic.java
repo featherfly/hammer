@@ -9,16 +9,18 @@ import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
+import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryConditionLimit;
 import cn.featherfly.hammer.expression.query.QueryExecutor;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 
 public class UserTableLogic implements
-        //RepositoryQueryConditionsGroupLogicExpression<UserTableFilterable, UserTableLogic, RepositoryQuerySortExpression>
-        GroupEndExpression<UserTableFilterable, UserTableLogic>, QueryExecutor, QueryLimitExecutor,
-        QueryConditionLimit<QueryLimitExecutor> {
+    //RepositoryQueryConditionsGroupLogicExpression<UserTableFilterable, UserTableLogic, RepositoryQuerySortExpression>
+    GroupEndExpression<UserTableFilterable, UserTableLogic>, QueryExecutor, QueryLimitExecutor,
+    QueryConditionLimit<QueryLimitExecutor> {
 
     private UserTableFilterable query;
 
@@ -269,6 +271,26 @@ public class UserTableLogic implements
      */
     @Override
     public UserTableLogic or(LogicExpression<?, ?> logicExpression) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
+        GL extends GroupEndExpression<GC, GL>> G and(G conditionExpression) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
+        GL extends GroupEndExpression<GC, GL>> G or(G conditionExpression) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

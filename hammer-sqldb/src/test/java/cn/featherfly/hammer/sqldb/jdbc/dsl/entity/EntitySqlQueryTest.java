@@ -12,8 +12,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
+import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -1428,9 +1431,9 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .where() //
             .gt(User::getId, 1) //
             .and( //
-                g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5)) //
-                    .or() //
-                    .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15)) //
+                    (Function<EntityQueryConditionGroup<User>, EntityQueryConditionGroupLogic<User>>) g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5)) //
+                        .or() //
+                        .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15)) //
             ) //
             .count();
         assertEquals(count, 2);
@@ -1453,9 +1456,9 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .where() //
             .gt(User::getId, 1) //
             .and( //
-                g -> g.group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
-                    .or() //
-                    .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup() //
+                    (Function<EntityQueryConditionGroup<User>, EntityQueryConditionGroupLogic<User>>) g -> g.group().eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
+                        .or() //
+                        .group().eq(User::getId, 3).and().eq(User::getAge, 15).endGroup() //
             ) //
             .count();
         assertEquals(count, 2);
@@ -1465,9 +1468,9 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .where() //
             .gt(User::getId, 1) //
             .and( //
-                g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
-                    .or() //
-                    .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))))
+                    (Function<EntityQueryConditionGroup<User>, EntityQueryConditionGroupLogic<User>>) g -> g.group(g1 -> g1.eq(User::getId, 2).and().eq(User::getAge, 5).endGroup() //
+                        .or() //
+                        .group(g2 -> g2.eq(User::getId, 3).and().eq(User::getAge, 15))))
             .count();
         assertEquals(count, 2);
     }
