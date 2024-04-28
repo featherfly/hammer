@@ -250,7 +250,8 @@ public class SqlDeleterJoin5Test extends AbstractDeleterTest {
                 .eq(j.property(User::getId))) //
             .join(User.class).on((e1, e2, e3, e4, e5, j) -> e1.property(Order2::getUser3) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2, e3, e4, e5, e6) -> e2.eq(createUser::getUsername) //
+            .where((e1, e2, e3, e4, e5, e6) -> e1.eq(order::getNo) //
+                .and(e2.eq(createUser::getUsername)) //
                 .and(e3.eq(updateUser::getUsername)) //
                 .and(e4.eq(user1::getUsername)) //
                 .and(e5.eq(user2::getUsername)) //
@@ -282,7 +283,8 @@ public class SqlDeleterJoin5Test extends AbstractDeleterTest {
                 .eq(j.property(User::getId))) //
             .join(User.class).on((e1, e2, e3, e4, e5, j) -> e1.property(Order2::getUser3) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2, e3, e4, e5, e6) -> e2.eq(User::getUsername, createUser.getUsername()) //
+            .where((e1, e2, e3, e4, e5, e6) -> e1.eq(Order2::getNo, order.getNo()) //
+                .and(e2.eq(User::getUsername, createUser.getUsername())) //
                 .and(e3.eq(User::getUsername, updateUser.getUsername())) //
                 .and(e4.eq(User::getUsername, user1.getUsername())) //
                 .and(e5.eq(User::getUsername, user2.getUsername())) //
@@ -314,11 +316,45 @@ public class SqlDeleterJoin5Test extends AbstractDeleterTest {
                 .eq(j.property(User::getId))) //
             .join(User.class).on((e1, e2, e3, e4, e5, j) -> e1.property(Order2::getUser3) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2, e3, e4, e5, e6) -> e2.property(User::getUsername).eq(createUser.getUsername()) //
+            .where((e1, e2, e3, e4, e5, e6) -> e1.property(Order2::getNo).eq(order.getNo()) //
+                .and(e2.property(User::getUsername).eq(createUser.getUsername())) //
                 .and(e3.property(User::getUsername).eq(updateUser.getUsername())) //
                 .and(e4.property(User::getUsername).eq(user1.getUsername())) //
                 .and(e5.property(User::getUsername).eq(user2.getUsername())) //
                 .and(e6.property(User::getUsername).eq(user3.getUsername())) //
+            ) //
+            .execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(order);
+        assertNull(load);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        hammer.save(order);
+
+        load = hammer.get(order);
+        assertEquals(load.getId(), order.getId());
+        assertEquals(load.getNo(), order.getNo());
+        assertEquals(load.getAppId(), order.getAppId());
+
+        result = deleter.delete(Order2.class) //
+            .join(User.class).on((e1, j) -> e1.property(Order2::getCreateUser) //
+                .eq(j.property(User::getId))) //
+            .join(User.class).on((e1, e2, j) -> e1.property(Order2::getUpdateUser) //
+                .eq(j.property(User::getId))) //
+            .join(User.class).on((e1, e2, e3, j) -> e1.property(Order2::getUser1) //
+                .eq(j.property(User::getId))) //
+            .join(User.class).on((e1, e2, e3, e4, j) -> e1.property(Order2::getUser2) //
+                .eq(j.property(User::getId))) //
+            .join(User.class).on((e1, e2, e3, e4, e5, j) -> e1.property(Order2::getUser3) //
+                .eq(j.property(User::getId))) //
+            .where((e1, e2, e3, e4, e5, e6) -> e1.property(Order2::getNo).eq(order.getNo()) //
+                .and(e2).property(User::getUsername).eq(createUser.getUsername()) //
+                .and(e3).property(User::getUsername).eq(updateUser.getUsername()) //
+                .and(e4).property(User::getUsername).eq(user1.getUsername()) //
+                .and(e5).property(User::getUsername).eq(user2.getUsername()) //
+                .and(e6).property(User::getUsername).eq(user3.getUsername()) //
             ) //
             .execute();
         assertEquals(result, 1);

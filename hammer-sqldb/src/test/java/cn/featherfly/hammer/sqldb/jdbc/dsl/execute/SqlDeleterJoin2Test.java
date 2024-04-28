@@ -184,7 +184,8 @@ public class SqlDeleterJoin2Test extends AbstractDeleterTest {
                 .eq(j.property(User::getId))) //
             .join(User.class).on((e1, e2, j) -> e1.property(Order2::getUpdateUser) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2, e3) -> e2.eq(createUser::getUsername) //
+            .where((e1, e2, e3) -> e1.eq(order::getNo) //
+                .and(e2.eq(createUser::getUsername)) //
                 .and(e3.eq(updateUser::getUsername)) //
             ) //
             .execute();
@@ -207,7 +208,8 @@ public class SqlDeleterJoin2Test extends AbstractDeleterTest {
                 .eq(j.property(User::getId))) //
             .join(User.class).on((e1, e2, j) -> e1.property(Order2::getUpdateUser) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2, e3) -> e2.eq(User::getUsername, createUser.getUsername()) //
+            .where((e1, e2, e3) -> e1.eq(Order2::getNo, order.getNo()) //
+                .and(e2.eq(User::getUsername, createUser.getUsername())) //
                 .and(e3.eq(User::getUsername, updateUser.getUsername())) //
             ) //
             .execute();
@@ -230,8 +232,33 @@ public class SqlDeleterJoin2Test extends AbstractDeleterTest {
                 .eq(j.property(User::getId))) //
             .join(User.class).on((e1, e2, j) -> e1.property(Order2::getUpdateUser) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2, e3) -> e2.property(User::getUsername).eq(createUser.getUsername()) //
+            .where((e1, e2, e3) -> e1.property(Order2::getNo).eq(order.getNo()) //
+                .and(e2.property(User::getUsername).eq(createUser.getUsername())) //
                 .and(e3.property(User::getUsername).eq(updateUser.getUsername())) //
+            ) //
+            .execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(order);
+        assertNull(load);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        hammer.save(order);
+
+        load = hammer.get(order);
+        assertEquals(load.getId(), order.getId());
+        assertEquals(load.getNo(), order.getNo());
+        assertEquals(load.getAppId(), order.getAppId());
+
+        result = deleter.delete(Order2.class) //
+            .join(User.class).on((e1, j) -> e1.property(Order2::getCreateUser) //
+                .eq(j.property(User::getId))) //
+            .join(User.class).on((e1, e2, j) -> e1.property(Order2::getUpdateUser) //
+                .eq(j.property(User::getId))) //
+            .where((e1, e2, e3) -> e1.property(Order2::getNo).eq(order.getNo()) //
+                .and(e2).property(User::getUsername).eq(createUser.getUsername()) //
+                .and(e3).property(User::getUsername).eq(updateUser.getUsername()) //
             ) //
             .execute();
         assertEquals(result, 1);

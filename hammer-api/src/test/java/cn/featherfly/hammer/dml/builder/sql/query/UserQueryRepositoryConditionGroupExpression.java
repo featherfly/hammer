@@ -31,6 +31,9 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.GroupEndExpression;
+import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.field.FieldExpression;
 import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
@@ -4389,6 +4392,26 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression eq(String name, Field value) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
+        GL extends GroupEndExpression<GC, GL>> G and(G conditionExpression) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
+        GL extends GroupEndExpression<GC, GL>> G or(G conditionExpression) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

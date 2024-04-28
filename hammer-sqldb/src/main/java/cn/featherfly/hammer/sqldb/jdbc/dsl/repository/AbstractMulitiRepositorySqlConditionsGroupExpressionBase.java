@@ -6,7 +6,6 @@ import java.util.function.Function;
 import com.speedment.common.tuple.Tuple;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
@@ -100,31 +99,31 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public C logic(LogicOperator operator) {
-        AssertIllegalArgument.isNotNull(operator, "operator");
-        return (C) addCondition(new SqlLogicOperatorExpressionBuilder(operator));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L logic(LogicOperator operator, LogicExpression<?, ?> logicExpression) {
-        logic(operator);
-        return (L) addCondition(logicExpression);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L logic(LogicOperator operator, Function<C, L> group) {
-        return logic(operator).group(group);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public C logic(LogicOperator operator) {
+    //        AssertIllegalArgument.isNotNull(operator, "operator");
+    //        return (C) addCondition(new SqlLogicOperatorExpressionBuilder(operator));
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L logic(LogicOperator operator, LogicExpression<?, ?> logicExpression) {
+    //        logic(operator);
+    //        return (L) addCondition(logicExpression);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public L logic(LogicOperator operator, Function<C, L> group) {
+    //        return logic(operator).group(group);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -155,17 +154,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C
      * {@inheritDoc}
      */
     @Override
-    public L or(LogicExpression<?, ?> logicExpression) {
-        or();
-        return (L) addCondition(logicExpression);
+    public C or() {
+        return (C) addCondition(new SqlLogicOperatorExpressionBuilder(LogicOperator.OR));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public C or() {
-        return (C) addCondition(new SqlLogicOperatorExpressionBuilder(LogicOperator.OR));
+    public L or(LogicExpression<?, ?> logicExpression) {
+        or();
+        return (L) addCondition(logicExpression);
     }
 
     /**

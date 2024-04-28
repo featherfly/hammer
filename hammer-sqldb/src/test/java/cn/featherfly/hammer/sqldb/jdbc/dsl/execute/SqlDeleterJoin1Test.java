@@ -162,7 +162,8 @@ public class SqlDeleterJoin1Test extends AbstractDeleterTest {
         int result = deleter.delete(Order2.class) //
             .join(User.class).on((e1, j) -> e1.property(Order2::getCreateUser) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2) -> e2.eq(createUser::getUsername) //
+            .where((e1, e2) -> e1.eq(order::getNo) //
+                .and(e2.eq(createUser::getUsername)) //
             ) //
             .execute();
         assertEquals(result, 1);
@@ -182,7 +183,8 @@ public class SqlDeleterJoin1Test extends AbstractDeleterTest {
         result = deleter.delete(Order2.class) //
             .join(User.class).on((e1, j) -> e1.property(Order2::getCreateUser) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2) -> e2.eq(User::getUsername, createUser.getUsername()) //
+            .where((e1, e2) -> e1.eq(Order2::getNo, order.getNo()) //
+                .and(e2.eq(User::getUsername, createUser.getUsername())) //
             ) //
             .execute();
         assertEquals(result, 1);
@@ -202,7 +204,29 @@ public class SqlDeleterJoin1Test extends AbstractDeleterTest {
         result = deleter.delete(Order2.class) //
             .join(User.class).on((e1, j) -> e1.property(Order2::getCreateUser) //
                 .eq(j.property(User::getId))) //
-            .where((e1, e2) -> e2.property(User::getUsername).eq(createUser.getUsername()) //
+            .where((e1, e2) -> e1.property(Order2::getNo).eq(order.getNo()) //
+                .and(e2.property(User::getUsername).eq(createUser.getUsername())) //
+            ) //
+            .execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(order);
+        assertNull(load);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        hammer.save(order);
+
+        load = hammer.get(order);
+        assertEquals(load.getId(), order.getId());
+        assertEquals(load.getNo(), order.getNo());
+        assertEquals(load.getAppId(), order.getAppId());
+
+        result = deleter.delete(Order2.class) //
+            .join(User.class).on((e1, j) -> e1.property(Order2::getCreateUser) //
+                .eq(j.property(User::getId))) //
+            .where((e1, e2) -> e1.property(Order2::getNo).eq(order.getNo()) //
+                .and(e2).property(User::getUsername).eq(createUser.getUsername()) //
             ) //
             .execute();
         assertEquals(result, 1);
