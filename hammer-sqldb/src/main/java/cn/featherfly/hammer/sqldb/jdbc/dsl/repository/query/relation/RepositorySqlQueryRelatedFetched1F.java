@@ -15,12 +15,11 @@ import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2FF;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression2;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2FR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2FF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
@@ -60,7 +59,7 @@ public class RepositorySqlQueryRelatedFetched1F extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression2<RepositoryQueryRelate2FR, RepositoryQueryRelatedFetched2FF> join(
+    public RepositoryOnExpression2<RepositoryQueryRelate2FR> join(
         Repository repository) {
         return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2FR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate2FR) relate).setIdName());

@@ -6,8 +6,8 @@ import java.util.Date;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroup;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroupLogic;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroup;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroupLogic;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryDateFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryEnumFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryLocalDateFieldExpression;
@@ -37,8 +37,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.StringFiel
 public abstract class SqlExecutableConditionGroupExpression<C extends ExecutableConditionConfig<C>,
         R extends RepositorySqlRelation<R, B>, B extends SqlBuilder> extends
         //        AbstractRepositorySqlConditionGroupExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C>
-        AbstractMulitiRepositorySqlConditionsGroupExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>, C, R, B>
-        implements ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C> {
+        AbstractMulitiRepositorySqlConditionsGroupExpression<RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>, C, R, B>
+        implements RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C> {
     // FIXME 使用AbstractMulitiRepositorySqlConditionExpression代替AbstractMulitiRepositorySqlConditionsGroupExpression
     /**
      * Instantiates a new sql condition group expression.
@@ -70,7 +70,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * @param queryAlias      queryAlias
      * @param conditionConfig the condition config
      */
-    SqlExecutableConditionGroupExpression(ExecutableConditionGroupLogic<C> parent, Jdbc jdbc, String queryAlias,
+    SqlExecutableConditionGroupExpression(RepositoryExecutableConditionsGroupLogic<C> parent, Jdbc jdbc, String queryAlias,
             R repositoryRelation, C conditionConfig) {
         // 删除，和更新不需要分页
         super(parent, jdbc.getDialect(), queryAlias, repositoryRelation, conditionConfig);
@@ -124,7 +124,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public RepositorySerializableFieldExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> field(
+    public RepositorySerializableFieldExpression<RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> field(
             String name) {
         return new SerializableFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }
@@ -133,7 +133,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public RepositoryStringFieldExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> fieldAsString(
+    public RepositoryStringFieldExpression<RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> fieldAsString(
             String name) {
         return new StringFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }
@@ -142,7 +142,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositoryNumberFieldExpression<N, ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> fieldAsNumber(
+    public <N extends Number> RepositoryNumberFieldExpression<N, RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> fieldAsNumber(
             String name) {
         return new NumberFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }
@@ -151,7 +151,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> RepositoryEnumFieldExpression<E, ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> fieldAsEnum(
+    public <E extends Enum<E>> RepositoryEnumFieldExpression<E, RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> fieldAsEnum(
             String name) {
         return new EnumFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }
@@ -160,7 +160,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> RepositoryDateFieldExpression<D, ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> fieldAsDate(
+    public <D extends Date> RepositoryDateFieldExpression<D, RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> fieldAsDate(
             String name) {
         return new DateFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }
@@ -169,7 +169,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public RepositoryLocalDateFieldExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> fieldAsLocalDate(
+    public RepositoryLocalDateFieldExpression<RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> fieldAsLocalDate(
             String name) {
         return new LocalDateFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }
@@ -178,7 +178,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public RepositoryLocalDateTimeFieldExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> fieldAsLocalDateTime(
+    public RepositoryLocalDateTimeFieldExpression<RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> fieldAsLocalDateTime(
             String name) {
         return new LocalDateTimeFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }
@@ -187,7 +187,7 @@ public abstract class SqlExecutableConditionGroupExpression<C extends Executable
      * {@inheritDoc}
      */
     @Override
-    public RepositoryLocalTimeFieldExpression<ExecutableConditionGroup<C>, ExecutableConditionGroupLogic<C>> fieldAsLocalTime(
+    public RepositoryLocalTimeFieldExpression<RepositoryExecutableConditionsGroup<C>, RepositoryExecutableConditionsGroupLogic<C>> fieldAsLocalTime(
             String name) {
         return new LocalTimeFieldExpressionMulitiRepositoryImpl<>(0, name, this);
     }

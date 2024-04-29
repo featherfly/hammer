@@ -27,24 +27,29 @@ import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpres
  * The Interface EntityConditionsExpression6.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <E4> fouth filterable entity type
+ * @param <E5> fifth filterable entity type
+ * @param <E6> sixth filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionsExpression6<E, E2, E3, E4, E5, E6,
-        C extends EntityConditionsExpression6<E, E2, E3, E4, E5, E6, C, L>, L extends LogicExpression<C, L>> extends
-        EntityBetweenExpression6<E, E2, E3, E4, E5, E6, C, L>, EntityNotBetweenExpression6<E, E2, E3, E4, E5, E6, C, L> //
-        , EntityContainsExpression6<E, E2, E3, E4, E5, E6, C, L>,
-        EntityNotContainsExpression6<E, E2, E3, E4, E5, E6, C, L>//
-        , EntityEndWithExpression6<E, E2, E3, E4, E5, E6, C, L>,
-        EntityNotEndWithExpression6<E, E2, E3, E4, E5, E6, C, L> //
-        , EntityEqualsExpression6<E, E2, E3, E4, E5, E6, C, L>, EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C, L>//
-        , EntityGreatEqualsExpression6<E, E2, E3, E4, E5, E6, C, L>,
-        EntityGreatThanExpression6<E, E2, E3, E4, E5, E6, C, L> //
-        , EntityInExpression6<E, E2, E3, E4, E5, E6, C, L>, EntityNotInExpression6<E, E2, E3, E4, E5, E6, C, L> //
-        , EntityIsNullExpression6<E, E2, E3, E4, E5, E6, C, L>, EntityIsNotNullExpression6<E, E2, E3, E4, E5, E6, C, L>,
-        EntityLessEqualsExpression6<E, E2, E3, E4, E5, E6, C, L>, EntityLessThanExpression6<E, E2, E3, E4, E5, E6, C, L> //
-        , EntityStartWithExpression6<E, E2, E3, E4, E5, E6, C, L>,
-        EntityNotStartWithExpression6<E, E2, E3, E4, E5, E6, C, L>//
-        , EntityLikeExpression6<E, E2, E3, E4, E5, E6, C, L>, EntityNotLikeExpression6<E, E2, E3, E4, E5, E6, C, L> //
-        , EntityPropertyExpression6<E, E2, E3, E4, E5, E6, C, L> {
+public interface EntityConditionsExpression6<E1, E2, E3, E4, E5, E6,
+    C extends EntityConditionsExpression6<E1, E2, E3, E4, E5, E6, C, L>, L extends LogicExpression<C, L>> extends
+    EntityBetweenExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityNotBetweenExpression6<E1, E2, E3, E4, E5, E6, C, L> //
+    , EntityContainsExpression6<E1, E2, E3, E4, E5, E6, C, L>,
+    EntityNotContainsExpression6<E1, E2, E3, E4, E5, E6, C, L>//
+    , EntityEndWithExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityNotEndWithExpression6<E1, E2, E3, E4, E5, E6, C, L> //
+    , EntityEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityNotEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>//
+    , EntityGreatEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>,
+    EntityGreatThanExpression6<E1, E2, E3, E4, E5, E6, C, L> //
+    , EntityInExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityNotInExpression6<E1, E2, E3, E4, E5, E6, C, L> //
+    , EntityIsNullExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityIsNotNullExpression6<E1, E2, E3, E4, E5, E6, C, L>,
+    EntityLessEqualsExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityLessThanExpression6<E1, E2, E3, E4, E5, E6, C, L> //
+    , EntityStartWithExpression6<E1, E2, E3, E4, E5, E6, C, L>,
+    EntityNotStartWithExpression6<E1, E2, E3, E4, E5, E6, C, L>//
+    , EntityLikeExpression6<E1, E2, E3, E4, E5, E6, C, L>, EntityNotLikeExpression6<E1, E2, E3, E4, E5, E6, C, L> //
+    , EntityPropertyExpression6<E1, E2, E3, E4, E5, E6, C, L> {
 }

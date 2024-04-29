@@ -16,8 +16,8 @@ import cn.featherfly.hammer.expression.repository.RepositoryWhereExpression;
  * @param <N> the number value type
  */
 public interface FieldExecutableUpdateExpression<U extends FieldExecutableUpdateExpression<U, C, L>,
-    C extends ExecutableConditionGroupExpression<C, L, UpdateConditionConfig>,
-    L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>>
+    C extends RepositoryExecutableConditionsGroupExpression<C, L, UpdateConditionConfig>,
+    L extends RepositoryExecutableConditionsGroupLogicExpression<C, L, UpdateConditionConfig>>
     extends RepositoryWhereExpression<C, L>, RepositoryFieldUpdateExpression<U, C, L>, Executor {
 
 }

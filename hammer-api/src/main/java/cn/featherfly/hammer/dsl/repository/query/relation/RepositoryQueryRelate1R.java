@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.dsl.repository.query.relation;
 
+import cn.featherfly.hammer.dsl.repository.RepositoryJoin;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2F;
@@ -14,10 +16,9 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpre
  * @author zhongj
  */
 public interface RepositoryQueryRelate1R extends RepositoryQueryRelateExpression<RepositoryQueryRelatedFetched1F>,
-        RepositoryQuery2<RepositoryQueryConditionsGroup2F, RepositoryQueryConditionsGroupLogic2F,
-                RepositoryQuerySortExpression2<QueryLimitExecutor>, QueryLimitExecutor>,
-        RepositoryQueryRelate<
-                RepositoryQueryOnExpression2<RepositoryQueryRelate2RR, RepositoryQueryRelatedFetched2RF>,
-                RepositoryQueryRelate2RR, RepositoryQueryRelatedFetched2RF> {
+    RepositoryQuery2<RepositoryQueryConditionsGroup2F, RepositoryQueryConditionsGroupLogic2F,
+        RepositoryQuerySortExpression2<QueryLimitExecutor>, QueryLimitExecutor>,
+    RepositoryJoin<RepositoryOnExpression2<RepositoryQueryRelate2RR>,
+        RepositoryQueryRelate2RR> {
 
 }

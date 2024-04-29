@@ -11,10 +11,9 @@ import cn.featherfly.hammer.expression.execute.Executor;
  * @author zhongj
  * @param <E>  the update type
  * @param <J1> the join type 1
- * @param <J1> the generic type
- * @param <U>  the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <U>  property update expressoin
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
 public interface EntityPropertyExecutableUpdateExpression2<E, J1,
     U extends EntityPropertyExecutableUpdateExpression2<E, J1, U, C, L>,

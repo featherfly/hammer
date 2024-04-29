@@ -7,14 +7,15 @@ import cn.featherfly.hammer.expression.ConfigureExpression;
 import cn.featherfly.hammer.expression.repository.RepositoryWhereExpression;
 
 /**
- * DeleteExpression.
+ * repository delete expression.
  *
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface RepositoryDeleteExpression<C extends ExecutableConditionGroupExpression<C, L, DeleteConditionConfig>,
-        L extends ExecutableConditionGroupLogicExpression<C, L, DeleteConditionConfig>>
-        extends RepositoryWhereExpression<C, L>,
-        ConfigureExpression<RepositoryDeleteExpression<C, L>, DeleteConfig, DeleteConditionConfig> {
+public interface RepositoryDeleteExpression<
+    C extends RepositoryExecutableConditionsGroupExpression<C, L, DeleteConditionConfig>,
+    L extends RepositoryExecutableConditionsGroupLogicExpression<C, L, DeleteConditionConfig>>
+    extends RepositoryWhereExpression<C, L>,
+    ConfigureExpression<RepositoryDeleteExpression<C, L>, DeleteConfig, DeleteConditionConfig> {
 }

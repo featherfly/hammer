@@ -11,14 +11,17 @@ import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroup;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroupLogic;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete2;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroup;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.execute.RepositoryDeleteExpression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlDeleteRelation;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlOn1;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 
 /**
@@ -27,8 +30,6 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.Repository
  * @author zhongj
  */
 public class RepositorySqlDelete implements RepositoryDelete {
-
-    private String tableName;
 
     private RepositorySqlDeleteRelation repositoryDeleteRelation;
 
@@ -55,9 +56,31 @@ public class RepositorySqlDelete implements RepositoryDelete {
      */
     public RepositorySqlDelete(Jdbc jdbc, String tableName, AliasManager aliasManager, DatabaseMetadata metadata,
         DeleteConfig deleteConfig) {
-        this.tableName = tableName;
-        repositoryDeleteRelation = new RepositorySqlDeleteRelation(jdbc,
-            aliasManager == null ? new AliasManager() : aliasManager, metadata, deleteConfig.clone());
+        this(jdbc, tableName, null, aliasManager, metadata, deleteConfig);
+    }
+
+    /**
+     * Instantiates a new repository sql delete.
+     *
+     * @param jdbc         the jdbc
+     * @param tableName    the table name
+     * @param tableAlias   the table alias
+     * @param aliasManager the alias manager
+     * @param metadata     the metadata
+     * @param deleteConfig the delete config
+     */
+    public RepositorySqlDelete(Jdbc jdbc, String tableName, String tableAlias, AliasManager aliasManager,
+        DatabaseMetadata metadata, DeleteConfig deleteConfig) {
+        if (aliasManager == null) {
+            aliasManager = new AliasManager();
+        }
+        //        if (Lang.isNotEmpty(tableAlias)) {
+        //            aliasManager.put(tableName, tableAlias);
+        //        } else {
+        //            aliasManager.put(tableName);
+        //        }
+        repositoryDeleteRelation = new RepositorySqlDeleteRelation(jdbc, aliasManager, metadata, deleteConfig.clone())
+            .addFilterable(tableName, tableAlias);
     }
 
     /**
@@ -83,7 +106,7 @@ public class RepositorySqlDelete implements RepositoryDelete {
      */
     public RepositorySqlDelete(Jdbc jdbc, Repository repository, AliasManager aliasManager, DatabaseMetadata metadata,
         DeleteConfig deleteConfig) {
-        this(jdbc, repository.name(), aliasManager, metadata, deleteConfig);
+        this(jdbc, repository.name(), null, aliasManager, metadata, deleteConfig);
     }
 
     /**
@@ -110,28 +133,24 @@ public class RepositorySqlDelete implements RepositoryDelete {
      */
     public RepositorySqlDelete(Jdbc jdbc, AliasRepository repository, AliasManager aliasManager,
         DatabaseMetadata metadata, DeleteConfig deleteConfig) {
-        tableName = repository.name();
-        repositoryDeleteRelation = new RepositorySqlDeleteRelation(jdbc,
-            aliasManager == null ? new AliasManager() : aliasManager, metadata, deleteConfig.clone());
+        this(jdbc, repository.name(), repository.alias(), aliasManager, metadata, deleteConfig);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroup<DeleteConditionConfig> where() {
-        Jdbc jdbc = repositoryDeleteRelation.getJdbc();
-        return new SqlDeleteExpression(jdbc, new SqlDeleteFromBasicBuilder(jdbc.getDialect(), tableName, "tableAlias"),
-            repositoryDeleteRelation, repositoryDeleteRelation.getConfig());
+    public RepositoryExecutableConditionsGroup<DeleteConditionConfig> where() {
+        return new RepositorySqlDeleteExpression(repositoryDeleteRelation);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupLogic<DeleteConditionConfig> where(
+    public RepositoryExecutableConditionsGroupLogic<DeleteConditionConfig> where(
         Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
-        SqlDeleteExpression sqlDeleteExpression = (SqlDeleteExpression) where();
+        RepositorySqlDeleteExpression sqlDeleteExpression = (RepositorySqlDeleteExpression) where();
         if (filterable != null) {
             // filterable.apply(sqlDeleteExpression);
             sqlDeleteExpression
@@ -144,11 +163,21 @@ public class RepositorySqlDelete implements RepositoryDelete {
      * {@inheritDoc}
      */
     @Override
-    public RepositoryDeleteExpression<ExecutableConditionGroup<DeleteConditionConfig>,
-        ExecutableConditionGroupLogic<DeleteConditionConfig>> configure(Consumer<DeleteConfig> configure) {
+    public RepositoryDeleteExpression<RepositoryExecutableConditionsGroup<DeleteConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<DeleteConditionConfig>> configure(Consumer<DeleteConfig> configure) {
         if (configure != null) {
             configure.accept(repositoryDeleteRelation.getConfig());
         }
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryOnExpression1<RepositoryDelete2> join(Repository repository) {
+        return new RepositorySqlOn1<RepositoryDelete2, DeleteConditionConfig, RepositorySqlDeleteRelation,
+            SqlDeleteFromBasicBuilder>(repository, new RepositorySqlDelete2(repositoryDeleteRelation),
+                repositoryDeleteRelation);
     }
 }

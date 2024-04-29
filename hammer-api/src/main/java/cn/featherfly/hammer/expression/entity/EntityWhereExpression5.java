@@ -10,25 +10,26 @@ import cn.featherfly.hammer.expression.query.WhereExpression;
  * The Interface EntityWhereExpression5.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <E5> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <E4> fouth filterable entity type
+ * @param <E5> fifth filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityWhereExpression5<E, E2, E3, E4, E5,
-    C extends EntityConditionGroupExpression5<E, E2, E3, E4, E5, C, L>,
-    L extends EntityConditionGroupLogicExpression5<E, E2, E3, E4, E5, C, L>> extends WhereExpression<C> {
+public interface EntityWhereExpression5<E1, E2, E3, E4, E5,
+    C extends EntityConditionGroupExpression5<E1, E2, E3, E4, E5, C, L>,
+    L extends EntityConditionGroupLogicExpression5<E1, E2, E3, E4, E5, C, L>> extends WhereExpression<C> {
+
     /**
      * gets the filter expression. 获取筛选条件表达式.
      *
-     * @param consumer the condition expression consumer
+     * @param entitiesCondtionFuntion the entities condtion funtion
      * @return filter expression
      */
     default L filter(
-        FiveArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+        FiveArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
             EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
             EntityConditionsGroupExpression<E5, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion) {
         return where(entitiesCondtionFuntion);
@@ -40,7 +41,7 @@ public interface EntityWhereExpression5<E, E2, E3, E4, E5,
      * @param entitiesCondtionFuntion the entities condtion funtion
      * @return QueryCondition
      */
-    L where(FiveArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+    L where(FiveArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
         EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
         EntityConditionsGroupExpression<E5, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion);
 }

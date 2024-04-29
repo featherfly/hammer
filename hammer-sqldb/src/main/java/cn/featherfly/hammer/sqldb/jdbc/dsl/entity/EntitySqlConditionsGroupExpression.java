@@ -27,9 +27,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelati
  * @param <L>  the generic type
  * @param <C2> the generic type
  */
-public class EntitySqlConditionsGroupExpression<E, ER extends EntitySqlRelation<ER,B>, B extends SqlBuilder,
-    C extends EntityConditionGroupExpression<E, C, L>, L extends EntityConditionGroupLogicExpression<E, C, L>,
-    C2 extends ConditionConfig<C2>> extends AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER, B, C, L, C2>
+public class EntitySqlConditionsGroupExpression<E, C extends EntityConditionGroupExpression<E, C, L>,
+    L extends EntityConditionGroupLogicExpression<E, C, L>, C2 extends ConditionConfig<C2>,
+    ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder>
+    extends AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, C, L, C2, ER, B>
     implements EntityConditionGroupExpression<E, C, L>, EntityConditionGroupLogicExpression<E, C, L>, MulitiExpression {
 
     /**

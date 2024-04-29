@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression2;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression2;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
@@ -26,7 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.field.Repository
  * @param <F> the generic type
  */
 public class RepositorySqlQueryOn2<Q extends RepositoryQueryRelateExpression<F>, F>
-    extends AbstractRepositorySqlQueryOn<Q, F> implements RepositoryQueryOnExpression2<Q, F> {
+    extends AbstractRepositorySqlQueryOn<Q, F> implements RepositoryOnExpression2<Q> {
 
     /**
      * Instantiates a new repository sql query on 2.

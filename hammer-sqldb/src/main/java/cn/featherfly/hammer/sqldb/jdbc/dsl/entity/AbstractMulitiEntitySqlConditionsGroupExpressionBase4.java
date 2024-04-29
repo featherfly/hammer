@@ -57,22 +57,23 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelati
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityPropertyOnlyExpressionImpl;
 
 /**
- * sql condition group builder sql条件逻辑组构造器 .
+ * sql condition group expression 4. sql条件逻辑组表达式4.
  *
  * @author zhongj
- * @param <T1> the element type
- * @param <T2> the generic type
- * @param <T3> the generic type
- * @param <T4> the generic type
- * @param <ER> the generic type
- * @param <B>  the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <E4> fouth filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <C2> condition config
+ * @param <ER> entity sql relation
+ * @param <B>  sql builder
  */
-public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<T1, T2, T3, T4,
-    ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder, C extends GroupExpression<C, L>,
-    L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>>
-    extends AbstractMulitiEntitySqlConditionsGroupExpressionBase3<T1, T2, T3, ER, B, C, L, C2>
+public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<E1, E2, E3, E4,
+    C extends GroupExpression<C, L>, L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>,
+    ER extends EntitySqlRelation<ER, B>, B extends SqlBuilder>
+    extends AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, E2, E3, C, L, C2, ER, B>
 //        implements EntityBetweenExpressionBase4<T1, T2, T3, T4, C, L>, EntityNotBetweenExpressionBase4<T1, T2, T3, T4, C, L> //
 //        , EntityContainsExpressionBase4<T1, T2, T3, T4, C, L>, EntityNotContainsExpressionBase4<T1, T2, T3, T4, C, L> //
 //        , EntityEndWithExpressionBase4<T1, T2, T3, T4, C, L>, EntityNotEndWithExpressionBase4<T1, T2, T3, T4, C, L> //
@@ -88,7 +89,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<T1, 
 {
 
     /** The class mapping. */
-    protected JdbcClassMapping<T4> classMapping4;
+    protected JdbcClassMapping<E4> classMapping4;
 
     /** The query alias 4. */
     protected String queryAlias4;
@@ -106,7 +107,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<T1, 
         super(parent, factory, entitySqlRelation);
 
         EntityRelationMapping<?> erm = entitySqlRelation.getEntityRelationMappingTuple().getOrNull3();
-        classMapping4 = (JdbcClassMapping<T4>) erm.getClassMapping();
+        classMapping4 = (JdbcClassMapping<E4>) erm.getClassMapping();
         queryAlias4 = erm.getTableAlias();
     }
 
@@ -114,208 +115,583 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<T1, 
     //  eq
     // ****************************************************************************************************************
 
-    public <R> L eq4(SerializableFunction<T4, R> name, R value) {
+    /**
+     * Eq 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L eq4(SerializableFunction<E4, R> name, R value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L eq4(SerializableFunction<T4, R> name, R value, Predicate<R> ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L eq4(SerializableFunction<E4, R> name, R value, Predicate<R> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L eq4(SerializableToDateFunction<T4, D> name, D value) {
+    /**
+     * Eq 4.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <D extends Date> L eq4(SerializableToDateFunction<E4, D> name, D value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L eq4(SerializableToDateFunction<T4, D> name, D value, Predicate<D> ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L eq4(SerializableToDateFunction<E4, D> name, D value, Predicate<D> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToDoubleFunction<T4> name, double value) {
+    /**
+     * Eq 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L eq4(SerializableToDoubleFunction<E4> name, double value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToDoubleFunction<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToDoubleFunction<E4> name, double value, DoublePredicate ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L eq4(SerializableToEnumFunction<T4, E> name, E value) {
+    /**
+     * Eq 4.
+     *
+     * @param <E>   the element type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <E extends Enum<E>> L eq4(SerializableToEnumFunction<E4, E> name, E value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L eq4(SerializableToEnumFunction<T4, E> name, E value, Predicate<E> ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L eq4(SerializableToEnumFunction<E4, E> name, E value, Predicate<E> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToCharFunction<T4> name, char value) {
+    /**
+     * Eq 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L eq4(SerializableToCharFunction<E4> name, char value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToCharFunction<T4> name, char value, CharPredicate ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToCharFunction<E4> name, char value, CharPredicate ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToIntFunction<T4> name, int value) {
+    /**
+     * Eq 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L eq4(SerializableToIntFunction<E4> name, int value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToIntFunction<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToIntFunction<E4> name, int value, IntPredicate ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToLocalDateFunction<T4> name, LocalDate value) {
+    /**
+     * Eq 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L eq4(SerializableToLocalDateFunction<E4> name, LocalDate value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToLocalDateFunction<T4> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToLocalDateFunction<E4> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime value) {
+    /**
+     * Eq 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L eq4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime value,
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToLocalTimeFunction<T4> name, LocalTime value) {
+    /**
+     * Eq 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L eq4(SerializableToLocalTimeFunction<E4> name, LocalTime value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToLocalTimeFunction<T4> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToLocalTimeFunction<E4> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToLongFunction<T4> name, long value) {
+    /**
+     * Eq 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L eq4(SerializableToLongFunction<E4> name, long value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToLongFunction<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToLongFunction<E4> name, long value, LongPredicate ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <N extends Number> L eq4(SerializableToNumberFunction<T4, N> name, N value) {
+    /**
+     * Eq 4.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <N extends Number> L eq4(SerializableToNumberFunction<E4, N> name, N value) {
         return eq(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L eq4(SerializableToNumberFunction<T4, N> name, N value, Predicate<N> ignoreStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L eq4(SerializableToNumberFunction<E4, N> name, N value, Predicate<N> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L eq4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Eq 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L eq4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy) {
         return eq(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L eq4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Eq 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L eq4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return eq(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Date> L eq4(SerializableDateSupplier<R> property) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Date> L eq4(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L eq4(SerializableDoubleSupplier property) {
         return eq(classMapping4, property, property.getAsDouble(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return eq(classMapping4, property, property.getAsDouble(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <E>      the element type
+     * @param property the property
+     * @return the l
+     */
     public <E extends Enum<E>> L eq4(SerializableEnumSupplier<E> property) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <E>            the element type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <E extends Enum<E>> L eq4(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param propertyValue the property value
+     * @return the l
+     */
     public L eq4(SerializableBooleanSupplier propertyValue) {
         return eq(classMapping4, propertyValue, propertyValue.getAsBoolean(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param propertyValue the property value
+     * @return the l
+     */
     public L eq4(SerializableBoolSupplier propertyValue) {
         return eq(classMapping4, propertyValue, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
         return eq(classMapping4, propertyValue, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L eq4(SerializableCharSupplier property) {
         return eq(classMapping4, property, property.get(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableCharSupplier property, CharPredicate ignoreStrategy) {
         return eq(classMapping4, property, property.get(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L eq4(SerializableIntSupplier property) {
         return eq(classMapping4, property, property.getAsInt(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return eq(classMapping4, property, property.getAsInt(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L eq4(SerializableLocalDateSupplier property) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L eq4(SerializableLocalDateTimeSupplier property) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L eq4(SerializableLocalTimeSupplier property) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L eq4(SerializableLongSupplier property) {
         return eq(classMapping4, property, property.getAsLong(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return eq(classMapping4, property, property.getAsLong(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Number> L eq4(SerializableNumberSupplier<R> property) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Number> L eq4(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L eq4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L eq4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Serializable> L eq4(SerializableSupplier<R> property) {
         return eq(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Eq 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Serializable> L eq4(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return eq(classMapping4, property, queryAlias4, ignoreStrategy);
     }
@@ -324,1536 +700,4310 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<T1, 
     //  ne
     // ****************************************************************************************************************
 
-    public <R> L ne4(SerializableFunction<T4, R> name, R value) {
+    /**
+     * Ne 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L ne4(SerializableFunction<E4, R> name, R value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L ne4(SerializableFunction<T4, R> name, R value, Predicate<R> ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L ne4(SerializableFunction<E4, R> name, R value, Predicate<R> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L ne4(SerializableToDateFunction<T4, D> name, D value) {
+    /**
+     * Ne 4.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <D extends Date> L ne4(SerializableToDateFunction<E4, D> name, D value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L ne4(SerializableToDateFunction<T4, D> name, D value, Predicate<D> ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L ne4(SerializableToDateFunction<E4, D> name, D value, Predicate<D> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ne4(SerializableToDoubleFunction<T4> name, double value) {
+    /**
+     * Ne 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ne4(SerializableToDoubleFunction<E4> name, double value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ne4(SerializableToDoubleFunction<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ne4(SerializableToDoubleFunction<E4> name, double value, DoublePredicate ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L ne4(SerializableToEnumFunction<T4, E> name, E value) {
+    /**
+     * Ne 4.
+     *
+     * @param <E>   the element type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <E extends Enum<E>> L ne4(SerializableToEnumFunction<E4, E> name, E value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L ne4(SerializableToEnumFunction<T4, E> name, E value, Predicate<E> ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L ne4(SerializableToEnumFunction<E4, E> name, E value, Predicate<E> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ne4(SerializableToIntFunction<T4> name, int value) {
+    /**
+     * Ne 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ne4(SerializableToIntFunction<E4> name, int value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ne4(SerializableToIntFunction<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ne4(SerializableToIntFunction<E4> name, int value, IntPredicate ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ne4(SerializableToLocalDateFunction<T4> name, LocalDate value) {
+    /**
+     * Ne 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ne4(SerializableToLocalDateFunction<E4> name, LocalDate value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ne4(SerializableToLocalDateFunction<T4> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ne4(SerializableToLocalDateFunction<E4> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ne4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime value) {
+    /**
+     * Ne 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ne4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ne4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime value,
+    /**
+     * Ne 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ne4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ne4(SerializableToLocalTimeFunction<T4> name, LocalTime value) {
+    /**
+     * Ne 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ne4(SerializableToLocalTimeFunction<E4> name, LocalTime value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ne4(SerializableToLocalTimeFunction<T4> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ne4(SerializableToLocalTimeFunction<E4> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ne4(SerializableToLongFunction<T4> name, long value) {
+    /**
+     * Ne 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ne4(SerializableToLongFunction<E4> name, long value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ne4(SerializableToLongFunction<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ne4(SerializableToLongFunction<E4> name, long value, LongPredicate ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <N extends Number> L ne4(SerializableToNumberFunction<T4, N> name, N value) {
+    /**
+     * Ne 4.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <N extends Number> L ne4(SerializableToNumberFunction<E4, N> name, N value) {
         return ne(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L ne4(SerializableToNumberFunction<T4, N> name, N value, Predicate<N> ignoreStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L ne4(SerializableToNumberFunction<E4, N> name, N value, Predicate<N> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ne4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Ne 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L ne4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy) {
         return ne(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L ne4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Ne 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ne4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return ne(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Date> L ne4(SerializableDateSupplier<R> property) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Date> L ne4(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ne4(SerializableDoubleSupplier property) {
         return ne(classMapping4, property, property.getAsDouble(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return ne(classMapping4, property, property.getAsDouble(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <E>      the element type
+     * @param property the property
+     * @return the l
+     */
     public <E extends Enum<E>> L ne4(SerializableEnumSupplier<E> property) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <E>            the element type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <E extends Enum<E>> L ne4(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param propertyValue the property value
+     * @return the l
+     */
     public L ne4(SerializableBooleanSupplier propertyValue) {
         return ne(classMapping4, propertyValue, propertyValue.getAsBoolean(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param propertyValue the property value
+     * @return the l
+     */
     public L ne4(SerializableBoolSupplier propertyValue) {
         return ne(classMapping4, propertyValue, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
         return ne(classMapping4, propertyValue, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param propertyValue the property value
+     * @return the l
+     */
     public L ne4(SerializableCharSupplier propertyValue) {
         return ne(classMapping4, propertyValue, propertyValue.get(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param propertyValue  the property value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableCharSupplier propertyValue, CharPredicate ignoreStrategy) {
         return ne(classMapping4, propertyValue, propertyValue.get(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ne4(SerializableIntSupplier property) {
         return ne(classMapping4, property, property.getAsInt(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return ne(classMapping4, property, property.getAsInt(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ne4(SerializableLocalDateSupplier property) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ne4(SerializableLocalDateTimeSupplier property) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ne4(SerializableLocalTimeSupplier property) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ne4(SerializableLongSupplier property) {
         return ne(classMapping4, property, property.getAsLong(), queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return ne(classMapping4, property, property.getAsLong(), queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Number> L ne4(SerializableNumberSupplier<R> property) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Number> L ne4(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L ne4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ne4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Serializable> L ne4(SerializableSupplier<R> property) {
         return ne(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ne 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Serializable> L ne4(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ne(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L lk4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Lk 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return lk(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L lk4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Lk 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lk4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return lk(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Lk 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return lk(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * Lk 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return lk(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L nl4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Nl 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L nl4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return nl(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L nl4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Nl 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nl4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return nl(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Nl 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L nl4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return nl(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * Nl 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L nl4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return nl(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L sw4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Sw 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L sw4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return sw(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L sw4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Sw 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L sw4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return sw(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Sw 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L sw4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return sw(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * Sw 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L sw4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return sw(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L nsw4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Nsw 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L nsw4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return nsw(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L nsw4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Nsw 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nsw4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return nsw(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Nsw 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L nsw4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return nsw(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * Nsw 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L nsw4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return nsw(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L ew4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Ew 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L ew4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return ew(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L ew4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Ew 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ew4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return ew(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Ew 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L ew4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return ew(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * Ew 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ew4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return ew(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L new4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * New 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L new4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return newv(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L new4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * New 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L new4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return newv(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * New 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L new4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return newv(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * New 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L new4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return newv(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L co4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Co 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L co4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return co(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L co4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Co 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L co4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return co(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Co 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L co4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return co(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * Co 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L co4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return co(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L nco4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Nco 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L nco4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return nco(classMapping4, name, value, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
-    public L nco4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Nco 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nco4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return nco(classMapping4, name, value, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * Nco 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L nco4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return nco(classMapping4, property, queryAlias4, matchStrategy, getIgnoreStrategy());
     }
 
+    /**
+     * Nco 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L nco4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return nco(classMapping4, property, queryAlias4, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public <N extends Number> L ge4(SerializableFunction<T4, N> name, N value) {
+    /**
+     * Ge 4.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <N extends Number> L ge4(SerializableFunction<E4, N> name, N value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L ge4(SerializableFunction<T4, N> name, N value, Predicate<N> ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L ge4(SerializableFunction<E4, N> name, N value, Predicate<N> ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L ge4(SerializableFunction<T4, D> name, D value) {
+    /**
+     * Ge 4.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <D extends Date> L ge4(SerializableFunction<E4, D> name, D value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L ge4(SerializableFunction<T4, D> name, D value, Predicate<D> ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L ge4(SerializableFunction<E4, D> name, D value, Predicate<D> ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
+    /**
+     * Ge 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, LocalTime> name, LocalTime value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableFunction<T4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
+    /**
+     * Ge 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, LocalDate> name, LocalDate value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableFunction<T4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
+    /**
+     * Ge 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value,
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableFunction<T4, String> name, String value) {
+    /**
+     * Ge 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, String> name, String value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableFunction<T4, String> name, String value, Predicate<String> ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, String> name, String value, Predicate<String> ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableToIntFunction4<T4> name, int value) {
+    /**
+     * Ge 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ge4(SerializableToIntFunction4<E4> name, int value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableToIntFunction4<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableToLongFunction4<T4> name, long value) {
+    /**
+     * Ge 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ge4(SerializableToLongFunction4<E4> name, long value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableToLongFunction4<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableToDoubleFunction4<T4> name, double value) {
+    /**
+     * Ge 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ge4(SerializableToDoubleFunction4<E4> name, double value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableToDoubleFunction4<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableToDoubleFunction4<E4> name, double value, DoublePredicate ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Date> L ge4(SerializableDateSupplier<R> property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Date> L ge4(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Number> L ge4(SerializableNumberSupplier<R> property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Number> L ge4(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ge4(SerializableLocalDateSupplier property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ge4(SerializableLocalTimeSupplier property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ge4(SerializableLocalDateTimeSupplier property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ge4(SerializableStringSupplier property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ge4(SerializableIntSupplier property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ge4(SerializableLongSupplier property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ge4(SerializableDoubleSupplier property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public <N extends Number> L gt4(SerializableFunction<T4, N> name, N value) {
+    /**
+     * Gt 4.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <N extends Number> L gt4(SerializableFunction<E4, N> name, N value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L gt4(SerializableFunction<T4, N> name, N value, Predicate<N> ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L gt4(SerializableFunction<E4, N> name, N value, Predicate<N> ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L ge4(SerializableFunction<T4, E> name, E value) {
+    /**
+     * Ge 4.
+     *
+     * @param <E>   the element type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <E extends Enum<E>> L ge4(SerializableFunction<E4, E> name, E value) {
         return ge(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L ge4(SerializableFunction<T4, E> name, E value, Predicate<E> ignoreStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L ge4(SerializableFunction<E4, E> name, E value, Predicate<E> ignoreStrategy) {
         return ge(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ge4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Ge 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return ge(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ge4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Ge 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ge4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return ge(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param <E>      the element type
+     * @param property the property
+     * @return the l
+     */
     public <E extends Enum<E>> L ge4(SerializableEnumSupplier<E> property) {
         return ge(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param <E>            the element type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <E extends Enum<E>> L ge4(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
         return ge(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L ge4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return ge(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ge 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ge4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return ge(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L gt4(SerializableFunction<T4, E> name, E value) {
+    /**
+     * Gt 4.
+     *
+     * @param <E>   the element type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <E extends Enum<E>> L gt4(SerializableFunction<E4, E> name, E value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L gt4(SerializableFunction<T4, E> name, E value, Predicate<E> ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L gt4(SerializableFunction<E4, E> name, E value, Predicate<E> ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return gt(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return gt(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param <E>      the element type
+     * @param property the property
+     * @return the l
+     */
     public <E extends Enum<E>> L gt4(SerializableEnumSupplier<E> property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param <E>            the element type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <E extends Enum<E>> L gt4(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L gt4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return gt(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return gt(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L gt4(SerializableFunction<T4, D> name, D value) {
+    /**
+     * Gt 4.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <D extends Date> L gt4(SerializableFunction<E4, D> name, D value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L gt4(SerializableFunction<T4, D> name, D value, Predicate<D> ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L gt4(SerializableFunction<E4, D> name, D value, Predicate<D> ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
+    /**
+     * Gt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, LocalTime> name, LocalTime value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableFunction<T4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
+    /**
+     * Gt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, LocalDate> name, LocalDate value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableFunction<T4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
+    /**
+     * Gt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value,
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableFunction<T4, String> name, String value) {
+    /**
+     * Gt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, String> name, String value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableFunction<T4, String> name, String value, Predicate<String> ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableFunction<E4, String> name, String value, Predicate<String> ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableToIntFunction4<T4> name, int value) {
+    /**
+     * Gt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L gt4(SerializableToIntFunction4<E4> name, int value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableToIntFunction4<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableToLongFunction4<T4> name, long value) {
+    /**
+     * Gt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L gt4(SerializableToLongFunction4<E4> name, long value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableToLongFunction4<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L gt4(SerializableToDoubleFunction4<T4> name, double value) {
+    /**
+     * Gt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L gt4(SerializableToDoubleFunction4<E4> name, double value) {
         return gt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L gt4(SerializableToDoubleFunction4<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * Gt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L gt4(SerializableToDoubleFunction4<E4> name, double value, DoublePredicate ignoreStrategy) {
         return gt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Number> L gt4(SerializableNumberSupplier<R> property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Number> L gt4(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Date> L gt4(SerializableDateSupplier<R> property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Date> L gt4(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L gt4(SerializableLocalDateSupplier property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L gt4(SerializableLocalTimeSupplier property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L gt4(SerializableLocalDateTimeSupplier property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L gt4(SerializableStringSupplier property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L gt4(SerializableIntSupplier property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L gt4(SerializableLongSupplier property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L gt4(SerializableDoubleSupplier property) {
         return gt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Gt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L gt4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return gt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public <N extends Number> L le4(SerializableFunction<T4, N> name, N value) {
+    /**
+     * Le 4.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <N extends Number> L le4(SerializableFunction<E4, N> name, N value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L le4(SerializableFunction<T4, N> name, N value, Predicate<N> ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L le4(SerializableFunction<E4, N> name, N value, Predicate<N> ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L le4(SerializableFunction<T4, E> name, E value) {
+    /**
+     * Le 4.
+     *
+     * @param <E>   the element type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <E extends Enum<E>> L le4(SerializableFunction<E4, E> name, E value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L le4(SerializableFunction<T4, E> name, E value, Predicate<E> ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L le4(SerializableFunction<E4, E> name, E value, Predicate<E> ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return le(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return le(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param <E>      the element type
+     * @param property the property
+     * @return the l
+     */
     public <E extends Enum<E>> L le4(SerializableEnumSupplier<E> property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param <E>            the element type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <E extends Enum<E>> L le4(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L le4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return le(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return le(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L le4(SerializableFunction<T4, D> name, D value) {
+    /**
+     * Le 4.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <D extends Date> L le4(SerializableFunction<E4, D> name, D value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L le4(SerializableFunction<T4, D> name, D value, Predicate<D> ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L le4(SerializableFunction<E4, D> name, D value, Predicate<D> ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
+    /**
+     * Le 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, LocalTime> name, LocalTime value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableFunction<T4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
+    /**
+     * Le 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, LocalDate> name, LocalDate value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableFunction<T4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
+    /**
+     * Le 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value,
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableFunction<T4, String> name, String value) {
+    /**
+     * Le 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, String> name, String value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableFunction<T4, String> name, String value, Predicate<String> ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableFunction<E4, String> name, String value, Predicate<String> ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Date> L le4(SerializableDateSupplier<R> property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Date> L le4(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Number> L le4(SerializableNumberSupplier<R> property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Number> L le4(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L le4(SerializableLocalDateSupplier property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L le4(SerializableLocalTimeSupplier property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L le4(SerializableLocalDateTimeSupplier property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L le4(SerializableStringSupplier property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableToIntFunction4<T4> name, int value) {
+    /**
+     * Le 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L le4(SerializableToIntFunction4<E4> name, int value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableToIntFunction4<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableToLongFunction4<T4> name, long value) {
+    /**
+     * Le 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L le4(SerializableToLongFunction4<E4> name, long value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableToLongFunction4<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L le4(SerializableToDoubleFunction4<T4> name, double value) {
+    /**
+     * Le 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L le4(SerializableToDoubleFunction4<E4> name, double value) {
         return le(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L le4(SerializableToDoubleFunction4<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * Le 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L le4(SerializableToDoubleFunction4<E4> name, double value, DoublePredicate ignoreStrategy) {
         return le(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L le4(SerializableIntSupplier property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L le4(SerializableLongSupplier property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L le4(SerializableDoubleSupplier property) {
         return le(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Le 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L le4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return le(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public <N extends Number> L lt4(SerializableFunction<T4, N> name, N value) {
+    /**
+     * Lt 4.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <N extends Number> L lt4(SerializableFunction<E4, N> name, N value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L lt4(SerializableFunction<T4, N> name, N value, Predicate<N> ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L lt4(SerializableFunction<E4, N> name, N value, Predicate<N> ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L lt4(SerializableFunction<T4, E> name, E value) {
+    /**
+     * Lt 4.
+     *
+     * @param <E>   the element type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <E extends Enum<E>> L lt4(SerializableFunction<E4, E> name, E value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L lt4(SerializableFunction<T4, E> name, E value, Predicate<E> ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L lt4(SerializableFunction<E4, E> name, E value, Predicate<E> ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy) {
         return lt(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return lt(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param <E>      the element type
+     * @param property the property
+     * @return the l
+     */
     public <E extends Enum<E>> L lt4(SerializableEnumSupplier<E> property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param <E>            the element type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <E extends Enum<E>> L lt4(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L lt4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return lt(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return lt(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L lt4(SerializableFunction<T4, D> name, D value) {
+    /**
+     * Lt 4.
+     *
+     * @param <D>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <D extends Date> L lt4(SerializableFunction<E4, D> name, D value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L lt4(SerializableFunction<T4, D> name, D value, Predicate<D> ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L lt4(SerializableFunction<E4, D> name, D value, Predicate<D> ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableFunction<T4, LocalTime> name, LocalTime value) {
+    /**
+     * Lt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, LocalTime> name, LocalTime value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableFunction<T4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableFunction<T4, LocalDate> name, LocalDate value) {
+    /**
+     * Lt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, LocalDate> name, LocalDate value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableFunction<T4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value) {
+    /**
+     * Lt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableFunction<T4, LocalDateTime> name, LocalDateTime value,
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableFunction<T4, String> name, String value) {
+    /**
+     * Lt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, String> name, String value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableFunction<T4, String> name, String value, Predicate<String> ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableFunction<E4, String> name, String value, Predicate<String> ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Number> L lt4(SerializableNumberSupplier<R> property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Number> L lt4(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R extends Date> L lt4(SerializableDateSupplier<R> property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Date> L lt4(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L lt4(SerializableLocalDateSupplier property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L lt4(SerializableLocalTimeSupplier property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L lt4(SerializableLocalDateTimeSupplier property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L lt4(SerializableStringSupplier property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableToIntFunction4<T4> name, int value) {
+    /**
+     * Lt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L lt4(SerializableToIntFunction4<E4> name, int value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableToIntFunction4<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableToLongFunction4<T4> name, long value) {
+    /**
+     * Lt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L lt4(SerializableToLongFunction4<E4> name, long value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableToLongFunction4<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L lt4(SerializableToDoubleFunction4<T4> name, double value) {
+    /**
+     * Lt 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L lt4(SerializableToDoubleFunction4<E4> name, double value) {
         return lt(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L lt4(SerializableToDoubleFunction4<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * Lt 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L lt4(SerializableToDoubleFunction4<E4> name, double value, DoublePredicate ignoreStrategy) {
         return lt(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L lt4(SerializableIntSupplier property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L lt4(SerializableLongSupplier property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L lt4(SerializableDoubleSupplier property) {
         return lt(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Lt 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L lt4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return lt(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public <R> L in4(SerializableFunction<T4, R> name, R value) {
+    /**
+     * In 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L in4(SerializableFunction<E4, R> name, R value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L in4(SerializableFunction<T4, R> name, R value, Predicate<R> ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L in4(SerializableFunction<E4, R> name, R value, Predicate<R> ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <R> L in4(SerializableFunction<T4, R> name, @SuppressWarnings("unchecked") R... value) {
+    /**
+     * In 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L in4(SerializableFunction<E4, R> name, @SuppressWarnings("unchecked") R... value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L in4(SerializableFunction<T4, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L in4(SerializableFunction<E4, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <R> L in4(SerializableFunction<T4, R> name, Collection<R> value) {
+    /**
+     * In 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L in4(SerializableFunction<E4, R> name, Collection<R> value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L in4(SerializableFunction<T4, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L in4(SerializableFunction<E4, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * In 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R> L in4(SerializableSupplier<R> property) {
         return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * In 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R> L in4(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return in(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToIntFunction4<T4> name, int value) {
+    /**
+     * In 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L in4(SerializableToIntFunction4<E4> name, int value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToIntFunction4<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToLongFunction4<T4> name, long value) {
+    /**
+     * In 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L in4(SerializableToLongFunction4<E4> name, long value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToLongFunction4<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToDoubleFunction<T4> name, double value) {
+    /**
+     * In 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L in4(SerializableToDoubleFunction<E4> name, double value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToDoubleFunction<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToDoubleFunction<E4> name, double value, DoublePredicate ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToIntFunction4<T4> name, int... value) {
+    /**
+     * In 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L in4(SerializableToIntFunction4<E4> name, int... value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToLongFunction4<T4> name, long... value) {
+    /**
+     * In 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L in4(SerializableToLongFunction4<E4> name, long... value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToDoubleFunction4<T4> name, double... value) {
+    /**
+     * In 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L in4(SerializableToDoubleFunction4<E4> name, double... value) {
         return in(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToDoubleFunction4<T4> name, double[] value, Predicate<double[]> ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToDoubleFunction4<E4> name, double[] value, Predicate<double[]> ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToIntFunction4<T4> name, int[] value, Predicate<int[]> ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToIntFunction4<E4> name, int[] value, Predicate<int[]> ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToLongFunction4<T4> name, long[] value, Predicate<long[]> ignoreStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToLongFunction4<E4> name, long[] value, Predicate<long[]> ignoreStrategy) {
         return in(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L in4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy) {
         return in(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy,
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return in(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
-    public L in4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy) {
+    /**
+     * In 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L in4(SerializableToStringFunction<E4> name, String[] value, MatchStrategy matchStrategy) {
         return in(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L in4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy,
+    /**
+     * In 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L in4(SerializableToStringFunction<E4> name, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
         return in(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * In 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L in4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return in(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * In 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L in4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return in(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * In 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L in4(SerializableIntSupplier property) {
         return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * In 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L in4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return in(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * In 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L in4(SerializableLongSupplier property) {
         return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * In 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L in4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return in(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * In 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L in4(SerializableDoubleSupplier property) {
         return in(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * In 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L in4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return in(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public <R> L ni4(SerializableFunction<T4, R> name, R value) {
+    /**
+     * Ni 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L ni4(SerializableFunction<E4, R> name, R value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L ni4(SerializableFunction<T4, R> name, R value, Predicate<R> ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L ni4(SerializableFunction<E4, R> name, R value, Predicate<R> ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <R> L ni4(SerializableFunction<T4, R> name, @SuppressWarnings("unchecked") R... value) {
+    /**
+     * Ni 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L ni4(SerializableFunction<E4, R> name, @SuppressWarnings("unchecked") R... value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L ni4(SerializableFunction<T4, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L ni4(SerializableFunction<E4, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public <R> L ni4(SerializableFunction<T4, R> name, Collection<R> value) {
+    /**
+     * Ni 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L ni4(SerializableFunction<E4, R> name, Collection<R> value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public <R> L ni4(SerializableFunction<T4, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param <R>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <R> L ni4(SerializableFunction<E4, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param <R>      the generic type
+     * @param property the property
+     * @return the l
+     */
     public <R> L ni4(SerializableSupplier<R> property) {
         return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param <R>            the generic type
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R> L ni4(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ni(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToIntFunction4<T4> name, int value) {
+    /**
+     * Ni 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ni4(SerializableToIntFunction4<E4> name, int value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToIntFunction4<T4> name, int value, IntPredicate ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToIntFunction4<E4> name, int value, IntPredicate ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToLongFunction4<T4> name, long value) {
+    /**
+     * Ni 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ni4(SerializableToLongFunction4<E4> name, long value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToLongFunction4<T4> name, long value, LongPredicate ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToLongFunction4<E4> name, long value, LongPredicate ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToDoubleFunction<T4> name, double value) {
+    /**
+     * Ni 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ni4(SerializableToDoubleFunction<E4> name, double value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToDoubleFunction<T4> name, double value, DoublePredicate ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToDoubleFunction<E4> name, double value, DoublePredicate ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToIntFunction4<T4> name, int... value) {
+    /**
+     * Ni 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ni4(SerializableToIntFunction4<E4> name, int... value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToLongFunction4<T4> name, long... value) {
+    /**
+     * Ni 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ni4(SerializableToLongFunction4<E4> name, long... value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToDoubleFunction4<T4> name, double... value) {
+    /**
+     * Ni 4.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public L ni4(SerializableToDoubleFunction4<E4> name, double... value) {
         return ni(classMapping4, name, value, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToDoubleFunction4<T4> name, double[] value, Predicate<double[]> ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToDoubleFunction4<E4> name, double[] value, Predicate<double[]> ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToIntFunction4<T4> name, int[] value, Predicate<int[]> ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToIntFunction4<E4> name, int[] value, Predicate<int[]> ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToLongFunction4<T4> name, long[] value, Predicate<long[]> ignoreStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToLongFunction4<E4> name, long[] value, Predicate<long[]> ignoreStrategy) {
         return ni(classMapping4, name, value, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L ni4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy) {
         return ni(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy,
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToStringFunction<E4> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
         return ni(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
-    public L ni4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy) {
+    /**
+     * Ni 4.
+     *
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
+    public L ni4(SerializableToStringFunction<E4> name, String[] value, MatchStrategy matchStrategy) {
         return ni(classMapping4, name, value, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ni4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy,
+    /**
+     * Ni 4.
+     *
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ni4(SerializableToStringFunction<E4> name, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
         return ni(classMapping4, name, value, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property      the property
+     * @param matchStrategy the match strategy
+     * @return the l
+     */
     public L ni4(SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return ni(classMapping4, property, matchStrategy, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property       the property
+     * @param matchStrategy  the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ni4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         return ni(classMapping4, property, matchStrategy, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ni4(SerializableIntSupplier property) {
         return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ni4(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
         return ni(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ni4(SerializableLongSupplier property) {
         return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ni4(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
         return ni(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property the property
+     * @return the l
+     */
     public L ni4(SerializableDoubleSupplier property) {
         return ni(classMapping4, property, queryAlias4, getIgnoreStrategy());
     }
 
+    /**
+     * Ni 4.
+     *
+     * @param property       the property
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public L ni4(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
         return ni(classMapping4, property, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public <R> L inn4(SerializableFunction<T4, R> name, Boolean value) {
+    /**
+     * Inn 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L inn4(SerializableFunction<E4, R> name, Boolean value) {
         return inn(classMapping4, name, value, queryAlias4);
     }
 
-    public <R> L isn4(SerializableFunction<T4, R> name, Boolean value) {
+    /**
+     * Isn 4.
+     *
+     * @param <R>   the generic type
+     * @param name  the name
+     * @param value the value
+     * @return the l
+     */
+    public <R> L isn4(SerializableFunction<E4, R> name, Boolean value) {
         return isn(classMapping4, name, value, queryAlias4);
     }
 
     // ****************************************************************************************************************
 
-    public L ba4(SerializableToIntFunction<T4> name, int min, int max) {
+    /**
+     * Ba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L ba4(SerializableToIntFunction<E4> name, int min, int max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ba4(SerializableToIntFunction<T4> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
+    /**
+     * Ba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ba4(SerializableToIntFunction<E4> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L ba4(SerializableToLongFunction<T4> name, long min, long max) {
+    /**
+     * Ba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L ba4(SerializableToLongFunction<E4> name, long min, long max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ba4(SerializableToLongFunction<T4> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
+    /**
+     * Ba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ba4(SerializableToLongFunction<E4> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L ba4(SerializableToDoubleFunction<T4> name, double min, double max) {
+    /**
+     * Ba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L ba4(SerializableToDoubleFunction<E4> name, double min, double max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ba4(SerializableToDoubleFunction<T4> name, double min, double max,
+    /**
+     * Ba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ba4(SerializableToDoubleFunction<E4> name, double min, double max,
         BiPredicate<Double, Double> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public <N extends Number> L ba4(SerializableToNumberFunction<T4, N> name, N min, N max) {
+    /**
+     * Ba 4.
+     *
+     * @param <N>  the number type
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public <N extends Number> L ba4(SerializableToNumberFunction<E4, N> name, N min, N max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L ba4(SerializableToNumberFunction<T4, N> name, N min, N max,
+    /**
+     * Ba 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L ba4(SerializableToNumberFunction<E4, N> name, N min, N max,
         BiPredicate<N, N> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L ba4(SerializableToDateFunction<T4, D> name, D min, D max) {
+    /**
+     * Ba 4.
+     *
+     * @param <D>  the generic type
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public <D extends Date> L ba4(SerializableToDateFunction<E4, D> name, D min, D max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L ba4(SerializableToDateFunction<T4, D> name, D min, D max,
+    /**
+     * Ba 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L ba4(SerializableToDateFunction<E4, D> name, D min, D max,
         BiPredicate<D, D> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L ba4(SerializableToEnumFunction<T4, E> name, E min, E max) {
+    /**
+     * Ba 4.
+     *
+     * @param <E>  the element type
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public <E extends Enum<E>> L ba4(SerializableToEnumFunction<E4, E> name, E min, E max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L ba4(SerializableToEnumFunction<T4, E> name, E min, E max,
+    /**
+     * Ba 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L ba4(SerializableToEnumFunction<E4, E> name, E min, E max,
         BiPredicate<E, E> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L ba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max) {
+    /**
+     * Ba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L ba4(SerializableToLocalTimeFunction<E4> name, LocalTime min, LocalTime max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max,
+    /**
+     * Ba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ba4(SerializableToLocalTimeFunction<E4> name, LocalTime min, LocalTime max,
         BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L ba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max) {
+    /**
+     * Ba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L ba4(SerializableToLocalDateFunction<E4> name, LocalDate min, LocalDate max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max,
+    /**
+     * Ba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ba4(SerializableToLocalDateFunction<E4> name, LocalDate min, LocalDate max,
         BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L ba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max) {
+    /**
+     * Ba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L ba4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime min, LocalDateTime max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max,
+    /**
+     * Ba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ba4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime min, LocalDateTime max,
         BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L ba4(SerializableToStringFunction<T4> name, String min, String max) {
+    /**
+     * Ba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L ba4(SerializableToStringFunction<E4> name, String min, String max) {
         return ba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L ba4(SerializableToStringFunction<T4> name, String min, String max,
+    /**
+     * Ba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L ba4(SerializableToStringFunction<E4> name, String min, String max,
         BiPredicate<String, String> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
-    public L nba4(SerializableToIntFunction<T4> name, int min, int max) {
+    /**
+     * Nba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L nba4(SerializableToIntFunction<E4> name, int min, int max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L nba4(SerializableToIntFunction<T4> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
+    /**
+     * Nba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nba4(SerializableToIntFunction<E4> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L nba4(SerializableToLongFunction<T4> name, long min, long max) {
+    /**
+     * Nba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L nba4(SerializableToLongFunction<E4> name, long min, long max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L nba4(SerializableToLongFunction<T4> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
+    /**
+     * Nba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nba4(SerializableToLongFunction<E4> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L nba4(SerializableToDoubleFunction<T4> name, double min, double max) {
+    /**
+     * Nba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L nba4(SerializableToDoubleFunction<E4> name, double min, double max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L nba4(SerializableToDoubleFunction<T4> name, double min, double max,
+    /**
+     * Nba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nba4(SerializableToDoubleFunction<E4> name, double min, double max,
         BiPredicate<Double, Double> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public <N extends Number> L nba4(SerializableToNumberFunction<T4, N> name, N min, N max) {
+    /**
+     * Nba 4.
+     *
+     * @param <N>  the number type
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public <N extends Number> L nba4(SerializableToNumberFunction<E4, N> name, N min, N max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public <N extends Number> L nba4(SerializableToNumberFunction<T4, N> name, N min, N max,
+    /**
+     * Nba 4.
+     *
+     * @param <N>            the number type
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <N extends Number> L nba4(SerializableToNumberFunction<E4, N> name, N min, N max,
         BiPredicate<N, N> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public <D extends Date> L nba4(SerializableToDateFunction<T4, D> name, D min, D max) {
+    /**
+     * Nba 4.
+     *
+     * @param <D>  the generic type
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public <D extends Date> L nba4(SerializableToDateFunction<E4, D> name, D min, D max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public <D extends Date> L nba4(SerializableToDateFunction<T4, D> name, D min, D max,
+    /**
+     * Nba 4.
+     *
+     * @param <D>            the generic type
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <D extends Date> L nba4(SerializableToDateFunction<E4, D> name, D min, D max,
         BiPredicate<D, D> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public <E extends Enum<E>> L nba4(SerializableToEnumFunction<T4, E> name, E min, E max) {
+    /**
+     * Nba 4.
+     *
+     * @param <E>  the element type
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public <E extends Enum<E>> L nba4(SerializableToEnumFunction<E4, E> name, E min, E max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public <E extends Enum<E>> L nba4(SerializableToEnumFunction<T4, E> name, E min, E max,
+    /**
+     * Nba 4.
+     *
+     * @param <E>            the element type
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public <E extends Enum<E>> L nba4(SerializableToEnumFunction<E4, E> name, E min, E max,
         BiPredicate<E, E> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L nba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max) {
+    /**
+     * Nba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L nba4(SerializableToLocalTimeFunction<E4> name, LocalTime min, LocalTime max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L nba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max,
+    /**
+     * Nba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nba4(SerializableToLocalTimeFunction<E4> name, LocalTime min, LocalTime max,
         BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L nba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max) {
+    /**
+     * Nba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L nba4(SerializableToLocalDateFunction<E4> name, LocalDate min, LocalDate max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L nba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max,
+    /**
+     * Nba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nba4(SerializableToLocalDateFunction<E4> name, LocalDate min, LocalDate max,
         BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L nba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max) {
+    /**
+     * Nba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L nba4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime min, LocalDateTime max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L nba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max,
+    /**
+     * Nba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nba4(SerializableToLocalDateTimeFunction<E4> name, LocalDateTime min, LocalDateTime max,
         BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
-    public L nba4(SerializableToStringFunction<T4> name, String min, String max) {
+    /**
+     * Nba 4.
+     *
+     * @param name the name
+     * @param min  the min
+     * @param max  the max
+     * @return the l
+     */
+    public L nba4(SerializableToStringFunction<E4> name, String min, String max) {
         return nba(classMapping, name, min, max, queryAlias4, getIgnoreStrategy());
     }
 
-    public L nba4(SerializableToStringFunction<T4> name, String min, String max,
+    /**
+     * Nba 4.
+     *
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
+    public L nba4(SerializableToStringFunction<E4> name, String min, String max,
         BiPredicate<String, String> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias4, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
 
+    /**
+     * Property.
+     *
+     * @param entitiesPropertyFunction the entities property function
+     * @return the l
+     */
     @SuppressWarnings("unchecked")
 
-    public L property(FourArgusFunction<EntityPropertyOnlyExpression<T1>, EntityPropertyOnlyExpression<T2>,
-        EntityPropertyOnlyExpression<T3>, EntityPropertyOnlyExpression<T4>,
+    public L property(FourArgusFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
+        EntityPropertyOnlyExpression<E3>, EntityPropertyOnlyExpression<E4>,
         LogicExpression<?, ?>> entitiesPropertyFunction) {
         return (L) entitiesPropertyFunction.apply(
             new EntityPropertyOnlyExpressionImpl<>(0, this, factory, entityRelation),
@@ -1870,6 +5020,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase4<T1, 
     // protected method
     // ********************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int getIndex() {
         return 3;

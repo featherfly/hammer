@@ -7,13 +7,13 @@ import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression4;
  * The Interface EntityQuerySortExpression4.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <R>  the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <E4> fouth filterable entity type
+ * @param <R>  query result type
  */
-public interface EntityQuerySortExpression4<E, E2, E3, E4, R>
-        extends EntitySortExpression4<E, E2, E3, E4, EntityQuerySortedExpression4<E, E2, E3, E4, R>> {
+public interface EntityQuerySortExpression4<E1, E2, E3, E4, R>
+    extends EntitySortExpression4<E1, E2, E3, E4, EntityQuerySortedExpression4<E1, E2, E3, E4, R>> {
 
 }

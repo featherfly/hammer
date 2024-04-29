@@ -7,15 +7,15 @@ import cn.featherfly.hammer.expression.entity.EntityWhereExpression;
  * The Interface EntityQueryWhereExpression.
  *
  * @author zhongj
- * @param <E> the element type
- * @param <V> the value type
- * @param <C> the generic type
- * @param <L> the generic type
- * @param <S> the generic type
+ * @param <E> filterable entity type
+ * @param <V> filterable entity fetch property type
+ * @param <C> condition expression
+ * @param <L> logic expression
+ * @param <S> sort expression
  */
 public interface EntityQueryValueWhereExpression<E, V,
-        C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
-        L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
-        S extends EntityQueryValueSortExpression<E, V>> extends EntityWhereExpression<E, C, L> {
+    C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
+    L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
+    S extends EntityQueryValueSortExpression<E, V>> extends EntityWhereExpression<E, C, L> {
 
 }

@@ -27,20 +27,25 @@ import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpres
  * The Interface EntityConditionsExpression5.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <E4> fouth filterable entity type
+ * @param <E5> fifth filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionsExpression5<E, E2, E3, E4, E5,
-        C extends EntityConditionsExpression5<E, E2, E3, E4, E5, C, L>, L extends LogicExpression<C, L>>
-        extends EntityBetweenExpression5<E, E2, E3, E4, E5, C, L>, EntityNotBetweenExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityContainsExpression5<E, E2, E3, E4, E5, C, L>, EntityNotContainsExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityEndWithExpression5<E, E2, E3, E4, E5, C, L>, EntityNotEndWithExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityEqualsExpression5<E, E2, E3, E4, E5, C, L>, EntityNotEqualsExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityGreatEqualsExpression5<E, E2, E3, E4, E5, C, L>, EntityGreatThanExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityInExpression5<E, E2, E3, E4, E5, C, L>, EntityNotInExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityIsNullExpression5<E, E2, E3, E4, E5, C, L>, EntityIsNotNullExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityLessEqualsExpression5<E, E2, E3, E4, E5, C, L>, EntityLessThanExpression5<E, E2, E3, E4, E5, C, L> //
-        , EntityStartWithExpression5<E, E2, E3, E4, E5, C, L>, EntityNotStartWithExpression5<E, E2, E3, E4, E5, C, L>//
-        , EntityLikeExpression5<E, E2, E3, E4, E5, C, L>, EntityNotLikeExpression5<E, E2, E3, E4, E5, C, L>//
-        , EntityPropertyExpression5<E, E2, E3, E4, E5, C, L> {
+public interface EntityConditionsExpression5<E1, E2, E3, E4, E5,
+    C extends EntityConditionsExpression5<E1, E2, E3, E4, E5, C, L>, L extends LogicExpression<C, L>>
+    extends EntityBetweenExpression5<E1, E2, E3, E4, E5, C, L>, EntityNotBetweenExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityContainsExpression5<E1, E2, E3, E4, E5, C, L>, EntityNotContainsExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityEndWithExpression5<E1, E2, E3, E4, E5, C, L>, EntityNotEndWithExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityEqualsExpression5<E1, E2, E3, E4, E5, C, L>, EntityNotEqualsExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityGreatEqualsExpression5<E1, E2, E3, E4, E5, C, L>, EntityGreatThanExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityInExpression5<E1, E2, E3, E4, E5, C, L>, EntityNotInExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityIsNullExpression5<E1, E2, E3, E4, E5, C, L>, EntityIsNotNullExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityLessEqualsExpression5<E1, E2, E3, E4, E5, C, L>, EntityLessThanExpression5<E1, E2, E3, E4, E5, C, L> //
+    , EntityStartWithExpression5<E1, E2, E3, E4, E5, C, L>, EntityNotStartWithExpression5<E1, E2, E3, E4, E5, C, L>//
+    , EntityLikeExpression5<E1, E2, E3, E4, E5, C, L>, EntityNotLikeExpression5<E1, E2, E3, E4, E5, C, L>//
+    , EntityPropertyExpression5<E1, E2, E3, E4, E5, C, L> {
 }

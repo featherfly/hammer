@@ -15,8 +15,8 @@ import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
  * @param <L> the generic type
  */
 public interface RepositoryFieldUpdateExpression<U extends FieldExecutableUpdateExpression<U, C, L>,
-    C extends ExecutableConditionGroupExpression<C, L, UpdateConditionConfig>,
-    L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>> {
+    C extends RepositoryExecutableConditionsGroupExpression<C, L, UpdateConditionConfig>,
+    L extends RepositoryExecutableConditionsGroupLogicExpression<C, L, UpdateConditionConfig>> {
 
     /**
      * field.

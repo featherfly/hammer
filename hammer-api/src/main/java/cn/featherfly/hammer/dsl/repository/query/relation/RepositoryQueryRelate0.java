@@ -8,13 +8,15 @@
  */
 package cn.featherfly.hammer.dsl.repository.query.relation;
 
+import cn.featherfly.hammer.dsl.repository.RepositoryJoin;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression1;
+
 /**
  * repository query fetch.
  *
  * @author zhongj
  */
-public interface RepositoryQueryRelate0 extends
-        RepositoryQueryRelate<RepositoryQueryOnExpression1<RepositoryQueryRelate1R, RepositoryQueryRelatedFetched1F>,
-                RepositoryQueryRelate1R, RepositoryQueryRelatedFetched1F> {
+public interface RepositoryQueryRelate0 extends RepositoryJoin<
+    RepositoryOnExpression1<RepositoryQueryRelate1R>, RepositoryQueryRelate1R> {
 
 }

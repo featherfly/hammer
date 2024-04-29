@@ -9,8 +9,8 @@ import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroup;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroupLogic;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroup;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroupLogic;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlUpdateRelation;
@@ -48,7 +48,7 @@ public class SqlUpdateExpression extends SqlExecutableConditionGroupExpression<U
      * @param updateRelation        the update relation
      * @param updateConditionConfig the update condition config
      */
-    SqlUpdateExpression(ExecutableConditionGroupLogic<UpdateConditionConfig> parent, Jdbc jdbc,
+    SqlUpdateExpression(RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig> parent, Jdbc jdbc,
             SqlUpdateSetBasicBuilder builder, String tableAlias, RepositorySqlUpdateRelation updateRelation,
             UpdateConditionConfig updateConditionConfig) {
         super(parent, jdbc, tableAlias, updateRelation, updateConditionConfig);
@@ -59,8 +59,8 @@ public class SqlUpdateExpression extends SqlExecutableConditionGroupExpression<U
      * {@inheritDoc}
      */
     @Override
-    protected ExecutableConditionGroup<UpdateConditionConfig> createGroup(
-            ExecutableConditionGroupLogic<UpdateConditionConfig> parent) {
+    protected RepositoryExecutableConditionsGroup<UpdateConditionConfig> createGroup(
+            RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig> parent) {
         return new SqlUpdateExpression(this, jdbc, builder, getRepositoryAlias(), repositoryRelation, conditionConfig);
     }
 

@@ -10,6 +10,6 @@ import cn.featherfly.hammer.expression.repository.execute.RepositoryFieldUpdateE
  * @author zhongj
  */
 public interface FieldUpdate extends RepositoryFieldUpdateExpression<ExecutableUpdate,
-    ExecutableConditionGroup<UpdateConditionConfig>, ExecutableConditionGroupLogic<UpdateConditionConfig>> {
+    RepositoryExecutableConditionsGroup<UpdateConditionConfig>, RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> {
 
 }

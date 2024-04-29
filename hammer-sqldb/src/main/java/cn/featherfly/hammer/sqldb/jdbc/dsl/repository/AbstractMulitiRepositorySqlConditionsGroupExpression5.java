@@ -101,17 +101,17 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.sw.StartWithRepo
  * abstract muliti repository sql conditions group expression5.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <C5> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <C2> condition config
+ * @param <S>  repository sql relation
+ * @param <B>  sql builder
  */
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     C extends RepositoryConditionsGroupExpression5<C, L>, L extends RepositoryConditionsGroupLogicExpression5<C, L>,
-    C5 extends ConditionConfig<C5>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
+    C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
     AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<C, L, Tuple5<Integer, Integer, Integer, Integer, Integer>,
-        C5, S, B>
+        C2, S, B>
     implements RepositoryConditionsGroupExpression5<C, L>, RepositoryConditionsGroupLogicExpression5<C, L> {
 
     /**

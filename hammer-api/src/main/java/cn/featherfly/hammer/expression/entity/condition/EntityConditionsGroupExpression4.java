@@ -7,15 +7,15 @@ import cn.featherfly.hammer.expression.condition.GroupExpression;
  * The Interface EntityConditionsGroupExpression4.
  *
  * @author zhongj
- * @param <T>  the element type
- * @param <T2> the generic type
- * @param <T3> the generic type
- * @param <T4> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <E4> fouth filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionsGroupExpression4<T, T2, T3, T4,
-        C extends EntityConditionsGroupExpression4<T, T2, T3, T4, C, L>,
-        L extends EntityConditionsGroupLogicExpression4<T, T2, T3, T4, C, L>>
-        extends EntityConditionsExpression4<T, T2, T3, T4, C, L>, GroupExpression<C, L> {
+public interface EntityConditionsGroupExpression4<E1, E2, E3, E4,
+    C extends EntityConditionsGroupExpression4<E1, E2, E3, E4, C, L>,
+    L extends EntityConditionsGroupLogicExpression4<E1, E2, E3, E4, C, L>>
+    extends EntityConditionsExpression4<E1, E2, E3, E4, C, L>, GroupExpression<C, L> {
 }

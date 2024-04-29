@@ -13,13 +13,12 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3F;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression3;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2RR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate3RRR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2RF;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched3RRF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
@@ -96,7 +95,7 @@ public class RepositorySqlQueryRelate2RR extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression3<RepositoryQueryRelate3RRR, RepositoryQueryRelatedFetched3RRF> join(
+    public RepositoryOnExpression3<RepositoryQueryRelate3RRR> join(
         Repository repository) {
         return new RepositorySqlQueryOn3<>(new RepositorySqlQueryRelate3RRR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate3RRR) relate).setIdName());

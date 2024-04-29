@@ -10,9 +10,9 @@ import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
  *
  * @author zhongj
  * @param <E>  the element type
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <C2> the generic type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <C2> executable condition config
  */
 public interface EntityExecutableConditionGroupExpression<E,
     C extends EntityExecutableConditionGroupExpression<E, C, L, C2>,
