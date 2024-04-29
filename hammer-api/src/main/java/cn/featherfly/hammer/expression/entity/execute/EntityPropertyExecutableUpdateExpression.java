@@ -10,9 +10,9 @@ import cn.featherfly.hammer.expression.execute.Executor;
  *
  * @author zhongj
  * @param <E> the update type
- * @param <U> the generic type
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <U> property update expressoin
+ * @param <C> condition expression
+ * @param <L> logic expression
  */
 public interface EntityPropertyExecutableUpdateExpression<E,
     U extends EntityPropertyExecutableUpdateExpression<E, U, C, L>,

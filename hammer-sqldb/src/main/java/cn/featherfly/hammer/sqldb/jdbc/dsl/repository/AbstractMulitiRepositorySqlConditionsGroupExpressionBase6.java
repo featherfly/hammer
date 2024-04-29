@@ -27,17 +27,17 @@ import cn.featherfly.hammer.sqldb.Constants;
  * abstract muliti repository sql conditions group expression base6.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <T>  the generic type
- * @param <C6> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <T>  filterable repository index tuple type
+ * @param <C2> condition config
+ * @param <S>  repository sql relation
+ * @param <B>  sql builder
  */
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<C extends GroupExpression<C, L>,
-    L extends GroupEndExpression<C, L>, T extends Tuple, C6 extends ConditionConfig<C6>,
+    L extends GroupEndExpression<C, L>, T extends Tuple, C2 extends ConditionConfig<C2>,
     S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
-    extends AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<C, L, T, C6, S, B>
+    extends AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<C, L, T, C2, S, B>
 //    implements RepositoryBetweenExpressionBase6<C, L>, RepositoryNotBetweenExpressionBase6<C, L> //
 //    , RepositoryContainsExpressionBase6<C, L>, RepositoryNotContainsExpressionBase6<C, L> //
 //    , RepositoryEndWithExpressionBase6<C, L>, RepositoryNotEndWithExpressionBase6<C, L>//

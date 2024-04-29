@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.dsl.repository.query.relation;
 
+import cn.featherfly.hammer.dsl.repository.RepositoryJoin;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression5;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup5FFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic5FFFF;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor4;
@@ -18,8 +20,7 @@ public interface RepositoryQueryRelatedFetched4FFRF
     RepositoryQueryExpression5<RepositoryQueryConditionsGroup5FFFF, RepositoryQueryConditionsGroupLogic5FFFF,
         RepositoryQuerySortExpression5<QueryLimitExecutor4>, QueryLimitExecutor4>,
     QueryLimitExecutor4,
-    RepositoryQueryRelate<
-        RepositoryQueryOnExpression5<RepositoryQueryRelate5FFRFR, RepositoryQueryRelatedFetched5FFRFF>,
-        RepositoryQueryRelate5FFRFR, RepositoryQueryRelatedFetched5FFRFF> {
+    RepositoryJoin<RepositoryOnExpression5<RepositoryQueryRelate5FFRFR>,
+        RepositoryQueryRelate5FFRFR> {
 
 }

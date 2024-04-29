@@ -1,5 +1,6 @@
 **/bin
 **/build
+**/out
 **/.gradle
 **/.settings
 **/.sts4-cache

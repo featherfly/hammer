@@ -19,12 +19,12 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlLogicOperatorExpressionBuilder;
  * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <T>  the generic type
- * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <T>  filterable repository index tuple type
+ * @param <C2> condition config
+ * @param <S>  repository sql relation
+ * @param <B>  sql builder
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C extends GroupExpression<C, L>,

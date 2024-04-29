@@ -14,13 +14,12 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 import java.util.function.BiFunction;
 
 import cn.featherfly.common.repository.Repository;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2F;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression2;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2RR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2RF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
@@ -66,8 +65,7 @@ public class RepositorySqlQueryRelate1R extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression2<RepositoryQueryRelate2RR, RepositoryQueryRelatedFetched2RF> join(
-        Repository repository) {
+    public RepositoryOnExpression2<RepositoryQueryRelate2RR> join(Repository repository) {
         return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2RR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate2RR) relate).setIdName());
     }

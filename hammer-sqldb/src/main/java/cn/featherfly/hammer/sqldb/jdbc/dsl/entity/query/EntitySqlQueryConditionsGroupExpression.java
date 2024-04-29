@@ -21,9 +21,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * @param <E> the element type
  */
 public class EntitySqlQueryConditionsGroupExpression<E> extends
-        EntitySqlConditionsGroupExpression<E, EntitySqlQueryRelation, SqlSelectBasicBuilder,
-                EntitySqlQueryConditionsGroupExpression<E>, EntitySqlQueryConditionsGroupExpression<E>,
-                QueryConditionConfig> {
+    EntitySqlConditionsGroupExpression<E, EntitySqlQueryConditionsGroupExpression<E>,
+        EntitySqlQueryConditionsGroupExpression<E>, QueryConditionConfig, EntitySqlQueryRelation,
+        SqlSelectBasicBuilder> {
 
     /**
      * Instantiates a new entity sql query conditions group expression.
@@ -34,7 +34,7 @@ public class EntitySqlQueryConditionsGroupExpression<E> extends
      * @param entitySqlRelation the entity sql relation
      */
     public EntitySqlQueryConditionsGroupExpression(EntitySqlQueryConditionsGroupExpression<E> parent, int index,
-            JdbcMappingFactory factory, EntitySqlQueryRelation entitySqlRelation) {
+        JdbcMappingFactory factory, EntitySqlQueryRelation entitySqlRelation) {
         super(parent, index, factory, entitySqlRelation);
     }
 
@@ -46,7 +46,7 @@ public class EntitySqlQueryConditionsGroupExpression<E> extends
      * @param entitySqlRelation the entity sql relation
      */
     public EntitySqlQueryConditionsGroupExpression(int index, JdbcMappingFactory factory,
-            EntitySqlQueryRelation entitySqlRelation) {
+        EntitySqlQueryRelation entitySqlRelation) {
         super(index, factory, entitySqlRelation);
     }
 

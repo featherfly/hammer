@@ -16,7 +16,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
@@ -30,7 +30,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation.Repo
  * @param <F> the generic type
  */
 public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpression<F>, F>
-    implements RepositoryQueryOnExpression<Q, F> {
+    implements RepositoryOnExpression<Q> {
 
     /** The query relate. */
     protected final Q queryRelate;

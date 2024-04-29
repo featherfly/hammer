@@ -101,17 +101,17 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.sw.StartWithRepo
  * abstract muliti repository sql conditions group expression4.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <C4> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <C2> condition config
+ * @param <S>  repository sql relation
+ * @param <B>  sql builder
  */
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression4<
     C extends RepositoryConditionsGroupExpression4<C, L>, L extends RepositoryConditionsGroupLogicExpression4<C, L>,
-    C4 extends ConditionConfig<C4>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
+    C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
     extends AbstractMulitiRepositorySqlConditionsGroupExpressionBase4<C, L, Tuple4<Integer, Integer, Integer, Integer>,
-        C4, S, B>
+        C2, S, B>
     implements RepositoryConditionsGroupExpression4<C, L>, RepositoryConditionsGroupLogicExpression4<C, L> {
 
     /**

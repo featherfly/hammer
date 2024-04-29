@@ -12,11 +12,10 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression4;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression4;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate3RFR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate4RFRR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched3RFF;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched4RFRF;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQuery4;
@@ -61,7 +60,7 @@ public class RepositorySqlQueryRelate3RFR extends AbstractRepositorySqlQuery4FF<
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression4<RepositoryQueryRelate4RFRR, RepositoryQueryRelatedFetched4RFRF> join(
+    public RepositoryOnExpression4<RepositoryQueryRelate4RFRR> join(
         Repository repository) {
         return new RepositorySqlQueryOn4<>(new RepositorySqlQueryRelate4RFRR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate4RFRR) relate).setIdName());

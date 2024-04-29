@@ -14,9 +14,9 @@ import cn.featherfly.hammer.expression.execute.Executor;
  * @param <J2> the join type 2
  * @param <J3> the join type 3
  * @param <J4> the join type 4
- * @param <U>  the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <U>  update set expressoin
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
 public interface EntityUpdateSetExecutableExpression5<E, J1, J2, J3, J4,
     U extends EntityUpdateSetExecutableExpression5<E, J1, J2, J3, J4, U, C, L>,

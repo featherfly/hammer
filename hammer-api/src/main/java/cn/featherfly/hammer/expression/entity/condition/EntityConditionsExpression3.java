@@ -27,19 +27,22 @@ import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpres
  * The Interface EntityConditionsExpression3.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionsExpression3<E, E2, E3, C extends EntityConditionsExpression3<E, E2, E3, C, L>,
-        L extends LogicExpression<C, L>> extends EntityBetweenExpression3<E, E2, E3, C, L>,
-        EntityNotBetweenExpression3<E, E2, E3, C, L>, EntityContainsExpression3<E, E2, E3, C, L>,
-        EntityNotContainsExpression3<E, E2, E3, C, L>, EntityEndWithExpression3<E, E2, E3, C, L>,
-        EntityNotEndWithExpression3<E, E2, E3, C, L>, EntityEqualsExpression3<E, E2, E3, C, L>,
-        EntityGreatEqualsExpression3<E, E2, E3, C, L>, EntityGreatThanExpression3<E, E2, E3, C, L>,
-        EntityInExpression3<E, E2, E3, C, L>, EntityIsNotNullExpression3<E, E2, E3, C, L>,
-        EntityIsNullExpression3<E, E2, E3, C, L>, EntityLessEqualsExpression3<E, E2, E3, C, L>,
-        EntityLessThanExpression3<E, E2, E3, C, L>, EntityNotEqualsExpression3<E, E2, E3, C, L>,
-        EntityNotInExpression3<E, E2, E3, C, L>, EntityStartWithExpression3<E, E2, E3, C, L>,
-        EntityNotStartWithExpression3<E, E2, E3, C, L>, EntityLikeExpression3<E, E2, E3, C, L>,
-        EntityNotLikeExpression3<E, E2, E3, C, L>, EntityPropertyExpression3<E, E2, E3, C, L> {
+public interface EntityConditionsExpression3<E1, E2, E3, C extends EntityConditionsExpression3<E1, E2, E3, C, L>,
+    L extends LogicExpression<C, L>> extends EntityBetweenExpression3<E1, E2, E3, C, L>,
+    EntityNotBetweenExpression3<E1, E2, E3, C, L>, EntityContainsExpression3<E1, E2, E3, C, L>,
+    EntityNotContainsExpression3<E1, E2, E3, C, L>, EntityEndWithExpression3<E1, E2, E3, C, L>,
+    EntityNotEndWithExpression3<E1, E2, E3, C, L>, EntityEqualsExpression3<E1, E2, E3, C, L>,
+    EntityGreatEqualsExpression3<E1, E2, E3, C, L>, EntityGreatThanExpression3<E1, E2, E3, C, L>,
+    EntityInExpression3<E1, E2, E3, C, L>, EntityIsNotNullExpression3<E1, E2, E3, C, L>,
+    EntityIsNullExpression3<E1, E2, E3, C, L>, EntityLessEqualsExpression3<E1, E2, E3, C, L>,
+    EntityLessThanExpression3<E1, E2, E3, C, L>, EntityNotEqualsExpression3<E1, E2, E3, C, L>,
+    EntityNotInExpression3<E1, E2, E3, C, L>, EntityStartWithExpression3<E1, E2, E3, C, L>,
+    EntityNotStartWithExpression3<E1, E2, E3, C, L>, EntityLikeExpression3<E1, E2, E3, C, L>,
+    EntityNotLikeExpression3<E1, E2, E3, C, L>, EntityPropertyExpression3<E1, E2, E3, C, L> {
 }

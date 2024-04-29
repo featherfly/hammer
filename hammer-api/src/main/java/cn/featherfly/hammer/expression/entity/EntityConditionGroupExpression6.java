@@ -7,17 +7,17 @@ import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExp
  * The Interface EntityConditionGroupExpression6.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <E4> the generic type
- * @param <E5> the generic type
- * @param <E6> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <E4> fouth filterable entity type
+ * @param <E5> fifth filterable entity type
+ * @param <E6> sixth filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionGroupExpression6<E, E2, E3, E4, E5, E6,
-        C extends EntityConditionGroupExpression6<E, E2, E3, E4, E5, E6, C, L>,
-        L extends EntityConditionGroupLogicExpression6<E, E2, E3, E4, E5, E6, C, L>>
-        extends EntityConditionsGroupExpression6<E, E2, E3, E4, E5, E6, C, L> {
+public interface EntityConditionGroupExpression6<E1, E2, E3, E4, E5, E6,
+    C extends EntityConditionGroupExpression6<E1, E2, E3, E4, E5, E6, C, L>,
+    L extends EntityConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L>>
+    extends EntityConditionsGroupExpression6<E1, E2, E3, E4, E5, E6, C, L> {
 }

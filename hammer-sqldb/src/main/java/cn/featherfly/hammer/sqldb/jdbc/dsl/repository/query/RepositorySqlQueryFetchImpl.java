@@ -11,13 +11,12 @@ import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.QueryableField;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetched1Field;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.FetchField;
 import cn.featherfly.hammer.expression.query.FetchFieldImpl;
@@ -177,7 +176,7 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression1<RepositoryQueryRelate1R, RepositoryQueryRelatedFetched1F> join(
+    public RepositoryOnExpression1<RepositoryQueryRelate1R> join(
         Repository repository) {
         return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1R(queryRelation, sqlPageFactory), queryRelation,
             repository, relate -> ((RepositorySqlQueryRelate1R) relate).setIdName());

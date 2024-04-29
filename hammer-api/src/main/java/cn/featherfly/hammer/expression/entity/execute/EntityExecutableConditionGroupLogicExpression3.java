@@ -9,12 +9,12 @@ import cn.featherfly.hammer.expression.execute.Executor;
  * entity executable condition group logic expression,.
  *
  * @author zhongj
- * @param <E1> the generic type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <C2> the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <C2> executable condition config
  */
 public interface EntityExecutableConditionGroupLogicExpression3<E1, E2, E3,
     C extends EntityExecutableConditionGroupExpression3<E1, E2, E3, C, L, C2>,

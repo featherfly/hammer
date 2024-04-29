@@ -33,8 +33,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 public abstract class AbstractEntitySqlExecutableConditionGroupExpression<E, R extends EntitySqlRelation<R, B>,
     B extends SqlBuilder, L extends EntityExecutableConditionGroupLogic<E, C>, C extends ExecutableConditionConfig<C>>
     extends
-    AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, R, B, EntityExecutableConditionGroup<E, C>,
-        EntityExecutableConditionGroupLogic<E, C>, C>
+    AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, EntityExecutableConditionGroup<E, C>,
+        EntityExecutableConditionGroupLogic<E, C>, C, R, B>
     implements EntityExecutableConditionGroup<E, C>, EntityExecutableConditionGroupLogic<E, C> {
 
     /**

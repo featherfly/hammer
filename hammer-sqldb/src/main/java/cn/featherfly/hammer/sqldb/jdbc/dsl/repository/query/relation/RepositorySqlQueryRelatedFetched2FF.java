@@ -15,12 +15,11 @@ import com.speedment.common.tuple.Tuple3;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3FFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3FFF;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression3;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate3FFR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2FF;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched3FFF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor3;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
@@ -60,7 +59,7 @@ public class RepositorySqlQueryRelatedFetched2FF extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression3<RepositoryQueryRelate3FFR, RepositoryQueryRelatedFetched3FFF> join(
+    public RepositoryOnExpression3<RepositoryQueryRelate3FFR> join(
         Repository repository) {
         return new RepositorySqlQueryOn3<>(new RepositorySqlQueryRelate3FFR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate3FFR) relate).setIdName());

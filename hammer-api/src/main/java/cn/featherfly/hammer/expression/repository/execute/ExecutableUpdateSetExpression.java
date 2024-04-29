@@ -11,7 +11,7 @@ import cn.featherfly.hammer.expression.repository.RepositoryWhereExpression;
  * @author zhongj
  */
 public interface ExecutableUpdateSetExpression<U extends ExecutableUpdateSetExpression<U, C, L>,
-        C extends ExecutableConditionGroupExpression<C, L, UpdateConditionConfig>,
-        L extends ExecutableConditionGroupLogicExpression<C, L, UpdateConditionConfig>>
+        C extends RepositoryExecutableConditionsGroupExpression<C, L, UpdateConditionConfig>,
+        L extends RepositoryExecutableConditionsGroupLogicExpression<C, L, UpdateConditionConfig>>
         extends RepositoryWhereExpression<C, L>, RepositoryUpdateSetExpression<U, C, L>, Executor {
 }

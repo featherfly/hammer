@@ -27,8 +27,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
  */
 public class InternalMulitiEntityPropertyOnlyConditionImpl<E, C2 extends ConditionConfig<C2>,
     S extends EntitySqlRelation<S, B>, B extends SqlBuilder> extends
-    AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, S, B, EntityPropertyOnlyExpression<E>,
-        EntityPropertyOnlyLogicExpression<E>, C2>
+    AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, EntityPropertyOnlyExpression<E>,
+        EntityPropertyOnlyLogicExpression<E>, C2, S, B>
     implements EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E> {
 
     /**

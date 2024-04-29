@@ -1,12 +1,16 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository;
 
-import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
+import java.util.function.Supplier;
+
+import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBasicBuilder2;
+import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.exception.NotImplementedException;
+import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -44,35 +48,42 @@ public class RepositorySqlUpdateRelation
     }
 
     // ****************************************************************************************************************
-    //	protected method
+    //  public method
     // ****************************************************************************************************************
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected SqlSelectJoinOnBasicBuilder join0(String sourceTableAlias, String sourceColumn, String joinTable,
-        String joinTableAlias, String joinTableColumn) {
-        // IMPLSOON update还未实现join
-        throw new NotImplementedException();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public RepositorySqlUpdateRelation join(int sourceIndex, String sourceField, String joinRepository,
+    //        String joinRepositoryAlias, String joinField) {
+    //        AssertIllegalArgument.isNotNull(sourceField, "sourceField");
+    //        AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
+    //        AssertIllegalArgument.isNotNull(joinField, "joinField");
+    //        RepositoryRelation erm = getRepositoryRelation(sourceIndex);
+    //
+    //        addFilterable(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField);
+    //
+    //        RepositoryRelation jerm = getRepositoryRelation(index - 1);
+    //
+    //        getBuilder().join(new SqlJoinOnBasicBuilder(jdbc.getDialect(), jerm.getRepository(), jerm.getRepositoryAlias(),
+    //            joinRepositoryAlias, erm.getRepositoryAlias(), sourceField));
+    //
+    //        return this;
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected SqlSelectJoinOnBasicBuilder join0(String joinTable, String joinTableAlias, String onSql) {
-        // IMPLSOON update还未实现join
-        throw new NotImplementedException();
-    }
+    public RepositorySqlUpdateRelation join(String joinRepository, Supplier<Expression> onExpression) {
+        AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
+        addFilterable(joinRepository);
+        RepositoryRelation jerm = getRepositoryRelation(index - 1);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initBuilder(RepositoryRelation erm) {
-        updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getRepository(), erm.getRepositoryAlias(),
-            getConfig().getIgnoreStrategy()::test);
+        updateBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), jerm.getRepository(),
+            jerm.getRepositoryAlias(), onExpression.get().expression()));
+        return this;
     }
 
     /**
@@ -90,6 +101,28 @@ public class RepositorySqlUpdateRelation
     @Override
     public UpdateConfig getConfig() {
         return (UpdateConfig) conditionConfig;
+    }
+
+    // ****************************************************************************************************************
+    //	protected method
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected RepositorySqlUpdateRelation join(SqlJoinOnBuilder joinOnBuilder) {
+        getBuilder().join(joinOnBuilder);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initBuilder(RepositoryRelation erm) {
+        updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getRepository(), erm.getRepositoryAlias(),
+            getConfig().getIgnoreStrategy()::test);
     }
 
     // ********************************************************************

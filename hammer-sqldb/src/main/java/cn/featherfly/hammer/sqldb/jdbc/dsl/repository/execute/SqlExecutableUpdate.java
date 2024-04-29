@@ -14,8 +14,8 @@ import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroup;
-import cn.featherfly.hammer.dsl.repository.execute.ExecutableConditionGroupLogic;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroup;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryExecutableConditionsGroupLogic;
 import cn.featherfly.hammer.dsl.repository.execute.ExecutableUpdate;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryUpdateValueImpl;
@@ -207,8 +207,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public UpdateValueExpression<Object, ExecutableUpdate, ExecutableConditionGroup<UpdateConditionConfig>,
-        ExecutableConditionGroupLogic<UpdateConditionConfig>> field(String name) {
+    public UpdateValueExpression<Object, ExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> field(String name) {
         return new RepositoryUpdateValueImpl<>(name, this);
     }
 
@@ -216,8 +216,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public UpdateNumberValueExpression<Number, ExecutableUpdate, ExecutableConditionGroup<UpdateConditionConfig>,
-        ExecutableConditionGroupLogic<UpdateConditionConfig>> fieldAsNumber(String name) {
+    public UpdateNumberValueExpression<Number, ExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> fieldAsNumber(String name) {
         return new RepositoryUpdateNumberValueImpl<>(name, this);
     }
 
@@ -225,8 +225,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public <T, R> UpdateValueExpression<R, ExecutableUpdate, ExecutableConditionGroup<UpdateConditionConfig>,
-        ExecutableConditionGroupLogic<UpdateConditionConfig>> field(SerializableFunction<T, R> name) {
+    public <T, R> UpdateValueExpression<R, ExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> field(SerializableFunction<T, R> name) {
         return new RepositoryUpdateValueImpl<>(LambdaUtils.getLambdaPropertyName(name), this);
     }
 
@@ -236,8 +236,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
     @Override
     public <T,
         R extends Number> UpdateNumberValueExpression<R, ExecutableUpdate,
-            ExecutableConditionGroup<UpdateConditionConfig>,
-            ExecutableConditionGroupLogic<UpdateConditionConfig>> fieldAsNumber(SerializableFunction<T, R> name) {
+            RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+            RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> fieldAsNumber(SerializableFunction<T, R> name) {
         return new RepositoryUpdateNumberValueImpl<>(LambdaUtils.getLambdaPropertyName(name), this);
     }
 
@@ -245,7 +245,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroup<UpdateConditionConfig> where() {
+    public RepositoryExecutableConditionsGroup<UpdateConditionConfig> where() {
         return new SqlUpdateExpression(jdbc, builder, repositoryRelation, updateConfig);
     }
 
@@ -253,7 +253,7 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public ExecutableConditionGroupLogic<UpdateConditionConfig> where(
+    public RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig> where(
         Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
         SqlUpdateExpression sqlUpdateExpression = new SqlUpdateExpression(jdbc, builder, repositoryRelation,
             updateConfig);
@@ -277,8 +277,8 @@ public class SqlExecutableUpdate extends AbstractSqlExecutableUpdate<SqlExecutab
      * {@inheritDoc}
      */
     @Override
-    public RepositoryUpdateExpression<ExecutableUpdate, ExecutableConditionGroup<UpdateConditionConfig>,
-        ExecutableConditionGroupLogic<UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
+    public RepositoryUpdateExpression<ExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
         if (configure != null) {
             configure.accept(updateConfig);
         }

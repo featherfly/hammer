@@ -5,9 +5,10 @@ package cn.featherfly.hammer.expression.entity.condition;
  * entity conditions group logic expression.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <E1> first filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionsGroupLogicExpression<E, C extends EntityConditionsGroupExpression<E, C, L>,
-        L extends EntityConditionsGroupLogicExpression<E, C, L>> extends EntityConditionsLogicExpression<E, C, L> {
+public interface EntityConditionsGroupLogicExpression<E1, C extends EntityConditionsGroupExpression<E1, C, L>,
+    L extends EntityConditionsGroupLogicExpression<E1, C, L>> extends EntityConditionsLogicExpression<E1, C, L> {
 }

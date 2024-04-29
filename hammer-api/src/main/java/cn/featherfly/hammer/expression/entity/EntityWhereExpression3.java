@@ -10,23 +10,23 @@ import cn.featherfly.hammer.expression.query.WhereExpression;
  * The Interface EntityWhereExpression3.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <E2> the generic type
- * @param <E3> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <E3> third filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityWhereExpression3<E, E2, E3, C extends EntityConditionGroupExpression3<E, E2, E3, C, L>,
-    L extends EntityConditionGroupLogicExpression3<E, E2, E3, C, L>> extends WhereExpression<C> {
+public interface EntityWhereExpression3<E1, E2, E3, C extends EntityConditionGroupExpression3<E1, E2, E3, C, L>,
+    L extends EntityConditionGroupLogicExpression3<E1, E2, E3, C, L>> extends WhereExpression<C> {
 
     /**
      * gets the filter expression. 获取筛选条件表达式.
      *
-     * @param consumer the condition expression consumer
+     * @param entitiesCondtionFuntion the entities condtion funtion
      * @return filter expression
      */
     default L filter(
-        ThreeArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+        ThreeArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
             EntityConditionsGroupExpression<E3, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion) {
         return where(entitiesCondtionFuntion);
     }
@@ -37,6 +37,6 @@ public interface EntityWhereExpression3<E, E2, E3, C extends EntityConditionGrou
      * @param entitiesCondtionFuntion the entities condtion funtion
      * @return QueryCondition
      */
-    L where(ThreeArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+    L where(ThreeArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
         EntityConditionsGroupExpression<E3, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion);
 }

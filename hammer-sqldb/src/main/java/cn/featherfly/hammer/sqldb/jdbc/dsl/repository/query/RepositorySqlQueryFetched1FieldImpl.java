@@ -20,12 +20,11 @@ import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroupLogic;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.FetchField;
 import cn.featherfly.hammer.expression.query.QueryValueLimitExecutor;
@@ -348,7 +347,7 @@ public class RepositorySqlQueryFetched1FieldImpl
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression1<RepositoryQueryRelate1R, RepositoryQueryRelatedFetched1F> join(
+    public RepositoryOnExpression1<RepositoryQueryRelate1R> join(
         Repository repository) {
         // ENHANCE 目前Fetch1Field在join后和其他的一样，后续考虑是否特化
         return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1R(queryRelation, sqlPageFactory), queryRelation,

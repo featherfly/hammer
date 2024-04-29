@@ -103,17 +103,17 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.condition.sw.StartWithRepo
  * abstract muliti repository sql conditions group expression6.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <C6> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <C2> condition config
+ * @param <S>  repository sql relation
+ * @param <B>  sql builder
  */
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
     C extends RepositoryConditionsGroupExpression6<C, L>, L extends RepositoryConditionsGroupLogicExpression6<C, L>,
-    C6 extends ConditionConfig<C6>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
+    C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
     AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<C, L,
-        Tuple6<Integer, Integer, Integer, Integer, Integer, Integer>, C6, S, B>
+        Tuple6<Integer, Integer, Integer, Integer, Integer, Integer>, C2, S, B>
     implements RepositoryConditionsGroupExpression6<C, L>, RepositoryConditionsGroupLogicExpression6<C, L> {
 
     /**

@@ -7,9 +7,10 @@ import cn.featherfly.hammer.expression.condition.GroupEndExpression;
  * The Interface EntityLogicGroupExpression.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <E1> first filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionsLogicExpression<E, C extends EntityConditionsExpression<E, C, L>,
-        L extends EntityConditionsLogicExpression<E, C, L>> extends GroupEndExpression<C, L> {
+public interface EntityConditionsLogicExpression<E1, C extends EntityConditionsExpression<E1, C, L>,
+    L extends EntityConditionsLogicExpression<E1, C, L>> extends GroupEndExpression<C, L> {
 }

@@ -9,7 +9,6 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroupLogic
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortedExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractMulitiEntitySqlQueryValueConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
 /**

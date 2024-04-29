@@ -16,6 +16,8 @@ import com.speedment.common.tuple.mutable.MutableTuple9;
 
 import cn.featherfly.common.db.Column;
 import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBasicBuilder;
+import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -236,23 +238,35 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      * @param joinField           the join field
      * @return the r
      */
-    @SuppressWarnings("unchecked")
     public R join(int sourceIndex, String sourceField, String joinRepository, String joinRepositoryAlias,
         String joinField) {
-        AssertIllegalArgument.isNotNull(sourceField, "sourceField");
         AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
-        AssertIllegalArgument.isNotNull(joinField, "joinField");
+        if (Lang.isEmpty(joinField)) {
+            List<Column> pks = metadata.getTable(joinRepository).getPrimaryColumns();
+            if (pks.size() == 1) {
+                joinField = pks.get(0).getName();
+            } else {
+                AssertIllegalArgument.isNotNull(joinField, "joinField");
+            }
+        }
+
         RepositoryRelation erm = getRepositoryRelation(sourceIndex);
+
+        if (Lang.isEmpty(sourceField)) {
+            List<Column> pks = metadata.getTable(erm.getRepository()).getPrimaryColumns();
+            if (pks.size() == 1) {
+                sourceField = pks.get(0).getName();
+            } else {
+                AssertIllegalArgument.isNotNull(sourceField, "sourceField");
+            }
+        }
 
         addFilterable(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField);
 
         RepositoryRelation jerm = getRepositoryRelation(index - 1);
 
-        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getRepositoryAlias(), sourceField,
-            jerm.getRepository(), jerm.getRepositoryAlias(), jerm.getField());
-        jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
-
-        return (R) this;
+        return join(new SqlJoinOnBasicBuilder(jdbc.getDialect(), jerm.getRepository(), jerm.getRepositoryAlias(),
+            joinField, erm.getRepositoryAlias(), sourceField));
     }
 
     /**
@@ -260,42 +274,17 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      *
      * @param joinRepository the join repository
      * @param onExpression   the on expression
-     * @return the r
+     * @return this
      */
-    @SuppressWarnings("unchecked")
-    public R join(String joinRepository, Supplier<Expression> onExpression) {
-        AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
-        //        RepositoryRelation erm = getRepositoryRelation(sourceIndex);
-        addFilterable(joinRepository);
-        RepositoryRelation jerm = getRepositoryRelation(index - 1);
-        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(jerm.getRepository(), jerm.getRepositoryAlias(),
-            onExpression.get().expression());
-        jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
-        return (R) this;
-    }
+    public abstract R join(String joinRepository, Supplier<Expression> onExpression);
 
     /**
-     * Join 0.
+     * Join.
      *
-     * @param sourceTableAlias the table alias
-     * @param sourceColumn     the column name
-     * @param joinTable        the join table
-     * @param joinTableAlias   the join table alias
-     * @param joinTableColumn  the join table column name
-     * @return the sql select join on basic builder
+     * @param joinOnBuilder the join on builder
+     * @return this
      */
-    protected abstract SqlSelectJoinOnBasicBuilder join0(String sourceTableAlias, String sourceColumn, String joinTable,
-        String joinTableAlias, String joinTableColumn);
-
-    /**
-     * Join 0.
-     *
-     * @param joinTable      the join table
-     * @param joinTableAlias the join table alias
-     * @param onSql          the on sql
-     * @return the sql select join on basic builder
-     */
-    protected abstract SqlSelectJoinOnBasicBuilder join0(String joinTable, String joinTableAlias, String onSql);
+    protected abstract R join(SqlJoinOnBuilder joinOnBuilder);
 
     /**
      * Inits the builder.

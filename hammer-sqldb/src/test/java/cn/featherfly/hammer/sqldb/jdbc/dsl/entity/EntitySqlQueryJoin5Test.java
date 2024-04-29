@@ -84,8 +84,7 @@ public class EntitySqlQueryJoin5Test extends AbstractEntitySqlQueryJoinTest {
         assertEquals(order.getUser2(), orderUser5.get4().getId());
         assertEquals(order.getUser3(), orderUser5.get5().getId());
 
-        User2 createUser = hammer.get(orderUser5.get1().getId(), User2.class);
-
+        //        User2 createUser = hammer.get(orderUser5.get1().getId(), User2.class);
         //        order = query.find(Order2.class).join(Order2::getUser1, User2.class)
         //                .join((e1, e2) -> e1, Order2::getUser2, User2.class).where().eq(Order2::getId, oid1).single();
         //        assertNotNull(order);

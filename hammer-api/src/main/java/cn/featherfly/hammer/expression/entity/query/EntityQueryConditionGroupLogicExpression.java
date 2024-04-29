@@ -9,14 +9,15 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * The Interface EntityConditionGroupLogicExpression.
  *
  * @author zhongj
- * @param <E> the element type
- * @param <C> the generic type
- * @param <L> the generic type
- * @param <S> the generic type
+ * @param <E1> first filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <S>  sort expression
  */
-public interface EntityQueryConditionGroupLogicExpression<E, C extends EntityQueryConditionGroupExpression<E, C, L, S>,
-        L extends EntityQueryConditionGroupLogicExpression<E, C, L, S>, S extends EntityQuerySortExpression<E>>
-        extends EntityConditionGroupLogicExpression<E, C, L>, Queryable<S>,
-        EntityQueryConditionLimit<EntityQueryLimitExecutor<E>>, EntityQueryLimitExecutor<E>, QueryCountExecutor {
+public interface EntityQueryConditionGroupLogicExpression<E1,
+    C extends EntityQueryConditionGroupExpression<E1, C, L, S>,
+    L extends EntityQueryConditionGroupLogicExpression<E1, C, L, S>, S extends EntityQuerySortExpression<E1>>
+    extends EntityConditionGroupLogicExpression<E1, C, L>, Queryable<S>,
+    EntityQueryConditionLimit<EntityQueryLimitExecutor<E1>>, EntityQueryLimitExecutor<E1>, QueryCountExecutor {
 
 }

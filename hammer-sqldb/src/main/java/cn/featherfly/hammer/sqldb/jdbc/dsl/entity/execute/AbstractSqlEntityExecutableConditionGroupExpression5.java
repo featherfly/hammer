@@ -9,7 +9,7 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLog
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 
 /**
- * sql condition group builder sql条件逻辑组构造器 .
+ * sql condition group expression5. sql条件逻辑组表达式5.
  *
  * @author zhongj
  * @param <T> the element type

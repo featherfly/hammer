@@ -12,11 +12,10 @@
 package cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation;
 
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryOnExpression5;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression5;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate4RFRR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate5RFRRR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched4RFRF;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched5RFRRF;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.AbstractRepositorySqlQuery5;
@@ -61,7 +60,7 @@ public class RepositorySqlQueryRelate4RFRR extends AbstractRepositorySqlQuery5FF
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryOnExpression5<RepositoryQueryRelate5RFRRR, RepositoryQueryRelatedFetched5RFRRF> join(
+    public RepositoryOnExpression5<RepositoryQueryRelate5RFRRR> join(
         Repository repository) {
         return new RepositorySqlQueryOn5<>(new RepositorySqlQueryRelate5RFRRR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate5RFRRR) relate).setIdName());

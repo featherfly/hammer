@@ -13,9 +13,9 @@ import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
  * @param <J3> the join type 3
  * @param <J4> the join type 4
  * @param <J5> the join type 5
- * @param <U>  the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <U>  update expressoin
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
 public interface EntityExecutableUpdateExpression6<E, J1, J2, J3, J4, J5,
     U extends EntityExecutableUpdateExpression6<E, J1, J2, J3, J4, J5, U, C, L>,

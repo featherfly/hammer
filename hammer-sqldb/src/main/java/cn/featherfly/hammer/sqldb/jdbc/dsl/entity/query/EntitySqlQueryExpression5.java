@@ -7,7 +7,6 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup5;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic5;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.AbstractMulitiEntitySqlQueryConditionsGroupExpression5;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
 
 /**

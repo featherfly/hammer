@@ -34,17 +34,20 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
 import cn.featherfly.hammer.sqldb.sql.dml.SqlLogicOperatorExpressionBuilder;
 
 /**
- * sql condition group builder sql条件逻辑组构造器 .
+ * sql condition group expression . sql条件逻辑组表达式.
  *
  * @author zhongj
- * @param <E> the element type
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <E1> first filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
+ * @param <C2> condition config
+ * @param <ER> entity sql relation
+ * @param <B>  sql builder
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER extends EntitySqlRelation<ER, B>,
-    B extends SqlBuilder, C extends GroupExpression<C, L>, L extends GroupEndExpression<C, L>,
-    C2 extends ConditionConfig<C2>> extends AbstractMulitiEntitySqlConditionsExpressionBase<E, ER, B, C, L, C2>
+public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C extends GroupExpression<C, L>,
+    L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>, ER extends EntitySqlRelation<ER, B>,
+    B extends SqlBuilder> extends AbstractMulitiEntitySqlConditionsExpressionBase<E1, C, L, C2, ER, B>
     implements LogicExpression<C, L>, GroupExpression<C, L>, GroupEndExpression<C, L> {
 
     /**
@@ -64,23 +67,25 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
      *
      * @return the root
      */
-    protected AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER, B, C, L, C2> getRoot() {
+    protected AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C, L, C2, ER, B> getRoot() {
         L p = endGroup();
         while (p != p.endGroup()) {
             p = p.endGroup();
         }
-        return (AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER, B, C, L, C2>) p;
+        return (AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C, L, C2, ER, B>) p;
     }
 
     /**
      * Creates the group.
      *
-     * @param parent     the parent
-     * @param tableAlias the query alias
+     * @param parent the parent
      * @return the c
      */
     protected abstract C createGroup(L parent);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public C group() {
         C group = createGroup((L) this);
@@ -88,12 +93,18 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
         return group;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L group(Function<C, L> group) {
         C g = group();
         return ((GroupEndExpression<C, L>) group.apply(g)).endGroup();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L endGroup() {
         if (parent != null) {
@@ -120,33 +131,51 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
     //        return logic(operator).group(group);
     //    }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public C and() {
         return (C) addCondition(new SqlLogicOperatorExpressionBuilder(LogicOperator.AND));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L and(LogicExpression<?, ?> logicExpression) {
         and();
         return (L) addCondition(logicExpression);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L and(Function<C, L> group) {
         return and().group(group);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public C or() {
         return (C) addCondition(new SqlLogicOperatorExpressionBuilder(LogicOperator.OR));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L or(LogicExpression<?, ?> logicExpression) {
         or();
         return (L) addCondition(logicExpression);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L or(Function<C, L> group) {
         return or().group(group);
@@ -230,7 +259,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
                 // ENHANCE 后续配置，使用configure可以进行动态设置使用and还是or连接
                 condition = logic.and();
             }
-            logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E, ER, B, C, L, C2>) condition)
+            logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E1, C, L, C2, ER, B>) condition)
                 .eqOrNe(comparisonOperator, pm, ov, queryAlias, matchStrategy, ignoreStrategy);
         }
         if (groupable && logic != null) {
@@ -268,7 +297,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
                     // ENHANCE 后续配置，使用configure可以进行动态设置使用and还是or连接
                     condition = logic.and();
                 }
-                logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E, ER, B, C, L, C2>) condition)
+                logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E1, C, L, C2, ER, B>) condition)
                     .eqOrNe(comparisonOperator, tv.get0(), tv.get1(), queryAlias, matchStrategy, ignoreStrategy);
             }
         } else {
@@ -282,7 +311,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
                     // ENHANCE 后续配置，使用configure可以进行动态设置使用and还是or连接
                     condition = logic.and();
                 }
-                logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E, ER, B, C, L, C2>) condition)
+                logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E1, C, L, C2, ER, B>) condition)
                     .eqOrNe(comparisonOperator, pm, ov, queryAlias, matchStrategy, ignoreStrategy);
             }
         }
@@ -292,6 +321,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E, ER
         return logic;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {

@@ -26,21 +26,21 @@ import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpres
  * The Interface EntityConditionsExpression2.
  *
  * @author zhongj
- * @param <T>  the generic type
- * @param <T2> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E1> first filterable entity type
+ * @param <E2> second filterable entity type
+ * @param <C>  condition expression
+ * @param <L>  logic expression
  */
-public interface EntityConditionsExpression2<T, T2, C extends EntityConditionsExpression2<T, T2, C, L>,
-        L extends EntityConditionsLogicExpression2<T, T2, C, L>> extends EntityBetweenExpression2<T, T2, C, L>,
-        EntityNotBetweenExpression2<T, T2, C, L>, EntityContainsExpression2<T, T2, C, L>,
-        EntityNotContainsExpression2<T, T2, C, L>, EntityEndWithExpression2<T, T2, C, L>,
-        EntityNotEndWithExpression2<T, T2, C, L>, EntityEqualsExpression2<T, T2, C, L>,
-        EntityGreatEqualsExpression2<T, T2, C, L>, EntityGreatThanExpression2<T, T2, C, L>,
-        EntityInExpression2<T, T2, C, L>, EntityIsNotNullExpression2<T, T2, C, L>, EntityIsNullExpression2<T, T2, C, L>,
-        EntityLessEqualsExpression2<T, T2, C, L>, EntityLessThanExpression2<T, T2, C, L>,
-        EntityNotEqualsExpression2<T, T2, C, L>, EntityNotInExpression2<T, T2, C, L>,
-        EntityStartWithExpression2<T, T2, C, L>, EntityNotStartWithExpression2<T, T2, C, L>,
-        EntityLikeExpression2<T, T2, C, L>, EntityNotLikeExpression2<T, T2, C, L>,
-        EntityPropertyExpression2<T, T2, C, L> {
+public interface EntityConditionsExpression2<E1, E2, C extends EntityConditionsExpression2<E1, E2, C, L>,
+    L extends EntityConditionsLogicExpression2<E1, E2, C, L>> extends EntityBetweenExpression2<E1, E2, C, L>,
+    EntityNotBetweenExpression2<E1, E2, C, L>, EntityContainsExpression2<E1, E2, C, L>,
+    EntityNotContainsExpression2<E1, E2, C, L>, EntityEndWithExpression2<E1, E2, C, L>,
+    EntityNotEndWithExpression2<E1, E2, C, L>, EntityEqualsExpression2<E1, E2, C, L>,
+    EntityGreatEqualsExpression2<E1, E2, C, L>, EntityGreatThanExpression2<E1, E2, C, L>,
+    EntityInExpression2<E1, E2, C, L>, EntityIsNotNullExpression2<E1, E2, C, L>, EntityIsNullExpression2<E1, E2, C, L>,
+    EntityLessEqualsExpression2<E1, E2, C, L>, EntityLessThanExpression2<E1, E2, C, L>,
+    EntityNotEqualsExpression2<E1, E2, C, L>, EntityNotInExpression2<E1, E2, C, L>,
+    EntityStartWithExpression2<E1, E2, C, L>, EntityNotStartWithExpression2<E1, E2, C, L>,
+    EntityLikeExpression2<E1, E2, C, L>, EntityNotLikeExpression2<E1, E2, C, L>,
+    EntityPropertyExpression2<E1, E2, C, L> {
 }

@@ -9,17 +9,25 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.repository;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Supplier;
 
+import cn.featherfly.common.db.Column;
+import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.exception.NotImplementedException;
+import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -75,18 +83,71 @@ public class RepositorySqlQueryRelation
      * {@inheritDoc}
      */
     @Override
-    protected SqlSelectJoinOnBasicBuilder join0(String sourceTableAlias, String sourceColumn, String joinTable,
-        String joinTableAlias, String joinTableColumn) {
-        return getBuilder().join(Join.INNER_JOIN, metadata.getTable(joinTable), joinTableAlias, joinTableColumn,
-            sourceTableAlias, sourceColumn);
+    public RepositorySqlQueryRelation join(String joinRepository, Supplier<Expression> onExpression) {
+        AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
+        //        RepositoryRelation erm = getRepositoryRelation(sourceIndex);
+        addFilterable(joinRepository);
+        RepositoryRelation jerm = getRepositoryRelation(index - 1);
+        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(jerm.getRepository(), jerm.getRepositoryAlias(),
+            onExpression.get().expression());
+        jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
+        return this;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected SqlSelectJoinOnBasicBuilder join0(String joinTable, String joinTableAlias, String onSql) {
+    public RepositorySqlQueryRelation join(int sourceIndex, String sourceField, String joinRepository,
+        String joinRepositoryAlias, String joinField) {
+        AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
+        if (Lang.isEmpty(joinField)) {
+            List<Column> pks = metadata.getTable(joinRepository).getPrimaryColumns();
+            if (pks.size() == 1) {
+                joinField = pks.get(0).getName();
+            } else {
+                AssertIllegalArgument.isNotNull(joinField, "joinField");
+            }
+        }
+
+        RepositoryRelation erm = getRepositoryRelation(sourceIndex);
+
+        if (Lang.isEmpty(sourceField)) {
+            List<Column> pks = metadata.getTable(erm.getRepository()).getPrimaryColumns();
+            if (pks.size() == 1) {
+                sourceField = pks.get(0).getName();
+            } else {
+                AssertIllegalArgument.isNotNull(sourceField, "sourceField");
+            }
+        }
+
+        addFilterable(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField);
+
+        RepositoryRelation jerm = getRepositoryRelation(index - 1);
+
+        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getRepositoryAlias(), sourceField,
+            jerm.getRepository(), jerm.getRepositoryAlias(), jerm.getField());
+        jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
+
+        return this;
+    }
+
+    private SqlSelectJoinOnBasicBuilder join0(String sourceTableAlias, String sourceColumn, String joinTable,
+        String joinTableAlias, String joinTableColumn) {
+        return getBuilder().join(Join.INNER_JOIN, metadata.getTable(joinTable), joinTableAlias, joinTableColumn,
+            sourceTableAlias, sourceColumn);
+    }
+
+    private SqlSelectJoinOnBasicBuilder join0(String joinTable, String joinTableAlias, String onSql) {
         return getBuilder().join(Join.INNER_JOIN, metadata.getTable(joinTable), joinTableAlias, onSql);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected RepositorySqlQueryRelation join(SqlJoinOnBuilder joinOnBuilder) {
+        throw new NotImplementedException();
     }
 
     /**
