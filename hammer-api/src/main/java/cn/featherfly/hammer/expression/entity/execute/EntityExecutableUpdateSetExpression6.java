@@ -2,9 +2,11 @@
 package cn.featherfly.hammer.expression.entity.execute;
 
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.entity.EntityWhereExpression6;
+import cn.featherfly.hammer.expression.execute.Executor;
 
 /**
- * EntityExecutableUpdateExpression6.
+ * EntityUpdateSetExecutableExpression6.
  *
  * @author zhongj
  * @param <E>  the update type
@@ -13,16 +15,13 @@ import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
  * @param <J3> the join type 3
  * @param <J4> the join type 4
  * @param <J5> the join type 5
- * @param <U>  update expressoin
+ * @param <U>  update set expressoin
  * @param <C>  condition expression
  * @param <L>  logic expression
  */
-public interface EntityExecutableUpdateExpression6<E, J1, J2, J3, J4, J5,
-    U extends EntityExecutableUpdateExpression6<E, J1, J2, J3, J4, J5, U, C, L>,
+public interface EntityExecutableUpdateSetExpression6<E, J1, J2, J3, J4, J5,
+    U extends EntityExecutableUpdateSetExpression6<E, J1, J2, J3, J4, J5, U, C, L>,
     C extends EntityExecutableConditionGroupExpression6<E, J1, J2, J3, J4, J5, C, L, UpdateConditionConfig>,
     L extends EntityExecutableConditionGroupLogicExpression6<E, J1, J2, J3, J4, J5, C, L, UpdateConditionConfig>>
-    extends EntityUpdateExpression<E, U, C, L>,
-    EntityPropertyExecutableUpdateExpression6<E, J1, J2, J3, J4, J5, U, C, L>,
-    EntityExecutableUpdateSetExpression6<E, J1, J2, J3, J4, J5, U, C, L> {
-
+    extends EntityWhereExpression6<E, J1, J2, J3, J4, J5, C, L>, EntityUpdateSetExpression<E, U, C, L>, Executor {
 }

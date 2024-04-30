@@ -16,6 +16,6 @@ public interface EntityExecutableUpdateExpression<E, U extends EntityExecutableU
     C extends EntityExecutableConditionGroupExpression<E, C, L, UpdateConditionConfig>,
     L extends EntityExecutableConditionGroupLogicExpression<E, C, L, UpdateConditionConfig>>
     extends EntityUpdateExpression<E, U, C, L>, EntityPropertyExecutableUpdateExpression<E, U, C, L>,
-    EntityUpdateSetExecutableExpression<E, U, C, L> {
+    EntityExecutableUpdateSetExpression<E, U, C, L> {
 
 }

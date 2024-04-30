@@ -11,7 +11,7 @@ import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityDelete;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.EntitySqlDelete;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.RepositorySqlDelete;
 
 /**
@@ -80,6 +80,6 @@ public class SqlDeleter implements Deleter {
             throw new SqldbHammerException("mappingFactory is null");
         }
         // ENHANCE 删除暂时没有支持别名
-        return new SqlEntityDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(entityType), deleteConfig);
+        return new EntitySqlDelete<>(jdbc, mappingFactory, mappingFactory.getClassMapping(entityType), deleteConfig);
     }
 }

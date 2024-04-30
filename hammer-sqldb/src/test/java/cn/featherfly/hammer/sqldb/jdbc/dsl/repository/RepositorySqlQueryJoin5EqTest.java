@@ -181,7 +181,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
         //        assertNotNull(order);
         //        assertEquals(((Number) order.get("id")).intValue(), oid1.intValue());
 
-        // ENHANCE 当前实现方法性能太差了，后续必须优化
+        // ENHANCE 当前实现方法性能太差了，后续必须优化，运行全部单元测试时，到这里性能是正常的，应该是和内存申请有关
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))).fetch() //
             .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))).fetch() //
