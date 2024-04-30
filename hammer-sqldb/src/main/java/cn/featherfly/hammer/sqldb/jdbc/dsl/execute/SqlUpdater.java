@@ -11,7 +11,7 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.SqlEntityExecutableUpdate;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.EntitySqlExecutableUpdate;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.SqlExecutableUpdate;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.SqlUpdate;
 
@@ -82,7 +82,7 @@ public class SqlUpdater implements Updater {
         if (mappingFactory == null) {
             throw new SqldbHammerException("mappingFactory is null");
         }
-        return new SqlEntityExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(entityType), mappingFactory,
+        return new EntitySqlExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(entityType), mappingFactory,
                 updateConfig);
     }
 }
