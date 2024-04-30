@@ -9,8 +9,8 @@ import cn.featherfly.hammer.expression.entity.execute.EntityExecutableUpdateExpr
  *
  * @author zhongj
  */
-public interface EntityExecutableUpdate<E> extends EntityPropertyExecutableUpdate<E>,
-        EntityExecutableUpdateExpression<E, EntityExecutableUpdate<E>,
-                EntityExecutableConditionGroup<E, UpdateConditionConfig>,
-                EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> {
+public interface EntityExecutableUpdate<E> extends
+    EntityExecutableUpdateExpression<E, EntityExecutableUpdate<E>,
+        EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+        EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> {
 }

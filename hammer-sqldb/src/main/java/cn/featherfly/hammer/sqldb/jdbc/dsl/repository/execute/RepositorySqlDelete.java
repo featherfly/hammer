@@ -141,7 +141,7 @@ public class RepositorySqlDelete implements RepositoryDelete {
      */
     @Override
     public RepositoryExecutableConditionsGroup<DeleteConditionConfig> where() {
-        return new RepositorySqlDeleteExpression(repositoryDeleteRelation);
+        return new RepositorySqlDeleteConditions(repositoryDeleteRelation);
     }
 
     /**
@@ -150,7 +150,7 @@ public class RepositorySqlDelete implements RepositoryDelete {
     @Override
     public RepositoryExecutableConditionsGroupLogic<DeleteConditionConfig> where(
         Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
-        RepositorySqlDeleteExpression sqlDeleteExpression = (RepositorySqlDeleteExpression) where();
+        RepositorySqlDeleteConditions sqlDeleteExpression = (RepositorySqlDeleteConditions) where();
         if (filterable != null) {
             // filterable.apply(sqlDeleteExpression);
             sqlDeleteExpression

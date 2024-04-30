@@ -61,7 +61,7 @@ public class EntitySqlUpdateConditions<E> extends AbstractMulitiEntitySqlExecuta
             if (Lang.isEmpty(condition)) {
                 switch (conditionConfig.getEmptyConditionStrategy()) {
                     case EXCEPTION:
-                        throw new SqldbHammerException("empty condition");
+                        throw new SqldbHammerException("empty condition for update");
                     case NON_EXECUTION:
                         return null;
                     case EXECUTION:

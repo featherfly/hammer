@@ -5,7 +5,7 @@ import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
-import cn.featherfly.hammer.dsl.repository.execute.Update;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryUpdate;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFetch;
 
@@ -30,7 +30,7 @@ public interface SqldbHammer extends Hammer {
      * @param table the table
      * @return Update
      */
-    Update update(Table table);
+    RepositoryUpdate update(Table table);
 
     /**
      * create delete for table.

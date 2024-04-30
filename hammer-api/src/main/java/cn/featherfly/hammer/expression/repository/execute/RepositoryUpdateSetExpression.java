@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -19,7 +20,6 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression, L extends LogicExpression<C, L>> {
-
     /**
      * Sets the.
      *
@@ -31,6 +31,7 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
+     * @param <V>   the value type
      * @param name  property name
      * @param value property value
      * @return Update
@@ -40,6 +41,7 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
+     * @param <V>            the value type
      * @param name           property name
      * @param value          property value
      * @param ignoreStrategy the ignore strategy
@@ -50,6 +52,7 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
+     * @param <V>            the value type
      * @param name           property name
      * @param value          property value
      * @param ignoreStrategy the ignore strategy
@@ -92,6 +95,86 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     default <N extends Number> U increase(String name, N value, IgnoreStrategy ignoreStrategy) {
         return increase(name, value, ignoreStrategy::test);
     }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * set value for property.
+     *
+     * @param <V>   the value type
+     * @param field property name
+     * @param value property value
+     * @return Update
+     */
+    default <V> U set(Field field, V value) {
+        return set(field.name(), value);
+    }
+
+    /**
+     * set value for property.
+     *
+     * @param <V>            the value type
+     * @param field          the field
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <V> U set(Field field, V value, Predicate<V> ignoreStrategy) {
+        return set(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * set value for property.
+     *
+     * @param <V>            the value type
+     * @param field          the field
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <V> U set(Field field, V value, IgnoreStrategy ignoreStrategy) {
+        return set(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * increase value for property.
+     *
+     * @param <N>   number type
+     * @param field the field
+     * @param value property value
+     * @return Update
+     */
+    default <N extends Number> U increase(Field field, N value) {
+        return increase(field.name(), value);
+    }
+
+    /**
+     * increase value for property.
+     *
+     * @param <N>            number type
+     * @param field          the field
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <N extends Number> U increase(Field field, N value, Predicate<N> ignoreStrategy) {
+        return increase(field.name(), value, ignoreStrategy);
+    }
+
+    /**
+     * increase value for property.
+     *
+     * @param <N>            number type
+     * @param field          the field
+     * @param value          property value
+     * @param ignoreStrategy the ignore strategy
+     * @return Update
+     */
+    default <N extends Number> U increase(Field field, N value, IgnoreStrategy ignoreStrategy) {
+        return increase(field.name(), value, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
 
     /**
      * set value for property.

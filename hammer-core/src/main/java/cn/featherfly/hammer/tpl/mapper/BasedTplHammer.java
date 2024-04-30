@@ -23,7 +23,7 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
-import cn.featherfly.hammer.dsl.repository.execute.Update;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryUpdate;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 
@@ -1060,7 +1060,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public Update update(String repository) {
+    public RepositoryUpdate update(String repository) {
         return hammer.update(repository);
     }
 
@@ -1324,7 +1324,7 @@ public class BasedTplHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public Update update(Repository repository) {
+    public RepositoryUpdate update(Repository repository) {
         return hammer.update(repository);
     }
 

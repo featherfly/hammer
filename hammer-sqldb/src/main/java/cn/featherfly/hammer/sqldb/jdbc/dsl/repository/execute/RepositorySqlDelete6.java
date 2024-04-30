@@ -38,7 +38,7 @@ public class RepositorySqlDelete6 implements RepositoryDelete6 {
      */
     @Override
     public RepositoryExecutableConditionsGroup6<DeleteConditionConfig> where() {
-        return new RepositorySqlDeleteExpression6(repositoryDeleteRelation);
+        return new RepositorySqlDeleteConditions6(repositoryDeleteRelation);
     }
 
     /**
@@ -49,7 +49,7 @@ public class RepositorySqlDelete6 implements RepositoryDelete6 {
         SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> filterable) {
-        RepositorySqlDeleteExpression6 sqlDeleteExpression = (RepositorySqlDeleteExpression6) where();
+        RepositorySqlDeleteConditions6 sqlDeleteExpression = (RepositorySqlDeleteConditions6) where();
         if (filterable != null) {
             // filterable.apply(sqlDeleteExpression);
             sqlDeleteExpression
