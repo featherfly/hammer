@@ -43,7 +43,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param updateConfig the update config
      */
     protected AbstractSqlExecutableUpdate(String tableName, Jdbc jdbc, AliasManager aliasManager,
-            UpdateConfig updateConfig) {
+        UpdateConfig updateConfig) {
         this(tableName, null, jdbc, aliasManager, updateConfig);
     }
 
@@ -57,7 +57,30 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param updateConfig the update config
      */
     protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
-            UpdateConfig updateConfig) {
+        UpdateConfig updateConfig) {
+        this.jdbc = jdbc;
+        this.aliasManager = aliasManager;
+        this.updateConfig = updateConfig;
+        if (Lang.isEmpty(tableAlias)) {
+            tableAlias = aliasManager.put(tableName);
+        }
+        // 都是用*SqlUpdateRelation来初始化Builder了
+        //        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias,
+        //            v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
+        //        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias, this::test);
+    }
+
+    /**
+     * Instantiates a new sql executable update.
+     *
+     * @param tableName    tableName
+     * @param tableAlias   the table alias
+     * @param jdbc         jdbc
+     * @param aliasManager the alias manager
+     * @param updateConfig the update config
+     */
+    protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
+        UpdateConfig updateConfig, SqlUpdateSetBasicBuilder builder) {
         this.jdbc = jdbc;
         this.aliasManager = aliasManager;
         this.updateConfig = updateConfig.clone();
@@ -65,7 +88,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
             tableAlias = aliasManager.put(tableName);
         }
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias,
-                v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
+            v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
         //        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias, this::test);
         // YUFEI_TEST 需要测试这个逻辑
     }
@@ -86,7 +109,20 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
-     * @param <O>   the generic type
+     * @param name              the name
+     * @param value             the value
+     * @param setIgnoreStrategy the set ignore strategy
+     * @return the u
+     */
+    @SuppressWarnings("unchecked")
+    protected <O> U set0(String name, FieldValueOperator<O> value, Predicate<O> setIgnoreStrategy) {
+        builder.setValue(name, value, setIgnoreStrategy);
+        return (U) this;
+    }
+
+    /**
+     * Sets value.
+     *
      * @param name  the name
      * @param value the value
      * @return the u
@@ -98,20 +134,19 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
-     * @param <O>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */
-    @SuppressWarnings("unchecked")
     protected <O> U set0(String name, O value, Predicate<O> ignoreStrategy) {
-        builder.setIgnoreStrategy(ignoreStrategy);
-        if (ignoreStrategy.test(value)) { // ignore, 忽略
-            return (U) this;
-        } else {
-            return set0(name, FieldValueOperator.create(value));
-        }
+        return set0(name, FieldValueOperator.create(value), ignoreStrategy);
+        //        builder.setIgnoreStrategy(ignoreStrategy);
+        //        if (ignoreStrategy.test(value)) { // ignore, 忽略
+        //            return (U) this;
+        //        } else {
+        //            return set0(name, FieldValueOperator.create(value));
+        //        }
     }
 
     /**
@@ -136,6 +171,20 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param value the value
      * @return the u
      */
+    @SuppressWarnings("unchecked")
+    protected <N extends Number> U increase0(String name, FieldValueOperator<N> value, Predicate<N> setIgnoreStrategy) {
+        builder.setValue(name, value, SetType.INCR, setIgnoreStrategy);
+        return (U) this;
+    }
+
+    /**
+     * Increase.
+     *
+     * @param <N>   the number type
+     * @param name  the name
+     * @param value the value
+     * @return the u
+     */
     protected <N extends Number> U increase0(String name, N value) {
         return increase0(name, value, updateConfig.getSetValueIgnoreStrategy()::test);
     }
@@ -149,14 +198,14 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */
-    @SuppressWarnings("unchecked")
     protected <N extends Number> U increase0(String name, N value, Predicate<N> ignoreStrategy) {
-        builder.setIgnoreStrategy(ignoreStrategy);
-        if (ignoreStrategy.test(value)) { // ignore, 忽略
-            return (U) this;
-        } else {
-            return increase0(name, FieldValueOperator.create(value));
-        }
+        return increase0(name, FieldValueOperator.create(value), ignoreStrategy);
+        //        builder.setIgnoreStrategy(ignoreStrategy);
+        //        if (ignoreStrategy.test(value)) { // ignore, 忽略
+        //            return (U) this;
+        //        } else {
+        //            return increase0(name, FieldValueOperator.create(value));
+        //        }
     }
 
     /**

@@ -12,8 +12,8 @@ import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.execute.EntitySqlExecutableUpdate;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.SqlExecutableUpdate;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.SqlUpdate;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.RepositorySqlExecutableUpdate;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.execute.RepositorySqlUpdate;
 
 /**
  * SqlUpdater .
@@ -47,7 +47,7 @@ public class SqlUpdater implements Updater {
      * @param table the table
      * @return Delete
      */
-    public SqlUpdate update(Table table) {
+    public RepositorySqlUpdate update(Table table) {
         return update(table.name());
     }
 
@@ -55,13 +55,14 @@ public class SqlUpdater implements Updater {
      * {@inheritDoc}
      */
     @Override
-    public SqlUpdate update(Repository repository) {
+    public RepositorySqlUpdate update(Repository repository) {
         AliasManager aliasManager = new AliasManager();
         if (repository instanceof AliasRepository) {
-            return new SqlExecutableUpdate((AliasRepository) repository, jdbc, aliasManager,
-                    mappingFactory.getMetadata(), updateConfig);
+            return new RepositorySqlExecutableUpdate((AliasRepository) repository, jdbc, aliasManager,
+                mappingFactory.getMetadata(), updateConfig.clone());
         } else {
-            return new SqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(), updateConfig);
+            return new RepositorySqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(),
+                updateConfig.clone());
         }
     }
 
@@ -69,9 +70,10 @@ public class SqlUpdater implements Updater {
      * {@inheritDoc}
      */
     @Override
-    public SqlUpdate update(String repository) {
+    public RepositorySqlUpdate update(String repository) {
         AliasManager aliasManager = new AliasManager();
-        return new SqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(), updateConfig);
+        return new RepositorySqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(),
+            updateConfig.clone());
     }
 
     /**
@@ -83,6 +85,6 @@ public class SqlUpdater implements Updater {
             throw new SqldbHammerException("mappingFactory is null");
         }
         return new EntitySqlExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(entityType), mappingFactory,
-                updateConfig);
+            updateConfig.clone());
     }
 }

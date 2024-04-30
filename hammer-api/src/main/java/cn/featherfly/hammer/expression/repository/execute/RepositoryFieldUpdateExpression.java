@@ -2,7 +2,8 @@
 package cn.featherfly.hammer.expression.repository.execute;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
+import cn.featherfly.hammer.expression.condition.ConditionExpression;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.execute.UpdateNumberValueExpression;
 import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
 
@@ -14,9 +15,7 @@ import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface RepositoryFieldUpdateExpression<U extends FieldExecutableUpdateExpression<U, C, L>,
-    C extends RepositoryExecutableConditionsGroupExpression<C, L, UpdateConditionConfig>,
-    L extends RepositoryExecutableConditionsGroupLogicExpression<C, L, UpdateConditionConfig>> {
+public interface RepositoryFieldUpdateExpression<U, C extends ConditionExpression, L extends LogicExpression<C, L>> {
 
     /**
      * field.

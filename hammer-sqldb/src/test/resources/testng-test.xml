@@ -9,8 +9,8 @@
     <listeners>
         <listener
             class-name="cn.featherfly.hammer.sqldb.TestngListener"/>
-<!--         <listener -->
-<!--             class-name="cn.featherfly.hammer.sqldb.TimeReporter"/> -->
+        <listener
+            class-name="cn.featherfly.hammer.sqldb.TimeReporter"/>
     </listeners>
     <test name="mapping type test">
         <packages>

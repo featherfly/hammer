@@ -43,7 +43,7 @@ public class RepositorySqlDelete2 implements RepositoryDelete2 {
      */
     @Override
     public RepositoryExecutableConditionsGroup2<DeleteConditionConfig> where() {
-        return new RepositorySqlDeleteExpression2(repositoryDeleteRelation);
+        return new RepositorySqlDeleteConditions2(repositoryDeleteRelation);
     }
 
     /**
@@ -52,7 +52,7 @@ public class RepositorySqlDelete2 implements RepositoryDelete2 {
     @Override
     public RepositoryExecutableConditionsGroupLogic2<DeleteConditionConfig> where(
         BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
-        RepositorySqlDeleteExpression2 sqlDeleteExpression = (RepositorySqlDeleteExpression2) where();
+        RepositorySqlDeleteConditions2 sqlDeleteExpression = (RepositorySqlDeleteConditions2) where();
         if (filterable != null) {
             // filterable.apply(sqlDeleteExpression);
             sqlDeleteExpression

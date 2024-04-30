@@ -5,7 +5,6 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.BeforeClass;
 
-import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 
 /**
@@ -13,13 +12,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
  *
  * @author zhongj
  */
-public class AbstractUpdaterTest extends HammerJdbcTestBase {
-
-    protected final Integer createUserId = 6;
-    protected final Integer updateUserId = 7;
-    protected final Integer userId1 = 8;
-    protected final Integer userId2 = 9;
-    protected final Integer userId3 = 10;
+public class AbstractUpdaterTest extends AbstractExeTest {
 
     SqlUpdater updater;
 

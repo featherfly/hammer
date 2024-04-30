@@ -87,7 +87,8 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
         result = updater.update("role") //
             .configure(c -> c.setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION)) //
-            .set("create_time", strDate).execute();
+            .set("create_time", strDate) //
+            .execute();
         assertEquals(result, count.intValue());
 
         String createTime = jdbc.queryString("select create_time from role where  id = ?", 1);

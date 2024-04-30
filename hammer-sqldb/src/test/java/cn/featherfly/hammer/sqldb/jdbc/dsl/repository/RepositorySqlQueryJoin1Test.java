@@ -390,8 +390,6 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
             .where() //
             .eq("id", oid1) //
             .single(Order2.class, User2.class);
-        // SELECT _order0.*, _user0.* FROM `order` _order0 JOIN `user` _user0 ON _user0.`id` = _order0.`create_user` WHERE _order0.`id` = ?
-        // FIXME 生成的sql没有别名，所有就没有映射前缀（ _order0.id as _order0.id, _user0.id as _user0.id ）
         assertNotNull(orderUser);
         assertEquals(orderUser.get0().getId(), oid1);
         assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());

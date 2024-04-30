@@ -3,7 +3,7 @@ package cn.featherfly.hammer.dsl.execute;
 
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
-import cn.featherfly.hammer.dsl.repository.execute.Update;
+import cn.featherfly.hammer.dsl.repository.execute.RepositoryUpdate;
 
 /**
  * Updater.
@@ -21,7 +21,7 @@ public interface Updater
      * @param repository repository
      * @return the generic type of UpdateExpression
      */
-    Update update(Repository repository);
+    RepositoryUpdate update(Repository repository);
 
     /**
      * start update dsl for the repository
@@ -29,7 +29,7 @@ public interface Updater
      * @param repository repository
      * @return the generic type of UpdateExpression
      */
-    Update update(String repository);
+    RepositoryUpdate update(String repository);
 
     /**
      * start update dsl for the entity type.

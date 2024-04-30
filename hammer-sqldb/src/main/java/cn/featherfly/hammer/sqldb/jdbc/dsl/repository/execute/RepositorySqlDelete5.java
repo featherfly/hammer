@@ -43,7 +43,7 @@ public class RepositorySqlDelete5 implements RepositoryDelete5 {
      */
     @Override
     public RepositoryExecutableConditionsGroup5<DeleteConditionConfig> where() {
-        return new RepositorySqlDeleteExpression5(repositoryDeleteRelation);
+        return new RepositorySqlDeleteConditions5(repositoryDeleteRelation);
     }
 
     /**
@@ -53,7 +53,7 @@ public class RepositorySqlDelete5 implements RepositoryDelete5 {
     public RepositoryExecutableConditionsGroupLogic5<DeleteConditionConfig> where(
         FiveArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
-        RepositorySqlDeleteExpression5 sqlDeleteExpression = (RepositorySqlDeleteExpression5) where();
+        RepositorySqlDeleteConditions5 sqlDeleteExpression = (RepositorySqlDeleteConditions5) where();
         if (filterable != null) {
             // filterable.apply(sqlDeleteExpression);
             sqlDeleteExpression

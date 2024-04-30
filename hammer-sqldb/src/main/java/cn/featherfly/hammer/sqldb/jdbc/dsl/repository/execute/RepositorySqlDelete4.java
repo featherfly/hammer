@@ -43,7 +43,7 @@ public class RepositorySqlDelete4 implements RepositoryDelete4 {
      */
     @Override
     public RepositoryExecutableConditionsGroup4<DeleteConditionConfig> where() {
-        return new RepositorySqlDeleteExpression4(repositoryDeleteRelation);
+        return new RepositorySqlDeleteConditions4(repositoryDeleteRelation);
     }
 
     /**
@@ -53,7 +53,7 @@ public class RepositorySqlDelete4 implements RepositoryDelete4 {
     public RepositoryExecutableConditionsGroupLogic4<DeleteConditionConfig> where(
         FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
-        RepositorySqlDeleteExpression4 sqlDeleteExpression = (RepositorySqlDeleteExpression4) where();
+        RepositorySqlDeleteConditions4 sqlDeleteExpression = (RepositorySqlDeleteConditions4) where();
         if (filterable != null) {
             // filterable.apply(sqlDeleteExpression);
             sqlDeleteExpression

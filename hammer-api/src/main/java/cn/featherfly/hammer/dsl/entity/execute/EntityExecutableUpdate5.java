@@ -14,7 +14,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityExecutableUpdateExpr
  * @param <J3> the join type 3
  * @param <J4> the join type 4
  */
-public interface EntityExecutableUpdate5<E, J1, J2, J3, J4> extends EntityPropertyExecutableUpdate5<E, J1, J2, J3, J4>,
+public interface EntityExecutableUpdate5<E, J1, J2, J3, J4> extends
     EntityExecutableUpdateExpression5<E, J1, J2, J3, J4, EntityExecutableUpdate5<E, J1, J2, J3, J4>,
         EntityExecutableConditionGroup5<E, J1, J2, J3, J4, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic5<E, J1, J2, J3, J4, UpdateConditionConfig>> {
