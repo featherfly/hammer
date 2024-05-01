@@ -23,19 +23,17 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <J>      join type
      * @param joinType the join type
-     * @return the entity query related expression
-     * @retirm EntityQueryRelatedExpression
+     * @return EntityOnExpression5
      */
     <J> EntityOnExpression5<E, R1, R2, R3, R4, J, EntityQueryRelate5FFRRR<E, R1, R2, R3, R4, J>> join(
-        Class<J> joinType);
+            Class<J> joinType);
 
     /**
      * join on.
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRR
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRR
      */
     <R5> EntityQueryRelate5FFRRR<E, R1, R2, R3, R4, R5> join(SerializableFunction2<R5, E> propertyName);
 
@@ -44,8 +42,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     <R5> EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R5> join(SerializableFunction1<E, R5> propertyName);
 
@@ -53,8 +50,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      * join on.
      *
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, E> join(SerializableUnaryOperator1<E> propertyName);
 
@@ -67,8 +63,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRR
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRR
      */
     <R5> EntityQueryRelate5FFRRR<E, R1, R2, R3, R4, R5> join2(SerializableFunction2<R5, R1> propertyName);
 
@@ -77,8 +72,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     <R5> EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R5> join2(SerializableFunction1<R1, R5> propertyName);
 
@@ -86,8 +80,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      * join on.
      *
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R1> join2(SerializableUnaryOperator1<R1> propertyName);
 
@@ -100,8 +93,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRR
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRR
      */
     <R5> EntityQueryRelate5FFRRR<E, R1, R2, R3, R4, R5> join3(SerializableFunction2<R5, R2> propertyName);
 
@@ -110,8 +102,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     <R5> EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R5> join3(SerializableFunction1<R2, R5> propertyName);
 
@@ -119,8 +110,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      * join on.
      *
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R2> join3(SerializableUnaryOperator1<R2> propertyName);
 
@@ -133,8 +123,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRR
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRR
      */
     <R5> EntityQueryRelate5FFRRR<E, R1, R2, R3, R4, R5> join4(SerializableFunction2<R5, R3> propertyName);
 
@@ -143,8 +132,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     <R5> EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R5> join4(SerializableFunction1<R3, R5> propertyName);
 
@@ -152,8 +140,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      * join on.
      *
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R3> join4(SerializableUnaryOperator1<R3> propertyName);
 
@@ -166,8 +153,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      *
      * @param <R5>         the generic type
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRR
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRR
      */
     <R5> EntityQueryRelate5FFRRR<E, R1, R2, R3, R4, R5> join5(SerializableFunction2<R5, R4> propertyName);
 
@@ -184,8 +170,7 @@ public interface EntityQueryRelate4FFRXBase<E, R1, R2, R3, R4> {
      * join on.
      *
      * @param propertyName find type object property name
-     * @return the entity query relate 5 FFRRP
-     * @retirm EntityQueryRelate5FFRRR
+     * @return EntityQueryRelate5FFRRP
      */
     EntityQueryRelate5FFRRP<E, R1, R2, R3, R4, R4> join5(SerializableUnaryOperator1<R4> propertyName);
 }

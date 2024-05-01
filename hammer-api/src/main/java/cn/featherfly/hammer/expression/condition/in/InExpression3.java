@@ -196,8 +196,9 @@ public interface InExpression3<C extends ConditionExpression, L extends LogicExp
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
-     * @param values the values
+     * @param <R>   the generic type
+     * @param field the field
+     * @param value the value
      * @return LogicExpression
      */
     default <R extends Serializable> L in3(Field field, R value) {
@@ -207,6 +208,7 @@ public interface InExpression3<C extends ConditionExpression, L extends LogicExp
     /**
      * values in. 包含指定，sql中的in.
      *
+     * @param <R>    the generic type
      * @param field  the field
      * @param values the values
      * @return LogicExpression
@@ -243,6 +245,7 @@ public interface InExpression3<C extends ConditionExpression, L extends LogicExp
     /**
      * values in. 包含指定，sql中的in.
      *
+     * @param <R>    the generic type
      * @param name   the name
      * @param values the values
      * @return LogicExpression
@@ -623,8 +626,9 @@ public interface InExpression3<C extends ConditionExpression, L extends LogicExp
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
-     * @param values the values
+     * @param <R>   the generic type
+     * @param field the field
+     * @param value the value
      * @return LogicExpression
      */
     default <R extends Serializable> L in3(AliasField field, R value) {
@@ -634,6 +638,7 @@ public interface InExpression3<C extends ConditionExpression, L extends LogicExp
     /**
      * values in. 包含指定，sql中的in.
      *
+     * @param <R>    the generic type
      * @param field  the field
      * @param values the values
      * @return LogicExpression

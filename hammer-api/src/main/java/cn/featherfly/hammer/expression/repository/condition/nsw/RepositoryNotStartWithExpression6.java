@@ -17,24 +17,21 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotStartWithExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryNotStartWithExpressionBase6<C, L> {
-    /**
-     * not start with.
-     *
-     * @param startWithExpressions the start with expressions
-     * @return the LogicExpression
-     */
-    L nsw(Consumer<Tuple6<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
-        NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
-        NotStartWithRepositoryExpression>> notStartWithExpressions);
+        extends RepositoryNotStartWithExpressionBase6<C, L> {
 
     /**
      * not start with.
      *
-     * @param startWithExpressions the start with expressions
+     * @param notStartWithExpressions the not start with expressions
      * @return the LogicExpression
      */
-    L nsw(SixArgusConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
-        NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
-        NotStartWithRepositoryExpression> notStartWithExpressions);
+    L nsw(Consumer<Tuple6<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression>> notStartWithExpressions);
+
+    /**
+     * not start with.
+     *
+     * @param notStartWithExpressions the not start with expressions
+     * @return the LogicExpression
+     */
+    L nsw(SixArgusConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression> notStartWithExpressions);
 }

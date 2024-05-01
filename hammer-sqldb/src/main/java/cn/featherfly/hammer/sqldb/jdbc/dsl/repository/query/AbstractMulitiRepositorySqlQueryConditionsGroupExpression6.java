@@ -35,30 +35,30 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.sort.SetSqlSortField
  * abstract muliti repository sql query conditions group expression6.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
+ * @param <S> the generic type
+ * @param <Q> the generic type
  */
 public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6<
-    C extends RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,
-    L extends RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>, S extends RepositoryQuerySortExpression6<Q>,
-    Q extends QueryLimitExecutor> extends
-    AbstractMulitiRepositorySqlConditionsGroupExpression6<C, L, QueryConditionConfig, RepositorySqlQueryRelation,
-        SqlSelectBasicBuilder>
-    implements RepositoryQueryableExpression<S, Q>, //
-    //    RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>,
-    RepositoryQuerySortExpression6<Q>, RepositoryQuerySortedExpression6<Q> {
+        C extends RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,
+        L extends RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>,
+        S extends RepositoryQuerySortExpression6<Q>, Q extends QueryLimitExecutor> extends
+        AbstractMulitiRepositorySqlConditionsGroupExpression6<C, L, QueryConditionConfig, RepositorySqlQueryRelation, SqlSelectBasicBuilder>
+        implements RepositoryQueryableExpression<S, Q>, //
+        //    RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>,
+        RepositoryQuerySortExpression6<Q>, RepositoryQuerySortedExpression6<Q> {
 
     private SqlSortBuilder sortBuilder;
 
     /** The sql page factory. */
     protected SqlPageFactory sqlPageFactory;
 
+    /** The repository sql query condition group query. */
     protected final RepositorySqlQueryConditionGroupQuery repositorySqlQueryConditionGroupQuery;
 
     /**
-     * Instantiates a new abstract muliti repository sql query conditions group
-     * expression.
+     * Instantiates a new abstract muliti repository sql query conditions group expression.
      *
      * @param parent         the parent
      * @param index          the index
@@ -66,7 +66,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryConditionsGroupExpression6(L parent, int index,
-        RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
+            RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(parent, index, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         if (parent == null) {
@@ -74,13 +74,16 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
             sortBuilder = new SqlSortBuilder(dialect, repositoryAlias);
         }
         repositorySqlQueryConditionGroupQuery = new RepositorySqlQueryConditionGroupQuery(this, sqlPageFactory,
-            queryRelation);
+                queryRelation);
 
         if (Constants.DEBUG) {
             Console.log("{} end at time {}", this.getClass().getName(), System.currentTimeMillis());
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public Q limit(Limit limit) {
@@ -88,6 +91,9 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
         return (Q) this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long count() {
         repositoryRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
@@ -194,6 +200,9 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
     //	sort
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public S sort() {
@@ -259,14 +268,13 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
      */
     @Override
     public RepositoryQuerySortedExpression6<Q> asc(
-        SixArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
-            SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+            SixArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.ASC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.ASC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.ASC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.ASC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias6, SortOperator.ASC));
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.ASC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.ASC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.ASC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias6, SortOperator.ASC));
         return this;
     }
 
@@ -329,14 +337,13 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
      */
     @Override
     public RepositoryQuerySortedExpression6<Q> desc(
-        SixArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
-            SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+            SixArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.DESC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.DESC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.DESC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.DESC),
-            new SetSqlSortFieldExpression(sortBuilder, repositoryAlias6, SortOperator.DESC));
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.DESC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias4, SortOperator.DESC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias5, SortOperator.DESC),
+                new SetSqlSortFieldExpression(sortBuilder, repositoryAlias6, SortOperator.DESC));
         return this;
     }
 
@@ -344,6 +351,11 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
     //	private method
     // ****************************************************************************************************************
 
+    /**
+     * Gets the root sort builder.
+     *
+     * @return the root sort builder
+     */
     @SuppressWarnings("unchecked")
     protected SortBuilder getRootSortBuilder() {
         return ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression6<C, L, S, Q>) getRoot()).sortBuilder;
@@ -362,7 +374,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
                 return result + Chars.SPACE + sort;
             } else {
                 return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                    + sort;
+                        + sort;
             }
         } else {
             return condition;

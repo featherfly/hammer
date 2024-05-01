@@ -1025,8 +1025,9 @@ public interface LessThanExpression2<C extends ConditionExpression, L extends Lo
     /**
      * less than. 小于.
      *
-     * @param field the field
-     * @param value the value
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     default L lt2(AliasField field, String value, MatchStrategy matchStrategy) {

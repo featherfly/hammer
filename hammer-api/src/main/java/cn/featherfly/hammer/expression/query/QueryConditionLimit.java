@@ -8,10 +8,12 @@ import cn.featherfly.common.structure.page.Page;
  * limit condition.
  *
  * @author zhongj
+ * @param <Q> the generic type
  */
 public interface QueryConditionLimit<Q> {
+
     /**
-     * limit
+     * limit.
      *
      * @param limit limit rows
      * @return QueryExecutor
@@ -21,7 +23,7 @@ public interface QueryConditionLimit<Q> {
     }
 
     /**
-     * limit
+     * limit.
      *
      * @param offset start index offset
      * @param limit  limit rows
@@ -32,7 +34,7 @@ public interface QueryConditionLimit<Q> {
     }
 
     /**
-     * limit
+     * limit.
      *
      * @param page params for pagination
      * @return QueryExecutor
@@ -42,9 +44,9 @@ public interface QueryConditionLimit<Q> {
     }
 
     /**
-     * limit
+     * limit.
      *
-     * @param page params for pagination
+     * @param limit the limit
      * @return QueryExecutor
      */
     Q limit(Limit limit);

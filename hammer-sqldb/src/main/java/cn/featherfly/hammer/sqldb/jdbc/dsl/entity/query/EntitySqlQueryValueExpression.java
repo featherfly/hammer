@@ -16,10 +16,10 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <V> the value type
  */
 public class EntitySqlQueryValueExpression<E, V> extends
-        AbstractMulitiEntitySqlQueryValueConditionsGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>,
-                EntityQueryValueConditionGroupLogic<E, V>>
+        AbstractMulitiEntitySqlQueryValueConditionsGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>, EntityQueryValueConditionGroupLogic<E, V>>
         implements EntityQueryValueConditionGroup<E, V>, EntityQueryValueConditionGroupLogic<E, V>,
         EntityQueryValueSortExpression<E, V>, EntityQueryValueSortedExpression<E, V> {
 
@@ -29,6 +29,7 @@ public class EntitySqlQueryValueExpression<E, V> extends
      * @param factory        the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
+     * @param valueType      the value type
      */
     public EntitySqlQueryValueExpression(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation queryRelation, Class<V> valueType) {
@@ -42,6 +43,7 @@ public class EntitySqlQueryValueExpression<E, V> extends
      * @param factory        the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation  the query relation
+     * @param valueType      the value type
      */
     EntitySqlQueryValueExpression(EntityQueryValueConditionGroupLogic<E, V> parent, JdbcMappingFactory factory,
             SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Class<V> valueType) {

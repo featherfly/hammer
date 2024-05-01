@@ -19,14 +19,11 @@ public class EntitySqlQueryRelate2FP<E, R1, R2> extends AbstractEntitySqlQueryRe
         implements EntityQueryRelate2FP<E, R1, R2> {
 
     /**
-     * Instantiates a new entity sql query relate 2 R.
+     * Instantiates a new entity sql query relate 2 FP.
      *
-     * @param classMapping   the class mapping
-     * @param jdbc           the jdbc
-     * @param factory        the factory
-     * @param sqlPageFactory the sql page factory
-     * @param aliasManager   the alias manager
-     * @param ignoreStrategy the ignore strategy
+     * @param factory                the factory
+     * @param sqlPageFactory         the sql page factory
+     * @param entitySqlQueryRelation the entity sql query relation
      */
     public EntitySqlQueryRelate2FP(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation) {

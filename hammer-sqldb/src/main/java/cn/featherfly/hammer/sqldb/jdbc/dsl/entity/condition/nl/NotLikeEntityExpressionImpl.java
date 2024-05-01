@@ -37,23 +37,20 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 public class NotLikeEntityExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractNotLikeEntityExpression<E, C, L> implements NotLikeEntityExpression<E> {
 
-    /** The factory. */
     private JdbcMappingFactory factory;
 
-    /** The query relation. */
-    private EntitySqlRelation<?,?> queryRelation;
+    private EntitySqlRelation<?, ?> queryRelation;
 
     /**
      * Instantiates a new end with entity expression impl.
      *
-     * @param index          the index
-     * @param expression     the expression
-     * @param ignoreStrategy the ignore strategy
-     * @param factory        the factory
-     * @param queryRelation  the query relation
+     * @param index         the index
+     * @param expression    the expression
+     * @param factory       the factory
+     * @param queryRelation the query relation
      */
     public NotLikeEntityExpressionImpl(int index, MulitiNotLikeExpression<C, L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+            EntitySqlRelation<?, ?> queryRelation) {
         super(index, expression, queryRelation.getIgnoreStrategy());
         this.factory = factory;
         this.queryRelation = queryRelation;

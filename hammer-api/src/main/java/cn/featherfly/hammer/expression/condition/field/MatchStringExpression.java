@@ -159,7 +159,6 @@ public interface MatchStringExpression extends IgnorableExpression {
      * match value. 匹配value.
      *
      * @param propertyValue the property value
-     * @return LogicExpression
      */
     default void accept(SerializableSupplier<String> propertyValue) {
         accept(propertyValue, MatchStrategy.AUTO);
@@ -170,7 +169,6 @@ public interface MatchStringExpression extends IgnorableExpression {
      *
      * @param propertyValue  the property value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy) {
         accept(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
@@ -181,7 +179,6 @@ public interface MatchStringExpression extends IgnorableExpression {
      *
      * @param propertyValue the property value
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     default void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy) {
         accept(propertyValue, matchStrategy, v -> getIgnoreStrategy().test(v));
@@ -193,7 +190,6 @@ public interface MatchStringExpression extends IgnorableExpression {
      * @param propertyValue  the property value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);

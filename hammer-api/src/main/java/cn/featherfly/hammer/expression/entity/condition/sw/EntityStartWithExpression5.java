@@ -24,6 +24,22 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends ConditionExpression,
         L extends LogicExpression<C, L>> extends EntityStartWithExpressionBase5<E, E2, E3, E4, E5, C, L> {
 
+    /**
+     * start with value. 以value开始.
+     *
+     * @param startWithEntityExpressions the start with entity expressions
+     * @return the LogicExpression
+     */
+    L sw(Consumer<Tuple5<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>>> startWithEntityExpressions);
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param startWithEntityExpressions the start with entity expressions
+     * @return the LogicExpression
+     */
+    L sw(FiveArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>> startWithEntityExpressions);
+
     //    /**
     //     * start with value. 以value开始.
     //     *
@@ -753,21 +769,4 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
     //            Function<Tuple5<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>, QueryEntityRepository<E5>>, QueryEntityRepository<E5>> entities,
     //            SerializableSupplier5<R> fetchEntityValue, SerializableFunction<R, String> fetchEntityProperty);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param startWithEntityExpressions the start with entity expressions
-     * @return the LogicExpression
-     */
-    L sw(Consumer<Tuple5<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
-            StartWithEntityExpression<E4>, StartWithEntityExpression<E5>>> startWithEntityExpressions);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @return the LogicExpression
-     */
-    L sw(FiveArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
-            StartWithEntityExpression<E4>, StartWithEntityExpression<E5>> startWithEntityExpressions);
 }

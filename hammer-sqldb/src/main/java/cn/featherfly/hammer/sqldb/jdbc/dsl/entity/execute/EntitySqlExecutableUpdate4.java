@@ -35,10 +35,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn4;
  * @param <J1> the join type 1
  * @param <J2> the join type 2
  * @param <J3> the join type 3
- * @param <J4> the join type 4
  */
 public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
-    implements EntitySqlUpdate4<E, J1, J2, J3>, EntityExecutableUpdate4<E, J1, J2, J3> {
+        implements EntitySqlUpdate4<E, J1, J2, J3>, EntityExecutableUpdate4<E, J1, J2, J3> {
 
     private EntitySqlExecutableUpdate<E> update;
 
@@ -55,9 +54,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      * {@inheritDoc}
      */
     @Override
-    public <R> UpdateValueExpression<R, EntityExecutableUpdate4<E, J1, J2, J3>,
-        EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
+    public <R> UpdateValueExpression<R, EntityExecutableUpdate4<E, J1, J2, J3>, EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>, EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
             SerializableFunction<E, R> property) {
         return new EntityUpdateValueImpl<>(property, this);
     }
@@ -67,10 +64,8 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R,
-        O> UpdateValueExpression<O, EntityExecutableUpdate4<E, J1, J2, J3>,
-            EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>,
-            EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
-                SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
+            O> UpdateValueExpression<O, EntityExecutableUpdate4<E, J1, J2, J3>, EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>, EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
+                    SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
     }
 
@@ -78,9 +73,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> UpdateNumberValueExpression<R, EntityExecutableUpdate4<E, J1, J2, J3>,
-        EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
+    public <R extends Number> UpdateNumberValueExpression<R, EntityExecutableUpdate4<E, J1, J2, J3>, EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>, EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
             SerializableToNumberFunction<E, R> property) {
         return new EntityUpdateNumberValueImpl<>(property, this);
     }
@@ -89,9 +82,8 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      * {@inheritDoc}
      */
     @Override
-    public EntityExecutableUpdate4<E, J1, J2, J3> set(Consumer<EntityUpdateSetExpression<E,
-        EntityExecutableUpdate4<E, J1, J2, J3>, EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>>> consumer) {
+    public EntityExecutableUpdate4<E, J1, J2, J3> set(
+            Consumer<EntityUpdateSetExpression<E, EntityExecutableUpdate4<E, J1, J2, J3>, EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>, EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>>> consumer) {
         if (consumer != null) {
             consumer.accept(this);
         }
@@ -112,7 +104,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R> EntityExecutableUpdate4<E, J1, J2, J3> set(SerializableFunction<E, R> property, R value,
-        Predicate<R> ignoreStrategy) {
+            Predicate<R> ignoreStrategy) {
         update.set(property, value, ignoreStrategy);
         return this;
     }
@@ -122,7 +114,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, O> EntityExecutableUpdate4<E, J1, J2, J3> set(SerializableFunction<E, R> property,
-        SerializableFunction<R, O> nestedProperty, O value) {
+            SerializableFunction<R, O> nestedProperty, O value) {
         update.set(property, nestedProperty, value);
         return this;
     }
@@ -132,7 +124,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, O> EntityExecutableUpdate4<E, J1, J2, J3> set(SerializableFunction<E, R> property,
-        SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
+            SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
         update.set(property, nestedProperty, value, ignoreStrategy);
         return this;
     }
@@ -151,7 +143,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R> EntityExecutableUpdate4<E, J1, J2, J3> set(SerializableSupplier<R> property,
-        Predicate<R> ignoreStrategy) {
+            Predicate<R> ignoreStrategy) {
         update.set(property, ignoreStrategy);
         return this;
     }
@@ -161,7 +153,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, O> EntityExecutableUpdate4<E, J1, J2, J3> set(SerializableSupplier<R> property,
-        SerializableFunction<R, O> nestedProperty) {
+            SerializableFunction<R, O> nestedProperty) {
         update.set(property, nestedProperty);
         return this;
     }
@@ -171,7 +163,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, O> EntityExecutableUpdate4<E, J1, J2, J3> set(SerializableSupplier<R> property,
-        SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
+            SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
         update.set(property, nestedProperty, ignoreStrategy);
         return this;
     }
@@ -181,7 +173,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <N extends Number> EntityExecutableUpdate4<E, J1, J2, J3> increase(SerializableFunction<E, N> property,
-        N value) {
+            N value) {
         update.increase(property, value);
         return this;
     }
@@ -191,7 +183,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <N extends Number> EntityExecutableUpdate4<E, J1, J2, J3> increase(SerializableFunction<E, N> property,
-        N value, Predicate<N> ignoreStrategy) {
+            N value, Predicate<N> ignoreStrategy) {
         update.increase(property, value, ignoreStrategy);
         return this;
     }
@@ -201,7 +193,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate4<E, J1, J2, J3> increase(SerializableFunction<E, R> property,
-        SerializableFunction<R, N> nestedProperty, N value) {
+            SerializableFunction<R, N> nestedProperty, N value) {
         update.increase(property, nestedProperty, value);
         return this;
     }
@@ -211,7 +203,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate4<E, J1, J2, J3> increase(SerializableFunction<E, R> property,
-        SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
+            SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
         update.increase(property, nestedProperty, value, ignoreStrategy);
         return this;
     }
@@ -230,7 +222,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <N extends Number> EntityExecutableUpdate4<E, J1, J2, J3> increase(SerializableSupplier<N> property,
-        Predicate<N> ignoreStrategy) {
+            Predicate<N> ignoreStrategy) {
         update.increase(property, ignoreStrategy);
         return this;
     }
@@ -240,7 +232,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate4<E, J1, J2, J3> increase(SerializableSupplier<R> property,
-        SerializableFunction<R, N> nestedProperty) {
+            SerializableFunction<R, N> nestedProperty) {
         update.increase(property, nestedProperty);
         return this;
     }
@@ -250,7 +242,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public <R, N extends Number> EntityExecutableUpdate4<E, J1, J2, J3> increase(SerializableSupplier<R> property,
-        SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
+            SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
         update.increase(property, nestedProperty, ignoreStrategy);
         return this;
     }
@@ -259,9 +251,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      * {@inheritDoc}
      */
     @Override
-    public EntityUpdateExpression<E, EntityExecutableUpdate4<E, J1, J2, J3>,
-        EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>,
-        EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> configure(
+    public EntityUpdateExpression<E, EntityExecutableUpdate4<E, J1, J2, J3>, EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>, EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> configure(
             Consumer<UpdateConfig> configure) {
         if (configure != null) {
             configure.accept(update.relation.getConfig());
@@ -274,16 +264,14 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig> where(
-        FourArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<J1, ?, ?>,
-            EntityConditionsGroupExpression<J2, ?, ?>, EntityConditionsGroupExpression<J3, ?, ?>,
-            LogicExpression<?, ?>> entitiesCondtionFuntion) {
+            FourArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<J1, ?, ?>, EntityConditionsGroupExpression<J2, ?, ?>, EntityConditionsGroupExpression<J3, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion) {
         EntitySqlUpdateConditions4<E, J1, J2, J3> expr = createSqlUpdateExpression();
         if (entitiesCondtionFuntion != null) {
             expr.addCondition(entitiesCondtionFuntion.apply(
-                new EntitySqlConditionsGroupExpression<>(0, update.factory, update.relation),
-                new EntitySqlConditionsGroupExpression<>(1, update.factory, update.relation),
-                new EntitySqlConditionsGroupExpression<>(2, update.factory, update.relation),
-                new EntitySqlConditionsGroupExpression<>(3, update.factory, update.relation)));
+                    new EntitySqlConditionsGroupExpression<>(0, update.factory, update.relation),
+                    new EntitySqlConditionsGroupExpression<>(1, update.factory, update.relation),
+                    new EntitySqlConditionsGroupExpression<>(2, update.factory, update.relation),
+                    new EntitySqlConditionsGroupExpression<>(3, update.factory, update.relation)));
         }
         return expr;
     }

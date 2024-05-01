@@ -28,16 +28,12 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryFe
  */
 public class SqlQuery implements Query {
 
-    /** The jdbc. */
     private Jdbc jdbc;
 
-    /** The database metadata. */
     private DatabaseMetadata databaseMetadata;
 
-    /** The mapping factory. */
     private JdbcMappingFactory mappingFactory;
 
-    /** The sql page factory. */
     private SqlPageFactory sqlPageFactory;
 
     private QueryConfig queryConfig;
@@ -51,7 +47,7 @@ public class SqlQuery implements Query {
      * @param queryConfig      the query config
      */
     public SqlQuery(Jdbc jdbc, DatabaseMetadata databaseMetadata, SqlPageFactory sqlPageFactory,
-        QueryConfig queryConfig) {
+            QueryConfig queryConfig) {
         super();
         this.jdbc = jdbc;
         this.databaseMetadata = databaseMetadata;
@@ -65,9 +61,10 @@ public class SqlQuery implements Query {
      * @param jdbc           jdbc
      * @param mappingFactory mappingFactory
      * @param sqlPageFactory the sql page factory
+     * @param queryConfig    the query config
      */
     public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory,
-        QueryConfig queryConfig) {
+            QueryConfig queryConfig) {
         super();
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
@@ -101,6 +98,12 @@ public class SqlQuery implements Query {
         }
     }
 
+    /**
+     * Find.
+     *
+     * @param repository the repository
+     * @return the repository sql query fetch
+     */
     public RepositorySqlQueryFetch find(AliasRepository repository) {
         AssertIllegalArgument.isNotNull(repository, "repository");
         return find(repository.name(), repository.alias());
@@ -115,6 +118,13 @@ public class SqlQuery implements Query {
         return find(tableName, null);
     }
 
+    /**
+     * Find.
+     *
+     * @param tableName  the table name
+     * @param tableAlias the table alias
+     * @return the repository sql query fetch
+     */
     public RepositorySqlQueryFetch find(String tableName, String tableAlias) {
         AssertIllegalArgument.isNotNull(tableName, "tableName");
         AliasManager aliasManager = new AliasManager();
@@ -124,9 +134,9 @@ public class SqlQuery implements Query {
             tableAlias = aliasManager.put(tableName);
         }
         return new RepositorySqlQueryFetchImpl(
-            new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone())
-                .query(tableName, tableAlias).fetch(0),
-            sqlPageFactory);
+                new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone())
+                        .query(tableName, tableAlias).fetch(0),
+                sqlPageFactory);
     }
 
     /**
@@ -143,7 +153,7 @@ public class SqlQuery implements Query {
         //        }
 
         EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
-            queryConfig.clone());
+                queryConfig.clone());
         return new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
     }
 

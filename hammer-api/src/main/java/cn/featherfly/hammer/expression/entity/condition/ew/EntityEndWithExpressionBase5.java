@@ -39,8 +39,8 @@ public interface EntityEndWithExpressionBase5<E, E2, E3, E4, E5, C extends Condi
     /**
      * end with value. 以value结尾.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,9 +51,9 @@ public interface EntityEndWithExpressionBase5<E, E2, E3, E4, E5, C extends Condi
     /**
      * end with value. 以value结尾.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L ew5(SerializableFunction<E5, String> name, String value, MatchStrategy matchStrategy);
@@ -63,7 +63,7 @@ public interface EntityEndWithExpressionBase5<E, E2, E3, E4, E5, C extends Condi
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

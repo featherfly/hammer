@@ -10,8 +10,6 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * entity query value expression.
  *
  * @author zhongj
- * @param <E> the query type
- * @param <V> the value type
  * @param <C> the generic type
  * @param <L> the generic type
  * @param <S> the generic type

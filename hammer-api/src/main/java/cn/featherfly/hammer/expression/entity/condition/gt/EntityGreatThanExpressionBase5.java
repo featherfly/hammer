@@ -116,7 +116,7 @@ public interface EntityGreatThanExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * great than. 大于.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -126,7 +126,7 @@ public interface EntityGreatThanExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * great than. 大于.
      *
-     * @param <N>            number type
+     * @param <E>            the element type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -238,8 +238,9 @@ public interface EntityGreatThanExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * great than. 大于.
      *
-     * @param name  the name
-     * @param value the value
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L gt5(SerializableFunction<T5, String> name, String value, MatchStrategy matchStrategy);
@@ -249,6 +250,7 @@ public interface EntityGreatThanExpressionBase5<T, T2, T3, T4, T5, C extends Con
      *
      * @param name           the name
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

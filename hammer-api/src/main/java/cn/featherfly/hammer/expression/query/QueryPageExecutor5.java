@@ -19,11 +19,13 @@ public interface QueryPageExecutor5 extends QueryPageExecutor {
      * @param <E2>     the generic type
      * @param <E3>     the generic type
      * @param <E4>     the generic type
+     * @param <E5>     the generic type
      * @param prefixes the prefixes
      * @param type1    the type 1
      * @param type2    the type 2
      * @param type3    the type 3
      * @param type4    the type 4
+     * @param type5    the type 5
      * @return PaginationResults
      */
     <E1, E2, E3, E4, E5> PaginationResults<Tuple5<E1, E2, E3, E4, E5>> pagination(
@@ -37,10 +39,12 @@ public interface QueryPageExecutor5 extends QueryPageExecutor {
      * @param <E2>  the generic type
      * @param <E3>  the generic type
      * @param <E4>  the generic type
+     * @param <E5>  the generic type
      * @param type1 the type 1
      * @param type2 the type 2
      * @param type3 the type 3
      * @param type4 the type 4
+     * @param type5 the type 5
      * @return PaginationResults
      */
     default <E1, E2, E3, E4, E5> PaginationResults<Tuple5<E1, E2, E3, E4, E5>> pagination(Class<E1> type1,

@@ -30,14 +30,13 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFe
  * The Class AbstractEntitySqlQueryRelate3RRX.
  *
  * @author zhongj
- * @param <E>   the element type
- * @param <R1>  the generic type
- * @param <R2>  the generic type
- * @param <R3>  the generic type
- * @param <RES> the generic type
+ * @param <E>  the element type
+ * @param <R1> the generic type
+ * @param <R2> the generic type
+ * @param <R3> the generic type
  */
 public abstract class AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
-    extends AbstractEntitySqlQueryFetch4<E, R1, R2, R3, E> implements EntityQueryRelate3RRXBase<E, R1, R2, R3> {
+        extends AbstractEntitySqlQueryFetch4<E, R1, R2, R3, E> implements EntityQueryRelate3RRXBase<E, R1, R2, R3> {
 
     /**
      * Instantiates a new abstract entity sql query relate 3 RRX.
@@ -47,7 +46,7 @@ public abstract class AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
      * @param entitySqlQueryRelation the entity sql query relation
      */
     protected AbstractEntitySqlQueryRelate3RRX(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation entitySqlQueryRelation) {
+            EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
@@ -57,7 +56,7 @@ public abstract class AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
     @Override
     public <J> EntityOnExpression4<E, R1, R2, R3, J, EntityQueryRelate4RRRR<E, R1, R2, R3, J>> join(Class<J> joinType) {
         return new EntitySqlOn4<>(joinType, new EntitySqlQueryRelate4RRRR<>(factory, sqlPageFactory, queryRelation),
-            factory, queryRelation);
+                factory, queryRelation);
     }
 
     /**
@@ -67,7 +66,7 @@ public abstract class AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
     public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join(SerializableFunction2<R4, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4RRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
@@ -102,7 +101,7 @@ public abstract class AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
     public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join2(SerializableFunction2<R4, R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(1, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4RRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
@@ -137,7 +136,7 @@ public abstract class AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
     public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join3(SerializableFunction2<R4, R2> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(2, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4RRRR<>(factory, sqlPageFactory, queryRelation);
     }
 
@@ -172,7 +171,7 @@ public abstract class AbstractEntitySqlQueryRelate3RRX<E, R1, R2, R3>
     public <R4> EntityQueryRelate4RRRR<E, R1, R2, R3, R4> join4(SerializableFunction2<R4, R3> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(3, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4RRRR<>(factory, sqlPageFactory, queryRelation);
     }
 

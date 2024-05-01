@@ -17,11 +17,12 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotEndWithExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryNotEndWithExpressionBase2<C, L> {
+        extends RepositoryNotEndWithExpressionBase2<C, L> {
+
     /**
      * not end with.
      *
-     * @param endWithRepositoryExpressions the end with repository expressions
+     * @param notEndWithExpressions the not end with expressions
      * @return the LogicExpression
      */
     L newv(Consumer<Tuple2<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression>> notEndWithExpressions);
@@ -29,7 +30,7 @@ public interface RepositoryNotEndWithExpression2<C extends ConditionExpression, 
     /**
      * not end with.
      *
-     * @param endWithRepositoryExpressions the end with repository expressions
+     * @param notEndWithExpressions the not end with expressions
      * @return the LogicExpression
      */
     L newv(BiConsumer<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression> notEndWithExpressions);

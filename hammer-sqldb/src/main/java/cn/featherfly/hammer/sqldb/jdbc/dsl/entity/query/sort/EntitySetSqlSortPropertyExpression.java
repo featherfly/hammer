@@ -36,6 +36,7 @@ public class EntitySetSqlSortPropertyExpression<E> implements EntitySetSortPrope
     /**
      * Instantiates a new sql sort entity.
      *
+     * @param sortBuilder  the sort builder
      * @param queryAlias   the query alias
      * @param sortOperator the sort operator
      * @param classMapping the class mapping

@@ -32,16 +32,15 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.AbstractEntitySqlQueryFe
  * The Class AbstractEntitySqlQueryRelate4RFFX.
  *
  * @author zhongj
- * @param <E>   the element type
- * @param <R1>  the generic type
- * @param <R2>  the generic type
- * @param <R3>  the generic type
- * @param <R4>  the generic type
- * @param <RES> the generic type
+ * @param <E>  the element type
+ * @param <R1> the generic type
+ * @param <R2> the generic type
+ * @param <R3> the generic type
+ * @param <R4> the generic type
  */
 public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
-    extends AbstractEntitySqlQueryFetch5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>
-    implements EntityQueryRelate4RFFXBase<E, R1, R2, R3, R4> {
+        extends AbstractEntitySqlQueryFetch5<E, R1, R2, R3, R4, Tuple3<E, R2, R3>>
+        implements EntityQueryRelate4RFFXBase<E, R1, R2, R3, R4> {
 
     /**
      * Instantiates a new abstract entity sql query relate 4 RFFX.
@@ -51,25 +50,34 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
      * @param entitySqlQueryRelation the entity sql query relation
      */
     protected AbstractEntitySqlQueryRelate4RFFX(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation entitySqlQueryRelation) {
+            EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <J> EntityOnExpression5<E, R1, R2, R3, R4, J, EntityQueryRelate5RFFRR<E, R1, R2, R3, R4, J>> join(
-        Class<J> joinType) {
+            Class<J> joinType) {
         return new EntitySqlOn5<>(joinType, new EntitySqlQueryRelate5RFFRR<>(factory, sqlPageFactory, queryRelation),
-            factory, queryRelation);
+                factory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRR<E, R1, R2, R3, R4, R5> join(SerializableFunction2<R5, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate5RFFRR<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R5> join(SerializableFunction1<E, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -77,6 +85,9 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
         return new EntitySqlQueryRelate5RFFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, E> join(SerializableUnaryOperator1<E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -88,14 +99,20 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
     //	join 2
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRR<E, R1, R2, R3, R4, R5> join2(SerializableFunction2<R5, R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(1, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate5RFFRR<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R5> join2(SerializableFunction1<R1, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -103,6 +120,9 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
         return new EntitySqlQueryRelate5RFFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R1> join2(SerializableUnaryOperator1<R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -114,14 +134,20 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
     //	join 3
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRR<E, R1, R2, R3, R4, R5> join3(SerializableFunction2<R5, R2> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(2, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate5RFFRR<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R5> join3(SerializableFunction1<R2, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -129,6 +155,9 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
         return new EntitySqlQueryRelate5RFFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R2> join3(SerializableUnaryOperator1<R2> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -140,14 +169,20 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
     //	4
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRR<E, R1, R2, R3, R4, R5> join4(SerializableFunction2<R5, R3> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(3, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate5RFFRR<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R5> join4(SerializableFunction1<R3, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -155,6 +190,9 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
         return new EntitySqlQueryRelate5RFFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R3> join4(SerializableUnaryOperator1<R3> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -162,14 +200,20 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
         return new EntitySqlQueryRelate5RFFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRR<E, R1, R2, R3, R4, R5> join5(SerializableFunction2<R5, R4> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(4, queryRelation.getEntityRelationMapping(0).getIdName(),
-            factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
+                factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate5RFFRR<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <R5> EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R5> join5(SerializableFunction1<R4, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
@@ -177,6 +221,9 @@ public abstract class AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
         return new EntitySqlQueryRelate5RFFRP<>(factory, sqlPageFactory, queryRelation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityQueryRelate5RFFRP<E, R1, R2, R3, R4, R4> join5(SerializableUnaryOperator1<R4> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);

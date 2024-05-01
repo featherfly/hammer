@@ -22,7 +22,6 @@ public interface OnJoinFieldAware {
      * Source field.
      *
      * @param name the name
-     * @return the on consumer
      */
     void sourceField(String name);
 
@@ -30,7 +29,6 @@ public interface OnJoinFieldAware {
      * Source field.
      *
      * @param field the field
-     * @return the on consumer
      */
     default void sourceField(Field field) {
         AssertIllegalArgument.isNotNull(field, "field");

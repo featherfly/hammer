@@ -13,21 +13,20 @@ import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFiel
  * repository where expression2.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 public interface RepositoryWhereExpression2<C extends RepositoryConditionsGroupExpression2<C, L>,
-    L extends RepositoryConditionsGroupLogicExpression2<C, L>> extends WhereExpression<C> {
+        L extends RepositoryConditionsGroupLogicExpression2<C, L>> extends WhereExpression<C> {
 
     /**
      * gets the filter expression. 获取筛选条件表达式.
      *
-     * @param function the condition expression function
+     * @param repositoriesCondtionFuntion the repositories condtion funtion
      * @return filter expression
      */
-    default L filter(BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
-        LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+    default L filter(
+            BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(repositoriesCondtionFuntion);
     }
 
@@ -37,6 +36,5 @@ public interface RepositoryWhereExpression2<C extends RepositoryConditionsGroupE
      * @param repositoriesCondtionFuntion the repositories condtion funtion
      * @return filter expression
      */
-    L where(BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
-        LogicExpression<?, ?>> repositoriesCondtionFuntion);
+    L where(BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion);
 }

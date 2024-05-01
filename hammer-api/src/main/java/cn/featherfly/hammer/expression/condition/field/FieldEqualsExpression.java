@@ -17,7 +17,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <V> the value type
  */
 public interface FieldEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>, V>
-    extends ConditionExpression {
+        extends ConditionExpression {
 
     /**
      * equals. 等于.
@@ -58,7 +58,7 @@ public interface FieldEqualsExpression<C extends ConditionExpression, L extends 
     /**
      * equals. 等于.
      *
-     * @param field the field
+     * @param expression the expression
      * @return LogicExpression
      */
     L eq(FieldExpression expression);

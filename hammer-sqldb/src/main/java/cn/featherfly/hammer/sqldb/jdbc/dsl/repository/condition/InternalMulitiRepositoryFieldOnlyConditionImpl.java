@@ -22,17 +22,14 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
  * RepositoryInternalMulitiConditionImpl.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
  * @param <C2> the generic type
  * @param <S>  the generic type
  * @param <B>  the generic type
  */
 public class InternalMulitiRepositoryFieldOnlyConditionImpl<C2 extends ConditionConfig<C2>,
-    S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
-    AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryFieldOnlyExpression,
-        RepositoryFieldOnlyLogicExpression, Tuple1<Integer>, C2, S, B>
-    implements RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression {
+        S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
+        AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression, Tuple1<Integer>, C2, S, B>
+        implements RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression {
 
     /**
      * Instantiates a new internal muliti repository condition impl.
@@ -52,7 +49,7 @@ public class InternalMulitiRepositoryFieldOnlyConditionImpl<C2 extends Condition
      * @param repositoryRelation the repository relation
      */
     InternalMulitiRepositoryFieldOnlyConditionImpl(RepositoryFieldOnlyLogicExpression parent, int index,
-        S repositoryRelation) {
+            S repositoryRelation) {
         super(parent, index, repositoryRelation);
     }
 

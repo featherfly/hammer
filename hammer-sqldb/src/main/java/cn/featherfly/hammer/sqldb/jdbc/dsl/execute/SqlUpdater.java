@@ -33,6 +33,7 @@ public class SqlUpdater implements Updater {
      *
      * @param jdbc           the jdbc
      * @param mappingFactory the mapping factory
+     * @param updateConfig   the update config
      */
     public SqlUpdater(Jdbc jdbc, JdbcMappingFactory mappingFactory, UpdateConfig updateConfig) {
         super();
@@ -59,10 +60,10 @@ public class SqlUpdater implements Updater {
         AliasManager aliasManager = new AliasManager();
         if (repository instanceof AliasRepository) {
             return new RepositorySqlExecutableUpdate((AliasRepository) repository, jdbc, aliasManager,
-                mappingFactory.getMetadata(), updateConfig.clone());
+                    mappingFactory.getMetadata(), updateConfig.clone());
         } else {
             return new RepositorySqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(),
-                updateConfig.clone());
+                    updateConfig.clone());
         }
     }
 
@@ -73,7 +74,7 @@ public class SqlUpdater implements Updater {
     public RepositorySqlUpdate update(String repository) {
         AliasManager aliasManager = new AliasManager();
         return new RepositorySqlExecutableUpdate(repository, jdbc, aliasManager, mappingFactory.getMetadata(),
-            updateConfig.clone());
+                updateConfig.clone());
     }
 
     /**
@@ -85,6 +86,6 @@ public class SqlUpdater implements Updater {
             throw new SqldbHammerException("mappingFactory is null");
         }
         return new EntitySqlExecutableUpdate<>(jdbc, mappingFactory.getClassMapping(entityType), mappingFactory,
-            updateConfig.clone());
+                updateConfig.clone());
     }
 }

@@ -196,8 +196,9 @@ public interface NotInExpression3<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
-     * @param values the values
+     * @param <R>   the generic type
+     * @param field the field
+     * @param value the value
      * @return LogicExpression
      */
     default <R extends Serializable> L ni3(Field field, R value) {
@@ -207,6 +208,7 @@ public interface NotInExpression3<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <R>    the generic type
      * @param field  the field
      * @param values the values
      * @return LogicExpression
@@ -243,6 +245,7 @@ public interface NotInExpression3<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <R>    the generic type
      * @param name   the name
      * @param values the values
      * @return LogicExpression
@@ -623,8 +626,9 @@ public interface NotInExpression3<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
-     * @param values the values
+     * @param <R>   the generic type
+     * @param field the field
+     * @param value the value
      * @return LogicExpression
      */
     default <R extends Serializable> L ni3(AliasField field, R value) {
@@ -634,6 +638,7 @@ public interface NotInExpression3<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <R>    the generic type
      * @param field  the field
      * @param values the values
      * @return LogicExpression

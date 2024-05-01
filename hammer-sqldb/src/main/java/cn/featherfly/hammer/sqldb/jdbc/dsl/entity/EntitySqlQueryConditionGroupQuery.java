@@ -40,11 +40,9 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     /**
      * Instantiates a new entity sql query condition group query.
      *
-     * @param entitySqlConditionGroupExpression the entity sql condition group
-     *                                          expression
+     * @param entitySqlConditionGroupExpression the entity sql condition group expression
      * @param sqlPageFactory                    the sql page factory
      * @param queryRelation                     the query relation
-     * @param queryConditionConfig              the query condition config
      */
     public EntitySqlQueryConditionGroupQuery(
             AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
@@ -55,11 +53,9 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     /**
      * Instantiates a new entity sql query condition group query.
      *
-     * @param entitySqlConditionGroupExpression the entity sql condition group
-     *                                          expression
+     * @param entitySqlConditionGroupExpression the entity sql condition group expression
      * @param sqlPageFactory                    the sql page factory
      * @param queryRelation                     the query relation
-     * @param queryConditionConfig              the query condition config
      * @param limit                             the limit
      */
     public EntitySqlQueryConditionGroupQuery(

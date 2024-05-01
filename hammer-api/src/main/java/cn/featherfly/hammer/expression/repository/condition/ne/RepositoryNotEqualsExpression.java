@@ -46,11 +46,12 @@ import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends NotEqualsExpression<C, L>, NotEqualsSupplierExpression<C, L> {
+        extends NotEqualsExpression<C, L>, NotEqualsSupplierExpression<C, L> {
 
     /**
      * not equals. 不等于.
      *
+     * @param <T>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -62,9 +63,9 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne(SerializableToLongFunction<T> name, char value) {
@@ -74,6 +75,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -86,9 +88,9 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne(SerializableToLongFunction<T> name, int value) {
@@ -98,6 +100,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -110,9 +113,9 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne(SerializableToLongFunction<T> name, long value) {
@@ -122,6 +125,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -134,9 +138,9 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne(SerializableToDoubleFunction<T> name, double value) {
@@ -146,6 +150,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -159,6 +164,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * not equals. 不等于.
      *
      * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -171,6 +177,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * not equals. 不等于.
      *
      * @param <T>            the generic type
+     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -184,6 +191,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * not equals. 不等于.
      *
      * @param <T>            the generic type
+     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -255,7 +263,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L ne(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-        IgnoreStrategy ignoreStrategy) {
+            IgnoreStrategy ignoreStrategy) {
         return ne(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -270,7 +278,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default <T> L ne(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
+            Predicate<String> ignoreStrategy) {
         return ne(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -471,7 +479,7 @@ public interface RepositoryNotEqualsExpression<C extends ConditionExpression, L 
      */
     @Override
     default L ne(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
+            Predicate<String> ignoreStrategy) {
         return ne(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 

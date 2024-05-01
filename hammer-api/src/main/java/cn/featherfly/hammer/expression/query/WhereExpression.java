@@ -8,7 +8,6 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
  *
  * @author zhongj
  * @param <C> the generic type
- * @param <L> the generic type
  */
 public interface WhereExpression<C extends ConditionExpression> extends Where<C> {
 

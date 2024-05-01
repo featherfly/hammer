@@ -14,14 +14,15 @@ import cn.featherfly.hammer.expression.query.RepositoryFetcher;
  * repository query relate base.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <R> the generic type
+ * @param <Q> the generic type
  */
 public interface RepositoryJoin<R extends RepositoryOnExpression<Q>, Q> {
+
     /**
      * Join.
      *
-     * @param <R>      the generic type
-     * @param joinType the join type
+     * @param repository the repository
      * @return the entity query related expression
      */
     default R join(String repository) {
@@ -31,7 +32,7 @@ public interface RepositoryJoin<R extends RepositoryOnExpression<Q>, Q> {
     /**
      * Join.
      *
-     * @param repository the repository
+     * @param function the function
      * @return the entity query related expression
      */
     default R join(Function<RepositoryFetcher, Repository> function) {

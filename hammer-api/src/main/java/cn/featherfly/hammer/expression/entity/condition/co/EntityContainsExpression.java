@@ -21,14 +21,6 @@ import cn.featherfly.hammer.expression.condition.co.ContainsSupplierExpression;
 public interface EntityContainsExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ContainsSupplierExpression<C, L> {
 
-    //    /**
-    //     * contains value. 包含value.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L co(Consumer<EntityContainsExpression<E, C, L>> consumer);
-
     /**
      * contains value. 包含value.
      *
@@ -43,8 +35,8 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
     /**
      * contains value. 包含value.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -55,8 +47,8 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
     /**
      * contains value. 包含value.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -67,9 +59,9 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
     /**
      * contains value. 包含value.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L co(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
@@ -79,7 +71,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -93,7 +85,7 @@ public interface EntityContainsExpression<E, C extends ConditionExpression, L ex
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

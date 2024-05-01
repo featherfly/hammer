@@ -19,16 +19,14 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.InternalMulitiEntityCondition;
 
 /**
- * entity property function only impl.
+ * entity property only expression impl.
  *
  * @author zhongj
  * @param <E> the element type
- * @param <C> the generic type
- * @param <L> the generic type
  */
 public class EntityPropertyOnlyExpressionImpl<E>
-    extends EntityPropertyExpressionImpl<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>
-    implements EntityPropertyOnlyExpression<E> {
+        extends EntityPropertyExpressionImpl<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>
+        implements EntityPropertyOnlyExpression<E> {
 
     /**
      * Instantiates a new entity property function impl.
@@ -40,9 +38,9 @@ public class EntityPropertyOnlyExpressionImpl<E>
      */
     @SuppressWarnings("unchecked")
     public EntityPropertyOnlyExpressionImpl(int index, InternalMulitiEntityCondition<?> expression,
-        JdbcMappingFactory factory, EntitySqlRelation<?,?> queryRelation) {
+            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, (InternalMulitiEntityCondition<EntityPropertyOnlyLogicExpression<E>>) expression, factory,
-            queryRelation);
+                queryRelation);
     }
 
     /**
@@ -59,7 +57,7 @@ public class EntityPropertyOnlyExpressionImpl<E>
      */
     @Override
     public EntityPropertyOnlyLogicExpression<E> group(
-        Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> group) {
+            Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> group) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
     }

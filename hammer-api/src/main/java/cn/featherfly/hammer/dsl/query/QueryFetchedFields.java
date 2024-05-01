@@ -13,7 +13,6 @@ import cn.featherfly.hammer.expression.query.QueryFetchFieldExpression;
  * query fetched fields expression.
  *
  * @author zhongj
- * @param <Q> the generic type
  */
 public interface QueryFetchedFields extends QueryFetchFieldExpression<QueryFetchedFields, QueryFetchedFields> {
 

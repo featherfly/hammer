@@ -22,7 +22,7 @@ public interface EntityOnExpression5<E1, E2, E3, E4, E5, J, R> extends EntityOnE
     /**
      * on expression.
      *
-     * @param onExpression the on expression. <br/>
+     * @param onExpression the on expression. <br>
      *                     <ol>
      *                     <li>query type property expresion
      *                     <li>query or joined type property expresion

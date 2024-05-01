@@ -63,9 +63,9 @@ public interface EntityStartWithExpressionBase4<E, E2, E3, E4, C extends Conditi
     /**
      * start with value. 以value开始.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L sw4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy);
@@ -75,7 +75,7 @@ public interface EntityStartWithExpressionBase4<E, E2, E3, E4, C extends Conditi
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -89,7 +89,7 @@ public interface EntityStartWithExpressionBase4<E, E2, E3, E4, C extends Conditi
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

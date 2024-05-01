@@ -80,7 +80,6 @@ public interface MatchStringRepositoryExpression extends MatchStringExpression, 
      * @param propertyValue  the property value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     @Override
     default void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,

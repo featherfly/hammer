@@ -18,10 +18,11 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface LikeExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>> {
+
     /**
      * like value.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
@@ -32,7 +33,7 @@ public interface LikeExpression2<C extends ConditionExpression, L extends LogicE
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -44,7 +45,7 @@ public interface LikeExpression2<C extends ConditionExpression, L extends LogicE
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -56,7 +57,7 @@ public interface LikeExpression2<C extends ConditionExpression, L extends LogicE
     /**
      * like value.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
@@ -68,7 +69,7 @@ public interface LikeExpression2<C extends ConditionExpression, L extends LogicE
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -81,7 +82,7 @@ public interface LikeExpression2<C extends ConditionExpression, L extends LogicE
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy

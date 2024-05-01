@@ -18,7 +18,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public abstract class AbstractRepositoryFieldExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    implements Expression {
+        implements Expression {
 
     /** The name. */
     protected final String name;
@@ -29,7 +29,6 @@ public abstract class AbstractRepositoryFieldExpression<C extends ConditionExpre
     /**
      * Instantiates a new abstract muliti repository field expression.
      *
-     * @param index      the index
      * @param name       the name
      * @param expression the expression
      */
@@ -38,10 +37,22 @@ public abstract class AbstractRepositoryFieldExpression<C extends ConditionExpre
         this.expression = expression;
     }
 
+    /**
+     * Eq.
+     *
+     * @param field the field
+     * @return the l
+     */
     public L eq(Field field) {
         return expression.eq(name, field);
     }
 
+    /**
+     * Eq.
+     *
+     * @param expression the expression
+     * @return the l
+     */
     public L eq(FieldExpression expression) {
         return this.expression.eq(name, expression);
     }

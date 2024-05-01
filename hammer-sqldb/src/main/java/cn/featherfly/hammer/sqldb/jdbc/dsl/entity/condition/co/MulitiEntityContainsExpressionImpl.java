@@ -19,7 +19,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.InternalMulitiEntity
  * muliti entity contains expression implements.
  *
  * @author zhongj
- * @param <E>
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public class MulitiEntityContainsExpressionImpl<C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends AbstractMulitiContainsExpression<InternalMulitiEntityCondition<L>, C, L> {

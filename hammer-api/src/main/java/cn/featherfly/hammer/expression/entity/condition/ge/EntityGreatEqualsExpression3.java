@@ -25,18 +25,16 @@ public interface EntityGreatEqualsExpression3<E, E2, E3, C extends ConditionExpr
     /**
      * great and equals. 大于等于.
      *
-     * @param entitiesGreatEqualsFunction the entities great equals function
+     * @param greatEqualsEntityExpressions the great equals entity expressions
      * @return the LogicExpression
      */
-    L ge(Consumer<Tuple3<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
-            GreatEqualsEntityExpression<E3>>> greatEqualsEntityExpressions);
+    L ge(Consumer<Tuple3<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>, GreatEqualsEntityExpression<E3>>> greatEqualsEntityExpressions);
 
     /**
      * great and equals. 大于等于.
      *
-     * @param entitiesGreatEqualsFunction the entities great equals function
+     * @param greatEqualsEntityExpressions the great equals entity expressions
      * @return the LogicExpression
      */
-    L ge(ThreeArgusConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
-            GreatEqualsEntityExpression<E3>> greatEqualsEntityExpressions);
+    L ge(ThreeArgusConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>, GreatEqualsEntityExpression<E3>> greatEqualsEntityExpressions);
 }

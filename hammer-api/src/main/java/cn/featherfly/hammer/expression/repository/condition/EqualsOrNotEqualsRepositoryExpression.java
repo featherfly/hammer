@@ -97,7 +97,6 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
      *
      * @param <R>      the generic type
      * @param property bean property
-     * @return LogicExpression
      */
     default <R> void accept(SerializableSupplier<R> property) {
         accept(property, getIgnoreStrategy()::test);
@@ -109,7 +108,6 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
      * @param <R>            the generic type
      * @param property       bean property
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
 }

@@ -8,10 +8,8 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQueryValueSort
  * repository query value conditions group.
  *
  * @author zhongj
- * @param <E> the element type
  */
-public interface RepositoryQueryValueConditionsGroup
-        extends RepositoryQueryValueConditionsGroupExpression<RepositoryQueryValueConditionsGroup,
-                RepositoryQueryValueConditionsGroupLogic, RepositoryQueryValueSortExpression> {
+public interface RepositoryQueryValueConditionsGroup extends
+        RepositoryQueryValueConditionsGroupExpression<RepositoryQueryValueConditionsGroup, RepositoryQueryValueConditionsGroupLogic, RepositoryQueryValueSortExpression> {
 
 }

@@ -8,7 +8,7 @@ import cn.featherfly.common.structure.page.Page;
  * type query limit condition.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the generic type
  */
 public interface EntityQueryConditionLimit<T> {
 

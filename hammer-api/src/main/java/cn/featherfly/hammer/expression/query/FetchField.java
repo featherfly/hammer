@@ -29,6 +29,7 @@ public interface FetchField {
     /**
      * Distinct.
      *
+     * @param distinct the distinct
      * @return the distincted
      */
     DistinctAware distinct(boolean distinct);
@@ -106,6 +107,7 @@ public interface FetchField {
     /**
      * Aggregate.
      *
+     * @param distinct          the distinct
      * @param aggregateFunction the aggregate function
      * @param name              the name
      * @return the aggregate field
@@ -115,7 +117,8 @@ public interface FetchField {
     /**
      * Count.
      *
-     * @param name the name
+     * @param distinct the distinct
+     * @param name     the name
      * @return the aggregate field
      */
     default AggregateDistinctNameAware count(boolean distinct, String name) {
@@ -125,7 +128,8 @@ public interface FetchField {
     /**
      * Max.
      *
-     * @param name the name
+     * @param distinct the distinct
+     * @param name     the name
      * @return the aggregate field
      */
     default AggregateDistinctNameAware max(boolean distinct, String name) {
@@ -135,7 +139,8 @@ public interface FetchField {
     /**
      * Min.
      *
-     * @param name the name
+     * @param distinct the distinct
+     * @param name     the name
      * @return the aggregate field
      */
     default AggregateDistinctNameAware min(boolean distinct, String name) {
@@ -145,7 +150,8 @@ public interface FetchField {
     /**
      * Sum.
      *
-     * @param name the name
+     * @param distinct the distinct
+     * @param name     the name
      * @return the aggregate field
      */
     default AggregateDistinctNameAware sum(boolean distinct, String name) {
@@ -155,7 +161,8 @@ public interface FetchField {
     /**
      * Avg.
      *
-     * @param name the name
+     * @param distinct the distinct
+     * @param name     the name
      * @return the aggregate field
      */
     default AggregateDistinctNameAware avg(boolean distinct, String name) {

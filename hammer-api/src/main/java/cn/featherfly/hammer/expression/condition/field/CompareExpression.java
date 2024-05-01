@@ -522,7 +522,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>   date type
+     * @param <E>   the element type
      * @param name  the name
      * @param value the value
      */
@@ -533,7 +533,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
+     * @param <E>            the element type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -543,7 +543,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
+     * @param <E>            the element type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -555,7 +555,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>   date type
+     * @param <E>   the element type
      * @param field the field
      * @param value the value
      */
@@ -566,7 +566,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
+     * @param <E>            the element type
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -578,7 +578,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
+     * @param <E>            the element type
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -590,7 +590,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>   date type
+     * @param <E>   the element type
      * @param field the field
      * @param value the value
      */
@@ -962,6 +962,7 @@ public interface CompareExpression extends CompareSupplierExpression {
      *
      * @param name           the name
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
@@ -1028,6 +1029,7 @@ public interface CompareExpression extends CompareSupplierExpression {
      *
      * @param field          the field
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
@@ -1047,8 +1049,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field the field
-     * @param value the value
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the match strategy
      */
     default void accept(AliasField field, String value, MatchStrategy matchStrategy) {
         accept(field.getAliasOrName(), value, matchStrategy);
@@ -1070,6 +1073,7 @@ public interface CompareExpression extends CompareSupplierExpression {
      *
      * @param field          the field
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
@@ -1092,6 +1096,7 @@ public interface CompareExpression extends CompareSupplierExpression {
      *
      * @param field          the field
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {

@@ -65,9 +65,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] save(List<E> entities, int batchSize);
 
     /**
-     * update entity, update all values. equal invoke method
-     * {@link #update(Object, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update entity, update all values. equal invoke method {@link #update(Object, IgnoreStrategy)} with params
+     * (entity, IgnoreStrategy.NONE)
      *
      * @param entity entity to update
      * @return effect data row num
@@ -93,9 +92,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     E updateFetch(E entity, UnaryOperator<E> updateOperator);
 
     /**
-     * update all values for each entity in entity array. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update all values for each entity in entity array. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * params (entity, IgnoreStrategy.NONE)
      *
      * @param entities entity array to update
      * @return effect data row num
@@ -103,9 +101,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] update(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * update all values for each entity in entity list. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update all values for each entity in entity list. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * params (entity, IgnoreStrategy.NONE)
      *
      * @param entities entity list to update
      * @return effect data row num
@@ -113,9 +110,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] update(List<E> entities);
 
     /**
-     * update all values for each entity in entity list. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update all values for each entity in entity list. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * params (entity, IgnoreStrategy.NONE)
      *
      * @param entities  entity list to update
      * @param batchSize the batch size
@@ -124,10 +120,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] update(List<E> entities, int batchSize);
 
     /**
-     * /** merge entity, update values ignore null or empty(string, array,
-     * collectoin, map) value. equal invoke method
-     * {@link #update(Object, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.EMPTY)
+     * /** merge entity, update values ignore null or empty(string, array, collectoin, map) value. equal invoke method
+     * {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
      *
      * @param entity         entity to update
      * @param ignoreStrategy ignore value to update strategy
@@ -145,8 +139,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] update(List<E> entities, IgnoreStrategy ignoreStrategy);
 
     /**
-     * merge entity, update values ignore null or empty(string, list, map)
-     * value.
+     * merge entity, update values ignore null or empty(string, list, map) value.
      *
      * @param entity entity to merge
      * @return effect data row num
@@ -154,10 +147,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int merge(E entity);
 
     /**
-     * update values ignore null or empty(string, array, collectoin, map) value
-     * for each entity in entity array. equal invoke method
-     * {@link #update(Object, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.EMPTY)
+     * update values ignore null or empty(string, array, collectoin, map) value for each entity in entity array. equal
+     * invoke method {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
      *
      * @param entities entity array to merge
      * @return effect data row num
@@ -165,10 +156,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] merge(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * update values ignore null or empty(string, array, collectoin, map) value
-     * for each entity in entity list. equal invoke method
-     * {@link #update(Object, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.EMPTY)
+     * update values ignore null or empty(string, array, collectoin, map) value for each entity in entity list. equal
+     * invoke method {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
      *
      * @param entities entity list to merge
      * @return effect data row num

@@ -19,11 +19,13 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.AbstractSqlConditionsExpres
  * @param <L> the generic type
  */
 public class NumberFieldExpressionImpl<N extends Number, C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends AbstractRepositoryFieldExpression<C, L> implements RepositoryNumberFieldExpression<N, C, L> {
+        extends AbstractRepositoryFieldExpression<C, L> implements RepositoryNumberFieldExpression<N, C, L> {
 
     /**
-     * @param name
-     * @param expression
+     * Instantiates a new number field expression impl.
+     *
+     * @param name       the name
+     * @param expression the expression
      */
     public NumberFieldExpressionImpl(String name, AbstractSqlConditionsExpression<C, L, ?> expression) {
         super(name, expression);

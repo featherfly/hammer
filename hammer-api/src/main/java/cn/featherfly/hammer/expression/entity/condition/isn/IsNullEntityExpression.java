@@ -18,8 +18,6 @@ import cn.featherfly.hammer.expression.entity.condition.NullNotNullEntityExpress
  *
  * @author zhongj
  * @param <E> the element type
- * @param <C> the generic type
- * @param <L> the generic type
  */
 public interface IsNullEntityExpression<E> extends NullNotNullEntityExpression<E> {
 

@@ -45,14 +45,12 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Instantiates a new entity sql query condition group query.
      *
-     * @param repositorySqlConditionGroupExpression the repository sql condition
-     *                                              group expression
+     * @param repositorySqlConditionGroupExpression the repository sql condition group expression
      * @param sqlPageFactory                        the sql page factory
      * @param queryRelation                         the query relation
      */
     public RepositorySqlQueryConditionGroupQuery(
-            AbstractMulitiRepositorySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?,
-                    ?> repositorySqlConditionGroupExpression,
+            AbstractMulitiRepositorySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> repositorySqlConditionGroupExpression,
             SqlPageFactory sqlPageFactory, RepositorySqlQueryRelation queryRelation) {
         this(repositorySqlConditionGroupExpression, sqlPageFactory, queryRelation, null);
     }
@@ -60,15 +58,13 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Instantiates a new entity sql query condition group query.
      *
-     * @param repositorySqlConditionGroupExpression the repository sql condition
-     *                                              group expression
+     * @param repositorySqlConditionGroupExpression the repository sql condition group expression
      * @param sqlPageFactory                        the sql page factory
      * @param queryRelation                         the query relation
      * @param limit                                 the limit
      */
     public RepositorySqlQueryConditionGroupQuery(
-            AbstractMulitiRepositorySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?,
-                    ?> repositorySqlConditionGroupExpression,
+            AbstractMulitiRepositorySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> repositorySqlConditionGroupExpression,
             SqlPageFactory sqlPageFactory, RepositorySqlQueryRelation queryRelation, Limit limit) {
         super();
         this.limit = limit;
@@ -98,11 +94,33 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().query(execution.getExecution(), type, execution.getParams());
     }
 
+    /**
+     * List.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @return the list
+     */
     public <E1, E2> List<Tuple2<E1, E2>> list(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().query(execution.getExecution(), type1, type2, prefixes, execution.getParams());
     }
 
+    /**
+     * List.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @return the list
+     */
     public <E1, E2, E3> List<Tuple3<E1, E2, E3>> list(Tuple3<String, String, String> prefixes, Class<E1> type1,
             Class<E2> type2, Class<E3> type3) {
         Execution execution = getExecution();
@@ -110,6 +128,20 @@ public class RepositorySqlQueryConditionGroupQuery {
                 execution.getParams());
     }
 
+    /**
+     * List.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @return the list
+     */
     public <E1, E2, E3, E4> List<Tuple4<E1, E2, E3, E4>> list(Tuple4<String, String, String, String> prefixes,
             Class<E1> type1, Class<E2> type2, Class<E3> type3, Class<E4> type4) {
         Execution execution = getExecution();
@@ -117,6 +149,22 @@ public class RepositorySqlQueryConditionGroupQuery {
                 execution.getParams());
     }
 
+    /**
+     * List.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @return the list
+     */
     public <E1, E2, E3, E4, E5> List<Tuple5<E1, E2, E3, E4, E5>> list(
             Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
             Class<E4> type4, Class<E5> type5) {
@@ -125,6 +173,24 @@ public class RepositorySqlQueryConditionGroupQuery {
                 execution.getParams());
     }
 
+    /**
+     * List.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param <E6>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @param type6    the type 6
+     * @return the list
+     */
     public <E1, E2, E3, E4, E5, E6> List<Tuple6<E1, E2, E3, E4, E5, E6>> list(
             Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
             Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
@@ -190,6 +256,8 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Pagination.
      *
+     * @param <T>  the generic type
+     * @param type the type
      * @return the pagination results
      */
     public <T> PaginationResults<T> pagination(Class<T> type) {
@@ -219,6 +287,16 @@ public class RepositorySqlQueryConditionGroupQuery {
         return pagination;
     }
 
+    /**
+     * Pagination.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @return the pagination results
+     */
     public <E1, E2> PaginationResults<Tuple2<E1, E2>> pagination(Tuple2<String, String> prefixes, Class<E1> type1,
             Class<E2> type2) {
         String oraginalSql = exp.getRoot().expression();
@@ -247,6 +325,18 @@ public class RepositorySqlQueryConditionGroupQuery {
         return pagination;
     }
 
+    /**
+     * Pagination.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @return the pagination results
+     */
     public <E1, E2, E3> PaginationResults<Tuple3<E1, E2, E3>> pagination(Tuple3<String, String, String> prefixes,
             Class<E1> type1, Class<E2> type2, Class<E3> type3) {
         String oraginalSql = exp.getRoot().expression();
@@ -275,6 +365,20 @@ public class RepositorySqlQueryConditionGroupQuery {
         return pagination;
     }
 
+    /**
+     * Pagination.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @return the pagination results
+     */
     public <E1, E2, E3, E4> PaginationResults<Tuple4<E1, E2, E3, E4>> pagination(
             Tuple4<String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
             Class<E4> type4) {
@@ -304,6 +408,22 @@ public class RepositorySqlQueryConditionGroupQuery {
         return pagination;
     }
 
+    /**
+     * Pagination.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @return the pagination results
+     */
     public <E1, E2, E3, E4, E5> PaginationResults<Tuple5<E1, E2, E3, E4, E5>> pagination(
             Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
             Class<E4> type4, Class<E5> type5) {
@@ -333,6 +453,24 @@ public class RepositorySqlQueryConditionGroupQuery {
         return pagination;
     }
 
+    /**
+     * Pagination.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param <E6>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @param type6    the type 6
+     * @return the pagination results
+     */
     public <E1, E2, E3, E4, E5, E6> PaginationResults<Tuple6<E1, E2, E3, E4, E5, E6>> pagination(
             Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
             Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
@@ -365,6 +503,8 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Pagination.
      *
+     * @param <T>       the generic type
+     * @param rowMapper the row mapper
      * @return the pagination results
      */
     public <T> PaginationResults<T> pagination(RowMapper<T> rowMapper) {
@@ -407,6 +547,8 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Single.
      *
+     * @param <E>       the element type
+     * @param rowMapper the row mapper
      * @return the map
      */
     public <E> E single(RowMapper<E> rowMapper) {
@@ -417,6 +559,8 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Single.
      *
+     * @param <E>  the element type
+     * @param type the type
      * @return the map
      */
     public <E> E single(Class<E> type) {
@@ -424,12 +568,34 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().querySingle(execution.getExecution(), type, execution.getParams());
     }
 
+    /**
+     * Single.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @return the tuple 2
+     */
     public <E1, E2> Tuple2<E1, E2> single(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().querySingle(execution.getExecution(), type1, type2, prefixes,
                 execution.getParams());
     }
 
+    /**
+     * Single.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @return the tuple 3
+     */
     public <E1, E2, E3> Tuple3<E1, E2, E3> single(Tuple3<String, String, String> prefixes, Class<E1> type1,
             Class<E2> type2, Class<E3> type3) {
         Execution execution = getExecution();
@@ -437,6 +603,20 @@ public class RepositorySqlQueryConditionGroupQuery {
                 execution.getParams());
     }
 
+    /**
+     * Single.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @return the tuple 4
+     */
     public <E1, E2, E3, E4> Tuple4<E1, E2, E3, E4> single(Tuple4<String, String, String, String> prefixes,
             Class<E1> type1, Class<E2> type2, Class<E3> type3, Class<E4> type4) {
         Execution execution = getExecution();
@@ -444,6 +624,22 @@ public class RepositorySqlQueryConditionGroupQuery {
                 execution.getParams());
     }
 
+    /**
+     * Single.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @return the tuple 5
+     */
     public <E1, E2, E3, E4, E5> Tuple5<E1, E2, E3, E4, E5> single(
             Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
             Class<E4> type4, Class<E5> type5) {
@@ -452,6 +648,24 @@ public class RepositorySqlQueryConditionGroupQuery {
                 prefixes, execution.getParams());
     }
 
+    /**
+     * Single.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param <E6>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @param type6    the type 6
+     * @return the tuple 6
+     */
     public <E1, E2, E3, E4, E5, E6> Tuple6<E1, E2, E3, E4, E5, E6> single(
             Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
             Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
@@ -473,6 +687,8 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * unique.
      *
+     * @param <E>       the element type
+     * @param rowMapper the row mapper
      * @return the map
      */
     public <E> E unique(RowMapper<E> rowMapper) {
@@ -483,6 +699,8 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * unique.
      *
+     * @param <E>  the element type
+     * @param type the type
      * @return the map
      */
     public <E> E unique(Class<E> type) {
@@ -490,12 +708,34 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().queryUnique(execution.getExecution(), type, execution.getParams());
     }
 
+    /**
+     * Unique.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @return the tuple 2
+     */
     public <E1, E2> Tuple2<E1, E2> unique(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryUnique(execution.getExecution(), type1, type2, prefixes,
                 execution.getParams());
     }
 
+    /**
+     * Unique.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @return the tuple 3
+     */
     public <E1, E2, E3> Tuple3<E1, E2, E3> unique(Tuple3<String, String, String> prefixes, Class<E1> type1,
             Class<E2> type2, Class<E3> type3) {
         Execution execution = getExecution();
@@ -503,6 +743,20 @@ public class RepositorySqlQueryConditionGroupQuery {
                 execution.getParams());
     }
 
+    /**
+     * Unique.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @return the tuple 4
+     */
     public <E1, E2, E3, E4> Tuple4<E1, E2, E3, E4> unique(Tuple4<String, String, String, String> prefixes,
             Class<E1> type1, Class<E2> type2, Class<E3> type3, Class<E4> type4) {
         Execution execution = getExecution();
@@ -510,6 +764,22 @@ public class RepositorySqlQueryConditionGroupQuery {
                 execution.getParams());
     }
 
+    /**
+     * Unique.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @return the tuple 5
+     */
     public <E1, E2, E3, E4, E5> Tuple5<E1, E2, E3, E4, E5> unique(
             Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
             Class<E4> type4, Class<E5> type5) {
@@ -518,6 +788,24 @@ public class RepositorySqlQueryConditionGroupQuery {
                 prefixes, execution.getParams());
     }
 
+    /**
+     * Unique.
+     *
+     * @param <E1>     the generic type
+     * @param <E2>     the generic type
+     * @param <E3>     the generic type
+     * @param <E4>     the generic type
+     * @param <E5>     the generic type
+     * @param <E6>     the generic type
+     * @param prefixes the prefixes
+     * @param type1    the type 1
+     * @param type2    the type 2
+     * @param type3    the type 3
+     * @param type4    the type 4
+     * @param type5    the type 5
+     * @param type6    the type 6
+     * @return the tuple 6
+     */
     public <E1, E2, E3, E4, E5, E6> Tuple6<E1, E2, E3, E4, E5, E6> unique(
             Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
             Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {

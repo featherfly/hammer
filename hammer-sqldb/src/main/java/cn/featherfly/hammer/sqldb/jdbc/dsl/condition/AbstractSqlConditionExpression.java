@@ -57,11 +57,12 @@ import cn.featherfly.hammer.sqldb.Constants;
  * abstract sqldb condition expression.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <C>  the generic type
+ * @param <L>  the generic type
+ * @param <C2> the generic type
  */
 public abstract class AbstractSqlConditionExpression<C extends ConditionExpression, L extends LogicExpression<C, L>,
-    C2 extends ConditionConfig<C2>> extends AbstractConditionExpression<C2> implements ParamedExpression {
+        C2 extends ConditionConfig<C2>> extends AbstractConditionExpression<C2> implements ParamedExpression {
     // TODO 后续来处理和AbstractSqlConditionsExpression的关系
     /** The parent. */
     protected L parent;
@@ -73,6 +74,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
 
     // --------------------------------------------------------------------------------------------------------------
 
+    /** The dialect. */
     protected Dialect dialect;
 
     /**
@@ -108,7 +110,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
             Expression last = conditions.get(conditions.size() - 1);
             if (last instanceof LogicOperatorExpression) {
                 throw new BuilderException(BuilderExceptionCode
-                    .createNoConditionBehindCode(((LogicOperatorExpression) last).getLogicOperator().name()));
+                        .createNoConditionBehindCode(((LogicOperatorExpression) last).getLogicOperator().name()));
             }
         }
 
@@ -189,6 +191,11 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
         return params;
     }
 
+    /**
+     * Gets the expressions.
+     *
+     * @return the expressions
+     */
     public List<Expression> getExpressions() {
         return conditions;
     }
@@ -212,7 +219,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     public Expression addCondition(Expression condition) {
         if (previousCondition != null && previousCondition.getClass().isInstance(condition)) {
             throw new BuilderException(
-                BuilderExceptionCode.createNextToSameConditionCode(condition.getClass().getName()));
+                    BuilderExceptionCode.createNextToSameConditionCode(condition.getClass().getName()));
         }
         if (condition instanceof MulitiExpression) {
             for (Expression expression : ((MulitiExpression) condition).getExpressions()) {
@@ -236,14 +243,14 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      */
     @SuppressWarnings("unchecked")
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value,
-        JdbcClassMapping<?> classMapping) {
+            JdbcClassMapping<?> classMapping) {
         List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
         if (value != null) {
             String propertyName = info.getPropertyName();
             if (classMapping != null) {
                 JdbcPropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
                 if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
-                    && propertyMapping.getPropertyType() == value.getClass()) {
+                        && propertyMapping.getPropertyType() == value.getClass()) {
                     for (JdbcPropertyMapping pm : propertyMapping.getPropertyMappings()) {
                         Object obj = BeanUtils.getProperty(value, pm.getPropertyName());
                         // TODO 这里的返回值不是R类型
@@ -270,7 +277,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * @return LogicExpressionist
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
-        JdbcClassMapping<?> classMapping) {
+            JdbcClassMapping<?> classMapping) {
         return supplier(info.getSerializedLambdaInfo(), info.get(), classMapping);
     }
 
@@ -288,8 +295,8 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * @return the tuple 2
      */
     protected <O, T, R> Tuple2<String, String> conditionResult(SerializableFunction<O, T> property,
-        SerializableFunction<T, R> nestedProperty, Object value, JdbcClassMapping<O> classMapping,
-        JdbcMappingFactory factory) {
+            SerializableFunction<T, R> nestedProperty, Object value, JdbcClassMapping<O> classMapping,
+            JdbcMappingFactory factory) {
         SerializedLambdaInfo propertyRepo = LambdaUtils.getLambdaInfo(property);
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(nestedProperty);
         String pn = propertyInfo.getPropertyName();
@@ -340,7 +347,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * @return the tuple 3
      */
     protected <O, T, R> Tuple3<String, String, Object> conditionResult(SerializableSupplier<T> repository,
-        SerializableFunction<T, R> property, JdbcClassMapping<O> classMapping, JdbcMappingFactory factory) {
+            SerializableFunction<T, R> property, JdbcClassMapping<O> classMapping, JdbcMappingFactory factory) {
         // IMPLSOON 这里未测试
         SerializableSupplierLambdaInfo<T> repositoryInfo = LambdaUtils.getSerializableSupplierLambdaInfo(repository);
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(property);
@@ -348,12 +355,12 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
         T obj = repositoryInfo.getValue();
 
         JdbcPropertyMapping pm = classMapping
-            .getPropertyMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyName());
+                .getPropertyMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyName());
         if (pm.getMode() == Mode.EMBEDDED) {
             for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
                 if (spm.getPropertyName().equals(pn)) {
                     return Tuples.of(repositoryInfo.getSerializedLambdaInfo().getPropertyName(),
-                        spm.getRepositoryFieldName(), BeanUtils.getProperty(obj, pn));
+                            spm.getRepositoryFieldName(), BeanUtils.getProperty(obj, pn));
                 }
             }
         }
@@ -361,7 +368,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
         JdbcClassMapping<?> cm = factory.getClassMapping(repositoryInfo.getSerializedLambdaInfo().getPropertyType());
         String column = ClassMappingUtils.getColumnName(pn, cm);
         return Tuples.of(repositoryInfo.getSerializedLambdaInfo().getPropertyName(), column,
-            BeanUtils.getProperty(obj, pn));
+                BeanUtils.getProperty(obj, pn));
     }
 
     // ****************************************************************************************************************
@@ -381,7 +388,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
                 }
             } else if (value instanceof Collection) {
                 param = ((Collection<?>) value).stream().map(op -> getFieldValueOperator(pm, op))
-                    .collect(Collectors.toList());
+                        .collect(Collectors.toList());
                 //                Collection<FieldValueOperator<?>> paramCollection = new ArrayList<>();
                 //                for (Object op : (Collection<?>) value) {
                 //                    paramCollection.add(getFieldValueOperator(pm, op));
@@ -423,7 +430,6 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * Gets the field value operator.
      *
      * @param <R>   the generic type
-     * @param pm    the pm
      * @param value the value
      * @return the field value operator
      */
@@ -431,6 +437,12 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
         return FieldValueOperator.create(value);
     }
 
+    /**
+     * Prepare field value.
+     *
+     * @param value the value
+     * @return the object
+     */
     protected Object prepareFieldValue(Object value) {
         if (value instanceof Field || value instanceof SqlElement || value instanceof Expression) {
             return value;

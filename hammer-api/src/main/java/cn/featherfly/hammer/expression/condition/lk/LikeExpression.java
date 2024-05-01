@@ -22,7 +22,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     /**
      * like value.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
@@ -33,7 +33,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -45,7 +45,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -57,7 +57,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     /**
      * like value.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
@@ -69,7 +69,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -82,7 +82,7 @@ public interface LikeExpression<C extends ConditionExpression, L extends LogicEx
     /**
      * like value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy

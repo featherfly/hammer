@@ -52,8 +52,8 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
     /**
      * contains value. 包含value.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -64,9 +64,9 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
     /**
      * contains value. 包含value.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L co5(SerializableFunction<E5, String> name, String value, MatchStrategy matchStrategy);
@@ -76,7 +76,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -90,7 +90,7 @@ public interface EntityContainsExpressionBase5<E, E2, E3, E4, E5, C extends Cond
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

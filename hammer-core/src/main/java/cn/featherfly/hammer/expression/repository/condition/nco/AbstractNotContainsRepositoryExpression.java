@@ -14,14 +14,13 @@ import cn.featherfly.hammer.expression.repository.condition.MatchStringRepositor
  * abstract not contains repository expression.
  *
  * @author zhongj
- * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 public abstract class AbstractNotContainsRepositoryExpression<C extends ConditionExpression,
-    L extends LogicExpression<C, L>>
-    extends AbstractRepositoryIndexableConditionExpression<MulitiNotContainsExpression<C, L>>
-    implements NotContainsRepositoryExpression {
+        L extends LogicExpression<C, L>>
+        extends AbstractRepositoryIndexableConditionExpression<MulitiNotContainsExpression<C, L>>
+        implements NotContainsRepositoryExpression {
 
     /** The field name. */
     protected String fieldName;
@@ -34,7 +33,7 @@ public abstract class AbstractNotContainsRepositoryExpression<C extends Conditio
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractNotContainsRepositoryExpression(int index, MulitiNotContainsExpression<C, L> expression,
-        Predicate<Object> ignoreStrategy) {
+            Predicate<Object> ignoreStrategy) {
         this(index, null, expression, ignoreStrategy);
     }
 
@@ -47,7 +46,7 @@ public abstract class AbstractNotContainsRepositoryExpression<C extends Conditio
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractNotContainsRepositoryExpression(int index, String fieldName,
-        MulitiNotContainsExpression<C, L> expression, Predicate<Object> ignoreStrategy) {
+            MulitiNotContainsExpression<C, L> expression, Predicate<Object> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
         this.fieldName = fieldName;
     }

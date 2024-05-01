@@ -16,11 +16,11 @@ import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
  * RepositoryNumberFieldExpression.
  *
  * @author zhongj
- * @param <D> the generic type
- * @param <C> the generic type
- * @param <L> the generic type
+ * @param <N> the number type
+ * @param <C> condition expression
+ * @param <L> logic expression
  */
 public interface RepositoryNumberFieldExpression<N extends Number, C extends ConditionExpression,
-    L extends LogicExpression<C, L>> extends NumberFieldExpression<N, C, L> {
+        L extends LogicExpression<C, L>> extends NumberFieldExpression<N, C, L> {
 
 }

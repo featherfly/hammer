@@ -33,7 +33,6 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -43,9 +42,9 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
-     * @param name  the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L le(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy);
@@ -53,7 +52,6 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -63,9 +61,9 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
-     * @param name  the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L le(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy);
@@ -73,7 +71,6 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -83,9 +80,9 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
-     * @param name  the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L le(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy);
@@ -114,7 +111,7 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -124,7 +121,7 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>            number type
+     * @param <E>            the element type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -236,8 +233,9 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
     /**
      * less and equals. 小于等于.
      *
-     * @param name  the name
-     * @param value the value
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L le(SerializableFunction<T, String> name, String value, MatchStrategy matchStrategy);
@@ -247,6 +245,7 @@ public interface EntityLessEqualsExpression<T, C extends ConditionExpression, L 
      *
      * @param name           the name
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

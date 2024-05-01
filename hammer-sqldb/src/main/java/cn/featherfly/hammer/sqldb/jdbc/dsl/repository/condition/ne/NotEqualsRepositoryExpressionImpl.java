@@ -12,23 +12,21 @@ import cn.featherfly.hammer.expression.repository.condition.ne.AbstractNotEquals
  * The Class EqualsEntityExpressionImpl.
  *
  * @author zhongj
- * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 public class NotEqualsRepositoryExpressionImpl<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends AbstractNotEqualsRepositoryExpression<C, L> {
+        extends AbstractNotEqualsRepositoryExpression<C, L> {
 
     /**
      * Instantiates a new equals entity expression impl.
      *
-     * @param index         the index
-     * @param expression    the expression
-     * @param factory       the factory
-     * @param queryRelation the query relation
+     * @param index            the index
+     * @param expression       the expression
+     * @param ignorepPredicate the ignorep predicate
      */
     public NotEqualsRepositoryExpressionImpl(int index, MulitiNotEqualsExpression<C, L> expression,
-        Predicate<Object> ignorepPredicate) {
+            Predicate<Object> ignorepPredicate) {
         super(index, expression, ignorepPredicate);
     }
 }

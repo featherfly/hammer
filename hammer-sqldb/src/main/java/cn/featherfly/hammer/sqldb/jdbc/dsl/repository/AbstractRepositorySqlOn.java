@@ -23,7 +23,7 @@ import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression;
  * @param <B> sql builder
  */
 public class AbstractRepositorySqlOn<O, R extends RepositorySqlRelation<R, B>, B extends SqlBuilder>
-    implements RepositoryOnExpression<O> {
+        implements RepositoryOnExpression<O> {
 
     /** The on result. */
     protected final O onResult;
@@ -57,7 +57,7 @@ public class AbstractRepositorySqlOn<O, R extends RepositorySqlRelation<R, B>, B
     /**
      * Instantiates a new abstract repository sql on.
      *
-     * @param joinTable   the join table
+     * @param repository  the repository
      * @param onResult    the query relate
      * @param sqlRelation the query relation
      */

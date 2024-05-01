@@ -114,7 +114,7 @@ public interface EntityLessEqualsExpressionBase3<T, T2, T3, C extends ConditionE
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -124,7 +124,7 @@ public interface EntityLessEqualsExpressionBase3<T, T2, T3, C extends ConditionE
     /**
      * less and equals. 小于等于.
      *
-     * @param <N>            number type
+     * @param <E>            the element type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -236,8 +236,9 @@ public interface EntityLessEqualsExpressionBase3<T, T2, T3, C extends ConditionE
     /**
      * less and equals. 小于等于.
      *
-     * @param name  the name
-     * @param value the value
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L le3(SerializableFunction<T3, String> name, String value, MatchStrategy matchStrategy);
@@ -247,6 +248,7 @@ public interface EntityLessEqualsExpressionBase3<T, T2, T3, C extends ConditionE
      *
      * @param name           the name
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

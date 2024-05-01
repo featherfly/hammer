@@ -65,9 +65,9 @@ public interface EntityNotLikeExpressionBase6<E, E2, E3, E4, E5, E6, C extends C
     /**
      * not like value.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L nl6(SerializableFunction<E6, String> name, String value, MatchStrategy matchStrategy);
@@ -77,7 +77,7 @@ public interface EntityNotLikeExpressionBase6<E, E2, E3, E4, E5, E6, C extends C
      *
      * @param name           the name 参数名称
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -91,7 +91,7 @@ public interface EntityNotLikeExpressionBase6<E, E2, E3, E4, E5, E6, C extends C
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

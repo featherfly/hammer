@@ -71,13 +71,12 @@ import cn.featherfly.hammer.expression.repository.condition.AbstractRepositoryIn
  * The Class AbstractEqualsRepositoryExpression.
  *
  * @author zhongj
- * @param <T> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends AbstractRepositoryIndexableConditionExpression<MulitiEqualsExpression<C, L>>
-    implements EqualsRepositoryExpression {
+        extends AbstractRepositoryIndexableConditionExpression<MulitiEqualsExpression<C, L>>
+        implements EqualsRepositoryExpression {
 
     /**
      * Instantiates a new abstract equals entity expression.
@@ -87,7 +86,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractEqualsRepositoryExpression(int index, MulitiEqualsExpression<C, L> expression,
-        Predicate<Object> ignoreStrategy) {
+            Predicate<Object> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
     }
 
@@ -136,7 +135,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      */
     @Override
     public <T, N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value,
-        Predicate<N> ignoreStrategy) {
+            Predicate<N> ignoreStrategy) {
         expression.eq(index, name, value, ignoreStrategy);
     }
 
@@ -145,7 +144,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      */
     @Override
     public <T, D extends Date> void accept(SerializableToDateFunction<T, D> name, D value,
-        Predicate<D> ignoreStrategy) {
+            Predicate<D> ignoreStrategy) {
         expression.eq(index, name, value, ignoreStrategy);
     }
 
@@ -154,7 +153,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      */
     @Override
     public <T> void accept(SerializableToLocalTimeFunction<T> name, LocalTime value,
-        Predicate<LocalTime> ignoreStrategy) {
+            Predicate<LocalTime> ignoreStrategy) {
         expression.eq(index, name, value, ignoreStrategy);
     }
 
@@ -163,7 +162,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      */
     @Override
     public <T> void accept(SerializableToLocalDateFunction<T> name, LocalDate value,
-        Predicate<LocalDate> ignoreStrategy) {
+            Predicate<LocalDate> ignoreStrategy) {
         expression.eq(index, name, value, ignoreStrategy);
     }
 
@@ -172,7 +171,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      */
     @Override
     public <T> void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-        Predicate<LocalDateTime> ignoreStrategy) {
+            Predicate<LocalDateTime> ignoreStrategy) {
         expression.eq(index, name, value, ignoreStrategy);
     }
 
@@ -181,7 +180,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      */
     @Override
     public <T> void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
+            Predicate<String> ignoreStrategy) {
         expression.eq(index, name, value, ignoreStrategy);
     }
 
@@ -334,7 +333,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      */
     @Override
     public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
+            Predicate<String> ignoreStrategy) {
         expression.eq(index, property, ignoreStrategy);
     }
 
@@ -346,7 +345,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public <V> SetValueMatchStrategyExpression<V> field(String name) {
         return new SetValueMatchStrategyExpressionImpl<>(ignoreStrategy,
-            (value, match, ignore) -> expression.eq(index, name, value, match, ignore));
+                (value, match, ignore) -> expression.eq(index, name, value, match, ignore));
     }
 
     /**
@@ -371,7 +370,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public SetDoubleExpression fieldAsDouble(String name) {
         return new SetDoubleExpressionImpl(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -380,7 +379,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public <N extends Number> SetNumberExpression<N> fieldAsNumber(String name) {
         return new SetNumberExpressionImpl<>(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -389,7 +388,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public <N extends Number> SetNumberExpression<N> fieldAsNumber(String name, Class<N> type) {
         return new SetNumberExpressionImpl<>(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -398,7 +397,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public <E extends Enum<E>> SetEnumExpression<E> fieldAsEnum(String name) {
         return new SetEnumExpressionImpl<>(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -407,7 +406,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public <E extends Enum<E>> SetEnumExpression<E> fieldAsEnum(String name, Class<E> type) {
         return new SetEnumExpressionImpl<>(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -416,7 +415,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public <D extends Date> SetDateExpression<D> fieldAsDate(String name) {
         return new SetDateExpressionImpl<>(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -425,7 +424,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public <D extends Date> SetDateExpression<D> fieldAsDate(String name, Class<D> type) {
         return new SetDateExpressionImpl<>(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -434,7 +433,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public SetLocalDateExpression fieldAsLocalDate(String name) {
         return new SetLocalDateExpressionImpl(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -443,7 +442,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public SetLocalTimeExpression fieldAsLocalTime(String name) {
         return new SetLocalTimeExpressionImpl(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -452,7 +451,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public SetLocalDateTimeExpression fieldAsLocalDateTime(String name) {
         return new SetLocalDateTimeExpressionImpl(ignoreStrategy,
-            (value, ignore) -> expression.eq(index, name, value, ignore));
+                (value, ignore) -> expression.eq(index, name, value, ignore));
     }
 
     /**
@@ -461,6 +460,6 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
     @Override
     public SetStringExpression fieldAsString(String name) {
         return new SetStringExpressionImpl(ignoreStrategy,
-            (value, match, ignore) -> expression.eq(index, name, value, match, ignore));
+                (value, match, ignore) -> expression.eq(index, name, value, match, ignore));
     }
 }

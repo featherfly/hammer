@@ -2275,6 +2275,7 @@ public abstract class AbstractJdbc implements Jdbc {
     /**
      * Sets the params.
      *
+     * @param <T>       the generic type
      * @param call      the CallableStatement
      * @param outParams the out params
      * @param args      the args
@@ -2407,14 +2408,12 @@ public abstract class AbstractJdbc implements Jdbc {
      * Release connection.
      *
      * @param connection the connection
-     * @param dataSource the data source
      */
     protected abstract void releaseConnection(Connection connection);
 
     /**
      * Gets the connection.
      *
-     * @param dataSource the data source
      * @return the connection
      */
     protected abstract Connection getConnection();

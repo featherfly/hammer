@@ -22,13 +22,12 @@ import cn.featherfly.hammer.expression.repository.condition.AbstractRepositoryIn
  * abstract is null repository expression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 public abstract class AbstractIsNullRepositoryExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends AbstractRepositoryIndexableConditionExpression<MulitiIsNullExpression<C, L>>
-    implements IsNullRepositoryExpression {
+        extends AbstractRepositoryIndexableConditionExpression<MulitiIsNullExpression<C, L>>
+        implements IsNullRepositoryExpression {
 
     /**
      * Instantiates a new abstract is null entity expression.
@@ -38,7 +37,7 @@ public abstract class AbstractIsNullRepositoryExpression<C extends ConditionExpr
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractIsNullRepositoryExpression(int index, MulitiIsNullExpression<C, L> expression,
-        Predicate<Object> ignoreStrategy) {
+            Predicate<Object> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
     }
 

@@ -10,8 +10,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
  * abstract entity sql query entity properties.
  *
  * @author zhongj
- * @param <V> the query result type
- * @param <P> the generic type
+ * @param <E> the element type
  */
 public abstract class AbstractEntitySqlQuery<E> extends AbstractEntitySqlQueryBase<E, EntityQueryLimitExecutor<E>> {
 
@@ -27,7 +26,6 @@ public abstract class AbstractEntitySqlQuery<E> extends AbstractEntitySqlQueryBa
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param <E>                    the element type
      * @param factory                the factory
      * @param sqlPageFactory         the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation

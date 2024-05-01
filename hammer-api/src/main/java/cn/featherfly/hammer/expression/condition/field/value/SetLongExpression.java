@@ -14,8 +14,6 @@ import java.util.function.LongPredicate;
  * set long expression.
  *
  * @author zhongj
- * @param <C> the generic type
- * @param <L> the generic type
  */
 public interface SetLongExpression {
 

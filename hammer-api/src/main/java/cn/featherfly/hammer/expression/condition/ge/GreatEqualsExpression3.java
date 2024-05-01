@@ -1025,8 +1025,9 @@ public interface GreatEqualsExpression3<C extends ConditionExpression, L extends
     /**
      * great equals. 大于等于.
      *
-     * @param field the field
-     * @param value the value
+     * @param field         the field
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     default L ge3(AliasField field, String value, MatchStrategy matchStrategy) {

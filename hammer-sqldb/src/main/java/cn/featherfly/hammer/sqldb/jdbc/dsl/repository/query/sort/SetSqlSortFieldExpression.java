@@ -17,7 +17,6 @@ import cn.featherfly.hammer.expression.query.sort.SetSortFieldExpression;
  * SqlSortEntity.
  *
  * @author zhongj
- * @param <E> the element type
  */
 public class SetSqlSortFieldExpression implements SetSortFieldExpression {
 
@@ -30,9 +29,9 @@ public class SetSqlSortFieldExpression implements SetSortFieldExpression {
     /**
      * Instantiates a new sql sort entity.
      *
+     * @param sortBuilder  the sort builder
      * @param queryAlias   the query alias
      * @param sortOperator the sort operator
-     * @param classMapping the class mapping
      */
     public SetSqlSortFieldExpression(SortBuilder sortBuilder, String queryAlias, SortOperator sortOperator) {
         super();
@@ -41,6 +40,9 @@ public class SetSqlSortFieldExpression implements SetSortFieldExpression {
         this.sortOperator = sortOperator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetSortFieldExpression field(String field) {
         if (sortOperator == SortOperator.ASC) {

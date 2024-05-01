@@ -97,9 +97,8 @@ public interface Hammer extends TplExecutor {
     <E> int[] save(List<E> entities, int batchSize);
 
     /**
-     * update entity, update all values. equal invoke method
-     * {@link #update(Object, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update entity, update all values. equal invoke method {@link #update(Object, IgnoreStrategy)} with params
+     * (entity, IgnoreStrategy.NONE)
      *
      * @param <E>    generic type
      * @param entity entity to update
@@ -145,9 +144,8 @@ public interface Hammer extends TplExecutor {
     <E> E updateFetch(E entity, UnaryOperator<E> updateOperator);
 
     /**
-     * update all values for each entity in entity array. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update all values for each entity in entity array. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * params (entity, IgnoreStrategy.NONE)
      *
      * @param <E>      generic type
      * @param entities entity array to update
@@ -156,9 +154,8 @@ public interface Hammer extends TplExecutor {
     <E> int[] update(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * update all values for each entity in entity list. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update all values for each entity in entity list. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * params (entity, IgnoreStrategy.NONE)
      *
      * @param <E>      generic type
      * @param entities entity list to update
@@ -167,9 +164,8 @@ public interface Hammer extends TplExecutor {
     <E> int[] update(List<E> entities);
 
     /**
-     * update all values for each entity in entity list. equal invoke method
-     * {@link #update(List, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.NONE)
+     * update all values for each entity in entity list. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * params (entity, IgnoreStrategy.NONE)
      *
      * @param <E>       generic type
      * @param entities  entity list to update
@@ -189,9 +185,8 @@ public interface Hammer extends TplExecutor {
     <E> int[] update(List<E> entities, IgnoreStrategy ignoreStrategy);
 
     /**
-     * update values ignore null or empty(string, array, collectoin, map) value.
-     * equal invoke method {@link #update(Object, IgnorePolicy)} with params
-     * (entity, IgnorePolicy.EMPTY)
+     * update values ignore null or empty(string, array, collectoin, map) value. equal invoke method
+     * {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
      *
      * @param <E>    generic type
      * @param entity entity to merge
@@ -200,10 +195,8 @@ public interface Hammer extends TplExecutor {
     <E> int merge(E entity);
 
     /**
-     * update values ignore null or empty(string, array, collectoin, map) value
-     * for each entity in entity array. equal invoke method
-     * {@link #update(Object, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.EMPTY)
+     * update values ignore null or empty(string, array, collectoin, map) value for each entity in entity array. equal
+     * invoke method {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
      *
      * @param <E>      generic type
      * @param entities entity array to merge
@@ -212,10 +205,8 @@ public interface Hammer extends TplExecutor {
     <E> int[] merge(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * update values ignore null or empty(string, array, collectoin, map) value
-     * for each entity in entity list. equal invoke method
-     * {@link #update(Object, IgnorePolicy)} with params (entity,
-     * IgnorePolicy.EMPTY)
+     * update values ignore null or empty(string, array, collectoin, map) value for each entity in entity list. equal
+     * invoke method {@link #update(List, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
      *
      * @param <E>      generic type
      * @param entities entity list to merge
@@ -463,8 +454,7 @@ public interface Hammer extends TplExecutor {
     //    <E> TypeQueryEntity queryType(Class<E> type);
 
     /**
-     * create EntityQueryEntity for entityType. entity type must be a entity
-     * object, otherwise throws HammerException
+     * create EntityQueryEntity for entityType. entity type must be a entity object, otherwise throws HammerException
      *
      * @param <E>        entity generic type
      * @param entityType query for entity type

@@ -32,12 +32,14 @@ public class JdbcFactoryImpl implements JdbcFactory {
     /** The sql type mapping manager. */
     protected SqlTypeMappingManager sqlTypeMappingManager;
 
+    /** The metadata. */
     protected DatabaseMetadata metadata;
 
     /**
      * Instantiates a new jdbc factory impl.
      *
      * @param dialect               the dialect
+     * @param metadata              the metadata
      * @param sqlTypeMappingManager the sql type mapping manager
      */
     public JdbcFactoryImpl(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager sqlTypeMappingManager) {

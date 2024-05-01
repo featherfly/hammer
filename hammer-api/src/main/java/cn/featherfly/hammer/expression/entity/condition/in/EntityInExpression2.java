@@ -24,7 +24,7 @@ public interface EntityInExpression2<E, E2, C extends ConditionExpression, L ext
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param entitiesInFunction the entities in function
+     * @param inEntityExpressions the in entity expressions
      * @return the LogicExpression
      */
     L in(Consumer<Tuple2<InEntityExpression<E>, InEntityExpression<E2>>> inEntityExpressions);
@@ -32,7 +32,7 @@ public interface EntityInExpression2<E, E2, C extends ConditionExpression, L ext
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param entitiesInFunction the entities in function
+     * @param inEntityExpressions the in entity expressions
      * @return the LogicExpression
      */
     L in(BiConsumer<InEntityExpression<E>, InEntityExpression<E2>> inEntityExpressions);

@@ -91,7 +91,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
     /**
      * contains value. 包含value.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
@@ -102,7 +102,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -114,7 +114,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -126,7 +126,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
     /**
      * contains value. 包含value.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
@@ -138,7 +138,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -151,7 +151,7 @@ public interface ContainsExpression3<C extends ConditionExpression, L extends Lo
     /**
      * contains value. 包含value.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy

@@ -29,7 +29,7 @@ public interface Query {
     /**
      * start query dsl for repository.
      *
-     * @param repositoryFunction the repository function
+     * @param fetchRepositoryFunction the fetch repository function
      * @return generic type of QueryEntityExpression
      */
     default RepositoryQueryFetch find(Function<RepositoryFetcher, Repository> fetchRepositoryFunction) {

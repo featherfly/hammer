@@ -10,12 +10,16 @@ import cn.featherfly.common.structure.ChainMapImpl;
  */
 public class TplConfigDebugMessage extends AbstractDebugMessage<TplConfigDebugMessage> {
 
+    /** The column template name. */
     private String columnTemplateName = "TemplateName";
 
+    /** The column id. */
     private String columnId = "Id";
 
+    /** The column namespace. */
     private String columnNamespace = "Namespace";
 
+    /** The column file. */
     private String columnFile = "File";
 
     /**
@@ -34,6 +38,7 @@ public class TplConfigDebugMessage extends AbstractDebugMessage<TplConfigDebugMe
      * @param templateName the template name
      * @param id           the id
      * @param namespace    the namespace
+     * @param file         the file
      * @return the tpl config debug message
      */
     public TplConfigDebugMessage addConfig(String templateName, String id, String namespace, String file) {

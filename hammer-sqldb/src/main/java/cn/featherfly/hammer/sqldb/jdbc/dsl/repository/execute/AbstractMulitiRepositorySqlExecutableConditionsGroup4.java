@@ -12,27 +12,24 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
  * sql condition group expression4. sql条件逻辑组表达式4.
  *
  * @author zhongj
- * @param <T> the element type
- * @param <R> the generic type
- * @param <B> the generic type
- * @param <C> the generic type
+ * @param <C2> the generic type
+ * @param <S>  the generic type
+ * @param <B>  the generic type
  */
 public abstract class AbstractMulitiRepositorySqlExecutableConditionsGroup4<C2 extends ExecutableConditionConfig<C2>,
-    S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
-    AbstractMulitiRepositorySqlConditionsGroupExpression4<RepositoryExecutableConditionsGroup4<C2>,
-        RepositoryExecutableConditionsGroupLogic4<C2>, C2, S, B>
-    implements RepositoryExecutableConditionsGroup4<C2>, RepositoryExecutableConditionsGroupLogic4<C2> {
+        S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
+        AbstractMulitiRepositorySqlConditionsGroupExpression4<RepositoryExecutableConditionsGroup4<C2>, RepositoryExecutableConditionsGroupLogic4<C2>, C2, S, B>
+        implements RepositoryExecutableConditionsGroup4<C2>, RepositoryExecutableConditionsGroupLogic4<C2> {
 
     /**
-     * Instantiates a new abstract muliti sql repository executable conditions
-     * group 4.
+     * Instantiates a new abstract muliti sql repository executable conditions group 4.
      *
      * @param parent             the parent
      * @param index              the index
      * @param repositoryRelation the repository relation
      */
     protected AbstractMulitiRepositorySqlExecutableConditionsGroup4(
-        RepositoryExecutableConditionsGroupLogic4<C2> parent, int index, S repositoryRelation) {
+            RepositoryExecutableConditionsGroupLogic4<C2> parent, int index, S repositoryRelation) {
         // 删除，和更新不需要分页
         super(parent, index, repositoryRelation);
     }

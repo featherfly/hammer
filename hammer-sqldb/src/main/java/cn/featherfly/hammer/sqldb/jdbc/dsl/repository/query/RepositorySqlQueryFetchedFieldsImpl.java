@@ -34,21 +34,18 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.relation.RepositoryS
  *
  * @author zhongj
  */
-public class RepositorySqlQueryFetchedFieldsImpl extends AbstractRepositorySqlQueryFetch<RepositoryQueryFetchedFields,
-    RepositoryQueryFetchedFields, RepositoryQueryConditionsGroup, QueryLimitExecutor>
-    implements RepositorySqlQueryFetchedFields {
+public class RepositorySqlQueryFetchedFieldsImpl extends
+        AbstractRepositorySqlQueryFetch<RepositoryQueryFetchedFields, RepositoryQueryFetchedFields, RepositoryQueryConditionsGroup, QueryLimitExecutor>
+        implements RepositorySqlQueryFetchedFields {
 
     /**
      * Instantiates a new sql query entity properties.
      *
-     * @param queryRelation    the repository relation
-     * @param databaseMetadata the database metadata
-     * @param sqlPageFactory   the sql page factory
-     * @param aliasManager     aliasManager
-     * @param tableName        tableName
+     * @param queryRelation  the repository relation
+     * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryFetchedFieldsImpl(RepositorySqlQueryRelation queryRelation,
-        SqlPageFactory sqlPageFactory) {
+            SqlPageFactory sqlPageFactory) {
         super(queryRelation, sqlPageFactory);
     }
 
@@ -74,7 +71,7 @@ public class RepositorySqlQueryFetchedFieldsImpl extends AbstractRepositorySqlQu
      */
     @Override
     public RepositoryQueryConditionsGroupLogic where(
-        Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> function) {
+            Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> function) {
         RepositorySqlQueryExpression expr = new RepositorySqlQueryExpression(queryRelation, sqlPageFactory);
         if (function != null) {
             // function.apply(expr);
@@ -87,8 +84,8 @@ public class RepositorySqlQueryFetchedFieldsImpl extends AbstractRepositorySqlQu
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic,
-        RepositoryQuerySortExpression> configure(Consumer<QueryConfig> configure) {
+    public RepositoryQueryExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, RepositoryQuerySortExpression> configure(
+            Consumer<QueryConfig> configure) {
         if (configure == null) {
             return this;
         }
@@ -179,7 +176,7 @@ public class RepositorySqlQueryFetchedFieldsImpl extends AbstractRepositorySqlQu
      */
     @Override
     public RepositoryQueryFetchedFields fetch(AggregateFunction aggregateFunction, boolean distinct, String columnName,
-        String columnAlias) {
+            String columnAlias) {
         queryRelation.getBuilder().addColumn(aggregateFunction, distinct, columnName, columnAlias);
         return this;
     }
@@ -188,9 +185,8 @@ public class RepositorySqlQueryFetchedFieldsImpl extends AbstractRepositorySqlQu
      * {@inheritDoc}
      */
     @Override
-    public RepositoryOnExpression1<RepositoryQueryRelate1R> join(
-        Repository repository) {
+    public RepositoryOnExpression1<RepositoryQueryRelate1R> join(Repository repository) {
         return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1R(queryRelation, sqlPageFactory), queryRelation,
-            repository, relate -> ((RepositorySqlQueryRelate1R) relate).setIdName());
+                repository, relate -> ((RepositorySqlQueryRelate1R) relate).setIdName());
     }
 }

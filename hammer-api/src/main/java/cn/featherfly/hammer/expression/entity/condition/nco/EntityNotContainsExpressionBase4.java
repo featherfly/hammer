@@ -39,8 +39,8 @@ public interface EntityNotContainsExpressionBase4<E, E2, E3, E4, C extends Condi
     /**
      * not contains value. 不包含value.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,8 +51,8 @@ public interface EntityNotContainsExpressionBase4<E, E2, E3, E4, C extends Condi
     /**
      * not contains value. 不包含value.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -63,9 +63,9 @@ public interface EntityNotContainsExpressionBase4<E, E2, E3, E4, C extends Condi
     /**
      * not contains value. 不包含value.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L nco4(SerializableFunction<E4, String> name, String value, MatchStrategy matchStrategy);
@@ -89,7 +89,7 @@ public interface EntityNotContainsExpressionBase4<E, E2, E3, E4, C extends Condi
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

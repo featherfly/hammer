@@ -17,11 +17,12 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotStartWithExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryNotStartWithExpressionBase2<C, L> {
+        extends RepositoryNotStartWithExpressionBase2<C, L> {
+
     /**
      * not start with.
      *
-     * @param startWithExpressions the start with expressions
+     * @param notStartWithExpressions the not start with expressions
      * @return the LogicExpression
      */
     L nsw(Consumer<Tuple2<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression>> notStartWithExpressions);
@@ -29,7 +30,7 @@ public interface RepositoryNotStartWithExpression2<C extends ConditionExpression
     /**
      * not start with.
      *
-     * @param startWithExpressions the start with expressions
+     * @param notStartWithExpressions the not start with expressions
      * @return the LogicExpression
      */
     L nsw(BiConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression> notStartWithExpressions);

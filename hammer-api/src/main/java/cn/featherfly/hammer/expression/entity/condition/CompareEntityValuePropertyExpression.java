@@ -25,7 +25,7 @@ import cn.featherfly.hammer.expression.condition.field.value.SetNumberExpression
 import cn.featherfly.hammer.expression.condition.field.value.SetStringExpression;
 
 /**
- * The Interface CompareEntityValuePropertyExpression.
+ * compare entity value property expression.
  *
  * @author zhongj
  * @param <T> the element type
@@ -35,7 +35,6 @@ public interface CompareEntityValuePropertyExpression<T> {
     /**
      * entity compare function property expression.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return entity compare function property expression.
      */
@@ -44,7 +43,6 @@ public interface CompareEntityValuePropertyExpression<T> {
     /**
      * entity compare function property expression.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return entity compare function property expression.
      */
@@ -53,7 +51,6 @@ public interface CompareEntityValuePropertyExpression<T> {
     /**
      * entity compare function property expression.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return entity compare function property expression.
      */
@@ -104,7 +101,7 @@ public interface CompareEntityValuePropertyExpression<T> {
     /**
      * entity compare function property expression.
      *
-     * @param <N>  the generic type
+     * @param <E>  the element type
      * @param name the name
      * @return entity compare function property expression.
      */

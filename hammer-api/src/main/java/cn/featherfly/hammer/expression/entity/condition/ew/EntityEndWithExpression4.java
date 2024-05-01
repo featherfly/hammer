@@ -606,14 +606,13 @@ public interface EntityEndWithExpression4<E, E2, E3, E4, C extends ConditionExpr
      * @param endWithEntityExpressions the end with entity expressions
      * @return the LogicExpression
      */
-    L ew(Consumer<Tuple4<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
-            EndWithEntityExpression<E4>>> endWithEntityExpressions);
+    L ew(Consumer<Tuple4<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>>> endWithEntityExpressions);
 
     /**
      * end with value. 以value结尾.
      *
+     * @param endWithEntityExpressions the end with entity expressions
      * @return the LogicExpression
      */
-    L ew(FourArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
-            EndWithEntityExpression<E4>> endWithEntityExpressions);
+    L ew(FourArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>> endWithEntityExpressions);
 }

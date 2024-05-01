@@ -23,13 +23,12 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EqualsExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>> {
+
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq4(String name, boolean value);
@@ -37,10 +36,8 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq4(String name, char value);
@@ -48,7 +45,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -59,10 +55,8 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq4(String name, int value);
@@ -70,7 +64,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -81,10 +74,8 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq4(String name, long value);
@@ -92,7 +83,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -103,10 +93,8 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     L eq4(String name, double value);
@@ -114,7 +102,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -136,7 +123,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -149,7 +135,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -172,7 +157,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -186,7 +170,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -198,6 +181,7 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
+     * @param <R>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -243,7 +227,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -256,7 +239,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -281,7 +263,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -295,7 +276,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -309,6 +289,7 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
+     * @param <R>   the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -357,7 +338,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -370,7 +350,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -395,7 +374,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -409,7 +387,6 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
      * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -423,6 +400,7 @@ public interface EqualsExpression4<C extends ConditionExpression, L extends Logi
     /**
      * equals. 等于.
      *
+     * @param <R>   the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
