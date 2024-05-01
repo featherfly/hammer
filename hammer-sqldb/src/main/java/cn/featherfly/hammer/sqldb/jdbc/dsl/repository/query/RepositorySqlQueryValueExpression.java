@@ -13,13 +13,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation
  */
 public class RepositorySqlQueryValueExpression extends AbstractMulitiRepositorySqlQueryValueConditionsGroupExpression {
 
-    //    /** The select builder. */
-    //    private SqlSelectBasicBuilder selectBuilder;
-
     /**
      * Instantiates a new repository sql query value expression.
      *
-     * @param tableName      the table name
      * @param queryRelation  the query relation
      * @param sqlPageFactory the sql page factory
      */

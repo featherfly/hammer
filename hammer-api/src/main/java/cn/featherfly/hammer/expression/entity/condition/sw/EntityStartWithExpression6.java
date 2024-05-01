@@ -25,6 +25,22 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public interface EntityStartWithExpression6<E, E2, E3, E4, E5, E6, C extends ConditionExpression,
         L extends LogicExpression<C, L>> extends EntityStartWithExpressionBase6<E, E2, E3, E4, E5, E6, C, L> {
 
+    /**
+     * start with value. 以value开始.
+     *
+     * @param startWithEntityExpressions the start with entity expressions
+     * @return the LogicExpression
+     */
+    L sw(Consumer<Tuple6<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>, StartWithEntityExpression<E6>>> startWithEntityExpressions);
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param startWithEntityExpressions the start with entity expressions
+     * @return the LogicExpression
+     */
+    L sw(SixArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>, StartWithEntityExpression<E6>> startWithEntityExpressions);
+
     //    /**
     //     * start with value. 以value开始.
     //     *
@@ -983,23 +999,4 @@ public interface EntityStartWithExpression6<E, E2, E3, E4, E5, E6, C extends Con
     //                            QueryEntityRepository<E4>, QueryEntityRepository<E5>, QueryEntityRepository<E6>>,
     //                    QueryEntityRepository<E6>> entities,
     //            SerializableSupplier6<R> fetchEntityValue, SerializableFunction<R, String> fetchEntityProperty);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param startWithEntityExpressions the start with entity expressions
-     * @return the LogicExpression
-     */
-    L sw(Consumer<Tuple6<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
-            StartWithEntityExpression<E4>, StartWithEntityExpression<E5>,
-            StartWithEntityExpression<E6>>> startWithEntityExpressions);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @return the LogicExpression
-     */
-    L sw(SixArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
-            StartWithEntityExpression<E4>, StartWithEntityExpression<E5>,
-            StartWithEntityExpression<E6>> startWithEntityExpressions);
 }

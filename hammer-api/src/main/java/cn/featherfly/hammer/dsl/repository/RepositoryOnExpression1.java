@@ -22,7 +22,7 @@ public interface RepositoryOnExpression1<O> extends RepositoryOnExpression<O> {
     /**
      * On.
      *
-     * @param onExpression the on expression. <br/>
+     * @param onExpression the on expression. <br>
      *                     <ol>
      *                     <li>filterable repository field expresion
      *                     <li>current join repository field expression

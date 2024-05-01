@@ -14,34 +14,41 @@ import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 
 /**
- * <p>
- * SqlDbTemplateEnv
- * </p>
+ * SqlDbTemplateEnv .
  *
  * @author zhongj
+ * @param <D> the generic type
+ * @param <M> the generic type
  */
 public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M extends TemplateMethod>
         implements TemplateProcessEnv<D, M> {
 
+    /** The condition params manager. */
     protected ConditionParamsManager conditionParamsManager;
 
+    /** The properties mapping manager. */
     protected PropertiesMappingManager propertiesMappingManager;
 
+    /** The result types. */
     protected Class<?>[] resultTypes;
 
+    /** The mapping factory. */
     protected JdbcMappingFactory mappingFactory;
 
+    /** The config factory. */
     protected TplConfigFactory configFactory;
 
+    /** The dialect. */
     protected Dialect dialect;
 
     /**
+     * Instantiates a new sql db template process env.
      */
     public SqlDbTemplateProcessEnv() {
     }
 
     /**
-     * get configFactory
+     * get configFactory.
      *
      * @return configFactory
      */
@@ -50,7 +57,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * set configFactory
+     * set configFactory.
      *
      * @param configFactory configFactory
      */
@@ -59,7 +66,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * set mappingFactory
+     * set mappingFactory.
      *
      * @param mappingFactory mappingFactory
      */
@@ -68,7 +75,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * get manager
+     * get manager.
      *
      * @return manager
      */
@@ -77,16 +84,16 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * set manager
+     * set manager.
      *
-     * @param manager manager
+     * @param conditionParamsManager the new condition params manager
      */
     public void setConditionParamsManager(ConditionParamsManager conditionParamsManager) {
         this.conditionParamsManager = conditionParamsManager;
     }
 
     /**
-     * get propertiesMappingManager value
+     * get propertiesMappingManager value.
      *
      * @return propertiesMappingManager
      */
@@ -95,7 +102,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * set propertiesMappingManager value
+     * set propertiesMappingManager value.
      *
      * @param propertiesMappingManager propertiesMappingManager
      */
@@ -122,7 +129,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * get mappingFactory
+     * get mappingFactory.
      *
      * @return mappingFactory
      */
@@ -131,7 +138,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * get dialect
+     * get dialect.
      *
      * @return dialect
      */
@@ -140,7 +147,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * set dialect
+     * set dialect.
      *
      * @param dialect dialect
      */
@@ -182,49 +189,49 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     }
 
     /**
-     * createWhereDirective
+     * createWhereDirective.
      *
      * @return WhereDirective
      */
     protected abstract D createWhereDirective();
 
     /**
-     * createAndDirective
+     * createAndDirective.
      *
      * @return AndDirective
      */
     protected abstract D createAndDirective();
 
     /**
-     * createOrDirective
+     * createOrDirective.
      *
      * @return OrDirective
      */
     protected abstract D createOrDirective();
 
     /**
-     * createPropertiesDirective
+     * createPropertiesDirective.
      *
      * @return PropertiesDirective
      */
     protected abstract D createPropertiesDirective();
 
     /**
-     * createTemplateIncludeDirective
+     * createTemplateIncludeDirective.
      *
      * @return IncludeDirective
      */
     protected abstract D createIncludeDirective();
 
     /**
-     * createWrapDirective
+     * createWrapDirective.
      *
      * @return WrapDirective
      */
     protected abstract D createWrapDirective();
 
     /**
-     * createWrapMethode
+     * createWrapMethode.
      *
      * @return WrapMethode
      */

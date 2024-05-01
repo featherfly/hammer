@@ -35,7 +35,6 @@ public interface BetweenAndEntityValuePropertyExpression<T> {
     /**
      * entity between and function property expression.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return set between and values expression.
      */
@@ -44,7 +43,6 @@ public interface BetweenAndEntityValuePropertyExpression<T> {
     /**
      * entity between and function property expression.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return set between and values expression.
      */
@@ -53,7 +51,6 @@ public interface BetweenAndEntityValuePropertyExpression<T> {
     /**
      * entity between and function property expression.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return set between and values expression.
      */

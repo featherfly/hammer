@@ -38,6 +38,7 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      *
      * @param connection the connection
      * @param dialect    the dialect
+     * @param metadata   the metadata
      * @param manager    the manager
      */
     public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager) {
@@ -50,6 +51,7 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param connection       the connection
      * @param defaultIsolation the default isolation
      * @param dialect          the dialect
+     * @param metadata         the metadata
      * @param manager          the manager
      */
     public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,

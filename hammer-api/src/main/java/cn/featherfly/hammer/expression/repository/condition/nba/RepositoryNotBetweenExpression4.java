@@ -17,22 +17,21 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type LogicExpression
  */
 public interface RepositoryNotBetweenExpression4<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryNotBetweenExpressionBase4<C, L> {
-    /**
-     * not between and.
-     *
-     * @param inExpressions the in expressions
-     * @return the LogicExpression
-     */
-    L nba(Consumer<Tuple4<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
-        NotBetweenRepositoryExpression, NotBetweenRepositoryExpression>> notBetweenExpressions);
+        extends RepositoryNotBetweenExpressionBase4<C, L> {
 
     /**
      * not between and.
      *
-     * @param inExpressions the in expressions
+     * @param notBetweenExpressions the not between expressions
      * @return the LogicExpression
      */
-    L nba(FourArgusConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
-        NotBetweenRepositoryExpression, NotBetweenRepositoryExpression> notBetweenExpressions);
+    L nba(Consumer<Tuple4<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression>> notBetweenExpressions);
+
+    /**
+     * not between and.
+     *
+     * @param notBetweenExpressions the not between expressions
+     * @return the LogicExpression
+     */
+    L nba(FourArgusConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression> notBetweenExpressions);
 }

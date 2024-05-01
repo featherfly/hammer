@@ -990,16 +990,13 @@ public interface EntityEndWithExpression6<E, E2, E3, E4, E5, E6, C extends Condi
      * @param endWithEntityExpressions the end with entity expressions
      * @return the LogicExpression
      */
-    L ew(Consumer<Tuple6<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
-            EndWithEntityExpression<E4>, EndWithEntityExpression<E5>,
-            EndWithEntityExpression<E6>>> endWithEntityExpressions);
+    L ew(Consumer<Tuple6<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>, EndWithEntityExpression<E5>, EndWithEntityExpression<E6>>> endWithEntityExpressions);
 
     /**
      * end with value. 以value结尾.
      *
+     * @param endWithEntityExpressions the end with entity expressions
      * @return the LogicExpression
      */
-    L ew(SixArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
-            EndWithEntityExpression<E4>, EndWithEntityExpression<E5>,
-            EndWithEntityExpression<E6>> endWithEntityExpressions);
+    L ew(SixArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>, EndWithEntityExpression<E5>, EndWithEntityExpression<E6>> endWithEntityExpressions);
 }

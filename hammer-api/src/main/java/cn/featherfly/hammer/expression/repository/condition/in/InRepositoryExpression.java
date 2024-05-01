@@ -6,7 +6,6 @@ import cn.featherfly.hammer.expression.repository.condition.InOrNotInRepositoryE
  * The Interface InRepositoryExpression.
  *
  * @author zhongj
- * @param <T> the element type
  */
 public interface InRepositoryExpression extends InRepositoryFieldExpression, InOrNotInRepositoryExpression {
 

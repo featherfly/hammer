@@ -28,7 +28,7 @@ import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 
 /**
- * The Interface BetweenAndEntityExpression.
+ * between and entity expression.
  *
  * @author zhongj
  * @param <T> the element type
@@ -38,54 +38,57 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     void accept(SerializableToIntFunction<T> name, int min, int max);
 
     /**
      * between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToIntFunction<T> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
 
     /**
      * between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     void accept(SerializableToLongFunction<T> name, long min, long max);
 
     /**
      * between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLongFunction<T> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
 
     /**
      * between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     void accept(SerializableToDoubleFunction<T> name, double min, double max);
 
     /**
      * between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToDoubleFunction<T> name, double min, double max,
             BiPredicate<Double, Double> ignoreStrategy);
@@ -93,9 +96,10 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param <N>   number type
+     * @param <N>  number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N min, N max);
 
@@ -103,8 +107,9 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <N>            number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N min, N max,
@@ -113,9 +118,10 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param <D>   date type
+     * @param <D>  date type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D min, D max);
 
@@ -123,8 +129,9 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param <D>            date type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D min, D max, BiPredicate<D, D> ignoreStrategy);
@@ -132,18 +139,20 @@ public interface BetweenAndEntityExpression<T> {
     /**
      * between and.
      *
-     * @param <D>   date type
+     * @param <E>  the element type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     <E extends Enum<E>> void accept(SerializableToEnumFunction<T, E> name, E min, E max);
 
     /**
      * between and.
      *
-     * @param <D>            date type
-     * @param name the name
-     * @param value the value
+     * @param <E>            the element type
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     <E extends Enum<E>> void accept(SerializableToEnumFunction<T, E> name, E min, E max,
@@ -153,15 +162,17 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max);
 
     /**
      * between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime min, LocalTime max,
@@ -171,15 +182,17 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max);
 
     /**
      * between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate min, LocalDate max,
@@ -189,15 +202,17 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max);
 
     /**
      * between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime min, LocalDateTime max,
@@ -207,15 +222,17 @@ public interface BetweenAndEntityExpression<T> {
      * between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      */
     void accept(SerializableToStringFunction<T> name, String min, String max);
 
     /**
      * between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToStringFunction<T> name, String min, String max,

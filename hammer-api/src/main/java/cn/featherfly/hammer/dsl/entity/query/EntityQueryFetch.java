@@ -48,6 +48,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
+     * @param <V>          the value type
      * @param function     the function
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
@@ -67,6 +68,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
+     * @param <V>               the value type
      * @param aggregateFunction aggregateFunction
      * @param propertyName      propertyName
      * @return QueryEntityPropertiesExpression
@@ -79,6 +81,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
+     * @param <V>               the value type
      * @param aggregateFunction aggregateFunction
      * @param distinct          the distinct
      * @param propertyName      propertyName
@@ -90,6 +93,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 设置返回的属性..
      *
+     * @param <V>          the value type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -100,6 +104,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 设置返回的属性..
      *
+     * @param <V>          the value type
      * @param distinct     the distinct
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
@@ -122,6 +127,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
+     * @param <V>          the value type
      * @param function     the function
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
@@ -133,6 +139,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
+     * @param <V>               the value type
      * @param aggregateFunction aggregateFunction
      * @param propertyName      propertyName
      * @return QueryEntityPropertiesExpression
@@ -145,6 +152,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
+     * @param <V>               the value type
      * @param aggregateFunction aggregateFunction
      * @param distinct          the distinct
      * @param propertyName      propertyName
@@ -158,6 +166,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Distinct.
      *
+     * @param <V>          the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -168,6 +177,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Count.
      *
+     * @param <V>          the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -178,6 +188,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Count.
      *
+     * @param <V>          the value type
      * @param distinct     the distinct
      * @param propertyName the property name
      * @return the q
@@ -189,6 +200,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Sum.
      *
+     * @param <V>          the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -199,6 +211,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Sum.
      *
+     * @param <V>          the value type
      * @param distinct     the distinct
      * @param propertyName the property name
      * @return the q
@@ -210,6 +223,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Max.
      *
+     * @param <V>          the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -220,6 +234,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Max.
      *
+     * @param <V>          the value type
      * @param distinct     the distinct
      * @param propertyName the property name
      * @return the q
@@ -231,6 +246,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Min.
      *
+     * @param <V>          the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -241,6 +257,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Min.
      *
+     * @param <V>          the value type
      * @param distinct     the distinct
      * @param propertyName the property name
      * @return the q
@@ -252,6 +269,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Avg.
      *
+     * @param <V>          the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -262,6 +280,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Avg.
      *
+     * @param <V>          the value type
      * @param distinct     the distinct
      * @param propertyName the property name
      * @return the q

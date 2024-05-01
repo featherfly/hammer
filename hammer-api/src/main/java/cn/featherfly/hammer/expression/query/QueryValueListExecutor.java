@@ -11,10 +11,9 @@ import java.util.List;
 public interface QueryValueListExecutor extends QueryTypeListExecutor {
 
     /**
-     * query for list
+     * query for list.
      *
-     * @param <E>  wrapper type
-     * @param type wrapper type
+     * @param <E> wrapper type
      * @return list
      */
     <E> List<E> list();

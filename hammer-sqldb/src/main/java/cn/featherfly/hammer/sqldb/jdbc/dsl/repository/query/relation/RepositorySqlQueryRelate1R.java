@@ -35,9 +35,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryEx
  * @author zhongj
  */
 public class RepositorySqlQueryRelate1R extends
-    AbstractRepositorySqlQuery2<RepositoryQueryRelatedFetched1F, RepositoryQueryConditionsGroup2F,
-        RepositoryQueryConditionsGroupLogic2F, RepositoryQuerySortExpression2<QueryLimitExecutor>, QueryLimitExecutor>
-    implements RepositoryQueryRelate1R {
+        AbstractRepositorySqlQuery2<RepositoryQueryRelatedFetched1F, RepositoryQueryConditionsGroup2F, RepositoryQueryConditionsGroupLogic2F, RepositoryQuerySortExpression2<QueryLimitExecutor>, QueryLimitExecutor>
+        implements RepositoryQueryRelate1R {
 
     /**
      * Instantiates a new repository sql query relate 1 R.
@@ -52,10 +51,7 @@ public class RepositorySqlQueryRelate1R extends
      * Instantiates a new repository sql query relate 1 R.
      *
      * @param repositoryRelation the repository relation
-     * @param databaseMetadata   the database metadata
      * @param sqlPageFactory     the sql page factory
-     * @param aliasManager       the alias manager
-     * @param tableName          the table name
      */
     public RepositorySqlQueryRelate1R(RepositorySqlQueryRelation repositoryRelation, SqlPageFactory sqlPageFactory) {
         super(repositoryRelation, sqlPageFactory);
@@ -67,7 +63,7 @@ public class RepositorySqlQueryRelate1R extends
     @Override
     public RepositoryOnExpression2<RepositoryQueryRelate2RR> join(Repository repository) {
         return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2RR(queryRelation, sqlPageFactory),
-            queryRelation, repository, relate -> ((RepositorySqlQueryRelate2RR) relate).setIdName());
+                queryRelation, repository, relate -> ((RepositorySqlQueryRelate2RR) relate).setIdName());
     }
 
     /**
@@ -82,8 +78,8 @@ public class RepositorySqlQueryRelate1R extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryConditionsGroupLogic2F where(BiFunction<RepositoryFieldOnlyExpression,
-        RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+    public RepositoryQueryConditionsGroupLogic2F where(
+            BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 

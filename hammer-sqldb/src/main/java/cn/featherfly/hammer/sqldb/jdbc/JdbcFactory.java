@@ -39,7 +39,7 @@ public interface JdbcFactory {
     SqlTypeMappingManager getSqlTypeMappingManager();
 
     /**
-     * Creates jdbc. <br/>
+     * Creates jdbc. <br>
      * note:
      * <ul>
      * <li>manage transaction with invoker on connection.
@@ -52,7 +52,7 @@ public interface JdbcFactory {
     Jdbc create(Connection connection);
 
     /**
-     * Creates jdbc session. <br/>
+     * Creates jdbc session. <br>
      * the jdbc session object can start transation with beginTransation method.
      *
      * @param dataSource the data source
@@ -61,7 +61,7 @@ public interface JdbcFactory {
     JdbcSession createSession(DataSource dataSource);
 
     /**
-     * Creates jdbc session. <br/>
+     * Creates jdbc session. <br>
      * the jdbc session object can start transation with beginTransation method.
      *
      * @param connection the connection

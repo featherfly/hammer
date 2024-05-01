@@ -16,14 +16,6 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public interface EntityIsNullExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends ConditionExpression {
 
-    //    /**
-    //     * is null.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L isn(Consumer<EntityIsNullExpression<E, C, L>> consumer);
-
     /**
      * is null.
      *
@@ -39,7 +31,7 @@ public interface EntityIsNullExpression<E, C extends ConditionExpression, L exte
      * is null.
      *
      * @param <R>   the generic type
-     * @param name the name
+     * @param name  the name
      * @param value if true, is null; if false, is not null; if null, ignore
      *              this operate
      * @return LogicExpression

@@ -234,8 +234,9 @@ public interface EntityGreatEqualsExpressionBase2<T, T2, C extends ConditionExpr
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
-     * @param value the value
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L ge2(SerializableFunction<T2, String> name, String value, MatchStrategy matchStrategy);
@@ -245,6 +246,7 @@ public interface EntityGreatEqualsExpressionBase2<T, T2, C extends ConditionExpr
      *
      * @param name           the name
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

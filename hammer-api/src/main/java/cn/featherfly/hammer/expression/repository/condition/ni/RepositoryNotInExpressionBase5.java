@@ -33,7 +33,7 @@ import cn.featherfly.hammer.expression.condition.ni.NotInSupplierExpression5;
  * @param <L> the generic type
  */
 public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryNotInExpressionBase4<C, L>, NotInExpression5<C, L>, NotInSupplierExpression5<C, L> {
+        extends RepositoryNotInExpressionBase4<C, L>, NotInExpression5<C, L>, NotInSupplierExpression5<C, L> {
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -158,6 +158,7 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <T>    the generic type
      * @param name   the name
      * @param values the values
      * @return LogicExpression
@@ -169,6 +170,7 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <T>           the generic type
      * @param name          the name
      * @param values        the values
      * @param matchStrategy the match strategy
@@ -181,6 +183,7 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -193,6 +196,7 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param matchStrategy  the match strategy
@@ -200,13 +204,14 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
      * @return LogicExpression
      */
     default <T> L ni5(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
+            Predicate<String> ignoreStrategy) {
         return ni5(name, new String[] { value }, matchStrategy, v -> ignoreStrategy.test(v[0]));
     }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param values         the values
      * @param ignoreStrategy the ignore strategy
@@ -219,6 +224,7 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param values         the values
      * @param matchStrategy  the match strategy
@@ -226,7 +232,7 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
      * @return LogicExpression
      */
     default <T> L ni5(SerializableToStringFunction<T> name, String[] values, MatchStrategy matchStrategy,
-        Predicate<String[]> ignoreStrategy) {
+            Predicate<String[]> ignoreStrategy) {
         return ni5(LambdaUtils.getLambdaPropertyName(name), values, matchStrategy, ignoreStrategy);
     }
 
@@ -251,8 +257,8 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
      *
      * @param <T>            the generic type
      * @param <R>            the generic type
-     * @param name
-     * @param value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -272,7 +278,7 @@ public interface RepositoryNotInExpressionBase5<C extends ConditionExpression, L
      * @return LogicExpression
      */
     default <T, R extends Serializable> L ni5(SerializableFunction<T, R> name, R[] values,
-        Predicate<R[]> ignoreStrategy) {
+            Predicate<R[]> ignoreStrategy) {
         return ni5(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
     }
 

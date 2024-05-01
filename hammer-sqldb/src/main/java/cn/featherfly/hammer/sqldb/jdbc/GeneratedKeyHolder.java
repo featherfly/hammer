@@ -24,7 +24,6 @@ public interface GeneratedKeyHolder<T> {
      * Accept key.
      *
      * @param key the key
-     * @param row the row
      */
     void acceptKey(T key);
 

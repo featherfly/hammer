@@ -17,7 +17,7 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
  * abstract entity indexable condition expression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <C> the generic type
  */
 public class AbstractEntityIndexableConditionExpression<C extends ConditionExpression>
         extends AbstractIndexableConditionExpression<C> {

@@ -35,8 +35,9 @@ public abstract class AbstractNotLikeEntityExpression<E, C extends ConditionExpr
     /**
      * Instantiates a new abstract not like entity expression.
      *
-     * @param index      the index
-     * @param expression the expression
+     * @param index          the index
+     * @param expression     the expression
+     * @param ignoreStrategy the ignore strategy
      */
     protected AbstractNotLikeEntityExpression(int index, MulitiNotLikeExpression<C, L> expression,
             Predicate<Object> ignoreStrategy) {

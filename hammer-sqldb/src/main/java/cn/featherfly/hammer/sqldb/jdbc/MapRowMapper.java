@@ -35,7 +35,9 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapping.Row
     private SqlTypeMappingManager manager;
 
     /**
-     * @param manager
+     * Instantiates a new map row mapper.
+     *
+     * @param manager the manager
      */
     public MapRowMapper(SqlTypeMappingManager manager) {
         super();
@@ -67,6 +69,9 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapping.Row
 
     private static final AliasGeneretor ALIAS_GENERETOR = (name, no) -> name + "(" + no + ")";
 
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, Object> mapRow(ResultSet res, int rowNum) throws SQLException {
         if (rowNum == 0) {
             AliasManager aliasManager = new AliasManager(ALIAS_GENERETOR);

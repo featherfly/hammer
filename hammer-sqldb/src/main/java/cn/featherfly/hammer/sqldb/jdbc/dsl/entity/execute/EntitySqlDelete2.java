@@ -23,7 +23,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn2;
  * entity sql delete2 .
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <E1> the generic type
+ * @param <E2> the generic type
  */
 public class EntitySqlDelete2<E1, E2> implements EntityDelete2<E1, E2> {
 
@@ -34,10 +35,8 @@ public class EntitySqlDelete2<E1, E2> implements EntityDelete2<E1, E2> {
     /**
      * Instantiates a new sql delete.
      *
-     * @param jdbc         the jdbc
-     * @param factory      the factory
-     * @param classMapping the class mapping
-     * @param deleteConfig the delete config
+     * @param factory  the factory
+     * @param relation the relation
      */
     public EntitySqlDelete2(JdbcMappingFactory factory, EntitySqlDeleteRelation relation) {
         this.factory = factory;
@@ -78,13 +77,12 @@ public class EntitySqlDelete2<E1, E2> implements EntityDelete2<E1, E2> {
      */
     @Override
     public EntityExecutableConditionGroupLogic2<E1, E2, DeleteConditionConfig> where(
-        BiFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
-            LogicExpression<?, ?>> function) {
+            BiFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>, LogicExpression<?, ?>> function) {
         EntitySqlDeleteConditions2<E1, E2> sqlDeleteExpression = createSqlDeleteExpression();
         if (function != null) {
             sqlDeleteExpression
-                .addCondition(function.apply(new EntitySqlConditionsGroupExpression<>(0, factory, relation),
-                    new EntitySqlConditionsGroupExpression<>(1, factory, relation)));
+                    .addCondition(function.apply(new EntitySqlConditionsGroupExpression<>(0, factory, relation),
+                            new EntitySqlConditionsGroupExpression<>(1, factory, relation)));
         }
         return sqlDeleteExpression;
     }
@@ -93,8 +91,7 @@ public class EntitySqlDelete2<E1, E2> implements EntityDelete2<E1, E2> {
      * {@inheritDoc}
      */
     @Override
-    public EntityDeleteExpression2<E1, E2, EntityExecutableConditionGroup2<E1, E2, DeleteConditionConfig>,
-        EntityExecutableConditionGroupLogic2<E1, E2, DeleteConditionConfig>> configure(
+    public EntityDeleteExpression2<E1, E2, EntityExecutableConditionGroup2<E1, E2, DeleteConditionConfig>, EntityExecutableConditionGroupLogic2<E1, E2, DeleteConditionConfig>> configure(
             Consumer<DeleteConfig> configure) {
         if (configure != null) {
             configure.accept(relation.getConfig());

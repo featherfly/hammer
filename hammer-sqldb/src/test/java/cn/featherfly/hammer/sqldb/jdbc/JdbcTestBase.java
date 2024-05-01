@@ -93,13 +93,13 @@ public class JdbcTestBase extends TestBase {
         basePackages.add("cn.featherfly.hammer");
 
         configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
-            new FreemarkerTemplatePreProcessor());
+                new FreemarkerTemplatePreProcessor());
 
         jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager);
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl();
         hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-            .buildValidatorFactory().getValidator());
+                .buildValidatorFactory().getValidator());
         hammerConfig = hammerConfigImpl;
     }
 
@@ -139,7 +139,8 @@ public class JdbcTestBase extends TestBase {
         //        ds.setUrl(
         //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
         // 高版本mysql-connector已经不需要serverTimezone=CTT
-        ds.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false");
+        ds.setUrl(
+                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true");
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUsername("root");
         ds.setPassword("123456");
@@ -208,7 +209,7 @@ public class JdbcTestBase extends TestBase {
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(JdbcTestBase.class.getResource("/").getFile(), "hammer.sqlite3.db"))
-            .getPath();
+                .getPath();
         System.out.println(path);
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName("org.sqlite.JDBC");

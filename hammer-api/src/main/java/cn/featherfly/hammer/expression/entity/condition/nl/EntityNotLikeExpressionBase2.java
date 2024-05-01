@@ -72,7 +72,7 @@ public interface EntityNotLikeExpressionBase2<E, E2, C extends ConditionExpressi
      *
      * @param name           the name 参数名称
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

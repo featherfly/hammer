@@ -65,7 +65,6 @@ public interface MatchStringEntityExpression<E> {
      * match value. 匹配value.
      *
      * @param propertyValue the property value
-     * @return LogicExpression
      */
     void accept(SerializableSupplier<String> propertyValue);
 
@@ -74,7 +73,6 @@ public interface MatchStringEntityExpression<E> {
      *
      * @param propertyValue  the property value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy);
 
@@ -83,7 +81,6 @@ public interface MatchStringEntityExpression<E> {
      *
      * @param propertyValue the property value
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy);
 
@@ -93,7 +90,6 @@ public interface MatchStringEntityExpression<E> {
      * @param propertyValue  the property value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
             Predicate<String> ignoreStrategy);

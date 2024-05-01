@@ -34,7 +34,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends EntityNotInExpressionBase2<T, T2, C, L> {
+        extends EntityNotInExpressionBase2<T, T2, C, L> {
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -140,7 +140,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -150,7 +149,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -160,7 +158,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -181,7 +178,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -192,7 +188,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -203,7 +198,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -252,7 +246,7 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
      * @return LogicExpression
      */
     L ni3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy);
+            Predicate<String> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -274,7 +268,7 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
      * @return LogicExpression
      */
     L ni3(SerializableToStringFunction<T3> name, String[] value, MatchStrategy matchStrategy,
-        Predicate<String[]> ignoreStrategy);
+            Predicate<String[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -310,7 +304,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property bean property
      * @return LogicExpression
      */
@@ -319,7 +312,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -329,7 +321,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property bean property
      * @return LogicExpression
      */
@@ -338,7 +329,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
      * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -348,7 +338,6 @@ public interface EntityNotInExpressionBase3<T, T2, T3, C extends ConditionExpres
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property bean property
      * @return LogicExpression
      */

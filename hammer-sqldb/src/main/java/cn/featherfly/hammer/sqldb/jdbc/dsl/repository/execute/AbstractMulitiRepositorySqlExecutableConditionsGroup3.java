@@ -12,10 +12,9 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
  * sql condition group expression3. sql条件逻辑组表达式3.
  *
  * @author zhongj
- * @param <T> the element type
- * @param <R> the generic type
+ * @param <C2> the generic type
+ * @param <S> the generic type
  * @param <B> the generic type
- * @param <C> the generic type
  */
 public abstract class AbstractMulitiRepositorySqlExecutableConditionsGroup3<C2 extends ExecutableConditionConfig<C2>,
     S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends

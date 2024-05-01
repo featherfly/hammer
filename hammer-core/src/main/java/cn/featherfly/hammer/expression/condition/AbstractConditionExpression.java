@@ -30,6 +30,7 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
  * abstract condition expression.
  *
  * @author zhongj
+ * @param <C> the generic type
  */
 public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> implements IgnorableExpression {
 
@@ -70,7 +71,6 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return the property name
      */
@@ -81,7 +81,6 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return the property name
      */
@@ -92,7 +91,6 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return the property name
      */
@@ -103,7 +101,6 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <R>  the generic type
      * @param name the name
      * @return the property name
      */

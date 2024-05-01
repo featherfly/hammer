@@ -7,7 +7,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
 
 /**
- * The Interface ConpareEntityPropertyExpression.
+ * compare entity property expression.
  *
  * @author zhongj
  * @param <V> the value type

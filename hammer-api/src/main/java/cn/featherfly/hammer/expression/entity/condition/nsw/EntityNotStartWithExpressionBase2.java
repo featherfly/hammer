@@ -61,9 +61,9 @@ public interface EntityNotStartWithExpressionBase2<E, E2, C extends ConditionExp
     /**
      * not start with value. 不以value开始.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L nsw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy);
@@ -73,7 +73,7 @@ public interface EntityNotStartWithExpressionBase2<E, E2, C extends ConditionExp
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -87,7 +87,7 @@ public interface EntityNotStartWithExpressionBase2<E, E2, C extends ConditionExp
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

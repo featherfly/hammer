@@ -29,9 +29,11 @@ public class EntitySqlQueryRelate3RFR<E, R1, R2, R3> extends AbstractEntitySqlQu
         implements EntityQueryRelate3RFR<E, R1, R2, R3> {
 
     /**
-     * @param factory
-     * @param sqlPageFactory
-     * @param entitySqlQueryRelation
+     * Instantiates a new entity sql query relate 3 RFR.
+     *
+     * @param factory                the factory
+     * @param sqlPageFactory         the sql page factory
+     * @param entitySqlQueryRelation the entity sql query relation
      */
     public EntitySqlQueryRelate3RFR(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
             EntitySqlQueryRelation entitySqlQueryRelation) {

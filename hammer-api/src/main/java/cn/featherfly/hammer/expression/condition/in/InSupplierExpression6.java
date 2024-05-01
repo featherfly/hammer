@@ -99,8 +99,7 @@ public interface InSupplierExpression6<C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property      bean property
-     * @param matchStrategy the match strategy
+     * @param property bean property
      * @return LogicExpression
      */
     default L in6(SerializableStringSupplier property) {
@@ -110,8 +109,8 @@ public interface InSupplierExpression6<C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property      bean property
-     * @param matchStrategy the match strategy
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L in6(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
@@ -121,8 +120,8 @@ public interface InSupplierExpression6<C extends ConditionExpression, L extends 
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param property      bean property
-     * @param matchStrategy the match strategy
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L in6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {

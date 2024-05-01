@@ -40,7 +40,7 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
 /**
- * The Interface ConpareEntityExpression.
+ * compare entity expression.
  *
  * @author zhongj
  * @param <T> the element type
@@ -50,7 +50,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     void accept(SerializableToIntFunction<T> name, int value);
@@ -58,8 +58,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy);
@@ -67,7 +67,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     void accept(SerializableToLongFunction<T> name, long value);
@@ -75,8 +75,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy);
@@ -84,7 +84,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     void accept(SerializableToDoubleFunction<T> name, double value);
@@ -92,8 +92,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy);
@@ -102,7 +102,7 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <N>   number type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value);
@@ -111,8 +111,8 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <N>            number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
@@ -121,7 +121,7 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <D>   date type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D value);
@@ -130,8 +130,8 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <D>            date type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <D extends Date> void accept(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
@@ -139,7 +139,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime value);
@@ -147,8 +147,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
@@ -156,7 +156,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate value);
@@ -164,8 +164,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
@@ -173,7 +173,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value);
@@ -181,8 +181,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
@@ -191,7 +191,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     void accept(SerializableToStringFunction<T> name, String value);
@@ -199,8 +199,8 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy);
@@ -208,16 +208,18 @@ public interface CompareEntityExpression<T> {
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name the name
-     * @param value the value
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      */
     void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy);
 
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
@@ -226,7 +228,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     void accept(SerializableIntSupplier property);
 
@@ -241,7 +243,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     void accept(SerializableLongSupplier property);
 
@@ -256,7 +258,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     void accept(SerializableDoubleSupplier property);
 
@@ -272,7 +274,7 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <R>      the generic type
-     * @param property  bean property
+     * @param property bean property
      */
     <R extends Date> void accept(SerializableDateSupplier<R> property);
 
@@ -289,7 +291,7 @@ public interface CompareEntityExpression<T> {
      * compare. 比较
      *
      * @param <R>      the generic type
-     * @param property  bean property
+     * @param property bean property
      */
     <R extends Number> void accept(SerializableNumberSupplier<R> property);
 
@@ -305,7 +307,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     void accept(SerializableLocalDateSupplier property);
 
@@ -320,7 +322,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     void accept(SerializableLocalTimeSupplier property);
 
@@ -335,7 +337,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     void accept(SerializableLocalDateTimeSupplier property);
 
@@ -350,7 +352,7 @@ public interface CompareEntityExpression<T> {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     void accept(SerializableStringSupplier property);
 
@@ -365,8 +367,7 @@ public interface CompareEntityExpression<T> {
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param <R>           the generic type
-     * @param property  bean property
+     * @param property      bean property
      * @param matchStrategy the match strategy
      */
     void accept(SerializableStringSupplier property, MatchStrategy matchStrategy);
@@ -374,7 +375,6 @@ public interface CompareEntityExpression<T> {
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param <R>            the generic type
      * @param property       bean property
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy

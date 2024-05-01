@@ -17,11 +17,12 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type LogicExpression
  */
 public interface RepositoryBetweenExpression2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryBetweenExpressionBase2<C, L> {
+        extends RepositoryBetweenExpressionBase2<C, L> {
+
     /**
      * between and.
      *
-     * @param inExpressions the in expressions
+     * @param betweenExpressions the between expressions
      * @return the LogicExpression
      */
     L ba(Consumer<Tuple2<BetweenRepositoryExpression, BetweenRepositoryExpression>> betweenExpressions);
@@ -29,7 +30,7 @@ public interface RepositoryBetweenExpression2<C extends ConditionExpression, L e
     /**
      * between and.
      *
-     * @param inExpressions the in expressions
+     * @param betweenExpressions the between expressions
      * @return the LogicExpression
      */
     L ba(BiConsumer<BetweenRepositoryExpression, BetweenRepositoryExpression> betweenExpressions);

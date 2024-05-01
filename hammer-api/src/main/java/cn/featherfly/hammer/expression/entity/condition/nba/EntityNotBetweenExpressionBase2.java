@@ -35,9 +35,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba2(SerializableToIntFunction<T2> name, int min, int max);
@@ -45,9 +45,10 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L nba2(SerializableToIntFunction<T2> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
@@ -55,9 +56,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba2(SerializableToLongFunction<T2> name, long min, long max);
@@ -65,9 +66,10 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L nba2(SerializableToLongFunction<T2> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
@@ -75,9 +77,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba2(SerializableToDoubleFunction<T2> name, double min, double max);
@@ -85,9 +87,10 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L nba2(SerializableToDoubleFunction<T2> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
@@ -95,9 +98,10 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <N>   number type
+     * @param <N>  number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     <N extends Number> L nba2(SerializableToNumberFunction<T2, N> name, N min, N max);
@@ -106,8 +110,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
      * not between and.
      *
      * @param <N>            number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -116,9 +121,10 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <D>   date type
+     * @param <D>  date type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     <D extends Date> L nba2(SerializableToDateFunction<T2, D> name, D min, D max);
@@ -127,8 +133,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
      * not between and.
      *
      * @param <D>            date type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -137,9 +144,10 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param <E>   enum type
+     * @param <E>  enum type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     <E extends Enum<E>> L nba2(SerializableToEnumFunction<T2, E> name, E min, E max);
@@ -148,8 +156,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
      * not between and.
      *
      * @param <E>            enum type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -159,7 +168,8 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba2(SerializableToLocalTimeFunction<T2> name, LocalTime min, LocalTime max);
@@ -167,8 +177,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -179,7 +190,8 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba2(SerializableToLocalDateFunction<T2> name, LocalDate min, LocalDate max);
@@ -187,8 +199,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -199,7 +212,8 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba2(SerializableToLocalDateTimeFunction<T2> name, LocalDateTime min, LocalDateTime max);
@@ -207,8 +221,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -219,7 +234,8 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba2(SerializableToStringFunction<T2> name, String min, String max);
@@ -227,8 +243,9 @@ public interface EntityNotBetweenExpressionBase2<T, T2, C extends ConditionExpre
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

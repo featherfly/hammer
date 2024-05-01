@@ -46,11 +46,13 @@ import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression4
  * @param <L> the generic type
  */
 public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryNotEqualsExpressionBase3<C, L>, NotEqualsExpression4<C, L>, NotEqualsSupplierExpression4<C, L> {
+        extends RepositoryNotEqualsExpressionBase3<C, L>, NotEqualsExpression4<C, L>,
+        NotEqualsSupplierExpression4<C, L> {
 
     /**
      * not equals. 不等于.
      *
+     * @param <T>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -62,9 +64,9 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne4(SerializableToLongFunction<T> name, char value) {
@@ -74,6 +76,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -86,9 +89,9 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne4(SerializableToLongFunction<T> name, int value) {
@@ -98,6 +101,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -110,9 +114,9 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne4(SerializableToLongFunction<T> name, long value) {
@@ -122,6 +126,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -134,9 +139,9 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
+     * @param <T>   the generic type
+     * @param name  the name
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L ne4(SerializableToDoubleFunction<T> name, double value) {
@@ -146,6 +151,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
+     * @param <T>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -159,6 +165,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
      * not equals. 不等于.
      *
      * @param <T>   the generic type
+     * @param <R>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -171,6 +178,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
      * not equals. 不等于.
      *
      * @param <T>            the generic type
+     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -184,6 +192,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
      * not equals. 不等于.
      *
      * @param <T>            the generic type
+     * @param <R>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -255,7 +264,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L ne4(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-        IgnoreStrategy ignoreStrategy) {
+            IgnoreStrategy ignoreStrategy) {
         return ne4(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -270,7 +279,7 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
      * @return LogicExpression
      */
     default <T> L ne4(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
+            Predicate<String> ignoreStrategy) {
         return ne4(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
@@ -471,9 +480,9 @@ public interface RepositoryNotEqualsExpressionBase4<C extends ConditionExpressio
      */
     @Override
     default L ne4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
+            Predicate<String> ignoreStrategy) {
         return ne4(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-            ignoreStrategy);
+                ignoreStrategy);
     }
 
     /**

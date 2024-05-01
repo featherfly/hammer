@@ -43,7 +43,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param updateConfig the update config
      */
     protected AbstractSqlExecutableUpdate(String tableName, Jdbc jdbc, AliasManager aliasManager,
-        UpdateConfig updateConfig) {
+            UpdateConfig updateConfig) {
         this(tableName, null, jdbc, aliasManager, updateConfig);
     }
 
@@ -57,7 +57,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param updateConfig the update config
      */
     protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
-        UpdateConfig updateConfig) {
+            UpdateConfig updateConfig) {
         this.jdbc = jdbc;
         this.aliasManager = aliasManager;
         this.updateConfig = updateConfig;
@@ -78,9 +78,10 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param jdbc         jdbc
      * @param aliasManager the alias manager
      * @param updateConfig the update config
+     * @param builder      the builder
      */
     protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
-        UpdateConfig updateConfig, SqlUpdateSetBasicBuilder builder) {
+            UpdateConfig updateConfig, SqlUpdateSetBasicBuilder builder) {
         this.jdbc = jdbc;
         this.aliasManager = aliasManager;
         this.updateConfig = updateConfig.clone();
@@ -88,7 +89,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
             tableAlias = aliasManager.put(tableName);
         }
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias,
-            v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
+                v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
         //        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias, this::test);
         // YUFEI_TEST 需要测试这个逻辑
     }
@@ -109,6 +110,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
+     * @param <O>               the generic type
      * @param name              the name
      * @param value             the value
      * @param setIgnoreStrategy the set ignore strategy
@@ -123,6 +125,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
+     * @param <O>   the generic type
      * @param name  the name
      * @param value the value
      * @return the u
@@ -134,6 +137,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
+     * @param <O>            the generic type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -166,9 +170,10 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Increase.
      *
-     * @param <N>   the number type
-     * @param name  the name
-     * @param value the value
+     * @param <N>               the number type
+     * @param name              the name
+     * @param value             the value
+     * @param setIgnoreStrategy the set ignore strategy
      * @return the u
      */
     @SuppressWarnings("unchecked")

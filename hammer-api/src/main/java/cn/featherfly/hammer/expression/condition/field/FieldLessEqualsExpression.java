@@ -29,7 +29,8 @@ public interface FieldLessEqualsExpression<C extends ConditionExpression, L exte
     /**
      * less equals. 小于等于.
      *
-     * @param value the value
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L le(V value, IgnoreStrategy ignoreStrategy) {
@@ -39,7 +40,8 @@ public interface FieldLessEqualsExpression<C extends ConditionExpression, L exte
     /**
      * less equals. 小于等于.
      *
-     * @param value the value
+     * @param value          the value
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L le(V value, Predicate<V> ignoreStrategy);

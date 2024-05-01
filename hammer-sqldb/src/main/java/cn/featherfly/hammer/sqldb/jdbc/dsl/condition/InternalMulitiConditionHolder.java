@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.condition;
  *
  * @author zhongj
  * @param <I> the generic type
+ * @param <L> the generic type
  */
 public interface InternalMulitiConditionHolder<I extends InternalMulitiCondition<L>, L> {
 

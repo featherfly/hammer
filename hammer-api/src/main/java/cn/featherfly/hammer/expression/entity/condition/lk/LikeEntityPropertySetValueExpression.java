@@ -7,7 +7,6 @@ import cn.featherfly.hammer.expression.condition.field.value.SetStringFuzzyQuery
  * The Interface LikeEntityPropertyValueExpression.
  *
  * @author zhongj
- * @param <E> the element type
  */
 public interface LikeEntityPropertySetValueExpression extends SetStringFuzzyQueryExpression {
 

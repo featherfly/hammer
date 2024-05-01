@@ -35,7 +35,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L>  the generic type
  */
 public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionExpression,
-    L extends LogicExpression<C, L>> extends EntityNotInExpressionBase3<T, T2, T3, C, L> {
+        L extends LogicExpression<C, L>> extends EntityNotInExpressionBase3<T, T2, T3, C, L> {
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -247,7 +247,7 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
      * @return LogicExpression
      */
     L ni4(SerializableToStringFunction<T4> name, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy);
+            Predicate<String> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -269,7 +269,7 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
      * @return LogicExpression
      */
     L ni4(SerializableToStringFunction<T4> name, String[] value, MatchStrategy matchStrategy,
-        Predicate<String[]> ignoreStrategy);
+            Predicate<String[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -339,7 +339,6 @@ public interface EntityNotInExpressionBase4<T, T2, T3, T4, C extends ConditionEx
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
      * @param property bean property
      * @return LogicExpression
      */

@@ -23,17 +23,12 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlQueryRelation
  *
  * @author zhongj
  * @param <R> the element type
- * @param <C> the generic type
- * @param <L> the generic type
- * @param <S> the generic type
- * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRelateExpression<R>> extends
-    AbstractRepositorySqlQuery3<R, RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF,
-        RepositoryQuerySortExpression3<QueryLimitExecutor2>, QueryLimitExecutor2>
-    implements RepositoryQuery3<RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF,
-        RepositoryQuerySortExpression3<QueryLimitExecutor2>, QueryLimitExecutor2>,
-    QueryLimitExecutor2 {
+        AbstractRepositorySqlQuery3<R, RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF, RepositoryQuerySortExpression3<QueryLimitExecutor2>, QueryLimitExecutor2>
+        implements
+        RepositoryQuery3<RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF, RepositoryQuerySortExpression3<QueryLimitExecutor2>, QueryLimitExecutor2>,
+        QueryLimitExecutor2 {
 
     /**
      * Instantiates a new abstract repository sql query 3 FF.
@@ -67,8 +62,7 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      */
     @Override
     public RepositoryQueryConditionsGroupLogic3FF where(
-        ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
-            LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+            ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
@@ -109,7 +103,7 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      */
     @Override
     public <E1, E2> PaginationResults<Tuple2<E1, E2>> pagination(Tuple2<String, String> prefixes, Class<E1> type1,
-        Class<E2> type2) {
+            Class<E2> type2) {
         return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).pagination(prefixes, type1, type2);
     }
 }

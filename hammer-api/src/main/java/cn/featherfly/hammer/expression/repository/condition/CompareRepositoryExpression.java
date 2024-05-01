@@ -35,7 +35,6 @@ import cn.featherfly.hammer.expression.condition.field.CompareExpression;
  * repository compare expression.
  *
  * @author zhongj
- * @param <T> the element type
  */
 public interface CompareRepositoryExpression extends CompareExpression, CompareRepositoryFieldExpression {
     //    , RepositoryComparePropertyExpression  {
@@ -44,7 +43,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param <T>   the generic type
+     * @param name  the name
      * @param value the value
      */
     default <T> void accept(SerializableToIntFunction<T> name, int value) {
@@ -54,8 +54,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToIntFunction<T> name, int value, IntPredicate ignoreStrategy);
@@ -63,7 +64,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param <T>   the generic type
+     * @param name  the name
      * @param value the value
      */
     default <T> void accept(SerializableToLongFunction<T> name, long value) {
@@ -73,8 +75,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy);
@@ -82,7 +85,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param <T>   the generic type
+     * @param name  the name
      * @param value the value
      */
     default <T> void accept(SerializableToDoubleFunction<T> name, double value) {
@@ -92,8 +96,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy);
@@ -101,8 +106,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
+     * @param <T>   the generic type
      * @param <N>   number type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     default <T, N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value) {
@@ -112,9 +118,10 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
+     * @param <T>            the generic type
      * @param <N>            number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T, N extends Number> void accept(SerializableToNumberFunction<T, N> name, N value, Predicate<N> ignoreStrategy);
@@ -122,8 +129,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
+     * @param <T>   the generic type
      * @param <D>   date type
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
     default <T, D extends Date> void accept(SerializableToDateFunction<T, D> name, D value) {
@@ -133,9 +141,10 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
+     * @param <T>            the generic type
      * @param <D>            date type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T, D extends Date> void accept(SerializableToDateFunction<T, D> name, D value, Predicate<D> ignoreStrategy);
@@ -143,7 +152,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param <T>   the generic type
+     * @param name  the name
      * @param value the value
      */
     default <T> void accept(SerializableToLocalTimeFunction<T> name, LocalTime value) {
@@ -153,8 +163,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLocalTimeFunction<T> name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
@@ -162,7 +173,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param <T>   the generic type
+     * @param name  the name
      * @param value the value
      */
     default <T> void accept(SerializableToLocalDateFunction<T> name, LocalDate value) {
@@ -172,8 +184,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLocalDateFunction<T> name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
@@ -181,7 +194,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param <T>   the generic type
+     * @param name  the name
      * @param value the value
      */
     default <T> void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value) {
@@ -191,8 +205,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
@@ -201,7 +216,8 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
+     * @param <T>   the generic type
+     * @param name  the name
      * @param value the value
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value) {
@@ -211,8 +227,9 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * compare. 比较
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
@@ -222,8 +239,10 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>           the generic type
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
         accept(name, value, matchStrategy, getIgnoreStrategy()::test);
@@ -232,8 +251,10 @@ public interface CompareRepositoryExpression extends CompareExpression, CompareR
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param name the name
-     * @param value the value
+     * @param <T>            the generic type
+     * @param name           the name
+     * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     <T> void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,

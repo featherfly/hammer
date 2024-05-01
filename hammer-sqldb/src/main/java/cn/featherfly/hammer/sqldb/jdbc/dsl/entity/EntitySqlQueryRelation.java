@@ -47,9 +47,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param dialect        the dialect
-     * @param aliasManager   aliasManager
-     * @param ignoreStrategy the ignore strategy
+     * @param jdbc         the jdbc
+     * @param aliasManager aliasManager
+     * @param queryConfig  the query config
      */
     public EntitySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, QueryConfig queryConfig) {
         super(jdbc, aliasManager, queryConfig);
@@ -74,22 +74,26 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         addFilterable(joinClassMapping);
         EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
         SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = getBuilder().join2(joinClassMapping,
-            jerm.getTableAlias(), onExpression.get().expression());
+                jerm.getTableAlias(), onExpression.get().expression());
         jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
-        JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
+            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
         return getBuilder().join(Join.INNER_JOIN, tableAlias, columnName, joinClassMapping, joinTableAlias,
-            joinTableColumnName);
+                joinTableColumnName);
     }
 
     /**
      * Fetch.
      *
      * @param index the index
+     * @return the entity sql query relation
      */
     public EntitySqlQueryRelation fetch(int index) {
         AssertIllegalArgument.isGe(index, 0, "fetch entity index");
@@ -105,6 +109,12 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         return this;
     }
 
+    /**
+     * Fetch property.
+     *
+     * @param index the index
+     * @return the entity sql query relation
+     */
     public EntitySqlQueryRelation fetchProperty(int index) {
         AssertIllegalArgument.isGe(index, 0, "fetch entity index");
         AssertIllegalArgument.isLt(index, entityFilterableMappingTuple.degree(), "fetch entity index");
@@ -135,7 +145,6 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     /**
      * Gets the result type.
      *
-     * @param <R> the generic type
      * @return the result type
      */
     public Class<?> getResultType() {
@@ -163,17 +172,22 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         }
     }
 
+    /**
+     * Builds the select sql.
+     *
+     * @return the string
+     */
     public String buildSelectSql() {
         return selectBuilder.setColumnAliasPrefixTableAlias(isReturnTuple())
-            .build((tableName, tableAlias) -> queryFetchAlias.contains(tableAlias));
+                .build((tableName, tableAlias) -> queryFetchAlias.contains(tableAlias));
     }
 
     /**
      * Single tuple.
      *
-     * @param sql        the sql
-     * @param resultType the result type
-     * @param params     the params
+     * @param <R>    the generic type
+     * @param sql    the sql
+     * @param params the params
      * @return the r
      */
     @SuppressWarnings("unchecked")
@@ -181,32 +195,32 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (R) jdbc.querySingle(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
-                    params);
+                        params);
             case 2:
                 return (R) jdbc.querySingle(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(), getFetchAliasTuple2(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(), getFetchAliasTuple2(), params);
             case 3:
                 return (R) jdbc.querySingle(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(), getFetchAliasTuple3(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(), getFetchAliasTuple3(), params);
             case 4:
                 return (R) jdbc.querySingle(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(), getFetchAliasTuple4(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(), getFetchAliasTuple4(), params);
             case 5:
                 return (R) jdbc.querySingle(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(),
-                    entityQueryFetchMapping.get(4).classMapping.getType(), getFetchAliasTuple5(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(),
+                        entityQueryFetchMapping.get(4).classMapping.getType(), getFetchAliasTuple5(), params);
             case 6:
                 return (R) jdbc.querySingle(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(),
-                    entityQueryFetchMapping.get(4).classMapping.getType(),
-                    entityQueryFetchMapping.get(5).classMapping.getType(), getFetchAliasTuple6(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(),
+                        entityQueryFetchMapping.get(4).classMapping.getType(),
+                        entityQueryFetchMapping.get(5).classMapping.getType(), getFetchAliasTuple6(), params);
             default:
                 throw new SqldbHammerException("entity query fetch times must be 2-6");
         }
@@ -215,9 +229,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     /**
      * Unique tuple.
      *
-     * @param sql        the sql
-     * @param resultType the result type
-     * @param params     the params
+     * @param <R>    the generic type
+     * @param sql    the sql
+     * @param params the params
      * @return the r
      */
     @SuppressWarnings("unchecked")
@@ -225,32 +239,32 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (R) jdbc.queryUnique(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
-                    params);
+                        params);
             case 2:
                 return (R) jdbc.queryUnique(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(), getFetchAliasTuple2(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(), getFetchAliasTuple2(), params);
             case 3:
                 return (R) jdbc.queryUnique(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(), getFetchAliasTuple3(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(), getFetchAliasTuple3(), params);
             case 4:
                 return (R) jdbc.queryUnique(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(), getFetchAliasTuple4(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(), getFetchAliasTuple4(), params);
             case 5:
                 return (R) jdbc.queryUnique(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(),
-                    entityQueryFetchMapping.get(4).classMapping.getType(), getFetchAliasTuple5(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(),
+                        entityQueryFetchMapping.get(4).classMapping.getType(), getFetchAliasTuple5(), params);
             case 6:
                 return (R) jdbc.queryUnique(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(),
-                    entityQueryFetchMapping.get(4).classMapping.getType(),
-                    entityQueryFetchMapping.get(5).classMapping.getType(), getFetchAliasTuple6(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(),
+                        entityQueryFetchMapping.get(4).classMapping.getType(),
+                        entityQueryFetchMapping.get(5).classMapping.getType(), getFetchAliasTuple6(), params);
             default:
                 throw new SqldbHammerException("entity query fetch times must be 2-6");
         }
@@ -259,9 +273,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     /**
      * List tuple.
      *
-     * @param sql        the sql
-     * @param resultType the result type
-     * @param params     the params
+     * @param <R>    the generic type
+     * @param sql    the sql
+     * @param params the params
      * @return LogicExpressionist
      */
     @SuppressWarnings("unchecked")
@@ -269,32 +283,32 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (List<R>) jdbc.query(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
-                    params);
+                        params);
             case 2:
                 return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(), getFetchAliasTuple2(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(), getFetchAliasTuple2(), params);
             case 3:
                 return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(), getFetchAliasTuple3(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(), getFetchAliasTuple3(), params);
             case 4:
                 return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(), getFetchAliasTuple4(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(), getFetchAliasTuple4(), params);
             case 5:
                 return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(),
-                    entityQueryFetchMapping.get(4).classMapping.getType(), getFetchAliasTuple5(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(),
+                        entityQueryFetchMapping.get(4).classMapping.getType(), getFetchAliasTuple5(), params);
             case 6:
                 return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(1).getClassMapping().getType(),
-                    entityQueryFetchMapping.get(2).classMapping.getType(),
-                    entityQueryFetchMapping.get(3).classMapping.getType(),
-                    entityQueryFetchMapping.get(4).classMapping.getType(),
-                    entityQueryFetchMapping.get(5).classMapping.getType(), getFetchAliasTuple6(), params);
+                        entityQueryFetchMapping.get(1).getClassMapping().getType(),
+                        entityQueryFetchMapping.get(2).classMapping.getType(),
+                        entityQueryFetchMapping.get(3).classMapping.getType(),
+                        entityQueryFetchMapping.get(4).classMapping.getType(),
+                        entityQueryFetchMapping.get(5).classMapping.getType(), getFetchAliasTuple6(), params);
             default:
                 throw new SqldbHammerException("entity query fetch times must be 2-6");
         }
@@ -366,7 +380,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     private Tuple2<String, String> getFetchAliasTuple2() {
         if (entityQueryFetchMapping.size() == 2) {
             return Tuples.of(entityQueryFetchMapping.get(0).tableAlias + ".",
-                entityQueryFetchMapping.get(1).tableAlias + ".");
+                    entityQueryFetchMapping.get(1).tableAlias + ".");
         }
         throw new SqldbHammerException("entity query fetch times must be 2");
     }
@@ -374,7 +388,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     private Tuple3<String, String, String> getFetchAliasTuple3() {
         if (entityQueryFetchMapping.size() == 3) {
             return Tuples.of(entityQueryFetchMapping.get(0).tableAlias + ".",
-                entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".");
+                    entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".");
         }
         throw new SqldbHammerException("entity query fetch times must be 3");
     }
@@ -382,8 +396,8 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     private Tuple4<String, String, String, String> getFetchAliasTuple4() {
         if (entityQueryFetchMapping.size() == 4) {
             return Tuples.of(entityQueryFetchMapping.get(0).tableAlias + ".",
-                entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".",
-                entityQueryFetchMapping.get(3).tableAlias + ".");
+                    entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".",
+                    entityQueryFetchMapping.get(3).tableAlias + ".");
         }
         throw new SqldbHammerException("entity query fetch times must be 4");
     }
@@ -391,8 +405,8 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     private Tuple5<String, String, String, String, String> getFetchAliasTuple5() {
         if (entityQueryFetchMapping.size() == 5) {
             return Tuples.of(entityQueryFetchMapping.get(0).tableAlias + ".",
-                entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".",
-                entityQueryFetchMapping.get(3).tableAlias + ".", entityQueryFetchMapping.get(4).tableAlias + ".");
+                    entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".",
+                    entityQueryFetchMapping.get(3).tableAlias + ".", entityQueryFetchMapping.get(4).tableAlias + ".");
         }
         throw new SqldbHammerException("entity query fetch times must be 5");
     }
@@ -400,9 +414,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     private Tuple6<String, String, String, String, String, String> getFetchAliasTuple6() {
         if (entityQueryFetchMapping.size() == 6) {
             return Tuples.of(entityQueryFetchMapping.get(0).tableAlias + ".",
-                entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".",
-                entityQueryFetchMapping.get(3).tableAlias + ".", entityQueryFetchMapping.get(4).tableAlias + ".",
-                entityQueryFetchMapping.get(5).tableAlias + ".");
+                    entityQueryFetchMapping.get(1).tableAlias + ".", entityQueryFetchMapping.get(2).tableAlias + ".",
+                    entityQueryFetchMapping.get(3).tableAlias + ".", entityQueryFetchMapping.get(4).tableAlias + ".",
+                    entityQueryFetchMapping.get(5).tableAlias + ".");
         }
         throw new SqldbHammerException("entity query fetch times must be 6");
     }
@@ -438,6 +452,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     //        throw new SqldbHammerException("entity query fetch times must be 9");
     //    }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public QueryConfig getConfig() {

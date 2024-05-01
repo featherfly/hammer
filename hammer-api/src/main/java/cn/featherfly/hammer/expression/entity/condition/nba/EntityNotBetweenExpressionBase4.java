@@ -37,9 +37,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba4(SerializableToIntFunction<T4> name, int min, int max);
@@ -47,9 +47,10 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L nba4(SerializableToIntFunction<T4> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy);
@@ -57,9 +58,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba4(SerializableToLongFunction<T4> name, long min, long max);
@@ -67,9 +68,10 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L nba4(SerializableToLongFunction<T4> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy);
@@ -77,9 +79,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <N>   number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba4(SerializableToDoubleFunction<T4> name, double min, double max);
@@ -87,9 +89,10 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <N>   number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L nba4(SerializableToDoubleFunction<T4> name, double min, double max, BiPredicate<Double, Double> ignoreStrategy);
@@ -97,9 +100,10 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <N>   number type
+     * @param <N>  number type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     <N extends Number> L nba4(SerializableToNumberFunction<T4, N> name, N min, N max);
@@ -108,8 +112,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
      * not between and.
      *
      * @param <N>            number type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -118,9 +123,10 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param <D>   date type
+     * @param <D>  date type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     <D extends Date> L nba4(SerializableToDateFunction<T4, D> name, D min, D max);
@@ -129,8 +135,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
      * not between and.
      *
      * @param <D>            date type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -139,9 +146,10 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * between and.
      *
-     * @param <E>   enum type
+     * @param <E>  enum type
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     <E extends Enum<E>> L nba4(SerializableToEnumFunction<T4, E> name, E min, E max);
@@ -150,8 +158,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
      * between and.
      *
      * @param <E>            enum type
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -161,7 +170,8 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba4(SerializableToLocalTimeFunction<T4> name, LocalTime min, LocalTime max);
@@ -169,8 +179,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -181,7 +192,8 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba4(SerializableToLocalDateFunction<T4> name, LocalDate min, LocalDate max);
@@ -189,8 +201,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -201,7 +214,8 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba4(SerializableToLocalDateTimeFunction<T4> name, LocalDateTime min, LocalDateTime max);
@@ -209,8 +223,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -221,7 +236,8 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
      * not between and.
      *
      * @param name the name
-     * @param value the value
+     * @param min  the min
+     * @param max  the max
      * @return LogicExpression
      */
     L nba4(SerializableToStringFunction<T4> name, String min, String max);
@@ -229,8 +245,9 @@ public interface EntityNotBetweenExpressionBase4<T, T2, T3, T4, C extends Condit
     /**
      * not between and.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param min            the min
+     * @param max            the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

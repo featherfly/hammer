@@ -20,16 +20,19 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.query.RepositorySqlQueryVa
  * abstract entity sql query entity properties.
  *
  * @author zhongj
- * @param <V> the query result type
- * @param <P> the generic type
+ * @param <E> the element type
+ * @param <L> the generic type
  */
 public abstract class AbstractEntitySqlQueryBase<E, L>
         implements EntityQueryConditionLimit<L>, EntityQueryLimitExecutor<E>, QueryCountExecutor {
 
+    /** The factory. */
     protected final JdbcMappingFactory factory;
 
+    /** The sql page factory. */
     protected final SqlPageFactory sqlPageFactory;
 
+    /** The query relation. */
     protected final EntitySqlQueryRelation queryRelation;
 
     /** The limit. */
@@ -38,7 +41,6 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param <E>                    the element type
      * @param factory                the factory
      * @param sqlPageFactory         the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
@@ -69,6 +71,9 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
     //        //        this.valueType = valueType;
     //    }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public L limit(Limit limit) {
@@ -132,11 +137,15 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
         //        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long count() {
         return new RepositorySqlQueryValueExpression(new RepositorySqlQueryRelation(queryRelation.getJdbc(),
                 new AliasManager(), factory.getMetadata(), queryRelation.getConfig())
-                .query(queryRelation.getEntityRelationMapping(0).getClassMapping().getRepositoryName()).fetch(0),
+                        .query(queryRelation.getEntityRelationMapping(0).getClassMapping().getRepositoryName())
+                        .fetch(0),
                 sqlPageFactory).count();
     }
 }

@@ -62,9 +62,9 @@ public interface EntityStartWithExpressionBase3<E, E2, E3, C extends ConditionEx
     /**
      * start with value. 以value开始.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L sw3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy);
@@ -74,7 +74,7 @@ public interface EntityStartWithExpressionBase3<E, E2, E3, C extends ConditionEx
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -88,7 +88,7 @@ public interface EntityStartWithExpressionBase3<E, E2, E3, C extends ConditionEx
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

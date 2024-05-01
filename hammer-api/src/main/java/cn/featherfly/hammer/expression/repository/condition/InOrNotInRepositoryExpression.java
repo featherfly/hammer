@@ -22,7 +22,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param <R>   the generic type
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     <R> void accept(String name, R value);
 
@@ -33,7 +32,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <R> void accept(String name, R value, Predicate<R> ignoreStrategy);
 
@@ -43,7 +41,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     void accept(String name, String value, MatchStrategy matchStrategy);
 
@@ -54,7 +51,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
@@ -63,7 +59,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     void accept(String name, int value);
 
@@ -73,7 +68,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(String name, int value, IntPredicate ignoreStrategy);
 
@@ -82,7 +76,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     void accept(String name, long value);
 
@@ -92,7 +85,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(String name, long value, LongPredicate ignoreStrategy);
 
@@ -101,7 +93,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     void accept(String name, double value);
 
@@ -111,7 +102,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(String name, double value, DoublePredicate ignoreStrategy);
 
@@ -121,7 +111,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param <R>   the generic type
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     <R> void accept(String name, @SuppressWarnings("unchecked") R... value);
 
@@ -131,7 +120,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name          the name
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     void accept(String name, String[] value, MatchStrategy matchStrategy);
 
@@ -142,7 +130,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(String name, String[] value, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy);
 
@@ -151,7 +138,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     void accept(String name, int... value);
 
@@ -160,7 +146,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     void accept(String name, long... value);
 
@@ -171,7 +156,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <R> void accept(String name, R[] value, Predicate<R[]> ignoreStrategy);
 
@@ -181,7 +165,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(String name, int[] value, Predicate<int[]> ignoreStrategy);
 
@@ -191,7 +174,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     void accept(String name, long[] value, Predicate<long[]> ignoreStrategy);
 
@@ -201,7 +183,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param <R>   the generic type
      * @param name  the name
      * @param value the value
-     * @return LogicExpression
      */
     <R> void accept(String name, Collection<R> value);
 
@@ -212,7 +193,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     <R> void accept(String name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy);
 
@@ -224,7 +204,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param <R>   the generic type
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default <R> void accept(Field field, R value) {
         accept(field.name(), value);
@@ -237,7 +216,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default <R> void accept(Field field, R value, Predicate<R> ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -249,7 +227,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy) {
         accept(field.name(), value, matchStrategy);
@@ -262,7 +239,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         accept(field.name(), value, matchStrategy, ignoreStrategy);
@@ -273,7 +249,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default void accept(Field field, int value) {
         accept(field.name(), value);
@@ -285,7 +260,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(Field field, int value, IntPredicate ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -296,7 +270,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default void accept(Field field, long value) {
         accept(field.name(), value);
@@ -308,7 +281,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(Field field, long value, LongPredicate ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -319,7 +291,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default void accept(Field field, double value) {
         accept(field.name(), value);
@@ -331,7 +302,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(Field field, double value, DoublePredicate ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -343,7 +313,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param <R>   the generic type
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default <R> void accept(Field field, @SuppressWarnings("unchecked") R... value) {
         accept(field.name(), value);
@@ -355,7 +324,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
-     * @return LogicExpression
      */
     default void accept(Field field, String[] value, MatchStrategy matchStrategy) {
         accept(field.name(), value, matchStrategy);
@@ -368,7 +336,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(Field field, String[] value, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
         accept(field.name(), value, matchStrategy, ignoreStrategy);
@@ -379,7 +346,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default void accept(Field field, int... value) {
         accept(field.name(), value);
@@ -390,7 +356,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      *
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default void accept(Field field, long... value) {
         accept(field.name(), value);
@@ -403,7 +368,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default <R> void accept(Field field, R[] value, Predicate<R[]> ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -415,7 +379,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(Field field, int[] value, Predicate<int[]> ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -427,7 +390,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default void accept(Field field, long[] value, Predicate<long[]> ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -439,7 +401,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param <R>   the generic type
      * @param field the field
      * @param value the value
-     * @return LogicExpression
      */
     default <R> void accept(Field field, Collection<R> value) {
         accept(field.name(), value);
@@ -452,7 +413,6 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
      * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
      */
     default <R> void accept(Field field, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
         accept(field.name(), value, ignoreStrategy);
@@ -463,7 +423,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     *
     //     * @param <R>      the generic type
     //     * @param property bean property
-    //     * @return LogicExpression
+    //     *
     //     */
     //    <R> void accept(SerializableSupplier<R> property);
     //
@@ -473,7 +433,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     * @param <R>            the generic type
     //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
+    //     *
     //     */
     //    <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
     //
@@ -482,7 +442,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     *
     //     * @param property      the property
     //     * @param matchStrategy the match strategy
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableStringSupplier property, MatchStrategy matchStrategy);
     //
@@ -492,7 +452,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     * @param property       the property
     //     * @param matchStrategy  the match strategy
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
     //
@@ -500,7 +460,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
     //     *
     //     * @param property bean property
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableIntSupplier property);
     //
@@ -509,7 +469,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     *
     //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy);
     //
@@ -517,7 +477,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
     //     *
     //     * @param property bean property
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableLongSupplier property);
     //
@@ -526,7 +486,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     *
     //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy);
     //
@@ -534,7 +494,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
     //     *
     //     * @param property bean property
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableDoubleSupplier property);
     //
@@ -543,7 +503,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     //     *
     //     * @param property       bean property
     //     * @param ignoreStrategy the ignore strategy
-    //     * @return LogicExpression
+    //     *
     //     */
     //    void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
 }

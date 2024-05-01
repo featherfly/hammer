@@ -99,8 +99,7 @@ public interface NotInSupplierExpression4<C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property      bean property
-     * @param matchStrategy the match strategy
+     * @param property bean property
      * @return LogicExpression
      */
     default L ni4(SerializableStringSupplier property) {
@@ -110,8 +109,8 @@ public interface NotInSupplierExpression4<C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property      bean property
-     * @param matchStrategy the match strategy
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ni4(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
@@ -121,8 +120,8 @@ public interface NotInSupplierExpression4<C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property      bean property
-     * @param matchStrategy the match strategy
+     * @param property       bean property
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ni4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {

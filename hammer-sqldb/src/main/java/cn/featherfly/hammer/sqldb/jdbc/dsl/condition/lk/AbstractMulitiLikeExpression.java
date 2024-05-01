@@ -26,6 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.condition.InternalMulitiCondition;
  * abstract muliti like expression .
  *
  * @author zhongj
+ * @param <I> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
@@ -36,7 +37,7 @@ public abstract class AbstractMulitiLikeExpression<I extends InternalMulitiCondi
     /**
      * Instantiates a new muliti entity like expression impl.
      *
-     * @param proxy the proxy
+     * @param internalMulitiCondition the internal muliti condition
      */
     protected AbstractMulitiLikeExpression(I internalMulitiCondition) {
         super(internalMulitiCondition);

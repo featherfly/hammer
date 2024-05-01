@@ -760,14 +760,13 @@ public interface EntityEndWithExpression5<E, E2, E3, E4, E5, C extends Condition
      * @param endWithEntityExpressions the end with entity expressions
      * @return the LogicExpression
      */
-    L ew(Consumer<Tuple5<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
-            EndWithEntityExpression<E4>, EndWithEntityExpression<E5>>> endWithEntityExpressions);
+    L ew(Consumer<Tuple5<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>, EndWithEntityExpression<E5>>> endWithEntityExpressions);
 
     /**
      * end with value. 以value结尾.
      *
+     * @param endWithEntityExpressions the end with entity expressions
      * @return the LogicExpression
      */
-    L ew(FiveArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
-            EndWithEntityExpression<E4>, EndWithEntityExpression<E5>> endWithEntityExpressions);
+    L ew(FiveArgusConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>, EndWithEntityExpression<E4>, EndWithEntityExpression<E5>> endWithEntityExpressions);
 }

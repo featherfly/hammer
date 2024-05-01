@@ -115,7 +115,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param <N>   number type
+     * @param <E>   the element type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -125,7 +125,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param <N>            number type
+     * @param <E>            the element type
      * @param name           the name
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
@@ -237,8 +237,9 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
     /**
      * great than. 大于.
      *
-     * @param name  the name
-     * @param value the value
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L gt4(SerializableFunction<T4, String> name, String value, MatchStrategy matchStrategy);
@@ -248,6 +249,7 @@ public interface EntityGreatThanExpressionBase4<T, T2, T3, T4, C extends Conditi
      *
      * @param name           the name
      * @param value          the value
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

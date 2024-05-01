@@ -201,7 +201,7 @@ public interface BetweenAndRepositoryExpression {
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, LocalDateTime min, LocalDateTime max,
-        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
      * between and.
@@ -227,9 +227,9 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default void accept(Field field, int min, int max) {
         accept(field.name(), min, max);
@@ -238,7 +238,7 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -250,9 +250,9 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default void accept(Field field, long min, long max) {
         accept(field.name(), min, max);
@@ -261,7 +261,7 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -273,9 +273,9 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default void accept(Field field, double min, double max) {
         accept(field.name(), min, max);
@@ -284,7 +284,7 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -296,10 +296,10 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param <N>  number type
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param <N>   number type
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default <N extends Number> void accept(Field field, N min, N max) {
         accept(field.name(), min, max);
@@ -309,7 +309,7 @@ public interface BetweenAndRepositoryExpression {
      * between and.
      *
      * @param <N>            number type
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -321,10 +321,10 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param <D>  date type
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param <D>   date type
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default <D extends Date> void accept(Field field, D min, D max) {
         accept(field.name(), min, max);
@@ -334,7 +334,7 @@ public interface BetweenAndRepositoryExpression {
      * between and.
      *
      * @param <D>            date type
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -346,10 +346,10 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param <E>  the element type
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param <E>   the element type
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default <E extends Enum<E>> void accept(Field field, E min, E max) {
         accept(field.name(), min, max);
@@ -359,7 +359,7 @@ public interface BetweenAndRepositoryExpression {
      * between and.
      *
      * @param <E>            the element type
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -371,9 +371,9 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default void accept(Field field, LocalTime min, LocalTime max) {
         accept(field.name(), min, max);
@@ -382,7 +382,7 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -394,9 +394,9 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default void accept(Field field, LocalDate min, LocalDate max) {
         accept(field.name(), min, max);
@@ -405,7 +405,7 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
@@ -417,9 +417,9 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default void accept(Field field, LocalDateTime min, LocalDateTime max) {
         accept(field.name(), min, max);
@@ -428,22 +428,22 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, LocalDateTime min, LocalDateTime max,
-        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         accept(field.name(), min, max, ignoreStrategy);
     }
 
     /**
      * between and.
      *
-     * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param field the field
+     * @param min   the min
+     * @param max   the max
      */
     default void accept(Field field, String min, String max) {
         accept(field.name(), min, max);
@@ -452,7 +452,7 @@ public interface BetweenAndRepositoryExpression {
     /**
      * between and.
      *
-     * @param name           the name
+     * @param field          the field
      * @param min            the min
      * @param max            the max
      * @param ignoreStrategy the ignore strategy

@@ -20,10 +20,13 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlDeleteRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn4;
 
 /**
- * entity sql delete2 .
+ * entity sql delete4 .
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <E1> the generic type
+ * @param <E2> the generic type
+ * @param <E3> the generic type
+ * @param <E4> the generic type
  */
 public class EntitySqlDelete4<E1, E2, E3, E4> implements EntityDelete4<E1, E2, E3, E4> {
 
@@ -34,10 +37,8 @@ public class EntitySqlDelete4<E1, E2, E3, E4> implements EntityDelete4<E1, E2, E
     /**
      * Instantiates a new sql delete.
      *
-     * @param jdbc         the jdbc
-     * @param factory      the factory
-     * @param classMapping the class mapping
-     * @param deleteConfig the delete config
+     * @param factory  the factory
+     * @param relation the relation
      */
     public EntitySqlDelete4(JdbcMappingFactory factory, EntitySqlDeleteRelation relation) {
         this.factory = factory;
@@ -69,16 +70,14 @@ public class EntitySqlDelete4<E1, E2, E3, E4> implements EntityDelete4<E1, E2, E
      */
     @Override
     public EntityExecutableConditionGroupLogic4<E1, E2, E3, E4, DeleteConditionConfig> where(
-        FourArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
-            EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
-            LogicExpression<?, ?>> function) {
+            FourArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>, EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>, LogicExpression<?, ?>> function) {
         EntitySqlDeleteConditions4<E1, E2, E3, E4> sqlDeleteExpression = createSqlDeleteExpression();
         if (function != null) {
             sqlDeleteExpression
-                .addCondition(function.apply(new EntitySqlConditionsGroupExpression<>(0, factory, relation),
-                    new EntitySqlConditionsGroupExpression<>(1, factory, relation),
-                    new EntitySqlConditionsGroupExpression<>(2, factory, relation),
-                    new EntitySqlConditionsGroupExpression<>(3, factory, relation)));
+                    .addCondition(function.apply(new EntitySqlConditionsGroupExpression<>(0, factory, relation),
+                            new EntitySqlConditionsGroupExpression<>(1, factory, relation),
+                            new EntitySqlConditionsGroupExpression<>(2, factory, relation),
+                            new EntitySqlConditionsGroupExpression<>(3, factory, relation)));
         }
         return sqlDeleteExpression;
     }
@@ -87,9 +86,7 @@ public class EntitySqlDelete4<E1, E2, E3, E4> implements EntityDelete4<E1, E2, E
      * {@inheritDoc}
      */
     @Override
-    public EntityDeleteExpression4<E1, E2, E3, E4,
-        EntityExecutableConditionGroup4<E1, E2, E3, E4, DeleteConditionConfig>,
-        EntityExecutableConditionGroupLogic4<E1, E2, E3, E4, DeleteConditionConfig>> configure(
+    public EntityDeleteExpression4<E1, E2, E3, E4, EntityExecutableConditionGroup4<E1, E2, E3, E4, DeleteConditionConfig>, EntityExecutableConditionGroupLogic4<E1, E2, E3, E4, DeleteConditionConfig>> configure(
             Consumer<DeleteConfig> configure) {
         if (configure != null) {
             configure.accept(relation.getConfig());

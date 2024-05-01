@@ -30,14 +30,13 @@ import cn.featherfly.hammer.expression.condition.field.value.SetStringExpression
  * repository conpare field expression.
  *
  * @author zhongj
- * @param <V> the value type
  */
 public interface CompareRepositoryFieldExpression extends CompareFieldExpression {
 
     /**
      * get set int expression with name.
      *
-     * @param <R>  the generic type
+     * @param <T>  the generic type
      * @param name the name
      * @return set int expression.
      */
@@ -48,7 +47,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set long expression with name.
      *
-     * @param <R>  the generic type
+     * @param <T>  the generic type
      * @param name the name
      * @return set long expression.
      */
@@ -59,7 +58,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set double expression with name.
      *
-     * @param <R>  the generic type
+     * @param <T>  the generic type
      * @param name the name
      * @return set double expression.
      */
@@ -70,6 +69,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set Date expression with name.
      *
+     * @param <T>  the generic type
      * @param <D>  the generic type
      * @param name the name
      * @return set Date expression.
@@ -81,6 +81,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set LocalDate expression with name.
      *
+     * @param <T>  the generic type
      * @param name the name
      * @return set LocalDate expression.
      */
@@ -91,6 +92,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set LocalTime expression with name.
      *
+     * @param <T>  the generic type
      * @param name the name
      * @return set LocalTime expression.
      */
@@ -101,6 +103,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set LocalDateTime expression with name.
      *
+     * @param <T>  the generic type
      * @param name the name
      * @return set LocalDateTime expression.
      */
@@ -111,6 +114,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set Number expression with name.
      *
+     * @param <T>  the generic type
      * @param <N>  the generic type
      * @param name the name
      * @return set Number expression.
@@ -122,7 +126,8 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set Enum expression with name.
      *
-     * @param <N>  the generic type
+     * @param <T>  the generic type
+     * @param <E>  the element type
      * @param name the name
      * @return set Enum expression.
      */
@@ -133,6 +138,7 @@ public interface CompareRepositoryFieldExpression extends CompareFieldExpression
     /**
      * get set String expression with name.
      *
+     * @param <T>  the generic type
      * @param name the name
      * @return set String expression.
      */

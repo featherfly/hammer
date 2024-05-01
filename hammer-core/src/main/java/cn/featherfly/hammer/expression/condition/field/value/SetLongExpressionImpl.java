@@ -32,10 +32,10 @@ public class SetLongExpressionImpl implements SetLongExpression {
     private BiConsumer<Long, LongPredicate> setValue0;
 
     /**
-     * Instantiates a new condition entity expression long property expression
-     * impl.
+     * Instantiates a new condition entity expression long property expression impl.
      *
-     * @param setValue the set value
+     * @param ignoreStrategy the ignore strategy
+     * @param setValue       the set value
      */
     public SetLongExpressionImpl(Predicate<?> ignoreStrategy, BiConsumer<Long, LongPredicate> setValue) {
         super();
@@ -44,8 +44,7 @@ public class SetLongExpressionImpl implements SetLongExpression {
     }
 
     /**
-     * Instantiates a new condition entity expression long property expression
-     * impl.
+     * Instantiates a new condition entity expression long property expression impl.
      *
      * @param propertyMapping the property mapping
      * @param ignoreStrategy  the ignore strategy

@@ -14,8 +14,8 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
  * @param <C2> executable condition config
  */
 public interface RepositoryExecutableConditionsGroupLogicExpression5<
-    C extends RepositoryExecutableConditionsGroupExpression5<C, L, C5>,
-    L extends RepositoryExecutableConditionsGroupLogicExpression5<C, L, C5>, C5 extends ExecutableConditionConfig<C5>>
-    extends Executor, RepositoryConditionsGroupLogicExpression5<C, L> {
+        C extends RepositoryExecutableConditionsGroupExpression5<C, L, C2>,
+        L extends RepositoryExecutableConditionsGroupLogicExpression5<C, L, C2>,
+        C2 extends ExecutableConditionConfig<C2>> extends Executor, RepositoryConditionsGroupLogicExpression5<C, L> {
 
 }

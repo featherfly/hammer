@@ -17,24 +17,21 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface RepositoryNotEndWithExpression6<C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends RepositoryNotEndWithExpressionBase6<C, L> {
-    /**
-     * not end with.
-     *
-     * @param endWithRepositoryExpressions the end with repository expressions
-     * @return the LogicExpression
-     */
-    L newv(Consumer<Tuple6<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
-        NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
-        NotEndWithRepositoryExpression>> notEndWithExpressions);
+        extends RepositoryNotEndWithExpressionBase6<C, L> {
 
     /**
      * not end with.
      *
-     * @param endWithRepositoryExpressions the end with repository expressions
+     * @param notEndWithExpressions the not end with expressions
      * @return the LogicExpression
      */
-    L newv(SixArgusConsumer<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
-        NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
-        NotEndWithRepositoryExpression> notEndWithExpressions);
+    L newv(Consumer<Tuple6<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression>> notEndWithExpressions);
+
+    /**
+     * not end with.
+     *
+     * @param notEndWithExpressions the not end with expressions
+     * @return the LogicExpression
+     */
+    L newv(SixArgusConsumer<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression> notEndWithExpressions);
 }

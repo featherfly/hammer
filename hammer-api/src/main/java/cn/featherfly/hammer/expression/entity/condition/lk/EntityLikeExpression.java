@@ -20,13 +20,6 @@ import cn.featherfly.hammer.expression.condition.lk.LikeSupplierExpression;
  */
 public interface EntityLikeExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends LikeSupplierExpression<C, L> {
-    //    /**
-    //     * like value.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L lk(Consumer<EntityLikeExpression<E, C, L>> consumer);
 
     /**
      * like value.
@@ -66,9 +59,9 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
     /**
      * like value.
      *
-     * @param name        the name 参数名称
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name 参数名称
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L lk(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
@@ -78,7 +71,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      *
      * @param name           the name 参数名称
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -92,7 +85,7 @@ public interface EntityLikeExpression<E, C extends ConditionExpression, L extend
      *
      * @param name           the name 参数名称
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

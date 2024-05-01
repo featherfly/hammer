@@ -54,8 +54,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * less and equals. 小于等于.
      *
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -75,8 +75,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * less and equals. 小于等于.
      *
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -96,8 +96,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * less and equals. 小于等于.
      *
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -119,8 +119,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <N>            number type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -142,8 +142,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -165,8 +165,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <D>            date type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -175,7 +175,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param name  the name
      * @param value the value
@@ -186,10 +185,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -198,7 +196,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param name  the name
      * @param value the value
@@ -209,10 +206,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -221,7 +217,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param name  the name
      * @param value the value
@@ -232,10 +227,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -244,7 +238,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param name  the name
      * @param value the value
@@ -257,10 +250,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -271,10 +263,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>               the element type
      * @param index             the index
-     * @param name the name
-     * @param value the value
+     * @param name              the name
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -283,10 +274,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>               the element type
      * @param index             the index
-     * @param name the name
-     * @param value the value
+     * @param name              the name
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -312,7 +302,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -337,7 +327,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -362,7 +352,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -389,7 +379,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <N>            number type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -416,7 +406,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -443,7 +433,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <D>            date type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -454,7 +444,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -467,10 +456,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -481,7 +469,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -494,10 +481,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -508,7 +494,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -521,10 +506,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -535,7 +519,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -548,10 +531,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -562,10 +544,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value the value
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -576,10 +557,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value the value
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -608,7 +588,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -633,7 +613,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -658,7 +638,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -685,7 +665,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <N>            number type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -712,7 +692,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -739,7 +719,7 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <D>            date type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -750,7 +730,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -763,10 +742,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -777,7 +755,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -790,10 +767,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -804,7 +780,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -817,10 +792,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -831,7 +805,6 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>   the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -844,10 +817,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>            the element type
      * @param index          the index
      * @param field          the field
-     * @param value the value
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -858,10 +830,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value the value
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -872,10 +843,9 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
     /**
      * less and equals. 小于等于.
      *
-     * @param <E>               the element type
      * @param index             the index
      * @param field             the field
-     * @param value the value
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression
@@ -903,8 +873,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -926,8 +896,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -949,8 +919,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -974,8 +944,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <E>            the element type
      * @param <N>            number type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -999,8 +969,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <T>            the generic type
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1024,8 +994,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      * @param <E>            the element type
      * @param <D>            date type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1047,8 +1017,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1070,8 +1040,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1093,8 +1063,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1119,8 +1089,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>            the element type
      * @param index          the index
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1133,8 +1103,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name the name
-     * @param value the value
+     * @param name              the name
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -1145,8 +1115,8 @@ public interface MulitiLessEqualsExpression<C extends ConditionExpression, L ext
      *
      * @param <E>               the element type
      * @param index             the index
-     * @param name the name
-     * @param value the value
+     * @param name              the name
+     * @param value             the value
      * @param mathMatchStrategy the math match strategy
      * @param ignoreStrategy    the ignore strategy
      * @return LogicExpression

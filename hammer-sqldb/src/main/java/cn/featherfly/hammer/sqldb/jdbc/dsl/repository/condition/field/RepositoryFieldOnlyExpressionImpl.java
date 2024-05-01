@@ -26,14 +26,15 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.repository.RepositorySqlRelation;
  * @param <B>  the generic type
  */
 public class RepositoryFieldOnlyExpressionImpl<C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>,
-    B extends SqlBuilder>
-    extends RepositoryFieldExpressionImpl<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression, C2, S, B>
-    implements RepositoryFieldOnlyExpression {
+        B extends SqlBuilder> extends
+        RepositoryFieldExpressionImpl<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression, C2, S, B>
+        implements RepositoryFieldOnlyExpression {
 
     /**
      * Instantiates a new repository field only expression impl.
      *
-     * @param index the index
+     * @param index              the index
+     * @param repositoryRelation the repository relation
      */
     public RepositoryFieldOnlyExpressionImpl(int index, S repositoryRelation) {
         super(index, repositoryRelation);
@@ -52,7 +53,7 @@ public class RepositoryFieldOnlyExpressionImpl<C2 extends ConditionConfig<C2>, S
      */
     @Override
     public RepositoryFieldOnlyLogicExpression group(
-        Function<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression> group) {
+            Function<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression> group) {
         return expression.group(group);
     }
 }

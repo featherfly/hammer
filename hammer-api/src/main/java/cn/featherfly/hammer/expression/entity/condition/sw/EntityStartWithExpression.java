@@ -21,14 +21,6 @@ import cn.featherfly.hammer.expression.condition.sw.StartWithSupplierExpression;
 public interface EntityStartWithExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
         extends StartWithSupplierExpression<C, L> {
 
-    //    /**
-    //     * start with value. 以value开始.
-    //     *
-    //     * @param consumer the consumer
-    //     * @return LogicExpression
-    //     */
-    //    L sw(Consumer<EntityStartWithExpression<E, C, L>> consumer);
-
     /**
      * start with value. 以value开始.
      *
@@ -67,9 +59,9 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
     /**
      * start with value. 以value开始.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L sw(SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy);
@@ -79,7 +71,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -93,7 +85,7 @@ public interface EntityStartWithExpression<E, C extends ConditionExpression, L e
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

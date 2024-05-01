@@ -297,6 +297,7 @@ public interface EntityEndWithExpression2<E, E2, C extends ConditionExpression, 
     /**
      * end with value. 以value结尾.
      *
+     * @param endWithEntityExpressions the end with entity expressions
      * @return the LogicExpression
      */
     L ew(BiConsumer<EndWithEntityExpression<E>, EndWithEntityExpression<E2>> endWithEntityExpressions);

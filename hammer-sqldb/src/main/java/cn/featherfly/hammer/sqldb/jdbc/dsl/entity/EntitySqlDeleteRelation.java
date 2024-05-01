@@ -39,6 +39,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     /**
      * Join.
      *
+     * @param <T>              the generic type
      * @param joinClassMapping the join class mapping
      * @param onExpression     the on expression
      * @return the EntitySqlDeleteRelation
@@ -49,7 +50,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
         addFilterable(joinClassMapping);
         EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
         deleteBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), joinClassMapping.getRepositoryName(),
-            jerm.getTableAlias(), onExpression.get().expression()));
+                jerm.getTableAlias(), onExpression.get().expression()));
         return this;
     }
 
@@ -57,9 +58,12 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     //	protected method
     // ****************************************************************************************************************
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
-        JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
+            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
         // IMPLSOON delete还未实现join
         throw new NotImplementedException();
     }
@@ -70,7 +74,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     @Override
     protected void initBuilder(EntityRelationMapping<?> erm) {
         deleteBuilder = new SqlDeleteFromBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-            erm.getTableAlias());
+                erm.getTableAlias());
     }
 
     /**

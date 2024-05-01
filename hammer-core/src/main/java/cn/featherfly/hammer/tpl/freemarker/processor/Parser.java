@@ -51,7 +51,9 @@ public class Parser {
      */
     public enum NullType {
         /** The null. */
-        NULL, EMPTY
+        NULL,
+        /** The empty. */
+        EMPTY
     }
 
     //    Parser parent;
@@ -104,6 +106,7 @@ public class Parser {
      * Parses the.
      *
      * @param source the source
+     * @return the string
      */
     public String parse(String source) {
         char c = 0;
@@ -760,7 +763,7 @@ public class Parser {
     }
 
     /**
-     * 返回directiveStart
+     * 返回directiveStart.
      *
      * @return directiveStart
      */
@@ -769,7 +772,7 @@ public class Parser {
     }
 
     /**
-     * 设置directiveStart
+     * 设置directiveStart.
      *
      * @param directiveStart directiveStart
      */
@@ -778,7 +781,7 @@ public class Parser {
     }
 
     /**
-     * 返回directiveEnd
+     * 返回directiveEnd.
      *
      * @return directiveEnd
      */
@@ -787,7 +790,7 @@ public class Parser {
     }
 
     /**
-     * 设置directiveEnd
+     * 设置directiveEnd.
      *
      * @param directiveEnd directiveEnd
      */
@@ -796,7 +799,7 @@ public class Parser {
     }
 
     /**
-     * 返回startDirecitve
+     * 返回startDirecitve.
      *
      * @return startDirecitve
      */
@@ -805,7 +808,7 @@ public class Parser {
     }
 
     /**
-     * 设置startDirecitve
+     * 设置startDirecitve.
      *
      * @param startDirecitve startDirecitve
      */
@@ -814,7 +817,7 @@ public class Parser {
     }
 
     /**
-     * 返回endDirecitve
+     * 返回endDirecitve.
      *
      * @return endDirecitve
      */
@@ -823,7 +826,7 @@ public class Parser {
     }
 
     /**
-     * 设置endDirecitve
+     * 设置endDirecitve.
      *
      * @param endDirecitve endDirecitve
      */
@@ -832,7 +835,7 @@ public class Parser {
     }
 
     /**
-     * 返回namedParamStart
+     * 返回namedParamStart.
      *
      * @return namedParamStart
      */
@@ -841,7 +844,7 @@ public class Parser {
     }
 
     /**
-     * 设置namedParamStart
+     * 设置namedParamStart.
      *
      * @param namedParamStart namedParamStart
      */
@@ -851,7 +854,7 @@ public class Parser {
     }
 
     /**
-     * 返回fuzzyQueryChar
+     * 返回fuzzyQueryChar.
      *
      * @return fuzzyQueryChar
      */
@@ -860,7 +863,7 @@ public class Parser {
     }
 
     /**
-     * 设置fuzzyQueryChar
+     * 设置fuzzyQueryChar.
      *
      * @param fuzzyQueryChar fuzzyQueryChar
      */
@@ -869,7 +872,7 @@ public class Parser {
     }
 
     /**
-     * 返回namedParamEnds
+     * 返回namedParamEnds.
      *
      * @return namedParamEnds
      */
@@ -878,7 +881,7 @@ public class Parser {
     }
 
     /**
-     * 设置namedParamEnds
+     * 设置namedParamEnds.
      *
      * @param namedParamEnds namedParamEnds
      */
@@ -887,7 +890,7 @@ public class Parser {
     }
 
     /**
-     * get sqlStringWarpChars value
+     * get sqlStringWarpChars value.
      *
      * @return sqlStringWarpChars
      */
@@ -896,7 +899,7 @@ public class Parser {
     }
 
     /**
-     * set sqlStringWarpChars value
+     * set sqlStringWarpChars value.
      *
      * @param sqlStringWarpChars sqlStringWarpChars
      */
@@ -904,6 +907,12 @@ public class Parser {
         this.sqlStringWarpChars = sqlStringWarpChars;
     }
 
+    /**
+     * Checks if is sql string warp char.
+     *
+     * @param c the c
+     * @return true, if is sql string warp char
+     */
     public boolean isSqlStringWarpChar(char c) {
         for (char sqlStringWrapChar : sqlStringWarpChars) {
             if (sqlStringWrapChar == c) {

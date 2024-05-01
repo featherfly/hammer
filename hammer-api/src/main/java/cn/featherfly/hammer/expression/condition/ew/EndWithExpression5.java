@@ -93,7 +93,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
@@ -104,7 +104,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -116,7 +116,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -128,7 +128,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
@@ -140,7 +140,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -153,7 +153,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -166,7 +166,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name  the name
+     * @param field the field
      * @param value the value
      * @return LogicExpression
      */
@@ -177,7 +177,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -189,7 +189,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -201,7 +201,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name          the name
+     * @param field         the field
      * @param value         the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
@@ -213,7 +213,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -226,7 +226,7 @@ public interface EndWithExpression5<C extends ConditionExpression, L extends Log
     /**
      * end with value. 以value结尾.
      *
-     * @param name           the name
+     * @param field          the field
      * @param value          the value
      * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy

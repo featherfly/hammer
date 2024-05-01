@@ -62,9 +62,9 @@ public interface EntityNotStartWithExpressionBase3<E, E2, E3, C extends Conditio
     /**
      * not start with value. 不以value开始.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L nsw3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy);
@@ -74,7 +74,7 @@ public interface EntityNotStartWithExpressionBase3<E, E2, E3, C extends Conditio
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -88,7 +88,7 @@ public interface EntityNotStartWithExpressionBase3<E, E2, E3, C extends Conditio
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

@@ -26,7 +26,6 @@ public interface EntityQueryRelateBase<E> {
     /**
      * join on.
      *
-     * @param <Q>          the generic type
      * @param <R>          the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelateExpression
@@ -36,7 +35,6 @@ public interface EntityQueryRelateBase<E> {
     /**
      * join on.
      *
-     * @param <Q>          the generic type
      * @param <R>          the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelateExpression
@@ -46,7 +44,6 @@ public interface EntityQueryRelateBase<E> {
     /**
      * join on.
      *
-     * @param <Q>          the generic type
      * @param propertyName find type object property name
      * @return EntityQueryRelateExpression
      */

@@ -68,36 +68,26 @@ import cn.featherfly.hammer.tpl.TransverterManager;
  */
 public class SqldbHammerImpl implements SqldbHammer {
 
-    /** The jdbc. */
     private Jdbc jdbc;
 
-    /** The mapping factory. */
     private JdbcMappingFactory mappingFactory;
 
     private HammerConfig hammerConfig;
 
-    /** The sql tpl executor. */
     private SqlTplExecutor sqlTplExecutor;
 
-    /** The insert operates. */
     private Map<Class<?>, InsertOperate<?>> insertOperates = new HashMap<>();
 
-    /** The update operates. */
     private Map<Class<?>, UpdateOperate<?>> updateOperates = new HashMap<>();
 
-    /** The update fetch operates. */
     private Map<Class<?>, UpdateFetchOperate<?>> updateFetchOperates = new HashMap<>();
 
-    /** The update operates. */
     private Map<Class<?>, UpsertOperate<?>> upsertOperates = new HashMap<>();
 
-    /** The get operates. */
     private Map<Class<?>, GetOperate<?>> getOperates = new HashMap<>();
 
-    /** The delete operates. */
     private Map<Class<?>, DeleteOperate<?>> deleteOperates = new HashMap<>();
 
-    /** The merge operates. */
     private Map<Class<?>, MergeOperate<?>> mergeOperates = new HashMap<>();
 
     private final SqlQuery query;
@@ -112,6 +102,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param jdbc           the jdbc
      * @param mappingFactory the mapping factory
      * @param configFactory  the config factory
+     * @param hammerConfig   the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
             HammerConfig hammerConfig) {
@@ -140,6 +131,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param mappingFactory the mapping factory
      * @param configFactory  the config factory
      * @param templateEngine the template engine
+     * @param hammerConfig   the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, HammerConfig hammerConfig) {
@@ -155,7 +147,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param configFactory  the config factory
      * @param templateEngine the template processor
      * @param sqlPageFacotry the sql page facotry
-     * @param validator      the validator
+     * @param hammerConfig   the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
@@ -191,7 +183,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param templateEngine     the template processor
      * @param sqlPageFacotry     the sql page facotry
      * @param transverterManager the transverter manager
-     * @param validator          the validator
+     * @param hammerConfig       the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
             @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,

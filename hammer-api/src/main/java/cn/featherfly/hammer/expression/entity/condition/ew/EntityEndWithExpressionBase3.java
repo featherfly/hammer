@@ -36,8 +36,8 @@ public interface EntityEndWithExpressionBase3<E, E2, E3, C extends ConditionExpr
     /**
      * end with value. 以value结尾.
      *
-     * @param name the name
-     * @param value the value
+     * @param name           the name
+     * @param value          the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -48,9 +48,9 @@ public interface EntityEndWithExpressionBase3<E, E2, E3, C extends ConditionExpr
     /**
      * end with value. 以value结尾.
      *
-     * @param name        the name
-     * @param value       the value
-     * @param queryPolicy the query policy
+     * @param name          the name
+     * @param value         the value
+     * @param matchStrategy the match strategy
      * @return LogicExpression
      */
     L ew3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy);
@@ -60,7 +60,7 @@ public interface EntityEndWithExpressionBase3<E, E2, E3, C extends ConditionExpr
      *
      * @param name           the name
      * @param value          the value
-     * @param queryPolicy    the query policy
+     * @param matchStrategy  the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

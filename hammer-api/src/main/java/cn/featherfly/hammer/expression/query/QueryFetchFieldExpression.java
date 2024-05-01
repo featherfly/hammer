@@ -393,6 +393,7 @@ public interface QueryFetchFieldExpression<Q, Q2> {
      * add query fetch field .
      *
      * @param function the function
+     * @param distinct the distinct
      * @param field    the field
      * @return query fetched field expression
      */

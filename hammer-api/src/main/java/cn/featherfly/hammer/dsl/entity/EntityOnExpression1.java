@@ -19,7 +19,7 @@ public interface EntityOnExpression1<E1, J, R> extends EntityOnExpression<E1, J,
     /**
      * on expression.
      *
-     * @param onExpression the on expression. <br/>
+     * @param onExpression the on expression. <br>
      *                     <ol>
      *                     <li>query type property expresion
      *                     <li>current join type property expression

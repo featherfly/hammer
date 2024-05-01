@@ -180,6 +180,7 @@ public interface NotEqualsExpression6<C extends ConditionExpression, L extends L
     /**
      * not equals. 不等于.
      *
+     * @param <R>   the generic type
      * @param name  the name
      * @param value the value
      * @return LogicExpression
@@ -215,6 +216,7 @@ public interface NotEqualsExpression6<C extends ConditionExpression, L extends L
     /**
      * not equals. 不等于.
      *
+     * @param <R>   the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -325,6 +327,7 @@ public interface NotEqualsExpression6<C extends ConditionExpression, L extends L
     /**
      * not equals. 不等于.
      *
+     * @param <R>   the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression

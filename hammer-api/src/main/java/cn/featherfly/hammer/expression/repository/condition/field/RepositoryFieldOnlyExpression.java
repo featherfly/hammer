@@ -17,12 +17,9 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryFieldExpre
  * repository field only expression.
  *
  * @author zhongj
- * @param <E> the element type
- * @param <C> the generic type
- * @param <L> the generic type
  */
 public interface RepositoryFieldOnlyExpression
-    extends RepositoryFieldExpression<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression>,
-    GroupExpression<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression> {
+        extends RepositoryFieldExpression<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression>,
+        GroupExpression<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression> {
 
 }

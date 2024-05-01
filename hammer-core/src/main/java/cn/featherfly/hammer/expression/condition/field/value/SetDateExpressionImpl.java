@@ -25,16 +25,17 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
 public class SetDateExpressionImpl<D extends Date> extends SetValueExpressionImpl<D> implements SetDateExpression<D> {
 
     /**
-     * @param ignoreStrategy
-     * @param setValue
+     * Instantiates a new sets the date expression impl.
+     *
+     * @param ignoreStrategy the ignore strategy
+     * @param setValue       the set value
      */
     public SetDateExpressionImpl(Predicate<?> ignoreStrategy, BiConsumer<D, Predicate<D>> setValue) {
         super(ignoreStrategy, setValue);
     }
 
     /**
-     * Instantiates a new condition entity expression date property expression
-     * impl.
+     * Instantiates a new condition entity expression date property expression impl.
      *
      * @param propertyMapping the property mapping
      * @param ignoreStrategy  the ignore strategy

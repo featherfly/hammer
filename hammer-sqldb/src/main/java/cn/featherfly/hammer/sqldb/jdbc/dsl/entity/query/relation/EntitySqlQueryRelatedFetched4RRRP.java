@@ -31,7 +31,6 @@ public class EntitySqlQueryRelatedFetched4RRRP<E, R1, R2, R3, R4>
     /**
      * Instantiates a new entity sql query related fetched 4 RRRP.
      *
-     * @param entitySqlQueryRelate   the entity sql query relate
      * @param factory                the factory
      * @param sqlPageFactory         the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation

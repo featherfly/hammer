@@ -23,6 +23,22 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionExpression,
         L extends LogicExpression<C, L>> extends EntityStartWithExpressionBase4<E, E2, E3, E4, C, L> {
 
+    /**
+     * start with value. 以value开始.
+     *
+     * @param startWithEntityExpressions the start with entity expressions
+     * @return the LogicExpression
+     */
+    L sw(Consumer<Tuple4<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>>> startWithEntityExpressions);
+
+    /**
+     * start with value. 以value开始.
+     *
+     * @param startWithEntityExpressions the start with entity expressions
+     * @return the LogicExpression
+     */
+    L sw(FourArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>, StartWithEntityExpression<E4>> startWithEntityExpressions);
+
     //
     //     * start with value. 以value开始.
     //     *
@@ -599,22 +615,4 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
     //            Function<Tuple4<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>,
     //                    QueryEntityRepository<E4>>, QueryEntityRepository<E4>> entities,
     //            SerializableSupplier4<R> fetchEntityValue, SerializableFunction<R, String> fetchEntityProperty);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param startWithEntityExpressions the start with entity expressions
-     * @return the LogicExpression
-     */
-    L sw(Consumer<Tuple4<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
-            StartWithEntityExpression<E4>>> startWithEntityExpressions);
-
-    /**
-     * start with value. 以value开始.
-     *
-     * @param startWithEntityExpressions the start with entity expressions
-     * @return the LogicExpression
-     */
-    L sw(FourArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
-            StartWithEntityExpression<E4>> startWithEntityExpressions);
 }
