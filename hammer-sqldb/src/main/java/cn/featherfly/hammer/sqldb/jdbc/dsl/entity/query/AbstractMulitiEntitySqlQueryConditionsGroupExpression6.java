@@ -77,7 +77,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
     protected AbstractMulitiEntitySqlQueryConditionsGroupExpression6(L parent, JdbcMappingFactory factory,
         SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, queryRelation);
-        sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelationMapping(0).getTableAlias());
+        sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         this.sqlPageFactory = sqlPageFactory;
         entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
             entityRelation);

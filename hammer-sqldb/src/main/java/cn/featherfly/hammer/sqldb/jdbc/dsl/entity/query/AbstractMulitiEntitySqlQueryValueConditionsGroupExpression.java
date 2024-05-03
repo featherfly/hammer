@@ -74,8 +74,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
         super(parent, factory, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         this.valueType = valueType;
-        queryType = (Class<E>) queryRelation.getEntityRelationMappingTuple().get0().get().getClassMapping().getType();
-        sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelationMapping(0).getTableAlias());
+        queryType = (Class<E>) queryRelation.getEntityRelationTuple().get0().get().getClassMapping().getType();
+        sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
     }
 
     /**

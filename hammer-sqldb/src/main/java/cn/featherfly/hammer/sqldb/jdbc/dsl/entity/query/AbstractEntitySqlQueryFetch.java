@@ -64,7 +64,7 @@ public abstract class AbstractEntitySqlQueryFetch<E> extends AbstractEntitySqlQu
     @Override
     public <R> EntityQueryRelate1R<E, R> join(SerializableFunction2<R, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
+        queryRelation.join(0, queryRelation.getEntityRelation(0).getIdName(),
                 factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation);
     }

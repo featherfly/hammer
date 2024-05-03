@@ -53,7 +53,7 @@ import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.condition.propery.EntityPropertyOnlyExpressionImpl;
 
 /**
@@ -103,7 +103,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     protected AbstractMulitiEntitySqlConditionsGroupExpressionBase3(L parent, JdbcMappingFactory factory,
         ER entitySqlRelation) {
         super(parent, factory, entitySqlRelation);
-        EntityRelationMapping<?> erm = entitySqlRelation.getEntityRelationMappingTuple().getOrNull2();
+        EntityRelation<?> erm = entitySqlRelation.getEntityRelationTuple().getOrNull2();
         classMapping3 = (JdbcClassMapping<E3>) erm.getClassMapping();
         queryAlias3 = erm.getTableAlias();
     }

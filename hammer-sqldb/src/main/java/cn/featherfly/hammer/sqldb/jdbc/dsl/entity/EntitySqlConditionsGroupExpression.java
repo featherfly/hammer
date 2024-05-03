@@ -14,7 +14,7 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.MulitiExpression;
 import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelation;
 
 /**
  * MulitiEntitySqlConditionsGroupExpression.
@@ -56,7 +56,7 @@ public class EntitySqlConditionsGroupExpression<E, C extends EntityConditionGrou
         super(parent, factory, entitySqlRelation);
         this.index = index;
         @SuppressWarnings("unchecked")
-        EntityRelationMapping<E> erm = (EntityRelationMapping<E>) entityRelation.getEntityRelationMapping(index);
+        EntityRelation<E> erm = (EntityRelation<E>) entityRelation.getEntityRelation(index);
         tableAlias = erm.getTableAlias();
         classMapping = erm.getClassMapping();
         aliasManager = entityRelation.getAliasManager();

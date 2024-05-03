@@ -53,7 +53,7 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     public <T> EntitySqlUpdateRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         addFilterable(joinClassMapping);
-        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+        EntityRelation<?> jerm = getEntityRelation(index - 1);
         updateBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), joinClassMapping.getRepositoryName(),
                 jerm.getTableAlias(), onExpression.get().expression()));
         return this;
@@ -77,7 +77,7 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
      * {@inheritDoc}
      */
     @Override
-    protected void initBuilder(EntityRelationMapping<?> erm) {
+    protected void initBuilder(EntityRelation<?> erm) {
         updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
                 erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
     }
