@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBasicBuilder2;
-import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -54,19 +53,19 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
         return this;
     }
 
-    // ****************************************************************************************************************
-    //	protected method
-    // ****************************************************************************************************************
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
-            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
-        // IMPLSOON delete还未实现join
+    public EntitySqlDeleteRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+            String joinPropertyName, boolean returnType) {
+        // IMPLSOON delete还未实现此join方法
         throw new NotImplementedException();
     }
+
+    // ****************************************************************************************************************
+    //	protected method
+    // ****************************************************************************************************************
 
     /**
      * {@inheritDoc}
