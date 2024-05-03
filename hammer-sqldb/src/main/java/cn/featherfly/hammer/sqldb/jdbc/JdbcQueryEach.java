@@ -21,11 +21,17 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
- * jdbc query stream.
+ * jdbc query each. <br>
+ * lazy load data from {@linkplain java.sql.ResultSet ResultSet} when invoke iterator.next() .
+ *
+ * <pre>
+ * for (Map<String, Object> data : queryEach("")) { // each loop starts loading data
+ * }
+ * </pre>
  *
  * @author zhongj
  */
-public interface JdbcQueryStream {
+public interface JdbcQueryEach {
     /**
      * Query.
      *
@@ -33,7 +39,7 @@ public interface JdbcQueryStream {
      * @param args args
      * @return map list
      */
-    Iterable<Map<String, Object>> queryStream(String sql, Object... args);
+    Iterable<Map<String, Object>> queryEach(String sql, Object... args);
 
     /**
      * Query.
@@ -42,7 +48,7 @@ public interface JdbcQueryStream {
      * @param args args
      * @return map list
      */
-    Iterable<Map<String, Object>> queryStream(String sql, Map<String, Object> args);
+    Iterable<Map<String, Object>> queryEach(String sql, Map<String, Object> args);
 
     /**
      * Query.
@@ -53,7 +59,7 @@ public interface JdbcQueryStream {
      * @param args      args
      * @return elementType object list
      */
-    <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Object... args);
+    <T> Iterable<T> queryEach(String sql, RowMapper<T> rowMapper, Object... args);
 
     //    /**
     //     * Query.
@@ -64,7 +70,7 @@ public interface JdbcQueryStream {
     //     * @param args      the args
     //     * @return LogicExpressionist
     //     */
-    //    <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
+    //    <T> Iterable<T> queryEach(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
 
     /**
      * Query.
@@ -75,7 +81,7 @@ public interface JdbcQueryStream {
      * @param args        args
      * @return elementType object list
      */
-    <T> Iterable<T> queryStream(String sql, Class<T> elementType, Object... args);
+    <T> Iterable<T> queryEach(String sql, Class<T> elementType, Object... args);
 
     /**
      * Query.
@@ -88,9 +94,9 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    default <T1, T2> Iterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Object... args) {
-        return queryStream(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
+        return queryEach(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
     /**
@@ -105,7 +111,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    <T1, T2> Iterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Object... args);
 
     /**
@@ -121,9 +127,9 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1,
+    default <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Object... args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
+        return queryEach(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
     }
 
     /**
@@ -140,7 +146,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
 
     /**
@@ -158,9 +164,9 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+    default <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Object... args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, elementType4,
+        return queryEach(sql, elementType1, elementType2, elementType3, elementType4,
                 (Tuple4<String, String, String, String>) null, args);
     }
 
@@ -180,7 +186,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Tuple4<String, String, String, String> prefixes, Object... args);
 
@@ -201,10 +207,10 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+    default <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Object... args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
+        return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
                 (Tuple5<String, String, String, String, String>) null, args);
     }
 
@@ -226,12 +232,12 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Tuple5<String, String, String, String, String> prefixes, Object... args);
 
     /**
-     * Query .
+     * query each .
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
@@ -249,15 +255,15 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql,
+    default <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
             Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Class<T5> elementType5, Class<T6> elementType6, Object... args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
+        return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
                 (Tuple6<String, String, String, String, String, String>) null, args);
     }
 
     /**
-     * Query .
+     * query each .
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
@@ -276,7 +282,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args);
 
@@ -289,7 +295,7 @@ public interface JdbcQueryStream {
     //     * @param args        the args
     //     * @return LogicExpressionist
     //     */
-    //    <T> Iterable<T> queryStream(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
+    //    <T> Iterable<T> queryEach(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
 
     /**
      * Query.
@@ -300,7 +306,7 @@ public interface JdbcQueryStream {
      * @param args      args
      * @return elementType object list
      */
-    <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
+    <T> Iterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
 
     /**
      * Query.
@@ -311,7 +317,7 @@ public interface JdbcQueryStream {
      * @param args        args
      * @return elementType object list
      */
-    <T> Iterable<T> queryStream(String sql, Class<T> elementType, Map<String, Object> args);
+    <T> Iterable<T> queryEach(String sql, Class<T> elementType, Map<String, Object> args);
 
     /**
      * Query.
@@ -324,9 +330,9 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    default <T1, T2> Iterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Map<String, Object> args) {
-        return queryStream(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
+        return queryEach(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
     /**
@@ -341,7 +347,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    <T1, T2> Iterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Map<String, Object> args);
 
     /**
@@ -357,9 +363,9 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1,
+    default <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Map<String, Object> args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
+        return queryEach(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
     }
 
     /**
@@ -376,7 +382,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args);
 
     /**
@@ -394,9 +400,9 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+    default <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Object> args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, elementType4,
+        return queryEach(sql, elementType1, elementType2, elementType3, elementType4,
                 (Tuple4<String, String, String, String>) null, args);
     }
 
@@ -416,7 +422,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Tuple4<String, String, String, String> prefixes, Map<String, Object> args);
 
@@ -437,10 +443,10 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+    default <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Map<String, Object> args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
+        return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
                 (Tuple5<String, String, String, String, String>) null, args);
     }
 
@@ -462,12 +468,12 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args);
 
     /**
-     * Query .
+     * query each .
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
@@ -485,15 +491,15 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql,
+    default <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
             Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Class<T5> elementType5, Class<T6> elementType6, Map<String, Object> args) {
-        return queryStream(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
+        return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
                 (Tuple6<String, String, String, String, String, String>) null, args);
     }
 
     /**
-     * Query .
+     * query each .
      *
      * @param <T1>         the generic type
      * @param <T2>         the generic type
@@ -512,7 +518,7 @@ public interface JdbcQueryStream {
      * @param args         the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
             Map<String, Object> args);

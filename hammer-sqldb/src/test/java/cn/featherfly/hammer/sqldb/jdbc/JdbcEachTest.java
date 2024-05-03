@@ -24,7 +24,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
  *
  * @author zhongj
  */
-public class JdbcStreamTest extends JdbcTestBase {
+public class JdbcEachTest extends JdbcTestBase {
 
     @BeforeClass
     void before() {
@@ -40,7 +40,7 @@ public class JdbcStreamTest extends JdbcTestBase {
     @Test
     public void testQueryStream() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        Iterable<Map<String, Object>> ids = jdbc.queryStream("select * from role where id = ?", 1);
+        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
         Iterator<Map<String, Object>> iter = ids.iterator();
         int size = 0;
         while (iter.hasNext()) {
@@ -55,7 +55,7 @@ public class JdbcStreamTest extends JdbcTestBase {
     public void testQueryStream2() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         //        JdbcTransaction tran = jdbc.beginTransation();
-        Iterable<Map<String, Object>> ids = jdbc.queryStream("select * from role where id = ?", 1);
+        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
         int size = 0;
         for (Map<String, Object> value : ids) {
             System.out.println(value);
@@ -68,7 +68,7 @@ public class JdbcStreamTest extends JdbcTestBase {
     @Test
     public void testQueryStreamEntity() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        Iterable<User> users = jdbc.queryStream("select id,username from user where id in (?,?)", User.class, 1, 2);
+        Iterable<User> users = jdbc.queryEach("select id,username from user where id in (?,?)", User.class, 1, 2);
         Iterator<User> iter = users.iterator();
         int size = 0;
         while (iter.hasNext()) {
@@ -84,7 +84,7 @@ public class JdbcStreamTest extends JdbcTestBase {
     @Test(expectedExceptions = JdbcException.class, expectedExceptionsMessageRegExp = "[\\s\\S]+close[\\s\\S]*")
     public void testQueryStreamExceptionConnClosed() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        Iterable<Map<String, Object>> ids = jdbc.queryStream("select * from role where id = ?", 1);
+        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
         Iterator<Map<String, Object>> iter = ids.iterator();
 
         jdbc.close(); // 手动关闭链接
@@ -101,7 +101,7 @@ public class JdbcStreamTest extends JdbcTestBase {
     @Test(expectedExceptions = NoSuchElementException.class)
     public void testQueryStreamNoSuchElementException() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        Iterable<Map<String, Object>> ids = jdbc.queryStream("select * from role where id in (?,?)", 1, 2);
+        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id in (?,?)", 1, 2);
         Iterator<Map<String, Object>> iter = ids.iterator();
         System.out.println(iter.hasNext());
         System.out.println(iter.hasNext());
