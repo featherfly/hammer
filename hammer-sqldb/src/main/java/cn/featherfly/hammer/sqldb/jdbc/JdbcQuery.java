@@ -15,6 +15,6 @@ package cn.featherfly.hammer.sqldb.jdbc;
  *
  * @author zhongj
  */
-public interface JdbcQuery extends JdbcQueryList, JdbcQueryStream, JdbcQuerySingle, JdbcQueryUnique, JdbcQueryValue {
+public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle, JdbcQueryUnique, JdbcQueryValue {
 
 }

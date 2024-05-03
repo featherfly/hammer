@@ -55,7 +55,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 13. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
 
-14. Jdbc实现queryStream，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
+14. Jdbc实现queryEach，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
 
 15. 加入配置`HammerConfig`，实现update、delete、query等表达式的配置（configure方法）
 

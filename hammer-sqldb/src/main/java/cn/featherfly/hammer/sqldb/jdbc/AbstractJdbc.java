@@ -652,45 +652,45 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Iterable<Map<String, Object>> queryStream(String sql, Map<String, Object> args) {
-        return queryStream(sql, new MapRowMapper(manager), args);
+    public Iterable<Map<String, Object>> queryEach(String sql, Map<String, Object> args) {
+        return queryEach(sql, new MapRowMapper(manager), args);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Iterable<Map<String, Object>> queryStream(String sql, Object... args) {
-        return queryStream(sql, new MapRowMapper(manager), args);
+    public Iterable<Map<String, Object>> queryEach(String sql, Object... args) {
+        return queryEach(sql, new MapRowMapper(manager), args);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    public <T> Iterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return new RowIterable<>(null, rowMapper);
         }
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream0(execution.getExecution(), rowMapper, execution.getParams());
+        return queryEach0(execution.getExecution(), rowMapper, execution.getParams());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> Iterable<T> queryStream(String sql, RowMapper<T> rowMapper, Object... args) {
+    public <T> Iterable<T> queryEach(String sql, RowMapper<T> rowMapper, Object... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return new RowIterable<>(null, rowMapper);
         }
-        return queryStream0(sql, rowMapper, args);
+        return queryEach0(sql, rowMapper, args);
     }
 
-    private <T> Iterable<T> queryStream0(String sql, RowMapper<T> rowMapper, Object... args) {
+    private <T> Iterable<T> queryEach0(String sql, RowMapper<T> rowMapper, Object... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
@@ -704,8 +704,7 @@ public abstract class AbstractJdbc implements Jdbc {
             //                return postHandle(execution.setOriginalResult(list), sql, args);
         } catch (SQLException e) {
             releaseConnection(con);
-            throw new JdbcException(Strings.format("queryStream: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
-                    e);
+            throw new JdbcException(Strings.format("queryEach: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
         } finally {
             releaseConnection(con);
         }
@@ -715,41 +714,41 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, Map<String, Object> args) {
-        return queryStream(sql, getTypeMapper(elementType), args);
+    public <T> Iterable<T> queryEach(String sql, Class<T> elementType, Map<String, Object> args) {
+        return queryEach(sql, getTypeMapper(elementType), args);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, Object... args) {
-        return queryStream(sql, getTypeMapper(elementType), args);
+    public <T> Iterable<T> queryEach(String sql, Class<T> elementType, Object... args) {
+        return queryEach(sql, getTypeMapper(elementType), args);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    public <T1, T2> Iterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Map<String, Object> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
                 elementType2);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
+        return queryEach(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1,
+    public <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
             Map<String, Object> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
                 elementType1, elementType2, elementType3);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, prefixes,
+        return queryEach(execution.getExecution(), elementType1, elementType2, elementType3, prefixes,
                 execution.getParams());
     }
 
@@ -757,14 +756,14 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+    public <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
         logger.debug(
                 "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}",
                 sql, args, elementType1, elementType2, elementType3, elementType4);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
+        return queryEach(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
                 execution.getParams());
     }
 
@@ -772,22 +771,22 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+    public <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
         logger.debug(
                 "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
                 sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
-                elementType5, prefixes, execution.getParams());
+        return queryEach(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
+                prefixes, execution.getParams());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql,
+    public <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
             Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Class<T5> elementType5, Class<T6> elementType6,
             Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> args) {
@@ -795,17 +794,17 @@ public abstract class AbstractJdbc implements Jdbc {
                 "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}, elementType6 -> {}",
                 sql, args, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
-        return queryStream(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
-                elementType5, elementType6, prefixes, execution.getParams());
+        return queryEach(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
+                elementType6, prefixes, execution.getParams());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> Iterable<Tuple2<T1, T2>> queryStream(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    public <T1, T2> Iterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Object... args) {
-        return queryStream(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
+        return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
                 prefixes, manager), args);
     }
 
@@ -813,9 +812,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryStream(String sql, Class<T1> elementType1,
+    public <T1, T2, T3> Iterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
-        return queryStream(sql, new TupleNestedBeanPropertyRowMapper<>(
+        return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
     }
 
@@ -823,10 +822,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryStream(String sql, Class<T1> elementType1,
+    public <T1, T2, T3, T4> Iterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Tuple4<String, String, String, String> prefixes, Object... args) {
-        return queryStream(sql,
+        return queryEach(sql,
                 new TupleNestedBeanPropertyRowMapper<>(
                         ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager),
                 args);
@@ -836,10 +835,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryStream(String sql, Class<T1> elementType1,
+    public <T1, T2, T3, T4, T5> Iterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Tuple5<String, String, String, String, String> prefixes, Object... args) {
-        return queryStream(sql,
+        return queryEach(sql,
                 new TupleNestedBeanPropertyRowMapper<>(
                         ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5),
                         prefixes, manager),
@@ -850,17 +849,17 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryStream(String sql,
+    public <T1, T2, T3, T4, T5, T6> Iterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
             Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
             Class<T5> elementType5, Class<T6> elementType6,
             Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
-        return queryStream(sql, new TupleNestedBeanPropertyRowMapper<>(
+        return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5, elementType6),
                 prefixes, manager), args);
     }
 
     //    @Override
-    //    public <T> Iterable<T> queryStream(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
+    //    public <T> Iterable<T> queryEach(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
     //        SQLType sqlType = manager.getSqlType(elementType);
     //        RowMapper<T> rowMapper = null;
     //        if (sqlType == null) {
@@ -868,7 +867,7 @@ public abstract class AbstractJdbc implements Jdbc {
     //        } else {
     //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
     //        }
-    //        return queryStream(sql, rowMapper, args);
+    //        return queryEach(sql, rowMapper, args);
     //    }
 
     //    /**
