@@ -47,7 +47,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
     public <T> EntitySqlDeleteRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         addFilterable(joinClassMapping);
-        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+        EntityRelation<?> jerm = getEntityRelation(index - 1);
         deleteBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), joinClassMapping.getRepositoryName(),
                 jerm.getTableAlias(), onExpression.get().expression()));
         return this;
@@ -71,7 +71,7 @@ public class EntitySqlDeleteRelation extends EntitySqlRelation<EntitySqlDeleteRe
      * {@inheritDoc}
      */
     @Override
-    protected void initBuilder(EntityRelationMapping<?> erm) {
+    protected void initBuilder(EntityRelation<?> erm) {
         deleteBuilder = new SqlDeleteFromBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
                 erm.getTableAlias());
     }

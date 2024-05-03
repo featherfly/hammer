@@ -27,7 +27,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryFetchedProperties
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlOn1;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlQueryRelation;
-import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelationMapping;
+import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.EntitySqlRelation.EntityRelation;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate1P;
 import cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation.EntitySqlQueryRelate1R;
 
@@ -80,7 +80,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     @Override
     public <R> EntityQueryRelate1R<E, R> join(SerializableFunction2<R, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
+        queryRelation.join(0, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation);
     }
@@ -145,7 +145,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     @SuppressWarnings("unchecked")
     public P property(boolean distinct, String propertyName) {
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-            queryRelation.getEntityRelationMappingTuple().getOrNull0().getClassMapping());
+            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
         if (Lang.isEmpty(columnAndProperty.get1())) {
             queryRelation.getBuilder().addColumn(distinct, columnAndProperty.get0());
         } else {
@@ -165,7 +165,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     @SuppressWarnings("unchecked")
     public P property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
         Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-            queryRelation.getEntityRelationMappingTuple().getOrNull0().getClassMapping());
+            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
         if (Lang.isEmpty(columnAndProperty.get1())) {
             queryRelation.getBuilder().addColumn(aggregateFunction, distinct, columnAndProperty.get0());
         } else {
@@ -225,7 +225,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     @SuppressWarnings("unchecked")
     public P propertyAlias(String columnName, String alias) {
         queryRelation.getBuilder().addColumn(ClassMappingUtils.getColumnName(columnName,
-            queryRelation.getEntityRelationMappingTuple().getOrNull0().getClassMapping()), alias);
+            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping()), alias);
         return (P) this;
     }
 
@@ -251,7 +251,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      */
     @SuppressWarnings("unchecked")
     public P id(String propertyName) {
-        EntityRelationMapping<?> erm = queryRelation.getEntityRelationMappingTuple().getOrNull0();
+        EntityRelation<?> erm = queryRelation.getEntityRelationTuple().getOrNull0();
         erm.setIdName(ClassMappingUtils.getColumnName(propertyName, erm.getClassMapping()));
         //        queryRelation.getEntityRelationMappingTuple().getOrNull0().idName =
         //                ClassMappingUtils.getColumnName(propertyName, queryRelation.getEntityRelationMappingTuple().getOrNull0().classMapping);

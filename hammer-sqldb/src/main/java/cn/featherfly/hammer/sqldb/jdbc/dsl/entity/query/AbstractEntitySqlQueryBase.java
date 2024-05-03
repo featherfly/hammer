@@ -144,7 +144,7 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
     public long count() {
         return new RepositorySqlQueryValueExpression(new RepositorySqlQueryRelation(queryRelation.getJdbc(),
                 new AliasManager(), factory.getMetadata(), queryRelation.getConfig())
-                        .query(queryRelation.getEntityRelationMapping(0).getClassMapping().getRepositoryName())
+                        .query(queryRelation.getEntityRelation(0).getClassMapping().getRepositoryName())
                         .fetch(0),
                 sqlPageFactory).count();
     }

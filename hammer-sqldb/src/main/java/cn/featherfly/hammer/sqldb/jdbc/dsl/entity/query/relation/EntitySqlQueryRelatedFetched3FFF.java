@@ -68,7 +68,7 @@ public class EntitySqlQueryRelatedFetched3FFF<E, R1, R2, R3>
     @Override
     public <R4> EntityQueryRelate4FFFR<E, R1, R2, R3, R4> join(SerializableFunction2<R4, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
+        queryRelation.join(0, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4FFFR<>(factory, sqlPageFactory, queryRelation);
     }
@@ -103,7 +103,7 @@ public class EntitySqlQueryRelatedFetched3FFF<E, R1, R2, R3>
     @Override
     public <R4> EntityQueryRelate4FFFR<E, R1, R2, R3, R4> join2(SerializableFunction2<R4, R1> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, queryRelation.getEntityRelationMapping(0).getIdName(),
+        queryRelation.join(0, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4FFFR<>(factory, sqlPageFactory, queryRelation);
     }
@@ -138,7 +138,7 @@ public class EntitySqlQueryRelatedFetched3FFF<E, R1, R2, R3>
     @Override
     public <R4> EntityQueryRelate4FFFR<E, R1, R2, R3, R4> join3(SerializableFunction2<R4, R2> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(2, queryRelation.getEntityRelationMapping(0).getIdName(),
+        queryRelation.join(2, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4FFFR<>(factory, sqlPageFactory, queryRelation);
     }
@@ -173,7 +173,7 @@ public class EntitySqlQueryRelatedFetched3FFF<E, R1, R2, R3>
     @Override
     public <R4> EntityQueryRelate4FFFR<E, R1, R2, R3, R4> join4(SerializableFunction2<R4, R3> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(3, queryRelation.getEntityRelationMapping(0).getIdName(),
+        queryRelation.join(3, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate4FFFR<>(factory, sqlPageFactory, queryRelation);
     }

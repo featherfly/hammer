@@ -40,7 +40,7 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlRelation;
  * @param <B> the generic type
  */
 public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B>, B extends SqlBuilder>
-    implements SqlRelation<B> {
+        implements SqlRelation<B> {
 
     /** The jdbc. */
     protected Jdbc jdbc;
@@ -58,9 +58,8 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
     protected int index;
 
     /** The entity filterable mapping tuple. */
-    protected MutableTuple9<RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation,
-        RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation,
-        RepositoryRelation> repositoryFilterableTuple = MutableTuples.create9();
+    protected MutableTuple9<RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation> repositoryFilterableTuple = MutableTuples
+            .create9();
 
     /**
      * Instantiates a new abstract sql query entity properties.
@@ -71,7 +70,7 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      * @param conditionConfig the condition config
      */
     protected RepositorySqlRelation(Jdbc jdbc, AliasManager aliasManager, DatabaseMetadata metadata,
-        ConditionConfig<?> conditionConfig) {
+            ConditionConfig<?> conditionConfig) {
         AssertIllegalArgument.isNotNull(jdbc, "jdbc");
         AssertIllegalArgument.isNotNull(aliasManager, "aliasManager");
         AssertIllegalArgument.isNotNull(metadata, "metadata");
@@ -150,46 +149,46 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      */
     @SuppressWarnings("unchecked")
     public R addFilterable(int sourceIndex, String sourceField, String joinRepository, String joinRepositoryAlias,
-        String joinField) {
+            String joinField) {
         checkIndex(index);
         switch (index) {
             case 0:
                 RepositoryRelation eqm = createRelationMapping(sourceIndex, sourceField, joinRepository,
-                    joinRepositoryAlias, joinField);
+                        joinRepositoryAlias, joinField);
                 repositoryFilterableTuple.set0(eqm);
                 initBuilder(eqm);
                 break;
             case 1:
-                repositoryFilterableTuple.set1(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set1(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             case 2:
-                repositoryFilterableTuple.set2(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set2(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             case 3:
-                repositoryFilterableTuple.set3(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set3(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             case 4:
-                repositoryFilterableTuple.set4(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set4(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             case 5:
-                repositoryFilterableTuple.set5(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set5(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             case 6:
-                repositoryFilterableTuple.set6(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set6(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             case 7:
-                repositoryFilterableTuple.set7(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set7(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             case 8:
-                repositoryFilterableTuple.set8(
-                    createRelationMapping(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField));
+                repositoryFilterableTuple.set8(createRelationMapping(sourceIndex, sourceField, joinRepository,
+                        joinRepositoryAlias, joinField));
                 break;
             default:
                 break;
@@ -212,7 +211,7 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
             return join(sourceIndex, sourceField, joinRepository, pkList.get(0).getName());
         }
         throw new SqldbHammerException(
-            Strings.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
+                Strings.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
     }
 
     /**
@@ -239,7 +238,7 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      * @return the r
      */
     public R join(int sourceIndex, String sourceField, String joinRepository, String joinRepositoryAlias,
-        String joinField) {
+            String joinField) {
         AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
         if (Lang.isEmpty(joinField)) {
             List<Column> pks = metadata.getTable(joinRepository).getPrimaryColumns();
@@ -266,7 +265,7 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
         RepositoryRelation jerm = getRepositoryRelation(index - 1);
 
         return join(new SqlJoinOnBasicBuilder(jdbc.getDialect(), jerm.getRepository(), jerm.getRepositoryAlias(),
-            joinField, erm.getRepositoryAlias(), sourceField));
+                joinField, erm.getRepositoryAlias(), sourceField));
     }
 
     /**
@@ -331,9 +330,7 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      *
      * @return entityQueryMappingTuple
      */
-    public MutableTuple9<RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation,
-        RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation,
-        RepositoryRelation> getRepositoryRelationTuple() {
+    public MutableTuple9<RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation, RepositoryRelation> getRepositoryRelationTuple() {
         return repositoryFilterableTuple;
     }
 
@@ -368,6 +365,16 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
         }
     }
 
+    /**
+     * Gets the filterable repository relations.
+     *
+     * @return the filterable repository relations
+     */
+    public RepositoryRelation[] getFilterableRepositoryRelations() {
+        return repositoryFilterableTuple.streamOf(RepositoryRelation.class).filter(r -> r != null)
+                .toArray(num -> new RepositoryRelation[num]);
+    }
+
     // ****************************************************************************************************************
     //
     // ****************************************************************************************************************
@@ -393,9 +400,9 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
      * @return the entity relation mapping
      */
     protected RepositoryRelation createRelationMapping(int sourceIndex, String sourceField, String joinRepository,
-        String joinRepositoryAlias, String joinField) {
+            String joinRepositoryAlias, String joinField) {
         return new RepositoryRelation(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField,
-            aliasManager);
+                aliasManager);
     }
 
     // ********************************************************************
@@ -420,7 +427,7 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
          * @param aliasManager        the alias manager
          */
         public RepositoryRelation(int sourceIndex, String sourceField, String joinRepository,
-            String joinRepositoryAlias, String joinField, AliasManager aliasManager) {
+                String joinRepositoryAlias, String joinField, AliasManager aliasManager) {
             this(sourceIndex, sourceField, joinRepository, joinRepositoryAlias, joinField, aliasManager, null);
         }
 
@@ -436,8 +443,8 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
          * @param selectJoinOnBasicBuilder the select join on basic builder
          */
         public RepositoryRelation(int sourceIndex, String sourceField, String joinRepository,
-            String joinRepositoryAlias, String joinField, AliasManager aliasManager,
-            SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder) {
+                String joinRepositoryAlias, String joinField, AliasManager aliasManager,
+                SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder) {
             super();
             if (sourceIndex > 0) {
                 AssertIllegalArgument.isNotEmpty(joinField, "joinField");

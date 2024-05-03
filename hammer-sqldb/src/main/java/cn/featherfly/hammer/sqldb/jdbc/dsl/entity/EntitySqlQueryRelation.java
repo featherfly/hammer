@@ -41,7 +41,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     /** The select builder. */
     private SqlSelectBasicBuilder selectBuilder;
 
-    private Map<Integer, EntityRelationMapping<?>> entityQueryFetchMapping = new HashMap<>();
+    private Map<Integer, EntityRelation<?>> entityQueryFetchMapping = new HashMap<>();
 
     private Set<String> queryFetchAlias = new HashSet<>();
 
@@ -73,7 +73,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     public <T> EntitySqlQueryRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         addFilterable(joinClassMapping);
-        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+        EntityRelation<?> jerm = getEntityRelation(index - 1);
         SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = getBuilder().join2(joinClassMapping,
                 jerm.getTableAlias(), onExpression.get().expression());
         jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
@@ -96,7 +96,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         AssertIllegalArgument.isNotNull(propertyName, "propertyName");
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         AssertIllegalArgument.isNotNull(joinPropertyName, "joinPropertyName");
-        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
+        EntityRelation<?> erm = getEntityRelation(sourceIndex);
         if (returnType) {
             addFilterable(sourceIndex, null, joinClassMapping, joinPropertyName);
         } else if (Lang.isNotEmpty(erm.getJoinFromPropertyName())) {
@@ -106,7 +106,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
             addFilterable(sourceIndex, propertyName, joinClassMapping, joinPropertyName);
         }
 
-        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
+        EntityRelation<?> jerm = getEntityRelation(index - 1);
 
         String joinRelation = erm.getClassMapping().getType().getSimpleName() + "[" + erm.getTableAlias() + "]."
                 + jerm.getJoinFromPropertyName();
@@ -137,7 +137,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     public EntitySqlQueryRelation fetch(int index) {
         AssertIllegalArgument.isGe(index, 0, "fetch entity index");
         AssertIllegalArgument.isLt(index, entityFilterableMappingTuple.degree(), "fetch entity index");
-        EntityRelationMapping<?> erm = getEntityRelationMapping(index);
+        EntityRelation<?> erm = getEntityRelation(index);
         entityQueryFetchMapping.put(entityQueryFetchMapping.size(), erm);
         queryFetchAlias.add(erm.getTableAlias());
 
@@ -157,12 +157,12 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     public EntitySqlQueryRelation fetchProperty(int index) {
         AssertIllegalArgument.isGe(index, 0, "fetch entity index");
         AssertIllegalArgument.isLt(index, entityFilterableMappingTuple.degree(), "fetch entity index");
-        EntityRelationMapping<?> erm = getEntityRelationMapping(index);
+        EntityRelation<?> erm = getEntityRelation(index);
         queryFetchAlias.add(erm.getTableAlias());
         if (index > 0) {
             erm.selectJoinOnBasicBuilder.fetch((prefixTableAlias, alias) -> {
                 if (prefixTableAlias) {
-                    EntityRelationMapping<?> jerm = getEntityRelationMapping(erm.getJoinFromIndex());
+                    EntityRelation<?> jerm = getEntityRelation(erm.getJoinFromIndex());
                     return jerm.getTableAlias() + Chars.DOT_CHAR + erm.getJoinFromPropertyName();
                 } else {
                     return erm.getJoinFromPropertyName();
@@ -361,7 +361,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * {@inheritDoc}
      */
     @Override
-    protected void initBuilder(EntityRelationMapping<?> erm) {
+    protected void initBuilder(EntityRelation<?> erm) {
         selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), erm.classMapping, erm.tableAlias);
     }
 
