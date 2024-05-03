@@ -4,7 +4,6 @@ package cn.featherfly.hammer.sqldb.jdbc.dsl.entity;
 import java.util.function.Supplier;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBasicBuilder2;
-import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -56,8 +55,18 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
         addFilterable(joinClassMapping);
         EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
         updateBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), joinClassMapping.getRepositoryName(),
-            jerm.getTableAlias(), onExpression.get().expression()));
+                jerm.getTableAlias(), onExpression.get().expression()));
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntitySqlUpdateRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+            String joinPropertyName, boolean returnType) {
+        // IMPLSOON update还未实现此join方法
+        throw new NotImplementedException();
     }
 
     // ****************************************************************************************************************
@@ -68,19 +77,9 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
      * {@inheritDoc}
      */
     @Override
-    protected SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
-        JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
-        // IMPLSOON update还未实现join
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected void initBuilder(EntityRelationMapping<?> erm) {
         updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-            erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
+                erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
     }
 
     /**

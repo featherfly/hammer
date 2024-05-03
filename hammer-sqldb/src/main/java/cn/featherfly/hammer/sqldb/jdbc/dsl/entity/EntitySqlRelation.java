@@ -36,8 +36,8 @@ import cn.featherfly.hammer.sqldb.jdbc.dsl.query.SqlRelation;
  * abstract entity sql relation.
  *
  * @author zhongj
- * @param <R> the generic type
- * @param <B> the generic type
+ * @param <R> implements EntitySqlRelation
+ * @param <B> sql builder
  */
 public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B extends SqlBuilder>
         implements SqlRelation<B> {
@@ -58,7 +58,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
     protected MutableTuple9<EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>, EntityRelationMapping<?>> entityFilterableMappingTuple = MutableTuples
             .create9();
 
-    private Set<String> joinedRelations = new HashSet<>();
+    protected final Set<String> joinedRelations = new HashSet<>();
 
     /**
      * Instantiates a new abstract sql query entity properties.
@@ -154,7 +154,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param sourceIndex      the source index
      * @param propertyName     the property name
      * @param joinClassMapping the join class mapping
-     * @return the r
+     * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping) {
         return join(sourceIndex, propertyName, joinClassMapping, false);
@@ -167,7 +167,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param propertyName     the property name
      * @param joinClassMapping the join class mapping
      * @param returnType       the return type
-     * @return the r
+     * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, boolean returnType) {
         if (joinClassMapping.getPrivaryKeyPropertyMappings().size() == 1) {
@@ -186,7 +186,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param joinClassMapping the join class mapping
      * @param joinPropertyName the join property name
      * @param returnType       the return type
-     * @return the r
+     * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName, boolean returnType) {
         EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
@@ -200,7 +200,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param propertyName     the property name
      * @param joinClassMapping the join class mapping
      * @param joinPropertyName the join property name
-     * @return the r
+     * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName) {
         return join(sourceIndex, propertyName, joinClassMapping, joinPropertyName, true);
@@ -214,39 +214,10 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param joinClassMapping the join class mapping
      * @param joinPropertyName the join property name
      * @param returnType       the return type
-     * @return the r
+     * @return this type implements EntitySqlRelation
      */
-    @SuppressWarnings("unchecked")
-    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName,
-            boolean returnType) {
-        AssertIllegalArgument.isNotNull(propertyName, "propertyName");
-        AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
-        AssertIllegalArgument.isNotNull(joinPropertyName, "joinPropertyName");
-        EntityRelationMapping<?> erm = getEntityRelationMapping(sourceIndex);
-        if (returnType) {
-            addFilterable(sourceIndex, null, joinClassMapping, joinPropertyName);
-        } else if (Lang.isNotEmpty(erm.getJoinFromPropertyName())) {
-            addFilterable(sourceIndex, erm.getJoinFromPropertyName() + "." + propertyName, joinClassMapping,
-                    joinPropertyName);
-        } else {
-            addFilterable(sourceIndex, propertyName, joinClassMapping, joinPropertyName);
-        }
-
-        EntityRelationMapping<?> jerm = getEntityRelationMapping(index - 1);
-
-        String joinRelation = erm.getClassMapping().getType().getSimpleName() + "[" + erm.getTableAlias() + "]."
-                + jerm.getJoinFromPropertyName();
-
-        if (returnType || !joinedRelations.contains(joinRelation)) {
-            joinedRelations.add(joinRelation);
-            SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
-                    erm.getClassMapping().getPropertyMapping(propertyName).getRepositoryFieldName(), joinClassMapping,
-                    jerm.getTableAlias(),
-                    joinClassMapping.getPropertyMapping(joinPropertyName).getRepositoryFieldName());
-            jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
-        }
-        return (R) this;
-    }
+    public abstract R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+            String joinPropertyName, boolean returnType);
 
     /**
      * Join.
@@ -254,23 +225,10 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param <T>              the generic type
      * @param joinClassMapping the join class mapping
      * @param onExpression     the on expression
-     * @return the r
+     * @return this type implements EntitySqlRelation
      */
     public abstract <T> EntitySqlRelation<?, ?> join(JdbcClassMapping<T> joinClassMapping,
             Supplier<Expression> onExpression);
-
-    /**
-     * Join 0.
-     *
-     * @param tableAlias          the table alias
-     * @param columnName          the column name
-     * @param joinClassMapping    the join class mapping
-     * @param joinTableAlias      the join table alias
-     * @param joinTableColumnName the join table column name
-     * @return the sql select join on basic builder
-     */
-    protected abstract SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
-            JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName);
 
     /**
      * Inits the builder.
