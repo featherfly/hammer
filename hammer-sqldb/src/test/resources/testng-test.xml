@@ -78,7 +78,7 @@
     <test name="dsl test">
         <packages>
             <package
-                name="cn.featherfly.hammer.sqldb.jdbc.dsl.*" />
+                name="cn.featherfly.hammer.sqldb.dsl.*" />
         </packages>
         <!-- <classes> -->
         <!-- <class name="cn.featherfly.hammer.sqldb.jdbc.dsl.SqlDslExpressionTest" 
