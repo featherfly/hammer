@@ -734,7 +734,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                         }
                     }
                     if (Lang.isNotEmpty(map.get("type"))) {
-                        config.setType(TplType.valueOf(map.get("type").toString()));
+                        config.setType(ExecutionType.valueOf(map.get("type").toString()));
                     }
                 }
                 checkName(executeIds, k, finalFilePath);

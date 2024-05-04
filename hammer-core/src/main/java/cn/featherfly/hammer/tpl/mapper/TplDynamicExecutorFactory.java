@@ -56,7 +56,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
-import cn.featherfly.hammer.tpl.TplType;
+import cn.featherfly.hammer.tpl.ExecutionType;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 import cn.featherfly.hammer.tpl.annotation.ParamType;
@@ -705,7 +705,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 methodNode.parameters = new ArrayList<>();
                 methodNode.visitVarInsn(ALOAD, 0);
                 methodNode.visitFieldInsn(GETFIELD, classNode.name, HAMMER_FIELD_NAME, hammerDescriptor);
-                TplType tplType = getType(method);
+                ExecutionType tplType = getType(method);
 
                 //                    String typeDescriptor = Type.getDescriptor(TplExecuteIdFileImpl.class);
                 String executeIdType = Type.getInternalName(TplExecuteIdFileImpl.class);
@@ -726,7 +726,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     methodNode.visitMaxs(stackSize, localeSize);
                     methodNode.visitEnd();
                 } else if (method.getReturnType() == Integer.TYPE
-                        && (tplType == TplType.AUTO || tplType == TplType.EXECUTE)) {
+                        && (tplType == ExecutionType.AUTO || tplType == ExecutionType.EXECUTE)) {
                     setParams(methodNode, method);
                     methodNode.visitMethodInsn(INVOKEINTERFACE, hammerName, executeMethod.getName(),
                             executeMethodDescriptor, true);
@@ -1276,12 +1276,12 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         }
     }
 
-    private TplType getType(Method method) {
+    private ExecutionType getType(Method method) {
         Template template = method.getAnnotation(Template.class);
         if (template != null && Lang.isNotEmpty(template.type())) {
             return template.type();
         } else {
-            return TplType.AUTO;
+            return ExecutionType.AUTO;
         }
     }
 
