@@ -14,8 +14,19 @@ SELECT
     ur.`user_id` `ur.userId`,
     ur.`role_id` `ur.roleId`,
     ur.`descp` `ur.descp`,
-    ur.`descp2` `ur.descp2`
+    ur.`descp2` `ur.descp2`,
+    r.`id` `r.id`,
+    r.`name` `r.name`,
+    r.`descp` `r.descp`,
+    r.`create_time` `r.createTime`,
+    o.`id` `o.id`,
+    o.`app_id` `o.appId`,
+    o.`create_user` `o.createUser.id`
 FROM
     `user` _user0 
     JOIN `user_info` ui ON _user0.id = ui.user_id 
     JOIN `user_role` ur ON _user0.id = ur.user_id
+    JOIN `role` r ON ur.role_id = r.id
+    JOIN `order` o ON _user0.id = o.create_user
+where
+    _user0.`id` > ?

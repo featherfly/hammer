@@ -14,6 +14,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import cn.featherfly.common.db.NamedParamSql;
+import cn.featherfly.common.repository.Execution;
+
 /**
  * jdbc update.
  *
@@ -45,6 +48,18 @@ public interface JdbcUpdate {
     /**
      * Update.
      *
+     * @param sql  the sql
+     * @param args the args
+     * @return the int
+     */
+    default int update(NamedParamSql sql, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return update(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * Update.
+     *
      * @param <T>                the generic type
      * @param sql                sql
      * @param generatedKeyHolder the key supplier
@@ -63,6 +78,21 @@ public interface JdbcUpdate {
      * @return map list
      */
     <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Map<String, Object> args);
+
+    /**
+     * Update.
+     *
+     * @param <T>                the generic type
+     * @param sql                sql
+     * @param generatedKeyHolder the key supplier
+     * @param args               args
+     * @return map list
+     */
+    default <T extends Serializable> int update(NamedParamSql sql, GeneratedKeyHolder<T> generatedKeyHolder,
+            Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return update(execution.getExecution(), generatedKeyHolder, execution.getParams());
+    }
 
     /**
      * batch update. use jdbc batch execute.

@@ -14,3 +14,5 @@ SELECT
 FROM
     `user` _user0 
     JOIN `user_info` ui ON _user0.id = ui.user_id
+where
+    _user0.`id` > ?

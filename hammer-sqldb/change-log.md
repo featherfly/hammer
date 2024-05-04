@@ -55,7 +55,9 @@ TODO dsl实体查询加入以下（EntityQuery）
 
     fetch一次，数据返回加入T value()（单条）和 List<T> listValue()（多条列表），还原single和unique方法为原来的返回查询实体对象
 
-14. Jdbc实现queryEach，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
+13. Jdbc实现queryEach，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
+
+    Jdbc各种执行sql的方法支持NamedParamSql参数（例如jdbc.query(NamedParamSql sql, Map<String,Object>）
 
 15. 加入配置`HammerConfig`，实现update、delete、query等表达式的配置（configure方法）
 

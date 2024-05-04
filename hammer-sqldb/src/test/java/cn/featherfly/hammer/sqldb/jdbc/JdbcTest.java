@@ -33,6 +33,7 @@ import com.speedment.common.tuple.mutable.MutableTuple3;
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.db.JdbcException;
+import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
@@ -62,7 +63,18 @@ public class JdbcTest extends JdbcTestBase {
 
     private String selectAvg;
 
+    private String selectAvgNamedParam;
+
+    private Map<String, Object> selectAvgParams = new ChainMapImpl<String, Object>().putChain("age", 0);
+
     private String selectString;
+
+    private String selectStringNamedParam;
+
+    private Map<String, Object> selectStringParams = new ChainMapImpl<String, Object>().putChain("id", 1);
+
+    private Map<String, Object> queryTupleListParamsMap = new ChainMapImpl<String, Object>().putChain("id", 0);
+    private Object[] queryTupleListParamsArray = new Object[] { 0 };
 
     final String tableName = "cms_article";
     final String id = "id";
@@ -93,7 +105,11 @@ public class JdbcTest extends JdbcTestBase {
     @BeforeClass
     void before() {
         selectAvg = Strings.format("select avg(age) from {0}", jdbc.getDialect().wrapName("user"));
+        selectAvgNamedParam = Strings.format("select avg(age) from {0} where age > :age",
+                jdbc.getDialect().wrapName("user"));
         selectString = Strings.format("select username from {0} where id = 1", jdbc.getDialect().wrapName("user"));
+        selectStringNamedParam = Strings.format("select username from {0} where id = :id",
+                jdbc.getDialect().wrapName("user"));
 
         PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();
 
@@ -105,7 +121,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQuery() {
+    public void query() {
         List<Long> idList = jdbc.query("select id from role order by id", Long.class);
         System.out.println(idList);
         assertTrue(idList.size() > 0);
@@ -123,7 +139,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQuery2() {
+    public void query2() {
         Integer id = 1;
         String sql = "select * from user_info where id = " + id;
         RowMapper<UserInfo> m = (RowMapper<UserInfo>) (res, rowNum) -> {
@@ -147,10 +163,10 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQueryTuple2() {
+    public void queryTuple2() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple2<User, UserInfo>> list = jdbc.query(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                new Object[0]);
+                queryTupleListParamsArray);
         for (Tuple2<User, UserInfo> tuple : list) {
             assertEquals(tuple.get0().getId(), tuple.get1().getUser().getId());
             assertNotNull(tuple.get0().getUsername());
@@ -158,7 +174,16 @@ public class JdbcTest extends JdbcTestBase {
         }
 
         sql = sql.replace("?", ":id");
-        list = jdbc.query(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."), new ChainMapImpl<>());
+        list = jdbc.query(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."), queryTupleListParamsMap);
+        for (Tuple2<User, UserInfo> tuple : list) {
+            assertEquals(tuple.get0().getId(), tuple.get1().getUser().getId());
+            assertNotNull(tuple.get0().getUsername());
+            assertNotNull(tuple.get1().getName());
+        }
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        list = jdbc.query(namedParamSql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
+                queryTupleListParamsMap);
         for (Tuple2<User, UserInfo> tuple : list) {
             assertEquals(tuple.get0().getId(), tuple.get1().getUser().getId());
             assertNotNull(tuple.get0().getUsername());
@@ -167,10 +192,10 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQueryTuple3() {
+    public void queryTuple3() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple3<User, UserInfo, UserRole>> list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class,
-                Tuples.of("_user0.", "ui.", "ur."));
+                Tuples.of("_user0.", "ui.", "ur."), queryTupleListParamsArray);
         for (Tuple3<User, UserInfo, UserRole> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -181,7 +206,18 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
-                new ChainMapImpl<>());
+                queryTupleListParamsMap);
+        for (Tuple3<User, UserInfo, UserRole> r : list) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2().getRoleId());
+        }
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        list = jdbc.query(namedParamSql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
+                queryTupleListParamsMap);
         for (Tuple3<User, UserInfo, UserRole> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -192,10 +228,10 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQueryTuple4() {
+    public void queryTuple4() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple4<User, UserInfo, UserRole, Role>> list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class,
-                Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."));
+                Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsArray);
         for (Tuple4<User, UserInfo, UserRole, Role> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -208,7 +244,20 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<>());
+                Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsMap);
+        for (Tuple4<User, UserInfo, UserRole, Role> r : list) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
+            assertEquals(r.get2().getRoleId(), r.get3().getId());
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2().getRoleId());
+            assertNotNull(r.get3().getName());
+        }
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        list = jdbc.query(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsMap);
         for (Tuple4<User, UserInfo, UserRole, Role> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -221,10 +270,11 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQueryTuple5() {
+    public void queryTuple5() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple5<User, UserInfo, UserRole, Role, Order>> list = jdbc.query(sql, User.class, UserInfo.class,
-                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."));
+                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."),
+                queryTupleListParamsArray);
         for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -239,7 +289,22 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<>());
+                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), queryTupleListParamsMap);
+        for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
+            assertEquals(r.get2().getRoleId(), r.get3().getId());
+            assertEquals(r.get4().getCreateUser().getId(), r.get0().getId());
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2().getRoleId());
+            assertNotNull(r.get3().getName());
+            assertNotNull(r.get4().getAppId());
+        }
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        list = jdbc.query(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), queryTupleListParamsMap);
         for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -254,16 +319,27 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = JdbcException.class)
-    public void testQueryException() {
+    public void queryException() {
         jdbc.query("select * from role where id = ?", new Object[0]);
     }
 
     @Test
-    public void testQuerySingle() {
+    public void querySingle() {
         Integer id = 1;
         String sql = "select * from user_info where id = ?";
         String sql2 = "select * from user_info where id = :id";
-        Map<String, Object> result = jdbc.querySingle(sql, new Object[] { id });
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql2);
+
+        Map<String, Object> paramMap = new ChainMapImpl<String, Object>().putChain("id", id);
+        Object[] paramArray = new Object[] { id };
+
+        Map<String, Object> result = jdbc.querySingle(sql, paramArray);
+        assertEquals(result.get("id"), id);
+
+        result = jdbc.querySingle(sql2, paramMap);
+        assertEquals(result.get("id"), id);
+
+        result = jdbc.querySingle(namedParamSql, paramMap);
         assertEquals(result.get("id"), id);
 
         RowMapper<UserInfo> m = (RowMapper<UserInfo>) (res, rowNum) -> {
@@ -272,14 +348,30 @@ public class JdbcTest extends JdbcTestBase {
             return ui;
         };
 
-        UserInfo ui = jdbc.querySingle(sql2, m, new ChainMapImpl<String, Object>().putChain("id", id));
+        UserInfo ui = jdbc.querySingle(sql, m, paramArray);
         assertEquals(ui.getId(), id);
+
+        ui = jdbc.querySingle(sql2, m, paramMap);
+        assertEquals(ui.getId(), id);
+
+        ui = jdbc.querySingle(namedParamSql, m, paramMap);
+        assertEquals(ui.getId(), id);
+
+        // sql, Class, params
+        ui = jdbc.querySingle(sql, UserInfo.class, paramArray);
+        assertEquals(result.get("id"), id);
+
+        ui = jdbc.querySingle(sql2, UserInfo.class, paramMap);
+        assertEquals(result.get("id"), id);
+
+        ui = jdbc.querySingle(namedParamSql, UserInfo.class, paramMap);
+        assertEquals(result.get("id"), id);
     }
 
     @Test
-    public void testQuerySingleTuple2() {
+    public void querySingleTuple2() {
         Integer id = 1;
-        String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        String sql = getSql("querySingleTuple2").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple2<User, UserInfo> r = jdbc.querySingle(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
@@ -293,10 +385,18 @@ public class JdbcTest extends JdbcTestBase {
         assertEquals(r.get1().getUser().getId(), id);
         assertNotNull(r.get0().getUsername());
         assertNotNull(r.get1().getName());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
+                new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
     }
 
     @Test
-    public void testQuerySingleTuple3() {
+    public void querySingleTuple3() {
         Integer id = 1;
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple3<User, UserInfo, UserRole> r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class,
@@ -317,10 +417,20 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get0().getUsername());
         assertNotNull(r.get1().getName());
         assertNotNull(r.get2().getRoleId());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, UserRole.class,
+                Tuples.of("_user0.", "ui.", "ur."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
     }
 
     @Test
-    public void testQuerySingleTuple4() {
+    public void querySingleTuple4() {
         Integer id = 1;
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple4<User, UserInfo, UserRole, Role> r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class,
@@ -345,10 +455,22 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get1().getName());
         assertNotNull(r.get2().getRoleId());
         assertNotNull(r.get3().getName());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
     }
 
     @Test
-    public void testQuerySingleTuple5() {
+    public void querySingleTuple5() {
         Integer id = 1;
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple5<User, UserInfo, UserRole, Role, Order> r = jdbc.querySingle(sql, User.class, UserInfo.class,
@@ -377,22 +499,44 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get2().getRoleId());
         assertNotNull(r.get3().getName());
         assertNotNull(r.get4().getAppId());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertEquals(r.get4().getCreateUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
+        assertNotNull(r.get4().getAppId());
     }
 
     @Test(expectedExceptions = JdbcException.class)
-    public void testQuerySingleException() {
+    public void querySingleException() {
         jdbc.querySingle("select * from role", new Object[0]);
     }
 
     @Test
-    public void testQueryUnique() {
+    public void queryUnique() {
         Integer id = 1;
         String sql = "select * from user_info where id = ?";
         String sql2 = "select * from user_info where id = :id";
-        Map<String, Object> result = jdbc.queryUnique(sql, new Object[] { id });
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql2);
+
+        Map<String, Object> paramMap = new ChainMapImpl<String, Object>().putChain("id", id);
+        Object[] paramArray = new Object[] { id };
+
+        Map<String, Object> result = jdbc.queryUnique(sql, paramArray);
         assertEquals(result.get("id"), id);
 
-        result = jdbc.queryUnique(sql2, new ChainMapImpl<String, Object>().putChain("id", id));
+        result = jdbc.queryUnique(sql2, paramMap);
+        assertEquals(result.get("id"), id);
+
+        result = jdbc.queryUnique(namedParamSql, paramMap);
         assertEquals(result.get("id"), id);
 
         RowMapper<UserInfo> m = (RowMapper<UserInfo>) (res, rowNum) -> {
@@ -401,24 +545,30 @@ public class JdbcTest extends JdbcTestBase {
             return ui;
         };
 
-        UserInfo ui = jdbc.queryUnique(sql, m, new Object[] { id });
+        UserInfo ui = jdbc.queryUnique(sql, m, paramArray);
         assertEquals(ui.getId(), id);
 
-        ui = jdbc.queryUnique(sql2, m, new ChainMapImpl<String, Object>().putChain("id", id));
+        ui = jdbc.queryUnique(sql2, m, paramMap);
+        assertEquals(ui.getId(), id);
+
+        ui = jdbc.queryUnique(namedParamSql, m, paramMap);
         assertEquals(ui.getId(), id);
 
         // sql, Class, params
-        ui = jdbc.queryUnique(sql, UserInfo.class, new Object[] { id });
+        ui = jdbc.queryUnique(sql, UserInfo.class, paramArray);
         assertEquals(result.get("id"), id);
 
-        ui = jdbc.queryUnique(sql2, UserInfo.class, new ChainMapImpl<String, Object>().putChain("id", id));
+        ui = jdbc.queryUnique(sql2, UserInfo.class, paramMap);
+        assertEquals(result.get("id"), id);
+
+        ui = jdbc.queryUnique(namedParamSql, UserInfo.class, paramMap);
         assertEquals(result.get("id"), id);
     }
 
     @Test
-    public void testQueryUniqueTuple2() {
+    public void queryUniqueTuple2() {
         Integer id = 1;
-        String sql = getSql("testQuerySingleTuple2").replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        String sql = getSql("querySingleTuple2").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple2<User, UserInfo> r = jdbc.queryUnique(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
@@ -432,12 +582,20 @@ public class JdbcTest extends JdbcTestBase {
         assertEquals(r.get1().getUser().getId(), id);
         assertNotNull(r.get0().getUsername());
         assertNotNull(r.get1().getName());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
+                new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
     }
 
     @Test
-    public void testQueryUniqueTuple3() {
+    public void queryUniqueTuple3() {
         Integer id = 1;
-        String sql = getSql("testQuerySingleTuple3").replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        String sql = getSql("querySingleTuple3").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple3<User, UserInfo, UserRole> r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class,
                 Tuples.of("_user0.", "ui.", "ur."), id);
         assertEquals(r.get0().getId(), id);
@@ -456,12 +614,22 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get0().getUsername());
         assertNotNull(r.get1().getName());
         assertNotNull(r.get2().getRoleId());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, UserRole.class,
+                Tuples.of("_user0.", "ui.", "ur."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
     }
 
     @Test
-    public void testQueryUniqueTuple4() {
+    public void queryUniqueTuple4() {
         Integer id = 1;
-        String sql = getSql("testQuerySingleTuple4").replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        String sql = getSql("querySingleTuple4").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple4<User, UserInfo, UserRole, Role> r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class,
                 Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), id);
         assertEquals(r.get0().getId(), id);
@@ -484,12 +652,24 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get1().getName());
         assertNotNull(r.get2().getRoleId());
         assertNotNull(r.get3().getName());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
     }
 
     @Test
-    public void testQueryUniqueTuple5() {
+    public void queryUniqueTuple5() {
         Integer id = 1;
-        String sql = getSql("testQuerySingleTuple5").replaceAll("`", jdbc.getDialect().getWrapSymbol());
+        String sql = getSql("querySingleTuple5").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple5<User, UserInfo, UserRole, Role, Order> r = jdbc.queryUnique(sql, User.class, UserInfo.class,
                 UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
         assertEquals(r.get0().getId(), id);
@@ -516,26 +696,40 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(r.get2().getRoleId());
         assertNotNull(r.get3().getName());
         assertNotNull(r.get4().getAppId());
+
+        NamedParamSql namedParamSql = NamedParamSql.compile(sql);
+        r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
+                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
+        assertEquals(r.get0().getId(), id);
+        assertEquals(r.get1().getUser().getId(), id);
+        assertEquals(r.get2().getUserId(), id);
+        assertEquals(r.get2().getRoleId(), r.get3().getId());
+        assertEquals(r.get4().getCreateUser().getId(), id);
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2().getRoleId());
+        assertNotNull(r.get3().getName());
+        assertNotNull(r.get4().getAppId());
     }
 
     @Test(expectedExceptions = JdbcException.class)
-    public void testQueryUniqueException() {
+    public void queryUniqueException() {
         jdbc.queryUnique("select * from role", new Object[0]);
     }
 
     @Test(expectedExceptions = JdbcException.class)
-    public void testQueryUniqueException2() {
+    public void queryUniqueException2() {
         jdbc.queryUnique("select * from role where id = 0", new Object[0]);
     }
 
     @Test(expectedExceptions = JdbcException.class)
-    public void testQueryValueException() {
+    public void queryValueException() {
         String sql = "select * from user_info where id = 1";
         jdbc.queryValue(sql, String.class);
     }
 
     @Test(expectedExceptions = JdbcException.class)
-    public void testQueryValueException2() {
+    public void queryValueException2() {
         String sql = "select name from user_info_1111 where id = 1";
         jdbc.queryValue(sql, String.class);
     }
@@ -1025,43 +1219,123 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void testLongValue() {
-        Long avg = jdbc.queryLong(selectAvg, new ChainMapImpl<>());
+    public void queryLongValue() {
+        long avg = jdbc.queryLong(selectAvg, new ChainMapImpl<>());
+        assertTrue(avg > 20);
+
+        avg = jdbc.queryLong(selectAvg, new Object[0]);
         assertTrue(avg > 20);
 
         avg = jdbc.queryLong(selectAvg);
         assertTrue(avg > 20);
+
+        avg = jdbc.queryLong(selectAvgNamedParam, selectAvgParams);
+        assertTrue(avg > 20);
+
+        Long avg2 = jdbc.queryLongWrapper(selectAvg, new ChainMapImpl<>());
+        assertTrue(avg2 > 20);
+
+        avg2 = jdbc.queryLongWrapper(selectAvg, new Object[0]);
+        assertTrue(avg2 > 20);
+
+        avg2 = jdbc.queryLongWrapper(selectAvg);
+        assertTrue(avg2 > 20);
+
+        avg2 = jdbc.queryLongWrapper(selectAvgNamedParam, selectAvgParams);
+        assertTrue(avg2 > 20);
+
+        NamedParamSql selectAvg2 = NamedParamSql.compile(selectAvgNamedParam);
+
+        avg = jdbc.queryLong(selectAvg2, selectAvgParams);
+        assertTrue(avg > 20);
+
+        avg2 = jdbc.queryLongWrapper(selectAvg2, selectAvgParams);
+        assertTrue(avg2 > 20);
+
     }
 
     @Test
-    void testDoubleValue() {
-        Double avg = jdbc.queryDouble(selectAvg, new ChainMapImpl<>());
+    public void queryDoubleValue() {
+        double avg = jdbc.queryDouble(selectAvg, new ChainMapImpl<>());
+        assertTrue(avg > 20);
+
+        avg = jdbc.queryDouble(selectAvg, new Object[0]);
         assertTrue(avg > 20);
 
         avg = jdbc.queryDouble(selectAvg);
         assertTrue(avg > 20);
+
+        avg = jdbc.queryDouble(selectAvgNamedParam, selectAvgParams);
+        assertTrue(avg > 20);
+
+        Double avg2 = jdbc.queryDoubleWrapper(selectAvg, new ChainMapImpl<>());
+        assertTrue(avg2 > 20);
+
+        avg2 = jdbc.queryDoubleWrapper(selectAvg, new Object[0]);
+        assertTrue(avg2 > 20);
+
+        avg2 = jdbc.queryDoubleWrapper(selectAvg);
+        assertTrue(avg2 > 20);
+
+        avg2 = jdbc.queryDoubleWrapper(selectAvgNamedParam, selectAvgParams);
+        assertTrue(avg2 > 20);
+
+        NamedParamSql selectAvg2 = NamedParamSql.compile(selectAvgNamedParam);
+
+        avg = jdbc.queryDouble(selectAvg2, selectAvgParams);
+        assertTrue(avg > 20);
+
+        avg2 = jdbc.queryDoubleWrapper(selectAvg, selectAvgParams);
+        assertTrue(avg2 > 20);
     }
 
     @Test
-    void testBigDecimalValue() {
+    public void queryBigDecimalValue() {
         BigDecimal avg = jdbc.queryBigDecimal(selectAvg, new ChainMapImpl<>());
+        assertTrue(avg.doubleValue() > 20);
+
+        avg = jdbc.queryBigDecimal(selectAvg, new Object[0]);
         assertTrue(avg.doubleValue() > 20);
 
         avg = jdbc.queryBigDecimal(selectAvg);
         assertTrue(avg.doubleValue() > 20);
+
+        avg = jdbc.queryBigDecimal(selectAvgNamedParam, selectAvgParams);
+        assertTrue(avg.doubleValue() > 20);
+
+        NamedParamSql selectAvg2 = NamedParamSql.compile(selectAvgNamedParam);
+
+        avg = jdbc.queryBigDecimal(selectAvg2, selectAvgParams);
+        assertTrue(avg.doubleValue() > 20);
+
+        selectAvg2 = NamedParamSql.compile(selectAvg);
+
+        avg = jdbc.queryBigDecimal(selectAvg2, new HashMap<>());
+        assertTrue(avg.doubleValue() > 20);
     }
 
     @Test
-    void testStringValue() {
+    public void queryString() {
         String str = jdbc.queryString(selectString, new ChainMapImpl<>());
+        assertEquals(str, "yufei");
+
+        str = jdbc.queryString(selectString, new Object[0]);
         assertEquals(str, "yufei");
 
         str = jdbc.queryString(selectString);
         assertEquals(str, "yufei");
+
+        str = jdbc.queryString(selectStringNamedParam, selectStringParams);
+        assertEquals(str, "yufei");
+
+        NamedParamSql selectAvg2 = NamedParamSql.compile(selectStringNamedParam);
+
+        str = jdbc.queryString(selectAvg2, selectStringParams);
+        assertEquals(str, "yufei");
     }
 
     @Test
-    void testCallQuery() throws SQLException {
+    public void callQuery() throws SQLException {
         List<Map<String, Object>> list = jdbc.callQuery("call_query_user", "yufei%");
         for (Map<String, Object> map : list) {
             System.out.println(map);
@@ -1070,7 +1344,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void testCallQuery1() throws SQLException {
+    public void callQuery1() throws SQLException {
         List<User> list = jdbc.callQuery("call_query_user", (res, rowNum) -> {
             User user = new User();
             user.setId(res.getInt("id"));
@@ -1087,7 +1361,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void testCallQuery2() throws SQLException {
+    public void callQuery2() throws SQLException {
         List<User> list = jdbc.callQuery("call_query_user", User.class, "yufei%");
         for (User user : list) {
             System.out.println(user);
@@ -1096,7 +1370,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void testCallQueryInOutParam() throws SQLException {
+    public void callQueryInOutParam() throws SQLException {
         Integer id = 1;
         Object[] params = new Object[] { id };
 
@@ -1110,7 +1384,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void call() throws SQLException {
+    public void call() throws SQLException {
         String newname = "featherfly_call" + Randoms.getInt(1000);
         Object[] params = new Object[] { 13, newname, 0 };
         int outparam = (Integer) params[2];
@@ -1123,7 +1397,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    void call_array_args() throws SQLException {
+    public void call_array_args() throws SQLException {
         String qname = "name_init%";
         String newdescp = "call_update_batch_" + Randoms.getInt(1000);
         Object[] params = new Object[] { qname, newdescp, null }; // out参数传递null
@@ -1136,7 +1410,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     //    @Test
-    //    void call_map_args() throws SQLException {
+    //    public void call_map_args() throws SQLException {
     //        String qname = "name_init%";
     //        String newdescp = "call_update_batch_" + Randoms.getInt(1000);
     //        SequencedMap<String, Object> params = new LinkedHashMap<>();
@@ -1152,7 +1426,7 @@ public class JdbcTest extends JdbcTestBase {
     //    }
 
     @Test
-    void call_tuple_args() throws SQLException {
+    public void call_tuple_args() throws SQLException {
         String qname = "name_init%";
         String newdescp = "call_update_batch_" + Randoms.getInt(1000);
         MutableTuple3<String, String, Integer> params = MutableTuples.create3();
