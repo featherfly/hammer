@@ -38,6 +38,13 @@ public @interface Template {
     String value() default "";
 
     /**
+     * pre compile template.
+     *
+     * @return true, if need pre compile
+     */
+    boolean precompile() default true;
+
+    /**
      * template type
      *
      * @return template type

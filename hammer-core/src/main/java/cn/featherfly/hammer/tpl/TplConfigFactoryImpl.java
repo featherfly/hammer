@@ -547,7 +547,11 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
             checkName(executeIds, name, namespace);
             TplExecuteConfig config = new TplExecuteConfig();
-            config.setQuery(templatePreprocessor.process(template.value()));
+            if (template.precompile()) {
+                config.setQuery(templatePreprocessor.process(template.value()));
+            } else {
+                config.setQuery(template.value());
+            }
             config.setTplName(namespace + ID_SIGN + name);
             config.setNamespace(namespace);
             config.setExecuteId(name);
