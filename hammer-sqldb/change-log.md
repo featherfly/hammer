@@ -1,6 +1,6 @@
 TODO dsl实体查询加入以下（EntityQuery）
 
-2. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
+1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 
 # 0.7.0
 1. 加入强类型dsl查询
@@ -49,11 +49,11 @@ TODO dsl实体查询加入以下（EntityQuery）
 
     where().property(Xx:Yy).property(Yy::Name).[eq|ne|...] 如果需要join会自动加入join
 
+    where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
+
     where().eq()方法支持@Embeddable,@ManyToOne（传入是映射对象，对非空值使用and连接，如果是连表查询条件会自动join）
 
     fetch一次，数据返回加入T value()（单条）和 List<T> listValue()（多条列表），还原single和unique方法为原来的返回查询实体对象
-
-13. where().property()后的各种条件筛选方法加入带Predicate和IgnoreStrategy的重载方法
 
 14. Jdbc实现queryEach，主要用于大数据查询导出，不会依次把内容都加载到内存中，而是迭代的时候依次获取，需要调用者处理连接
 
@@ -61,7 +61,9 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 16. RepositoryQuery支持多存储|表（muliti repository）查询（基于join），实现支持多存储|表条件过滤，实现多存储|表排序
 
-17. EntityUpdate,EntityDelete支持join进行多实体条件过滤
+16. EntityUpdate,EntityDelete支持join进行多实体条件过滤
+
+17. RepositoryUpdate,RepositoryDelete支持join进行多实体条件过滤
 
 # 0.6.7 2023-04-18
 1. 修复eq参数为空时报错的问题

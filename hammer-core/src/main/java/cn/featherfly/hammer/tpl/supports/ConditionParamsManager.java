@@ -3,12 +3,11 @@ package cn.featherfly.hammer.tpl.supports;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import cn.featherfly.common.lang.Lang;
 
@@ -88,21 +87,11 @@ public class ConditionParamsManager {
 
     private Boolean paramNamed;
 
-    private int amount = 0;
+    private final Set<String> filterParamNames = new HashSet<>();
 
-    private Set<String> filterParamNames = new HashSet<>();
+    private final Map<String, Param> nameParamMap = new LinkedHashMap<>();
 
-    private Map<String, Param> paramNames = new HashMap<>();
-
-    private Map<Integer, String> paramValuesMap = new TreeMap<>((o1, o2) -> {
-        if (o1 > o2) {
-            return 1;
-        } else if (o1 < o2) {
-            return -1;
-        } else {
-            return 0;
-        }
-    });
+    private final List<Param> paramList = new ArrayList<>();
 
     private ConditionGroup rootGroup = new ConditionGroup();
 
@@ -138,9 +127,8 @@ public class ConditionParamsManager {
      * @param param the param
      */
     public void addParam(Param param) {
-        paramValuesMap.put(amount, param.getName());
-        paramNames.put(param.getName(), param);
-        amount++;
+        paramList.add(param);
+        nameParamMap.putIfAbsent(param.getName(), param);
         currentGroup.addCondition();
     }
 
@@ -150,7 +138,7 @@ public class ConditionParamsManager {
      * @return the amount
      */
     public int getAmount() {
-        return paramValuesMap.size();
+        return paramList.size();
     }
 
     /**
@@ -159,8 +147,7 @@ public class ConditionParamsManager {
      * @return paramValues
      */
     public List<String> getParamNames() {
-        //        return paramValuesMap.values().stream().map(p -> p.name).collect(Collectors.toList());
-        return new ArrayList<>(paramValuesMap.values());
+        return new ArrayList<>(nameParamMap.keySet());
     }
 
     /**
@@ -169,7 +156,7 @@ public class ConditionParamsManager {
      * @return paramValues
      */
     public List<Param> getParams() {
-        return new ArrayList<>(paramNames.values());
+        return new ArrayList<>(paramList);
     }
 
     /**
@@ -195,10 +182,10 @@ public class ConditionParamsManager {
      */
     public boolean isNeedAppendLogicWorld() {
         if (currentGroup == rootGroup) {
-            return amount > 0;
+            return getAmount() > 0;
         } else {
+            return currentGroup.getAmount() > 0 && getAmount() > 0;
         }
-        return currentGroup.getAmount() > 0 && amount > 0;
     }
 
     /**
@@ -226,7 +213,7 @@ public class ConditionParamsManager {
      * @return true, if successful
      */
     public boolean containsName(String paramName) {
-        return paramValuesMap.containsValue(paramName);
+        return nameParamMap.containsKey(paramName);
     }
 
     /**
@@ -236,7 +223,7 @@ public class ConditionParamsManager {
      * @return the param
      */
     public Param getParam(String paramName) {
-        return paramNames.get(paramName);
+        return nameParamMap.get(paramName);
     }
 
     public void addFilterParamName(String paramName) {
