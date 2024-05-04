@@ -14,7 +14,7 @@ public class TplExecuteConfig {
 
     private String name;
 
-    private TplType type = TplType.AUTO;
+    private ExecutionType type = ExecutionType.AUTO;
 
     private String content;
 
@@ -69,7 +69,7 @@ public class TplExecuteConfig {
      *
      * @return type
      */
-    public TplType getType() {
+    public ExecutionType getType() {
         return type;
     }
 
@@ -78,7 +78,7 @@ public class TplExecuteConfig {
      *
      * @param type type
      */
-    public void setType(TplType type) {
+    public void setType(ExecutionType type) {
         this.type = type;
     }
 

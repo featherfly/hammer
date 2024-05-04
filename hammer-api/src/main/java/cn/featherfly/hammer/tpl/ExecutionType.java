@@ -2,22 +2,22 @@
 package cn.featherfly.hammer.tpl;
 
 /**
- * template type.
+ * execution type.
  *
  * @author zhongj
  */
-public enum TplType {
+public enum ExecutionType {
     /**
-     * auto template type. the behaving should be determined by implements.<br>
+     * auto type. the behaving should be determined by implements.<br>
      * 自动，其行为由具体实现自行决定.
      */
     AUTO,
     /**
-     * query template type.
+     * query type.
      */
     QUERY,
     /**
-     * execute template type（insert, update, delete and so on）.
+     * execute type（insert, update, delete and so on）.
      */
     EXECUTE;
 }

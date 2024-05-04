@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.hammer.tpl.TplType;
+import cn.featherfly.hammer.tpl.ExecutionType;
 import cn.featherfly.hammer.tpl.annotation.Mapper;
 import cn.featherfly.hammer.tpl.annotation.Param;
 import cn.featherfly.hammer.tpl.annotation.ParamType;
@@ -68,16 +68,16 @@ public interface TeMapper {
 
     String getName2(Long id);
 
-    @Template(name = "getInt", namespace = "namespace", type = TplType.QUERY)
+    @Template(name = "getInt", namespace = "namespace", type = ExecutionType.QUERY)
     int getInt();
 
-    @Template(name = "getInt_1", namespace = "namespace", type = TplType.QUERY)
+    @Template(name = "getInt_1", namespace = "namespace", type = ExecutionType.QUERY)
     int getInt(Long id);
 
-    @Template(value = "getInit2", type = TplType.QUERY)
+    @Template(value = "getInit2", type = ExecutionType.QUERY)
     int getInt2();
 
-    @Template(value = "getInit2_1", type = TplType.QUERY)
+    @Template(value = "getInit2_1", type = ExecutionType.QUERY)
     int getInt2(Long id);
 
     @Template(name = "getLong", namespace = "namespace")

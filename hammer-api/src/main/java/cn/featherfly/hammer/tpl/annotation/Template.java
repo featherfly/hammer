@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import cn.featherfly.hammer.tpl.TplType;
+import cn.featherfly.hammer.tpl.ExecutionType;
 
 /**
  * template.
@@ -49,5 +49,5 @@ public @interface Template {
      *
      * @return template type
      */
-    TplType type() default TplType.AUTO;
+    ExecutionType type() default ExecutionType.AUTO;
 }
