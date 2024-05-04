@@ -38,7 +38,7 @@ public class TestTpl {
 
     public static TplExecuteConfig createConfig(String table) {
         TplExecuteConfig config = new TplExecuteConfig();
-        config.setQuery("select * from " + table);
+        config.setContent("select * from " + table);
         return config;
     }
 
@@ -67,13 +67,13 @@ public class TestTpl {
             System.out.println("key " + k + " value " + v.getClass() + " " + v);
             TplExecuteConfig config = new TplExecuteConfig();
             if (v instanceof String) {
-                config.setQuery(v.toString());
+                config.setContent(v.toString());
             } else {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) v;
                 System.err.println(map);
                 if (Lang.isNotEmpty(map.get("query"))) {
-                    config.setQuery(map.get("query").toString());
+                    config.setContent(map.get("query").toString());
                 }
                 if (Lang.isNotEmpty(map.get("count"))) {
                     config.setCount(map.get("count").toString());

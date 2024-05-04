@@ -68,7 +68,7 @@ public abstract class AbstractFreemarkerTemplateEngine<
                             config.getTplName(), config.getFilePath(),
                             tplConfig.getFileDirectory() + "/" + tplConfig.getFileName()));
                 }
-                templateLoader.putTemplate(config.getTplName(), config.getQuery());
+                templateLoader.putTemplate(config.getTplName(), config.getContent());
             });
         });
         //        if (logger.isDebugEnabled()) {

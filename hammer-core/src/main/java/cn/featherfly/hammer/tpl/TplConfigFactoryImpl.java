@@ -466,7 +466,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                                 config.getName(), config.getTplName(), config.getFilePath(), config.getNamespace(),
                                 config.getExecuteId(), config.getType(), config.getPrecompile()));
                         message.append(String.format("      query:  %s\n",
-                                config.getQuery().trim().replaceAll("\n", "\n              ")));
+                                config.getContent().trim().replaceAll("\n", "\n              ")));
                         if (config.getCount() != null) {
                             message.append(String.format("      count:  %s\n",
                                     config.getCount().trim().replaceAll("\n", "\n              ")));
@@ -547,7 +547,12 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
             checkName(executeIds, name, namespace);
             TplExecuteConfig config = new TplExecuteConfig();
-            config.setQuery(templatePreprocessor.process(template.value()));
+            config.setPrecompile(template.precompile());
+            if (template.precompile()) {
+                config.setContent(templatePreprocessor.process(template.value()));
+            } else {
+                config.setContent(template.value());
+            }
             config.setTplName(namespace + ID_SIGN + name);
             config.setNamespace(namespace);
             config.setExecuteId(name);
@@ -691,7 +696,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             tplExecuteConfigs.forEach((k, v) -> {
                 TplExecuteConfig config = new TplExecuteConfig();
                 if (v instanceof String) {
-                    config.setQuery(templatePreprocessor.process(v.toString()));
+                    config.setContent(templatePreprocessor.process(v.toString()));
                 } else {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) v;
@@ -707,20 +712,25 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                     }
                     config.setPrecompile(precompile);
 
-                    Object query = map.get("query");
-                    if (Lang.isNotEmpty(query)) {
-                        if (precompile) {
-                            config.setQuery(templatePreprocessor.process(query.toString()));
-                        } else {
-                            config.setQuery(query.toString());
-                        }
+                    Object content = map.get("query"); // 历史遗留
+                    if (Lang.isEmpty(content)) {
+                        content = map.get("content");
                     }
+                    if (Lang.isEmpty(content)) {
+                        throw new TplException("template content not found with key [content | query]");
+                    }
+                    if (precompile) {
+                        config.setContent(templatePreprocessor.process(content.toString()));
+                    } else {
+                        config.setContent(content.toString());
+                    }
+
                     Object count = map.get("count");
                     if (Lang.isNotEmpty(count)) {
                         if (precompile) {
                             config.setCount(templatePreprocessor.process(count.toString()));
                         } else {
-                            config.setQuery(query.toString());
+                            config.setCount(count.toString());
                         }
                     }
                     if (Lang.isNotEmpty(map.get("type"))) {
