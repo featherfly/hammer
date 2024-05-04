@@ -18,6 +18,8 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
+import cn.featherfly.common.db.NamedParamSql;
+import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
@@ -43,18 +45,19 @@ public interface JdbcQuerySingle {
      * @param args args
      * @return map
      */
-    Map<String, Object> querySingle(String sql, Object... args);
+    default Map<String, Object> querySingle(NamedParamSql sql, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), execution.getParams());
+    }
 
-    //  /**
-    //     * Query single.
-    //     *
-    //     * @param <T>         the generic type
-    //     * @param sql         the sql
-    //     * @param elementType the element type
-    //     * @param args        the args
-    //     * @return the t
-    //     */
-    //    <T> T querySingle(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
+    /**
+     * Query single.
+     *
+     * @param sql  sql
+     * @param args args
+     * @return map
+     */
+    Map<String, Object> querySingle(String sql, Object... args);
 
     /**
      * Query single.
@@ -92,6 +95,20 @@ public interface JdbcQuerySingle {
     /**
      * Query single.
      *
+     * @param <T>       generic type
+     * @param sql       sql
+     * @param rowMapper rowMapper
+     * @param args      args
+     * @return single elementType object
+     */
+    default <T> T querySingle(NamedParamSql sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), rowMapper, execution.getParams());
+    }
+
+    /**
+     * Query single.
+     *
      * @param <T>         generic type
      * @param sql         sql
      * @param elementType return object type
@@ -99,6 +116,20 @@ public interface JdbcQuerySingle {
      * @return element type object list
      */
     <T> T querySingle(String sql, Class<T> elementType, Map<String, Object> args);
+
+    /**
+     * Query single.
+     *
+     * @param <T>         generic type
+     * @param sql         sql
+     * @param elementType return object type
+     * @param args        args
+     * @return element type object list
+     */
+    default <T> T querySingle(NamedParamSql sql, Class<T> elementType, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType, execution.getParams());
+    }
 
     /**
      * Query single.
@@ -124,12 +155,47 @@ public interface JdbcQuerySingle {
      * @param sql          the sql
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
+     * @param args         the args
+     * @return the tuple 2
+     */
+    default <T1, T2> Tuple2<T1, T2> querySingle(NamedParamSql sql, Class<T1> elementType1, Class<T2> elementType2,
+            Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, execution.getParams());
+    }
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
      * @param prefixes     the prefixes of mapping element type
      * @param args         the args
      * @return the tuple 2
      */
     <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Tuple2<String, String> prefixes, Map<String, Object> args);
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param prefixes     the prefixes of mapping element type
+     * @param args         the args
+     * @return the tuple 2
+     */
+    default <T1, T2> Tuple2<T1, T2> querySingle(NamedParamSql sql, Class<T1> elementType1, Class<T2> elementType2,
+            Tuple2<String, String> prefixes, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
+    }
 
     /**
      * Query single.
@@ -159,12 +225,53 @@ public interface JdbcQuerySingle {
      * @param elementType1 the element type 1
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(NamedParamSql sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, execution.getParams());
+    }
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
      * @param prefixes     the prefixes
      * @param args         the args
      * @return LogicExpressionist
      */
     <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args);
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(NamedParamSql sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
+            Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, prefixes,
+                execution.getParams());
+    }
 
     /**
      * Query single.
@@ -199,6 +306,28 @@ public interface JdbcQuerySingle {
      * @param elementType2 the element type 2
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(NamedParamSql sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
+                execution.getParams());
+    }
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
      * @param prefixes     the prefixes
      * @param args         the args
      * @return LogicExpressionist
@@ -206,6 +335,30 @@ public interface JdbcQuerySingle {
     <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
             Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
             Map<String, Object> args);
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(NamedParamSql sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
+                execution.getParams());
+    }
 
     /**
      * Query single.
@@ -245,6 +398,31 @@ public interface JdbcQuerySingle {
      * @param elementType3 the element type 3
      * @param elementType4 the element type 4
      * @param elementType5 the element type 5
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(NamedParamSql sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
+                elementType5, execution.getParams());
+    }
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param <T5>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param elementType5 the element type 5
      * @param prefixes     the prefixes
      * @param args         the args
      * @return LogicExpressionist
@@ -252,6 +430,32 @@ public interface JdbcQuerySingle {
     <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
             Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
             Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args);
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param <T5>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param elementType5 the element type 5
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(NamedParamSql sql, Class<T1> elementType1,
+            Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
+                elementType5, prefixes, execution.getParams());
+    }
 
     /**
      * Query single.
@@ -295,6 +499,33 @@ public interface JdbcQuerySingle {
      * @param elementType4 the element type 4
      * @param elementType5 the element type 5
      * @param elementType6 the element type 6
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(NamedParamSql sql,
+            Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Class<T5> elementType5, Class<T6> elementType6, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
+                elementType5, elementType6, execution.getParams());
+    }
+
+    /**
+     * Query single.
+     *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param <T5>         the generic type
+     * @param <T6>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param elementType5 the element type 5
+     * @param elementType6 the element type 6
      * @param prefixes     the prefixes
      * @param args         the args
      * @return LogicExpressionist
@@ -307,6 +538,35 @@ public interface JdbcQuerySingle {
     /**
      * Query single.
      *
+     * @param <T1>         the generic type
+     * @param <T2>         the generic type
+     * @param <T3>         the generic type
+     * @param <T4>         the generic type
+     * @param <T5>         the generic type
+     * @param <T6>         the generic type
+     * @param sql          the sql
+     * @param elementType1 the element type 1
+     * @param elementType2 the element type 2
+     * @param elementType3 the element type 3
+     * @param elementType4 the element type 4
+     * @param elementType5 the element type 5
+     * @param elementType6 the element type 6
+     * @param prefixes     the prefixes
+     * @param args         the args
+     * @return LogicExpressionist
+     */
+    default <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(NamedParamSql sql,
+            Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+            Class<T5> elementType5, Class<T6> elementType6,
+            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return querySingle(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
+                elementType5, elementType6, prefixes, execution.getParams());
+    }
+
+    /**
+     * Query single.
+     *
      * @param <T>         generic type
      * @param sql         sql
      * @param elementType return object type
@@ -314,19 +574,6 @@ public interface JdbcQuerySingle {
      * @return single elementType object
      */
     <T> T querySingle(String sql, Class<T> elementType, Object... args);
-
-    //    /**
-    //     * Query single.
-    //     *
-    //     * @param <T1>         the generic type
-    //     * @param <T2>         the generic type
-    //     * @param sql          the sql
-    //     * @param elementType1 the element type 1
-    //     * @param elementType2 the element type 2
-    //     * @param args         the args
-    //     * @return the tuple 2
-    //     */
-    //    <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2, Object... args);
 
     /**
      * Query single.
