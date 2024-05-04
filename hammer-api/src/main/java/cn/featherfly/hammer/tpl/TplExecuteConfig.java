@@ -16,7 +16,7 @@ public class TplExecuteConfig {
 
     private TplType type = TplType.AUTO;
 
-    private String query;
+    private String content;
 
     private String count;
 
@@ -29,21 +29,21 @@ public class TplExecuteConfig {
     private String tplName;
 
     /**
-     * 返回query.
+     * get content value
      *
-     * @return query
+     * @return content
      */
-    public String getQuery() {
-        return query;
+    public String getContent() {
+        return content;
     }
 
     /**
-     * 设置query.
+     * set content value
      *
-     * @param query query
+     * @param content content
      */
-    public void setQuery(String query) {
-        this.query = query;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     /**
@@ -229,7 +229,7 @@ public class TplExecuteConfig {
     @Override
     public String toString() {
         return "TplExecuteConfig [fileName=" + fileName + ", fileDirectory=" + fileDirectory + ", name=" + name
-                + ", type=" + type + ", query=" + query + ", count=" + count + ", precompile=" + precompile
+                + ", type=" + type + ", query=" + content + ", count=" + count + ", precompile=" + precompile
                 + ", namespace=" + namespace + ", executeId=" + executeId + ", tplName=" + tplName + "]";
     }
 }
