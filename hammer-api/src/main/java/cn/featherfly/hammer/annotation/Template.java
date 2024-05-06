@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.annotation;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -13,8 +14,9 @@ import cn.featherfly.hammer.tpl.ExecutionType;
  *
  * @author zhongj
  */
-@Target({ ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(Templates.class)
 public @interface Template {
     /**
      * template file name path

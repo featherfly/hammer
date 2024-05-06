@@ -2046,7 +2046,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     }
 
     private <E> DeleteOperate<E> getDelete(Collection<E> entities) {
-        E e = Lang.pickFirst(entities);
+        E e = Lang.ifNotNullFirst(entities);
         if (e == null) {
             return null;
         }

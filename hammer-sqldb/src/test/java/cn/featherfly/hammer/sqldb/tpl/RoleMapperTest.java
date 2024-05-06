@@ -24,9 +24,7 @@ import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
 
 /**
- * <p>
- * SqlTplExecutorTest
- * </p>
+ * RoleMapperTest.
  *
  * @author zhongj
  */

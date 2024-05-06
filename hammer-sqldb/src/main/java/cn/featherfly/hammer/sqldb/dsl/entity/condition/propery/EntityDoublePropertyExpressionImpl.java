@@ -40,7 +40,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     public EntityDoublePropertyExpressionImpl(int index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+            EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -55,7 +55,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     public EntityDoublePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+            EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -70,7 +70,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     public EntityDoublePropertyExpressionImpl(int index, SerializableToDoubleFunction<E> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+            EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -335,7 +335,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(Double min, Double max) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+                expression.getIgnoreStrategy());
     }
 
     /**
@@ -343,7 +344,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(Double min, Double max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -351,7 +352,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(Double min, Double max, BiPredicate<Double, Double> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -359,7 +360,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(Double min, Double max) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+                expression.getIgnoreStrategy());
     }
 
     /**
@@ -367,7 +369,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(Double min, Double max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -375,6 +377,6 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(Double min, Double max, BiPredicate<Double, Double> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 }

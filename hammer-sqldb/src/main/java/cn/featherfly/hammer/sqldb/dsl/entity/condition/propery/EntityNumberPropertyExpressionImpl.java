@@ -28,9 +28,9 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <L> the generic type
  */
 public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends ConditionExpression,
-    L extends LogicExpression<C, L>>
-    extends AbstractMulitiEntityGenericPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
-    implements EntityNumberPropertyExpression<E, N, C, L> {
+        L extends LogicExpression<C, L>>
+        extends AbstractMulitiEntityGenericPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
+        implements EntityNumberPropertyExpression<E, N, C, L> {
 
     /**
      * Instantiates a new entity number property expression impl.
@@ -42,8 +42,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(int index, List<Serializable> propertyList,
-        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-        EntitySqlRelation<?, ?> queryRelation) {
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -57,8 +57,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
-        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-        EntitySqlRelation<?, ?> queryRelation) {
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -72,8 +72,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(int index, SerializableFunction<E, N> name,
-        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-        EntitySqlRelation<?, ?> queryRelation) {
+            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+            EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -346,7 +346,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ba(N min, N max) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+                expression.getIgnoreStrategy());
     }
 
     /**
@@ -354,7 +355,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ba(N min, N max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -362,7 +363,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -370,7 +371,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L nba(N min, N max) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+                expression.getIgnoreStrategy());
     }
 
     /**
@@ -378,7 +380,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L nba(N min, N max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -386,7 +388,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L nba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
 }

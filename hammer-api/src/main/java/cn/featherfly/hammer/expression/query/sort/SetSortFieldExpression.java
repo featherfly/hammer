@@ -45,7 +45,7 @@ public interface SetSortFieldExpression {
                 exp = exp.field(field);
             }
         }
-        return Lang.pick(exp, this);
+        return Lang.ifNull(exp, this);
     }
 
     /**
@@ -70,6 +70,6 @@ public interface SetSortFieldExpression {
                 exp = exp.field(name);
             }
         }
-        return Lang.pick(exp, this);
+        return Lang.ifNull(exp, this);
     }
 }

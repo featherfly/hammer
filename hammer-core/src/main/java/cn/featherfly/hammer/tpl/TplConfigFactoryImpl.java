@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -438,7 +439,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             this.suffixs.addAll(suffixs);
         }
 
-        this.basePackages = basePackages == null ? new HashSet<>() : basePackages;
+        this.basePackages = Lang.ifNull(basePackages, () -> new HashSet<>());
 
         // 这里去掉ConstantPool依赖
         //        devMode = ConstantPool.getDefault().getConstantParameter().isDevMode();
@@ -528,23 +529,24 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @return the tpl execute configs
      */
     private TplExecuteConfigs readConfig(Class<?> type) {
-        Collection<Method> methods = ClassUtils.findMethods(type, new MethodAnnotationMatcher(Template.class));
         String globalNamespace = getNamespace(type);
+        String fileDirectory = ClassUtils.packageToDir(type);
         //        newConfigs.setFilePath(ClassUtils.packageToDir(type.getName()));
-        TplExecuteConfigs newConfigs = new TplExecuteConfigs();
+        final TplExecuteConfigs newConfigs = new TplExecuteConfigs();
         newConfigs.setNamespace(globalNamespace);
         newConfigs.getTypes().add(type);
-
-        String fileDirectory = ClassUtils.packageToDir(type);
         Set<String> executeIds = new HashSet<>();
-        for (Method method : methods) {
-            Template template = method.getAnnotation(Template.class);
-            if (Lang.isEmpty(template.value())) {
-                continue;
-            }
-            String name = Lang.isEmpty(template.name()) ? method.getName() : template.name();
-            String namespace = Lang.isEmpty(template.namespace()) ? globalNamespace : template.namespace();
 
+        BiConsumer<Template, String> setConfig = (template, templateName) -> {
+            if (Lang.isEmpty(template.value())) {
+                return;
+            }
+
+            String name = Lang.ifEmpty(template.name(), templateName);
+            if (name == null) {
+                throw new TplException("template name is not set for template content:\n" + template.value());
+            }
+            String namespace = Lang.ifEmpty(template.namespace(), globalNamespace);
             checkName(executeIds, name, namespace);
             TplExecuteConfig config = new TplExecuteConfig();
             config.setPrecompile(template.precompile());
@@ -573,15 +575,23 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 configs.getTypes().add(type);
                 configs.put(name, config);
             }
-
             if (executIdNamespaceMap.containsKey(config.getExecuteId())
                     && !executIdNamespaceMap.get(config.getExecuteId()).equals(newConfigs.getNamespace())) {
                 executIdNamespaceMap.put(config.getExecuteId(), MULTI_SAME_EXECUTEID);
             } else {
                 executIdNamespaceMap.put(config.getExecuteId(), namespace);
             }
+        };
+
+        Template[] templates = type.getAnnotationsByType(Template.class);
+        for (Template template : templates) {
+            setConfig.accept(template, null);
         }
-        //        logger.debug("type -> {} , namespace -> {} ,  configs -> {}", type.getName(), globalNamespace, newConfigs);
+
+        Collection<Method> methods = ClassUtils.findMethods(type, new MethodAnnotationMatcher(Template.class));
+        for (Method method : methods) {
+            setConfig.accept(method.getAnnotation(Template.class), method.getName());
+        }
 
         TplExecuteConfigs existsConfig = configsMap.get(newConfigs.getNamespace());
         if (existsConfig != null) {
