@@ -4,7 +4,7 @@ package cn.featherfly.hammer.tpl.mapper;
 import org.springframework.cache.annotation.Cacheable;
 
 import cn.featherfly.hammer.GenericHammer;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Mapper;
 
 /**
  * <p>

@@ -4,8 +4,8 @@ package cn.featherfly.hammer.tpl.mapper;
 import java.util.List;
 
 import cn.featherfly.hammer.Hammer;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
-import cn.featherfly.hammer.tpl.annotation.Template;
+import cn.featherfly.hammer.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Template;
 
 /**
  * <p>

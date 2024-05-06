@@ -4,9 +4,9 @@ package cn.featherfly.hammer.sqldb.tpl.mapper;
 import org.springframework.cache.annotation.Cacheable;
 
 import cn.featherfly.hammer.GenericHammer;
+import cn.featherfly.hammer.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Param;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo2;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
-import cn.featherfly.hammer.tpl.annotation.Param;
 
 /**
  * UserInfoMapper3.

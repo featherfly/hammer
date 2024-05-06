@@ -15,7 +15,7 @@ import org.springframework.core.type.classreading.MetadataReader;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Mapper;
 
 /**
  * <p>

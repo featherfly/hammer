@@ -46,9 +46,9 @@ import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Template;
 import cn.featherfly.hammer.config.HammerConstant;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
-import cn.featherfly.hammer.tpl.annotation.Template;
 
 /**
  * template config factory implement.

@@ -6,12 +6,12 @@ import java.util.List;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.GenericHammer;
+import cn.featherfly.hammer.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Param;
+import cn.featherfly.hammer.annotation.ParamType;
+import cn.featherfly.hammer.annotation.Template;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.tpl.ExecutionType;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
-import cn.featherfly.hammer.tpl.annotation.Param;
-import cn.featherfly.hammer.tpl.annotation.ParamType;
-import cn.featherfly.hammer.tpl.annotation.Template;
 
 /**
  * <p>
