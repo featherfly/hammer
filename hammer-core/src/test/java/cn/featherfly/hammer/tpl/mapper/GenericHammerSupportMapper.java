@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.tpl.mapper;
 
 import cn.featherfly.hammer.GenericHammerSupport;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Mapper;
 
 /**
  * <p>

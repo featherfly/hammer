@@ -3,8 +3,8 @@ package cn.featherfly.hammer.tpl.mapper;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.hammer.tpl.annotation.Mapper;
-import cn.featherfly.hammer.tpl.annotation.Param;
+import cn.featherfly.hammer.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Param;
 
 /**
  * The Interface TuplesMapper.

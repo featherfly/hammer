@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.tpl.annotation;
+package cn.featherfly.hammer.annotation;
 
 /**
  * ParamType.

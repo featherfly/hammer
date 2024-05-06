@@ -54,13 +54,13 @@ import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.GenericHammerSupport;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.annotation.Mapper;
+import cn.featherfly.hammer.annotation.Param;
+import cn.featherfly.hammer.annotation.ParamType;
+import cn.featherfly.hammer.annotation.Template;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.ExecutionType;
-import cn.featherfly.hammer.tpl.annotation.Mapper;
-import cn.featherfly.hammer.tpl.annotation.Param;
-import cn.featherfly.hammer.tpl.annotation.ParamType;
-import cn.featherfly.hammer.tpl.annotation.Template;
 
 /**
  * TplMapperFactory.
