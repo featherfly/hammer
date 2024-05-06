@@ -42,7 +42,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     public EntityLocalDatePropertyExpressionImpl(int index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+            EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
@@ -57,7 +57,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     public EntityLocalDatePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+            EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -72,7 +72,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     public EntityLocalDatePropertyExpressionImpl(int index, SerializableFunction<E, LocalDate> name,
             InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+            EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -337,7 +337,8 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ba(LocalDate min, LocalDate max) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+                expression.getIgnoreStrategy());
     }
 
     /**
@@ -345,7 +346,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ba(LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -353,7 +354,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L ba(LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -361,7 +362,8 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L nba(LocalDate min, LocalDate max) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, expression.getIgnoreStrategy());
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+                expression.getIgnoreStrategy());
     }
 
     /**
@@ -369,7 +371,7 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L nba(LocalDate min, LocalDate max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 
     /**
@@ -377,6 +379,6 @@ public class EntityLocalDatePropertyExpressionImpl<E, C extends ConditionExpress
      */
     @Override
     public L nba(LocalDate min, LocalDate max, BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.pick(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
     }
 }

@@ -30,8 +30,7 @@ public class SetDoubleExpression2Impl implements SetDoubleExpression2 {
     private FourArgusConsumer<Double, Double, BiPredicate<Double, Double>, PropertyMapping<?>> setValue;
 
     /**
-     * Instantiates a new condition entity expression property expression 2
-     * proxy.
+     * Instantiates a new condition entity expression property expression 2 proxy.
      *
      * @param propertyMapping the property mapping
      * @param ignoreStrategy  the ignore strategy
@@ -59,6 +58,6 @@ public class SetDoubleExpression2Impl implements SetDoubleExpression2 {
      */
     @Override
     public void value(double min, double max, BiPredicate<Double, Double> ignoreStrategy) {
-        setValue.accept(min, max, ignoreStrategy, propertyMapping.apply(Lang.pick(min, max)));
+        setValue.accept(min, max, ignoreStrategy, propertyMapping.apply(Lang.ifNull(min, max)));
     }
 }

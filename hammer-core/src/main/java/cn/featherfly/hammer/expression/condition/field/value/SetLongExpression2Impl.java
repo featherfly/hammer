@@ -30,8 +30,7 @@ public class SetLongExpression2Impl implements SetLongExpression2 {
     private FourArgusConsumer<Long, Long, BiPredicate<Long, Long>, PropertyMapping<?>> setValue;
 
     /**
-     * Instantiates a new condition entity expression long property expression 2
-     * impl.
+     * Instantiates a new condition entity expression long property expression 2 impl.
      *
      * @param propertyMapping the property mapping
      * @param ignoreStrategy  the ignore strategy
@@ -59,6 +58,6 @@ public class SetLongExpression2Impl implements SetLongExpression2 {
      */
     @Override
     public void value(long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
-        setValue.accept(min, max, ignoreStrategy, propertyMapping.apply(Lang.pick(min, max)));
+        setValue.accept(min, max, ignoreStrategy, propertyMapping.apply(Lang.ifNull(min, max)));
     }
 }

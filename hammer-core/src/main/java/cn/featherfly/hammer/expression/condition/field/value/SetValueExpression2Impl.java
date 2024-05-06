@@ -32,8 +32,7 @@ public class SetValueExpression2Impl<V> implements SetValueExpression2<V> {
     private FourArgusConsumer<V, V, BiPredicate<V, V>, PropertyMapping<?>> setValue;
 
     /**
-     * Instantiates a new condition entity expression property expression 2
-     * impl.
+     * Instantiates a new condition entity expression property expression 2 impl.
      *
      * @param propertyMapping the property mapping
      * @param ignoreStrategy  the ignore strategy
@@ -61,6 +60,6 @@ public class SetValueExpression2Impl<V> implements SetValueExpression2<V> {
      */
     @Override
     public void value(V min, V max, BiPredicate<V, V> ignoreStrategy) {
-        setValue.accept(min, max, ignoreStrategy, propertyMapping.apply(Lang.pick(min, max)));
+        setValue.accept(min, max, ignoreStrategy, propertyMapping.apply(Lang.ifNull(min, max)));
     }
 }
