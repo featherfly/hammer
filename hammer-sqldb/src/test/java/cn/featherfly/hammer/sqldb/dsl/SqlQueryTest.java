@@ -1,11 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.dsl;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -141,65 +141,65 @@ public class SqlQueryTest extends JdbcTestBase {
         };
 
         list = query.find("user").fields("username", "password", "age")//
-                .where() //
-                .eq("username", username)//
-                .and()//
-                .eq("password", password)//
-                .and().group()//
-                .gt("age", min).and().lt("age", max) //
-                .list(User.class);
+            .where() //
+            .eq("username", username)//
+            .and()//
+            .eq("password", password)//
+            .and().group()//
+            .gt("age", min).and().lt("age", max) //
+            .list(User.class);
         assertUser2.accept(list);
 
         list = query.find("user").fields("username", "password", "age")//
-                .where()//
-                .eq("username", username)//
-                .and() //
-                .eq("password", password)//
-                .and().group(g -> g.gt("age", min).and().lt("age", max)) //
-                .list(User.class);
+            .where()//
+            .eq("username", username)//
+            .and() //
+            .eq("password", password)//
+            .and().group(g -> g.gt("age", min).and().lt("age", max)) //
+            .list(User.class);
         assertUser2.accept(list);
 
         list = query.find("user").fields("username", "password", "age")//
-                .where()//
-                .eq("username", username) //
-                .and() //
-                .eq("password", password) //
-                .and((Function<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic>) g -> g
-                        .gt("age", min).and().lt("age", max)) //
-                .list(User.class);
+            .where()//
+            .eq("username", username) //
+            .and() //
+            .eq("password", password) //
+            .and((Function<RepositoryQueryConditionsGroup,
+                RepositoryQueryConditionsGroupLogic>) g -> g.gt("age", min).and().lt("age", max)) //
+            .list(User.class);
         assertUser2.accept(list);
 
         // ----------------------------------------------------------------------------------------------------------------
 
         list = query.find(new SimpleRepository("user")) //
-                .where()//
-                .eq("username", username)//
-                .and() //
-                .eq("password", password) //
-                .and().group() //
-                .gt("age", min).and().lt("age", max) //
-                .list(User.class);
+            .where()//
+            .eq("username", username)//
+            .and() //
+            .eq("password", password) //
+            .and().group() //
+            .gt("age", min).and().lt("age", max) //
+            .list(User.class);
         assertUser2.accept(list);
 
         list = query.find(new SimpleAliasRepository("user", "u")) //
-                .where()//
-                .eq("username", username)//
-                .and() //
-                .eq("password", password) //
-                .and().group() //
-                .gt("age", min).and().lt("age", max) //
-                .list(User.class);
+            .where()//
+            .eq("username", username)//
+            .and() //
+            .eq("password", password) //
+            .and().group() //
+            .gt("age", min).and().lt("age", max) //
+            .list(User.class);
         assertUser2.accept(list);
 
         Repository repository = new SimpleAliasRepository("user", "u");
         list = query.find(repository) //
-                .where()//
-                .eq("username", username)//
-                .and() //
-                .eq("password", password) //
-                .and().group() //
-                .gt("age", min).and().lt("age", max) //
-                .list(User.class);
+            .where()//
+            .eq("username", username)//
+            .and() //
+            .eq("password", password) //
+            .and().group() //
+            .gt("age", min).and().lt("age", max) //
+            .list(User.class);
         assertUser2.accept(list);
     }
 
@@ -244,15 +244,15 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void fetchField() {
         list = query.find("user") //
-                .fields("username", "password", "age") //
-                .sort().asc("age") //
-                .list();
+            .fields("username", "password", "age") //
+            .sort().asc("age") //
+            .list();
         compareAge.accept(list, "age");
 
         list = query.find("user") //
-                .fields("username", "password", "AGE") //
-                .sort().asc("AGE") //
-                .list();
+            .fields("username", "password", "AGE") //
+            .sort().asc("AGE") //
+            .list();
         compareAge.accept(list, "AGE");
 
         list = query.find("user").fields("username", "password").field("AGE", "age").sort().asc("age").list();
@@ -262,54 +262,54 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void fetchFieldWithLambda() {
         list = query.find("user") //
-                .field((Consumer<FetchField>) f -> f.name("username")) //
-                .field((Consumer<FetchField>) f -> f.name("password")) //
-                .field((Consumer<FetchField>) f -> f.name("age"))
-                //
-                .sort().asc("age") //
-                .list();
+            .field((Consumer<FetchField>) f -> f.name("username")) //
+            .field((Consumer<FetchField>) f -> f.name("password")) //
+            .field((Consumer<FetchField>) f -> f.name("age"))
+            //
+            .sort().asc("age") //
+            .list();
         compareAge.accept(list, "age");
 
         list = query.find("user") //
-                .field((q, f) -> q.field( //
-                        f.name("username"), //
-                        f.name("password"), //
-                        f.name("age"))) //
-                .sort().asc("age") //
-                .list();
+            .field((q, f) -> q.field( //
+                f.name("username"), //
+                f.name("password"), //
+                f.name("age"))) //
+            .sort().asc("age") //
+            .list();
         compareAge.accept(list, "age");
 
         list = query.find("user") //
-                .field((q, f) -> q.field(f.name("username")) //
-                        .field(f.name("password")) //
-                        .field(f.name("age"))) //
-                .sort().asc("age") //
-                .list();
+            .field((q, f) -> q.field(f.name("username")) //
+                .field(f.name("password")) //
+                .field(f.name("age"))) //
+            .sort().asc("age") //
+            .list();
         compareAge.accept(list, "age");
 
         // ----------------------------------------------------------------------------------------------------------------
 
         list = query.find("user") //
-                .fields("username", "password", "AGE") //
-                .sort().asc("AGE") //
-                .list();
+            .fields("username", "password", "AGE") //
+            .sort().asc("AGE") //
+            .list();
         compareAge.accept(list, "AGE");
 
         list = query.find("user") //
-                .field((q, f) -> q.field( //
-                        f.name("username"), //
-                        f.name("password"), //
-                        f.name("AGE"))) //
-                .sort().asc("AGE") //
-                .list();
+            .field((q, f) -> q.field( //
+                f.name("username"), //
+                f.name("password"), //
+                f.name("AGE"))) //
+            .sort().asc("AGE") //
+            .list();
         compareAge.accept(list, "AGE");
 
         list = query.find("user") //
-                .field((q, f) -> q.field(f.name("username")) //
-                        .field(f.name("password")) //
-                        .field(f.name("AGE"))) //
-                .sort().asc("AGE") //
-                .list();
+            .field((q, f) -> q.field(f.name("username")) //
+                .field(f.name("password")) //
+                .field(f.name("AGE"))) //
+            .sort().asc("AGE") //
+            .list();
         compareAge.accept(list, "AGE");
 
         // ----------------------------------------------------------------------------------------------------------------
@@ -318,20 +318,20 @@ public class SqlQueryTest extends JdbcTestBase {
         compareAge.accept(list, "age");
 
         list = query.find("user") //
-                .field((q, f) -> q.field( //
-                        f.name("username"), //
-                        f.name("password"), //
-                        f.name("AGE").alias("age"))) //
-                .sort().asc("age") //
-                .list();
+            .field((q, f) -> q.field( //
+                f.name("username"), //
+                f.name("password"), //
+                f.name("AGE").alias("age"))) //
+            .sort().asc("age") //
+            .list();
         compareAge.accept(list, "age");
 
         list = query.find("user") //
-                .field((q, f) -> q.field(f.name("username")) //
-                        .field(f.name("password")) //
-                        .field(f.name("AGE").alias("age"))) //
-                .sort().asc("age") //
-                .list();
+            .field((q, f) -> q.field(f.name("username")) //
+                .field(f.name("password")) //
+                .field(f.name("AGE").alias("age"))) //
+            .sort().asc("age") //
+            .list();
         compareAge.accept(list, "age");
     }
 
@@ -342,32 +342,32 @@ public class SqlQueryTest extends JdbcTestBase {
         String username = "yufei";
 
         list = query.find("user").fields("username", "password", "age") //
-                .where() //
-                .field("username").eq(username) //
-                .list();
+            .where() //
+            .field("username").eq(username) //
+            .list();
         assertEquals(list.size(), 1);
         map = query.find("user").fields("username", "password", "age") //
-                .where() //
-                .field("username").eq(username) //
-                .single();
+            .where() //
+            .field("username").eq(username) //
+            .single();
         assertEquals(map.get("username"), username);
 
         list = query.find("user").fields("username", "password", "age") //
-                .where() //
-                .fieldAsString("username").eq("yufei") //
-                .list();
+            .where() //
+            .fieldAsString("username").eq("yufei") //
+            .list();
         assertEquals(list.size(), 1);
         map = query.find("user").fields("username", "password", "age") //
-                .where() //
-                .fieldAsString("username").eq(username) //
-                .single();
+            .where() //
+            .fieldAsString("username").eq(username) //
+            .single();
         assertEquals(map.get("username"), username);
     }
 
     @Test
     void conditionNull() {
         List<Map<String, Object>> list = query.find("user").where().eq("a", (Serializable) null).and()
-                .eq("b", (Serializable) null).and().sw("username", "yufei").and().eq("d", (Serializable) null).list();
+            .eq("b", (Serializable) null).and().sw("username", "yufei").and().eq("d", (Serializable) null).list();
         for (Map<String, Object> map : list) {
             String username = (String) map.get("username");
             System.err.println(username);
@@ -379,36 +379,36 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionIn() {
         int[] ids = new int[] { 1, 2 };
         list = query.find("user") //
-                .where() //
-                .in("id", ids) //
-                .list();
+            .where() //
+            .in("id", ids) //
+            .list();
         assertEquals(list.size(), ids.length);
         list = query.find("user") //
-                .where() //
-                .field("id").in(ids) //
-                .list();
+            .where() //
+            .field("id").in(ids) //
+            .list();
         assertEquals(list.size(), ids.length);
 
         long total = query.find("user").count();
         list = query.find("user") //
-                .where() //
-                .in("id", (Serializable) null) //
-                .list();
+            .where() //
+            .in("id", (Serializable) null) //
+            .list();
         assertEquals(list.size(), total);
         list = query.find("user") //
-                .where() //
-                .field("id").in((Serializable) null) //
-                .list();
+            .where() //
+            .field("id").in((Serializable) null) //
+            .list();
         assertEquals(list.size(), total);
 
         long c1 = query.find("user") //
-                .where() //
-                .in("id", (Integer) null, IgnoreStrategy.NONE)// 不忽略空值
-                .count();
+            .where() //
+            .in("id", (Integer) null, IgnoreStrategy.NONE)// 不忽略空值
+            .count();
         c1 = query.find("user") //
-                .where() //
-                .field("id").in(null, IgnoreStrategy.NONE)// 不忽略空值
-                .count();
+            .where() //
+            .field("id").in(null, IgnoreStrategy.NONE)// 不忽略空值
+            .count();
         assertEquals(c1, 0);
     }
 
@@ -416,46 +416,46 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionEq() {
         int id = 1;
         int userId = query.find("user").field("id") //
-                .where() //
-                .eq("id", id) //
-                .intValue();
+            .where() //
+            .eq("id", id) //
+            .intValue();
         assertEquals(userId, id);
         userId = query.find("user").field("id") //
-                .where() //
-                .field("id").eq(id) //
-                .intValue();
+            .where() //
+            .field("id").eq(id) //
+            .intValue();
         assertEquals(userId, id);
 
         long total = query.find("user").count();
         long c1 = query.find("user") //
-                .where() //
-                .eq("id", (Serializable) null) //
-                .count();
+            .where() //
+            .eq("id", (Serializable) null) //
+            .count();
         c1 = query.find("user") //
-                .where() //
-                .field("id").eq((Serializable) null) //
-                .count();
+            .where() //
+            .field("id").eq((Serializable) null) //
+            .count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .eq("id", null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .eq("id", null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
         c2 = query.find("user") //
-                .where() //
-                .field("id").eq(null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .field("id").eq(null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
         c2 = query.find("user") //
-                .where() //
-                .eq("id", null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .eq("id", null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
         c2 = query.find("user") //
-                .where() //
-                .field("id").eq(null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .field("id").eq(null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -464,14 +464,14 @@ public class SqlQueryTest extends JdbcTestBase {
         int id = 1;
         //        r.eq("create_user", r.field("user1")
         int userId = query.find("order").field("id") //
-                .where(r -> //
-                r.field("create_user") //
-                        .eq(r.field("user1"))) // FIXME 此方式会触发内存溢出，应该是无限递归了
-                .intValue();
+            .where(r -> //
+            r.field("create_user") //
+                .eq(r.field("user1"))) // FIXME 此方式会触发内存溢出，应该是无限递归了
+            .intValue();
 
         Integer userId2 = query.find("order").field("id") //
-                .where(r -> r.field("create_user").eq(r.field("user1"))) //
-                .value();
+            .where(r -> r.field("create_user").eq(r.field("user1"))) //
+            .value();
 
         assertTrue(userId == id);
         assertTrue(userId2 == id);
@@ -481,29 +481,29 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionNe() {
         int id = 1;
         List<Integer> userIds = query.find("user").field("id") //
-                .where() //
-                .ne("id", id) //
-                .list(Integer.class);
+            .where() //
+            .ne("id", id) //
+            .list(Integer.class);
         for (Integer userId : userIds) {
             assertNotEquals(userId, id);
         }
 
         long c1 = query.find("user") //
-                .where() //
-                .ne("id", null) //
-                .count();
+            .where() //
+            .ne("id", null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .ne("id", null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .ne("id", null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
         c2 = query.find("user") //
-                .where() //
-                .ne("id", null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .ne("id", null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -511,36 +511,36 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionSw() {
         String sw = "yufei";
         List<String> usernames = query.find("user").field("username") //
-                .where() //
-                .sw("username", sw) //
-                .list(String.class);
+            .where() //
+            .sw("username", sw) //
+            .list(String.class);
         for (String username : usernames) {
             assertTrue(Strings.startsWith(username, sw));
         }
 
         long c = query.find("user")//
-                .where() //
-                .sw("username", "zzzzzzzz") //
-                .count();
+            .where() //
+            .sw("username", "zzzzzzzz") //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .sw("username", null) //
-                .count();
+            .where() //
+            .sw("username", null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .sw("username", null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .sw("username", null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .sw("username", null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .sw("username", null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -548,36 +548,36 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionEw() {
         String ew = "55";
         List<String> usernames = query.find("user").field("username") //
-                .where() //
-                .ew("username", ew) //
-                .list(String.class);
+            .where() //
+            .ew("username", ew) //
+            .list(String.class);
         for (String username : usernames) {
             assertTrue(Strings.endWith(username, ew));
         }
 
         long c = query.find("user")//
-                .where() //
-                .ew("username", "zzzzzzzz") //
-                .count();
+            .where() //
+            .ew("username", "zzzzzzzz") //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .ew("username", null) //
-                .count();
+            .where() //
+            .ew("username", null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .ew("username", null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .ew("username", null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .ew("username", null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .ew("username", null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -585,36 +585,36 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionCo() {
         String co = "uf";
         List<String> usernames = query.find("user").field("username") //
-                .where() //
-                .co("username", co) //
-                .list(String.class);
+            .where() //
+            .co("username", co) //
+            .list(String.class);
         for (String username : usernames) {
             assertTrue(Strings.contains(username, co));
         }
 
         long c = query.find("user")//
-                .where() //
-                .co("username", "zzzzzzzz") //
-                .count();
+            .where() //
+            .co("username", "zzzzzzzz") //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .co("username", null) //
-                .count();
+            .where() //
+            .co("username", null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .co("username", null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .co("username", null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .co("username", null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .co("username", null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -622,61 +622,61 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionLk() {
         String yufei = "yufei";
         String un = query.find("user").field("username") //
-                .where() //
-                .lk("username", yufei) //
-                .string();
+            .where() //
+            .lk("username", yufei) //
+            .string();
         assertEquals(un, yufei);
 
         String sw = "yufei";
         List<String> usernames = query.find("user").field("username") //
-                .where() //
-                .sw("username", sw + "%") //
-                .list(String.class);
+            .where() //
+            .sw("username", sw + "%") //
+            .list(String.class);
         for (String username : usernames) {
             assertTrue(Strings.startsWith(username, sw));
         }
 
         String ew = "55";
         usernames = query.find("user").field("username") //
-                .where() //
-                .ew("username", "%" + ew) //
-                .list(String.class);
+            .where() //
+            .ew("username", "%" + ew) //
+            .list(String.class);
         for (String username : usernames) {
             assertTrue(Strings.endWith(username, ew));
         }
 
         String co = "uf";
         usernames = query.find("user").field("username") //
-                .where() //
-                .co("username", "%" + co + "%") //
-                .list(String.class);
+            .where() //
+            .co("username", "%" + co + "%") //
+            .list(String.class);
         for (String username : usernames) {
             assertTrue(Strings.contains(username, co));
         }
 
         long c = query.find("user")//
-                .where() //
-                .lk("username", "zzzzzzzz") //
-                .count();
+            .where() //
+            .lk("username", "zzzzzzzz") //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .lk("username", null) //
-                .count();
+            .where() //
+            .lk("username", null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .lk("username", null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .lk("username", null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .lk("username", null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .lk("username", null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -684,42 +684,42 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionGt() {
         int ageValue = 40;
         List<Integer> ages = query.find("user").field("age") //
-                .where() //
-                .gt("age", ageValue) //
-                .list(Integer.class);
+            .where() //
+            .gt("age", ageValue) //
+            .list(Integer.class);
         for (Integer age : ages) {
             assertTrue(age > ageValue);
         }
 
         long c = query.find("user")//
-                .where() //
-                .gt("age", Integer.MAX_VALUE) //
-                .count();
+            .where() //
+            .gt("age", Integer.MAX_VALUE) //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .gt("age", (Integer) null) //
-                .count();
+            .where() //
+            .gt("age", (Integer) null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .gt("age", (Integer) null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .gt("age", (Integer) null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .gt("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .gt("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .gt("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .gt("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -727,42 +727,42 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionGe() {
         int ageValue = 40;
         List<Integer> ages = query.find("user").field("age") //
-                .where() //
-                .ge("age", ageValue) //
-                .list(Integer.class);
+            .where() //
+            .ge("age", ageValue) //
+            .list(Integer.class);
         for (Integer age : ages) {
             assertTrue(age >= ageValue);
         }
 
         long c = query.find("user")//
-                .where() //
-                .ge("age", Integer.MAX_VALUE) //
-                .count();
+            .where() //
+            .ge("age", Integer.MAX_VALUE) //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .ge("age", (Integer) null) //
-                .count();
+            .where() //
+            .ge("age", (Integer) null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .ge("age", (Integer) null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .ge("age", (Integer) null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .ge("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .ge("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .ge("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .ge("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -770,42 +770,42 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionLt() {
         int ageValue = 40;
         List<Integer> ages = query.find("user").field("age") //
-                .where() //
-                .lt("age", ageValue) //
-                .list(Integer.class);
+            .where() //
+            .lt("age", ageValue) //
+            .list(Integer.class);
         for (Integer age : ages) {
             assertTrue(age < ageValue);
         }
 
         long c = query.find("user")//
-                .where() //
-                .lt("age", 0) //
-                .count();
+            .where() //
+            .lt("age", 0) //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .lt("age", (Integer) null) //
-                .count();
+            .where() //
+            .lt("age", (Integer) null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .lt("age", (Integer) null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .lt("age", (Integer) null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .lt("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .lt("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .lt("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .lt("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -813,42 +813,42 @@ public class SqlQueryTest extends JdbcTestBase {
     void conditionLe() {
         int ageValue = 40;
         List<Integer> ages = query.find("user").field("age") //
-                .where() //
-                .le("age", ageValue) //
-                .list(Integer.class);
+            .where() //
+            .le("age", ageValue) //
+            .list(Integer.class);
         for (Integer age : ages) {
             assertTrue(age <= ageValue);
         }
 
         long c = query.find("user")//
-                .where() //
-                .le("age", 0) //
-                .count();
+            .where() //
+            .le("age", 0) //
+            .count();
         assertEquals(c, 0);
 
         long c1 = query.find("user") //
-                .where() //
-                .le("age", (Integer) null) //
-                .count();
+            .where() //
+            .le("age", (Integer) null) //
+            .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
-                .where() //
-                .le("age", (Integer) null, v -> false) // 不忽略空值
-                .count();
+            .where() //
+            .le("age", (Integer) null, v -> false) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .le("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .le("age", (Integer) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
 
         c2 = query.find("user") //
-                .where() //
-                .le("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
-                .count();
+            .where() //
+            .le("age", (Date) null, IgnoreStrategy.NONE) // 不忽略空值
+            .count();
         assertEquals(c2, 0);
     }
 
@@ -859,7 +859,7 @@ public class SqlQueryTest extends JdbcTestBase {
         assertEquals(user.get("id"), id);
 
         user = query.find("user").where().eq(User::getId, id).and()
-                .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and().expression("{0}.age - ? >= 0", 100).single();
@@ -869,7 +869,7 @@ public class SqlQueryTest extends JdbcTestBase {
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and()
-                .expr("{as0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expr("{as0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and().expr("{as0}.age - ? >= 0", 100).single();
@@ -904,7 +904,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void count2() {
         long number = query.find("user").field("id") //
-                .count();
+            .count();
         System.out.println("count:" + number);
         assertTrue(number > 0);
     }
@@ -926,7 +926,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void sum() {
         Long count = query.find("user").where().eq("age", 5) //
-                .count();
+            .count();
 
         Integer number = query.find("user").sum("age").where().eq("age", 5).intNumber();
         System.out.println("sum:" + number);
@@ -963,29 +963,29 @@ public class SqlQueryTest extends JdbcTestBase {
         int pageSize = 3;
         Integer total = 10;
         List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
-                .list(Role.class);
+            .list(Role.class);
         assertEquals(roleList.size(), pageSize);
 
         List<Map<String, Object>> roleList2 = query.find(new SimpleRepository("role")).where().le("id", total)
-                .limit(2, pageSize).list();
+            .limit(2, pageSize).list();
         assertEquals(roleList2.size(), pageSize);
 
         List<Integer> roleList3 = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
-                .list((res, rowNum) -> res.getInt("id"));
+            .list((res, rowNum) -> res.getInt("id"));
         assertEquals(roleList3.size(), pageSize);
 
         PaginationResults<Role> rolePage = query.find(new SimpleRepository("role")).where().le("id", total)
-                .limit(2, pageSize).pagination(Role.class);
+            .limit(2, pageSize).pagination(Role.class);
         assertEquals(rolePage.getTotal(), total);
         assertEquals(rolePage.getPageResults().size(), pageSize);
 
         PaginationResults<Map<String, Object>> rolePage2 = query.find(new SimpleRepository("role")).where()
-                .le("id", total).limit(2, pageSize).pagination();
+            .le("id", total).limit(2, pageSize).pagination();
         assertEquals(rolePage2.getTotal(), total);
         assertEquals(rolePage2.getPageResults().size(), pageSize);
 
         PaginationResults<Integer> rolePage3 = query.find(new SimpleRepository("role")).where().le("id", total)
-                .limit(2, pageSize).pagination((res, rowNum) -> res.getInt("id"));
+            .limit(2, pageSize).pagination((res, rowNum) -> res.getInt("id"));
         assertEquals(rolePage3.getTotal(), total);
         assertEquals(rolePage3.getPageResults().size(), pageSize);
     }
@@ -996,15 +996,15 @@ public class SqlQueryTest extends JdbcTestBase {
         final Table tm = metadata.getTable(table);
 
         map = query.find(table)//
-                .limit(1) //
-                .single();
+            .limit(1) //
+            .single();
         tm.getColumns().forEach(c -> {
             assertNotNull(map.get(c.getName()));
         });
 
         map = query.find(table)//
-                .join("user_info").on("user_id") //
-                .limit(1).single();
+            .join("user_info").on("user_id") //
+            .limit(1).single();
         tm.getColumns().forEach(c -> {
             assertNotNull(map.get(c.getName()));
         });
@@ -1015,12 +1015,12 @@ public class SqlQueryTest extends JdbcTestBase {
         // query.find("user") 返回 SqlQueryEntity
         // query.find("user").property("username") 返回 QueryEntityProperties，应该返回SqlQueryEntity
         query.find("user").fields("username", "password", "age") //
-                .join("user_info") //
-                .on("user_id") //
-                .list();
+            .join("user_info") //
+            .on("user_id") //
+            .list();
 
         query.find("user").fields("username", "password", "age").join("user_info").on("user_id").join("user_info")
-                .on("user_id").list();
+            .on("user_id").list();
 
         // ENHANCE 后续加入省略on方法的形式，通过database metadata 自动获取join的table的id
         //  query.find("user").property("username", "password", "age").join("user_info").list();
@@ -1037,20 +1037,20 @@ public class SqlQueryTest extends JdbcTestBase {
         //        query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch("name")
         //        .fetch("descp").list();
         query.find("user").fields("username", "password", "age").join("user_info").on("user_id").fetch("name", "descp")
-                .list();
+            .list();
 
         //        query.find("user").fields("username", "password", "age").join("user_role").on("user_id").join("role")
         //                .on("id", "user_role", "role_id").fetch().list();
 
         query.find("user").fields("username", "password", "age") //
-                .join("user_role").on("user_id") //
-                .join("role").on((r1, r2, j) -> j.field("id").eq(r2.field("role_id"))).fetch() //
-                .list();
+            .join("user_role").on("user_id") //
+            .join("role").on((r1, r2, j) -> j.field("id").eq(r2.field("role_id"))).fetch() //
+            .list();
 
         query.find("user").fields("username", "password", "age") //
-                .join("user_role").on((r1, j) -> j.field("user_id").eq(r1.field("id"))) //
-                .join("role").on((r1, r2, j) -> j.field("id").eq(r2.field("role_id"))).fetch() //
-                .list();
+            .join("user_role").on((r1, j) -> j.field("user_id").eq(r1.field("id"))) //
+            .join("role").on((r1, r2, j) -> j.field("id").eq(r2.field("role_id"))).fetch() //
+            .list();
 
         query.find("user").fields("username", "password", "age").join("user_info").on("user_id").list();
 

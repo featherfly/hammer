@@ -2,7 +2,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 
-# 0.7.0
+# 0.7.0 2024-05-05
 1. 加入强类型dsl查询
    一级、二级、三级、四级、五级join实现与测试
    
@@ -66,6 +66,16 @@ TODO dsl实体查询加入以下（EntityQuery）
 16. EntityUpdate,EntityDelete支持join进行多实体条件过滤
 
 17. RepositoryUpdate,RepositoryDelete支持join进行多实体条件过滤
+
+18. Jdbc加入各种参数为NamedParamSql的重载方法
+
+    ```java
+    Jdbc jdbc = ...;
+    Map<String,Object> userMap = jdbc.querySingle(namedParamSql, params);
+    User user = jdbc.querySingle(namedParamSql, User.class, params); // 这里只是举两例子，更多用法参考Jdbc类
+    ```
+
+    
 
 # 0.6.7 2023-04-18
 1. 修复eq参数为空时报错的问题
