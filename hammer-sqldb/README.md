@@ -707,9 +707,9 @@ API 调用传入的 tplExecuteId 字符串格式为 filePath@sqlId
 
 后续文档使用的 sql 模板定义
 
-[_`user.yaml.tpl`_](./src/test/resources/tpl/user.yaml.tpl)
+[_`user.yaml.tpl`_](./src/test/resources/tpl/user.yaml.tpl)  [_`user.yaml.sql`_](./src/test/resources/tpl_pre/user.yaml.sql)
 
-[_`role.yaml.tpl`_](./src/test/resources/tpl/role.yaml.tpl)
+[_`role.yaml.tpl`_](./src/test/resources/tpl/role.yaml.tpl) [_`role.yaml.sql`_](./src/test/resources/tpl_pre/role.yaml.sql)
 
 [_`role_common.yaml.tpl`_](./src/test/resources/tpl/user.yaml.tpl)
 
@@ -829,9 +829,78 @@ PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate3", Ro
 
 因为使用的模板引擎，所有在 sql 拼接中，对应的模板引擎支持的功能基本都能使用，不过由于我们只是用来动态拼接 SQL,所以为其定制化了一些专用于此的标签和函数。默认使用 freemarker，定制的功能也是 freemarker 的扩展。
 
+### 特化的SQL模板预编译支持
+
+为了让sql看起来更清晰，并更容易在sql客户端（heidiSQL,navicate等）和JAVA项目之间来回倒腾SQL，自定义了一套模板规则进行预编译，在加载期编译为内置模板引擎的模板样式（默认使用freemarker）
+
+下面这句sql除了能在hammer中运行，同时也可以在sql客户端中正常执行（比较复杂的sql会在sql客户端进行编写调试，这样效率更高，一般分析统计sql会比较复杂）`下面的语句只为演示功能，与sql复杂度无关`
+
+```sql
+select id, username, password pwd, mobile_no, age from /*<<wrap*/user
+/*<where*/ where
+    /*??*/ username like /*$=:username*/'yufei'
+    /*??*/ and password like /*$=:password*/'123456'
+    /*??*/ and mobile_no like /*$=:mobileNo*/'12345678901'
+    /*?*/ and age >= /*$=:minAge*/5
+    /*??*/ and age <= /*$=:maxAge*/40
+/*>where*/
+```
+
+如果你只是一个不太需要在sql客户端进行调试的sql，还可以简化为（其中符号的作用会再下面对应的章节描述）
+
+```sql
+select id, username, password pwd, mobile_no, age from /*<<wrap*/user
+/*<where*/ where
+    /*??*/ username like :username
+    /*??*/ and password like :password
+    /*??*/ and mobile_no like :mobileNo
+    /*?*/ and age >= :minAge
+    /*?*/ and age <= :maxAge
+/*>where*/
+
+-- 或者
+
+select id, username, password pwd, mobile_no, age from /*<<wrap*/user
+/*<where*/ where
+    /*username??*/ username like ?
+    /*password??*/ and password like ?
+    /*mobile_no??*/ and mobile_no like ?
+    /*age?*/ and age >= ?
+    /*age?*/ and age <= ?
+/*>where*/
+```
+
+### 特化SQL的标签定义规则
+
+1. `/*  */` 使用作为标签的开始和结束符号，因为这在sql中是注释，所以可以直接在sql客户端里运行不出现问题
+
+2. `/*<  */` 表示需要结束标签`/*  >*/`成对使用，类似html的标签: `<p> </p>`
+
+3. `/*<  >*/` 表示自关闭标签，类似html的标签:  `<br/>`
+
+4. `/*<<  */` 表示回把标签后面的字符包装进期标签内(规则为从标签后开始，直到遇到空格或者换行)，
+
+   例如：`/*<<wrap*/user from`则会转换为`<@wrap>user</@wrap> from`
+
+5. `/*$= */'yufei'` 表示使用$=后的内容替换标签后的字符(规则为从标签后开始，直到遇到空格或者换行)，
+
+   例如：`/*$=:password*/'123456' `则会转换为`:password`
+
+6. `/*[word][?|??]*/ [and | or]`  表示`<@and if=word[?|??]> ... </@and>`
+
+   例如: `/*?*/ and age >= :minAge`则会转换为 `<@and if=age?> age >= ? </@and>`
+
+    `/*??*/ username like :username`则会转换为 `<@and if=username??> username = ? </@and>`
+
+7. 内置的freemarker标签，直接替换期开始和结束标签就能直接使用
+
+   例如：`/*<tpl id='roleFromTemplate2' namespace='role_common'>*/`则转换为 `<@tpl id='roleFromTemplate2'/>
+
 ### where 支持
 
-当<@where><\/@where>中的内容不是空字符串时，会自动加入 where 关键字,相反则输出空字符串
+> freemarker模板
+
+当<@where>   \</@where>中的内容不是空字符串时，会自动加入 where 关键字,相反则输出空字符串
 
 ```sql
 select id, username, password pwd, mobile_no, age from user<@where>
@@ -853,7 +922,24 @@ select id, username, password pwd, mobile_no, age from user<@where>
 </@where>
 ```
 
+#### where的SQL特化模板
+
+特化模板中为 `/*<where*/ ... /*>where*/`
+
+```sql
+select id, username, password pwd, mobile_no, age from /*<<wrap*/user
+/*<where*/ where
+    /*??*/ username like :username
+    /*??*/ and password like :password
+    /*??*/ and mobile_no like :mobileNo
+    /*?*/ and age >= :minAge
+    /*?*/ and age <= :maxAge
+/*>where*/
+```
+
 ### and 和 or 支持
+
+> freemarker 支持
 
 `and`和`or`标签的属性是一致的，只是代表含义不同，如果其内容是查询条件，则当 if 为 true 时，则会自动追加 and(or)。如果内容是一个分组时（小括号包裹的条件表达式），逻辑等同于 where（不需要设置属性），只是自动加入的关键字是 and(or)。**此标签会自动判断是否需要加入 and(or)关键字，不需要人工判断，当成加强版的 if 标签用就行了**  
 `if` 传入布尔值，表示是否需要标签内的内容，当内容是一个分组时，不需要指定  
@@ -863,9 +949,12 @@ _基于命名占位符_
 
 ```sql
 select * from user<@where>
-    <@and if= age??>
+    <@and if= age?>
         age = :age
     </@and>
+    <@and if= minAge? && maxAge?>
+		age between :minAge and :maxAge
+	</@and>
     <@and>
         <@and if= name??>
             name = :name
@@ -881,9 +970,6 @@ select * from user<@where>
                 age < :maxAge
             </@and>
         </@or>
-        <@and if= minAge??>
-            age between :minAge and :maxAge
-        </@and>
     </@and>
     <@and if= age??>
         age = :age
@@ -921,10 +1007,10 @@ _基于问号占位符_
 
 ```sql
 select * from user<@where>
-    <@and if = age??>
+    <@and if = age?>
         age = ?
     </@and>
-    <@and if= minAge?? && maxAge?? name="minAge,maxAge">
+    <@and if= minAge? && maxAge? name="minAge,maxAge">
             age between ? and ?
     </@and>
     <@and>
@@ -975,6 +1061,78 @@ select * from user<@where>
 </@where>
 ```
 
+#### and和or的SQL特化模板
+
+特化模板中为 /\*?\*/  条件语句 换行
+
+1. `/*?*/` 表示!=null
+2. `/*??*/` 表示!=null并且长度为0（字符串，数组，集合）
+3. `/*<?*/ [and|or] ... /*>?*/` 代表`<@and> ... </@and>` 或者 `<@or> ... </@or>`
+
+```sql
+select * from user
+/*<where*/ where
+	/*?*/ age = :age
+	/*<?*/ and
+    (
+        /*??*/ name = :name
+        /*?*/ and age = :age
+        /*<?*/ or
+        (
+        	/*?*/ age > :minAge
+			/*?*/ and age < :maxAge
+        )
+		/*>?*/
+    )
+	/*>?*/
+	/*?*/ and age = :age
+	/*<?*/ or 
+	(
+        /*??*/ name = :name
+        /*?*/ and age = :age
+    )
+	/*>?*/
+    /*?*/ and sex = :sex
+    /*?*/ and mobile = :mobile
+	/*?*/ or name = :name
+	/*?*/ or age = :age
+	/*?*/ or sex = :sex
+	/*?*/ or mobile = :mobile
+/*>where*/
+
+-- 或者
+
+select * from user
+/*<where*/ where
+	/*age?*/ age = ?
+	/*<?*/ and
+    (
+        /*name??*/ name = ?
+        /*age?*/ and age = ?
+        /*<?*/ or
+        (
+        	/*minAge?*/ age > ?
+			/*maxAge?*/ and age < ?
+        )
+		/*>?*/
+    )
+	/*>?*/
+	/*age?*/ and age = ?
+	/*<?*/ or 
+	(
+        /*name??*/ name = ?
+        /*age?*/ and age = ?
+    )
+	/*>?*/
+    /*sex?*/ and sex = ?
+    /*mobile?*/ and mobile = ?
+	/*name?*/ or name = ?
+	/*age?*/ or age = ?
+	/*sex?*/ or sex = ?
+	/*mobile?*/ or mobile = ?
+/*>where*/
+```
+
 ### columns 支持
 
 同一个实现默认注册了两个标签名，推荐使用<@prop>，因为这是标准名称，<@columns>只是为了在这里更应景而已。  
@@ -1000,8 +1158,36 @@ selectWithTemplate3:
     count: "select count(*) <@sql id='roleFromTemplate2' namespace='tpl/role_common'/>"
 ```
 
-**如果调用返回的映射对象是已经使用@Entity 或者@Table 标注的实体对象，则只需要`<@prop/>`或者`<@columns/>`就行了，标签实现会根据对象映射信息生成正确的内容  
-如果调用返回的映射对象不是已经使用@Entity 或者@Table 标注的实体对象，则需要加入属性`<@columns table='user'/>或者<@prop repo='user_info'/>`**
+**如果调用返回的映射对象是使用@Entity 或者@Table 标注的实体对象，则只需要`<@prop/>`或者`<@columns/>`就行了，标签实现会根据对象映射信息生成正确的内容  
+如果调用返回的映射对象不是使用@Entity 或者@Table 标注的实体对象，则需要加入属性`<@columns table='user'/>或者<@prop repo='user_info'/>`**
+
+#### columns SQL特化模板
+
+```sql
+selectByUsername: >
+    select /*<<columns table='user'*/* from /*<<wrap*/user where username = :username
+selectUser: select username, password pwd from /*<<wrap*/user
+selectByAge: >
+    select /*<<prop*/* from /*<<wrap*/user where age = :age
+selectWithTemplate3:
+  query: |
+    select /*prop alias="_r"*/* /*<tpl id='roleFromTemplate2' namespace='role_common'>*/
+  count: |
+    select count(*) /*<sql id='roleFromTemplate2' namespace='role_common'>*/
+selectConditions: |
+    select id, username, password pwd, mobile_no, age from /*<<wrap*/user
+    /*<where*/ where
+    /*??*/ username like :username
+    /*??*/ and password like :password
+    /*??*/ and mobile_no like :mobileNo
+    /*?*/ and age >= :minAge
+    /*?*/ and age <= :maxAge
+    /*>where*/
+```
+
+**需要注意的是，某些需要换行格式的标签（/*<where*/ where 或者 /*??*/ 等），在写模板时，在yaml的key后面要跟 |，表示key对应的value不需要去掉换行符 **
+
+
 
 ### sql 关键字支持
 
@@ -1024,10 +1210,19 @@ selectByUsernameAndPassword: >
     select username, password pwd from ${tpl_wrap("user")} where username = :username and password = :password
 ```
 
+#### SQL关键字的SQL特化模板
+
+_标签实现_
+
+```sql
+selectByUsernameAndPassword: >
+    select username, password pwd from /*<<wrap*/user where username = :username and password = :password
+```
+
 ### include 支持
 
 前面已经说了，使用模板引擎，所以模板引擎有的功能都能使用，include 也是一样。  
-**不建议使用模板自带 include 机制，因为自定义的 include 实现更方便**
+**不建议使用模板自带 include 机制，因为模板的实际位置和扫描模板的前置路径相关（可以设置多个前置路径进行扫描，如：rbac/, order/），实际情况会比较复杂，而自定义的 include 已经帮你处理了实现了namespace和路径的关联**
 
 #### 自定义 include 实现
 
@@ -1041,11 +1236,12 @@ selectByUsernameAndPassword: >
 selectWithTemplate2:
   query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
   count: "select count(*) <@sql id='roleFromTemplate2'/>"
-roleFromTemplate2: "from role <@where>
-<@and if = name??>
-    name like :name
-</@and>
-</@where>"
+roleFromTemplate2: >
+	from role <@where>
+	<@and if = name??>
+	    name like :name
+	</@and>
+	</@where>
 selectWithTemplate3:
   query: >
     select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
@@ -1060,11 +1256,22 @@ selectWithTemplate3:
 selectWithTemplate:
   query: "select <@prop/> <#include '/tpl/role@roleFromTemplate'>"
   count: "select count(*) <#include '/tpl/role@roleFromTemplate'>"
-roleFromTemplate: "from role <@where>
-<@and if = name??>
-    name like :name
-</@and>
-</@where>"
+roleFromTemplate: >
+	from role <@where>
+	<@and if = name??>
+    	name like :name
+	</@and>
+	</@where>
+```
+
+#### includ的SQL特化模板
+
+```sql
+selectWithTemplate:
+  query: |
+    select /*prop alias="_r"*/* /*<tpl id='roleFromTemplate2' namespace='role_common'>*/
+  count: |
+    select count(*) /*<sql id='roleFromTemplate2' namespace='role_common'>*/
 ```
 
 ## Mapper 详解
