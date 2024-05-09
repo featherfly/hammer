@@ -11,6 +11,7 @@ package cn.featherfly.hammer.config;
 import javax.validation.Validator;
 
 import cn.featherfly.hammer.config.dsl.DslConfig;
+import cn.featherfly.hammer.config.tpl.TemplateConfig;
 
 /**
  * HammerConfigImpl.
@@ -24,6 +25,25 @@ public class HammerConfigImpl implements HammerConfig {
     private BatchConfig batchConfig = new BatchConfigImpl();
 
     private Validator validator;
+
+    private TemplateConfigImpl templateConfig = new TemplateConfigImpl();
+
+    private final boolean devMode;
+
+    /**
+     */
+    public HammerConfigImpl() {
+        this(false);
+    }
+
+    /**
+     * Instantiates a new hammer config impl.
+     *
+     * @param devMode the dev mode
+     */
+    public HammerConfigImpl(boolean devMode) {
+        this.devMode = devMode;
+    }
 
     /**
      * {@inheritDoc}
@@ -74,5 +94,32 @@ public class HammerConfigImpl implements HammerConfig {
      */
     public void setBatchConfig(BatchConfig batchConfig) {
         this.batchConfig = batchConfig;
+    }
+
+    /**
+     * set templateConfig value
+     *
+     * @param templateConfig templateConfig
+     */
+    public void setTemplateConfig(TemplateConfigImpl templateConfig) {
+        this.templateConfig = templateConfig;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TemplateConfig getTemplateConfig() {
+        return templateConfig;
+    }
+
+    /**
+     * get devMode value
+     *
+     * @return devMode
+     */
+    @Override
+    public boolean isDevMode() {
+        return devMode;
     }
 }

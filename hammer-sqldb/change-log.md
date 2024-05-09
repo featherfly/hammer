@@ -5,8 +5,31 @@ TODO dsl实体查询加入以下（EntityQuery）
 # 0.7.1
 
 1. 批量操作的逻辑优化，优先判断jdbc driver是否提供支持，再判断方言(Dialect)是否支持（构建为一条SQL)
+
 2. HammerConfig加入insertBatchSize配置
+
 3. 升级ASM依赖
+
+4. 重构模板执行方法，从Hammer继承TplExecutor改为组合（因为Hammer方法太多了），只需要在原来的基础上加入.template()就行了
+
+   例如 `hammer.string("selectStr", params)`  --> `hammer.template().string("selectStr", params)`
+
+   还加入了多层次的写法 `hammer.template("selectList", params).list()` 或 `hammer.template("selectSinle", params).single()` 等等
+
+   最重要的是把多级对象映射结构化了
+
+   ```java
+   // select u.name,ui.descp,o.amount from ......
+   List<Tuple3<User,UserInfo,Order> list = hammer.template("selectList", params)
+       .mapper(User.class, UserInfo.class, Order.class) // 按照SQL返回的前缀别名顺序映射
+       .list();
+   // 或者
+   List<Tuple3<User,UserInfo,Order> list = hammer.template("selectList", params)
+       .mapper(m->m.map("u.",User.class).map("ui.", UserInfo.class).map("o.", Order.class)) // 手动设置前缀别名映射关系
+       .list();
+   ```
+
+5.  模板ID（TplExecuteId）字符串格式从namespace@name变更为name@namespace
 
 # 0.7.0 2024-05-05
 

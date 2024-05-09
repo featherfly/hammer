@@ -4,9 +4,7 @@ package cn.featherfly.hammer.tpl.freemarker.processor;
 import java.util.List;
 
 /**
- * <p>
- * Element
- * </p>
+ * Element.
  *
  * @author zhongj
  */
@@ -17,6 +15,8 @@ public interface Element {
     String getSource();
 
     Element parent();
+
+    Element previous();
 
     int getStart();
 

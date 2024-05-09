@@ -12,9 +12,9 @@ import java.util.Set;
  */
 public class TplExecuteConfigs extends HashMap<String, Object> {
 
-    private String filePath;
+    private final Set<String> filePaths = new HashSet<>(0);
 
-    private Set<Class<?>> types = new HashSet<>(0);
+    private final Set<Class<?>> types = new HashSet<>(0);
 
     private String namespace;
 
@@ -24,34 +24,42 @@ public class TplExecuteConfigs extends HashMap<String, Object> {
     private static final long serialVersionUID = -3757923566368519179L;
 
     /**
+     * Instantiates a new tpl execute configs.
      */
     public TplExecuteConfigs() {
     }
 
-    public TplExecuteConfig getConfig(String sqlId) {
-        return (TplExecuteConfig) get(sqlId);
+    /**
+     * Contains config.
+     *
+     * @param name the name
+     * @return true, if successful
+     */
+    public boolean containsConfig(String name) {
+        return containsKey(name);
     }
 
     /**
-     * 返回filePath
+     * Gets the config.
+     *
+     * @param name the name
+     * @return the config
+     */
+    public TplExecuteConfig getConfig(String name) {
+        return (TplExecuteConfig) get(name);
+    }
+
+    /**
+     * 返回filePath.
      *
      * @return filePath
      */
-    public String getFilePath() {
-        return filePath;
+    public Set<String> getFilePath() {
+        return filePaths;
     }
 
     /**
-     * 设置filePath
-     *
-     * @param filePath filePath
-     */
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    /**
-     * get namespace value
+     * get namespace value.
      *
      * @return namespace
      */
@@ -60,7 +68,7 @@ public class TplExecuteConfigs extends HashMap<String, Object> {
     }
 
     /**
-     * set namespace value
+     * set namespace value.
      *
      * @param namespace namespace
      */
@@ -69,21 +77,11 @@ public class TplExecuteConfigs extends HashMap<String, Object> {
     }
 
     /**
-     * get types value
+     * get types value.
      *
      * @return types
      */
     public Set<Class<?>> getTypes() {
         return types;
     }
-
-    /**
-     * set types value
-     *
-     * @param types types
-     */
-    public void setTypes(Set<Class<?>> types) {
-        this.types = types;
-    }
-
 }

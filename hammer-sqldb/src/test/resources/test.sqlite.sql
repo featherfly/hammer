@@ -97,6 +97,22 @@ CREATE TABLE `user_info` (
 );
 
 -- ----------------------------
+-- Table structure for user_role2
+-- ----------------------------
+DROP TABLE IF EXISTS `user_info2`;
+CREATE TABLE `user_info2` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `user_id` INTEGER NULL,
+  `name` text(255) DEFAULT NULL,
+  `descp` text(255) DEFAULT NULL,
+  `province` text(255) DEFAULT NULL,
+  `city` text(255) DEFAULT NULL,
+  `district` text(255) DEFAULT NULL,
+  `street` text(255) DEFAULT NULL,
+  `street_no` INTEGER DEFAULT NULL
+);
+
+-- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
 

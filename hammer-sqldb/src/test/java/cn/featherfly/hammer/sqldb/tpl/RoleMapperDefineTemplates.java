@@ -18,13 +18,13 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 @Template(name = "selectIdList", value = "select id from role order by id")
 @Template(name = "selectList", value = "select <@prop repo='role'/> from role")
 @Template(name = "roleFromTemplate", value = "FROM role _r <@where><@and if = name??> name like :name </@and></@where>")
-@Template(name = "selectWithTemplate", value = "select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate'/>")
+@Template(name = "selectWithTemplate", value = "select <@prop alias=\"_r\"/> <@tpl name='roleFromTemplate'/>")
 @Template(name = "selectWithTemplate2",
-        value = "select <@prop alias='_r'/> <@tpl id='roleFromTemplate' namespace='role2'/>")
-@Template(name = "selectWithTemplate3", value = "select /*<<prop alias=\"_r\"*/* /*<tpl id='roleFromTemplate' >*/")
+        value = "select <@prop alias='_r'/> <@tpl name='roleFromTemplate' namespace='role2'/>")
+@Template(name = "selectWithTemplate3", value = "select /*<<prop alias=\"_r\"*/* /*<tpl name='roleFromTemplate' >*/")
 @Template(name = "selectWithTemplate4",
-        value = "select /*<<prop alias='_r'*/* /*<tpl id='roleFromTemplate' namespace='role2' >*/")
-@Template(name = "selectWithTemplate5", value = "select /*prop alias=\"_r\"*/* /*<tpl id='roleFromTemplate' >*/")
+        value = "select /*<<prop alias='_r'*/* /*<tpl name='roleFromTemplate' namespace='role2' >*/")
+@Template(name = "selectWithTemplate5", value = "select /*prop alias=\"_r\"*/* /*<tpl name='roleFromTemplate' >*/")
 public interface RoleMapperDefineTemplates extends GenericHammer<Role, Integer> {
 
     @Template(name = "selectIdList")
@@ -48,18 +48,18 @@ public interface RoleMapperDefineTemplates extends GenericHammer<Role, Integer> 
     @Template // name="selectWithTemplate5"
     List<Role> selectWithTemplate5(@Param("name") String name);
 
-    @Template("select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate' />")
+    @Template("select <@prop alias=\"_r\"/> <@tpl name='roleFromTemplate' />")
     List<Role> selectWithTemplate6(@Param("name") String name);
 
-    @Template("select <@prop alias='_r'/> <@tpl id='roleFromTemplate' namespace='role2' />")
+    @Template("select <@prop alias='_r'/> <@tpl name='roleFromTemplate' namespace='role2' />")
     List<Role> selectWithTemplate7(@Param("name") String name);
 
-    @Template("select /*<<prop alias=\"_r\"*/* /*<tpl id='roleFromTemplate' >*/")
+    @Template("select /*<<prop alias=\"_r\"*/* /*<tpl name='roleFromTemplate' >*/")
     List<Role> selectWithTemplate8(@Param("name") String name);
 
-    @Template("select /*<<prop alias='_r'*/* /*<tpl id='roleFromTemplate' namespace='role2' >*/")
+    @Template("select /*<<prop alias='_r'*/* /*<tpl name='roleFromTemplate' namespace='role2' >*/")
     List<Role> selectWithTemplate9(@Param("name") String name);
 
-    @Template("select /*prop alias=\"_r\"*/* /*<tpl id='roleFromTemplate' >*/")
+    @Template("select /*prop alias=\"_r\"*/* /*<tpl name='roleFromTemplate' >*/")
     List<Role> selectWithTemplate10(@Param("name") String name);
 }

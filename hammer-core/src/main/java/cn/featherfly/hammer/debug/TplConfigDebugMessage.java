@@ -10,11 +10,11 @@ import cn.featherfly.common.structure.ChainMapImpl;
  */
 public class TplConfigDebugMessage extends AbstractDebugMessage<TplConfigDebugMessage> {
 
-    /** The column template name. */
-    private String columnTemplateName = "TemplateName";
+    /** The column template Id. */
+    private String columnTemplateId = "TemplateId";
 
     /** The column id. */
-    private String columnId = "Id";
+    private String columnName = "Name";
 
     /** The column namespace. */
     private String columnNamespace = "Namespace";
@@ -29,7 +29,7 @@ public class TplConfigDebugMessage extends AbstractDebugMessage<TplConfigDebugMe
      */
     public TplConfigDebugMessage(boolean debug) {
         super(debug);
-        addColumn(columnTemplateName, columnId, columnNamespace, columnFile);
+        addColumn(columnTemplateId, columnName, columnNamespace, columnFile);
     }
 
     /**
@@ -43,7 +43,7 @@ public class TplConfigDebugMessage extends AbstractDebugMessage<TplConfigDebugMe
      */
     public TplConfigDebugMessage addConfig(String templateName, String id, String namespace, String file) {
         return (TplConfigDebugMessage) addRow(
-                new ChainMapImpl<String, Object>().putChain(columnTemplateName, templateName).putChain(columnId, id)
+                new ChainMapImpl<String, Object>().putChain(columnTemplateId, templateName).putChain(columnName, id)
                         .putChain(columnNamespace, namespace).putChain(columnFile, file));
     }
 }

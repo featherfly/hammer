@@ -26,7 +26,9 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.config.TemplateConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
@@ -56,8 +58,11 @@ public class HammerBenchmark extends AbstractBenchmark {
 
         SqlTypeMappingManager sqlTypeMappingManager = new SqlTypeMappingManager();
 
-        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
-                new FreemarkerTemplatePreProcessor());
+        HammerConfig config = new HammerConfigImpl();
+
+        TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
+                .basePackages(basePackages).config(config.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(new TemplateConfigImpl())).build();
 
         //        SqlPageFactory sqlPageFactory = new SimpleSqlPageFactory();
 
@@ -123,5 +128,37 @@ public class HammerBenchmark extends AbstractBenchmark {
     @Override
     protected List<UserInfo2> doSelectById(Serializable... ids) {
         return hammer.get(UserInfo2.class, ids);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doDeleteById(boolean batch, Serializable... ids) {
+        if (batch) {
+            return hammer.delete(ids, UserInfo2.class);
+        } else {
+            int[] res = new int[ids.length];
+            for (int i = 0; i < res.length; i++) {
+                res[i] = hammer.delete(ids[i], UserInfo2.class);
+            }
+            return res;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doUpdateById(boolean batch, Serializable... ids) {
+        UserInfo2[] uis = new UserInfo2[ids.length];
+        int i = 0;
+        for (Serializable id : ids) {
+            UserInfo2 ui = userInfo();
+            ui.setId((Integer) id);
+            uis[i] = ui;
+            i++;
+        }
+        return hammer.update(uis);
     }
 }

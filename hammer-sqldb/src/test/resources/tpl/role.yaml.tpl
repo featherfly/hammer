@@ -24,16 +24,16 @@ selectByNameEw: "select <@prop repo='role'/> from role
     </@and>
 </@where>"
 selectWithTemplate:
-  query: "select <@prop/> <#include 'role@roleFromTemplate'>"
-  count: "select count(*) <#include 'role@roleFromTemplate'>"
+  query: "select <@prop/> <#include 'roleFromTemplate@role'>"
+  count: "select count(*) <#include 'roleFromTemplate@role'>"
 roleFromTemplate: "from role <@where>
 <@and if = name??>
     name like :name
 </@and>
 </@where>"
 selectWithTemplate2:
-  query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
-  count: "select count(*) <@sql id='roleFromTemplate2'/>"
+  query: "select <@prop/> <@tpl name='roleFromTemplate2'/>"
+  count: "select count(*) <@sql name='roleFromTemplate2'/>"
 roleFromTemplate2: "from role <@where>
 <@and if = name??>
     name like :name
@@ -41,11 +41,11 @@ roleFromTemplate2: "from role <@where>
 </@where>"
 selectWithTemplate3:
   query: >
-    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' namespace='role_common'/>
-  count: "select count(*) <@sql id='roleFromTemplate2' namespace='role_common'/>"
+    select <@prop alias="_r"/> <@tpl name='roleFromTemplate2' namespace='role_common'/>
+  count: "select count(*) <@sql name='roleFromTemplate2' namespace='role_common'/>"
 selectWithTemplate4:
-  query: "select * <@tpl id='roleFromTemplate4'/>"
-  count: "select count(*) <@sql id='roleFromTemplate4'/>"
+  query: "select * <@tpl name='roleFromTemplate4'/>"
+  count: "select count(*) <@sql name='roleFromTemplate4'/>"
 roleFromTemplate4: "from role <@where>
 <@and if = name??>
     name like :name

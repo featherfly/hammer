@@ -10,6 +10,8 @@
  */
 package cn.featherfly.hammer;
 
+import cn.featherfly.hammer.config.HammerConfig;
+
 /**
  * HammerSupport.
  *
@@ -23,4 +25,11 @@ public interface HammerSupport {
      * @return the hammer
      */
     Hammer getHammer();
+
+    /**
+     * Gets the hammer config.
+     *
+     * @return the hammer config
+     */
+    HammerConfig getHammerConfig();
 }

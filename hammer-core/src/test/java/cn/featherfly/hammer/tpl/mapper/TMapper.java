@@ -8,9 +8,7 @@ import cn.featherfly.hammer.annotation.Mapper;
 import cn.featherfly.hammer.annotation.Template;
 
 /**
- * <p>
- * TestMapper
- * </p>
+ * TestMapper.
  *
  * @author zhongj
  */

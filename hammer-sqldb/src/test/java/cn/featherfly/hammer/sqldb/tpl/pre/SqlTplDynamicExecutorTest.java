@@ -31,9 +31,7 @@ import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
 
 /**
- * <p>
- * SqlTplExecutorTest
- * </p>
+ * SqlTplExecutorTest.
  *
  * @author zhongj
  */
@@ -51,19 +49,21 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
 
     @BeforeClass
     void setup() {
-        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre/", new FreemarkerTemplatePreProcessor());
+        TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder() //
+                .prefixes("tpl_pre/").config(hammerConfig.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         //        TransverterManager transverterManager = new TransverterManager();
         //        transverterManager.register(new FuzzyQueryTransverter());
         //        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, transverterManager);
 
-        HammerConfigImpl hammerConfig = new HammerConfigImpl();
+        HammerConfigImpl hammerConfig = new HammerConfigImpl(devMode);
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-            .buildValidatorFactory().getValidator());
+                .buildValidatorFactory().getValidator());
 
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
-        userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
-        roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer);
+        userMapper = mapperFactory.newInstance(UserMapper.class, hammer, hammerConfig);
+        roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer, hammerConfig);
     }
 
     @Test

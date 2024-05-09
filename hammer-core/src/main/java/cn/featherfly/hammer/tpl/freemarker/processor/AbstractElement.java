@@ -17,6 +17,9 @@ public abstract class AbstractElement implements Element {
     /** The parent. */
     protected Element parent;
 
+    /** The previous. */
+    protected Element previous;
+
     /** The childs. */
     protected List<Element> childs = new ArrayList<>();
 
@@ -26,27 +29,62 @@ public abstract class AbstractElement implements Element {
     /** The end. */
     protected int end;
 
+    /** The named param placeholder. */
+    protected boolean namedParamPlaceholder = true;
+
     /** The parser. */
     protected Parser parser;
 
     /**
      * Instantiates a new abstract element.
      *
-     * @param parser the parser
+     * @param namedParamPlaceholder the named param placeholder
+     * @param parser                the parser
      */
-    public AbstractElement(Parser parser) {
+    public AbstractElement(boolean namedParamPlaceholder, Parser parser) {
         this.parser = parser;
+        this.namedParamPlaceholder = namedParamPlaceholder;
     }
 
     /**
      * Instantiates a new abstract element.
      *
-     * @param source the source
-     * @param parser the parser
+     * @param namedParamPlaceholder the named param placeholder
+     * @param previous              the previous
+     * @param parser                the parser
      */
-    public AbstractElement(String source, Parser parser) {
+    public AbstractElement(boolean namedParamPlaceholder, Element previous, Parser parser) {
+        this.parser = parser;
+        this.namedParamPlaceholder = namedParamPlaceholder;
+        this.previous = previous;
+    }
+
+    /**
+     * Instantiates a new abstract element.
+     *
+     * @param source                the source
+     * @param namedParamPlaceholder the named param placeholder
+     * @param parser                the parser
+     */
+    public AbstractElement(String source, boolean namedParamPlaceholder, Parser parser) {
         super();
         this.parser = parser;
+        this.namedParamPlaceholder = namedParamPlaceholder;
+        this.source.append(source);
+    }
+
+    /**
+     * Instantiates a new abstract element.
+     *
+     * @param source                the source
+     * @param namedParamPlaceholder the named param placeholder
+     * @param parser                the parser
+     */
+    public AbstractElement(String source, boolean namedParamPlaceholder, Element previous, Parser parser) {
+        super();
+        this.parser = parser;
+        this.previous = previous;
+        this.namedParamPlaceholder = namedParamPlaceholder;
         this.source.append(source);
     }
 
@@ -58,6 +96,7 @@ public abstract class AbstractElement implements Element {
     public AbstractElement(Element parent) {
         super();
         this.parent = parent;
+        previous = parent;
     }
 
     /**
@@ -70,6 +109,7 @@ public abstract class AbstractElement implements Element {
         super();
         this.parent = parent;
         source.append(value);
+        previous = parent;
     }
 
     /**
@@ -142,6 +182,14 @@ public abstract class AbstractElement implements Element {
     @Override
     public Element parent() {
         return parent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Element previous() {
+        return previous;
     }
 
     /**

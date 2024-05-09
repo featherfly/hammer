@@ -16,13 +16,21 @@ package cn.featherfly.hammer.sqldb.pt;
  */
 public interface Benchmark {
 
-    void testInsertOne();
+    void insertOne();
 
-    void testInsertOneMulitiTimes();
+    void insertOneMulitiTimes();
 
-    void testInsertBatch();
+    void insertBatch();
 
-    void testSelectById();
+    void selectById();
 
-    void testSelectByIdMulitiTimes();
+    void selectByIdMulitiTimes();
+
+    void updateOneMulitiTimes();
+
+    void updateBatch();
+
+    void deleteOneMulitiTimes();
+
+    void deleteBatch();
 }

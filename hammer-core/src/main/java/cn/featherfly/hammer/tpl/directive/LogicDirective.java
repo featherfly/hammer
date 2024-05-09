@@ -11,6 +11,8 @@ public interface LogicDirective extends TemplateDirective {
 
     String PARAM_NAME_NAME = "name";
 
+    String PARAM_NAME_FORCE = "force";
+
     String PARAM_NAME_TRANSVERTER = "transverter";
 
 }

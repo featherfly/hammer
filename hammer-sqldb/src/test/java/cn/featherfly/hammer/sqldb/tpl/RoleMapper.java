@@ -14,9 +14,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.tpl.ExecutionType;
 
 /**
- * <p>
- * UserMapper
- * </p>
+ * UserMapper.
  *
  * @author zhongj
  */
@@ -29,17 +27,17 @@ public interface RoleMapper extends GenericHammer<Role, Integer> {
     @Template("select <@prop repo='role'/> from role")
     List<Role> list();
 
-    @Template("select <@prop repo='role'/> from role")
+    @Template(name = "list2", value = "select <@prop repo='role'/> from role")
     List<Role> list(Page page);
 
-    @Template("select <@prop repo='role'/> from role")
+    @Template(name = "list3", value = "select <@prop repo='role'/> from role")
     List<Role> list(@Param(type = ParamType.PAGE_OFFSET) int offset, @Param(type = ParamType.PAGE_LIMIT) int limit);
 
-    @Template("select <@prop repo='role'/> from role")
+    @Template(value = "select <@prop repo='role'/> from role")
     PaginationResults<Role> page(Page page);
 
     @Template("select <@prop repo='role'/> from role")
-    PaginationResults<Role> page(@Param(type = ParamType.PAGE_OFFSET) int offset,
+    PaginationResults<Role> page2(@Param(type = ParamType.PAGE_OFFSET) int offset,
             @Param(type = ParamType.PAGE_LIMIT) int limit);
 
     @Template("select <@prop repo='role'/> from role <@where><@and if = name??>name like :name</@and></@where>")
@@ -81,23 +79,23 @@ public interface RoleMapper extends GenericHammer<Role, Integer> {
     @Template
     List<Role> selectByNameCo4(@Param("name") String name);
 
-    @Template("select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate2' namespace='role_common'/>")
-    List<Role> selectWithTemplate(@Param("name") String name);
+    @Template("select <@prop alias=\"_r\"/> <@tpl name='roleFromTemplate2' namespace='role_common'/>")
+    List<Role> selectWithTemplate22(@Param("name") String name);
 
     @Template("insert into role(name, descp) values(:name, :descp)")
-    int insertRole(@Param("name") String name, @Param("descp") String descp);
+    int insertRole2(@Param("name") String name, @Param("descp") String descp);
 
     @Template("update role set descp = :descp where name = :name")
-    int updateRoleByName(@Param("name") String name, @Param("descp") String descp);
+    int updateRoleByName2(@Param("name") String name, @Param("descp") String descp);
 
     @Template("delete from role where name = :name")
-    int deleteRoleByName(@Param("name") String name);
+    int deleteRoleByName2(@Param("name") String name);
 
     @Template("select <@prop repo='role'/> from role where name = :name")
-    Role getByName(@Param("name") String name);
+    Role getByName2(@Param("name") String name);
 
     @Template(value = "select count(*) from role", type = ExecutionType.QUERY)
-    int countRole();
+    int countRole1();
 
     @Template("select count(*) from role")
     Integer countRole2();

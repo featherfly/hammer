@@ -9,11 +9,19 @@ import cn.featherfly.hammer.tpl.TplConfigFactory;
  */
 public abstract class IncludeDirective implements TemplateDirective {
 
+    /** The Constant TAG_NAME. */
+    public static final String TAG_NAME = "include";
+
+    /** The Constant NAME_SPACE_PARAM. */
     public static final String NAME_SPACE_PARAM = "namespace";
 
-    public static final String ID_PARAM = "id";
+    /**
+     * The Constant ID_PARAM.
+     */
+    public static final String NAME_PARAM = "name";
 
-    protected TplConfigFactory tplConfigFactory;
+    /** The tpl config factory. */
+    protected final TplConfigFactory tplConfigFactory;
 
     /**
      * Instantiates a new include directive.

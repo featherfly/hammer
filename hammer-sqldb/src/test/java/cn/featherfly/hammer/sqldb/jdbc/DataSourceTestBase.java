@@ -22,6 +22,8 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 
 /**
@@ -29,7 +31,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
  *
  * @author zhongj
  */
-public class DataSourceTestBase {
+public class DataSourceTestBase extends TestBase {
 
     private static final String CONFIG_FILE_PATTERN = "constant.%s.yaml";
 
@@ -49,10 +51,15 @@ public class DataSourceTestBase {
 
     protected static DatabaseMetadata metadata;
 
+    protected static HammerConfig hammerConfig;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", DataSourceTestBase.class));
+
+        hammerConfig = new HammerConfigImpl(devMode);
+
         initDataBase(dataBase);
     }
 

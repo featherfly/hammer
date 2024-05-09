@@ -3,7 +3,7 @@
 <suite name="Hammer Benchmark Test Suite With Mysql 2" parallel="tests"
 	thread-count="1">
     <parameter name="dataBase" value="mysql" />
-    <parameter name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&amp;useUnicode=true&amp;useSSL=false&amp;rewriteBatchedStatements=true" />
+    <parameter name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&amp;useUnicode=true&amp;useSSL=false&amp;rewriteBatchedStatements=true&amp;allowPublicKeyRetrieval=true" />
     <test name="Hammer Benchmark test with jdbc batch">
          <classes>
             <class name="cn.featherfly.hammer.sqldb.pt.HammerBenchmark" />

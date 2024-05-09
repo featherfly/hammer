@@ -49,26 +49,23 @@ public abstract class AbstractFreemarkerTemplateEngine<
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         TplConfigDebugMessage configDebugMessage = new TplConfigDebugMessage(logger.isDebugEnabled());
-        //        StringBuilder debugMessage = new StringBuilder();
-        //        if (logger.isDebugEnabled()) {
-        //            debugMessage.append("\n---------- template loader load template start ----------\n");
-        //        }
+
         Map<String, TplExecuteConfig> templateMap = new HashMap<>();
         configFactory.getAllConfigs().forEach(configs -> {
             configs.values().forEach(c -> {
                 TplExecuteConfig config = (TplExecuteConfig) c;
-                //                if (logger.isDebugEnabled()) {
-                //                    debugMessage.append("  template name: " + config.getTplName() + "\n");
-                //                }
-                configDebugMessage.addConfig(config.getTplName(), config.getExecuteId(), config.getNamespace(),
+                //                configDebugMessage.addConfig(config.getTplName(), config.getExecuteId(), config.getNamespace(),
+                //                        config.getFilePath());
+                //                TplExecuteConfig tplConfig = templateMap.get(config.getTplName());
+                configDebugMessage.addConfig(config.getExecuteId(), config.getName(), config.getNamespace(),
                         config.getFilePath());
-                TplExecuteConfig tplConfig = templateMap.get(config.getTplName());
+                TplExecuteConfig tplConfig = templateMap.get(config.getExecuteId());
                 if (tplConfig != null) {
                     throw new HammerException(Strings.format("duplicate template name {0} with {1} , {1}",
-                            config.getTplName(), config.getFilePath(),
+                            config.getExecuteId(), config.getFilePath(),
                             tplConfig.getFileDirectory() + "/" + tplConfig.getFileName()));
                 }
-                templateLoader.putTemplate(config.getTplName(), config.getContent());
+                templateLoader.putTemplate(config.getExecuteId(), config.getContent());
             });
         });
         //        if (logger.isDebugEnabled()) {

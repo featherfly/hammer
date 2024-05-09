@@ -4,16 +4,23 @@ package cn.featherfly.hammer.tpl.freemarker.processor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.tpl.TplException;
+import cn.featherfly.hammer.tpl.TplExecuteConfig;
+import cn.featherfly.hammer.tpl.TplExecuteConfig.Param;
 
 /**
  * Parser .
@@ -25,6 +32,8 @@ public class Parser {
     private static final Pattern WRAP_PARAM_WITH_VALUE_PATTERN = Pattern.compile("(.+/\\*\\$=.*\\*/)(.+)");
 
     private static final char[] COMMENT_SYMBOL_AFTER_DIRECTIVE_START = new char[] { '+', ' ', '\n' };
+
+    private static final String SQL_DELIM = " \n\t";
 
     private char[] directiveStart = new char[] { '/', '*' };
 
@@ -46,6 +55,8 @@ public class Parser {
 
     private Pattern hasReplaceableTargetPattern = Pattern.compile("\\$=%?" + namedParamStart + "\\w+%?");
 
+    private TemplateConfig templateConfig;
+
     /**
      * The Enum NullType.
      */
@@ -60,6 +71,10 @@ public class Parser {
 
     //    List<Parser> parsers = new ArrayList<>();
 
+    //    private List<String> paramNames;
+
+    private List<Param> params;
+
     private AbstractElement parentElement;
 
     /** The elements. */
@@ -72,18 +87,28 @@ public class Parser {
      * @param parent the parent
      */
     private Parser(Parser parent, AbstractElement parentElement) {
+        this.parentElement = parentElement;
         directiveStart = parent.directiveStart;
         directiveEnd = parent.directiveEnd;
         startDirecitve = parent.startDirecitve;
         endDirecitve = parent.endDirecitve;
-        this.parentElement = parentElement;
+        params = parent.params;
+        templateConfig = parent.templateConfig;
     }
 
     /**
      * Instantiates a new parser.
      */
     public Parser() {
+    }
 
+    /**
+     * Instantiates a new parser.
+     *
+     * @param templateConfig the template config
+     */
+    public Parser(TemplateConfig templateConfig) {
+        this.templateConfig = templateConfig;
     }
 
     /**
@@ -105,10 +130,20 @@ public class Parser {
     /**
      * Parses the.
      *
-     * @param source the source
+     * @param source           the source
+     * @param tplExecuteConfig the consumer
      * @return the string
      */
-    public String parse(String source) {
+    public String parse(String source, TplExecuteConfig tplExecuteConfig) {
+        //        List<String> paramNames = new ArrayList<>();
+        params = new ArrayList<>();
+        String content = parse(source, tplExecuteConfig, params);
+        //        tplExecuteConfig.setParamNames(paramNames.toArray(new String[paramNames.size()]));
+        tplExecuteConfig.setParams(params.toArray(new Param[params.size()]));
+        return content;
+    }
+
+    private String parse(String source, TplExecuteConfig tplExecuteConfig, List<Param> params) {
         char c = 0;
         char c2 = 0;
         elements.clear();
@@ -149,7 +184,7 @@ public class Parser {
                         }
                     }
                     String subSource = source.substring(substart, directive.start);
-                    parser.parse(subSource);
+                    parser.parse(subSource, tplExecuteConfig, params);
                     index = directive.end;
                     element = null;
                 }
@@ -157,9 +192,10 @@ public class Parser {
                 if (isDirectiveStart(c, c2)) {
                     Directive directive = parseDirective(source, index);
                     if (directive.comment) {
-                        element = new CommentElement(directive.content, this);
+                        element = new CommentElement(directive.content, element, this);
                     } else {
-                        element = new DirectiveElement(directive.content, this);
+                        element = new DirectiveElement(directive.content,
+                                templateConfig.isPrecompileNamedParamPlaceholder(), element, this);
                     }
                     addElement(element);
                     element.setEnd(directive.end);
@@ -171,7 +207,7 @@ public class Parser {
                         if (element != null) {
                             de = (DirectiveElement) element;
                         }
-                        element = new StringElement(this);
+                        element = new StringElement(templateConfig.isPrecompileNamedParamPlaceholder(), element, this);
                         addElement(element);
 
                         if (de != null) {
@@ -215,8 +251,11 @@ public class Parser {
                                         //                                        de.setSource(pre + name + de.getSource() + append);
                                         de.setSource(pre + name + de.getSource() + append + " name=\"" + name + "\"");
 
+                                        // IMPLSOON 处理 in
+                                        //                                        params.add(new Param(name));
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
+
                                         if (isConditionNull(de.getSource())) {
                                             append = "??";
                                         } else if (isConditionNullOrEmpty(de.getSource())) {
@@ -246,11 +285,14 @@ public class Parser {
                                         //                                        append = appendTransverter(startWith, endWith, append);
                                         //                                        de.setSource(pre + name + append);
                                         de.setSource(pre + name + append + " name=\"" + name + "\"");
+
+                                        //                                        params.add(new Param(name));
                                     }
                                     Parser parser = new Parser(this, de);
-                                    parser.parse(source.substring(subStart, wrapIndex));
+                                    parser.parse(source.substring(subStart, wrapIndex), tplExecuteConfig, params);
                                 } else {
-                                    de.addChild(new StringElement(source.substring(index, wrapIndex), this));
+                                    de.addChild(new StringElement(source.substring(index, wrapIndex),
+                                            templateConfig.isPrecompileNamedParamPlaceholder(), element, this));
                                 }
                                 index = wrapIndex;
                                 continue;
@@ -270,6 +312,7 @@ public class Parser {
         for (AbstractElement abstractElement : elements) {
             result.append(abstractElement.getValue());
         }
+
         return result.toString();
     }
 
@@ -577,6 +620,61 @@ public class Parser {
 
     private boolean isDirectiveEnd(char c, char c2) {
         return directiveEnd[0] == c && directiveEnd[1] == c2;
+    }
+
+    void addParamName(String content, boolean in) {
+        params.add(new Param(content, in));
+    }
+
+    String scanParamName(String content) {
+        return scanParamName(content, false);
+    }
+
+    String scanParamName(String content, boolean inParam) {
+        if (Lang.isEmpty(content)) {
+            return content;
+        } else if (StringUtils.isBlank(content)) {
+            return Chars.SPACE;
+        }
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer tokenizer = new StringTokenizer(content, SQL_DELIM, !templateConfig.isPrecompileMinimize());
+        String preToken = null;
+
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            if (templateConfig.isPrecompileMinimize()) {
+                sb.append(" ");
+            }
+            if (token.charAt(0) == namedParamStart) {
+                //                if (templateConfig.isPrecompileInParamPlaceholder() && "in".equalsIgnoreCase(preToken)) {
+
+                if (inParam || "in".equalsIgnoreCase(preToken)) {
+                    // id in :ids -> id in ${_ids}
+                    sb.append("${").append(templateConfig.getInParamPlaceholderName().apply(token.substring(1)))
+                            .append("}");
+                    params.add(new Param(token.substring(1), true));
+                    continue;
+                }
+
+                if (!templateConfig.isPrecompileNamedParamPlaceholder()) {
+                    params.add(new Param(token.substring(1)));
+                    // id = :id -> id = ?
+                    sb.append("?");
+                    continue;
+                }
+            }
+            sb.append(token);
+            if (Strings.isNotBlank(token)) {
+                preToken = token;
+            }
+        }
+        if (templateConfig.isPrecompileMinimize()) {
+            char c = content.charAt(content.length() - 1);
+            if (c == ' ' || c == '\n' || c == '\t' || c == '\r') {
+                sb.append(" ");
+            }
+        }
+        return sb.toString();
     }
 
     /**

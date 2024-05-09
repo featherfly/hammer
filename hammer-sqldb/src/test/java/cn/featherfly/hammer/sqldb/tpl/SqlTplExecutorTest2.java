@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
@@ -28,8 +29,10 @@ public class SqlTplExecutorTest2 extends JdbcTestBase {
 
     @Test(expectedExceptions = HammerException.class)
     void testInvalidateChar() {
-        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl2/", ".yaml.tpl");
-        executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
-                mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
+        TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl2/").suffixes(".yaml.tpl")
+                .config(hammerConfig.getTemplateConfig()).build();
+        executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
+                new SqldbFreemarkerTemplateEngine(configFactory), jdbc, mappingFactory, new SimpleSqlPageFactory(),
+                new TransverterManager());
     }
 }

@@ -36,6 +36,10 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
 
     final String insertSql = "insert into `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`) values(?,?,?,?,?,?,?)";
 
+    final String deleteSql = "delete from `user_info` where id = ?";
+
+    final String updateSql = "update `user_info` set  descp = CONCAT(descp, '_update') where id = ?";
+
     final String selectUserInfoByIdSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
 
     Connection conn;
@@ -43,13 +47,11 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
     @BeforeClass
     public void before() {
         conn = JdbcUtils.getConnection(dataSource);
-        //        System.out.println("connection.open");
     }
 
     @AfterClass
     public void after() {
         JdbcUtils.close(conn);
-        //        System.out.println("connection.close");
     }
 
     /**
@@ -93,7 +95,7 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
     @Override
     protected void doInsertBatch(List<UserInfo2> userInfos) {
         String insertSql = Dialects.MYSQL.buildInsertSql("user_info",
-            new String[] { "id", "user_id", "name", "descp", "province", "city", "district" });
+                new String[] { "id", "user_id", "name", "descp", "province", "city", "district" });
         try {
             PreparedStatement prep = conn.prepareStatement(insertSql);
             for (int index = 0; index < userInfos.size(); index++) {
@@ -171,6 +173,66 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
             return userInfo;
         } catch (SQLException e) {
             throw new JdbcException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doDeleteById(boolean batch, Serializable... ids) {
+        if (batch) {
+            try (PreparedStatement prep = conn.prepareStatement(deleteSql)) {
+                for (Serializable id : ids) {
+                    prep.setInt(1, (Integer) id);
+                    prep.addBatch();
+                }
+                return prep.executeBatch();
+            } catch (SQLException e) {
+                throw new JdbcException(e);
+            }
+        } else {
+            int[] res = new int[ids.length];
+            for (int i = 0; i < res.length; i++) {
+                try (PreparedStatement prep = conn.prepareStatement(deleteSql)) {
+                    Serializable id = ids[i];
+                    prep.setInt(1, (Integer) id);
+                    res[i] = prep.executeUpdate();
+                } catch (SQLException e) {
+                    throw new JdbcException(e);
+                }
+            }
+            return res;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doUpdateById(boolean batch, Serializable... ids) {
+        if (batch) {
+            try (PreparedStatement prep = conn.prepareStatement(updateSql)) {
+                for (Serializable id : ids) {
+                    prep.setInt(1, (Integer) id);
+                    prep.addBatch();
+                }
+                return prep.executeBatch();
+            } catch (SQLException e) {
+                throw new JdbcException(e);
+            }
+        } else {
+            int[] res = new int[ids.length];
+            for (int i = 0; i < res.length; i++) {
+                try (PreparedStatement prep = conn.prepareStatement(deleteSql)) {
+                    Serializable id = ids[i];
+                    prep.setInt(1, (Integer) id);
+                    res[i] = prep.executeUpdate();
+                } catch (SQLException e) {
+                    throw new JdbcException(e);
+                }
+            }
+            return res;
         }
     }
 }

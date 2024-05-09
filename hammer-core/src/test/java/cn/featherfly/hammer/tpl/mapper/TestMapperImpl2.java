@@ -4,6 +4,7 @@ package cn.featherfly.hammer.tpl.mapper;
 import org.springframework.cache.annotation.Cacheable;
 
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfig;
 
 /**
  * <p>
@@ -17,8 +18,8 @@ public class TestMapperImpl2 extends BasedTplGenericHammer<User, Long> implement
      * @param hammer
      * @param type
      */
-    public TestMapperImpl2(Hammer hammer) {
-        super(hammer, User.class);
+    public TestMapperImpl2(Hammer hammer, HammerConfig hammerConfig) {
+        super(hammer, User.class, hammerConfig);
     }
 
     @Override
@@ -33,7 +34,6 @@ public class TestMapperImpl2 extends BasedTplGenericHammer<User, Long> implement
     @Override
     @Cacheable(cacheNames = { "userCache", "userCache2" }, key = "'user:username:' + #username ")
     public User getByUsername(String username) {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 }

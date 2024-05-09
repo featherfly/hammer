@@ -38,7 +38,8 @@ public class LogicTemplateDirectiveModelTest {
 
     Method getParamName;
 
-    AndTemplateDirectiveModel templateDirectiveModel = new AndTemplateDirectiveModel(new ConditionParamsManager());
+    AndTemplateDirectiveModel templateDirectiveModel = new AndTemplateDirectiveModel(
+            new ConditionParamsManager(i -> "argu" + i));
 
     public LogicTemplateDirectiveModelTest()
             throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException {

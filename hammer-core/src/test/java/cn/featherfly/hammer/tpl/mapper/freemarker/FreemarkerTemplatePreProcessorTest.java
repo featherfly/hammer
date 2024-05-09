@@ -10,22 +10,38 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.hammer.config.TemplateConfigImpl;
+import cn.featherfly.hammer.config.tpl.TemplateConfig;
+import cn.featherfly.hammer.tpl.TplException;
+import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 
 /**
- * <p>
- * FreemakerTemplatePreProcessorTest
- * </p>
+ * FreemakerTemplatePreProcessorTest.
  *
  * @author zhongj
  */
 public class FreemarkerTemplatePreProcessorTest {
 
-    @Test
-    void test() {
+    TemplateConfig templateConfig = new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(true)
+            .setPrecompileMinimize(false);
+    TplExecuteConfig config = new TplExecuteConfig();
 
+    @Test
+    void test() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        System.out.println(s);
+        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
     }
 
     @Test
@@ -39,7 +55,7 @@ public class FreemarkerTemplatePreProcessorTest {
         }
         String s = sb.toString();
         System.out.println(s);
-        System.err.println(new FreemarkerTemplatePreProcessor().process(s));
+        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
     }
 
     @Test
@@ -53,7 +69,65 @@ public class FreemarkerTemplatePreProcessorTest {
         }
         String s = sb.toString();
         System.out.println(s);
-        System.err.println(new FreemarkerTemplatePreProcessor().process(s));
+        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
+    }
+
+    @Test(expectedExceptions = TplException.class,
+            expectedExceptionsMessageRegExp = "replaceable warp directive has no replaceble target, you can give target after[\\W]+")
+    void testError() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_error.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        System.out.println(s);
+        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
+    }
+
+    @Test
+    void testScanParams() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_names.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        System.out.println(s);
+        // namedParamPlaceholder false
+        System.err.println(new FreemarkerTemplatePreProcessor(
+                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
+                        .process(s, config));
+        System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
+        assertEquals(config.getParamNames(), new String[] { "username", "password", "mobileNo", "mobileNo", "mobileNo",
+                "ids", "minAge", "maxAge", "ids", "birthday", "ids", "gender", "birthday", "email", "mobile", "ids" });
+        System.out.println(config.getParams().length);
+        assertEquals(config.getParams().length, config.getParamNames().length);
+    }
+
+    @Test
+    void testScanParams2() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_names2.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        System.out.println(s);
+        // namedParamPlaceholder false
+        System.err.println(new FreemarkerTemplatePreProcessor(
+                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
+                        .process(s, config));
+        System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
+        assertEquals(config.getParamNames(), new String[] { "id", "age", "username", "password", "mobile" });
+        System.out.println(config.getParams().length);
+        //        assertEquals(config.getParams().length, config.getParamNames().length);
     }
 
     @Test
@@ -62,7 +136,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor().process(s);
+        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -76,7 +150,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor().process(s);
+        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -90,7 +164,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor().process(s);
+        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -104,7 +178,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor().process(s);
+        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -118,7 +192,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor().process(s);
+        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -132,7 +206,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor().process(s);
+        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -149,26 +223,4 @@ public class FreemarkerTemplatePreProcessorTest {
         return sb.toString();
     }
 
-    //
-    //    static String s = "select /*<<prop alias='r'*/* from /*<<wrap*/user\n" + "/*<where*/ where\n"
-    //            + "    /*id?*/id = /*$=:id*/1\n" + "    /*name??*/and name like /*$=:name*/'name'\n"
-    //            + "    /*gender?*/ and gender = /*$=:gender*/1\n" + "    /*<?*/ and\n" + "    (\n"
-    //            + "        /*??*/ username = /*$=:username*/'admin'\n"
-    //            + "        /*??*/ or email = /*$=:email*/'featherfly@foxmail.com'\n"
-    //            + "        /*??*/ or mobile = /*$=:mobile*/13212345678\n" + "    )\n" + "    /*>?*/\n" + "/*>where*/";
-
-    public static void main(String[] args) throws IOException {
-        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl.sql";
-        System.out.println(ClassLoaderUtils.getResource(file));
-        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
-        StringBuilder sb = new StringBuilder();
-        for (String string : list) {
-            sb.append(string).append("\n");
-        }
-        String s = sb.toString();
-        System.out.println(s);
-        String result = new FreemarkerTemplatePreProcessor().process(s);
-        System.err.println(result);
-
-    }
 }

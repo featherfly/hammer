@@ -1,5 +1,6 @@
 package cn.featherfly.hammer.tpl.mapper;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -13,60 +14,81 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.core.type.classreading.MetadataReader;
 
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.annotation.Mapper;
 
 /**
- * <p>
- * 自动注册配置信息到spring context
- * </p>
+ * 自动注册配置信息到spring context .
  *
  * @author zhongj
  */
 public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryPostProcessor {
 
-    /**
-     * logger
-     */
+    /** logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private Set<MetadataReader> metadataReaders;
 
     private TplDynamicExecutorFactory dynamicExecutorFactory = TplDynamicExecutorFactory.getInstance();
 
-    private String hammerReference;
+    private final Set<MetadataReader> metadataReaders = new HashSet<>();
+
+    private final String hammerReference;
+
+    private final String hammerConfigReference;
 
     private ClassLoader classLoader;
 
     /**
-     * @param hammerReference hammerReference
+     * Instantiates a new dynamic tpl executor spring registor.
+     *
+     * @param hammerReference       hammerReference
+     * @param hammerConfigReference the hammer config reference
      */
-    public DynamicTplExecutorSpringRegistor(String hammerReference) {
-        this(null, hammerReference);
-    }
-
-    /**
-     * @param metadataReaders metadataReaders
-     * @param hammerReference hammerReference
-     */
-    public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference) {
-        this(metadataReaders, hammerReference, null);
+    public DynamicTplExecutorSpringRegistor(String hammerReference, String hammerConfigReference) {
+        this(null, hammerReference, hammerConfigReference);
     }
 
     /**
      * Instantiates a new dynamic tpl executor spring registor.
      *
-     * @param metadataReaders metadataReaders
-     * @param hammerReference hammerReference
-     * @param classLoader     the class loader
+     * @param hammerReference       hammerReference
+     * @param hammerConfigReference the hammer config reference
+     * @param classLoader           the class loader
+     */
+    public DynamicTplExecutorSpringRegistor(String hammerReference, String hammerConfigReference,
+            ClassLoader classLoader) {
+        this(null, hammerReference, hammerConfigReference, classLoader);
+    }
+
+    /**
+     * Instantiates a new dynamic tpl executor spring registor.
+     *
+     * @param metadataReaders       metadataReaders
+     * @param hammerReference       hammerReference
+     * @param hammerConfigReference the hammer config reference
      */
     public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference,
-            ClassLoader classLoader) {
+            String hammerConfigReference) {
+        this(metadataReaders, hammerReference, hammerConfigReference, null);
+    }
+
+    /**
+     * Instantiates a new dynamic tpl executor spring registor.
+     *
+     * @param metadataReaders       metadataReaders
+     * @param hammerReference       hammerReference
+     * @param hammerConfigReference the hammer config reference
+     * @param classLoader           the class loader
+     */
+    public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference,
+            String hammerConfigReference, ClassLoader classLoader) {
         super();
-        this.metadataReaders = metadataReaders;
         this.hammerReference = hammerReference;
+        this.hammerConfigReference = hammerConfigReference;
         this.classLoader = classLoader;
+        CollectionUtils.addAll(this.metadataReaders, metadataReaders);
+
     }
 
     /**
@@ -91,8 +113,8 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
                 try {
                     Class<?> type = ClassUtils.forName(metadataReader.getClassMetadata().getClassName());
                     String dynamicImplName = dynamicExecutorFactory.create(type, classLoader);
-                    logger.debug("create class {} for {} with hammerReference {}", dynamicImplName, type.getName(),
-                            hammerReference);
+                    logger.debug("create class {} for {} with hammerReference {}, hammerConfigReference {}",
+                            dynamicImplName, type.getName(), hammerReference, hammerConfigReference);
                     Class<?> newType = null;
                     if (classLoader == null) {
                         newType = ClassUtils.forName(dynamicImplName);
@@ -100,7 +122,8 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
                         newType = classLoader.loadClass(dynamicImplName);
                     }
                     BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(newType);
-                    builder.addConstructorArgReference(hammerReference);
+                    builder.addConstructorArgReference(hammerReference)
+                            .addConstructorArgReference(hammerConfigReference);
                     builder.setScope(BeanDefinition.SCOPE_SINGLETON);
                     registry.registerBeanDefinition(type.getName(), builder.getBeanDefinition());
                 } catch (Exception e) {
@@ -112,7 +135,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
     }
 
     /**
-     * 返回metadataReaders
+     * 返回metadataReaders.
      *
      * @return metadataReaders
      */
@@ -121,16 +144,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
     }
 
     /**
-     * 设置metadataReaders
-     *
-     * @param metadataReaders metadataReaders
-     */
-    public void setMetadataReaders(Set<MetadataReader> metadataReaders) {
-        this.metadataReaders = metadataReaders;
-    }
-
-    /**
-     * 返回classLoader
+     * 返回classLoader.
      *
      * @return classLoader
      */
@@ -139,7 +153,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
     }
 
     /**
-     * 设置classLoader
+     * 设置classLoader.
      *
      * @param classLoader classLoader
      */

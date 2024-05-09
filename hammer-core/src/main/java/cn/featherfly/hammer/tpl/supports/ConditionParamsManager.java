@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.IntFunction;
 
 import cn.featherfly.common.lang.Lang;
 
@@ -28,7 +29,8 @@ public class ConditionParamsManager {
         /**
          * Instantiates a new param.
          */
-        public Param() {
+        public Param(String name) {
+            this(name, null);
         }
 
         /**
@@ -43,9 +45,9 @@ public class ConditionParamsManager {
             this.transverter = transverter;
         }
 
-        private String name;
+        private final String name;
 
-        private String transverter;
+        private final String transverter;
 
         /**
          * 返回name.
@@ -57,15 +59,6 @@ public class ConditionParamsManager {
         }
 
         /**
-         * 设置name.
-         *
-         * @param name name
-         */
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        /**
          * 返回transverter.
          *
          * @return transverter
@@ -73,16 +66,6 @@ public class ConditionParamsManager {
         public String getTransverter() {
             return transverter;
         }
-
-        /**
-         * 设置transverter.
-         *
-         * @param transverter transverter
-         */
-        public void setTransverter(String transverter) {
-            this.transverter = transverter;
-        }
-
     }
 
     private Boolean paramNamed;
@@ -96,6 +79,17 @@ public class ConditionParamsManager {
     private ConditionGroup rootGroup = new ConditionGroup();
 
     private ConditionGroup currentGroup = rootGroup;
+
+    private final IntFunction<String> indexToName;
+
+    /**
+     * Instantiates a new condition params manager.
+     *
+     * @param indexToName the index to name
+     */
+    public ConditionParamsManager(IntFunction<String> indexToName) {
+        this.indexToName = indexToName;
+    }
 
     /**
      * Adds the param.
@@ -217,7 +211,7 @@ public class ConditionParamsManager {
     }
 
     /**
-     * Gets the param.
+     * Gets the param with name.
      *
      * @param paramName the param name
      * @return the param
@@ -226,10 +220,30 @@ public class ConditionParamsManager {
         return nameParamMap.get(paramName);
     }
 
+    /**
+     * Gets the param with index.
+     *
+     * @param paramIndex the param index
+     * @return the param
+     */
+    public Param getParam(int paramIndex) {
+        return nameParamMap.get(paramIndex + "");
+    }
+
+    /**
+     * Adds the filter param name.
+     *
+     * @param paramName the param name
+     */
     public void addFilterParamName(String paramName) {
         filterParamNames.add(paramName);
     }
 
+    /**
+     * Adds the filter param names.
+     *
+     * @param paramNames the param names
+     */
     public void addFilterParamNames(String... paramNames) {
         if (paramNames != null) {
             for (String pn : paramNames) {
@@ -246,5 +260,24 @@ public class ConditionParamsManager {
      */
     public boolean filterParamName(String paramName) {
         return filterParamNames.contains(paramName);
+    }
+
+    /**
+     * Filter name.
+     *
+     * @param paramName the param name
+     * @return true, if successful
+     */
+    public boolean filterParamIndex(int index) {
+        return filterParamNames.contains(indexToName.apply(index));
+    }
+
+    /**
+     * get indexToName value
+     *
+     * @return indexToName
+     */
+    public IntFunction<String> getIndexToName() {
+        return indexToName;
     }
 }

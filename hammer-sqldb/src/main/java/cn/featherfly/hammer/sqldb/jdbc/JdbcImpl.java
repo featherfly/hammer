@@ -55,7 +55,7 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param manager          the manager
      */
     public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
-            SqlTypeMappingManager manager) {
+        SqlTypeMappingManager manager) {
         super(dialect, metadata, manager);
         this.connection = connection;
         if (defaultIsolation != null) {

@@ -3,6 +3,8 @@ package cn.featherfly.hammer.tpl;
 
 import java.util.Collection;
 
+import cn.featherfly.hammer.config.tpl.TemplateConfig;
+
 /**
  * SqlTplConfigFactory.
  *
@@ -10,27 +12,36 @@ import java.util.Collection;
  */
 public interface TplConfigFactory {
 
-    String ID_SIGN = "@";
+    /** The file sign. */
     String FILE_SIGN = "#";
+
+    /** The count suffix. */
     String COUNT_SUFFIX = ".count";
 
     /**
-     * getConfigs
+     * Gets the template config.
+     *
+     * @return the template config
+     */
+    TemplateConfig getTemplateConfig();
+
+    /**
+     * get all configs.
      *
      * @return TplExecuteConfig Collection
      */
     Collection<TplExecuteConfigs> getAllConfigs();
 
     /**
-     * getConfigs
+     * get configs.
      *
-     * @param filePath filePath
+     * @param namespace the namespace
      * @return TplExecuteConfig
      */
-    TplExecuteConfigs getConfigs(String filePath);
+    TplExecuteConfigs getConfigs(String namespace);
 
     /**
-     * getConfigs
+     * get config.
      *
      * @param executeId executeId
      * @return TplExecuteConfig
@@ -38,7 +49,7 @@ public interface TplConfigFactory {
     TplExecuteConfig getConfig(String executeId);
 
     /**
-     * getConfigs
+     * get config.
      *
      * @param executeId executeId
      * @return TplExecuteConfig

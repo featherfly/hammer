@@ -12,8 +12,9 @@ public interface TemplatePreprocessor {
     /**
      * Process.
      *
-     * @param template the template value
+     * @param template         the template value
+     * @param tplExecuteConfig the tpl execute config
      * @return processed template value
      */
-    String process(String template);
+    String process(String template, TplExecuteConfig tplExecuteConfig);
 }

@@ -2,18 +2,11 @@
 package cn.featherfly.hammer.tpl;
 
 /**
- * <p>
- * TplExecuteIdExecutionImpl
- * </p>
- * .
+ * TplExecuteIdExecutionImpl .
  *
  * @author zhongj
  */
-public class TplExecuteIdMapperImpl implements TplExecuteId {
-
-    private String name;
-
-    private String namespace;
+public class TplExecuteIdMapperImpl extends TplExecuteIdImpl {
 
     private Class<?> mapper;
 
@@ -23,36 +16,11 @@ public class TplExecuteIdMapperImpl implements TplExecuteId {
      * @param name      the name
      * @param namespace the namespace
      * @param mapper    the mapper
+     * @param parser    the parser
      */
-    public TplExecuteIdMapperImpl(String name, String namespace, Class<?> mapper) {
-        super();
-        this.name = name;
-        this.namespace = namespace;
+    public TplExecuteIdMapperImpl(String name, String namespace, Class<?> mapper, TplExecuteIdParser parser) {
+        super(name, namespace, parser);
         this.mapper = mapper;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getId() {
-        return namespace + TplConfigFactory.ID_SIGN + name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**
@@ -69,6 +37,8 @@ public class TplExecuteIdMapperImpl implements TplExecuteId {
      */
     @Override
     public String toString() {
-        return "TplExecuteIdMapperImpl [name=" + name + ", namespace=" + namespace + ", mapper=" + mapper + "]";
+        return "TplExecuteIdMapperImpl [name=" + name + ", namespace=" + namespace + ", mapper=" + mapper + ", parser="
+                + parser + "]";
     }
+
 }

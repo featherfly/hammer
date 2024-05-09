@@ -58,6 +58,6 @@ selectByNameCo4: |
     /*>where*/
 selectWithTemplate3:
   query: |
-    select /*prop alias="_r"*/* /*<tpl id='roleFromTemplate2' namespace='role_common'>*/
+    select /*prop alias="_r"*/* /*<tpl name='roleFromTemplate2' namespace='role_common'>*/
   count: |
-    select count(*) /*<sql id='roleFromTemplate2' namespace='role_common'>*/
+    select count(*) /*<sql name='roleFromTemplate2' namespace='role_common'>*/

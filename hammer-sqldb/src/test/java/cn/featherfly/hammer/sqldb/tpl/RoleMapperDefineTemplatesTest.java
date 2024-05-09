@@ -32,10 +32,13 @@ public class RoleMapperDefineTemplatesTest extends JdbcTestBase {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl");
-        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
-                new FreemarkerTemplatePreProcessor());
+        configFactory = TplConfigFactoryImpl.builder() //
+                .prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages)
+                .config(hammerConfig.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
+
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
-        roleMapper = mapperFactory.newInstance(RoleMapperDefineTemplates.class, hammer);
+        roleMapper = mapperFactory.newInstance(RoleMapperDefineTemplates.class, hammer, hammerConfig);
     }
 
     @Test

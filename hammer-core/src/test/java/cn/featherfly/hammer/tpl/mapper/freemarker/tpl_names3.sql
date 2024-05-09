@@ -1,0 +1,1 @@
+select /*<<prop*/* from /*<<wrap*/user where age = :age
