@@ -124,4 +124,36 @@ public class HammerBenchmark extends AbstractBenchmark {
     protected List<UserInfo2> doSelectById(Serializable... ids) {
         return hammer.get(UserInfo2.class, ids);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doDeleteById(boolean batch, Serializable... ids) {
+        if (batch) {
+            return hammer.delete(ids, UserInfo2.class);
+        } else {
+            int[] res = new int[ids.length];
+            for (int i = 0; i < res.length; i++) {
+                res[i] = hammer.delete(ids[i], UserInfo2.class);
+            }
+            return res;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doUpdateById(boolean batch, Serializable... ids) {
+        UserInfo2[] uis = new UserInfo2[ids.length];
+        int i = 0;
+        for (Serializable id : ids) {
+            UserInfo2 ui = userInfo();
+            ui.setId((Integer) id);
+            uis[i] = ui;
+            i++;
+        }
+        return hammer.update(uis);
+    }
 }

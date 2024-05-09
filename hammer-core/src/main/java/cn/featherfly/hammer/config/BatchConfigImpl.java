@@ -16,6 +16,8 @@ package cn.featherfly.hammer.config;
 public class BatchConfigImpl implements BatchConfig {
 
     private int insertBatchSize = 2000;
+    private int updateBatchSize = 2000;
+    private int deleteBatchSize = 2000;
 
     /**
      * {@inheritDoc}
@@ -31,6 +33,51 @@ public class BatchConfigImpl implements BatchConfig {
     @Override
     public BatchConfig setInsertBatchSize(int insertBatchSize) {
         this.insertBatchSize = insertBatchSize;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getUpdateBatchSize() {
+        return updateBatchSize;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BatchConfig setUpdateBatchSize(int updateBatchSize) {
+        this.updateBatchSize = updateBatchSize;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getDeleteBatchSize() {
+        return deleteBatchSize;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BatchConfig setDeleteBatchSize(int deleteBatchSize) {
+        this.deleteBatchSize = deleteBatchSize;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BatchConfig setBatchSize(int batchSize) {
+        insertBatchSize = batchSize;
+        updateBatchSize = batchSize;
+        deleteBatchSize = batchSize;
         return this;
     }
 

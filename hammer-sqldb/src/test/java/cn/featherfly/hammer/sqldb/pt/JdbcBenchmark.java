@@ -23,7 +23,11 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.db.dialect.Dialects;
+import cn.featherfly.common.exception.UnsupportedException;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
 /**
@@ -36,6 +40,12 @@ public class JdbcBenchmark extends AbstractBenchmark {
 
     final String insertSql = "insert into `user_info` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`) values(?,?,?,?,?,?,?)";
 
+    final String deleteSql = "delete from `user_info` where id = ?";
+
+    final String updateSql = "update `user_info` set  descp = CONCAT(descp, '_update') where id = ?";
+
+    final NamedParamSql deleteSqlBatch = NamedParamSql.compile("delete from `user_info` where id in :ids");
+
     final String selectUserInfoByIdSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
 
     Connection conn;
@@ -43,13 +53,11 @@ public class JdbcBenchmark extends AbstractBenchmark {
     @BeforeClass
     public void before() {
         conn = JdbcUtils.getConnection(dataSource);
-        //        System.out.println("connection.open");
     }
 
     @AfterClass
     public void after() {
         JdbcUtils.close(conn);
-        //        System.out.println("connection.close");
     }
 
     /**
@@ -190,6 +198,59 @@ public class JdbcBenchmark extends AbstractBenchmark {
             throw new JdbcException(e);
         }
         //        conn.close();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doDeleteById(boolean batch, Serializable... ids) {
+        if (batch) {
+            Execution exec = deleteSqlBatch.getExecution(new ChainMapImpl<String, Object>().putChain("ids", ids));
+            try (PreparedStatement prep = conn.prepareStatement(exec.getExecution())) {
+                for (int i = 0; i < ids.length; i++) {
+                    Serializable id = ids[i];
+                    prep.setInt(i + 1, (Integer) id);
+                }
+                return new int[] { prep.executeUpdate() };
+            } catch (SQLException e) {
+                throw new JdbcException(e);
+            }
+        } else {
+            int[] res = new int[ids.length];
+            for (int i = 0; i < res.length; i++) {
+                try (PreparedStatement prep = conn.prepareStatement(deleteSql)) {
+                    Serializable id = ids[i];
+                    prep.setInt(1, (Integer) id);
+                    res[i] = prep.executeUpdate();
+                } catch (SQLException e) {
+                    throw new JdbcException(e);
+                }
+            }
+            return res;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int[] doUpdateById(boolean batch, Serializable... ids) {
+        if (batch) {
+            throw new UnsupportedException("不支持批量更新优化为一个sql");
+        } else {
+            int[] res = new int[ids.length];
+            for (int i = 0; i < res.length; i++) {
+                try (PreparedStatement prep = conn.prepareStatement(updateSql)) {
+                    Serializable id = ids[i];
+                    prep.setInt(1, (Integer) id);
+                    res[i] = prep.executeUpdate();
+                } catch (SQLException e) {
+                    throw new JdbcException(e);
+                }
+            }
+            return res;
+        }
     }
 
     //    /**

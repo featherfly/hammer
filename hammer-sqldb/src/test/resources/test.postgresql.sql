@@ -118,6 +118,23 @@ CREATE TABLE "user_info" (
 ) ;
 
 -- ----------------------------
+-- Table structure for user_role2
+-- ----------------------------
+DROP TABLE IF EXISTS "user_info2" CASCADE;
+CREATE TABLE "user_info2" (
+  "id" int4 NOT NULL DEFAULT nextval('globl_id_seq'),
+  "user_id" int4 NULL,
+  "name" varchar(255) ,
+  "descp" varchar(255) ,
+  "province" varchar(255) ,
+  "city" varchar(255) ,
+  "district" varchar(255) ,
+  "street" varchar(255) ,
+  "street_no" int4 ,
+  CONSTRAINT "user_info_pkey2" PRIMARY KEY ("id")
+) ;
+
+-- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
 

@@ -107,6 +107,23 @@ CREATE TABLE `user_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 -- ----------------------------
+-- Table structure for user_role2
+-- ----------------------------
+DROP TABLE IF EXISTS `user_info2`;
+CREATE TABLE `user_info2` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT ,
+  `user_id` int(10) unsigned NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `descp` varchar(255) DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `district` varchar(255) DEFAULT NULL,
+  `street` varchar(255) DEFAULT NULL,
+  `street_no` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+-- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
 
