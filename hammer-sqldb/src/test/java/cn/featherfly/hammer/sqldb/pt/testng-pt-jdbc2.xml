@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="JDBC Benchmark Test Suite With Mysql 2" parallel="tests"
+	thread-count="1">
+    <parameter name="dataBase" value="mysql" />
+    <parameter name="url" value="jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&amp;useUnicode=true&amp;useSSL=false&amp;rewriteBatchedStatements=true" />
+    <test name="JDBC Benchmark test with jdbc batch">
+         <classes>
+            <class name="cn.featherfly.hammer.sqldb.pt.JdbcBenchmark2" />
+        </classes>
+    </test>
+</suite>

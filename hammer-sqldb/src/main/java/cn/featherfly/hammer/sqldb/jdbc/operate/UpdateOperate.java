@@ -84,7 +84,7 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
-    protected int doExecuteBatch(List<T> entities) {
+    protected int doSqlExecuteBatch(List<T> entities) {
         throw new UnsupportedException();
     }
 
@@ -92,7 +92,7 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
-    protected int[] doExecute(List<T> entities) {
+    protected int[] doJdbcExecuteBatch(List<T> entities) {
         //        List<Object[]> argsList = new ArrayList<>(entities.size());
         //        for (T entity : entities) {
         //            argsList.add(getParameters(entity));

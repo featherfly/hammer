@@ -2,7 +2,14 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 
+# 0.7.1
+
+1. 批量操作的逻辑优化，优先判断jdbc driver是否提供支持，再判断方言(Dialect)是否支持（构建为一条SQL)
+2. HammerConfig加入insertBatchSize配置
+3. 升级ASM依赖
+
 # 0.7.0 2024-05-05
+
 1. 加入强类型dsl查询
    一级、二级、三级、四级、五级join实现与测试
    

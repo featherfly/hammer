@@ -9,9 +9,9 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 /**
  * 数据库操作的抽象类.
  *
- * @author zhongj
- * @since 0.1.0
- * @param <T> entity type
+ * @author     zhongj
+ * @since      0.1.0
+ * @param  <T> entity type
  */
 public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
 
@@ -48,8 +48,8 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata      the database metadata
      */
-    public AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-            SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
+    protected AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
@@ -58,8 +58,8 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      * 执行操作. 操作的类型由具体子类构造的不同SQL来区分.
      * </p>
      *
-     * @param entity 对象
-     * @return 操作影响的数据行数
+     * @param  entity 对象
+     * @return        操作影响的数据行数
      */
     @Override
     public int execute(final T entity) {

@@ -192,7 +192,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
      * {@inheritDoc}
      */
     @Override
-    protected int doExecuteBatch(List<T> entities) {
+    protected int doSqlExecuteBatch(List<T> entities) {
         int bs = entities.size();
         Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(bs,
                 classMapping, jdbc.getDialect());
@@ -203,7 +203,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
      * {@inheritDoc}
      */
     @Override
-    protected int[] doExecute(List<T> entities) {
+    protected int[] doJdbcExecuteBatch(List<T> entities) {
         //        List<Object[]> argsList = new ArrayList<>(entities.size());
         //        for (T entity : entities) {
         //            argsList.add(getParameters(entity));

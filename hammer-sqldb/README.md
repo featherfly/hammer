@@ -309,12 +309,13 @@ public class Appconfig {
     	// dataSource自行配置
         // 配置你自己的日志框架
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
-        ConstantConfigurator.config(); //这条语句不能少
-        Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, Dialects.MYSQL);
-        // tpl/代表sql模板从classpath查找的根目录，如果调用无参构造函数，则从classpath目录开始查找
-        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/");
+        Dialect dialect = new MysqlDialect();
+        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata);
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, dialect);
+        // tpl/代表sql模板从classpath查找的根目录，如果调用无参构造函数，则从classpath目录开始查找，
+        // FreemarkerTemplatePreProcessor是freemarker模板的预处理器，从特化模板转换为freemarker模板
+        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/",new FreemarkerTemplatePreProcessor());
         SqlDbHammerImpl hammer = new SqlDbHammerImpl(jdbc, mappingFactory, configFactory);
         return hammer;
     }

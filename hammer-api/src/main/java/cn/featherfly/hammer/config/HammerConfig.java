@@ -32,4 +32,11 @@ public interface HammerConfig {
      * @return the validator
      */
     Validator getValidator();
+
+    /**
+     * Gets the batch config.
+     *
+     * @return the batch config
+     */
+    BatchConfig getBatchConfig();
 }

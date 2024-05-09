@@ -66,7 +66,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     }
 
     @Override
-    protected int doExecuteBatch(final List<T> entities) {
+    protected int doSqlExecuteBatch(final List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
                 .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
@@ -129,7 +129,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
-    protected int[] doExecute(List<T> entities) {
+    protected int[] doJdbcExecuteBatch(List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         //        List<Object[]> argsList = new ArrayList<>(entities.size());
         //        for (T entity : entities) {

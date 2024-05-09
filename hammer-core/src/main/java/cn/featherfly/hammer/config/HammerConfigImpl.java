@@ -21,6 +21,8 @@ public class HammerConfigImpl implements HammerConfig {
 
     private DslConfig dslConfig = new DslConfigImpl();
 
+    private BatchConfig batchConfig = new BatchConfigImpl();
+
     private Validator validator;
 
     /**
@@ -55,5 +57,22 @@ public class HammerConfigImpl implements HammerConfig {
      */
     public void setValidator(Validator validator) {
         this.validator = validator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BatchConfig getBatchConfig() {
+        return batchConfig;
+    }
+
+    /**
+     * Sets the batch config.
+     *
+     * @param batchConfig the new batch config
+     */
+    public void setBatchConfig(BatchConfig batchConfig) {
+        this.batchConfig = batchConfig;
     }
 }

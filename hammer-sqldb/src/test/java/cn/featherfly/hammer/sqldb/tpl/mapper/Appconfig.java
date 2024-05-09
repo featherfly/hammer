@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
-import cn.featherfly.common.db.metadata.DatabaseMetadata;
-import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -58,7 +56,7 @@ public class Appconfig extends JdbcTestBase {
         //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
         // 高版本mysql-connector已经不需要serverTimezone=CTT
         dataSource
-                .setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false");
+            .setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
@@ -72,8 +70,8 @@ public class Appconfig extends JdbcTestBase {
         //        ConstantConfigurator.config(JdbcTestBase.configFile);
         //        ConstantConfigurator.config();
 
+        //        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
         Jdbc jdbc = new JdbcSpringImpl(dataSource, Dialects.MYSQL, metadata);
-        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
 
