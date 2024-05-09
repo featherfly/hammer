@@ -50,7 +50,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     }
 
     @Override
-    protected int doExecuteBatch(final List<T> entities) {
+    protected int doSqlExecuteBatch(final List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
                 .getUpsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
@@ -110,7 +110,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
-    protected int[] doExecute(List<T> entities) {
+    protected int[] doJdbcExecuteBatch(List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
         Object[][] argsList = new Object[entities.size()][];
         Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));

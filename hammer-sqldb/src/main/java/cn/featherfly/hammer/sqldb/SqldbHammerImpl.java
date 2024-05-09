@@ -105,7 +105,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param hammerConfig   the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-            HammerConfig hammerConfig) {
+        HammerConfig hammerConfig) {
         this(jdbc, mappingFactory, configFactory, new SqldbFreemarkerTemplateEngine(configFactory), hammerConfig);
     }
 
@@ -134,7 +134,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param hammerConfig   the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, HammerConfig hammerConfig) {
+        @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, HammerConfig hammerConfig) {
         // this(jdbc, mappingFactory, configFactory, Validation.buildDefaultValidatorFactory().getValidator());
         this(jdbc, mappingFactory, configFactory, templateEngine, new SimpleSqlPageFactory(), hammerConfig);
     }
@@ -150,10 +150,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param hammerConfig   the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
-            HammerConfig hammerConfig) {
+        @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
+        HammerConfig hammerConfig) {
         this(jdbc, mappingFactory, configFactory, templateEngine, sqlPageFacotry,
-                new TransverterManager(new FuzzyQueryTransverter()), hammerConfig);
+            new TransverterManager(new FuzzyQueryTransverter()), hammerConfig);
     }
 
     //    /**
@@ -186,15 +186,15 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param hammerConfig       the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
-            TransverterManager transverterManager, HammerConfig hammerConfig) {
+        @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
+        TransverterManager transverterManager, HammerConfig hammerConfig) {
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         this.hammerConfig = hammerConfig;
         sqlTplExecutor = new SqlTplExecutor(configFactory, templateEngine, jdbc, mappingFactory, sqlPageFacotry,
-                transverterManager);
+            transverterManager);
         query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
-                hammerConfig.getDslConfig().getQueryConfig());
+            hammerConfig.getDslConfig().getQueryConfig());
         updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
         deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
     }
@@ -245,6 +245,14 @@ public class SqldbHammerImpl implements SqldbHammer {
     //        }
     //        return insert.executeBatch(entities);
     //    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] save(List<E> entities) {
+        return save(entities, hammerConfig.getBatchConfig().getInsertBatchSize());
+    }
 
     /**
      * {@inheritDoc}
@@ -424,7 +432,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             if (update == null) {
                 JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(type);
                 update = new UpdateOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                        mappingFactory.getMetadata());
+                    mappingFactory.getMetadata());
                 updateOperates.put(type, update);
             }
             for (E entity : entities) {
@@ -453,10 +461,10 @@ public class SqldbHammerImpl implements SqldbHammer {
     /**
      * Merge.
      *
-     * @param <E>      the element type
-     * @param entity   the entity
-     * @param onlyNull the only null
-     * @return the int
+     * @param  <E>      the element type
+     * @param  entity   the entity
+     * @param  onlyNull the only null
+     * @return          the int
      */
     private <E> int merge(E entity, boolean onlyNull) {
         if (entity == null) {
@@ -468,7 +476,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             @SuppressWarnings("unchecked")
             JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
             update = new MergeOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata());
+                mappingFactory.getMetadata());
             mergeOperates.put(entity.getClass(), update);
         }
         validate(entity);
@@ -824,7 +832,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
-            int limit) {
+        int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType, params, offset, limit);
     }
 
@@ -833,7 +841,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
-            int offset, int limit) {
+        int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType, params, offset, limit);
     }
 
@@ -874,7 +882,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(String tplExecuteId, Class<R1> elementType1, Class<R2> elementType2,
-            Map<String, Object> params) {
+        Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, elementType1, elementType2, params);
     }
 
@@ -883,7 +891,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(TplExecuteId tplExecuteId, Class<R1> elementType1, Class<R2> elementType2,
-            Map<String, Object> params) {
+        Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, elementType1, elementType2, params);
     }
 
@@ -892,7 +900,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(String tplExecuteId, Class<R1> elementType1, Class<R2> elementType2,
-            Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, elementType1, elementType2, prefixes, params);
     }
 
@@ -901,7 +909,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(TplExecuteId tplExecuteId, Class<R1> elementType1, Class<R2> elementType2,
-            Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, elementType1, elementType2, prefixes, params);
     }
 
@@ -910,7 +918,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Class<R3> entityType3, Map<String, Object> params) {
+        Class<R3> entityType3, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, params);
     }
 
@@ -919,7 +927,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, params);
     }
 
@@ -928,7 +936,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params) {
+        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params);
     }
 
@@ -937,8 +945,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-            Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params);
     }
 
@@ -947,7 +955,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params);
     }
 
@@ -956,7 +964,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params);
     }
 
@@ -965,10 +973,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes,
-                params);
+            params);
     }
 
     /**
@@ -976,10 +984,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes,
-                params);
+            params);
     }
 
     /**
@@ -987,10 +995,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params);
+            prefixes, params);
     }
 
     /**
@@ -998,10 +1006,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params);
+            prefixes, params);
     }
 
     /**
@@ -1009,10 +1017,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params);
+            params);
     }
 
     /**
@@ -1020,10 +1028,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params);
+            params);
     }
 
     /**
@@ -1031,10 +1039,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Class<R6> entityType6, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Class<R6> entityType6, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params);
+            entityType6, params);
     }
 
     /**
@@ -1042,10 +1050,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params);
+            entityType6, params);
     }
 
     /**
@@ -1053,11 +1061,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-            Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params);
+            entityType6, prefixes, params);
     }
 
     /**
@@ -1065,11 +1073,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6,
-            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params) {
         return sqlTplExecutor.single(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params);
+            entityType6, prefixes, params);
     }
 
     /**
@@ -1085,7 +1093,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
-            int limit) {
+        int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType, params, offset, limit);
     }
 
@@ -1094,7 +1102,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
-            Map<String, Object> params, int offset, int limit) {
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType, params, offset, limit);
     }
 
@@ -1127,7 +1135,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, int offset,
-            int limit) {
+        int limit) {
         return sqlTplExecutor.list(tplExecuteId, params, offset, limit);
     }
 
@@ -1136,7 +1144,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Map<String, Object> params) {
+        Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, params);
     }
 
@@ -1145,7 +1153,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Map<String, Object> params) {
+        Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, params);
     }
 
@@ -1154,7 +1162,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Map<String, Object> params, int offset, int limit) {
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, params, offset, limit);
     }
 
@@ -1163,7 +1171,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Map<String, Object> params, int offset, int limit) {
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, params, offset, limit);
     }
 
@@ -1172,7 +1180,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, prefixes, params);
     }
 
@@ -1181,7 +1189,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, prefixes, params);
     }
 
@@ -1190,7 +1198,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit);
     }
 
@@ -1199,7 +1207,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit);
     }
 
@@ -1208,7 +1216,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Class<R3> entityType3, Map<String, Object> params) {
+        Class<R3> entityType3, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, params);
     }
 
@@ -1217,7 +1225,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, params);
     }
 
@@ -1226,7 +1234,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Class<R3> entityType3, Map<String, Object> param, int offset, int limits) {
+        Class<R3> entityType3, Map<String, Object> param, int offset, int limits) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, param, offset, limits);
     }
 
@@ -1235,7 +1243,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, params, offset, limit);
     }
 
@@ -1244,7 +1252,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params) {
+        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params);
     }
 
@@ -1253,8 +1261,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-            Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params);
     }
 
@@ -1263,10 +1271,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-            Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset,
+        int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset,
-                limit);
+            limit);
     }
 
     /**
@@ -1274,10 +1282,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-            Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset,
-                limit);
+            limit);
     }
 
     /**
@@ -1285,7 +1293,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params);
     }
 
@@ -1294,7 +1302,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params);
     }
 
@@ -1303,10 +1311,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params, int offset,
+        int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params, offset,
-                limit);
+            limit);
     }
 
     /**
@@ -1314,10 +1322,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params, int offset,
+        int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params, offset,
-                limit);
+            limit);
     }
 
     /**
@@ -1325,8 +1333,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params);
     }
 
@@ -1335,8 +1343,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params);
     }
 
@@ -1345,10 +1353,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params,
-                offset, limit);
+            offset, limit);
     }
 
     /**
@@ -1356,10 +1364,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params,
-                offset, limit);
+            offset, limit);
     }
 
     /**
@@ -1367,10 +1375,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params);
+            params);
     }
 
     /**
@@ -1378,10 +1386,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params);
+            params);
     }
 
     /**
@@ -1389,10 +1397,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params, offset, limit);
+            params, offset, limit);
     }
 
     /**
@@ -1400,10 +1408,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params, offset, limit);
+            params, offset, limit);
     }
 
     /**
@@ -1411,10 +1419,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params);
+            prefixes, params);
     }
 
     /**
@@ -1422,10 +1430,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params);
+            prefixes, params);
     }
 
     /**
@@ -1433,11 +1441,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params, offset, limit);
+            prefixes, params, offset, limit);
     }
 
     /**
@@ -1445,11 +1452,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-            Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params, offset, limit);
+            prefixes, params, offset, limit);
     }
 
     /**
@@ -1457,10 +1463,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params);
+            entityType6, params);
     }
 
     /**
@@ -1468,10 +1474,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params, offset, limit);
+            entityType6, params, offset, limit);
     }
 
     /**
@@ -1479,10 +1485,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params);
+            entityType6, params);
     }
 
     /**
@@ -1490,10 +1496,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params, offset, limit);
+            entityType6, params, offset, limit);
     }
 
     /**
@@ -1501,11 +1507,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6,
-            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params);
+            entityType6, prefixes, params);
     }
 
     /**
@@ -1513,12 +1519,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6,
-            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params, offset, limit);
+            entityType6, prefixes, params, offset, limit);
     }
 
     /**
@@ -1526,11 +1531,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6,
-            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params);
+            entityType6, prefixes, params);
     }
 
     /**
@@ -1538,12 +1543,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6,
-            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params, offset, limit);
+            entityType6, prefixes, params, offset, limit);
     }
 
     /**
@@ -1551,7 +1555,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
-            int offset, int limit) {
+        int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, params, offset, limit);
     }
 
@@ -1560,7 +1564,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params,
-            int offset, int limit) {
+        int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, params, offset, limit);
     }
 
@@ -1569,7 +1573,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, params, offset, limit);
     }
 
@@ -1578,7 +1582,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, params, offset, limit);
     }
 
@@ -1587,7 +1591,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit);
     }
 
@@ -1596,7 +1600,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit);
     }
 
@@ -1605,7 +1609,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> param, int offset, int limits) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> param, int offset, int limits) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, param, offset, limits);
     }
 
@@ -1614,8 +1618,8 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset,
+        int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, params, offset, limit);
     }
 
@@ -1624,10 +1628,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId, Class<R1> entityType1,
-            Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-            Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset,
-                limit);
+            limit);
     }
 
     /**
@@ -1635,10 +1639,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-            Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset,
-                limit);
+            limit);
     }
 
     /**
@@ -1646,10 +1650,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params,
-                offset, limit);
+            offset, limit);
     }
 
     /**
@@ -1657,10 +1661,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, params,
-                offset, limit);
+            offset, limit);
     }
 
     /**
@@ -1668,10 +1672,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes,
-                params, offset, limit);
+            params, offset, limit);
     }
 
     /**
@@ -1679,10 +1683,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes,
-                params, offset, limit);
+            params, offset, limit);
     }
 
     /**
@@ -1690,10 +1694,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params, offset, limit);
+            params, offset, limit);
     }
 
     /**
@@ -1701,10 +1705,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                params, offset, limit);
+            params, offset, limit);
     }
 
     /**
@@ -1712,11 +1716,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
-            int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
+        int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params, offset, limit);
+            prefixes, params, offset, limit);
     }
 
     /**
@@ -1724,11 +1728,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(TplExecuteId tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
-            int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
+        int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                prefixes, params, offset, limit);
+            prefixes, params, offset, limit);
     }
 
     /**
@@ -1736,10 +1740,10 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params, offset, limit);
+            entityType6, params, offset, limit);
     }
 
     /**
@@ -1747,11 +1751,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
-            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
-            int limit) {
+        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
+        int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, params, offset, limit);
+            entityType6, params, offset, limit);
     }
 
     /**
@@ -1759,12 +1763,11 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
-            Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-            Class<R5> entityType5, Class<R6> entityType6,
-            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
-            int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params, offset, limit);
+            entityType6, prefixes, params, offset, limit);
     }
 
     /**
@@ -1772,12 +1775,12 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
-            TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-            Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
-            Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
-            int limit) {
+        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
+        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+        int limit) {
         return sqlTplExecutor.pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
-                entityType6, prefixes, params, offset, limit);
+            entityType6, prefixes, params, offset, limit);
     }
 
     /**
@@ -1980,20 +1983,20 @@ public class SqldbHammerImpl implements SqldbHammer {
     @SuppressWarnings("unchecked")
     private <E> UpdateOperate<E> getUpdate(Class<E> entityType) {
         return (UpdateOperate<E>) updateOperates.computeIfAbsent(entityType,
-                type -> new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+            type -> new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
     }
 
     @SuppressWarnings("unchecked")
     private <E> UpdateFetchOperate<E> getUpdateFetch(Class<E> entityType) {
         return (UpdateFetchOperate<E>) updateFetchOperates.computeIfAbsent(entityType,
-                type -> new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                        getOperate((Class<E>) type), getUpdate((Class<E>) type), key -> {
-                            // IMPLSOON 后续来从配置创建锁并进行加锁操作
-                        }, key -> {
-                            // IMPLSOON 后续来从配置创建锁并进行解锁操作
-                        }));
+            type -> new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), getOperate((Class<E>) type),
+                getUpdate((Class<E>) type), key -> {
+                    // IMPLSOON 后续来从配置创建锁并进行加锁操作
+                }, key -> {
+                    // IMPLSOON 后续来从配置创建锁并进行解锁操作
+                }));
     }
 
     @SuppressWarnings("unchecked")
@@ -2004,8 +2007,8 @@ public class SqldbHammerImpl implements SqldbHammer {
     @SuppressWarnings("unchecked")
     private <E> InsertOperate<E> getInsert(Class<E> entityType) {
         return (InsertOperate<E>) insertOperates.computeIfAbsent(entityType,
-                type -> new InsertOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+            type -> new InsertOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
     }
 
     @SuppressWarnings("unchecked")
@@ -2026,8 +2029,8 @@ public class SqldbHammerImpl implements SqldbHammer {
     @SuppressWarnings("unchecked")
     private <E> UpsertOperate<E> getUpsert(Class<E> entityType) {
         return (UpsertOperate<E>) upsertOperates.computeIfAbsent(entityType,
-                type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+            type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
     }
 
     @SuppressWarnings("unchecked")
@@ -2061,8 +2064,8 @@ public class SqldbHammerImpl implements SqldbHammer {
     @SuppressWarnings("unchecked")
     private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
         return (DeleteOperate<E>) deleteOperates.computeIfAbsent(entityType,
-                type -> new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+            type -> new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
         //        @SuppressWarnings("unchecked")
         //        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
         //        if (delete == null) {
@@ -2077,8 +2080,8 @@ public class SqldbHammerImpl implements SqldbHammer {
     @SuppressWarnings("unchecked")
     private <E> GetOperate<E> getOperate(Class<E> entityType) {
         return (GetOperate<E>) getOperates.computeIfAbsent(entityType,
-                type -> new GetOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+            type -> new GetOperate<>(jdbc, mappingFactory.getClassMapping(type),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
         //        @SuppressWarnings("unchecked")
         //        GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
         //        if (get == null) {

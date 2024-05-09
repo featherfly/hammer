@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.lang.SystemPropertyUtils;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
@@ -38,13 +37,11 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
     protected abstract List<UserInfo2> doSelectById(Serializable... ids);
 
     @BeforeClass
-    @Parameters({ "times", "batchSize", "batchTimes" })
-    public void init(@Optional("1000") int times, @Optional("1000") int batchSize, @Optional("1") int batchTimes)
-            throws IOException {
-        this.times = times;
+    @Parameters({ "total", "batchSize" })
+    public void init(@Optional("1000") int total, @Optional("1000") int batchSize) throws IOException {
+        this.total = total;
         this.batchSize = batchSize;
-        this.batchTimes = batchTimes;
-        System.out.println(SystemPropertyUtils.getJavaVersion());
+        batchTimes = (total + batchSize - 1) / batchSize;
     }
 
     @Test
@@ -83,7 +80,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
     @Override
     public void testInsertOneMulitiTimes() {
         List<UserInfo2> list = new ArrayList<>();
-        for (int index = 0; index < times; index++) {
+        for (int index = 0; index < total; index++) {
             UserInfo2 userInfo = new UserInfo2();
             userInfo.setId(null);
             userInfo.setUserId(1);
@@ -101,7 +98,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         }
         long time = timer.stop();
         System.out.println(Strings.format("{0} testInsertOneMulitiTimes use {1} {2} with {3} loop times", getName(),
-                time, unit, times));
+            time, unit, total));
     }
 
     @Test(dependsOnMethods = "testInsertOneMulitiTimes")
@@ -132,8 +129,8 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
             doInsertBatch(userInfos);
         }
         long time = timer.stop();
-        System.out.println(Strings.format("{0} testInsertBatch use {1} {2} with batchSize[{3}] {4} loop times",
-                getName(), time, unit, batchSize, batchTimes));
+        System.out.println(Strings.format("{0} testInsertBatch({1}) use {2} {3} with batchSize[{4}] {5} loop times",
+            getName(), total, time, unit, batchSize, batchTimes));
     }
 
     @Test(dependsOnMethods = "testInsertBatch")
@@ -154,14 +151,14 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
     @Test(dependsOnMethods = "testSelectById")
     public void testSelectByIdMulitiTimes() {
         Timer timer = start();
-        Serializable[] ids = new Serializable[times];
-        for (int i = 0; i < times; i++) {
+        Serializable[] ids = new Serializable[total];
+        for (int i = 0; i < total; i++) {
             ids[i] = i + 1;
         }
         doSelectById(ids);
         long time = timer.stop();
         System.out.println(Strings.format("{0} testSelectByIdMulitiTimes use {1} {2} with {3} loop times", getName(),
-                time, unit, times));
+            time, unit, total));
     }
 
     // ****************************************************************************************************************
@@ -175,30 +172,20 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         return Timer.start(unit);
     }
 
-    private int times = 1000;
+    private int total = 1000;
 
     private int batchSize = 1000;
 
-    private int batchTimes = 1;
+    private int batchTimes = (total + batchSize - 1) / batchSize;
 
     private TimeUnit unit = TimeUnit.MILLISECONDS;
 
-    /**
-     * get times value
-     *
-     * @return times
-     */
-    public int getTimes() {
-        return times;
+    public int getTotal() {
+        return total;
     }
 
-    /**
-     * set times value
-     *
-     * @param times times
-     */
-    public void setTimes(int times) {
-        this.times = times;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     /**
