@@ -3,14 +3,10 @@ package cn.featherfly.hammer.sqldb.tpl.freemarker.directive;
 import java.io.IOException;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
-import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteId;
-import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.directive.IncludeDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
 import freemarker.core.Environment;
@@ -18,7 +14,6 @@ import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
-import freemarker.template.TemplateScalarModel;
 
 /**
  * The Class IncludeDirectiveModel.
@@ -42,39 +37,38 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
             TemplateDirectiveBody body) throws TemplateException, IOException {
         String includeTemplateName = null;
         @SuppressWarnings("unchecked")
-        String id = getId(params);
+        String name = getName(params);
         @SuppressWarnings("unchecked")
-        String file = getFile(params);
-        if (Lang.isNotEmpty(file)) {
-            includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
+        String namespace = getNamespace(params);
+        if (Lang.isNotEmpty(namespace)) {
+            //            includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
+            includeTemplateName = tplConfigFactory.getParser().format(name, namespace);
         } else {
-            TplExecuteId executeId = new TplExecuteIdFileImpl(
-                    environment.getCurrentNamespace().getTemplate().getName());
-            TplExecuteConfig config = tplConfigFactory.getConfig(executeId);
-            includeTemplateName = StringUtils.substringBefore(config.getTplName(), TplConfigFactory.ID_SIGN)
-                    + TplConfigFactory.ID_SIGN + id;
+            TplExecuteId executeId = tplConfigFactory.getParser()
+                    .parse(environment.getCurrentNamespace().getTemplate().getName());
+            TplExecuteConfig config = tplConfigFactory
+                    .getConfig(tplConfigFactory.getParser().format(name, executeId.getNamespace()));
+            //            TplExecuteConfig config = tplConfigFactory.getConfigs(executeId.getNamespace()).getConfig(name);
+            //            TplExecuteId executeId = new TplExecuteIdFileImpl(name, namespace, )
+            //                    .parse(environment.getCurrentNamespace().getTemplate().getName());
+            //            includeTemplateName = StringUtils.substringBefore(config.getTplName(),
+            //                    tplConfigFactory.getParser().getSeparator()) + tplConfigFactory.getParser().getSeparator() + name;
+            //            includeTemplateName = StringUtils.substringBefore(config.getExecuteId(),
+            //                    tplConfigFactory.getParser().getSeparator()) + tplConfigFactory.getParser().getSeparator() + name;
+            includeTemplateName = config.getExecuteId();
         }
         environment.include(environment.getTemplateForInclusion(includeTemplateName, null, true));
     }
 
     /**
-     * Gets the id.
+     * Gets the name.
      *
      * @param params the params
-     * @return the id
+     * @return the name
      * @throws TemplateModelException the template model exception
      */
-    private String getId(Map<String, TemplateModel> params) throws TemplateModelException {
-        String id;
-        TemplateModel paramValue = params.get(ID_PARAM);
-        if (paramValue == null) {
-            throw new TplException("The \"" + ID_PARAM + "\" parameter " + "can not be null.");
-        }
-        if (!(paramValue instanceof TemplateScalarModel)) {
-            throw new TplException("The \"" + ID_PARAM + "\" parameter " + "must be a String.");
-        }
-        id = ((TemplateScalarModel) paramValue).getAsString();
-        return id;
+    private String getName(Map<String, TemplateModel> params) throws TemplateModelException {
+        return getStringValue(TAG_NAME, params, NAME_PARAM, false);
     }
 
     /**
@@ -84,15 +78,16 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
      * @return the file
      * @throws TemplateModelException the template model exception
      */
-    private String getFile(Map<String, TemplateModel> params) throws TemplateModelException {
-        String file = null;
-        TemplateModel paramValue = params.get(NAME_SPACE_PARAM);
-        if (paramValue != null) {
-            if (!(paramValue instanceof TemplateScalarModel)) {
-                throw new TplException("The \"" + NAME_SPACE_PARAM + "\" parameter " + "must be a String.");
-            }
-            file = ((TemplateScalarModel) paramValue).getAsString();
-        }
-        return file;
+    private String getNamespace(Map<String, TemplateModel> params) throws TemplateModelException {
+        return getStringValue(TAG_NAME, params, NAME_SPACE_PARAM, true);
+        //        String file = null;
+        //        TemplateModel paramValue = params.get(NAME_SPACE_PARAM);
+        //        if (paramValue != null) {
+        //            if (!(paramValue instanceof TemplateScalarModel)) {
+        //                throw new TplException("The \"" + NAME_SPACE_PARAM + "\" parameter " + "must be a String.");
+        //            }
+        //            file = ((TemplateScalarModel) paramValue).getAsString();
+        //        }
+        //        return file;
     }
 }

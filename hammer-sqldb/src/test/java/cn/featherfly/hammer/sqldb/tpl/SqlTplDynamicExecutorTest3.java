@@ -36,7 +36,7 @@ public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
-        userMapper = mapperFactory.newInstance(UserMapper3.class, hammer);
+        userMapper = mapperFactory.newInstance(UserMapper3.class, hammer, hammerConfig);
     }
 
     @Test

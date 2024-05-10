@@ -7,6 +7,7 @@ import java.util.Map;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.tpl.TplExecutor;
 
 /**
  * <p>
@@ -19,11 +20,14 @@ public class TeMapperImpl implements TeMapper {
 
     private Hammer hammer;
 
+    private TplExecutor tplExecutor;
+
     /**
      * @param hammer
      */
     public TeMapperImpl(Hammer hammer) {
         //        this.hammer = hammer;
+        //        tplExecutor = hammer.template();
     }
 
     /**

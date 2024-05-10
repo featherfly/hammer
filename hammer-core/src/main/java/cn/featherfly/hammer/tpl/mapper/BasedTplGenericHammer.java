@@ -12,6 +12,7 @@ import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
@@ -20,18 +21,26 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
  * BasedTplGenericHammer.
  *
  * @author zhongj
+ * @param <E>  the element type
+ * @param <ID> the generic type
  */
-public class BasedTplGenericHammer<E, ID extends Serializable> implements GenericHammer<E, ID> {
+public class BasedTplGenericHammer<E, ID extends Serializable> extends AbstractBasedHammer
+        implements GenericHammer<E, ID> {
 
-    protected Hammer hammer;
+    /** The hammer. */
+    protected final Hammer hammer;
 
-    private Class<E> type;
+    private final Class<E> type;
 
     /**
-     * @param hammer hammer
-     * @param type   type
+     * Instantiates a new based tpl generic hammer.
+     *
+     * @param hammer       hammer
+     * @param type         type
+     * @param hammerConfig the hammer config
      */
-    public BasedTplGenericHammer(Hammer hammer, Class<E> type) {
+    public BasedTplGenericHammer(Hammer hammer, Class<E> type, HammerConfig hammerConfig) {
+        super(hammer.template(), hammerConfig);
         this.hammer = hammer;
         this.type = type;
     }

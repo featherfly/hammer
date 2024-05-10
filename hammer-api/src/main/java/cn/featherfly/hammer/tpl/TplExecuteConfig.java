@@ -12,8 +12,6 @@ public class TplExecuteConfig {
 
     private String fileDirectory;
 
-    private String name;
-
     private ExecutionType type = ExecutionType.AUTO;
 
     private String content;
@@ -22,8 +20,13 @@ public class TplExecuteConfig {
 
     private Boolean precompile;
 
+    // template name
+    private String name;
+
+    // template namespace
     private String namespace;
 
+    // template execute id
     private String executeId;
 
     private String tplName;

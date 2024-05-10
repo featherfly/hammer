@@ -92,8 +92,8 @@ public class JdbcTestBase extends TestBase {
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer");
 
-        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
-                new FreemarkerTemplatePreProcessor());
+        configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages)
+                .preCompile(new FreemarkerTemplatePreProcessor()).build();
 
         jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager);
 

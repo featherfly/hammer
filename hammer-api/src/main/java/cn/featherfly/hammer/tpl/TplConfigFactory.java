@@ -10,27 +10,34 @@ import java.util.Collection;
  */
 public interface TplConfigFactory {
 
-    String ID_SIGN = "@";
+    //    String ID_SIGN = "@";
     String FILE_SIGN = "#";
     String COUNT_SUFFIX = ".count";
 
     /**
-     * getConfigs
+     * Gets the parser.
+     *
+     * @return the parser
+     */
+    TplExecuteIdParser getParser();
+
+    /**
+     * get all configs
      *
      * @return TplExecuteConfig Collection
      */
     Collection<TplExecuteConfigs> getAllConfigs();
 
     /**
-     * getConfigs
+     * get configs.
      *
-     * @param filePath filePath
+     * @param namespace the namespace
      * @return TplExecuteConfig
      */
-    TplExecuteConfigs getConfigs(String filePath);
+    TplExecuteConfigs getConfigs(String namespace);
 
     /**
-     * getConfigs
+     * get config
      *
      * @param executeId executeId
      * @return TplExecuteConfig
@@ -38,7 +45,7 @@ public interface TplConfigFactory {
     TplExecuteConfig getConfig(String executeId);
 
     /**
-     * getConfigs
+     * get config
      *
      * @param executeId executeId
      * @return TplExecuteConfig

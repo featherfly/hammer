@@ -2076,55 +2076,8 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     // ****************************************************************************************************************
-    //	private method
+    //	execution executor
     // ****************************************************************************************************************
-
-    //    private void queryPrimitiveValue(IntConsumer intConsumer, LongConsumer longConsumer, DoubleConsumer doubleConsumer,
-    //            String sql, Object... args) {
-    //        if (Lang.isNotEmpty(sql)) {
-    //            sql = sql.trim();
-    //            JdbcExecution execution = preHandle(sql, args);
-    //            sql = execution.getExecution();
-    //            args = execution.getParams();
-    //            logger.debug("execute sql -> {}, args -> {}", sql, args);
-    //            Connection con = getConnection();
-    //            try (PreparedStatement prep = con.prepareStatement(sql)) {
-    //                setParams(prep, args);
-    //                try (ResultSet rs = prep.executeQuery()) {
-    //                    int i = 0;
-    //                    Object result = null;
-    //                    while (rs.next()) {
-    //                        if (intConsumer != null) {
-    //                            int res = rs.getInt(i);
-    //                            result = res;
-    //                            intConsumer.accept(res);
-    //                        } else if (longConsumer != null) {
-    //                            long res = rs.getLong(i);
-    //                            result = res;
-    //                            longConsumer.accept(res);
-    //                        } else if (doubleConsumer != null) {
-    //                            double res = rs.getDouble(i);
-    //                            result = res;
-    //                            doubleConsumer.accept(res);
-    //                        } else {
-    //                            throw new JdbcException(Strings.format("only support primitive type[int long double]"));
-    //                        }
-    //                        i++;
-    //                    }
-    //                    if (i > 1) {
-    //                        throw new JdbcException(Strings.format("results size must be 1, but is {0}", i));
-    //                    }
-    //                    postHandle(execution.setOriginalResult(result), sql, args);
-    //                }
-    //            } catch (SQLException e) {
-    //                releaseConnection(con);
-    //                con = null;
-    //                throw new JdbcException(Strings.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-    //            } finally {
-    //                releaseConnection(con);
-    //            }
-    //        }
-    //    }
 
     private String getProcedure(String name, int argnum) {
         AssertIllegalArgument.isNotBlank(name, "procedureName");

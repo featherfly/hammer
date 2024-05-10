@@ -17,6 +17,8 @@ import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.lang.ClassLoaderUtils;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
@@ -36,11 +38,17 @@ import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorSpringRegistor;
 public class Appconfig extends JdbcTestBase {
 
     @Bean
+    public HammerConfig hammerConfig() {
+        return new HammerConfigImpl();
+    }
+
+    @Bean
     public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
         Set<String> packages = new HashSet<>();
         packages.add("cn.featherfly");
         //packages.add("你需要扫描的包路径");
-        DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer");
+        DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer",
+                "hammerConfig");
         //        registor.setClassLoader(classLoader);
         return registor;
     }
@@ -56,7 +64,7 @@ public class Appconfig extends JdbcTestBase {
         //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
         // 高版本mysql-connector已经不需要serverTimezone=CTT
         dataSource
-            .setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false");
+                .setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
@@ -77,7 +85,8 @@ public class Appconfig extends JdbcTestBase {
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
-        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages);
+        TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
+                .basePackages(basePackages).build();
 
         SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
         return hammer;

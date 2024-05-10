@@ -56,8 +56,8 @@ public class HammerBenchmark extends AbstractBenchmark {
 
         SqlTypeMappingManager sqlTypeMappingManager = new SqlTypeMappingManager();
 
-        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages,
-                new FreemarkerTemplatePreProcessor());
+        TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
+                .basePackages(basePackages).preCompile(new FreemarkerTemplatePreProcessor()).build();
 
         //        SqlPageFactory sqlPageFactory = new SimpleSqlPageFactory();
 

@@ -117,11 +117,11 @@ List<Role> roles = hammer.query(Role.class)
 // 模板SQL查询数据
 String str = hammer.string("selectString", new HashMap<String, Object>());
 int avg = hammer.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
-User u = hammer.single("user@selectByUsername", User.class,
+User u = hammer.single("selectByUsername@user", User.class,
                 new HashChainMap<String, Object>().putChain("username", username));
-List<User> users = hammer.list("user@selectConditions", User.class, new HashChainMap<String, Object>()
+List<User> users = hammer.list("selectConditions@user", User.class, new HashChainMap<String, Object>()
                 .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
-PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class,
+PaginationResults<User> userPaginationResults = executor.pagination("selectConditions@user", User.class,
                 new HashChainMap<String, Object>(), start, limit);
 ```
 
@@ -699,12 +699,16 @@ select2: "select id,user_id as `user.id`, name, descp
  from user_info"
 ```
 
-API 调用传入的 tplExecuteId 字符串格式为 filePath@sqlId  
-例：`hammer.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
-如果 sqlId 为全局唯一，也可以直接使用 sqlId  
-例：`hammer.numberInt("selectAvg", new HashChainMap<String, Object>())`
+API 调用传入的模板ID字符串格式为 name@namespace（邮件格式xx@yy）
+例：`hammer.template().single("selectByUsername@user", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
+如果SQL模板名称为全局唯一，也可以直接使用 name  
+例：`hammer.template().numberInt("selectAvg", new HashChainMap<String, Object>())`
 
-> 如果同样的 sqlId 出现在不同的文件中，调用时没有使用 filePath@sqlId 进行调用，就会抛出异常，因为程序不知道调用的是哪一个
+> 如果不同namespace的的模板拥有相同的名称（name），调用时只使用name就会抛出异常，因为程序不知道调用的是哪一个，所以最好是使用模板ID
+
+使用模板ID对象进行查找
+
+例：`hammer.template(b->b.name("selectByUsername").namespace("user"), new HashChainMap<String, Object>()).numberInt()`
 
 后续文档使用的 sql 模板定义
 
@@ -721,11 +725,11 @@ API 调用传入的 tplExecuteId 字符串格式为 filePath@sqlId
 | `execute` | 执行数据操作（即执行 insert,update,delete 等操作） |
 
 ```java
-int i = executor.execute("insertRole", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
+int i = executor.template().execute("insertRole", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
 
-int i = executor.execute("updateRoleByName", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
+int i = executor.template().execute("updateRoleByName", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
 
-int i = executor.execute("deleteRoleByName", new HashChainMap<String, Object>().putChain("name", name));
+int i = executor.template().execute("deleteRoleByName", new HashChainMap<String, Object>().putChain("name", name));
 ```
 
 ### 模板 SQL 唯一值查询
@@ -744,22 +748,28 @@ int i = executor.execute("deleteRoleByName", new HashChainMap<String, Object>().
 | `string`           | 查询返回 String      |
 
 ```java
-Integer avg = hammer.numberInt("selectAvg", new HashChainMap<String, Object>());
-Integer avg = hammer.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+Integer avg = hammer.template().numberInt("selectAvg", new HashChainMap<String, Object>());
+Integer avg = hammer.template().numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
 
-String str = hammer.string("selectString", new HashChainMap<String, Object>());
-String str = hammer.string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+String str = hammer.template().string("selectString", new HashChainMap<String, Object>());
+String str = hammer.template().string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
 ```
 
 ### 模板 SQL 唯一记录查询
 
-| 方法     | 说明             |
-| :------- | :--------------- |
-| `single` | 查询返回唯一对象 |
+| 方法     | 说明                                                         |
+| :------- | :----------------------------------------------------------- |
+| `single` | 查询返回唯一对象，可返回空，返回条数大于一时抛出异常（null or one） |
+| `unique` | 查询返回唯一对象，返回空或返回条数大于一都会抛出异常（only one） |
+
+
 
 ```java
-User u1 = hammer.single("user@selectByUsername", User.class, new HashChainMap<String, Object>().putChain("username", username));
-User u2 = hammer.single("user@selectByUsernameAndPassword", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+User u1 = hammer.template().single("selectByUsername@user", User.class, new HashChainMap<String, Object>().putChain("username", username));
+User u2 = hammer.template().single("selectByUsernameAndPassword@user", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+
+User u1 = hammer.template().unique("selectByUsername@user", User.class, new HashChainMap<String, Object>().putChain("username", username));
+User u2 = hammer.template().unique("selectByUsernameAndPassword@user", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
 ```
 
 ### 模板 SQL 列表查询
@@ -769,11 +779,11 @@ User u2 = hammer.single("user@selectByUsernameAndPassword", User.class, new Hash
 | `list` | 查询返回列表 |
 
 ```java
-List<User> users = executor.list("user@selectUser", User.class, new HashChainMap<String, Object>());
-List<User> users = executor.list("user@selectByAge", User.class, new HashChainMap<String, Object>().putChain("age", 5));
-List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>());
-List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
-List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
+List<User> users = executor.template().list("selectUser@user", User.class, new HashChainMap<String, Object>());
+List<User> users = executor.template().list("selectByAge@user", User.class, new HashChainMap<String, Object>().putChain("age", 5));
+List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>());
+List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
+List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
 ```
 
 ### 模板 SQL 分页查询
@@ -785,33 +795,33 @@ List<User> users = executor.list("user@selectConditions", User.class, new HashCh
 | `list` | 查询返回分页列表 |
 
 ```java
-List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
-List<User> users = executor.list("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"),new SimplePagination(start, limit));
+List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>(), start, limit);
+List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"),new SimplePagination(start, limit));
 ```
 
 #### 包装分页
 
-| 方法         | 说明                     |
-| :----------- | :----------------------- |
-| `pagination` | 查询返回分页列表包装对象 |
+| 方法         | 说明                                   |
+| :----------- | :------------------------------------- |
+| `pagination` | 查询返回分页列表包装对象，包含总数统计 |
 
 ##### 使用自动构建统计 sql
 
 基于查询 sql 自动转换统计 sql
 
 ```java
-PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>(), start, limit);
-PaginationResults<User> userPaginationResults = executor.pagination("user@selectConditions", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
+PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new HashChainMap<String, Object>(), start, limit);
+PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
 ```
 
-> sql 转换功能做的测试不可能覆盖所有的复查查询，当你的查询足够复杂并且自动转换不能正常工作时，请使用手动声明统计 sql
+> 注意：sql 转换功能做的测试不可能覆盖所有的复查查询，当你的查询足够复杂并且自动转换不能正常工作时，请使用手动声明统计 sql
 
 ##### 手动声明统计 sql
 
-yaml 配置文件中的 sql 模板,默认情况下只需要直接把 sql 模板跟在 sqlId 后面就行了,当需要手动设置统计 sql 时，就需要明确声明
+yaml 配置文件中的 sql 模板,默认情况下只需要直接把 sql 模板跟在 SQL模板名称 后面就行了,当需要手动设置统计 sql 时，就需要明确声明
 
 ```yaml
-sqlId:
+sqlName:
     query: select sql
     count: count sql
 ```
@@ -821,9 +831,9 @@ sqlId:
 具体内容可以进入此章节[**`include支持`**](#include支持)
 
 ```java
-PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate", Role.class, new HashChainMap<String, Object>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate2", Role.class, new HashChainMap<String, Object>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("role@selectWithTemplate3", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("selectWithTemplate@role", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("selectWithTemplate2@role", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("selectWithTemplate3@role", Role.class, new HashChainMap<String, Object>(), 0, 10);
 ```
 
 ## 模板动态 SQL
@@ -879,7 +889,7 @@ select id, username, password pwd, mobile_no, age from /*<<wrap*/user
 
 3. `/*<  >*/` 表示自关闭标签，类似html的标签:  `<br/>`
 
-4. `/*<<  */` 表示回把标签后面的字符包装进期标签内(规则为从标签后开始，直到遇到空格或者换行)，
+4. `/*<<  */` 表示会把标签后面的字符包装进期标签内(规则为从标签后开始，直到遇到空格或者换行)，
 
    例如：`/*<<wrap*/user from`则会转换为`<@wrap>user</@wrap> from`
 
@@ -893,9 +903,9 @@ select id, username, password pwd, mobile_no, age from /*<<wrap*/user
 
     `/*??*/ username like :username`则会转换为 `<@and if=username??> username = ? </@and>`
 
-7. 内置的freemarker标签，直接替换期开始和结束标签就能直接使用
+7. 内置的freemarker标签，直接替换其开始和结束标签就能直接使用
 
-   例如：`/*<tpl id='roleFromTemplate2' namespace='role_common'>*/`则转换为 `<@tpl id='roleFromTemplate2'/>
+   例如：`/*<tpl name='roleFromTemplate2' namespace='role_common'>*/`则转换为 `<@tpl name='roleFromTemplate2' namespace='role_common'/>
 
 ### where 支持
 
@@ -1229,9 +1239,9 @@ selectByUsernameAndPassword: >
 
 同一个实现默认注册了两个标签名，推荐使用<@tpl>，因为这是标准名称，<@sql>只是为了在这里更应景而已。
 
-`<@tpl id='roleFromTemplate2'/>`和`<@sql id='roleFromTemplate2'/>`是同一个实现不同的别名  
-`id` 表示 sqlId  
-`namespace` 表示模板 sql 所在的名称空间，对应定义在 yaml 模板文件中的模板 sql 而言, 如果是同一个文件中，可以省略此配置
+`<@tpl name='roleFromTemplate2'/>`和`<@sql name='roleFromTemplate2'/>`是同一个实现不同的别名  
+`name` 表示模板SQL名称（[**`template name`**](#`@Template`  )）  
+`namespace` 表示模板SQL所在的名称空间（[**`template namespace`**](#`@Template` )）  ，对应定义在 yaml 模板文件中的模板 sql 而言, 如果是同一个文件中，可以省略此配置
 
 ```yaml
 selectWithTemplate2:
@@ -1310,27 +1320,119 @@ public interface UserMapper3 extends GenericHammer<User> {
 
 **如果需要定义一个实体对象的 Mapper，建议使用继承 GenericHammer 接口的方式，这样此 mapper 就能把对应实体的基础操作都提供了**
 
+如果觉得`Hammer`，`GenericHammer`定义的方法太多，污染了接口，可以选择第四种方式，就是继承`HammerSupport`或者`GenericHammerSupport`
+
+这两个接口都只有两个方法，即`getHammer()`和`getHammerConfig()`，这样既能在自己的接口中使用hammer进行各种操作，又不会污染接口
+
+```java
+@Mapper(namespace = "user")
+public interface UserMapper4 extends HammerSupport {
+	// methods
+    default User getByEmailAndPass(String email, String pass) {
+        return getHammer().query(User.class).where()
+            .eq(User::getEmail, email)
+            .and().eq(User::getPass, pass)
+            .single();
+    }
+}
+
+@Mapper(namespace = "user")
+public interface UserMapper5 extends GenericHammerSupport<User, Long> {
+	// methods    
+	default User getByEmailAndPass(String email, String pass) {
+        return getHammer().query().where()
+            .eq(User::getEmail, email)
+            .and().eq(User::getPass, pass)
+            .single();
+    }
+}
+```
+
+
+
+
+
 ### Mapper 中注解的含义
 
-`@Mapper` 只能标注在类上
+#### `@Mapper` 
+
+Mapper只能标注在类上
 
 -   `namespace` 模板文件的路径，如果为空，则使用类型的名称 class.getSimpleName()
 
-`@Template` 只能标注在方法上
+#### `@Template` 
 
--   `namespace` 模板文件的路径，如果为空，使用 Mapper 的 namespace 进行查找
--   `name` sqlId，如果为空，则使用方法名作为 sqlId 进行查找
--   `template` sql template，如果不为空，则直接使用此模板执行，用法和在模板文件中定义的完全一样，模板管理器会使用 namespace 和 name 注册，前提是在使用 TplConfigFactory 时给定了 basePackges 进行类扫描注册
+既能标注在类上，也能标注在方法上
+
+当标注在类上时，是把类当做SQL模板的聚合存在，类似（SQL模板存储文件）
+
+- `namespace` SQL模板文件的名称空间
+
+  1. SQL模板定义配在置文件中，则为文件去掉前缀（prefix）和后缀（suffix）后的路径
+  2. 如果是定义在类（class）中，未设置namespace则使用 Mapper的简要名称（class.getSimpleName()）作为名称空间
+
+- `name` SQL模板名称，如果为空，则使用方法名作为模板名称
+
+- `value` SQL模板，如果不为空，则直接使用此模板执行，用法和在模板文件中定义的完全一样，模板管理器会使用 namespace 和 name 注册
+
+  > 注意：需要给TplConfigFactory 设置合适的 basePackges 进行类扫描注册
+
 -   `type` sql template type，默认值 AUTO，枚举 AUTO,QUERY,EXECUTE
     
+-   `precompile`  模板预编译，可以在某个SQL模板强制关闭预编译，主要作用是在预编译在某些情况如果出现了BUG，可以关闭预编译直接退回模板引擎的写法
+    
     > 在@Template 中定义 template 直接写 sql 模板其实是为了 jdk13，jdk14 中出现的文本块（目前还是预览版，不是正式版），目前把复杂 sql 模板放在@Template 中一点都不方便，也就适合放简单 sql, 但是简单 sql 我个人更倾向于直接使用 query dsl
+    
+    > 在类中定义模板的实例：
+    
+    ```java
+    @Mapper(namespace = "role2")
+    @Template(name = "selectIdList", value = "select id from role order by id")
+    @Template(name = "selectList", value = "select <@prop repo='role'/> from role")
+    @Template(name = "roleFromTemplate", value = "FROM role _r <@where><@and if = name??> name like :name </@and></@where>")
+    @Template(name = "selectWithTemplate", value = "select <@prop alias=\"_r\"/> <@tpl name='roleFromTemplate'/>")
+    @Template(name = "selectWithTemplate2",
+            value = "select <@prop alias='_r'/> <@tpl name='roleFromTemplate' namespace='role2'/>")
+    @Template(name = "selectWithTemplate3", value = "select /*<<prop alias=\"_r\"*/* /*<tpl name='roleFromTemplate' >*/")
+    @Template(name = "selectWithTemplate4",
+            value = "select /*<<prop alias='_r'*/* /*<tpl name='roleFromTemplate' namespace='role2' >*/")
+    @Template(name = "selectWithTemplate5", value = "select /*prop alias=\"_r\"*/* /*<tpl name='roleFromTemplate' >*/")
+    public interface RoleMapperDefineTemplates extends GenericHammer<Role, Integer> {
+    
+        @Template(name = "selectIdList")
+        List<Long> idList();
+    
+        @Template(name = "selectList")
+        List<Role> list();
+    
+        @Template(name = "selectWithTemplate")
+        List<Role> selectWithTemplate(@Param("name") String name);
+    
+        @Template // name="selectWithTemplate2"
+        List<Role> selectWithTemplate2(@Param("name") String name);
+    
+        @Template("select <@prop alias=\"_r\"/> <@tpl name='roleFromTemplate' />")
+        List<Role> selectWithTemplate6(@Param("name") String name);
+    
+        @Template("select <@prop alias='_r'/> <@tpl name='roleFromTemplate' namespace='role2' />")
+        List<Role> selectWithTemplate7(@Param("name") String name);
+    
+        @Template("select /*<<prop alias=\"_r\"*/* /*<tpl name='roleFromTemplate' >*/")
+        List<Role> selectWithTemplate8(@Param("name") String name);
+    }
+    ```
+    
+    
 
-`@Param` 标注在方法参数中，用于映射方法参数和查询参数
+#### `@Param` 标注在方法参数中，用于映射方法参数和查询参数
 
--   `value` 查询参数名称，如果是 java8 以上，并且**java 编译代码的时候开启-parameters 选项**，可以不使用此注解来映射查询参数名称
+- `value` 查询参数名称，查询参数的名称，需要与模板SQL中的参数名称对应上
+
+  > 注意： 如果是 java8 以上，并且**java 编译代码的时候开启了-parameters 选项**，不使用此注解依然能把参数名称映射正对
+
 -   `type` 查询参数类型，枚举类型
 
-### Mapper 方法 sqlId 的查找逻辑
+### Mapper 方法 SQL模板的查找逻辑
 
 标注在类（接口）上的`@Mapper`的`namespace`的值将作为内部所有方法的缺省默认值，
 方法没有标注`@Template`时，使用方法名作为`@Template`的`name`值，如果某一些方法需要使用不同于类标注的`namespace`的值，可以在方法上标注`@Template`，并指定`namespace`的值

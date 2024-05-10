@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.tpl.mapper;
 
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfig;
 
 /**
  * <p>
@@ -15,8 +16,8 @@ public class TestMapperImpl extends BasedTplGenericHammer<User, Long> implements
      * @param hammer
      * @param type
      */
-    public TestMapperImpl(Hammer hammer) {
-        super(hammer, User.class);
+    public TestMapperImpl(Hammer hammer, HammerConfig hammerConfig) {
+        super(hammer, User.class, hammerConfig);
     }
 
     //    /**
@@ -641,7 +642,6 @@ public class TestMapperImpl extends BasedTplGenericHammer<User, Long> implements
      */
     @Override
     public User getByUsername(String username) {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 }

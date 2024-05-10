@@ -1,69 +1,22 @@
 
 package cn.featherfly.hammer.tpl;
 
-import cn.featherfly.common.lang.Lang;
-
 /**
- * <p>
- * TplExecuteIdFileImpl
- * </p>
+ * TplExecuteIdFileImpl.
  *
  * @author zhongj
  */
-public class TplExecuteIdFileImpl implements TplExecuteId {
-
-    private String name;
-
-    private String namespace;
+public class TplExecuteIdFileImpl extends TplExecuteIdImpl {
 
     /**
-     * @param executeId executeId
-     */
-    public TplExecuteIdFileImpl(String executeId) {
-        super();
-        String[] args = executeId.split(TplConfigFactory.ID_SIGN);
-        if (args.length == 2) {
-            namespace = args[0];
-            name = args[1];
-            //            throw new HammerException("executeId[" + executeId + "] format error, format must be namespace"
-            //                    + TplConfigFactory.ID_SIGN + "name");
-        } else {
-            name = executeId;
-        }
-    }
-
-    /**
+     * Instantiates a new tpl execute id file impl.
+     *
      * @param name      name
      * @param namespace namespace
+     * @param parser    the parser
      */
-    public TplExecuteIdFileImpl(String name, String namespace) {
-        super();
-        this.name = name;
-        this.namespace = namespace;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getId() {
-        return Lang.isEmpty(namespace) ? name : namespace + TplConfigFactory.ID_SIGN + name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getName() {
-        return name;
+    public TplExecuteIdFileImpl(String name, String namespace, TplExecuteIdParser parser) {
+        super(name, namespace, parser);
     }
 
     /**
@@ -71,6 +24,6 @@ public class TplExecuteIdFileImpl implements TplExecuteId {
      */
     @Override
     public String toString() {
-        return "TplExecuteIdImpl [name=" + name + ", namespace=" + namespace + "]";
+        return "TplExecuteIdFileImpl [name=" + name + ", namespace=" + namespace + ", parser=" + parser + "]";
     }
 }

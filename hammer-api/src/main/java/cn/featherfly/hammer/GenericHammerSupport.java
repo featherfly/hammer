@@ -12,6 +12,8 @@ package cn.featherfly.hammer;
 
 import java.io.Serializable;
 
+import cn.featherfly.hammer.config.HammerConfig;
+
 /**
  * GenericHammerSupport.
  *
@@ -27,4 +29,11 @@ public interface GenericHammerSupport<E, ID extends Serializable> {
      * @return the hammer
      */
     GenericHammer<E, ID> getHammer();
+
+    /**
+     * Gets the hammer config.
+     *
+     * @return the hammer config
+     */
+    HammerConfig getHammerConfig();
 }

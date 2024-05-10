@@ -5,11 +5,10 @@ import java.util.Set;
 import org.springframework.core.type.classreading.MetadataReader;
 
 import cn.featherfly.common.io.ClassPathScanningProvider;
+import cn.featherfly.common.lang.CollectionUtils;
 
 /**
- * <p>
- * 自动注册配置信息到spring context
- * </p>
+ * 自动注册配置信息到spring context .
  *
  * @author zhongj
  */
@@ -18,26 +17,29 @@ public class DynamicTplExecutorScanSpringRegistor extends DynamicTplExecutorSpri
     /**
      * Instantiates a new dynamic tpl executor scan spring registor.
      *
-     * @param basePackages    basePackages
-     * @param hammerReference hammerReference
+     * @param basePackages          basePackages
+     * @param hammerReference       hammerReference
+     * @param hammerConfigReference the hammer config reference
      */
-    public DynamicTplExecutorScanSpringRegistor(Set<String> basePackages, String hammerReference) {
-        this(basePackages, hammerReference, null);
+    public DynamicTplExecutorScanSpringRegistor(Set<String> basePackages, String hammerReference,
+            String hammerConfigReference) {
+        this(basePackages, hammerReference, hammerConfigReference, null);
     }
 
     /**
      * Instantiates a new dynamic tpl executor scan spring registor.
      *
-     * @param basePackages    the base packages
-     * @param hammerReference hammerReference
-     * @param classLoader     the class loader
+     * @param basePackages          the base packages
+     * @param hammerReference       hammerReference
+     * @param hammerConfigReference the hammer config reference
+     * @param classLoader           the class loader
      */
     public DynamicTplExecutorScanSpringRegistor(Set<String> basePackages, String hammerReference,
-            ClassLoader classLoader) {
-        super(hammerReference);
+            String hammerConfigReference, ClassLoader classLoader) {
+        super(hammerReference, hammerConfigReference, classLoader);
         Set<MetadataReader> metadataReaders = new ClassPathScanningProvider()
                 .findMetadata(basePackages.toArray(new String[] {}));
-        setMetadataReaders(metadataReaders);
+        CollectionUtils.addAll(getMetadataReaders(), metadataReaders);
         setClassLoader(classLoader);
     }
 }

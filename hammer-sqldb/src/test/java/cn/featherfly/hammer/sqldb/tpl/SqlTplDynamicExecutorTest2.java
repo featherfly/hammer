@@ -37,7 +37,7 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
-        userMapper = mapperFactory.newInstance(UserMapper2.class, hammer);
+        userMapper = mapperFactory.newInstance(UserMapper2.class, hammer, hammerConfig);
     }
 
     @Test
@@ -51,11 +51,11 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
 
-        str = userMapper.string("selectString", new HashMap<>());
+        str = userMapper.template().string("selectString", new HashMap<>());
         System.out.println("selectString = " + str);
         assertEquals(str, "yufei");
 
-        str = userMapper.string("selectString2", new ChainMapImpl<String, Object>().putChain("id", 2));
+        str = userMapper.template().string("selectString2", new ChainMapImpl<String, Object>().putChain("id", 2));
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
 

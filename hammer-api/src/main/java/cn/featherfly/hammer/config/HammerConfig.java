@@ -11,6 +11,7 @@ package cn.featherfly.hammer.config;
 import javax.validation.Validator;
 
 import cn.featherfly.hammer.config.dsl.DslConfig;
+import cn.featherfly.hammer.config.tpl.TemplateConfig;
 
 /**
  * HammerConfig.
@@ -39,4 +40,11 @@ public interface HammerConfig {
      * @return the batch config
      */
     BatchConfig getBatchConfig();
+
+    /**
+     * Gets the template config.
+     *
+     * @return the template config
+     */
+    TemplateConfig getTemplateConfig();
 }

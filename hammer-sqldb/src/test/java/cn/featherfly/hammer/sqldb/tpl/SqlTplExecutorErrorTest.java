@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
@@ -25,19 +26,21 @@ public class SqlTplExecutorErrorTest extends JdbcTestBase {
 
     @BeforeMethod
     void setup() {
-        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl");
-        executor = new SqlTplExecutor(configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
-                mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
+        TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
+                .build();
+        executor = new SqlTplExecutor(new HammerConfigImpl(), configFactory,
+                new SqldbFreemarkerTemplateEngine(configFactory), jdbc, mappingFactory, new SimpleSqlPageFactory(),
+                new TransverterManager());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testWrapError() {
-        executor.numberInt("wrapError", new ChainMapImpl<String, Object>());
+        executor.numberInt("wrapError", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testWrapError2() {
-        executor.numberInt("wrapError2", new ChainMapImpl<String, Object>());
+        executor.numberInt("wrapError2", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
@@ -62,46 +65,46 @@ public class SqlTplExecutorErrorTest extends JdbcTestBase {
 
     @Test(expectedExceptions = TplException.class)
     void testIncludeDirectiveError() {
-        executor.list("includeError", new ChainMapImpl<String, Object>());
+        executor.list("includeError", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testIncludeDirectiveError2() {
-        executor.list("includeError2", new ChainMapImpl<String, Object>());
+        executor.list("includeError2", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testIncludeDirectiveError3() {
-        executor.list("includeError3", new ChainMapImpl<String, Object>());
+        executor.list("includeError3", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testPropDirectiveError() {
-        executor.list("propError", new ChainMapImpl<String, Object>());
+        executor.list("propError", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testPropDirectiveError2() {
-        executor.list("propError2", new ChainMapImpl<String, Object>());
+        executor.list("propError2", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testPropDirectiveError3() {
-        executor.list("propError3", new ChainMapImpl<String, Object>());
+        executor.list("propError3", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testPropDirectiveError4() {
-        executor.list("propError4", new ChainMapImpl<String, Object>());
+        executor.list("propError4", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testPropDirectiveError5() {
-        executor.list("propError5", new ChainMapImpl<String, Object>());
+        executor.list("propError5", new ChainMapImpl<>());
     }
 
     @Test(expectedExceptions = TplException.class)
     void testPropDirectiveError6() {
-        executor.list("propError6", new ChainMapImpl<String, Object>());
+        executor.list("propError6", new ChainMapImpl<>());
     }
 }

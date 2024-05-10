@@ -37,9 +37,10 @@ public class RoleMapperTest extends JdbcTestBase {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl");
-        configFactory = new TplConfigFactoryImpl("tpl/", ".yaml.tpl", basePackages);
+        configFactory = TplConfigFactoryImpl.builder() //
+                .prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages).build();
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
-        roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer);
+        roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer, hammerConfig);
     }
 
     @Test
@@ -89,7 +90,7 @@ public class RoleMapperTest extends JdbcTestBase {
         assertTrue(page.getNumber() == 2);
         assertTrue(page.getTotal() > 0);
 
-        page = roleMapper.page(1, ps);
+        page = roleMapper.page2(1, ps);
         assertEquals(page.getSize(), ps);
         assertTrue(page.getNumber() == 1);
         assertTrue(page.getTotal() > 0);
@@ -97,7 +98,7 @@ public class RoleMapperTest extends JdbcTestBase {
 
     @Test
     void testMapperSqlInAnnotationWithOtherTemplate() {
-        List<Role> list = roleMapper.selectWithTemplate("descp%");
+        List<Role> list = roleMapper.selectWithTemplate22("descp%");
         for (Role role : list) {
             assertTrue(role.getName().startsWith("descp"));
         }
@@ -107,31 +108,31 @@ public class RoleMapperTest extends JdbcTestBase {
     void testInsertUpdateDelete() {
         String name = "name_insert_" + Randoms.getString(6);
         String descp = "descp_" + Randoms.getString(6);
-        int i = roleMapper.insertRole(name, descp);
+        int i = roleMapper.insertRole2(name, descp);
         assertTrue(i == 1);
 
-        Role role = roleMapper.getByName(name);
+        Role role = roleMapper.getByName2(name);
         assertEquals(role.getName(), name);
         assertEquals(role.getDescp(), descp);
 
         descp = "descp_" + Randoms.getString(6);
-        i = roleMapper.updateRoleByName(name, descp);
+        i = roleMapper.updateRoleByName2(name, descp);
         assertTrue(i == 1);
 
-        role = roleMapper.getByName(name);
+        role = roleMapper.getByName2(name);
         assertEquals(role.getName(), name);
         assertEquals(role.getDescp(), descp);
 
-        i = roleMapper.deleteRoleByName(name);
+        i = roleMapper.deleteRoleByName2(name);
         assertTrue(i == 1);
 
-        role = roleMapper.getByName(name);
+        role = roleMapper.getByName2(name);
         assertEquals(role, null);
     }
 
     @Test
     void testQueryValue() {
-        int count = roleMapper.countRole();
+        int count = roleMapper.countRole1();
         assertTrue(count > 1);
 
         Integer count2 = roleMapper.countRole2();
