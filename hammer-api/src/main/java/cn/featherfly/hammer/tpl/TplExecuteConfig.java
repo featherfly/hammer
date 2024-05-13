@@ -1,12 +1,22 @@
 
 package cn.featherfly.hammer.tpl;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.featherfly.common.lang.ArrayUtils;
+
 /**
  * The Class TplExecuteConfig.
  *
  * @author zhongj
  */
 public class TplExecuteConfig {
+
+    public static final String PARAM_NAMES = "paramNames";
+    public static final String IN_PARAM_NAMES = "inParamNames";
+    public static final String IN_PARAM_INDEXS = "inParamIndexs";
+    public static final String PARAMS_FORMAT = "paramsFormat";
 
     private String fileName;
 
@@ -30,6 +40,20 @@ public class TplExecuteConfig {
     private String executeId;
 
     private String tplName;
+
+    private String[] paramNames = null;
+
+    private String[] inParamNames = ArrayUtils.EMPTY_STRING_ARRAY;
+
+    private Param[] params = null;
+
+    private Set<Integer> inParamIndexs = new HashSet<>(0);
+
+    private ParamsFormat paramsFormat = ParamsFormat.AUTO;
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    private boolean included;
 
     /**
      * get content value
@@ -227,12 +251,240 @@ public class TplExecuteConfig {
     }
 
     /**
+     * get inParamNames value
+     *
+     * @return inParamNames
+     */
+    public String[] getInParamNames() {
+        return inParamNames;
+    }
+
+    /**
+     * get inParamIndexs value
+     *
+     * @return inParamIndexs
+     */
+    public Set<Integer> getInParamIndexs() {
+        return inParamIndexs;
+    }
+
+    /**
+     * set inParamIndexs value
+     *
+     * @param inParamIndexs inParamIndexs
+     */
+    public void setInParamIndexs(Set<Integer> inParamIndexs) {
+        this.inParamIndexs = inParamIndexs;
+    }
+
+    /**
+     * set inParamNames value
+     *
+     * @param inParamNames inParamNames
+     */
+    public void setInParamNames(String[] inParamNames) {
+        this.inParamNames = inParamNames;
+    }
+
+    /**
+     * get paramsFormat value
+     *
+     * @return paramsFormat
+     */
+    public ParamsFormat getParamsFormat() {
+        return paramsFormat;
+    }
+
+    /**
+     * set paramsFormat value
+     *
+     * @param paramsFormat paramsFormat
+     */
+    public void setParamsFormat(ParamsFormat paramsFormat) {
+        this.paramsFormat = paramsFormat;
+    }
+
+    /**
+     * get paramNames value
+     *
+     * @return paramNames
+     */
+    public String[] getParamNames() {
+        return paramNames;
+    }
+
+    /**
+     * set paramNames value
+     *
+     * @param paramNames paramNames
+     */
+    public void setParamNames(String[] paramNames) {
+        this.paramNames = paramNames;
+    }
+
+    /**
+     * get params value
+     *
+     * @return params
+     */
+    public Param[] getParams() {
+        return params;
+    }
+
+    /**
+     * get included value
+     *
+     * @return includes
+     */
+    public boolean isIncluded() {
+        return included;
+    }
+
+    /**
+     * set included value.
+     *
+     * @param included the new included
+     */
+    public void setIncluded(boolean included) {
+        this.included = included;
+    }
+
+    /**
+     * set params value
+     *
+     * @param params params
+     */
+    public void setParams(Param[] params) {
+        this.params = params;
+        Set<String> inNames = new HashSet<>();
+        inParamIndexs.clear();
+        paramNames = new String[params.length];
+        for (int i = 0; i < params.length; i++) {
+            Param p = params[i];
+            paramNames[i] = p.name;
+            if (p.inParam) {
+                inNames.add(p.name);
+                inParamIndexs.add(i);
+            }
+        }
+        inParamNames = inNames.toArray(new String[inNames.size()]);
+    }
+
+    public enum ParamsFormat {
+        /**
+         * the program automatically decides
+         */
+        AUTO,
+        /**
+         * indexd param
+         */
+        INDEX,
+        /**
+         * named param
+         */
+        NAME;
+    }
+
+    /**
+     * The Class Param.
+     *
+     * @author zhongj
+     */
+    public static class Param {
+
+        /**
+         * Instantiates a new param.
+         *
+         * @param name the name
+         */
+        public Param(String name) {
+            this(name, null, false);
+        }
+
+        /**
+         * Instantiates a new param.
+         *
+         * @param name        the name
+         * @param transverter the transverter
+         */
+        public Param(String name, String transverter) {
+            this(name, transverter, false);
+        }
+
+        /**
+         * Instantiates a new param.
+         *
+         * @param name    the name
+         * @param inParam the in param
+         */
+        public Param(String name, boolean inParam) {
+            this(name, null, inParam);
+        }
+
+        /**
+         * Instantiates a new param.
+         *
+         * @param name        the name
+         * @param transverter the transverter
+         */
+        public Param(String name, String transverter, boolean inParam) {
+            super();
+            this.name = name;
+            this.transverter = transverter;
+            this.inParam = inParam;
+        }
+
+        private final String name;
+
+        private final String transverter;
+
+        private final boolean inParam;
+
+        /**
+         * 返回name.
+         *
+         * @return name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * get inParam value
+         *
+         * @return inParam
+         */
+        public boolean isInParam() {
+            return inParam;
+        }
+
+        /**
+         * 返回transverter.
+         *
+         * @return transverter
+         */
+        public String getTransverter() {
+            return transverter;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            return "Param [name=" + name + ", inParam=" + inParam + ", transverter=" + transverter + "]";
+        }
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return "TplExecuteConfig [fileName=" + fileName + ", fileDirectory=" + fileDirectory + ", name=" + name
-                + ", type=" + type + ", query=" + content + ", count=" + count + ", precompile=" + precompile
-                + ", namespace=" + namespace + ", executeId=" + executeId + ", tplName=" + tplName + "]";
+        return "TplExecuteConfig [fileName=" + fileName + ", fileDirectory=" + fileDirectory + ", tplName=" + tplName
+                + ", name=" + name + ", namespace=" + namespace + ", executeId=" + executeId + ", type=" + type
+                + ", precompile=" + precompile + ", paramsFormat=" + paramsFormat + ", inParamNames=" + inParamNames
+                + ", query=" + content + ", count=" + count + "]";
     }
 }

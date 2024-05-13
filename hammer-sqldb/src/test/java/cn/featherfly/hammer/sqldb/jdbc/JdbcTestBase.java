@@ -89,18 +89,20 @@ public class JdbcTestBase extends TestBase {
 
         initDataBase(dataBase);
 
+        HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
+        hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
+                .buildValidatorFactory().getValidator());
+        hammerConfig = hammerConfigImpl;
+
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer");
 
         configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages)
-                .preCompile(new FreemarkerTemplatePreProcessor()).build();
+                .config(hammerConfig.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
 
         jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager);
 
-        HammerConfigImpl hammerConfigImpl = new HammerConfigImpl();
-        hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-                .buildValidatorFactory().getValidator());
-        hammerConfig = hammerConfigImpl;
     }
 
     public void initDataBase(String dataBase) throws IOException {

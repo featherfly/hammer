@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -45,8 +46,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @BeforeClass
     public void before() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .build();
-        parser = configFactory.getParser();
+                .config(hammerConfig.getTemplateConfig()).build();
+        parser = configFactory.getTemplateConfig().getTplExecuteIdParser();
         hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory,
                 new SqldbFreemarkerTemplateEngine(configFactory), new SimpleSqlPageFactory(), hammerConfig);
     }
@@ -629,6 +630,30 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
 
     @Override
     @Test
+    public void testInParams3() {
+        int resultSize = 4;
+
+        Long[] ids = new Long[] { 1L, 2L, 3L, 4L };
+
+        List<User> users;
+
+        // list
+        users = hammer.template("selectIn3", new Object[] { ids }).list(User.class);
+        assertEquals(users.size(), resultSize);
+
+        users = hammer.template("selectIn3_2", new Object[] { ids }).list(User.class);
+        assertEquals(users.size(), resultSize);
+
+        users = hammer.template("selectIn3_3", new Object[] { ids, 0 }).list(User.class);
+        assertEquals(users.size(), resultSize);
+
+        users = hammer.template("selectIn3_4", new Object[] { ids, 0 }).list(User.class);
+        assertEquals(users.size(), resultSize);
+
+    }
+
+    @Override
+    @Test
     public void testSingleTuple2() {
         Integer userId = 1;
         // list
@@ -771,5 +796,34 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
 
             assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
         }
+    }
+
+    @Override
+    @Test
+    public void selectConditions2() {
+        Map<String, Object> u = hammer
+                .template("selectById2@user", new ChainMapImpl<String, Object>().putChain("id", 1)).single();
+
+        Map<String, Object> uis = executor.single("selectConditions2@user",
+                new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
+                        .putChain("mobile", u.get("mobileNo")) //
+                        .putChain("age", -1) //
+                        .putChain("id", u.get("id")) //
+                        .putChain("password", u.get("password")));
+        assertNotNull(uis);
+        assertEquals(uis.get("id"), u.get("id"));
+        assertEquals(uis.get("mobileNo"), u.get("mobileNo"));
+        assertEquals(uis.get("password"), u.get("password"));
+        assertEquals(uis.get("username"), u.get("username"));
+
+        //        <@and if=age??>id = :id</@and>
+        //        <@and if=age??>age > :age</@and>
+        //        <@and>
+        //        (
+        //            <#if test=username??>username = :username</#if>
+        //            <@or if=password??>password = :password</@or>
+        //            <@or if=mobile??>mobile_no = :mobile</@or>
+        //        )
+        //        </@and>
     }
 }

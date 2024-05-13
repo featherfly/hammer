@@ -39,7 +39,7 @@ public class Appconfig extends JdbcTestBase {
 
     @Bean
     public HammerConfig hammerConfig() {
-        return new HammerConfigImpl();
+        return new HammerConfigImpl(devMode);
     }
 
     @Bean
@@ -86,7 +86,7 @@ public class Appconfig extends JdbcTestBase {
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
         TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .basePackages(basePackages).build();
+                .basePackages(basePackages).config(hammerConfig.getTemplateConfig()).build();
 
         SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
         return hammer;

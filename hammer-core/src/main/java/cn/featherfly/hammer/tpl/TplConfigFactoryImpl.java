@@ -58,12 +58,16 @@ import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
 import cn.featherfly.hammer.annotation.Mapper;
 import cn.featherfly.hammer.annotation.Template;
 import cn.featherfly.hammer.config.HammerConstant;
+import cn.featherfly.hammer.config.tpl.TemplateConfig;
+import cn.featherfly.hammer.tpl.TplExecuteConfig.ParamsFormat;
 
 /**
  * template config factory implement.
  *
  * @author zhongj
  */
+//  YUFEI_TODO 后续把配置和TplExecute实例分开，配置就是yaml文件和类注释的内容
+//  TplExecute实例就是通过配置读取并进行逻辑处理后的最终状态，即TplExecutor实现进行最终执行时，查找的是TplExecute实例
 public class TplConfigFactoryImpl implements TplConfigFactory {
 
     /** The logger. */
@@ -98,7 +102,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     private final TemplatePreprocessor templatePreprocessor;
 
-    private final TplExecuteIdParser parser;
+    private final TemplateConfig templateConfig;
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -125,26 +129,23 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @param suffixes         the suffixes
      * @param basePackages     basePackages
      * @param preCompiler      the pre compiler
-     * @param parser           the parser
+     * @param templateConfig   the template config
      * @param commentMaxLength the buffer size
      * @param devMode          the dev mode
      */
     public TplConfigFactoryImpl(Set<String> prefixes, Set<String> suffixes, Set<String> basePackages,
-            TemplatePreprocessor preCompiler, TplExecuteIdParser parser, int commentMaxLength, boolean devMode) {
+            TemplatePreprocessor preCompiler, TemplateConfig templateConfig, int commentMaxLength, boolean devMode) {
         mapper = new ObjectMapper(new YAMLFactory());
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         if (preCompiler == null) {
-            templatePreprocessor = value -> value;
+            templatePreprocessor = (value, c) -> value;
         } else {
             templatePreprocessor = preCompiler;
         }
 
-        if (parser == null) {
-            this.parser = new TplExecuteIdEmailStyleParser();
-        } else {
-            this.parser = parser;
-        }
+        AssertIllegalArgument.isNotNull(templateConfig, "templateConfig");
+        this.templateConfig = templateConfig;
 
         if (Lang.isEmpty(prefixes)) {
             this.prefixes.add(HammerConstant.DEFAULT_PREFIX);
@@ -278,23 +279,23 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             checkName(name, namespace);
 
             TplExecuteConfig config = new TplExecuteConfig();
-            config.setPrecompile(template.precompile());
-            if (template.precompile()) {
-                config.setContent(templatePreprocessor.process(template.value()));
-            } else {
-                config.setContent(template.value());
-            }
             config.setName(name);
             config.setNamespace(namespace);
-            config.setExecuteId(parser.format(name, namespace));
+            config.setExecuteId(templateConfig.getTplExecuteIdParser().format(name, namespace));
             config.setTplName(type.getName() + FILE_SIGN + name);
             config.setFileName(type.getName() + ".class");
             config.setFileDirectory(fileDirectory);
+            config.setPrecompile(template.precompile());
+            if (template.precompile()) {
+                config.setContent(templatePreprocessor.process(template.value(), config));
+            } else {
+                config.setContent(template.value());
+            }
             //            logger.debug("type -> {} , namespace -> {} ,  {} -> {}", type.getName(), namespace, name, config);
 
             // 模板id和模板执行的关系,模板id全局唯一,重复报错
-            addOrExistsError(config,
-                    () -> new TplExecuteIdMapperImpl(config.getName(), config.getNamespace(), type, parser));
+            addOrExistsError(config, () -> new TplExecuteIdMapperImpl(config.getName(), config.getNamespace(), type,
+                    templateConfig.getTplExecuteIdParser()));
 
             if (namespace.equals(globalNamespace)) {
                 globalConfigs.put(name, config);
@@ -335,9 +336,10 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
     // check whether the template name is invalid or duplicate in the namespace
     private void checkName(String name, String namespace) {
-        if (name.contains(parser.getSeparator())) {
+        if (name.contains(templateConfig.getTplExecuteIdParser().getSeparator())) {
             // ENHANCE 使用exceptioncode
-            throw new TplException("invalid character [" + parser.getSeparator() + "] in executeId [" + name + "]");
+            throw new TplException("invalid character [" + templateConfig.getTplExecuteIdParser().getSeparator()
+                    + "] in executeId [" + name + "]");
         }
         if (Lang.ifNullOrElse(configsMap.get(namespace), () -> false, cs -> cs.containsConfig(namespace))) {
             // ENHANCE 使用exceptioncode
@@ -474,48 +476,6 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 Object value = entrySet.getValue();
 
                 TplExecuteConfig config = new TplExecuteConfig();
-                if (value instanceof String) {
-                    config.setContent(templatePreprocessor.process(value.toString()));
-                } else {
-                    @SuppressWarnings("unchecked")
-                    Map<String, Object> map = (Map<String, Object>) value;
-
-                    Object precompileObj = map.get("precompile");
-                    boolean precompile = true; // 默认使用预编译
-                    if (Lang.isNotEmpty(precompileObj)) {
-                        if (precompileObj instanceof Boolean) {
-                            precompile = (Boolean) precompileObj;
-                        } else {
-                            precompile = Boolean.parseBoolean(precompileObj.toString());
-                        }
-                    }
-                    config.setPrecompile(precompile);
-
-                    Object content = map.get("query"); // 历史遗留
-                    if (Lang.isEmpty(content)) {
-                        content = map.get("content");
-                    }
-                    if (Lang.isEmpty(content)) {
-                        throw new TplException("template content not found with key [content | query]");
-                    }
-                    if (precompile) {
-                        config.setContent(templatePreprocessor.process(content.toString()));
-                    } else {
-                        config.setContent(content.toString());
-                    }
-
-                    Object count = map.get("count");
-                    if (Lang.isNotEmpty(count)) {
-                        if (precompile) {
-                            config.setCount(templatePreprocessor.process(count.toString()));
-                        } else {
-                            config.setCount(count.toString());
-                        }
-                    }
-                    if (Lang.isNotEmpty(map.get("type"))) {
-                        config.setType(ExecutionType.valueOf(map.get("type").toString()));
-                    }
-                }
                 checkName(name, namespace);
 
                 // 多prefix、suffix实现
@@ -530,7 +490,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 // template namespace
                 config.setNamespace(namespace);
                 // template execute id
-                config.setExecuteId(parser.format(name, namespace));
+                config.setExecuteId(templateConfig.getTplExecuteIdParser().format(name, namespace));
 
                 //              config.setTplName(parser.format(key, namespace));
                 config.setTplName(filePath + FILE_SIGN + config.getName());
@@ -539,11 +499,51 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 config.setFileName(fileName);
                 config.setFileDirectory(fileDirectory);
 
+                if (value instanceof String) {
+                    config.setContent(templatePreprocessor.process(value.toString(), config));
+                } else {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> map = (Map<String, Object>) value;
+
+                    boolean precompile = getPrecompile(map);
+                    config.setPrecompile(precompile);
+                    config.setParamNames(getParamNames(map));
+                    config.setInParamNames(getInParamNames(map));
+                    config.setInParamIndexs(getInParamIndexs(map));
+                    config.setParamsFormat(getParamsFormat(map));
+                    Object content = map.get("query"); // 历史遗留
+                    if (Lang.isEmpty(content)) {
+                        content = map.get("content");
+                    }
+                    if (Lang.isEmpty(content)) {
+                        throw new TplException("template content not found with key [content | query]");
+                    }
+                    if (precompile) {
+                        config.setContent(templatePreprocessor.process(content.toString(), config));
+                    } else {
+                        config.setContent(content.toString());
+                    }
+
+                    Object count = map.get("count");
+                    if (Lang.isNotEmpty(count)) {
+                        if (precompile) {
+                            //                            config.setContent(templatePreprocessor.process(count.toString(), config));
+                            // YUFEI_TODO 先不让count处理tplconfig
+                            config.setContent(templatePreprocessor.process(count.toString(), new TplExecuteConfig()));
+                        } else {
+                            config.setCount(count.toString());
+                        }
+                    }
+                    if (Lang.isNotEmpty(map.get("type"))) {
+                        config.setType(ExecutionType.valueOf(map.get("type").toString()));
+                    }
+                }
+
                 newConfigs.put(name, config);
 
                 // 模板id和模板执行的关系,模板id全局唯一,重复报错
-                addOrExistsError(config,
-                        () -> new TplExecuteIdFileImpl(config.getName(), config.getNamespace(), parser));
+                addOrExistsError(config, () -> new TplExecuteIdFileImpl(config.getName(), config.getNamespace(),
+                        templateConfig.getTplExecuteIdParser()));
 
             }
             configsMap.put(namespace, newConfigs);
@@ -766,9 +766,87 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         } else if (MULTI_SAME_EXECUTEID == tplExecuteId) {
             throw new TplException("duplicated template name[" + executeId
                     + "], please use full template executeId with name and namespace such as "
-                    + parser.format("name", "namespace"));
+                    + templateConfig.getTplExecuteIdParser().format("name", "namespace"));
         }
         return getExistConfigs(tplExecuteId.getNamespace());
+    }
+
+    private boolean getPrecompile(Map<String, Object> map) {
+        Object precompileObj = map.get("precompile");
+        boolean precompile = true; // 默认使用预编译
+        if (Lang.isNotEmpty(precompileObj)) {
+            if (precompileObj instanceof Boolean) {
+                precompile = (Boolean) precompileObj;
+            } else {
+                precompile = Boolean.parseBoolean(precompileObj.toString());
+            }
+        }
+        return precompile;
+    }
+
+    private ParamsFormat getParamsFormat(Map<String, Object> map) {
+        Object pf = map.get("paramsFormat");
+        if (Lang.isNotEmpty(pf)) {
+            if (pf instanceof String) {
+                return ParamsFormat.valueOf(pf.toString());
+            } else {
+                throw new TplException("paramsFormat must be a String");
+            }
+        }
+        return ParamsFormat.AUTO;
+    }
+
+    @SuppressWarnings("unchecked")
+    private String[] getStrings(Map<String, Object> map, String key) {
+        Set<String> strs = new HashSet<>();
+        Object namesObj = map.get(key);
+        if (namesObj != null) {
+            if (namesObj instanceof String) {
+                strs.add((String) namesObj);
+            } else if (namesObj instanceof Collection) {
+                for (String inParamName : (Collection<String>) namesObj) {
+                    strs.add(inParamName);
+                }
+            } else if (namesObj instanceof String[]) {
+                for (String inParamName : (String[]) namesObj) {
+                    strs.add(inParamName);
+                }
+            } else {
+                throw new TplException(key + " must be a String or String array or String list");
+            }
+        }
+        return Lang.toArray(strs, String.class);
+    }
+
+    private String[] getParamNames(Map<String, Object> map) {
+        return getStrings(map, TplExecuteConfig.PARAM_NAMES);
+    }
+
+    private String[] getInParamNames(Map<String, Object> map) {
+        return getStrings(map, TplExecuteConfig.IN_PARAM_NAMES);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<Integer> getInParamIndexs(Map<String, Object> map) {
+        Set<Integer> inParamIndexs = new HashSet<>();
+        Object indexs = map.get("inParamIndexs");
+        if (indexs != null) {
+            if (indexs instanceof Integer || indexs.getClass() == int.class) {
+                inParamIndexs.add((Integer) indexs);
+            } else if (indexs instanceof Collection) {
+                for (Integer index : (Collection<Integer>) indexs) {
+                    inParamIndexs.add(index);
+                }
+            } else if (indexs instanceof Integer[]) {
+                for (Integer index : (Integer[]) indexs) {
+                    inParamIndexs.add(index);
+                }
+            } else {
+                throw new TplException("inParamIndexs must be a int or int array or int list");
+            }
+        }
+        return inParamIndexs;
+        //        return CollectionUtils.toIntArray(inParamIndexs);
     }
 
     /**
@@ -804,8 +882,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
      * @return parser
      */
     @Override
-    public TplExecuteIdParser getParser() {
-        return parser;
+    public TemplateConfig getTemplateConfig() {
+        return templateConfig;
     }
 
     /**
@@ -873,7 +951,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         private final Set<String> suffixes = new HashSet<>();
         private final Set<String> prefixes = new HashSet<>();
         private final Set<String> basePackages = new HashSet<>();
-        private TplExecuteIdParser parser;
+        private TemplateConfig templateConfig;
         private TemplatePreprocessor preCompiler;
 
         /**
@@ -959,8 +1037,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
          * @param parser the parser
          * @return the builder
          */
-        public Builder parser(TplExecuteIdParser parser) {
-            this.parser = parser;
+        public Builder config(TemplateConfig templateConfig) {
+            this.templateConfig = templateConfig;
             return this;
         }
 
@@ -992,8 +1070,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
          * @return the tpl config factory impl
          */
         public TplConfigFactoryImpl build() {
-            return new TplConfigFactoryImpl(prefixes, suffixes, basePackages, preCompiler, parser, commentMaxLength,
-                    devMode);
+            return new TplConfigFactoryImpl(prefixes, suffixes, basePackages, preCompiler, templateConfig,
+                    commentMaxLength, devMode);
         }
     }
 

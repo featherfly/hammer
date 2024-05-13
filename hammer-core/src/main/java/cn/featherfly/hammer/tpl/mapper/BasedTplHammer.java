@@ -406,6 +406,31 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
         return hammer.template(tplExecuteId, params);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParamedExecutionExecutor template(String tplExecuteId, Object... params) {
+        return hammer.template(tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+            Object... params) {
+        return hammer.template(tplExecuteIdBuilder, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params) {
+        return hammer.template(tplExecuteId, params);
+    }
+
     // ----------------------------------------------------------------------------------------------------------------
     // TplExecutor
 

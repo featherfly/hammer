@@ -27,8 +27,8 @@ public class SqlTplExecutorErrorTest extends JdbcTestBase {
     @BeforeMethod
     void setup() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .build();
-        executor = new SqlTplExecutor(new HammerConfigImpl(), configFactory,
+                .config(hammerConfig.getTemplateConfig()).build();
+        executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
                 new SqldbFreemarkerTemplateEngine(configFactory), jdbc, mappingFactory, new SimpleSqlPageFactory(),
                 new TransverterManager());
     }

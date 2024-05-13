@@ -31,7 +31,7 @@ import cn.featherfly.common.structure.page.PaginationResults;
  * @param <E1> the generic type
  * @param <E2> the generic type
  */
-public class ArrayParamedExecutionExecutorImpl<E1 extends ExecutionExecutor<E2>, E2>
+public class ArrayParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2>
         implements ParamedExecutionExecutor {
 
     /** The executor. */
@@ -50,7 +50,7 @@ public class ArrayParamedExecutionExecutorImpl<E1 extends ExecutionExecutor<E2>,
      * @param execution the execution
      * @param params    the params
      */
-    public ArrayParamedExecutionExecutorImpl(E1 executor, E2 execution, Object... params) {
+    public ArrayParamedExecutionExecutor(E1 executor, E2 execution, Object... params) {
         super();
         this.executor = executor;
         this.execution = execution;

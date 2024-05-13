@@ -5,10 +5,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.tpl.TplException;
 
 /**
- * <p>
- * TagElement
- * </p>
- * .
+ * DirectiveElement.
  *
  * @author zhongj
  */
@@ -18,23 +15,25 @@ public class DirectiveElement extends AbstractElement {
 
     protected char macro = '#';
 
-    /**
-     * Instantiates a new directive element.
-     *
-     * @param parser the parser
-     */
-    public DirectiveElement(Parser parser) {
-        this("", parser);
-    }
+    //    /**
+    //     * Instantiates a new directive element.
+    //     *
+    //     * @param parser the parser
+    //     */
+    //    public DirectiveElement(Parser parser) {
+    //        this("", parser);
+    //    }
 
     /**
      * Instantiates a new directive element.
      *
-     * @param value  the value
-     * @param parser the parser
+     * @param value                 the value
+     * @param namedParamPlaceholder the named param placeholder
+     * @param previous              the previous
+     * @param parser                the parser
      */
-    public DirectiveElement(String value, Parser parser) {
-        super(value, parser);
+    public DirectiveElement(String value, boolean namedParamPlaceholder, Element previous, Parser parser) {
+        super(value, namedParamPlaceholder, previous, parser);
     }
 
     /**
@@ -57,17 +56,25 @@ public class DirectiveElement extends AbstractElement {
     protected String wrapDirective() {
         if (isReplaceable()) {
             if (parser.hasReplaceableTarget(source.toString())) {
+                String result = null;
                 boolean isStartWith = source.charAt(2) == parser.getFuzzyQueryChar();
                 boolean isEndWith = source.charAt(source.length() - 1) == parser.getFuzzyQueryChar();
                 if (isStartWith && isEndWith) {
-                    return source.substring(3, source.length() - 1);
+                    result = source.substring(3, source.length() - 1);
                 } else if (isEndWith) {
-                    return source.substring(2, source.length() - 1);
+                    result = source.substring(2, source.length() - 1);
                 } else if (isStartWith) {
-                    return source.substring(3);
+                    result = source.substring(3);
                 } else {
-                    return source.substring(2);
+                    result = source.substring(2);
                 }
+
+                if (!namedParamPlaceholder) {
+                    parser.scanParamName(result, previous != null && previous.getSource().trim().endsWith("in"));
+                    return "?";
+                }
+
+                return result;
             } else {
                 throw new TplException(
                         "replaceable warp directive has no replaceble target, you can give target after $=");

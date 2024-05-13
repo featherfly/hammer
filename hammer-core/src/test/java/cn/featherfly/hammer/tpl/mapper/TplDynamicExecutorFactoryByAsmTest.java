@@ -140,7 +140,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         Long userId = 1L;
 
         GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
-                new HammerConfigImpl());
+                new HammerConfigImpl(true));
 
         User u = mapper.get(userId);
         assertNull(u);
@@ -170,7 +170,8 @@ public class TplDynamicExecutorFactoryByAsmTest {
         Class<User> userClass = User.class;
         Long userId = 1L;
 
-        HammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass), new HammerConfigImpl());
+        HammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
+                new HammerConfigImpl(true));
 
         User u = mapper.get(userId);
         assertNull(u);
@@ -423,6 +424,25 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
             @Override
             public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Map<String, Object> params) {
+
+                return null;
+            }
+
+            @Override
+            public ParamedExecutionExecutor template(String tplExecuteId, Object... params) {
+
+                return null;
+            }
+
+            @Override
+            public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+                    Object... params) {
+
+                return null;
+            }
+
+            @Override
+            public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params) {
 
                 return null;
             }

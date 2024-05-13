@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.tpl;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -32,6 +33,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
+import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
 import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
@@ -56,8 +58,8 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     @BeforeMethod
     public void setup() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .build();
-        HammerConfig config = new HammerConfigImpl();
+                .config(hammerConfig.getTemplateConfig()).build();
+        HammerConfig config = new HammerConfigImpl(devMode);
         parser = config.getTemplateConfig().getTplExecuteIdParser();
         executor = new SqlTplExecutor(config, configFactory, new SqldbFreemarkerTemplateEngine(configFactory), jdbc,
                 mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
@@ -589,6 +591,30 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
+    public void testInParams3() {
+        int resultSize = 4;
+
+        Long[] ids = new Long[] { 1L, 2L, 3L, 4L };
+
+        List<User> users;
+
+        // list
+        users = executor.list(new TplExecuteIdFileImpl("selectIn3", null, parser), User.class, new Object[] { ids });
+        assertEquals(users.size(), resultSize);
+
+        users = executor.list(new TplExecuteIdFileImpl("selectIn3_2", null, parser), User.class, new Object[] { ids });
+        assertEquals(users.size(), resultSize);
+
+        users = executor.list(new TplExecuteIdFileImpl("selectIn3_3", null, parser), User.class,
+                new Object[] { ids, 0 });
+        assertEquals(users.size(), resultSize);
+
+        users = executor.list(new TplExecuteIdFileImpl("selectIn3_4", null, parser), User.class,
+                new Object[] { ids, 0 });
+        assertEquals(users.size(), resultSize);
+    }
+
+    @Test
     public void testSingleTuple2() {
         Integer userId = 1;
         // list
@@ -719,5 +745,33 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
             assertEquals(tuple2.get0().getUser().getId(), tuple2.get1().getId());
         }
+    }
+
+    @Test
+    public void selectConditions2() {
+        Map<String, Object> u = executor.single("selectById2@user",
+                new ChainMapImpl<String, Object>().putChain("id", 1));
+
+        Map<String, Object> uis = executor.single("selectConditions2@user",
+                new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
+                        .putChain("mobile", u.get("mobileNo")) //
+                        .putChain("age", -1) //
+                        .putChain("id", u.get("id")) //
+                        .putChain("password", u.get("password")));
+        assertNotNull(uis);
+        assertEquals(uis.get("id"), u.get("id"));
+        assertEquals(uis.get("mobileNo"), u.get("mobileNo"));
+        assertEquals(uis.get("password"), u.get("password"));
+        assertEquals(uis.get("username"), u.get("username"));
+
+        //        <@and if=age??>id = :id</@and>
+        //        <@and if=age??>age > :age</@and>
+        //        <@and>
+        //        (
+        //            <#if test=username??>username = :username</#if>
+        //            <@or if=password??>password = :password</@or>
+        //            <@or if=mobile??>mobile_no = :mobile</@or>
+        //        )
+        //        </@and>
     }
 }

@@ -50,13 +50,14 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     @BeforeClass
     void setup() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder() //
-                .prefixes("tpl_pre/").preCompile(new FreemarkerTemplatePreProcessor()).build();
+                .prefixes("tpl_pre/").config(hammerConfig.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         //        TransverterManager transverterManager = new TransverterManager();
         //        transverterManager.register(new FuzzyQueryTransverter());
         //        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, transverterManager);
 
-        HammerConfigImpl hammerConfig = new HammerConfigImpl();
+        HammerConfigImpl hammerConfig = new HammerConfigImpl(devMode);
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
                 .buildValidatorFactory().getValidator());
 

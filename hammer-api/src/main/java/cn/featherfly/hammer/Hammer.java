@@ -539,6 +539,15 @@ public interface Hammer {
     /**
      * Template.
      *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the paramed execution executor
+     */
+    ParamedExecutionExecutor template(String tplExecuteId, Object... params);
+
+    /**
+     * Template.
+     *
      * @param tplExecuteIdBuilder the tpl execute id builder
      * @param params              the params
      * @return the paramed execution executor
@@ -549,9 +558,28 @@ public interface Hammer {
     /**
      * Template.
      *
+     * @param tplExecuteIdBuilder the tpl execute id builder
+     * @param params              the params
+     * @return the paramed execution executor
+     */
+    ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+            Object... params);
+
+    /**
+     * Template.
+     *
      * @param tplExecuteId the tpl execute id
      * @param params       the params
      * @return the paramed execution executor
      */
     ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Map<String, Object> params);
+
+    /**
+     * Template.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params       the params
+     * @return the paramed execution executor
+     */
+    ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params);
 }

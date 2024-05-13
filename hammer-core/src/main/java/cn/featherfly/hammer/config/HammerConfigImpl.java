@@ -28,6 +28,23 @@ public class HammerConfigImpl implements HammerConfig {
 
     private TemplateConfigImpl templateConfig = new TemplateConfigImpl();
 
+    private final boolean devMode;
+
+    /**
+     */
+    public HammerConfigImpl() {
+        this(false);
+    }
+
+    /**
+     * Instantiates a new hammer config impl.
+     *
+     * @param devMode the dev mode
+     */
+    public HammerConfigImpl(boolean devMode) {
+        this.devMode = devMode;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -94,5 +111,15 @@ public class HammerConfigImpl implements HammerConfig {
     @Override
     public TemplateConfig getTemplateConfig() {
         return templateConfig;
+    }
+
+    /**
+     * get devMode value
+     *
+     * @return devMode
+     */
+    @Override
+    public boolean isDevMode() {
+        return devMode;
     }
 }

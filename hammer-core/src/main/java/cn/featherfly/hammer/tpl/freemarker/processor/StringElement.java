@@ -13,20 +13,24 @@ public class StringElement extends AbstractElement {
     /**
      * Instantiates a new string element.
      *
-     * @param parser the parser
+     * @param namedParamPlaceholder the named param placeholder
+     * @param previous              the previous
+     * @param parser                the parser
      */
-    public StringElement(Parser parser) {
-        super(parser);
+    public StringElement(boolean namedParamPlaceholder, Element previous, Parser parser) {
+        super(namedParamPlaceholder, previous, parser);
     }
 
     /**
      * Instantiates a new string element.
      *
-     * @param value  the value
-     * @param parser the parser
+     * @param value                 the value
+     * @param namedParamPlaceholder the named param placeholder
+     * @param previous              the previous
+     * @param parser                the parser
      */
-    public StringElement(String value, Parser parser) {
-        super(parser);
+    public StringElement(String value, boolean namedParamPlaceholder, Element previous, Parser parser) {
+        super(namedParamPlaceholder, previous, parser);
         append(value);
     }
 
@@ -55,7 +59,7 @@ public class StringElement extends AbstractElement {
     }
 
     private boolean allow(char c) {
-        // FIXME 这里其实有BUG，如果有转移符在字符串中间，会出问题，但是一般在sql中的参数很少会用到转移符，后续看需不需要处理
+        // FIXME 这里其实有BUG，如果有转义符在字符串中间，会出问题，但是一般在sql中的参数很少会用到转移符，后续看需不需要处理
         if (preSqlStringChar == 0) {
             if (parser.isSqlStringWarpChar(c)) {
                 preSqlStringChar = c; //字符串开始
@@ -74,12 +78,13 @@ public class StringElement extends AbstractElement {
      */
     @Override
     public String getValue() {
-        if (source.toString().trim().equals("(")) {
-            return source.toString().replaceAll("\\(", "");
+        String result = source.toString();
+        if (result.trim().equals("(")) {
+            return result.replaceAll("\\(", "");
         }
-        if (source.toString().trim().equals(")")) {
-            return source.toString().replaceAll("\\)", "");
+        if (result.trim().equals(")")) {
+            return result.replaceAll("\\)", "");
         }
-        return source.toString();
+        return parser.scanParamName(result);
     }
 }

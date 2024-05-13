@@ -2111,6 +2111,28 @@ public abstract class AbstractJdbc implements Jdbc {
         } else {
             manager.set(prep, index, argu);
         }
+        //            else {
+        //            if (argu == null) {
+        //                manager.set(prep, index, argu);
+        //            } else if (argu instanceof Collection) {
+        //                int i = index;
+        //                for (Object arg : (Collection<?>) argu) {
+        //                    manager.set(prep, i, arg);
+        //                    i++;
+        //                }
+        //                return i > index ? i-- : index;
+        //            } else if (argu.getClass().isArray()) {
+        //                int i = 0;
+        //                for (; i < Array.getLength(argu); i++) {
+        //                    Object arg = Array.get(argu, i);
+        //                    manager.set(prep, i, arg);
+        //                }
+        //                return i + index > index ? i + index - 1 : index;
+        //            } else {
+        //                manager.set(prep, index, argu);
+        //            }
+        //        }
+        //        return index;
     }
 
     /**

@@ -1,11 +1,14 @@
 package cn.featherfly.hammer.sqldb.tpl.freemarker.directive;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
+import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
+import cn.featherfly.hammer.tpl.TplExecuteConfig.Param;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.directive.IncludeDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
@@ -42,22 +45,42 @@ public class IncludeDirectiveModel extends IncludeDirective implements Freemarke
         String namespace = getNamespace(params);
         if (Lang.isNotEmpty(namespace)) {
             //            includeTemplateName = file + TplConfigFactory.ID_SIGN + id;
-            includeTemplateName = tplConfigFactory.getParser().format(name, namespace);
+            includeTemplateName = tplConfigFactory.getTemplateConfig().getTplExecuteIdParser().format(name, namespace);
+
+            // ENHANCE 下面的逻辑最优是在预编译的时候执行
+            setIncluded(tplConfigFactory.getConfig(includeTemplateName), tplConfigFactory.getTemplateConfig()
+                    .getTplExecuteIdParser().parse(environment.getCurrentNamespace().getTemplate().getName()));
         } else {
-            TplExecuteId executeId = tplConfigFactory.getParser()
+            TplExecuteId executeId = tplConfigFactory.getTemplateConfig().getTplExecuteIdParser()
                     .parse(environment.getCurrentNamespace().getTemplate().getName());
-            TplExecuteConfig config = tplConfigFactory
-                    .getConfig(tplConfigFactory.getParser().format(name, executeId.getNamespace()));
-            //            TplExecuteConfig config = tplConfigFactory.getConfigs(executeId.getNamespace()).getConfig(name);
-            //            TplExecuteId executeId = new TplExecuteIdFileImpl(name, namespace, )
-            //                    .parse(environment.getCurrentNamespace().getTemplate().getName());
-            //            includeTemplateName = StringUtils.substringBefore(config.getTplName(),
-            //                    tplConfigFactory.getParser().getSeparator()) + tplConfigFactory.getParser().getSeparator() + name;
-            //            includeTemplateName = StringUtils.substringBefore(config.getExecuteId(),
-            //                    tplConfigFactory.getParser().getSeparator()) + tplConfigFactory.getParser().getSeparator() + name;
-            includeTemplateName = config.getExecuteId();
+            TplExecuteConfig includeConfig = tplConfigFactory.getConfig(tplConfigFactory.getTemplateConfig()
+                    .getTplExecuteIdParser().format(name, executeId.getNamespace()));
+            includeTemplateName = includeConfig.getExecuteId();
+
+            // ENHANCE 下面的逻辑最优是在预编译的时候执行
+            setIncluded(includeConfig, executeId);
         }
-        environment.include(environment.getTemplateForInclusion(includeTemplateName, null, true));
+        environment.include(environment.getTemplateForInclusion(includeTemplateName,
+                tplConfigFactory.getTemplateConfig().getCharset().name(), true));
+    }
+
+    private void setIncluded(TplExecuteConfig includeConfig, TplExecuteId tplExecuteId) {
+        if (Lang.isNotEmpty(includeConfig.getParams())) {
+            TplExecuteConfig config = tplConfigFactory.getConfig(tplExecuteId);
+            if (!config.isIncluded()) {
+                LinkedHashSet<Param> ps = new LinkedHashSet<>();
+                CollectionUtils.addAll(ps, config.getParams());
+
+                CollectionUtils.addAll(ps, includeConfig.getParams());
+
+                config.setParams(CollectionUtils.toArray(ps, Param.class));
+                // FIXME 如果引入模板前有参数，引入的模板有参数，引入后还有参数，那么这里的参数顺序是错误的
+                // t1[name, age, t2, gender, t3, descp] t2[price, amount] t3[address, mobile]
+                // 正确顺序是 name, age, price, amount, gender, address, mobile, descp
+                // 当前逻辑的顺序是 name, age, gender, descp, price, amount, address, mobile
+                config.setIncluded(true); //
+            }
+        }
     }
 
     /**

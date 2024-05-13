@@ -60,6 +60,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
         Boolean ifParam = null;
         String nameParam = null;
         String transverterParam = null;
+        boolean force = false;
 
         @SuppressWarnings("unchecked")
         Set<Map.Entry<String, Object>> entrySet = params.entrySet();
@@ -83,9 +84,15 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                     throw new TplException("The \"" + PARAM_NAME_TRANSVERTER + "\" parameter " + "must be a String.");
                 }
                 transverterParam = ((TemplateScalarModel) paramValue).getAsString();
+            } else if (paramName.equals(PARAM_NAME_FORCE)) {
+                if (!(paramValue instanceof TemplateBooleanModel)) {
+                    throw new TplException("The \"" + PARAM_NAME_FORCE + "\" parameter " + "must be a boolean.");
+                }
+                force = ((TemplateBooleanModel) paramValue).getAsBoolean();
             } else {
                 throw new TplException("Unsupported parameter: " + paramName);
             }
+
         }
 
         // ---------------------------------------------------------------------
@@ -112,16 +119,17 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
             } else {
                 String name = nameParam;
                 if (ifParam.booleanValue()) { // 判断!ifParam，在conditionManager里加入filterNames
-                    boolean needAppendLogicWorld = conditionParamsManager.isNeedAppendLogicWorld();
+                    boolean needAppendLogicWorld = force || conditionParamsManager.isNeedAppendLogicWorld();
                     String condition = getContent(body);
                     name = getParamName(name, condition);
 
                     for (String n : getParamNames(name)) {
-                        Param param = new Param();
+                        Param param = null;
                         if (Strings.isNotBlank(transverterParam)) {
-                            param.setTransverter(transverterParam.trim());
+                            param = new Param(n.trim(), transverterParam.trim());
+                        } else {
+                            param = new Param(n.trim());
                         }
-                        param.setName(n.trim());
                         conditionParamsManager.addParam(param);
                     }
 

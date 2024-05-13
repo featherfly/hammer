@@ -23,17 +23,17 @@ selectString: select username from /*<<wrap*/user where id = 1
 selectAvg2: select avg(age) from /*<<wrap*/user where age > :age
 selectString2: select username from /*<<wrap*/user where id = :id
 selectById: select /*<<prop*/* from /*<<wrap*/user where id = :id
+selectById2: select /*<<prop repo='user'*/* from /*<<wrap*/user where id = :id
 selectConditions2: |
-    select /*<<prop alias='r'*/* from /*<<wrap*/user
+    select /*<<prop repo='user'*/* from /*<<wrap*/user
     /*<where*/ where
     /*?*/ id = :id
-    /*??*/ and name like :name
-    /*?*/ and gender = :gender
+    /*??*/ age > :age
     /*<?*/ and
     (
         /*??*/ username = :username
-        /*??*/ or email = :email
-        /*??*/ or mobile = :mobile
+        /*??*/ or password = :password
+        /*??*/ or mobile_no = :mobile
     )
     /*>?*/
     /*>where*/

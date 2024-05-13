@@ -18,9 +18,9 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.AndTemplateDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrTemplateDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereTemplateDirectiveModel;
+import cn.featherfly.hammer.tpl.ExecutionType;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteConfigs;
-import cn.featherfly.hammer.tpl.ExecutionType;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -101,7 +101,7 @@ public class TestTpl {
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         /* Create a data-model */
-        ConditionParamsManager manager = new ConditionParamsManager();
+        ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
         Map<String, Object> root = new HashMap<>();
         root.put("where", new WhereTemplateDirectiveModel());
         root.put("and", new AndTemplateDirectiveModel(manager));
@@ -141,7 +141,7 @@ public class TestTpl {
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         /* Create a data-model */
-        ConditionParamsManager manager = new ConditionParamsManager();
+        ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
         Map<String, Object> root = new HashMap<>();
         root.put("where", new WhereTemplateDirectiveModel());
         root.put("and", new AndTemplateDirectiveModel(manager));

@@ -34,7 +34,8 @@ public class RoleMapperDefineTemplatesTest extends JdbcTestBase {
         basePackages.add("cn.featherfly.hammer.sqldb.tpl");
         configFactory = TplConfigFactoryImpl.builder() //
                 .prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages)
-                .preCompile(new FreemarkerTemplatePreProcessor()).build();
+                .config(hammerConfig.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
 
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
         roleMapper = mapperFactory.newInstance(RoleMapperDefineTemplates.class, hammer, hammerConfig);

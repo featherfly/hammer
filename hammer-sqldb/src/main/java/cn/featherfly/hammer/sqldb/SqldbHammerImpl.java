@@ -52,7 +52,7 @@ import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.transverter.FuzzyQueryTransverter;
-import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutorImpl;
+import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutor;
 import cn.featherfly.hammer.tpl.MapParamedExecutionExecutor;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplExecuteId;
@@ -2288,7 +2288,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public ParamedExecutionExecutor dml(String execution, Object... params) {
-        return new ArrayParamedExecutionExecutorImpl<>(jdbcExecutor, execution, params);
+        return new ArrayParamedExecutionExecutor<>(jdbcExecutor, execution, params);
     }
 
     @Override
@@ -2308,6 +2308,14 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public ParamedExecutionExecutor template(String templateId, Object... params) {
+        return template(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(templateId), params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
             Map<String, Object> params) {
         return template(tplExecuteIdBuilder
@@ -2318,7 +2326,25 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
+    public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+            Object... params) {
+        return template(tplExecuteIdBuilder
+                .apply(new TplExecuteIdBuilderImpl(hammerConfig.getTemplateConfig().getTplExecuteIdParser())), params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Map<String, Object> params) {
         return new MapParamedExecutionExecutor<>(sqlTplExecutor, tplExecuteId, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params) {
+        return new ArrayParamedExecutionExecutor<>(sqlTplExecutor, tplExecuteId, params);
     }
 }

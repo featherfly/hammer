@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,9 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
+import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
+import cn.featherfly.hammer.tpl.TplExecuteConfig.ParamsFormat;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.Transverter;
@@ -46,6 +50,34 @@ import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
  * sql template executor .
  *
  * @author zhongj
+ */
+/*
+ * ENHANCE 模板预编译直接把命名参数sql（name = :name）改为jdbc原生sql（name = ?）
+ * 1. 处理in的问题，把in参数占位符部分(?,? ... ,?)作为模板的一个参数 即 ids in :ids 改为 ids in ${_ids}
+ * 2. TplConfig加入sql类型的配置(Boolean namedSql)，此类通过namedSql进行不同的方法调用，为空则表示需要程序读取sql内容进行判断
+ * 3. MAPPER传入的参数需要加入数组索引(array inde）的映射信息，用于在执行此类更好的处理数组索引(array inde）的问题，
+ *     因为MAPPER调用是固定的，版本发布就定好了，但是模板确可以是两种形式（name = :name 或者name = ?）所以需要知道映射信息
+ *     映射信息可以自定义一个类，放在数组的第一个或者MAP的一个特性的key映射，此类按照规则拿出来，再判断一下类型是否匹配，就能处理了
+ *
+ *     name     0
+ *     pwd       1
+ *     age        3
+ *     state      2
+ *     gender   4
+ *     select * from user u where u.name = ? and u.pwd =? and state in ${_state}  and u.gender =? and u.age = ?
+ *     {name:"yufei", age:"18"}
+ *     select * from user u where u.name = ? and u.age = ?
+ *     {name:"yufei", age:"18", gender: "MALE", state:[1,2,3]}
+ *     select * from user u where u.name = ? and u.age = ? and u.state in (?,?,?) and u.gender = ?
+ *
+ *     实现方式，把命名参数的顺序定义出来，就没问题了
+ *     String[] names = new String[] { "name", "pwd", "state", "age", "gender" };
+ *     Map<String, Object> params = new ChainMapImpl<String, Object>().putChain("name", "yufei").putChain("pwd", "123")
+                .putChain("age", 18).putChain("state", new int[] { 1, 2 }).putChain("gender", "MALE");
+        Set<String> filterNames = Lang.set("age");
+        Object[] ps = Arrays.stream(names).filter(e -> !filterNames.contains(e)).map(name -> params.get(name))
+                .toArray();
+        System.out.println(ArrayUtils.toString(ps));
  */
 public class SqlTplExecutor implements TplExecutor {
 
@@ -141,13 +173,12 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
         String sql = tuple3.get0();
         ConditionParamsManager manager = tuple3.get2();
-        return jdbc.querySingle(sql, getEffectiveParamMap(params, manager));
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            return jdbc.querySingle(sql, getEffectiveParamMap(params, manager));
-        //        } else {
-        //            return jdbc.querySingle(sql, getEffectiveParamArray(params, manager));
-        //        }
+        TplExecuteConfig config = tuple3.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -163,17 +194,16 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, entityType);
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
-        return jdbc.querySingle(sql, entityType, getEffectiveParamMap(params, manager));
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            return jdbc.querySingle(sql, entityType, getEffectiveParamMap(params, manager));
-        //        } else {
-        //            return jdbc.querySingle(sql, entityType, getEffectiveParamArray(params, manager));
-        //        }
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -197,10 +227,16 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-
-        return jdbc.querySingle(sql, entityType1, entityType2,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -223,7 +259,13 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.querySingle(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -247,10 +289,19 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.querySingle(
-                sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0).getAlias() + ".",
-                        propManager.getValue(1).getAlias() + ".", propManager.getValue(2).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(
+                    sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0).getAlias() + ".",
+                            propManager.getValue(1).getAlias() + ".", propManager.getValue(2).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+
+        } else {
+            return jdbc.querySingle(
+                    sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0).getAlias() + ".",
+                            propManager.getValue(1).getAlias() + ".", propManager.getValue(2).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -274,8 +325,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -299,10 +356,18 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
-                        propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -327,8 +392,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -354,11 +425,20 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
-                        propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
-                        propManager.getValue(4).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -383,8 +463,15 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                    getEffectiveParamMap(params, manager));
+
+        }
     }
 
     /**
@@ -410,11 +497,20 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
-                        propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
-                        propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -441,8 +537,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                prefixes, getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    prefixes, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.querySingle(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    prefixes, getEffectiveParamMap(params, manager));
+        }
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -460,11 +562,16 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public Map<String, Object> unique(TplExecuteId tplExecuteId, Map<String, Object> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
-        return jdbc.queryUnique(sql, getEffectiveParamMap(params, manager));
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -480,11 +587,16 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <E> E unique(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, entityType);
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
-        return jdbc.queryUnique(sql, entityType, getEffectiveParamMap(params, manager));
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -508,10 +620,16 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-
-        return jdbc.queryUnique(sql, entityType1, entityType2,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -534,7 +652,13 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.queryUnique(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -558,10 +682,19 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.queryUnique(
-                sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0).getAlias() + ".",
-                        propManager.getValue(1).getAlias() + ".", propManager.getValue(2).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(
+                    sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0).getAlias() + ".",
+                            propManager.getValue(1).getAlias() + ".", propManager.getValue(2).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+
+        } else {
+            return jdbc.queryUnique(
+                    sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0).getAlias() + ".",
+                            propManager.getValue(1).getAlias() + ".", propManager.getValue(2).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -585,8 +718,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -610,10 +749,18 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
-                        propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -638,8 +785,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -665,11 +818,20 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
-                        propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
-                        propManager.getValue(4).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -694,8 +856,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -721,11 +889,20 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
-                        propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
-                        propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
+                            propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
+                            propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -752,8 +929,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                prefixes, getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    prefixes, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryUnique(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    prefixes, getEffectiveParamMap(params, manager));
+        }
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -775,13 +958,13 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.query(sql, getEffectiveParamMap(params, manager));
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            return jdbc.query(sql, getEffectiveParamMap(params, manager));
-        //        } else {
-        //            return jdbc.query(sql, getEffectiveParamArray(params, manager));
-        //        }
+        TplExecuteConfig config = tuple4.get1();
+        // after getQueryExecution
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -801,13 +984,13 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.query(sql, entityType, getEffectiveParamMap(params, manager));
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            return jdbc.query(sql, entityType, getEffectiveParamMap(params, manager));
-        //        } else {
-        //            return jdbc.query(sql, entityType, getEffectiveParamArray(params, manager));
-        //        }
+        TplExecuteConfig config = tuple4.get1();
+        // after getQueryExecution
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -869,9 +1052,16 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.query(sql, entityType1, entityType2,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2,
+                    Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -913,7 +1103,12 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.query(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, prefixes, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -956,9 +1151,18 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.query(sql, entityType1, entityType2, entityType3,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(
+                    sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0) + ".",
+                            propManager.getValue(1) + ".", propManager.getValue(2) + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(
+                    sql, entityType1, entityType2, entityType3, Tuples.of(propManager.getValue(0) + ".",
+                            propManager.getValue(1) + ".", propManager.getValue(2) + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1001,7 +1205,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.query(sql, entityType1, entityType2, entityType3, prefixes, getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1046,10 +1257,18 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.query(
-                sql, entityType1, entityType2, entityType3, entityType4, Tuples.of(propManager.getValue(0) + ".",
-                        propManager.getValue(1) + ".", propManager.getValue(2) + ".", propManager.getValue(3) + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4,
+                    Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".",
+                            propManager.getValue(2) + ".", propManager.getValue(3) + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4,
+                    Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".",
+                            propManager.getValue(2) + ".", propManager.getValue(3) + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1096,8 +1315,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1145,10 +1370,20 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
-                        propManager.getValue(3) + ".", propManager.getValue(4) + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                    Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".",
+                            propManager.getValue(2) + ".", propManager.getValue(3) + ".",
+                            propManager.getValue(4) + "."),
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                    Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".",
+                            propManager.getValue(2) + ".", propManager.getValue(3) + ".",
+                            propManager.getValue(4) + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1195,8 +1430,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                    getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1257,10 +1498,21 @@ public class SqlTplExecutor implements TplExecutor {
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         PropertiesMappingManager propManager = tuple4.get3();
-        return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
-                        propManager.getValue(3) + ".", propManager.getValue(4) + ".", propManager.getValue(5) + "."),
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".",
+                            propManager.getValue(2) + ".", propManager.getValue(3) + ".", propManager.getValue(4) + ".",
+                            propManager.getValue(5) + "."),
+                    getEffectiveParamArray(params, manager, config));
+
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".",
+                            propManager.getValue(2) + ".", propManager.getValue(3) + ".", propManager.getValue(4) + ".",
+                            propManager.getValue(5) + "."),
+                    getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1311,8 +1563,14 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6, prefixes,
-                getEffectiveParamMap(params, manager));
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    prefixes, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.query(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                    prefixes, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1348,28 +1606,7 @@ public class SqlTplExecutor implements TplExecutor {
         Tuple5<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> listTuple = findList(
                 tplExecuteId, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(
-                count(tplExecuteId, listTuple.get1(), params, listTuple.get4(), listTuple.get3(), listTuple.get2()));
-        //        String countSql = null;
-        //        ConditionParamsManager manager = null;
-        //        TplExecuteConfig config = listTuple.get2();
-        //        if (Lang.isEmpty(config.getCount())) {
-        //            countSql = SqlUtils.convertSelectToCount(listTuple.get1());
-        //            manager = listTuple.get3();
-        //        } else {
-        //            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(tplExecuteId, params, config);
-        //            countSql = countTuple.get0();
-        //            manager = countTuple.get1();
-        //        }
-        //        pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(listTuple.get4(), manager)));
-
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        // 默认使用namedParameter
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(listTuple.get4(), manager)));
-        //        } else {
-        //            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamArray(listTuple.get4(), manager)));
-        //        }
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
     }
 
@@ -1394,27 +1631,8 @@ public class SqlTplExecutor implements TplExecutor {
         Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> listTuple = findList(
                 tplExecuteId, entityType, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(
-                count(tplExecuteId, listTuple.get1(), params, listTuple.get4(), listTuple.get3(), listTuple.get2()));
-        //        String countSql = null;
-        //        ConditionParamsManager manager = null;
-        //        TplExecuteConfig config = listTuple.get2();
-        //        if (Lang.isEmpty(config.getCount())) {
-        //            countSql = SqlUtils.convertSelectToCount(listTuple.get1());
-        //            manager = listTuple.get3();
-        //        } else {
-        //            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(tplExecuteId, params, config);
-        //            countSql = countTuple.get0();
-        //            manager = countTuple.get1();
-        //        }
-        //        pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(listTuple.get4(), manager)));
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        // 默认使用namedParameter
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(listTuple.get4(), manager)));
-        //        } else {
-        //            pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamArray(listTuple.get4(), manager)));
-        //        }
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
+
         return pagination;
     }
 
@@ -1457,8 +1675,7 @@ public class SqlTplExecutor implements TplExecutor {
         Tuple5<List<Tuple2<R1, R2>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> listTuple = findList(
                 tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(
-                count(tplExecuteId, listTuple.get1(), params, listTuple.get4(), listTuple.get3(), listTuple.get2()));
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
     }
 
@@ -1505,8 +1722,7 @@ public class SqlTplExecutor implements TplExecutor {
         Tuple5<List<Tuple3<R1, R2, R3>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> listTuple = findList(
                 tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(
-                count(tplExecuteId, listTuple.get1(), params, listTuple.get4(), listTuple.get3(), listTuple.get2()));
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
     }
 
@@ -1554,8 +1770,7 @@ public class SqlTplExecutor implements TplExecutor {
         Tuple5<List<Tuple4<R1, R2, R3, R4>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> listTuple = findList(
                 tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(
-                count(tplExecuteId, listTuple.get1(), params, listTuple.get4(), listTuple.get3(), listTuple.get2()));
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
     }
 
@@ -1618,8 +1833,7 @@ public class SqlTplExecutor implements TplExecutor {
         //            manager = countTuple.get1();
         //        }
         //        pagination.setTotal(jdbc.queryInt(countSql, getEffectiveParamMap(listTuple.get4(), manager)));
-        pagination.setTotal(
-                count(tplExecuteId, listTuple.get1(), params, listTuple.get4(), listTuple.get3(), listTuple.get2()));
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
     }
 
@@ -1674,8 +1888,7 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6, prefixes,
                 params, offset, limit);
         pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(
-                count(tplExecuteId, listTuple.get1(), params, listTuple.get4(), listTuple.get3(), listTuple.get2()));
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
     }
 
@@ -1696,13 +1909,12 @@ public class SqlTplExecutor implements TplExecutor {
                 tplExecuteId, params, valueType);
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        return jdbc.queryValue(sql, valueType, getEffectiveParamMap(params, manager));
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            return jdbc.queryValue(sql, valueType, getEffectiveParamMap(params, manager));
-        //        } else {
-        //            return jdbc.queryValue(sql, valueType, getEffectiveParamArray(params, manager));
-        //        }
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryValue(sql, valueType, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryValue(sql, valueType, getEffectiveParamMap(params, manager));
+        }
     }
 
     /**
@@ -1788,9 +2000,56 @@ public class SqlTplExecutor implements TplExecutor {
         //        return numberDouble(tplExecuteId, params);
     }
 
+    // ****************************************************************************************************************
+
+    private Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> getQueryExecution(
+            TplExecuteId tplExecuteId, Object[] params, Class<?>... resultTypes) {
+        TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
+        if (config.getParamsFormat() == ParamsFormat.NAME) {
+            throw new TplException(
+                    "ParamsFormat is set to INDEX in the template. MAP cannot be used to pass parameters");
+        }
+
+        Map<String, Object> paramMap = new HashMap<>();
+        for (int i = 0; i < params.length; i++) {
+            // process in params
+            if (config.getInParamIndexs().contains(i)) {
+                String name = hammerConfig.getTemplateConfig().getParamIndexToName().apply(i);
+                paramMap.put(hammerConfig.getTemplateConfig().getInParamPlaceholderName().apply(name),
+                        SqlUtils.convertInParamsPlaceholder(params[i]));
+                paramMap.put(name, params[i]);
+            } else {
+                paramMap.put(hammerConfig.getTemplateConfig().getParamIndexToName().apply(i), params[i]);
+            }
+        }
+
+        Tuple3<String, ConditionParamsManager, PropertiesMappingManager> tuple3 = getExecution(tplExecuteId.getId(),
+                config.getContent(), paramMap, resultTypes);
+        logger.debug("tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", tplExecuteId, tuple3.get0(),
+                config.getContent());
+        return Tuples.of(tuple3.get0(), config, tuple3.get1(), tuple3.get2());
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
     private Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> getQueryExecution(
             TplExecuteId tplExecuteId, Map<String, Object> params, Class<?>... resultTypes) {
         TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
+        if (config.getParamsFormat() == ParamsFormat.INDEX
+                && (config.getParams() == null || config.getParamNames() == null)) {
+            throw new TplException(
+                    "ParamsFormat is set to INDEX in the template and (paramNames|params) is empty, MAP cannot be used to pass parameters");
+        }
+
+        // process in params
+        for (String inParamName : config.getInParamNames()) {
+            Object value = params.get(inParamName);
+            if (value != null) {
+                params.put(hammerConfig.getTemplateConfig().getInParamPlaceholderName().apply(inParamName),
+                        SqlUtils.convertInParamsPlaceholder(value));
+            }
+        }
+
         Tuple3<String, ConditionParamsManager, PropertiesMappingManager> tuple3 = getExecution(tplExecuteId.getId(),
                 config.getContent(), params, resultTypes);
         logger.debug("tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", tplExecuteId, tuple3.get0(),
@@ -1811,19 +2070,18 @@ public class SqlTplExecutor implements TplExecutor {
     /**
      * Gets the count execution.
      *
-     * @param tplExecuteId the tpl execute id
-     * @param params       the params
-     * @param config       the config
-     * @param resultType   the result type
+     * @param params the params
+     * @param config the config
      * @return the count execution
      */
-    private Tuple2<String, ConditionParamsManager> getCountExecution(TplExecuteId tplExecuteId,
-            Map<String, Object> params, TplExecuteConfig config) {
-        String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
+    private Tuple2<String, ConditionParamsManager> getCountExecution(Map<String, Object> params,
+            TplExecuteConfig config) {
+        //        String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
+        String templateName = config.getExecuteId() + TplConfigFactory.COUNT_SUFFIX;
         Tuple3<String, ConditionParamsManager, PropertiesMappingManager> result = getExecution(templateName,
                 config.getCount(), params, ArrayUtils.EMPTY_CLASS_ARRAY);
-        logger.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", tplExecuteId, result.get0(),
-                config.getCount());
+        logger.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", config.getExecuteId(),
+                result.get0(), config.getCount());
         return Tuples.of(result.get0(), result.get1());
     }
 
@@ -1862,13 +2120,15 @@ public class SqlTplExecutor implements TplExecutor {
     private Tuple3<String, ConditionParamsManager, PropertiesMappingManager> getExecution(String templateName,
             String sql, Map<String, Object> params, Class<?>... resultTypes) {
         logger.debug("execute template name : {}", templateName);
-        ConditionParamsManager conditionParamsManager = new ConditionParamsManager();
+        ConditionParamsManager conditionParamsManager = new ConditionParamsManager(
+                hammerConfig.getTemplateConfig().getParamIndexToName());
         PropertiesMappingManager propertiesMappingManager = new PropertiesMappingManager();
 
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
         SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> templateProcessEnv = createTemplateProcessEnv(
                 conditionParamsManager, propertiesMappingManager, resultTypes);
+
         String result = templateEngine.process(templateName, sql, params, templateProcessEnv);
         return Tuples.of(result, conditionParamsManager, propertiesMappingManager);
     }
@@ -1909,26 +2169,19 @@ public class SqlTplExecutor implements TplExecutor {
         List<Map<String, Object>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
 
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-                getEffectiveParamMap(params, manager));
-        list = jdbc.query(sqlPageQuery.getSql(), sqlPageQuery.getParams());
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        // 默认使用namedParameter
-        //                if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
-        //                    limit, getEffectiveParamMap(params, manager));
-        //            list = jdbc.query(sqlPageQuery.getSql(), sqlPageQuery.getParams());
-        //            //            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit),
-        //            //                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParamMap(params, manager), offset, limit));
-        //        } else {
-        //            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-        //                    getEffectiveParamArray(params, manager));
-        //            list = jdbc.query(sqlPageQuery.getSql(), sqlPageQuery.getParams());
-        //            //            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), jdbc.getDialect()
-        //            //                    .getPaginationSqlParameter(getEffectiveParamArray(params, tuple3.get2()), offset, limit));
-        //        }
-        return Tuples.of(list, sql, tuple4.get1(), manager, params);
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+                    getEffectiveParamArray(params, manager, config));
+            list = jdbc.query(sqlPageQuery.getSql(), sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
+        } else {
+            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+                    limit, getEffectiveParamMap(params, manager));
+            list = jdbc.query(sqlPageQuery.getSql(), sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
+        }
     }
 
     private <E> Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
@@ -1938,73 +2191,68 @@ public class SqlTplExecutor implements TplExecutor {
         List<E> list = null;
         String sql = tuple3.get0();
         ConditionParamsManager manager = tuple3.get2();
-
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-                getEffectiveParamMap(params, manager));
-        list = jdbc.query(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
-        // 模板SQL不支持默认占位符 xxx = ?
-        //        // 默认使用namedParameter
-        //        if (manager.getParamNamed() == null || manager.getParamNamed()) {
-        //            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
-        //                    limit, getEffectiveParamMap(params, manager));
-        //            list = jdbc.query(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
-        //            //            list = jdbc.query(jdbc.getDialect().getParamNamedPaginationSql(sql, offset, limit), entityType,
-        //            //                    jdbc.getDialect().getPaginationSqlParameter(getEffectiveParamMap(params, manager), offset, limit));
-        //        } else {
-        //            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-        //                    getEffectiveParamArray(params, manager));
-        //            list = jdbc.query(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
-        //            //            list = jdbc.query(jdbc.getDialect().getPaginationSql(sql, offset, limit), entityType, jdbc.getDialect()
-        //            //                    .getPaginationSqlParameter(getEffectiveParamArray(params, manager), offset, limit));
-        //        }
-        return Tuples.of(list, sql, tuple3.get1(), manager, params);
+        TplExecuteConfig config = tuple3.get1();
+        // after getQueryExecution
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+                    getEffectiveParamArray(params, manager, config));
+            list = jdbc.query(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple3.get1(), manager, getEffectiveParamMap(params, manager));
+        } else {
+            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+                    limit, getEffectiveParamMap(params, manager));
+            list = jdbc.query(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple3.get1(), manager, sqlPageQuery.getParams());
+        }
     }
 
     private <E1,
             E2> Tuple5<List<Tuple2<E1, E2>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
                     TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
                     Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, entityType1, entityType2);
         List<Tuple2<E1, E2>> list = null;
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
         SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamMap(params, manager));
         if (prefixes == null) {
-            PropertiesMappingManager propManager = tuple3.get3();
+            PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2,
                     Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
                     sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, prefixes, sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
         }
-        return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
     private <E1, E2,
             E3> Tuple5<List<Tuple3<E1, E2, E3>>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
                     TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2, Class<E3> entityType3,
                     Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, entityType1, entityType2);
         List<Tuple3<E1, E2, E3>> list = null;
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
         SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamMap(params, manager));
         if (prefixes == null) {
-            PropertiesMappingManager propManager = tuple3.get3();
+            PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc
                     .query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3,
                             Tuples.of(propManager.getValue(0).getAlias() + ".",
                                     propManager.getValue(1).getAlias() + ".", propManager.getValue(2).getAlias() + "."),
                             sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, prefixes,
                     sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
         }
-        return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
     private <E1, E2, E3,
@@ -2012,24 +2260,25 @@ public class SqlTplExecutor implements TplExecutor {
                     TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2, Class<E3> entityType3,
                     Class<E4> entityType4, Tuple4<String, String, String, String> prefixes, Map<String, Object> params,
                     int offset, int limit) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, entityType1, entityType2);
         List<Tuple4<E1, E2, E3, E4>> list = null;
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
         SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamMap(params, manager));
         if (prefixes == null) {
-            PropertiesMappingManager propManager = tuple3.get3();
+            PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4,
                     Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
                             propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + "."),
                     sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4, prefixes,
                     sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
         }
-        return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
     private <E1, E2, E3, E4,
@@ -2038,25 +2287,26 @@ public class SqlTplExecutor implements TplExecutor {
                     Class<E4> entityType4, Class<E5> entityType5,
                     Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
                     int limit) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, entityType1, entityType2);
         List<Tuple5<E1, E2, E3, E4, E5>> list = null;
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
         SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamMap(params, manager));
         if (prefixes == null) {
-            PropertiesMappingManager propManager = tuple3.get3();
+            PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4, entityType5,
                     Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
                             propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
                             propManager.getValue(4).getAlias() + "."),
                     sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4, entityType5,
                     prefixes, sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
         }
-        return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
     private <E1, E2, E3, E4, E5,
@@ -2065,45 +2315,66 @@ public class SqlTplExecutor implements TplExecutor {
                     Class<E4> entityType4, Class<E5> entityType5, Class<E6> entityType6,
                     Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params,
                     int offset, int limit) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple3 = getQueryExecution(
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
                 tplExecuteId, params, entityType1, entityType2);
         List<Tuple6<E1, E2, E3, E4, E5, E6>> list = null;
-        String sql = tuple3.get0();
-        ConditionParamsManager manager = tuple3.get2();
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
         SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamMap(params, manager));
         if (prefixes == null) {
-            PropertiesMappingManager propManager = tuple3.get3();
+            PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4, entityType5,
                     entityType6,
                     Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + ".",
                             propManager.getValue(2).getAlias() + ".", propManager.getValue(3).getAlias() + ".",
                             propManager.getValue(4).getAlias() + ".", propManager.getValue(5).getAlias() + "."),
                     sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
             list = jdbc.query(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4, entityType5,
                     entityType6, prefixes, sqlPageQuery.getParams());
+            return Tuples.of(list, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
         }
-        return Tuples.of(list, sql, tuple3.get1(), manager, params);
     }
 
-    private <T extends Tuple> int count(TplExecuteId tplExecuteId, String sql, Map<String, Object> params,
-            Map<String, Object> paramsWithLimit, ConditionParamsManager conditionParamsManager,
-            TplExecuteConfig config) {
+    private <T extends Tuple> int count(String sql, Map<String, Object> effectiveParams,
+            ConditionParamsManager conditionParamsManager, TplExecuteConfig config) {
         String countSql = null;
         ConditionParamsManager manager = null;
         if (Lang.isEmpty(config.getCount())) {
             countSql = SqlUtils.convertSelectToCount(sql);
             manager = conditionParamsManager;
         } else {
-            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(tplExecuteId, params, config);
+            Tuple2<String, ConditionParamsManager> countTuple = getCountExecution(effectiveParams, config);
             countSql = countTuple.get0();
             manager = countTuple.get1();
         }
-        return jdbc.queryInt(countSql, getEffectiveParamMap(paramsWithLimit, manager));
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryInt(countSql, getEffectiveParamArray(effectiveParams, manager, config));
+        } else {
+            return jdbc.queryInt(countSql, effectiveParams);
+        }
     }
 
-    private Map<String, Object> getEffectiveParamMap(Map<String, Object> params, ConditionParamsManager manager) {
+    private Object[] getEffectiveParamArray(Object[] params, ConditionParamsManager manager) {
+        List<Object> paramList = new ArrayList<>(params.length);
+        for (int i = 0; i < params.length; i++) {
+            if (manager.filterParamIndex(i)) {
+                continue;
+            }
+            Lang.eachObj(params[i], o -> paramList.add(o));
+        }
+        return paramList.toArray();
+    }
+
+    private Object[] getEffectiveParamArray(final Map<String, Object> params, ConditionParamsManager manager,
+            TplExecuteConfig config) {
+        return Arrays.stream(config.getParams()).filter(p -> !manager.filterParamName(p.getName()))
+                .map(p -> transvert(p.getName(), params.get(p.getName()), manager)).toArray();
+    }
+
+    private Map<String, Object> getEffectiveParamMap(final Map<String, Object> params, ConditionParamsManager manager) {
         return params.entrySet().stream().filter(t -> {
             return !manager.filterParamName(t.getKey());
         }).collect(Collectors.toMap(e -> {
@@ -2113,17 +2384,24 @@ public class SqlTplExecutor implements TplExecutor {
         }));
     }
 
+    private Object transvert(Param param, Object value, ConditionParamsManager manager) {
+        if (param != null && Lang.isNotEmpty(param.getTransverter())) {
+            Transverter transverter = transverterManager.getExist(param.getTransverter());
+            return transverter.transvert(param.getTransverter(), value);
+        }
+        return value;
+    }
+
+    //    private Object transvert(int index, Object value, ConditionParamsManager manager) {
+    //        return transvert(manager.getParam(index), value, manager);
+    //    }
+
     private Object transvert(String name, Object value, ConditionParamsManager manager) {
         // YUFEI_TEST 调用前已经吧value == null的过滤了，不确定IgnorePolicy会否影响，后续测试
         //        if (value == null) {
         //            return value;
         //        }
-        Param p = manager.getParam(name);
-        if (p != null && Lang.isNotEmpty(p.getTransverter())) {
-            Transverter transverter = transverterManager.getExist(p.getTransverter());
-            return transverter.transvert(p.getTransverter(), value);
-        }
-        return value;
+        return transvert(manager.getParam(name), value, manager);
     }
 
     /**
@@ -2143,7 +2421,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int execute(TplExecuteId execution, Object... params) {
+    public int execute(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2152,7 +2430,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public boolean bool(TplExecuteId execution, Object... params) {
+    public boolean bool(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2161,7 +2439,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int intValue(TplExecuteId execution, Object... params) {
+    public int intValue(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2170,7 +2448,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public long longValue(TplExecuteId execution, Object... params) {
+    public long longValue(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2179,7 +2457,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public double doubleValue(TplExecuteId execution, Object... params) {
+    public double doubleValue(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2188,7 +2466,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <V> V value(TplExecuteId execution, Class<V> valueType, Object... params) {
+    public <V> V value(TplExecuteId tplExecuteId, Class<V> valueType, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2197,7 +2475,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(TplExecuteId execution, Object... params) {
+    public Map<String, Object> single(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2206,7 +2484,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T single(TplExecuteId execution, Class<T> mapType, Object... params) {
+    public <T> T single(TplExecuteId tplExecuteId, Class<T> mapType, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2215,7 +2493,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> Tuple2<T1, T2> single(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2> Tuple2<T1, T2> single(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Tuple2<String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2225,7 +2503,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> Tuple3<T1, T2, T3> single(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2, T3> Tuple3<T1, T2, T3> single(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2235,7 +2513,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> single(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> single(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
             Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2246,7 +2524,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> single(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> single(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
             Tuple5<String, String, String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2257,7 +2535,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> single(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> single(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5, Class<T6> mapType6,
             Tuple6<String, String, String, String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2268,7 +2546,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique(TplExecuteId execution, Object... params) {
+    public Map<String, Object> unique(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2277,7 +2555,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T unique(TplExecuteId execution, Class<T> mapType, Object... params) {
+    public <T> T unique(TplExecuteId tplExecuteId, Class<T> mapType, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2286,7 +2564,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> Tuple2<T1, T2> unique(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2> Tuple2<T1, T2> unique(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Tuple2<String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2296,7 +2574,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> Tuple3<T1, T2, T3> unique(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2, T3> Tuple3<T1, T2, T3> unique(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2306,7 +2584,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> unique(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> unique(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
             Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2317,7 +2595,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> unique(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> unique(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
             Tuple5<String, String, String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2328,7 +2606,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> unique(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> unique(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5, Class<T6> mapType6,
             Tuple6<String, String, String, String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2339,7 +2617,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId execution, Object... params) {
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2348,7 +2626,19 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId execution, Class<T> mapType, Object... params) {
+    public <T> List<T> list(TplExecuteId tplExecuteId, Class<T> mapType, Object... params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+                tplExecuteId, params, mapType);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        return jdbc.query(sql, mapType, getEffectiveParamArray(params, manager));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2357,7 +2647,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId execution, Object[] params, int offset, int limit) {
+    public <T> List<T> list(TplExecuteId tplExecuteId, Class<T> mapType, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2366,16 +2656,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId execution, Class<T> mapType, Object[] params, int offset, int limit) {
-        // NOIMPL 模板执行未实现参数为数组的情况
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2> List<Tuple2<T1, T2>> list(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2> List<Tuple2<T1, T2>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Tuple2<String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2385,7 +2666,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> List<Tuple2<T1, T2>> list(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2> List<Tuple2<T1, T2>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Tuple2<String, String> prefixes, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2395,7 +2676,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> list(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2405,7 +2686,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> list(TplExecuteId execution, Class<T1> mapType1, Class<T2> mapType2,
+    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
             Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2415,7 +2696,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> list(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
             Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2426,7 +2707,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> list(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
             Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2437,7 +2718,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> list(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
             Tuple5<String, String, String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2448,7 +2729,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> list(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
             Tuple5<String, String, String, String, String> prefixes, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2459,7 +2740,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> list(TplExecuteId execution,
+    public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> list(TplExecuteId tplExecuteId,
             Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
             Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes, Object... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2470,7 +2751,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> list(TplExecuteId execution,
+    public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> list(TplExecuteId tplExecuteId,
             Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
             Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes, Object[] params,
             int offset, int limit) {
@@ -2482,7 +2763,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(TplExecuteId execution, Object[] params, int offset,
+    public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Object[] params, int offset,
             int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2492,7 +2773,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> PaginationResults<T> pagination(TplExecuteId execution, Class<T> mapType, Object[] params, int offset,
+    public <T> PaginationResults<T> pagination(TplExecuteId tplExecuteId, Class<T> mapType, Object[] params, int offset,
             int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2502,7 +2783,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> PaginationResults<Tuple2<T1, T2>> pagination(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2> PaginationResults<Tuple2<T1, T2>> pagination(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Tuple2<String, String> prefixes, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2512,7 +2793,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> PaginationResults<Tuple3<T1, T2, T3>> pagination(TplExecuteId execution, Class<T1> mapType1,
+    public <T1, T2, T3> PaginationResults<Tuple3<T1, T2, T3>> pagination(TplExecuteId tplExecuteId, Class<T1> mapType1,
             Class<T2> mapType2, Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object[] params,
             int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2523,7 +2804,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> PaginationResults<Tuple4<T1, T2, T3, T4>> pagination(TplExecuteId execution,
+    public <T1, T2, T3, T4> PaginationResults<Tuple4<T1, T2, T3, T4>> pagination(TplExecuteId tplExecuteId,
             Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4,
             Tuple4<String, String, String, String> prefixes, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2534,7 +2815,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> PaginationResults<Tuple5<T1, T2, T3, T4, T5>> pagination(TplExecuteId execution,
+    public <T1, T2, T3, T4, T5> PaginationResults<Tuple5<T1, T2, T3, T4, T5>> pagination(TplExecuteId tplExecuteId,
             Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
             Tuple5<String, String, String, String, String> prefixes, Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
@@ -2545,10 +2826,10 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> PaginationResults<Tuple6<T1, T2, T3, T4, T5, T6>> pagination(TplExecuteId execution,
-            Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-            Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes, Object[] params,
-            int offset, int limit) {
+    public <T1, T2, T3, T4, T5, T6> PaginationResults<Tuple6<T1, T2, T3, T4, T5, T6>> pagination(
+            TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4,
+            Class<T5> mapType5, Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes,
+            Object[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }

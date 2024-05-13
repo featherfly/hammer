@@ -43,7 +43,8 @@ public class SqlDbTemplateProcessEnvTest extends JdbcTestBase {
 
         env.setConfigFactory(configFactory);
         env.setDialect(jdbc.getDialect());
-        env.setConditionParamsManager(new ConditionParamsManager());
+        env.setConditionParamsManager(
+                new ConditionParamsManager(hammerConfig.getTemplateConfig().getParamIndexToName()));
         env.setPropertiesMappingManager(new PropertiesMappingManager());
         env.setMappingFactory(mappingFactory);
         env.setResultTypes(String.class);

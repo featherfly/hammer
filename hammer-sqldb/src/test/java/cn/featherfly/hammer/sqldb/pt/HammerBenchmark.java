@@ -26,7 +26,9 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.config.TemplateConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
@@ -56,8 +58,11 @@ public class HammerBenchmark extends AbstractBenchmark {
 
         SqlTypeMappingManager sqlTypeMappingManager = new SqlTypeMappingManager();
 
+        HammerConfig config = new HammerConfigImpl();
+
         TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .basePackages(basePackages).preCompile(new FreemarkerTemplatePreProcessor()).build();
+                .basePackages(basePackages).config(config.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(new TemplateConfigImpl())).build();
 
         //        SqlPageFactory sqlPageFactory = new SimpleSqlPageFactory();
 

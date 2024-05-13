@@ -21,6 +21,13 @@ import cn.featherfly.hammer.config.tpl.TemplateConfig;
 public interface HammerConfig {
 
     /**
+     * Checks if is dev mode.
+     *
+     * @return true, if is dev mode
+     */
+    boolean isDevMode();
+
+    /**
      * Gets the dsl config.
      *
      * @return the dsl config

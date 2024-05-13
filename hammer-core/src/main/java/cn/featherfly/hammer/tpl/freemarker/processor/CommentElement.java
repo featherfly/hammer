@@ -14,8 +14,8 @@ public class CommentElement extends AbstractElement {
      * @param source the source
      * @param parser the parser
      */
-    public CommentElement(String source, Parser parser) {
-        super(source, parser);
+    public CommentElement(String source, Element previous, Parser parser) {
+        super(source, true, parser);
     }
 
     /**

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -14,6 +15,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -41,10 +43,18 @@ public class TestBase {
     protected String username2 = "featherfly";
     protected int age2 = 5;
 
+    public boolean devMode = true;
+
+    @BeforeSuite
+    @Parameters({ "devMode" })
+    public void _beforeSuite(@Optional("mysql") boolean devMode) throws IOException {
+        this.devMode = devMode;
+    }
+
     @BeforeTest
     public void _beforeTest() {
         System.err
-            .println("currentThread: " + Thread.currentThread().getId() + " - " + Thread.currentThread().getName());
+                .println("currentThread: " + Thread.currentThread().getId() + " - " + Thread.currentThread().getName());
     }
 
     Timer timer;
@@ -77,10 +87,10 @@ public class TestBase {
     public void _afterClass() {
         String type = this.getClass().getName();
         TableMessage tableMessage = new TableMessage(
-            new ChainSetImpl<String>(new LinkedHashSet<>()).addChain("class", "method", "time"));
+                new ChainSetImpl<String>(new LinkedHashSet<>()).addChain("class", "method", "time"));
         for (Tuple3<String, String, Long> testInfo : TEST_INFOS.get(type)) {
             tableMessage.addRow(new ChainMapImpl<String, Object>().putChain("class", testInfo.get0())
-                .putChain("method", testInfo.get1()).putChain("time", testInfo.get2()));
+                    .putChain("method", testInfo.get1()).putChain("time", testInfo.get2()));
         }
         MESSAGES.put(type, tableMessage);
         //        System.err.println(tableMessage.toString());
