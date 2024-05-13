@@ -32,7 +32,7 @@ public class DirectiveElement extends AbstractElement {
      * @param previous              the previous
      * @param parser                the parser
      */
-    public DirectiveElement(String value, boolean namedParamPlaceholder, Element previous, Parser parser) {
+    public DirectiveElement(CharSequence value, boolean namedParamPlaceholder, Element previous, Parser parser) {
         super(value, namedParamPlaceholder, previous, parser);
     }
 
@@ -55,7 +55,7 @@ public class DirectiveElement extends AbstractElement {
      */
     protected String wrapDirective() {
         if (isReplaceable()) {
-            if (parser.hasReplaceableTarget(source.toString())) {
+            if (parser.hasReplaceableTarget(source)) {
                 String result = null;
                 boolean isStartWith = source.charAt(2) == parser.getFuzzyQueryChar();
                 boolean isEndWith = source.charAt(source.length() - 1) == parser.getFuzzyQueryChar();
@@ -174,7 +174,7 @@ public class DirectiveElement extends AbstractElement {
      * @return the content
      */
     public String getNameAndAttr() {
-        return parser.directiveNameAndAttr(source.toString());
+        return parser.directiveNameAndAttr(source).toString();
         //        StringBuilder sb = new StringBuilder();
         //        for (int i = 0; i < source.length(); i++) {
         //            char c = source.charAt(i);
@@ -201,7 +201,7 @@ public class DirectiveElement extends AbstractElement {
      * @return the name
      */
     public String getName() {
-        return parser.directiveName(source.toString());
+        return parser.directiveName(source);
     }
 
     //    /**
@@ -238,7 +238,7 @@ public class DirectiveElement extends AbstractElement {
      * @return true, if is condition
      */
     public boolean isCondition() {
-        return parser.isCondition(source.toString());
+        return parser.isCondition(source);
     }
 
     /**
@@ -256,7 +256,7 @@ public class DirectiveElement extends AbstractElement {
      * @return true, if is replaceable
      */
     public boolean isReplaceable() {
-        return parser.isReplaceable(source.toString());
+        return parser.isReplaceable(source);
     }
 
     /**
@@ -304,7 +304,7 @@ public class DirectiveElement extends AbstractElement {
      * @return true, if is wrapper
      */
     public boolean isWrapper() {
-        return parser.isWrapper(source.toString());
+        return parser.isWrapper(source);
         //        if (source.length() == 0) {
         //            return false;
         //        }
@@ -321,7 +321,7 @@ public class DirectiveElement extends AbstractElement {
      * @return true, if is empty condition param
      */
     public boolean isEmptyConditionParam() {
-        return parser.isEmptyConditionParam(source.toString());
+        return parser.isEmptyConditionParam(source);
     }
 
     /**
@@ -330,7 +330,7 @@ public class DirectiveElement extends AbstractElement {
      * @return true, if is enclose
      */
     public boolean isEnclosed() {
-        return parser.isEnclosed(source.toString());
+        return parser.isEnclosed(source);
     }
 
 }

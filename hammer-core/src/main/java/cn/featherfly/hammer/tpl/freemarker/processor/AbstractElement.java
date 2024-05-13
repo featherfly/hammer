@@ -66,7 +66,7 @@ public abstract class AbstractElement implements Element {
      * @param namedParamPlaceholder the named param placeholder
      * @param parser                the parser
      */
-    public AbstractElement(String source, boolean namedParamPlaceholder, Parser parser) {
+    public AbstractElement(CharSequence source, boolean namedParamPlaceholder, Parser parser) {
         super();
         this.parser = parser;
         this.namedParamPlaceholder = namedParamPlaceholder;
@@ -80,7 +80,7 @@ public abstract class AbstractElement implements Element {
      * @param namedParamPlaceholder the named param placeholder
      * @param parser                the parser
      */
-    public AbstractElement(String source, boolean namedParamPlaceholder, Element previous, Parser parser) {
+    public AbstractElement(CharSequence source, boolean namedParamPlaceholder, Element previous, Parser parser) {
         super();
         this.parser = parser;
         this.previous = previous;
@@ -105,7 +105,7 @@ public abstract class AbstractElement implements Element {
      * @param parent the parent
      * @param value  the value
      */
-    public AbstractElement(Element parent, String value) {
+    public AbstractElement(Element parent, CharSequence value) {
         super();
         this.parent = parent;
         source.append(value);
