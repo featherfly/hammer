@@ -158,6 +158,8 @@ public class Parser {
             // 直接找到group结束的索引
             if (element instanceof DirectiveElement && ((DirectiveElement) element).isGroupStart()) {
                 DirectiveElement de = (DirectiveElement) element;
+                // FIXME 当多个/*< .. >*/ 自关闭标签连续时，只有第一个被转换出后，后续的丢失
+                // 问题是这!de.isEnclosed()这里一直是true
                 if (!de.isEnclosed()) {
                     Directive directive = getEndDirective(source, (DirectiveElement) element);
                     // 去掉directive开始标签和结束标签，因为element就已经代表了这个标签
@@ -316,7 +318,7 @@ public class Parser {
         return result.toString();
     }
 
-    private Tuple2<Boolean, Boolean> isFuzzy(String paramContent) {
+    private Tuple2<Boolean, Boolean> isFuzzy(CharSequence paramContent) {
         AtomicInteger preSqlStringChar = new AtomicInteger(0);
         String fuzzyStr = paramContent.chars().filter(i -> {
             char c = (char) i;
@@ -348,7 +350,7 @@ public class Parser {
         return append;
     }
 
-    private boolean isInCondition(String value) {
+    private boolean isInCondition(CharSequence value) {
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
             if (c == 'i' || c == 'I') {
@@ -363,7 +365,7 @@ public class Parser {
     }
 
     // TODO 后续加入多个参数的获取，主要是为了between :param1 and :param2
-    private StringPart getFirstParamName(String value, boolean autoEnd) {
+    private StringPart getFirstParamName(CharSequence value, boolean autoEnd) {
         StringBuilder sb = new StringBuilder();
         int start = 0;
         int end = 0;
@@ -394,7 +396,7 @@ public class Parser {
         //        return sb.toString();
     }
 
-    private StringPart getFirstParamName(String value) {
+    private StringPart getFirstParamName(CharSequence value) {
         return getFirstParamName(value, true);
     }
 
@@ -407,11 +409,11 @@ public class Parser {
         return false;
     }
 
-    private int wrapString(String value, int start) {
+    private int wrapString(CharSequence value, int start) {
         return wrapString(value, start, false);
     }
 
-    private int wrapString(String value, int start, boolean onlyNewLine) {
+    private int wrapString(CharSequence value, int start, boolean onlyNewLine) {
         char c = 0;
         int index = start;
         boolean notWhitespace = false;
@@ -450,7 +452,7 @@ public class Parser {
      * @param value the value
      * @return the null type
      */
-    public NullType getNullType(String value) {
+    public NullType getNullType(CharSequence value) {
         if (value.length() == 0) {
             return null;
         }
@@ -482,7 +484,7 @@ public class Parser {
      * @param value the value
      * @return true, if is condition
      */
-    public boolean isCondition(String value) {
+    public boolean isCondition(CharSequence value) {
         return getNullType(value) != null;
     }
 
@@ -492,7 +494,7 @@ public class Parser {
      * @param value the value
      * @return true, if is null
      */
-    public boolean isConditionNull(String value) {
+    public boolean isConditionNull(CharSequence value) {
         NullType type = getNullType(value);
         return type != null && type == NullType.NULL;
     }
@@ -503,7 +505,7 @@ public class Parser {
      * @param value the value
      * @return true, if is null or empty string
      */
-    public boolean isConditionNullOrEmpty(String value) {
+    public boolean isConditionNullOrEmpty(CharSequence value) {
         NullType type = getNullType(value);
         return type != null && type == NullType.EMPTY;
     }
@@ -622,22 +624,23 @@ public class Parser {
         return directiveEnd[0] == c && directiveEnd[1] == c2;
     }
 
-    void addParamName(String content, boolean in) {
-        params.add(new Param(content, in));
-    }
-
-    String scanParamName(String content) {
+    String scanParamName(CharSequence content) {
         return scanParamName(content, false);
     }
 
-    String scanParamName(String content, boolean inParam) {
+    String scanParamName(CharSequence content, boolean inParam) {
         if (Lang.isEmpty(content)) {
-            return content;
+            return content.toString();
         } else if (StringUtils.isBlank(content)) {
-            return Chars.SPACE;
+            if (templateConfig.isPrecompileMinimize()) {
+                return Chars.SPACE;
+            } else {
+                return content.toString();
+            }
         }
         StringBuilder sb = new StringBuilder();
-        StringTokenizer tokenizer = new StringTokenizer(content, SQL_DELIM, !templateConfig.isPrecompileMinimize());
+        StringTokenizer tokenizer = new StringTokenizer(content.toString(), SQL_DELIM,
+                !templateConfig.isPrecompileMinimize());
         String preToken = null;
 
         while (tokenizer.hasMoreTokens()) {
@@ -683,8 +686,9 @@ public class Parser {
      * @param directiveSouce the directive souce
      * @return the string
      */
-    public String directiveContent(String directiveSouce) {
-        return directiveSouce.substring(directiveStart.length, directiveSouce.length() - directiveStart.length);
+    public CharSequence directiveContent(CharSequence directiveSouce) {
+        return directiveSouce.subSequence(directiveStart.length, directiveSouce.length() - directiveStart.length);
+        //        return directiveSouce.substring(directiveStart.length, directiveSouce.length() - directiveStart.length);
     }
 
     /**
@@ -693,7 +697,7 @@ public class Parser {
      * @param directiveContent the directive content
      * @return the string
      */
-    public String directiveNameAndAttr(String directiveContent) {
+    public CharSequence directiveNameAndAttr(CharSequence directiveContent) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < directiveContent.length(); i++) {
             char c = directiveContent.charAt(i);
@@ -718,7 +722,7 @@ public class Parser {
      * @param directiveContent the directive content
      * @return the string
      */
-    public String directiveName(String directiveContent) {
+    public String directiveName(CharSequence directiveContent) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < directiveContent.length(); i++) {
             char c = directiveContent.charAt(i);
@@ -737,7 +741,7 @@ public class Parser {
      * @param directiveContent the directive content
      * @return true, if is wrapper
      */
-    public boolean isWrapper(String directiveContent) {
+    public boolean isWrapper(CharSequence directiveContent) {
         if (directiveContent.length() == 0) {
             return false;
         }
@@ -755,8 +759,8 @@ public class Parser {
      * @param directiveContent the directive content
      * @return true, if is empty condition param
      */
-    public boolean isEmptyConditionParam(String directiveContent) {
-        String v = directiveContent.trim();
+    public boolean isEmptyConditionParam(CharSequence directiveContent) {
+        String v = directiveContent.toString().trim();
         if (v.length() == 1) {
             return v.charAt(0) == '?';
         } else if (v.length() == 2) {
@@ -771,7 +775,7 @@ public class Parser {
      * @param directiveContent the directive content
      * @return true, if is replaceable
      */
-    public boolean isReplaceable(String directiveContent) {
+    public boolean isReplaceable(CharSequence directiveContent) {
         return directiveContent.length() >= 2 && directiveContent.charAt(0) == '$' && directiveContent.charAt(1) == '=';
     }
 
@@ -781,7 +785,7 @@ public class Parser {
      * @param directiveContent the directive content
      * @return true, if is replaceable
      */
-    public boolean hasReplaceableTarget(String directiveContent) {
+    public boolean hasReplaceableTarget(CharSequence directiveContent) {
         return isReplaceable(directiveContent) && directiveContent.length() > 2
                 && hasReplaceableTargetPattern.matcher(directiveContent).matches();
     }
@@ -792,7 +796,7 @@ public class Parser {
      * @param directiveContent the directive content
      * @return true, if is enclosed
      */
-    public boolean isEnclosed(String directiveContent) {
+    public boolean isEnclosed(CharSequence directiveContent) {
         return directiveContent.charAt(directiveContent.length() - 1) == endDirecitve;
     }
 
@@ -820,11 +824,11 @@ public class Parser {
 
         String name;
 
-        String source;
+        CharSequence source;
 
-        String content;
+        CharSequence content;
 
-        public void setSource(String source, Parser parser) {
+        public void setSource(CharSequence source, Parser parser) {
             this.source = source;
             if (comment) {
                 content = source;

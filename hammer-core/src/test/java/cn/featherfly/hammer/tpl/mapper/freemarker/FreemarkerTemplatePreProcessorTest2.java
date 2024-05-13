@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
@@ -167,6 +168,28 @@ public class FreemarkerTemplatePreProcessorTest2 {
         //        assertEquals(config.getParamNames(), new String[] { "id", "age", "username", "password", "mobile" });
         //        System.out.println(config.getParams().length);
         //        assertEquals(config.getParams().length, config.getParamNames().length);
+    }
+
+    @Test
+    void testInclude() throws IOException {
+        String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_include.sql";
+        System.out.println(ClassLoaderUtils.getResource(file));
+        List<String> list = IOUtils.readLines(ClassLoaderUtils.getResourceAsStream(file), StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (String string : list) {
+            sb.append(string).append("\n");
+        }
+        String s = sb.toString();
+        System.out.println(s);
+        // namedParamPlaceholder false
+        System.err.println(new FreemarkerTemplatePreProcessor(
+                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
+                        .process(s, config));
+        System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
+        //        assertEquals(config.getParamNames(), new String[] { "id", "age", "username", "password", "mobile" });
+        //        System.out.println(config.getParams().length);
+        //        assertEquals(config.getParams().length, config.getParamNames().length);
+        throw new NotImplementedException("功能还有问题，多次include丢失，定位这里");
     }
 
     @Test

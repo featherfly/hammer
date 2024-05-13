@@ -103,8 +103,9 @@ public class FreemarkerTemplatePreProcessorTest {
                 new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
                         .process(s, config));
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
-        assertEquals(config.getParamNames(), new String[] { "username", "password", "mobileNo", "mobileNo", "mobileNo",
-                "ids", "minAge", "maxAge", "ids", "birthday", "ids", "gender", "birthday", "email", "mobile", "ids" });
+        assertEquals(config.getParamNames(),
+                new String[] { "username", "password", "mobileNo", "mobileNo", "mobileNo", "ids", "minAge", "maxAge",
+                        "ids2", "birthday", "ids3", "gender", "birthday", "email", "mobile", "ids4" });
         System.out.println(config.getParams().length);
         assertEquals(config.getParams().length, config.getParamNames().length);
     }
