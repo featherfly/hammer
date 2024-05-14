@@ -46,10 +46,11 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @BeforeClass
     public void before() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .config(hammerConfig.getTemplateConfig()).build();
+            .config(hammerConfig.getTemplateConfig()).build();
         parser = configFactory.getTemplateConfig().getTplExecuteIdParser();
         hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory,
-                new SqldbFreemarkerTemplateEngine(configFactory), new SimpleSqlPageFactory(), hammerConfig);
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()),
+            new SimpleSqlPageFactory(), hammerConfig);
     }
 
     Integer minAge = 5;
@@ -66,7 +67,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(avg > 20);
 
         avg = hammer.template(parser.parse("selectAvg2"), new ChainMapImpl<String, Object>().putChain("age", 40))
-                .number(Integer.class);
+            .number(Integer.class);
         System.out.println("avg(age) = " + avg);
         assertTrue(avg > 40);
 
@@ -154,7 +155,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(avg.intValue() > 40);
 
         avg = hammer.template(parser.parse("selectSum2"), new ChainMapImpl<String, Object>().putChain("age", 40))
-                .numberBigInteger();
+            .numberBigInteger();
         System.out.println("avg(age) = " + avg);
         assertTrue(avg.intValue() > 40);
     }
@@ -171,7 +172,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(avg.doubleValue() > 40);
 
         avg = hammer.template(parser.parse("selectAvg2"), new ChainMapImpl<String, Object>().putChain("age", 40))
-                .numberBigDecimal();
+            .numberBigDecimal();
         System.out.println("avg(age) = " + avg);
         assertTrue(avg.doubleValue() > 40);
     }
@@ -194,21 +195,23 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         String username = "yufei";
         String password = "123456";
         User u1 = hammer
-                .template("selectByUsername@user", new ChainMapImpl<String, Object>().putChain("username", username))
-                .single(User.class);
+            .template("selectByUsername@user", new ChainMapImpl<String, Object>().putChain("username", username))
+            .single(User.class);
 
         assertEquals(u1.getUsername(), username);
 
-        User u2 = hammer.template("selectByUsernameAndPassword@user",
+        User u2 = hammer
+            .template("selectByUsernameAndPassword@user",
                 new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password))
-                .single(User.class);
+            .single(User.class);
 
         assertEquals(u2.getUsername(), username);
         assertEquals(u2.getPwd(), password);
 
-        u2 = hammer.template("selectByUsernameAndPassword",
+        u2 = hammer
+            .template("selectByUsernameAndPassword",
                 new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password))
-                .single(User.class);
+            .single(User.class);
 
         assertEquals(u2.getUsername(), username);
         assertEquals(u2.getPwd(), password);
@@ -216,9 +219,10 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         //        u2 = hammer.single("/tpl/user@selectByUsernameAndPassword", User.class,
         //                new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password));
         // 加入多prefix、suffix支持后的获取
-        u2 = hammer.template("selectByUsernameAndPassword@user",
+        u2 = hammer
+            .template("selectByUsernameAndPassword@user",
                 new ChainMapImpl<String, Object>().putChain("username", username).putChain("password", password))
-                .single(User.class);
+            .single(User.class);
 
         assertEquals(u2.getUsername(), username);
         assertEquals(u2.getPwd(), password);
@@ -235,7 +239,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(users.size() > 0);
 
         users = hammer.template("selectByAge@user", new ChainMapImpl<String, Object>().putChain("age", 5))
-                .list(User.class);
+            .list(User.class);
         users.forEach(u -> {
             assertEquals(u.getAge(), age);
         });
@@ -249,7 +253,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(users.size() > 0);
 
         users = hammer.template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                .putChain("maxAge", maxAge).putChain("username", username1 + "%")).list(User.class);
+            .putChain("maxAge", maxAge).putChain("username", username1 + "%")).list(User.class);
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -257,7 +261,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         });
 
         users = hammer.template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                .putChain("maxAge", maxAge).putChain("username", username2 + "%")).list(User.class);
+            .putChain("maxAge", maxAge).putChain("username", username2 + "%")).list(User.class);
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -265,7 +269,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         });
 
         users = hammer.template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                .putChain("maxAge", maxAge).putChain("password", password + "%")).list(User.class);
+            .putChain("maxAge", maxAge).putChain("password", password + "%")).list(User.class);
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -273,7 +277,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         });
 
         users = hammer.template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                .putChain("maxAge", maxAge).putChain("password", "%" + password)).list(User.class);
+            .putChain("maxAge", maxAge).putChain("password", "%" + password)).list(User.class);
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
             assertTrue(u.getAge() <= maxAge);
@@ -287,15 +291,14 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         int limit = 3;
         int start = 0;
 
-        List<User> users = hammer.template("selectConditions@user", new ChainMapImpl<>()).list(User.class, start,
-                limit);
+        List<
+            User> users = hammer.template("selectConditions@user", new ChainMapImpl<>()).list(User.class, start, limit);
         assertTrue(users.size() == 3);
 
         users = hammer
-                .template("selectConditions@user",
-                        new ChainMapImpl<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge)
-                                .putChain("username", username1 + "%"))
-                .list(User.class, new SimplePagination(start, limit));
+            .template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
+                .putChain("maxAge", maxAge).putChain("username", username1 + "%"))
+            .list(User.class, new SimplePagination(start, limit));
         final int size = users.size();
         users.forEach(u -> {
             assertTrue(u.getAge() >= minAge);
@@ -305,9 +308,9 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(size == 3);
 
         List<Map<String, Object>> userList = hammer
-                .template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"))
-                .list(new SimplePagination(start, limit));
+            .template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
+                .putChain("maxAge", maxAge).putChain("username", username1 + "%"))
+            .list(new SimplePagination(start, limit));
         final int size2 = userList.size();
         userList.forEach(u -> {
             int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
@@ -325,13 +328,12 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         Integer start = 0;
 
         PaginationResults<User> userPaginationResults = hammer.template("selectConditions@user", new ChainMapImpl<>())
-                .pagination(User.class, start, limit);
+            .pagination(User.class, start, limit);
         assertTrue(userPaginationResults.getResultSize() == 3);
 
-        userPaginationResults = hammer
-                .template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"))
-                .pagination(User.class, start, limit);
+        userPaginationResults = hammer.template("selectConditions@user", new ChainMapImpl<String, Object>()
+            .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"))
+            .pagination(User.class, start, limit);
         final int size = userPaginationResults.getResultSize();
         assertTrue(userPaginationResults.getTotal() == 4);
         userPaginationResults.getPageResults().forEach(u -> {
@@ -342,9 +344,9 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         });
         assertTrue(size == 3);
 
-        PaginationResults<Map<String, Object>> userPage = hammer
-                .template("selectConditions@user", new ChainMapImpl<String, Object>().putChain("minAge", minAge)
-                        .putChain("maxAge", maxAge).putChain("username", username1 + "%"))
+        PaginationResults<Map<String,
+            Object>> userPage = hammer.template("selectConditions@user", new ChainMapImpl<String, Object>()
+                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"))
                 .pagination(start, limit);
         final int size2 = userPage.getResultSize();
         userPage.getPageResults().forEach(u -> {
@@ -356,8 +358,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(size2 == 3);
 
         userPage = hammer.template("selectConditions@user", new ChainMapImpl<String, Object>()
-                .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"))
-                .pagination(start, limit);
+            .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"))
+            .pagination(start, limit);
         userPage.getPageResults().forEach(u -> {
             int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
             assertTrue(age >= minAge);
@@ -371,15 +373,14 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Test
     public void testRoleList() {
         List<Role> roles = hammer
-                .template("selectByName@role", new ChainMapImpl<String, Object>().putChain("name", "name%"))
-                .list(Role.class);
+            .template("selectByName@role", new ChainMapImpl<String, Object>().putChain("name", "name%"))
+            .list(Role.class);
         assertTrue(roles.size() > 0);
         roles.forEach(r -> {
             assertTrue(r.getName().startsWith("name"));
         });
         List<Role> roles2 = hammer
-                .template("selectByName@role", new ChainMapImpl<String, Object>().putChain("name", null))
-                .list(Role.class);
+            .template("selectByName@role", new ChainMapImpl<String, Object>().putChain("name", null)).list(Role.class);
         assertTrue(roles2.size() > roles.size());
     }
 
@@ -399,9 +400,10 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         }
 
         if (sql != null) {
-            List<Map<String, Object>> roles = hammer.template(sql,
+            List<Map<String, Object>> roles = hammer
+                .template(sql,
                     new ChainMapImpl<String, Object>().putChain("name", "name%").putChain("dateFormat", dateFormat))
-                    .list();
+                .list();
             assertTrue(roles.size() > 0);
             roles.forEach(r -> {
                 if (r.get("") != null) {
@@ -409,9 +411,10 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
                 }
                 assertTrue(r.get("name").toString().startsWith("name"));
             });
-            List<Map<String, Object>> roles2 = hammer.template(sql,
+            List<Map<String, Object>> roles2 = hammer
+                .template(sql,
                     new ChainMapImpl<String, Object>().putChain("name", null).putChain("dateFormat", dateFormat))
-                    .list();
+                .list();
             assertTrue(roles2.size() > roles.size());
             roles.forEach(r -> {
                 if (r.get("") != null) {
@@ -444,8 +447,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Override
     @Test
     public void testWithTemplate() {
-        PaginationResults<Role> uis = hammer.template("selectWithTemplate@role", new ChainMapImpl<>())
-                .pagination(Role.class, 0, 10);
+        PaginationResults<
+            Role> uis = hammer.template("selectWithTemplate@role", new ChainMapImpl<>()).pagination(Role.class, 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {
@@ -456,8 +459,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Override
     @Test
     public void testWithTemplate2() {
-        PaginationResults<Role> uis = hammer.template("selectWithTemplate2@role", new ChainMapImpl<>())
-                .pagination(Role.class, 0, 10);
+        PaginationResults<
+            Role> uis = hammer.template("selectWithTemplate2@role", new ChainMapImpl<>()).pagination(Role.class, 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {
@@ -468,8 +471,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Override
     @Test
     public void testWithTemplate3() {
-        PaginationResults<Role> uis = hammer.template("selectWithTemplate3@role", new ChainMapImpl<>())
-                .pagination(Role.class, 0, 10);
+        PaginationResults<
+            Role> uis = hammer.template("selectWithTemplate3@role", new ChainMapImpl<>()).pagination(Role.class, 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {
@@ -481,7 +484,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Test
     public void testWithTemplate4() {
         PaginationResults<Map<String, Object>> result = hammer
-                .template("selectWithTemplate4@role", new ChainMapImpl<>()).pagination(0, 10);
+            .template("selectWithTemplate4@role", new ChainMapImpl<>()).pagination(0, 10);
         assertTrue(result.getResultSize() > 0);
         System.out.println("result size:" + result.getResultSize());
         result.getPageResults().forEach(ui -> {
@@ -493,7 +496,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Test
     public void testMap() {
         Map<String, Object> uis = hammer
-                .template("selectById@user_info", new ChainMapImpl<String, Object>().putChain("id", 1)).single();
+            .template("selectById@user_info", new ChainMapImpl<String, Object>().putChain("id", 1)).single();
         assertEquals(uis.get("id").toString(), "1");
         //        assertEquals(uis.get("ID").toString(), "1");
         System.out.println(uis);
@@ -539,22 +542,23 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     public void testInsertUpdateDelete() {
         String name = "name_insert_" + Randoms.getString(6);
         String descp = "descp_" + Randoms.getString(6);
-        int i = hammer.template("insertRole",
-                new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp)).execute();
+        int i = hammer
+            .template("insertRole", new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp))
+            .execute();
         assertTrue(i == 1);
 
         Role role = hammer.template("getByName", new ChainMapImpl<String, Object>().putChain("name", name))
-                .single(Role.class);
+            .single(Role.class);
         assertEquals(role.getName(), name);
         assertEquals(role.getDescp(), descp);
 
         descp = "descp_" + Randoms.getString(6);
         i = hammer.template("updateRoleByName",
-                new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp)).execute();
+            new ChainMapImpl<String, Object>().putChain("name", name).putChain("descp", descp)).execute();
         assertTrue(i == 1);
 
         role = hammer.template("getByName", new ChainMapImpl<String, Object>().putChain("name", name))
-                .single(Role.class);
+            .single(Role.class);
         assertEquals(role.getName(), name);
         assertEquals(role.getDescp(), descp);
 
@@ -562,7 +566,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         assertTrue(i == 1);
 
         role = hammer.template("getByName", new ChainMapImpl<String, Object>().putChain("name", name))
-                .single(Role.class);
+            .single(Role.class);
         assertEquals(role, null);
     }
 
@@ -606,8 +610,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
 
         // single
         User user = hammer
-                .template("selectInSingle", new ChainMapImpl<String, Object>().putChain("ids", new Long[] { 1L, -1L }))
-                .single(User.class);
+            .template("selectInSingle", new ChainMapImpl<String, Object>().putChain("ids", new Long[] { 1L, -1L }))
+            .single(User.class);
         assertEquals(user.getId(), Integer.valueOf(1));
 
     }
@@ -657,7 +661,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     public void testSingleTuple2() {
         Integer userId = 1;
         // list
-        Tuple2<UserInfo, User> tuple2 = hammer
+        Tuple2<UserInfo,
+            User> tuple2 = hammer
                 .template("selectUserInfoByUserId", new ChainMapImpl<String, Object>().putChain("userId", userId))
                 .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).single();
 
@@ -673,7 +678,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     public void testSingleTuple2_2() {
         Integer userId = 1;
         // list
-        Tuple2<UserInfo, User> tuple2 = hammer
+        Tuple2<UserInfo,
+            User> tuple2 = hammer
                 .template("selectUserInfoByUserId", new ChainMapImpl<String, Object>().putChain("userId", userId))
                 .mapper(UserInfo.class, User.class).single();
 
@@ -689,7 +695,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     public void testSingleTuple2List() {
         // list
         List<Tuple2<UserInfo, User>> list = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
-                .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).list();
+            .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).list();
 
         assertEquals(list.size(), TestConstants.USER_INFO_INIT_ROWS);
 
@@ -701,7 +707,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         }
 
         list = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
-                .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).list(0, 1);
+            .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).list(0, 1);
         assertEquals(list.size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
@@ -717,7 +723,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     public void testSingleTuple2List_2() {
         // list
         List<Tuple2<UserInfo, User>> list = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
-                .mapper(UserInfo.class, User.class).list();
+            .mapper(UserInfo.class, User.class).list();
         assertEquals(list.size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
@@ -728,7 +734,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         }
 
         list = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>()).mapper(UserInfo.class, User.class)
-                .list(0, 1);
+            .list(0, 1);
         assertEquals(list.size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : list) {
@@ -742,8 +748,8 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Override
     @Test
     public void testSingleTuple2Page() {
-        PaginationResults<Tuple2<UserInfo, User>> page = hammer
-                .template("selectUserInfoAndUserList", new ChainMapImpl<>())
+        PaginationResults<
+            Tuple2<UserInfo, User>> page = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
                 .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).pagination(0, 10);
         assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
@@ -756,7 +762,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         }
 
         page = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
-                .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).pagination(0, 1);
+            .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).pagination(0, 1);
         assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
@@ -772,9 +778,9 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Test
     public void testSingleTuple2Page_2() {
         int pageSize = 2;
-        PaginationResults<Tuple2<UserInfo, User>> page = hammer
-                .template("selectUserInfoAndUserList", new ChainMapImpl<>()).mapper(UserInfo.class, User.class)
-                .pagination(0, pageSize);
+        PaginationResults<
+            Tuple2<UserInfo, User>> page = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
+                .mapper(UserInfo.class, User.class).pagination(0, pageSize);
         assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), pageSize);
 
@@ -786,7 +792,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         }
 
         page = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>()).mapper(UserInfo.class, User.class)
-                .pagination(0, 1);
+            .pagination(0, 1);
         assertEquals(page.getSize(), Integer.valueOf(1));
         assertEquals(page.getPageResults().size(), 1);
 
@@ -802,14 +808,15 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     @Test
     public void selectConditions2() {
         Map<String, Object> u = hammer
-                .template("selectById2@user", new ChainMapImpl<String, Object>().putChain("id", 1)).single();
+            .template("selectById2@user", new ChainMapImpl<String, Object>().putChain("id", 1)).single();
 
-        Map<String, Object> uis = executor.single("selectConditions2@user",
+        Map<String,
+            Object> uis = executor.single("selectConditions2@user",
                 new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
-                        .putChain("mobile", u.get("mobileNo")) //
-                        .putChain("age", -1) //
-                        .putChain("id", u.get("id")) //
-                        .putChain("password", u.get("password")));
+                    .putChain("mobile", u.get("mobileNo")) //
+                    .putChain("age", -1) //
+                    .putChain("id", u.get("id")) //
+                    .putChain("password", u.get("password")));
         assertNotNull(uis);
         assertEquals(uis.get("id"), u.get("id"));
         assertEquals(uis.get("mobileNo"), u.get("mobileNo"));

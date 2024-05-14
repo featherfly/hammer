@@ -45,14 +45,14 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
         suffixes.add(".yaml.sql");
         //        TplConfigFactoryImpl configFactory = new TplConfigFactoryImpl("tpl_pre/", new FreemarkerTemplatePreProcessor());
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder() //
-                .prefixes(prefixes).suffixes(suffixes).config(hammerConfig.getTemplateConfig())
-                .preCompile(new FreemarkerTemplatePreProcessor(new TemplateConfigImpl().setPrecompileMinimize(false)
-                        .setPrecompileNamedParamPlaceholder(false)))
-                .build();
+            .prefixes(prefixes).suffixes(suffixes).config(hammerConfig.getTemplateConfig())
+            .preCompile(new FreemarkerTemplatePreProcessor(
+                new TemplateConfigImpl().setPrecompileMinimize(false).setPrecompileNamedParamPlaceholder(false)))
+            .build();
 
         executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
-                new SqldbFreemarkerTemplateEngine(configFactory), jdbc, mappingFactory, new SimpleSqlPageFactory(),
-                new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
+            new SimpleSqlPageFactory(), new TransverterManager());
     }
 
     @Test
@@ -63,8 +63,8 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
 
     @Test
     void testMulityPrefixAndSuffix() {
-        PaginationResults<Role> uis = executor.pagination("selectWithTemplate3@role", Role.class, new ChainMapImpl<>(),
-                0, 10);
+        PaginationResults<
+            Role> uis = executor.pagination("selectWithTemplate3@role", Role.class, new ChainMapImpl<>(), 0, 10);
         assertTrue(uis.getResultSize() > 0);
         System.out.println("result size:" + uis.getResultSize());
         uis.getPageResults().forEach(ui -> {
@@ -74,15 +74,16 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
 
     @Test
     public void selectConditions2() {
-        Map<String, Object> u = executor.single("selectById2@user",
-                new ChainMapImpl<String, Object>().putChain("id", 1));
+        Map<String,
+            Object> u = executor.single("selectById2@user", new ChainMapImpl<String, Object>().putChain("id", 1));
 
-        Map<String, Object> uis = executor.single("selectConditions2@user",
+        Map<String,
+            Object> uis = executor.single("selectConditions2@user",
                 new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
-                        .putChain("mobile", u.get("mobileNo")) //
-                        .putChain("age", null) //
-                        .putChain("id", u.get("id")) //
-                        .putChain("password", u.get("password")));
+                    .putChain("mobile", u.get("mobileNo")) //
+                    .putChain("age", null) //
+                    .putChain("id", u.get("id")) //
+                    .putChain("password", u.get("password")));
         assertNotNull(uis);
         assertEquals(uis.get("id"), u.get("id"));
         assertEquals(uis.get("mobileNo"), u.get("mobileNo"));
@@ -90,12 +91,12 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
         assertEquals(uis.get("username"), u.get("username"));
 
         PaginationResults<Map<String, Object>> up = executor.pagination("selectConditions2@user",
-                new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
-                        .putChain("mobile", u.get("mobileNo")) //
-                        .putChain("age", null) //
-                        .putChain("id", u.get("id")) //
-                        .putChain("password", u.get("password")),
-                0, 1);
+            new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
+                .putChain("mobile", u.get("mobileNo")) //
+                .putChain("age", null) //
+                .putChain("id", u.get("id")) //
+                .putChain("password", u.get("password")),
+            0, 1);
         assertNotNull(up);
         assertTrue(up.getTotal().equals(1));
 

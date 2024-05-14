@@ -11,6 +11,8 @@ package cn.featherfly.hammer.config;
 import javax.validation.Validator;
 
 import cn.featherfly.hammer.config.dsl.DslConfig;
+import cn.featherfly.hammer.config.entity.EntityConfig;
+import cn.featherfly.hammer.config.entity.EntityConfigImpl;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
 
 /**
@@ -22,7 +24,7 @@ public class HammerConfigImpl implements HammerConfig {
 
     private DslConfig dslConfig = new DslConfigImpl();
 
-    private BatchConfig batchConfig = new BatchConfigImpl();
+    private EntityConfig entityConfig = new EntityConfigImpl();
 
     private Validator validator;
 
@@ -80,23 +82,6 @@ public class HammerConfigImpl implements HammerConfig {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BatchConfig getBatchConfig() {
-        return batchConfig;
-    }
-
-    /**
-     * Sets the batch config.
-     *
-     * @param batchConfig the new batch config
-     */
-    public void setBatchConfig(BatchConfig batchConfig) {
-        this.batchConfig = batchConfig;
-    }
-
-    /**
      * set templateConfig value
      *
      * @param templateConfig templateConfig
@@ -111,6 +96,14 @@ public class HammerConfigImpl implements HammerConfig {
     @Override
     public TemplateConfig getTemplateConfig() {
         return templateConfig;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityConfig getEntityConfig() {
+        return entityConfig;
     }
 
     /**

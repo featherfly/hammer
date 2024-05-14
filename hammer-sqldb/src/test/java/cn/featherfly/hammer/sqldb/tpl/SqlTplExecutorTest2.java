@@ -30,9 +30,9 @@ public class SqlTplExecutorTest2 extends JdbcTestBase {
     @Test(expectedExceptions = HammerException.class)
     void testInvalidateChar() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl2/").suffixes(".yaml.tpl")
-                .config(hammerConfig.getTemplateConfig()).build();
+            .config(hammerConfig.getTemplateConfig()).build();
         executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
-                new SqldbFreemarkerTemplateEngine(configFactory), jdbc, mappingFactory, new SimpleSqlPageFactory(),
-                new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
+            new SimpleSqlPageFactory(), new TransverterManager());
     }
 }

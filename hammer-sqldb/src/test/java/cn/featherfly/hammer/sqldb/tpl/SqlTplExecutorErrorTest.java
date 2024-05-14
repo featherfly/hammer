@@ -27,10 +27,10 @@ public class SqlTplExecutorErrorTest extends JdbcTestBase {
     @BeforeMethod
     void setup() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .config(hammerConfig.getTemplateConfig()).build();
+            .config(hammerConfig.getTemplateConfig()).build();
         executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
-                new SqldbFreemarkerTemplateEngine(configFactory), jdbc, mappingFactory, new SimpleSqlPageFactory(),
-                new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
+            new SimpleSqlPageFactory(), new TransverterManager());
     }
 
     @Test(expectedExceptions = TplException.class)

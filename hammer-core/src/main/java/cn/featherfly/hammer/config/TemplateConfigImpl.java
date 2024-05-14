@@ -149,9 +149,11 @@ public class TemplateConfigImpl implements TemplateConfig {
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the template charset.
+     *
+     * @param  charset the charset
+     * @return         the template config
      */
-    @Override
     public TemplateConfig setCharset(Charset charset) {
         this.charset = charset;
         return this;
