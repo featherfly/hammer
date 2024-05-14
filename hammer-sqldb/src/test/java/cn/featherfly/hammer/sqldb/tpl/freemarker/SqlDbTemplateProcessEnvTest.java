@@ -31,7 +31,8 @@ public class SqlDbTemplateProcessEnvTest extends JdbcTestBase {
 
     @Test
     void test() {
-        SqldbFreemarkerTemplateEngine templateEngine = new SqldbFreemarkerTemplateEngine(configFactory);
+        SqldbFreemarkerTemplateEngine templateEngine = new SqldbFreemarkerTemplateEngine(configFactory,
+            hammerConfig.getTemplateConfig());
         SqlDbTemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> env = templateEngine.createTemplateProcessEnv();
 
         assertNull(env.getConfigFactory());
@@ -44,7 +45,7 @@ public class SqlDbTemplateProcessEnvTest extends JdbcTestBase {
         env.setConfigFactory(configFactory);
         env.setDialect(jdbc.getDialect());
         env.setConditionParamsManager(
-                new ConditionParamsManager(hammerConfig.getTemplateConfig().getParamIndexToName()));
+            new ConditionParamsManager(hammerConfig.getTemplateConfig().getParamIndexToName()));
         env.setPropertiesMappingManager(new PropertiesMappingManager());
         env.setMappingFactory(mappingFactory);
         env.setResultTypes(String.class);

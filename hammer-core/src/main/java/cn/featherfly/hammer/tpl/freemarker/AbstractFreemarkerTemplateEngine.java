@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.debug.TplConfigDebugMessage;
 import cn.featherfly.hammer.tpl.TemplateEngine;
 import cn.featherfly.hammer.tpl.TemplateProcessEnv;
@@ -23,15 +24,13 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * <p>
- * AbstractFreemarkerTemplateEngine
- * </p>
+ * AbstractFreemarkerTemplateEngine.
  *
  * @author zhongj
  */
 public abstract class AbstractFreemarkerTemplateEngine<
-        T extends TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod>>
-        implements TemplateEngine<T, FreemarkerDirective, FreemarkerMethod> {
+    T extends TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod>>
+    implements TemplateEngine<T, FreemarkerDirective, FreemarkerMethod> {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -42,9 +41,9 @@ public abstract class AbstractFreemarkerTemplateEngine<
      *
      * @param configFactory TplConfigFactory
      */
-    protected AbstractFreemarkerTemplateEngine(TplConfigFactory configFactory) {
+    protected AbstractFreemarkerTemplateEngine(TplConfigFactory configFactory, TemplateConfig templateConfig) {
         cfg = new Configuration(Configuration.VERSION_2_3_28);
-        cfg.setDefaultEncoding("UTF-8");
+        cfg.setDefaultEncoding(templateConfig.getCharset().name());
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
@@ -58,12 +57,12 @@ public abstract class AbstractFreemarkerTemplateEngine<
                 //                        config.getFilePath());
                 //                TplExecuteConfig tplConfig = templateMap.get(config.getTplName());
                 configDebugMessage.addConfig(config.getExecuteId(), config.getName(), config.getNamespace(),
-                        config.getFilePath());
+                    config.getFilePath());
                 TplExecuteConfig tplConfig = templateMap.get(config.getExecuteId());
                 if (tplConfig != null) {
-                    throw new HammerException(Strings.format("duplicate template name {0} with {1} , {1}",
-                            config.getExecuteId(), config.getFilePath(),
-                            tplConfig.getFileDirectory() + "/" + tplConfig.getFileName()));
+                    throw new HammerException(
+                        Strings.format("duplicate template name {0} with {1} , {1}", config.getExecuteId(),
+                            config.getFilePath(), tplConfig.getFileDirectory() + "/" + tplConfig.getFileName()));
                 }
                 templateLoader.putTemplate(config.getExecuteId(), config.getContent());
             });
@@ -81,7 +80,7 @@ public abstract class AbstractFreemarkerTemplateEngine<
      */
     @Override
     public String process(String templateName, String sourceCode, Map<String, Object> params,
-            TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> templateProcessEnv) {
+        TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> templateProcessEnv) {
         logger.debug("execute template name : {}", templateName);
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
