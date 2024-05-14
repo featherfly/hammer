@@ -7,5 +7,4 @@ package cn.featherfly.hammer.tpl.directive;
  * @author zhongj
  */
 public interface TemplateDirective {
-
 }

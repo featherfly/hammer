@@ -12,7 +12,6 @@
 package cn.featherfly.hammer.tpl;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +46,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.io.ClassPathScanningProvider;
 import cn.featherfly.common.io.FileUtils;
+import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
@@ -59,6 +59,8 @@ import cn.featherfly.hammer.annotation.Mapper;
 import cn.featherfly.hammer.annotation.Template;
 import cn.featherfly.hammer.config.HammerConstant;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
+import cn.featherfly.hammer.config.tpl.TemplateConfig.CountSqlConverteStrategy;
+import cn.featherfly.hammer.tpl.TplExecuteConfig.Param;
 import cn.featherfly.hammer.tpl.TplExecuteConfig.ParamsFormat;
 
 /**
@@ -151,7 +153,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             this.prefixes.add(HammerConstant.DEFAULT_PREFIX);
         } else {
             for (String prefix : prefixes) {
-                this.prefixes.add(trimBeginSeparator(prefix));
+                this.prefixes.add(checkEndSeparator(trimBeginSeparator(prefix)));
             }
         }
         if (Lang.isEmpty(suffixes)) {
@@ -179,34 +181,98 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         // 读取mapper类
         initConfigFromMapper();
 
+        // 加载include
+        if (!templateConfig.isPrecompileNamedParamPlaceholder()) { // 先用这个代替，后续看需不需要专用配置项
+            preInclude();
+        }
+
         if (logger.isDebugEnabled()) {
-            StringBuilder message = new StringBuilder("\n---------- template config start ----------\n");
-            for (Entry<String, TplExecuteConfigs> entry : configsMap.entrySet()) {
-                TplExecuteConfigs configs = entry.getValue();
-                message.append(Strings.format("  Config { key={0}  namespace={1}  filePath={2} types={3} }\n",
-                        entry.getKey(), configs.getNamespace(), configs.getFilePath(),
-                        configs.getTypes().stream().map((t) -> t.getName()).collect(Collectors.toList())));
-                for (Entry<String, Object> e : configs.entrySet()) {
-                    Object v = e.getValue();
-                    if (v instanceof TplExecuteConfig) {
-                        TplExecuteConfig config = (TplExecuteConfig) v;
-                        message.append(Strings.format(
-                                "    name={0}  namespace={1}  executeId={2} tplName={3}  filePath={4}   type={5}  precompile={6}\n",
-                                config.getName(), config.getNamespace(), config.getExecuteId(), config.getTplName(),
-                                config.getFilePath(), config.getType(), config.getPrecompile()));
-                        message.append(String.format("      query:  %s\n",
-                                config.getContent().trim().replaceAll("\n", "\n              ")));
-                        if (config.getCount() != null) {
-                            message.append(String.format("      count:  %s\n",
-                                    config.getCount().trim().replaceAll("\n", "\n              ")));
-                        }
-                        message.append("\n");
+            debugInfo();
+        }
+    }
+
+    private void preInclude() {
+        if (templateConfig.isPrecompileNamedParamPlaceholder()) { // 命名参数，不需要预加载
+            return;
+        }
+
+        for (Entry<String, TplExecuteConfigs> entry : configsMap.entrySet()) {
+            TplExecuteConfigs configs = entry.getValue();
+            for (Entry<String, Object> e : configs.entrySet()) {
+                Object v = e.getValue();
+                if (!(v instanceof TplExecuteConfig)) {
+                    continue;
+                }
+
+                preInclude((TplExecuteConfig) v, null, new HashMap<>());
+            }
+        }
+    }
+
+    private TplExecuteConfig preInclude(TplExecuteConfig config, String includeId,
+            Map<String, Object> templateContents) {
+        if (includeId != null && config.getIncludes().isEmpty()) {
+            templateContents.put(includeId, config.getContent());
+            return config;
+        } else {
+            for (TplExecuteId includeTplId : config.getIncludes()) {
+                TplExecuteConfig includeConfig = null;
+                if (Lang.isEmpty(includeTplId.getNamespace())) { // namespace is null, use container namespace
+                    String execId = templateConfig.getTplExecuteIdParser().format(includeTplId.getName(),
+                            config.getNamespace());
+                    includeConfig = preInclude(getConfig(execId), includeTplId.getId(), templateContents);
+                } else {
+                    includeConfig = preInclude(getConfig(includeTplId), includeTplId.getId(), templateContents);
+                }
+                config.setParams((Param[]) ArrayUtils.concat(config.getParams(), includeConfig.getParams()));
+            }
+            config.setContent(templateConfig.getPreIncludeFormmater().format(config.getContent(), templateContents));
+            config.setCount(templateConfig.getPreIncludeFormmater().format(config.getCount(), templateContents));
+            config.setIncluded(true);
+
+            if (Lang.isEmpty(config.getCount()) && templateConfig.getCountSqlConvertor() != null) {
+                if (CountSqlConverteStrategy.INIT_WARNING == templateConfig.getCountSqlConverteStrategy()) {
+                    try {
+                        config.setCount(templateConfig.getCountSqlConvertor().apply(config.getContent()));
+                    } catch (Exception e) {
+                        logger.warn("convert select sql to count sql error", e);
                     }
+                } else if (CountSqlConverteStrategy.INIT_EXCEPTION == templateConfig.getCountSqlConverteStrategy()) {
+                    config.setCount(templateConfig.getCountSqlConvertor().apply(config.getContent()));
                 }
             }
-            message.append("---------- template config end ----------");
-            logger.debug(message.toString());
+            return config;
         }
+    }
+
+    private void debugInfo() {
+        StringBuilder message = new StringBuilder("\n---------- template config start ----------\n");
+        for (Entry<String, TplExecuteConfigs> entry : configsMap.entrySet()) {
+            TplExecuteConfigs configs = entry.getValue();
+            message.append(Strings.format("  Config { key={0}  namespace={1}  filePath={2} types={3} }\n",
+                    entry.getKey(), configs.getNamespace(), configs.getFilePath(),
+                    configs.getTypes().stream().map((t) -> t.getName()).collect(Collectors.toList())));
+            for (Entry<String, Object> e : configs.entrySet()) {
+                Object v = e.getValue();
+                if (!(v instanceof TplExecuteConfig)) {
+                    continue;
+                }
+                TplExecuteConfig config = (TplExecuteConfig) v;
+                message.append(Strings.format(
+                        "    name={0}  namespace={1}  executeId={2} tplName={3}  filePath={4}   type={5}  precompile={6}\n",
+                        config.getName(), config.getNamespace(), config.getExecuteId(), config.getTplName(),
+                        config.getFilePath(), config.getType(), config.getPrecompile()));
+                message.append(String.format("      query:  %s\n",
+                        config.getContent().trim().replaceAll("\n", "\n              ")));
+                if (config.getCount() != null) {
+                    message.append(String.format("      count:  %s\n",
+                            config.getCount().trim().replaceAll("\n", "\n              ")));
+                }
+                message.append("\n");
+            }
+        }
+        message.append("---------- template config end ----------");
+        logger.debug(message.toString());
     }
 
     /**
@@ -416,6 +482,16 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         }
     }
 
+    private String checkEndSeparator(final String filePath) {
+        String result = filePath;
+        if (!result.endsWith("/")) {
+            return result + "/";
+        } else {
+            result = Strings.trimEnd(result, "/");
+            return result + "/";
+        }
+    }
+
     private String trimBeginSeparator(final String filePath) {
         String result = filePath;
         while (result.startsWith("/") && result.length() > 0) {
@@ -461,8 +537,13 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
 
             Lang.ifNotEmpty(commentContent(bis, commentMaxLength), (Consumer<String>) cc -> Lang.ifNotEmpty(cc,
                     (Consumer<String>) ns -> mutableNamespace.setValue(ns)));
-            final String namespace = mutableNamespace.getValue();
             bis.reset();
+            final String namespace;
+            if (mutableNamespace.getValue().contains("=")) {
+                namespace = mutableNamespace.getValue().split("=")[1];
+            } else {
+                namespace = mutableNamespace.getValue();
+            }
             TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class).readValue(bis);
             TplExecuteConfigs newConfigs = Lang.ifNull(configsMap.get(namespace), () -> {
                 TplExecuteConfigs cs = new TplExecuteConfigs();
@@ -1112,19 +1193,20 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         int start = -1;
         int read = -1;
         while (max-- > 0 && (read = is.read()) != -1) {
-            if (Character.isAlphabetic(read)) {
-                break;
+            if (read == '#') {
+                start = read;
+                continue;
             }
+
             if (read == ' ' || read == '\t') {
                 continue;
             }
             if (read == '\r' || read == '\n') {
+                start = -1;
                 break;
             }
-            if (read == '#') {
-                continue;
-            } else {
-                // 注释结束位置
+
+            if (start != -1 && Character.isAlphabetic(read)) {
                 start = read;
                 break;
             }
@@ -1166,14 +1248,14 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(
-                commentContent(new ByteArrayInputStream(" ###  \t   namespace=/user\nname: yufei".getBytes()), 128));
-        System.out.println(
-                commentContent(new ByteArrayInputStream(" ###  \r   namespace=/user\nname: yufei".getBytes()), 128));
-        System.out.println(commentContent(
-                new ByteArrayInputStream("select:\"select<@prop/>fromuser_infowhere1=1\"".getBytes()), 128));
-        System.out.println(
-                commentContent(new ByteArrayInputStream(" ###  \t   namespace=/user\nname: yufei".getBytes()), 128));
+        //        System.out.println(
+        //                commentContent(new ByteArrayInputStream(" ###  \t   namespace=/user\nname: yufei".getBytes()), 128));
+        //        System.out.println(
+        //                commentContent(new ByteArrayInputStream(" ###  \r   namespace=/user\nname: yufei".getBytes()), 128));
+        //        System.out.println(commentContent(
+        //                new ByteArrayInputStream("select:\"select<@prop/>fromuser_infowhere1=1\"".getBytes()), 128));
+        //        System.out.println(
+        //                commentContent(new ByteArrayInputStream(" ###  \t   namespace=/user\nname: yufei".getBytes()), 128));
     }
 
 }

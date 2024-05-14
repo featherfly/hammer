@@ -1,7 +1,15 @@
 
 package cn.featherfly.hammer.tpl.freemarker.processor;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.tpl.TplException;
 
 /**
@@ -10,6 +18,8 @@ import cn.featherfly.hammer.tpl.TplException;
  * @author zhongj
  */
 public class DirectiveElement extends AbstractElement {
+
+    private static final Pattern PATTERN = Pattern.compile("[a-zA-Z]+");
 
     protected char directive = '@';
 
@@ -173,6 +183,39 @@ public class DirectiveElement extends AbstractElement {
      *
      * @return the content
      */
+    public Map<String, String> getAtrtributes() {
+        Map<String, String> attrs = new HashMap<>();
+        String nameAndAttr = StringUtils.substringAfter(getNameAndAttr(), ' ');
+        StringTokenizer st = new StringTokenizer(nameAndAttr, " ");
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+            int i = token.indexOf('=');
+            if (i == -1) {
+                attrs.put(token, null);
+            } else {
+                attrs.put(trimSymbol(checkName(token.substring(0, i))), trimSymbol(token.substring(i + 1)));
+            }
+        }
+        return attrs;
+    }
+
+    protected String checkName(String attrName) {
+        if (PATTERN.matcher(attrName).matches()) {
+            return attrName;
+        }
+        throw new TplException(Strings.format("{} direcitve(tag) attribute names can only be alphabetic, error with {}",
+                getName(), attrName));
+    }
+
+    protected String trimSymbol(String attrToken) {
+        return Strings.trimBeginEnd(Strings.trimBeginEnd(attrToken, "\""), "\'");
+    }
+
+    /**
+     * Gets the content.
+     *
+     * @return the content
+     */
     public String getNameAndAttr() {
         return parser.directiveNameAndAttr(source).toString();
         //        StringBuilder sb = new StringBuilder();
@@ -201,7 +244,7 @@ public class DirectiveElement extends AbstractElement {
      * @return the name
      */
     public String getName() {
-        return parser.directiveName(source);
+        return parser.directiveName(source).toString();
     }
 
     //    /**

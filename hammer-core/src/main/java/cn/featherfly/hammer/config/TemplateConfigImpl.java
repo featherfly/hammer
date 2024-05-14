@@ -10,10 +10,13 @@ package cn.featherfly.hammer.config;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
+import cn.featherfly.common.lang.string.StringFormatter;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
+import cn.featherfly.hammer.tpl.TemplateDirectives;
 import cn.featherfly.hammer.tpl.TplExecuteIdEmailStyleParser;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
 
@@ -26,15 +29,24 @@ public class TemplateConfigImpl implements TemplateConfig {
 
     private Function<String, String> inParamPlaceholderName = n -> "_" + n;
 
+    private Function<String, String> countSqlConvertor;
+
+    // ascii 165 ¥ 166 ¦
+    private StringFormatter formatter = new StringFormatter((char) 165, (char) 166);
+
+    private CountSqlConverteStrategy countSqlConverteStrategy = CountSqlConverteStrategy.INIT_WARNING;
+
     private TplExecuteIdParser tplExecuteIdParser = new TplExecuteIdEmailStyleParser();
 
     private IntFunction<String> paramIndexToName = i -> "argu" + i;
 
-    private boolean precompileNamedParamPlaceholder = false; // YUFEI_TODO 功能完善了再来改成默认false\
+    private boolean precompileNamedParamPlaceholder = false;
 
     private boolean precompileMinimize = true;
 
     private Charset charset = StandardCharsets.UTF_8;
+
+    private String[] includeDirectiveTagNames = new String[] { TemplateDirectives.TEMPLATE_INCLUDE_DIRECTIVE_KEY };
 
     //    private boolean precompileInParamPlaceholder = true;
 
@@ -151,12 +163,80 @@ public class TemplateConfigImpl implements TemplateConfig {
     /**
      * Sets the template charset.
      *
-     * @param  charset the charset
-     * @return         the template config
+     * @param charset the charset
+     * @return the template config
      */
     public TemplateConfig setCharset(Charset charset) {
         this.charset = charset;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String[] getIncludeDirectiveTagNames() {
+        return includeDirectiveTagNames;
+    }
+
+    /**
+     * set includeDirectiveTagNames value
+     *
+     * @param includeDirectiveTagNames includeDirectiveTagNames
+     */
+    public TemplateConfigImpl setIncludeDirectiveTagNames(String[] includeDirectiveTagNames) {
+        this.includeDirectiveTagNames = includeDirectiveTagNames;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TemplateConfig setCountSqlConvertor(BiFunction<String, Boolean, String> countSqlConvertor) {
+        this.countSqlConvertor = (sql) -> countSqlConvertor.apply(sql, isPrecompileNamedParamPlaceholder());
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Function<String, String> getCountSqlConvertor() {
+        return countSqlConvertor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TemplateConfig setCountSqlConverteStrategy(CountSqlConverteStrategy countSqlConverteStrategy) {
+        this.countSqlConverteStrategy = countSqlConverteStrategy;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CountSqlConverteStrategy getCountSqlConverteStrategy() {
+        return countSqlConverteStrategy;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TemplateConfig setPreIncludeFormmater(StringFormatter formatter) {
+        this.formatter = formatter;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringFormatter getPreIncludeFormmater() {
+        return formatter;
+    }
 }

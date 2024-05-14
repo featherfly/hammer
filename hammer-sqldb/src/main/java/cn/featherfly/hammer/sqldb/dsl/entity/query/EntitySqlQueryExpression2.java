@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
-import cn.featherfly.common.constant.Chars;
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -18,32 +18,32 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <RS> the query result type
  */
 public class EntitySqlQueryExpression2<T1, T2, RS> extends
-        AbstractMulitiEntitySqlQueryConditionsGroupExpression2<T1, T2, RS, EntityQueryConditionGroup2<T1, T2, RS>,
-                EntityQueryConditionGroupLogic2<T1, T2, RS>>
-        implements EntityQueryConditionGroup2<T1, T2, RS>, EntityQueryConditionGroupLogic2<T1, T2, RS> {
+    AbstractMulitiEntitySqlQueryConditionsGroupExpression2<T1, T2, RS, EntityQueryConditionGroup2<T1, T2, RS>,
+        EntityQueryConditionGroupLogic2<T1, T2, RS>>
+    implements EntityQueryConditionGroup2<T1, T2, RS>, EntityQueryConditionGroupLogic2<T1, T2, RS> {
 
     /**
      * Instantiates a new entity sql query expression.
      *
-     * @param factory        the factory
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     public EntitySqlQueryExpression2(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation queryRelation) {
+        EntitySqlQueryRelation queryRelation) {
         this(null, factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * Instantiates a new entity sql query expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     EntitySqlQueryExpression2(EntityQueryConditionGroupLogic2<T1, T2, RS> parent, JdbcMappingFactory factory,
-            SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
 
@@ -60,18 +60,16 @@ public class EntitySqlQueryExpression2<T1, T2, RS> extends
      */
     @Override
     public String expression() {
-        String condition = super.expression();
-        if (parent == null) {
-            String result = entityRelation.buildSelectSql();
-            String sort = getRootSortBuilder().build();
-            if (Lang.isEmpty(condition)) {
-                return result + Chars.SPACE + sort;
-            } else {
-                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort;
-            }
-        } else {
-            return condition;
-        }
+        return EntitySqlQueryExpression.expression(super.expression(), parent, entityRelation, getRootSortBuilder(),
+            dialect);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Tuple2<String, String> expressionPage() {
+        return EntitySqlQueryExpression.expressionPage(super.expression(), parent, entityRelation, getRootSortBuilder(),
+            dialect);
     }
 }

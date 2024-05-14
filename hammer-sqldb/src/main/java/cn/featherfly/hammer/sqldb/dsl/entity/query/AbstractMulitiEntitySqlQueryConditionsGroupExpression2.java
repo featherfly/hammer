@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
@@ -37,8 +39,8 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <E1> first filterable entity type
  * @param <E2> second filterable entity type
  * @param <RS> result type
- * @param <C>  condition expression
- * @param <L>  logic expression
+ * @param <C> condition expression
+ * @param <L> logic expression
  */
 public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1, E2, RS,
     C extends EntityQueryConditionGroupExpression2<E1, E2, C, L, EntityQuerySortExpression2<E1, E2, RS>, RS>,
@@ -60,10 +62,10 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
     /**
      * Instantiates a new abstract entity sql condition group expression 2.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     protected AbstractMulitiEntitySqlQueryConditionsGroupExpression2(L parent, JdbcMappingFactory factory,
         SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
@@ -433,7 +435,16 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
     }
 
     // ****************************************************************************************************************
-    //  private method
+
+    /**
+     * Expression page.
+     *
+     * @return the tuple 2
+     */
+    public abstract Tuple2<String, String> expressionPage();
+
+    // ****************************************************************************************************************
+    //  protected method
     // ****************************************************************************************************************
 
     /**

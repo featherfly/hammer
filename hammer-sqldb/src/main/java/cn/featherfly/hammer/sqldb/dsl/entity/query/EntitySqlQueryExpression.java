@@ -1,11 +1,18 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuples;
+
 import cn.featherfly.common.constant.Chars;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -15,33 +22,32 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  * @param <T> the element type
  */
-public class EntitySqlQueryExpression<T> extends
-        AbstractMulitiEntitySqlQueryConditionsGroupExpression<T, EntityQueryConditionGroup<T>,
-                EntityQueryConditionGroupLogic<T>>
-        implements EntityQueryConditionGroup<T>, EntityQueryConditionGroupLogic<T> {
+public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryConditionsGroupExpression<T,
+    EntityQueryConditionGroup<T>, EntityQueryConditionGroupLogic<T>>
+    implements EntityQueryConditionGroup<T>, EntityQueryConditionGroupLogic<T> {
 
     /**
      * Instantiates a new entity sql query expression.
      *
-     * @param factory        the factory
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     public EntitySqlQueryExpression(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation queryRelation) {
+        EntitySqlQueryRelation queryRelation) {
         this(null, factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * Instantiates a new entity sql query expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     EntitySqlQueryExpression(EntityQueryConditionGroupLogic<T> parent, JdbcMappingFactory factory,
-            SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
 
@@ -67,37 +73,53 @@ public class EntitySqlQueryExpression<T> extends
      */
     @Override
     public String expression() {
-        //        String result = entityRelation.buildSelectSql();
-        //        String condition = super.build();
-        //        if (Lang.isNotEmpty(condition)) {
-        //            result = result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
-        //        }
-        //        return result;
-
-        //        String result = entityRelation.buildSelectSql();
-        //        String condition = super.build();
-        //        if (parent == null) {
-        //            if (Lang.isEmpty(condition)) {
-        //                return result;
-        //            } else {
-        //                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition;
-        //            }
-        //        } else {
-        //            return condition;
-        //        }
-
         String condition = super.expression();
+        return expression(condition, parent, entityRelation, getRootSortBuilder(), dialect);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Tuple2<String, String> expressionPage() {
+        return expressionPage(super.expression(), parent, entityRelation, getRootSortBuilder(), dialect);
+    }
+
+    static String expression(String condition, LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation,
+        SortBuilder sortBuilder, Dialect dialect) {
         if (parent == null) {
-            String result = entityRelation.buildSelectSql();
-            String sort = getRootSortBuilder().build();
+            String result = queryRelation.buildSelectSql();
             if (Lang.isEmpty(condition)) {
-                return result + Chars.SPACE + sort;
+                return result + Chars.SPACE + sortBuilder.build();
             } else {
                 return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort;
+                    + sortBuilder.build();
             }
         } else {
             return condition;
+        }
+    }
+
+    static Tuple2<String, String> expressionPage(String condition, LogicExpression<?, ?> parent,
+        EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder, Dialect dialect) {
+        if (parent == null) {
+            String select;
+            String selectCount;
+            select = queryRelation.buildSelectSql();
+            selectCount = queryRelation.buildSelectCountSql();
+
+            String sort = sortBuilder.build();
+            if (Lang.isEmpty(condition)) {
+                return Tuples.of(select + Chars.SPACE + sort, selectCount + Chars.SPACE + sort);
+            } else {
+                return Tuples.of(
+                    select + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE + sort,
+                    selectCount + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
+                        + sort);
+            }
+        } else {
+            // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
+            throw new SqldbHammerException("not root expression, only root expression can invoke this method");
         }
     }
 }

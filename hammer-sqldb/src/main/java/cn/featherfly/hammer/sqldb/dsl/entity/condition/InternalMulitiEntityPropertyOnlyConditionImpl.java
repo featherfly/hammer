@@ -20,10 +20,10 @@ import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation;
  * InternalMulitiEntityPropertyOnlyConditionImpl.
  *
  * @author zhongj
- * @param <E>  the element type
+ * @param <E> the element type
  * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 public class InternalMulitiEntityPropertyOnlyConditionImpl<E, C2 extends ConditionConfig<C2>,
     S extends EntitySqlRelation<S, B>, B extends SqlBuilder> extends
@@ -34,7 +34,7 @@ public class InternalMulitiEntityPropertyOnlyConditionImpl<E, C2 extends Conditi
     /**
      * Instantiates a new internal muliti repository condition impl.
      *
-     * @param factory           the factory
+     * @param factory the factory
      * @param entitySqlRelation the entity sql relation
      */
     public InternalMulitiEntityPropertyOnlyConditionImpl(JdbcMappingFactory factory, S entitySqlRelation) {
@@ -45,7 +45,7 @@ public class InternalMulitiEntityPropertyOnlyConditionImpl<E, C2 extends Conditi
      * Instantiates a new internal muliti repository condition impl.
      *
      * @param parent the parent
-     * @param index  the index
+     * @param index the index
      */
     private InternalMulitiEntityPropertyOnlyConditionImpl(EntityPropertyOnlyLogicExpression<E> parent,
         JdbcMappingFactory factory, S entitySqlRelation) {

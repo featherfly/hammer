@@ -9,9 +9,11 @@
 package cn.featherfly.hammer.config.tpl;
 
 import java.nio.charset.Charset;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
+import cn.featherfly.common.lang.string.StringFormatter;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
 
 /**
@@ -22,6 +24,22 @@ import cn.featherfly.hammer.tpl.TplExecuteIdParser;
 public interface TemplateConfig {
 
     /**
+     * The Enum CountSqlConverteStrategy.
+     */
+    public enum CountSqlConverteStrategy {
+
+        /** The init and warning. */
+        INIT_WARNING,
+
+        /** The init and exception. */
+        INIT_EXCEPTION,
+
+        /** The use and exception. */
+        USE_EXCEPTION;
+
+    }
+
+    /**
      * Gets the template charset.
      *
      * @return the charset
@@ -29,10 +47,17 @@ public interface TemplateConfig {
     Charset getCharset();
 
     /**
+     * Gets the include directive tag names.
+     *
+     * @return the include directive tag names
+     */
+    String[] getIncludeDirectiveTagNames();
+
+    /**
      * Sets the tpl execute id parser.
      *
-     * @param  tplExecuteIdParser the tpl execute id parser
-     * @return                    the template config
+     * @param tplExecuteIdParser the tpl execute id parser
+     * @return the template config
      */
     TemplateConfig setTplExecuteIdParser(TplExecuteIdParser tplExecuteIdParser);
 
@@ -46,8 +71,8 @@ public interface TemplateConfig {
     /**
      * Sets the param index to name.
      *
-     * @param  paramIndexToName the param index to name
-     * @return                  the template config
+     * @param paramIndexToName the param index to name
+     * @return the template config
      */
     TemplateConfig setParamIndexToName(IntFunction<String> paramIndexToName);
 
@@ -61,8 +86,8 @@ public interface TemplateConfig {
     /**
      * Sets the in param placeholder name.
      *
-     * @param  inParamPlaceholderName the in param placeholder name
-     * @return                        the template config
+     * @param inParamPlaceholderName the in param placeholder name
+     * @return the template config
      */
     TemplateConfig setInParamPlaceholderName(Function<String, String> inParamPlaceholderName);
 
@@ -76,8 +101,8 @@ public interface TemplateConfig {
     /**
      * Sets the precompile named param placeholder.
      *
-     * @param  precompileNamedParamPlaceholder the precompile named param placeholder
-     * @return                                 the template config
+     * @param precompileNamedParamPlaceholder the precompile named param placeholder
+     * @return the template config
      */
     TemplateConfig setPrecompileNamedParamPlaceholder(boolean precompileNamedParamPlaceholder);
 
@@ -91,8 +116,8 @@ public interface TemplateConfig {
     /**
      * Sets the precompile minimize.
      *
-     * @param  precompileMinimize the precompile minimize
-     * @return                    the template config
+     * @param precompileMinimize the precompile minimize
+     * @return the template config
      */
     TemplateConfig setPrecompileMinimize(boolean precompileMinimize);
 
@@ -103,8 +128,29 @@ public interface TemplateConfig {
      */
     boolean isPrecompileMinimize();
 
+    /**
+     * Sets the count sql convertor.
+     *
+     * @param countSqlConvertor the count sql convertor
+     * @return the template config
+     */
+    TemplateConfig setCountSqlConvertor(BiFunction<String, Boolean, String> countSqlConvertor);
+
+    /**
+     * Gets the count sql convertor.
+     *
+     * @return the count sql convertor
+     */
+    Function<String, String> getCountSqlConvertor();
     //    TemplateConfig setPrecompileInParamPlaceholder(boolean precompileInParamPlaceholder);
     //
     //    boolean isPrecompileInParamPlaceholder();
 
+    TemplateConfig setCountSqlConverteStrategy(CountSqlConverteStrategy countSqlConverteStrategy);
+
+    CountSqlConverteStrategy getCountSqlConverteStrategy();
+
+    TemplateConfig setPreIncludeFormmater(StringFormatter Formatter);
+
+    StringFormatter getPreIncludeFormmater();
 }

@@ -34,8 +34,13 @@ public class RoleMapperDefineTemplatesTest extends JdbcTestBase {
         basePackages.add("cn.featherfly.hammer.sqldb.tpl");
         configFactory = TplConfigFactoryImpl.builder() //
                 .prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages)
-                .config(hammerConfig.getTemplateConfig())
-                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
+                .config(hammerConfig.getTemplateConfig()).preCompile(new FreemarkerTemplatePreProcessor(
+                        hammerConfig.getTemplateConfig().setPrecompileNamedParamPlaceholder(true)
+                // 先使用命名参数(setPrecompileNamedParamPlaceholder(true))，
+                // 即执行模板时不认为模板为jdbc sql模板占位符(select * from user where id = ?)
+                // 而是使用命名占位符(select * from user where id = :id)
+                // YUFEI_TEST 后续单独测试setPrecompileNamedParamPlaceholder(false)的情况，主要测试不是include机制
+                )).build();
 
         Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
         roleMapper = mapperFactory.newInstance(RoleMapperDefineTemplates.class, hammer, hammerConfig);

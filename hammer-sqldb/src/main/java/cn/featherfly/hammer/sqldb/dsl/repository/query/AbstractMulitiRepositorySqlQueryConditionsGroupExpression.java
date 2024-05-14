@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.speedment.common.tuple.Tuple1;
+import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
+import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
@@ -19,9 +21,11 @@ import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.repository.AbstractMulitiRepositorySqlConditionsGroupExpressionBase;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryConditionGroupQuery;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
@@ -53,9 +57,9 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
      * Instantiates a new abstract muliti repository sql query conditions group
      * expression.
      *
-     * @param parent         the parent
-     * @param index          the index
-     * @param queryRelation  the query relation
+     * @param parent the parent
+     * @param index the index
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryConditionsGroupExpression(RepositoryQueryConditionsGroupLogic parent,
@@ -240,18 +244,53 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
      */
     @Override
     public String expression() {
-        String condition = super.expression();
+        return expression(super.expression(), parent, repositoryRelation, getRootSortBuilder(), dialect);
+    }
+
+    /**
+     * Expression page.
+     *
+     * @return the tuple 2
+     */
+    public Tuple2<String, String> expressionPage() {
+        return expressionPage(super.expression(), parent, repositoryRelation, getRootSortBuilder(), dialect);
+    }
+
+    static String expression(String condition, LogicExpression<?, ?> parent, RepositorySqlQueryRelation queryRelation,
+        SortBuilder sortBuilder, Dialect dialect) {
         if (parent == null) {
-            String result = repositoryRelation.buildSelectSql();
-            String sort = getRootSortBuilder().build();
+            String result = queryRelation.buildSelectSql();
             if (Lang.isEmpty(condition)) {
-                return result + Chars.SPACE + sort;
+                return result + Chars.SPACE + sortBuilder.build();
             } else {
                 return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                    + sort;
+                    + sortBuilder.build();
             }
         } else {
             return condition;
+        }
+    }
+
+    static Tuple2<String, String> expressionPage(String condition, LogicExpression<?, ?> parent,
+        RepositorySqlQueryRelation queryRelation, SortBuilder sortBuilder, Dialect dialect) {
+        if (parent == null) {
+            String select;
+            String selectCount;
+            select = queryRelation.buildSelectSql();
+            selectCount = queryRelation.buildSelectCountSql();
+
+            String sort = sortBuilder.build();
+            if (Lang.isEmpty(condition)) {
+                return Tuples.of(select + Chars.SPACE + sort, selectCount + Chars.SPACE + sort);
+            } else {
+                return Tuples.of(
+                    select + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE + sort,
+                    selectCount + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
+                        + sort);
+            }
+        } else {
+            // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
+            throw new SqldbHammerException("not root expression, only root expression can invoke this method");
         }
     }
 }

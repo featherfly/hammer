@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.tpl;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import cn.featherfly.common.lang.ArrayUtils;
@@ -51,6 +52,8 @@ public class TplExecuteConfig {
 
     private ParamsFormat paramsFormat = ParamsFormat.AUTO;
 
+    private final Set<TplExecuteId> includes = new LinkedHashSet<>();
+
     // ----------------------------------------------------------------------------------------------------------------
 
     private boolean included;
@@ -80,6 +83,10 @@ public class TplExecuteConfig {
      */
     public String getCount() {
         return count;
+    }
+
+    public String getCountExecuteId() {
+        return executeId + "." + TplConfigFactory.COUNT_SUFFIX;
     }
 
     /**
@@ -347,6 +354,15 @@ public class TplExecuteConfig {
      */
     public void setIncluded(boolean included) {
         this.included = included;
+    }
+
+    /**
+     * get includes value
+     *
+     * @return includes
+     */
+    public Set<TplExecuteId> getIncludes() {
+        return includes;
     }
 
     /**

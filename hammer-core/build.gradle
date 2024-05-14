@@ -23,8 +23,10 @@ dependencies {
     implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 	implementation group: 'org.springframework', name: 'spring-context', version: sv
 		
-	testImplementation project(":hammer-api")
+//	testImplementation project(":hammer-api")
+	testImplementation group: 'cn.featherfly.common', name: 'common-db', version: '0.6.1'
 	testImplementation group: 'org.ow2.asm', name: 'asm-util', version: '9.0'
+	testImplementation group: 'org.springframework', name: 'spring-core', version: '5.3.14'
 	testImplementation group: 'org.springframework', name: 'spring-core', version: '5.3.14'
 	
 }

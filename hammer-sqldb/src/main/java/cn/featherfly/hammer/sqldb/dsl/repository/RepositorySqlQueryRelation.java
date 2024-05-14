@@ -36,7 +36,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @author zhongj
  */
 public class RepositorySqlQueryRelation
-        extends RepositorySqlRelation<RepositorySqlQueryRelation, SqlSelectBasicBuilder> {
+    extends RepositorySqlRelation<RepositorySqlQueryRelation, SqlSelectBasicBuilder> {
 
     /** The select builder. */
     private SqlSelectBasicBuilder selectBuilder;
@@ -48,13 +48,13 @@ public class RepositorySqlQueryRelation
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param jdbc         the jdbc
+     * @param jdbc the jdbc
      * @param aliasManager aliasManager
-     * @param metadata     the metadata
-     * @param queryConfig  the query config
+     * @param metadata the metadata
+     * @param queryConfig the query config
      */
     public RepositorySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, DatabaseMetadata metadata,
-            QueryConfig queryConfig) {
+        QueryConfig queryConfig) {
         super(jdbc, aliasManager, metadata, queryConfig);
     }
 
@@ -72,7 +72,7 @@ public class RepositorySqlQueryRelation
      * add a query mapping.
      *
      * @param repository the repository
-     * @param alias      the alias
+     * @param alias the alias
      * @return the entity sql query relation
      */
     public RepositorySqlQueryRelation query(String repository, String alias) {
@@ -89,7 +89,7 @@ public class RepositorySqlQueryRelation
         addFilterable(joinRepository);
         RepositoryRelation jerm = getRepositoryRelation(index - 1);
         SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(jerm.getRepository(), jerm.getRepositoryAlias(),
-                onExpression.get().expression());
+            onExpression.get().expression());
         jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
         return this;
     }
@@ -99,7 +99,7 @@ public class RepositorySqlQueryRelation
      */
     @Override
     public RepositorySqlQueryRelation join(int sourceIndex, String sourceField, String joinRepository,
-            String joinRepositoryAlias, String joinField) {
+        String joinRepositoryAlias, String joinField) {
         AssertIllegalArgument.isNotNull(joinRepository, "joinRepository");
         if (Lang.isEmpty(joinField)) {
             List<Column> pks = metadata.getTable(joinRepository).getPrimaryColumns();
@@ -126,16 +126,16 @@ public class RepositorySqlQueryRelation
         RepositoryRelation jerm = getRepositoryRelation(index - 1);
 
         SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getRepositoryAlias(), sourceField,
-                jerm.getRepository(), jerm.getRepositoryAlias(), jerm.getField());
+            jerm.getRepository(), jerm.getRepositoryAlias(), jerm.getField());
         jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
 
         return this;
     }
 
     private SqlSelectJoinOnBasicBuilder join0(String sourceTableAlias, String sourceColumn, String joinTable,
-            String joinTableAlias, String joinTableColumn) {
+        String joinTableAlias, String joinTableColumn) {
         return getBuilder().join(Join.INNER_JOIN, metadata.getTable(joinTable), joinTableAlias, joinTableColumn,
-                sourceTableAlias, sourceColumn);
+            sourceTableAlias, sourceColumn);
     }
 
     private SqlSelectJoinOnBasicBuilder join0(String joinTable, String joinTableAlias, String onSql) {
@@ -172,7 +172,7 @@ public class RepositorySqlQueryRelation
     /**
      * fetch fields.
      *
-     * @param index  the index
+     * @param index the index
      * @param fields the fields
      * @return the repository sql query relation
      */
@@ -192,7 +192,7 @@ public class RepositorySqlQueryRelation
     /**
      * fetch fields.
      *
-     * @param index  the index
+     * @param index the index
      * @param fields the fields
      * @return the repository sql query relation
      */
@@ -225,9 +225,9 @@ public class RepositorySqlQueryRelation
     /**
      * Fetch.
      *
-     * @param index    the index
+     * @param index the index
      * @param distinct the distinct
-     * @param field    the field
+     * @param field the field
      * @return the repository sql query relation
      */
     public RepositorySqlQueryRelation fetch(int index, boolean distinct, String field) {
@@ -237,10 +237,10 @@ public class RepositorySqlQueryRelation
     /**
      * Fetch.
      *
-     * @param index    the index
+     * @param index the index
      * @param distinct the distinct
-     * @param field    the field
-     * @param alias    the alias
+     * @param field the field
+     * @param alias the alias
      * @return the repository sql query relation
      */
     public RepositorySqlQueryRelation fetch(int index, boolean distinct, String field, String alias) {
@@ -259,9 +259,9 @@ public class RepositorySqlQueryRelation
     /**
      * Fetch.
      *
-     * @param index             the index
+     * @param index the index
      * @param aggregateFunction the aggregate function
-     * @param field             the field
+     * @param field the field
      * @return the repository sql query relation
      */
     public RepositorySqlQueryRelation fetch(int index, AggregateFunction aggregateFunction, String field) {
@@ -271,29 +271,29 @@ public class RepositorySqlQueryRelation
     /**
      * Fetch.
      *
-     * @param index             the index
+     * @param index the index
      * @param aggregateFunction the aggregate function
-     * @param field             the field
-     * @param alias             the alias
+     * @param field the field
+     * @param alias the alias
      * @return the repository sql query relation
      */
     public RepositorySqlQueryRelation fetch(int index, AggregateFunction aggregateFunction, String field,
-            String alias) {
+        String alias) {
         return fetch(index, aggregateFunction, false, field, alias);
     }
 
     /**
      * Fetch.
      *
-     * @param index             the index
+     * @param index the index
      * @param aggregateFunction the aggregate function
-     * @param distinct          the distinct
-     * @param field             the field
-     * @param alias             the alias
+     * @param distinct the distinct
+     * @param field the field
+     * @param alias the alias
      * @return the repository sql query relation
      */
     public RepositorySqlQueryRelation fetch(int index, AggregateFunction aggregateFunction, boolean distinct,
-            String field, String alias) {
+        String field, String alias) {
         checkIndex(index);
         RepositoryRelation erm = getRepositoryRelation(index);
         repositoryQueryFetchMapping.put(repositoryQueryFetchMapping.size(), erm);
@@ -316,13 +316,24 @@ public class RepositorySqlQueryRelation
     }
 
     /**
+     * Builds the select count sql.
+     *
+     * @return the string
+     */
+    public String buildSelectCountSql() {
+        return jdbc.getDialect().getKeywords().select() + " " + jdbc.getDialect().getKeywords().count() + "(*) "
+            + jdbc.getDialect().getKeywords().from() + " " + getRepositoryRelation(0).getRepository() + " "
+            + getRepositoryRelation(0).getRepositoryAlias();
+    }
+
+    /**
      * Builds the select sql.
      *
      * @return the string
      */
     public String buildSelectSql() {
         return selectBuilder.setColumnAliasPrefixTableAlias(isReturnTuple())
-                .build((tableName, tableAlias) -> queryFetchAlias.contains(tableAlias));
+            .build((tableName, tableAlias) -> queryFetchAlias.contains(tableAlias));
     }
 
     // ****************************************************************************************************************
@@ -335,7 +346,7 @@ public class RepositorySqlQueryRelation
     @Override
     protected void initBuilder(RepositoryRelation erm) {
         selectBuilder = new SqlSelectBasicBuilder(jdbc.getDialect(), metadata.getTable(erm.getRepository()),
-                erm.getRepositoryAlias());
+            erm.getRepositoryAlias());
     }
 
     /**

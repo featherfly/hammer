@@ -10,16 +10,15 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.config.TemplateConfigImpl;
-import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
@@ -31,9 +30,18 @@ import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
  */
 public class FreemarkerTemplatePreProcessorTest2 {
 
-    TemplateConfig templateConfig = new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false)
-            .setPrecompileMinimize(false);
     TplExecuteConfig config = new TplExecuteConfig();
+
+    private FreemarkerTemplatePreProcessor processor;
+
+    @BeforeClass
+    void bc() {
+        TemplateConfigImpl templateConfig = new TemplateConfigImpl();
+        templateConfig.setIncludeDirectiveTagNames(new String[] { "include", "tpl", "sql" })
+                .setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false);
+
+        processor = new FreemarkerTemplatePreProcessor(templateConfig);
+    }
 
     @Test
     void test() throws IOException {
@@ -46,7 +54,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         }
         String s = sb.toString();
         System.out.println(s);
-        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
+        System.err.println(processor.process(s, config));
     }
 
     @Test
@@ -60,7 +68,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         }
         String s = sb.toString();
         System.out.println(s);
-        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
+        System.err.println(processor.process(s, config));
     }
 
     @Test
@@ -74,7 +82,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         }
         String s = sb.toString();
         System.out.println(s);
-        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
+        System.err.println(processor.process(s, config));
     }
 
     @Test(expectedExceptions = TplException.class,
@@ -89,7 +97,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         }
         String s = sb.toString();
         System.out.println(s);
-        System.err.println(new FreemarkerTemplatePreProcessor(templateConfig).process(s, config));
+        System.err.println(processor.process(s, config));
     }
 
     @Test
@@ -104,9 +112,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         String s = sb.toString();
         Console.log(s);
         // namedParamPlaceholder false
-        System.err.println(new FreemarkerTemplatePreProcessor(
-                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
-                        .process(s, config));
+        System.err.println(processor.process(s, config));
         Console.error("paramNames({}): {}", config.getParamNames().length, ArrayUtils.toString(config.getParamNames()));
         Console.error("inParamNames({}): {}", config.getInParamNames().length,
                 ArrayUtils.toString(config.getInParamNames()));
@@ -140,9 +146,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         String s = sb.toString();
         System.out.println(s);
         // namedParamPlaceholder false
-        System.err.println(new FreemarkerTemplatePreProcessor(
-                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
-                        .process(s, config));
+        System.err.println(processor.process(s, config));
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
         assertEquals(config.getParamNames(), new String[] { "id", "age", "username", "password", "mobile" });
         System.out.println(config.getParams().length);
@@ -161,9 +165,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         String s = sb.toString();
         System.out.println(s);
         // namedParamPlaceholder false
-        System.err.println(new FreemarkerTemplatePreProcessor(
-                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
-                        .process(s, config));
+        System.err.println(processor.process(s, config));
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
         //        assertEquals(config.getParamNames(), new String[] { "id", "age", "username", "password", "mobile" });
         //        System.out.println(config.getParams().length);
@@ -182,14 +184,17 @@ public class FreemarkerTemplatePreProcessorTest2 {
         String s = sb.toString();
         System.out.println(s);
         // namedParamPlaceholder false
-        System.err.println(new FreemarkerTemplatePreProcessor(
-                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
-                        .process(s, config));
+        String process = processor.process(s, config);
+        System.err.println();
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
         //        assertEquals(config.getParamNames(), new String[] { "id", "age", "username", "password", "mobile" });
         //        System.out.println(config.getParams().length);
         //        assertEquals(config.getParams().length, config.getParamNames().length);
-        throw new NotImplementedException("功能还有问题，多次include丢失，定位这里");
+
+        String result = read(
+                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_include_result.sql");
+        assertEquals(process, result);
+
     }
 
     @Test
@@ -204,9 +209,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         String s = sb.toString();
         System.out.println(s);
         // namedParamPlaceholder false
-        System.err.println(new FreemarkerTemplatePreProcessor(
-                new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false))
-                        .process(s, config));
+        System.err.println(processor.process(s, config));
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
         //        assertEquals(config.getParamNames(), new String[] { "id", "age", "username", "password", "mobile" });
         //        System.out.println(config.getParams().length);
@@ -219,7 +222,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
+        String process = processor.process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -233,7 +236,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
+        String process = processor.process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -247,7 +250,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
+        String process = processor.process(s, config);
         System.err.println(process);
 
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
@@ -264,7 +267,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
+        String process = processor.process(s, config);
         System.err.println(process);
 
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
@@ -280,7 +283,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
+        String process = processor.process(s, config);
         System.err.println(process);
 
         String result = read(
@@ -294,7 +297,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.out.println(ClassLoaderUtils.getResource(file));
         String s = read(file);
 
-        String process = new FreemarkerTemplatePreProcessor(templateConfig).process(s, config);
+        String process = processor.process(s, config);
         System.err.println(process);
 
         String result = read(
