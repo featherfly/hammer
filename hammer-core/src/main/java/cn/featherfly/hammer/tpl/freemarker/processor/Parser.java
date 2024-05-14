@@ -75,32 +75,26 @@ public class Parser {
 
     private List<Param> params;
 
-    private AbstractElement parentElement;
+    //    private AbstractElement parentElement;
 
     /** The elements. */
-    List<AbstractElement> elements = new ArrayList<>();
+    private final List<AbstractElement> elements = new ArrayList<>();
 
-    /**
-     * Instantiates a new parser.
-     *
-     * @param parent the parent
-     * @param parent the parent
-     */
-    private Parser(Parser parent, AbstractElement parentElement) {
-        this.parentElement = parentElement;
-        directiveStart = parent.directiveStart;
-        directiveEnd = parent.directiveEnd;
-        startDirecitve = parent.startDirecitve;
-        endDirecitve = parent.endDirecitve;
-        params = parent.params;
-        templateConfig = parent.templateConfig;
-    }
-
-    /**
-     * Instantiates a new parser.
-     */
-    public Parser() {
-    }
+    //    /**
+    //     * Instantiates a new parser.
+    //     *
+    //     * @param parent the parent
+    //     * @param parent the parent
+    //     */
+    //    private Parser(Parser parent, AbstractElement parentElement) {
+    //        //        this.parentElement = parentElement;
+    //        directiveStart = parent.directiveStart;
+    //        directiveEnd = parent.directiveEnd;
+    //        startDirecitve = parent.startDirecitve;
+    //        endDirecitve = parent.endDirecitve;
+    //        params = parent.params;
+    //        templateConfig = parent.templateConfig;
+    //    }
 
     /**
      * Instantiates a new parser.
@@ -144,9 +138,19 @@ public class Parser {
     }
 
     private String parse(String source, TplExecuteConfig tplExecuteConfig, List<Param> params) {
+        parse(source, tplExecuteConfig, params, null);
+        StringBuilder result = new StringBuilder();
+        for (AbstractElement abstractElement : elements) {
+            result.append(abstractElement.getValue());
+        }
+        return result.toString();
+    }
+
+    private void parse(String source, TplExecuteConfig tplExecuteConfig, List<Param> params,
+            AbstractElement parentElement) {
         char c = 0;
         char c2 = 0;
-        elements.clear();
+        //elements.clear();
         AbstractElement element = null;
         for (int index = 0; index < source.length();) {
             c = source.charAt(index);
@@ -158,15 +162,10 @@ public class Parser {
             // 直接找到group结束的索引
             if (element instanceof DirectiveElement && ((DirectiveElement) element).isGroupStart()) {
                 DirectiveElement de = (DirectiveElement) element;
-                // FIXME 当多个/*< .. >*/ 自关闭标签连续时，只有第一个被转换出后，后续的丢失
-                // 问题是这!de.isEnclosed()这里一直是true
                 if (!de.isEnclosed()) {
                     Directive directive = getEndDirective(source, (DirectiveElement) element);
                     // 去掉directive开始标签和结束标签，因为element就已经代表了这个标签
 
-                    //                Parser parser = new Parser(source.substring(element.getEnd() + 1, directive.start), element);
-                    //                parser.parse();
-                    Parser parser = new Parser(this, element);
                     int substart = element.getEnd() + 1;
                     if (de.getName().equals("where")) {
                         int wrapIndex = wrapString(source, substart);
@@ -186,7 +185,8 @@ public class Parser {
                         }
                     }
                     String subSource = source.substring(substart, directive.start);
-                    parser.parse(subSource, tplExecuteConfig, params);
+
+                    parse(subSource, tplExecuteConfig, params, element);
                     index = directive.end;
                     element = null;
                 }
@@ -199,10 +199,14 @@ public class Parser {
                         element = new DirectiveElement(directive.content,
                                 templateConfig.isPrecompileNamedParamPlaceholder(), element, this);
                     }
-                    addElement(element);
+                    addElement(element, parentElement);
                     element.setEnd(directive.end);
                     element.setStart(directive.start);
                     index = directive.end;
+                    if (directive.selfClose) {
+                        element = null;
+                    }
+
                 } else {
                     if (!(element instanceof StringElement || element instanceof CommentElement)) {
                         DirectiveElement de = null;
@@ -210,7 +214,7 @@ public class Parser {
                             de = (DirectiveElement) element;
                         }
                         element = new StringElement(templateConfig.isPrecompileNamedParamPlaceholder(), element, this);
-                        addElement(element);
+                        addElement(element, parentElement);
 
                         if (de != null) {
                             if (de.isWrapper()) {
@@ -250,11 +254,8 @@ public class Parser {
                                         boolean startWith = paramContent.charAt(namePart.getEnd()) == fuzzyQueryChar;
                                         append = appendTransverter(startWith, endWith, append);
 
-                                        //                                        de.setSource(pre + name + de.getSource() + append);
                                         de.setSource(pre + name + de.getSource() + append + " name=\"" + name + "\"");
 
-                                        // IMPLSOON 处理 in
-                                        //                                        params.add(new Param(name));
                                     } else {
                                         name = de.getSource().replaceAll("\\?", "");
 
@@ -276,25 +277,20 @@ public class Parser {
                                         Tuple2<Boolean, Boolean> isFuzzy = isFuzzy(paramContent);
                                         append = appendTransverter(isFuzzy.get0(), isFuzzy.get1(), append);
 
-                                        //                                        String fuzzyStr = paramContent.chars()
-                                        //                                                .filter(i -> i == fuzzyQueryChar || i == namedParamStart || i == '?')
-                                        //                                                .collect(StringBuilder::new, StringBuilder::appendCodePoint,
-                                        //                                                        StringBuilder::append)
-                                        //                                                .toString();
-                                        //                                        boolean endWith = fuzzyStr.indexOf(fuzzyQueryChar) == 0;
-                                        //                                        boolean startWith = fuzzyStr.lastIndexOf(fuzzyQueryChar) == fuzzyStr.length()
-                                        //                                                - 1;
-                                        //                                        append = appendTransverter(startWith, endWith, append);
-                                        //                                        de.setSource(pre + name + append);
                                         de.setSource(pre + name + append + " name=\"" + name + "\"");
 
-                                        //                                        params.add(new Param(name));
                                     }
-                                    Parser parser = new Parser(this, de);
-                                    parser.parse(source.substring(subStart, wrapIndex), tplExecuteConfig, params);
+
+                                    // new Direcitive时已经add了
+                                    // addElement(de, parentElement);
+                                    parse(source.substring(subStart, wrapIndex), tplExecuteConfig, params, de);
                                 } else {
-                                    de.addChild(new StringElement(source.substring(index, wrapIndex),
-                                            templateConfig.isPrecompileNamedParamPlaceholder(), element, this));
+                                    addElement(
+                                            new StringElement(source.substring(index, wrapIndex),
+                                                    templateConfig.isPrecompileNamedParamPlaceholder(), element, this),
+                                            de);
+                                    //                                    de.addChild(new StringElement(source.substring(index, wrapIndex),
+                                    //                                            templateConfig.isPrecompileNamedParamPlaceholder(), element, this));
                                 }
                                 index = wrapIndex;
                                 continue;
@@ -310,12 +306,6 @@ public class Parser {
             }
             index++;
         }
-        StringBuilder result = new StringBuilder();
-        for (AbstractElement abstractElement : elements) {
-            result.append(abstractElement.getValue());
-        }
-
-        return result.toString();
     }
 
     private Tuple2<Boolean, Boolean> isFuzzy(CharSequence paramContent) {
@@ -510,7 +500,7 @@ public class Parser {
         return type != null && type == NullType.EMPTY;
     }
 
-    private Directive parseDirective(String value, int start) {
+    private Directive parseDirective(CharSequence value, int start) {
         char c = 0;
         char c2 = 0;
         char c3 = 0;
@@ -543,7 +533,8 @@ public class Parser {
         }
 
         if (directive.start != -1 && directive.end != -1) {
-            directive.setSource(value.substring(directive.start, directive.end + 1), this);
+            directive.selfClose = value.charAt(directive.end - 2) == endDirecitve;
+            directive.setSource(value.subSequence(directive.start, directive.end + 1), this);
             //            directive.source = value.substring(directive.start, directive.end + 1);
             //            directive.content = directiveContent(directive.source, directiveStart.length, directiveEnd.length);
             //            directive.name = directiveName(directive.content);
@@ -554,7 +545,7 @@ public class Parser {
         }
     }
 
-    private Directive getEndDirective(String value, DirectiveElement directiveElement) {
+    private Directive getEndDirective(CharSequence value, DirectiveElement directiveElement) {
         char c = 0;
         char c2 = 0;
         //        char c3 = 0;
@@ -583,7 +574,7 @@ public class Parser {
                 directive.end = index + directiveEnd.length - 1;
                 if (directive.start != -1 && directive.end != -1) {
                     // start + 1 去掉<符号
-                    directive.setSource(value.substring(directive.start, directive.end + 1), this);
+                    directive.setSource(value.subSequence(directive.start, directive.end + 1), this);
                     if (directive.content.charAt(0) == endDirecitve
                             && directive.name.equals(directiveElement.getName())) {
                         directive.end = index + directiveEnd.length - 1;
@@ -596,7 +587,7 @@ public class Parser {
         throw new TplException(Strings.format("没有找到标签[{0}]对应的结束标签", directiveElement.getSource()));
     }
 
-    private void addElement(AbstractElement element) {
+    private void addElement(AbstractElement element, AbstractElement parentElement) {
         if (parentElement != null) {
             parentElement.addChild(element);
         } else {
@@ -821,6 +812,8 @@ public class Parser {
         int end = -1;
 
         boolean comment;
+
+        boolean selfClose;
 
         String name;
 

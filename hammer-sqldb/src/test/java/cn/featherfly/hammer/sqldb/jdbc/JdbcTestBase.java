@@ -135,17 +135,10 @@ public class JdbcTestBase extends TestBase {
         //        ConstantConfigurator.config("constant.mysql.yaml");
 
         BasicDataSource ds = new BasicDataSource();
-        //        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?useUnicode=true&characterEncoding=UTF-8");
-        //        ds.setUrl(
-        //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        //        ds.setUrl(
-        //                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false");
-        // 高版本mysql-connector已经不需要serverTimezone=CTT
-        ds.setUrl(
-                "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true");
+        ds.setUrl(MYSQL_URL);
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setUsername("root");
-        ds.setPassword("123456");
+        ds.setUsername(MYSQL_USER);
+        ds.setPassword(MYSQL_PWD);
         dataSource = ds;
 
         // 初始化数据库

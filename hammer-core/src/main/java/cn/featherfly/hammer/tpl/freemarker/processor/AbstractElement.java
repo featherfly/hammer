@@ -120,8 +120,8 @@ public abstract class AbstractElement implements Element {
      */
     public AbstractElement addChild(Element child) {
         if (child instanceof AbstractElement) {
-            AbstractElement ae = (AbstractElement) child;
-            ae.parent = this;
+            AbstractElement children = (AbstractElement) child;
+            children.parent = this;
         }
         childs.add(child);
         return this;
