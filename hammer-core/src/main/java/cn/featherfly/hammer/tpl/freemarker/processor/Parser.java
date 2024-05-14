@@ -3,7 +3,10 @@ package cn.featherfly.hammer.tpl.freemarker.processor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -21,6 +24,9 @@ import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteConfig.Param;
+import cn.featherfly.hammer.tpl.TplExecuteId;
+import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
+import cn.featherfly.hammer.tpl.directive.IncludeDirective;
 
 /**
  * Parser .
@@ -55,7 +61,7 @@ public class Parser {
 
     private Pattern hasReplaceableTargetPattern = Pattern.compile("\\$=%?" + namedParamStart + "\\w+%?");
 
-    private TemplateConfig templateConfig;
+    TemplateConfig templateConfig;
 
     /**
      * The Enum NullType.
@@ -129,25 +135,24 @@ public class Parser {
      * @return the string
      */
     public String parse(String source, TplExecuteConfig tplExecuteConfig) {
-        //        List<String> paramNames = new ArrayList<>();
         params = new ArrayList<>();
-        String content = parse(source, tplExecuteConfig, params);
-        //        tplExecuteConfig.setParamNames(paramNames.toArray(new String[paramNames.size()]));
-        tplExecuteConfig.setParams(params.toArray(new Param[params.size()]));
-        return content;
-    }
+        Set<TplExecuteId> includeTplExecuteIds = new LinkedHashSet<>();
 
-    private String parse(String source, TplExecuteConfig tplExecuteConfig, List<Param> params) {
-        parse(source, tplExecuteConfig, params, null);
+        parse(source, tplExecuteConfig, Tuples.of(params, includeTplExecuteIds), null);
+
         StringBuilder result = new StringBuilder();
         for (AbstractElement abstractElement : elements) {
             result.append(abstractElement.getValue());
         }
+
+        tplExecuteConfig.setParams(params.toArray(new Param[params.size()]));
+        tplExecuteConfig.getIncludes().addAll(includeTplExecuteIds);
+
         return result.toString();
     }
 
-    private void parse(String source, TplExecuteConfig tplExecuteConfig, List<Param> params,
-            AbstractElement parentElement) {
+    private void parse(String source, TplExecuteConfig tplExecuteConfig,
+            Tuple2<List<Param>, Set<TplExecuteId>> paramTuple, AbstractElement parentElement) {
         char c = 0;
         char c2 = 0;
         //elements.clear();
@@ -186,7 +191,7 @@ public class Parser {
                     }
                     String subSource = source.substring(substart, directive.start);
 
-                    parse(subSource, tplExecuteConfig, params, element);
+                    parse(subSource, tplExecuteConfig, paramTuple, element);
                     index = directive.end;
                     element = null;
                 }
@@ -196,8 +201,8 @@ public class Parser {
                     if (directive.comment) {
                         element = new CommentElement(directive.content, element, this);
                     } else {
-                        element = new DirectiveElement(directive.content,
-                                templateConfig.isPrecompileNamedParamPlaceholder(), element, this);
+                        element = craeteDirective(directive, element);
+                        processDirective((DirectiveElement) element, paramTuple.get1());
                     }
                     addElement(element, parentElement);
                     element.setEnd(directive.end);
@@ -283,7 +288,7 @@ public class Parser {
 
                                     // new Direcitive时已经add了
                                     // addElement(de, parentElement);
-                                    parse(source.substring(subStart, wrapIndex), tplExecuteConfig, params, de);
+                                    parse(source.substring(subStart, wrapIndex), tplExecuteConfig, paramTuple, de);
                                 } else {
                                     addElement(
                                             new StringElement(source.substring(index, wrapIndex),
@@ -500,6 +505,29 @@ public class Parser {
         return type != null && type == NullType.EMPTY;
     }
 
+    private void processDirective(DirectiveElement directiveElement, Set<TplExecuteId> includeIds) {
+        for (String includeDirectiveTagName : templateConfig.getIncludeDirectiveTagNames()) {
+            if (includeDirectiveTagName.equals(directiveElement.getName())) {
+                Map<String, String> attrs = directiveElement.getAtrtributes();
+                includeIds.add(new TplExecuteIdFileImpl(attrs.get(IncludeDirective.NAME_PARAM),
+                        attrs.get(IncludeDirective.NAME_SPACE_PARAM), templateConfig.getTplExecuteIdParser()));
+            }
+        }
+    }
+
+    //    directive.content,templateConfig.isPrecompileNamedParamPlaceholder(), element, this
+    private DirectiveElement craeteDirective(Directive directive, AbstractElement previous) {
+        for (String includeDirectiveTagName : templateConfig.getIncludeDirectiveTagNames()) {
+            if (includeDirectiveTagName.equals(directive.name)) {
+                return new IncludeDirectiveElement(directive.content,
+                        templateConfig.isPrecompileNamedParamPlaceholder(), previous, this);
+            }
+            // more special directives
+        }
+        return new DirectiveElement(directive.content, templateConfig.isPrecompileNamedParamPlaceholder(), previous,
+                this);
+    }
+
     private Directive parseDirective(CharSequence value, int start) {
         char c = 0;
         char c2 = 0;
@@ -704,7 +732,7 @@ public class Parser {
                 sb.append(c);
             }
         }
-        return sb.toString();
+        return sb;
     }
 
     /**
@@ -713,7 +741,7 @@ public class Parser {
      * @param directiveContent the directive content
      * @return the string
      */
-    public String directiveName(CharSequence directiveContent) {
+    public CharSequence directiveName(CharSequence directiveContent) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < directiveContent.length(); i++) {
             char c = directiveContent.charAt(i);
@@ -797,7 +825,7 @@ public class Parser {
      * @param directiveSouce the directive souce
      * @return the string
      */
-    public String directiveNameFromSource(String directiveSouce) {
+    public CharSequence directiveNameFromSource(String directiveSouce) {
         return directiveName(
                 directiveSouce.substring(directiveStart.length, directiveSouce.length() - directiveEnd.length));
     }
@@ -815,7 +843,7 @@ public class Parser {
 
         boolean selfClose;
 
-        String name;
+        CharSequence name;
 
         CharSequence source;
 

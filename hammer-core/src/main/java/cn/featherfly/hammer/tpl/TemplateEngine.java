@@ -16,9 +16,7 @@ import cn.featherfly.hammer.tpl.method.TemplateMethod;
 public interface TemplateEngine<T extends TemplateProcessEnv<D, M>, D extends TemplateDirective,
         M extends TemplateMethod> {
     /**
-     * <p>
-     * create template and process
-     * </p>
+     * create template and process.
      *
      * @param templateName templateName
      * @param sourceCode   sourceCode
@@ -28,6 +26,14 @@ public interface TemplateEngine<T extends TemplateProcessEnv<D, M>, D extends Te
      */
     String process(String templateName, String sourceCode, Map<String, Object> params,
             TemplateProcessEnv<D, M> templateEnv);
+
+    /**
+     * Put template.
+     *
+     * @param templateName    the template name
+     * @param templateContent the template content
+     */
+    void putTemplate(String templateName, String templateContent);
 
     /**
      * create template env to process

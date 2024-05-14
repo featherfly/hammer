@@ -29,6 +29,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.tpl.TemplateConfig.CountSqlConverteStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
@@ -129,12 +130,22 @@ public class SqlTplExecutor implements TplExecutor {
         this.transverterManager = transverterManager;
     }
 
+    private void setCountTemplate(TplExecuteConfig config) {
+        // convert select sql to count sql once
+        if (Lang.isEmpty(config.getCount())
+                && hammerConfig.getTemplateConfig()
+                        .getCountSqlConverteStrategy() == CountSqlConverteStrategy.USE_EXCEPTION
+                && hammerConfig.getTemplateConfig().getCountSqlConvertor() != null) {
+            config.setCount(hammerConfig.getTemplateConfig().getCountSqlConvertor().apply(config.getContent()));
+            templateEngine.putTemplate(config.getCountExecuteId(), config.getCount());
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public int execute(String tplExecuteId, Map<String, Object> params) {
-
         return execute(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -2010,6 +2021,8 @@ public class SqlTplExecutor implements TplExecutor {
                     "ParamsFormat is set to INDEX in the template. MAP cannot be used to pass parameters");
         }
 
+        setCountTemplate(config);
+
         Map<String, Object> paramMap = new HashMap<>();
         for (int i = 0; i < params.length; i++) {
             // process in params
@@ -2041,6 +2054,8 @@ public class SqlTplExecutor implements TplExecutor {
                     "ParamsFormat is set to INDEX in the template and (paramNames|params) is empty, MAP cannot be used to pass parameters");
         }
 
+        setCountTemplate(config);
+
         // process in params
         for (String inParamName : config.getInParamNames()) {
             Object value = params.get(inParamName);
@@ -2057,16 +2072,6 @@ public class SqlTplExecutor implements TplExecutor {
         return Tuples.of(tuple3.get0(), config, tuple3.get1(), tuple3.get2());
     }
 
-    //    private Tuple3<String, TplExecuteConfig, ConditionParamsManager> getQueryExecution(String tplExecuteId,
-    //            Map<String, Object> params, Class<?> resultType) {
-    //        TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
-    //        Tuple2<String, ConditionParamsManager> tuple2 = getExecution(tplExecuteId, config.getQuery(), params,
-    //                resultType);
-    //        Constants.LOGGER.debug("tplExecuteId -> {} \nexecuteQuerySql -> {} \nqueryTemplate -> {}", tplExecuteId,
-    //                tuple2.get0(), config.getQuery());
-    //        return Tuples.of(tuple2.get0(), config, tuple2.get1());
-    //    }
-
     /**
      * Gets the count execution.
      *
@@ -2076,7 +2081,6 @@ public class SqlTplExecutor implements TplExecutor {
      */
     private Tuple2<String, ConditionParamsManager> getCountExecution(Map<String, Object> params,
             TplExecuteConfig config) {
-        //        String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
         String templateName = config.getExecuteId() + TplConfigFactory.COUNT_SUFFIX;
         Tuple3<String, ConditionParamsManager, PropertiesMappingManager> result = getExecution(templateName,
                 config.getCount(), params, ArrayUtils.EMPTY_CLASS_ARRAY);
@@ -2084,29 +2088,6 @@ public class SqlTplExecutor implements TplExecutor {
                 result.get0(), config.getCount());
         return Tuples.of(result.get0(), result.get1());
     }
-
-    //    private Tuple2<String, ConditionParamsManager> getCountExecution(String tplExecuteId, Map<String, Object> params,
-    //            TplExecuteConfig config, Class<?> resultType) {
-    //        Tuple2<String, ConditionParamsManager> result = getExecution(tplExecuteId + TplConfigFactory.COUNT_SUFFIX,
-    //                config.getCount(), params, resultType);
-    //        Constants.LOGGER.debug("tplExecuteId -> {}  \nexecuteCountSql -> {}  \ncountTemplate -> {}", tplExecuteId,
-    //                result.get0(), config.getCount());
-    //        return result;
-    //    }
-
-    //    private Tuple2<String, ConditionParamsManager> getExecution(TplExecuteId tplExecuteId, String sql,
-    //            Map<String, Object> params, Class<?> resultType) {
-    //        String templateName = tplExecuteId.getId() + TplConfigFactory.COUNT_SUFFIX;
-    //        logger.debug("execute template name : {}", templateName);
-    //        ConditionParamsManager manager = new ConditionParamsManager();
-    //        Map<String, Object> root = new HashMap<>();
-    //        root.putAll(params);
-    //
-    //        SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> templateProcessEnv = createTemplateProcessEnv(
-    //                manager, resultType);
-    //        String result = templateEngine.process(templateName, sql, params, templateProcessEnv);
-    //        return Tuples.of(result, manager);
-    //    }
 
     /**
      * Gets the execution.

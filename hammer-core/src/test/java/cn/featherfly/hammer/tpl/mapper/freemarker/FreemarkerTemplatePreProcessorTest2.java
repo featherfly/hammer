@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ArrayUtils;
@@ -18,7 +19,6 @@ import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.config.TemplateConfigImpl;
-import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
@@ -30,11 +30,18 @@ import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
  */
 public class FreemarkerTemplatePreProcessorTest2 {
 
-    TemplateConfig templateConfig = new TemplateConfigImpl().setPrecompileNamedParamPlaceholder(false)
-            .setPrecompileMinimize(false);
     TplExecuteConfig config = new TplExecuteConfig();
 
-    private FreemarkerTemplatePreProcessor processor = new FreemarkerTemplatePreProcessor(templateConfig);
+    private FreemarkerTemplatePreProcessor processor;
+
+    @BeforeClass
+    void bc() {
+        TemplateConfigImpl templateConfig = new TemplateConfigImpl();
+        templateConfig.setIncludeDirectiveTagNames(new String[] { "include", "tpl", "sql" })
+                .setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false);
+
+        processor = new FreemarkerTemplatePreProcessor(templateConfig);
+    }
 
     @Test
     void test() throws IOException {

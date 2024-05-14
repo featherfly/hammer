@@ -50,7 +50,8 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
     @BeforeClass
     void setup() {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder() //
-                .prefixes("tpl_pre/").config(hammerConfig.getTemplateConfig())
+                .prefixes("tpl_pre/", "tpl_pre2").suffixes(".yaml.sql", ".yaml.tpl")
+                .config(hammerConfig.getTemplateConfig())
                 .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         //        TransverterManager transverterManager = new TransverterManager();
