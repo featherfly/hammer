@@ -148,7 +148,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
             Object... args) {
-        return update(getDialect().buildInsertSql(tableName, columnNames), keyHolder, args);
+        return update(getDialect().dml().insert(tableName, columnNames), keyHolder, args);
     }
 
     /**
@@ -161,11 +161,11 @@ public abstract class AbstractJdbc implements Jdbc {
         }
         int actualBatchSize = args.length / columnNames.length;
         if (batchSize >= actualBatchSize) { // 表示批量执行数的最大限制小于等于参数计算出的实际需要的批量执行数
-            return updateBatch(getDialect().buildInsertBatchSql(tableName, columnNames, actualBatchSize),
-                    actualBatchSize, args);
+            return updateBatch(getDialect().dml().insertBatch(tableName, columnNames, actualBatchSize), actualBatchSize,
+                    args);
         } else {
             int index = batchSize * columnNames.length;
-            return updateBatch(getDialect().buildInsertBatchSql(tableName, columnNames, batchSize), batchSize,
+            return updateBatch(getDialect().dml().insertBatch(tableName, columnNames, batchSize), batchSize,
                     Arrays.copyOfRange(args, 0, index))
                     + insertBatch(tableName, columnNames, actualBatchSize - batchSize,
                             Arrays.copyOfRange(args, index, args.length));
@@ -177,7 +177,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args) {
-        return update(getDialect().buildUpsertSql(tableName, columnNames, uniqueColumns), args);
+        return update(getDialect().dml().upsert(tableName, columnNames, uniqueColumns), args);
     }
 
     /**
