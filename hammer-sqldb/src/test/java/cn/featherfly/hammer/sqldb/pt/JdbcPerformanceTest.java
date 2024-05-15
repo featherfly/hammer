@@ -68,7 +68,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
 
     @Test
     public void testInsertBatchSingleSql() {
-        String insertSql = Dialects.MYSQL.buildInsertBatchSql("user_info",
+        String insertSql = Dialects.mysql().dml().insertBatch("user_info",
                 new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize);
         Timer timer = Timer.start();
         ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
@@ -99,14 +99,14 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
     //
     // ****************************************************************************************************************
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
-            Object> prepSetObject = (prep, index, value) -> prep.setObject(index, value);
+    ThreeArgusConsumer<PreparedStatementWrapper, Integer, Object> prepSetObject = (prep, index, value) -> prep
+            .setObject(index, value);
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
-            Integer> prepSetInt = (prep, index, value) -> prep.setInt(index, value);
+    ThreeArgusConsumer<PreparedStatementWrapper, Integer, Integer> prepSetInt = (prep, index, value) -> prep
+            .setInt(index, value);
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
-            String> prepSetString = (prep, index, value) -> prep.setString(index, value);
+    ThreeArgusConsumer<PreparedStatementWrapper, Integer, String> prepSetString = (prep, index, value) -> prep
+            .setString(index, value);
 
     @Test
     public void testInsertBatch2() {
@@ -147,7 +147,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
 
     @Test
     public void testInsertBatchSingleSql2() {
-        String insertSql = Dialects.MYSQL.buildInsertBatchSql("user_info",
+        String insertSql = Dialects.mysql().dml().insertBatch("user_info",
                 new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize);
         Timer timer = Timer.start();
         ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
