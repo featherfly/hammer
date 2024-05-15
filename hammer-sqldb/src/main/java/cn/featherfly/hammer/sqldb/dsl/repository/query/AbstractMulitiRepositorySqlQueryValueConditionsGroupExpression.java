@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.speedment.common.tuple.Tuple1;
+import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.repository.mapping.RowMapper;
@@ -43,11 +43,11 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
  * @author zhongj
  */
 public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpression extends
-        AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryQueryValueConditionsGroup,
-                RepositoryQueryValueConditionsGroupLogic, Tuple1<Integer>, QueryConditionConfig,
-                RepositorySqlQueryRelation, SqlSelectBasicBuilder>
-        implements RepositoryQueryValueConditionsGroup, RepositoryQueryValueConditionsGroupLogic,
-        RepositoryQueryValueSortExpression, RepositoryQueryValueSortedExpression {
+    AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryQueryValueConditionsGroup,
+        RepositoryQueryValueConditionsGroupLogic, Tuple1<Integer>, QueryConditionConfig, RepositorySqlQueryRelation,
+        SqlSelectBasicBuilder>
+    implements RepositoryQueryValueConditionsGroup, RepositoryQueryValueConditionsGroupLogic,
+    RepositoryQueryValueSortExpression, RepositoryQueryValueSortedExpression {
 
     /** The sort builder. */
     private SqlSortBuilder sortBuilder;
@@ -65,12 +65,12 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      * Instantiates a new abstract muliti repository sql query conditions group
      * expression.
      *
-     * @param index          the index
-     * @param queryRelation  the query relation
+     * @param index the index
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryValueConditionsGroupExpression(int index,
-            RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
+        RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         this(null, index, queryRelation, sqlPageFactory);
     }
 
@@ -78,14 +78,14 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      * Instantiates a new abstract muliti repository sql query conditions group
      * expression.
      *
-     * @param parent         the parent
-     * @param index          the index
-     * @param queryRelation  the query relation
+     * @param parent the parent
+     * @param index the index
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryValueConditionsGroupExpression(
-            RepositoryQueryValueConditionsGroupLogic parent, int index, RepositorySqlQueryRelation queryRelation,
-            SqlPageFactory sqlPageFactory) {
+        RepositoryQueryValueConditionsGroupLogic parent, int index, RepositorySqlQueryRelation queryRelation,
+        SqlPageFactory sqlPageFactory) {
         super(parent, index, queryRelation);
         jdbc = queryRelation.getJdbc();
         this.sqlPageFactory = sqlPageFactory;
@@ -130,8 +130,8 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         String sql = getRoot().expression();
         Object[] params = getRoot().getParams().toArray();
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
+            SqlPageQuery<
+                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
@@ -148,8 +148,8 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
+            SqlPageQuery<
+                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
             List<Map<String, Object>> list = jdbc.query(pageQuery.getSql(), pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
@@ -172,8 +172,8 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
+            SqlPageQuery<
+                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
             List<E> list = jdbc.query(pageQuery.getSql(), type, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
@@ -196,8 +196,8 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-                    params);
+            SqlPageQuery<
+                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
             List<E> list = jdbc.query(pageQuery.getSql(), rowMapper, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
@@ -436,18 +436,17 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public String expression() {
-        String condition = super.expression();
-        if (parent == null) {
-            String result = repositoryRelation.buildSelectSql();
-            String sort = getRootSortBuilder().build();
-            if (Lang.isEmpty(condition)) {
-                return result + Chars.SPACE + sort;
-            } else {
-                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort;
-            }
-        } else {
-            return condition;
-        }
+        return AbstractMulitiRepositorySqlQueryConditionsGroupExpression.expression(super.expression(), parent,
+            repositoryRelation, getRootSortBuilder(), dialect);
+    }
+
+    /**
+     * Expression page.
+     *
+     * @return the tuple 2
+     */
+    public Tuple2<String, String> expressionPage() {
+        return AbstractMulitiRepositorySqlQueryConditionsGroupExpression.expressionPage(super.expression(), parent,
+            repositoryRelation, getRootSortBuilder(), dialect);
     }
 }

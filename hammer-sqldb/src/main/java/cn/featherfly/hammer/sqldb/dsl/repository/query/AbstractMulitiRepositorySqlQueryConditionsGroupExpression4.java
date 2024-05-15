@@ -4,11 +4,12 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 import java.util.List;
 import java.util.Map;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.function.FourArgusConsumer;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
@@ -59,9 +60,9 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression4
      * Instantiates a new abstract muliti repository sql query conditions group
      * expression.
      *
-     * @param parent         the parent
-     * @param index          the index
-     * @param queryRelation  the query relation
+     * @param parent the parent
+     * @param index the index
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractMulitiRepositorySqlQueryConditionsGroupExpression4(L parent, int index,
@@ -321,18 +322,17 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression4
      */
     @Override
     public String expression() {
-        String condition = super.expression();
-        if (parent == null) {
-            String result = repositoryRelation.buildSelectSql();
-            String sort = getRootSortBuilder().build();
-            if (Lang.isEmpty(condition)) {
-                return result + Chars.SPACE + sort;
-            } else {
-                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                    + sort;
-            }
-        } else {
-            return condition;
-        }
+        return AbstractMulitiRepositorySqlQueryConditionsGroupExpression.expression(super.expression(), parent,
+            repositoryRelation, getRootSortBuilder(), dialect);
+    }
+
+    /**
+     * Expression page.
+     *
+     * @return the tuple 2
+     */
+    public Tuple2<String, String> expressionPage() {
+        return AbstractMulitiRepositorySqlQueryConditionsGroupExpression.expressionPage(super.expression(), parent,
+            repositoryRelation, getRootSortBuilder(), dialect);
     }
 }

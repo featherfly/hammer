@@ -4,8 +4,9 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 import java.util.Arrays;
 import java.util.List;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -62,11 +63,11 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     /**
      * Instantiates a new abstract entity sql condition group expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
-     * @param valueType      the value type
+     * @param queryRelation the query relation
+     * @param valueType the value type
      */
     @SuppressWarnings("unchecked")
     protected AbstractMulitiEntitySqlQueryValueConditionsGroupExpression(L parent, JdbcMappingFactory factory,
@@ -76,6 +77,19 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
         this.valueType = valueType;
         queryType = (Class<E>) queryRelation.getEntityRelationTuple().get0().get().getClassMapping().getType();
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected AbstractMulitiEntitySqlQueryValueConditionsGroupExpression<E, V, C, L> getRoot() {
+        L p = endGroup();
+        while (p != p.endGroup()) {
+            p = p.endGroup();
+        }
+        return (AbstractMulitiEntitySqlQueryValueConditionsGroupExpression<E, V, C, L>) p;
     }
 
     /**
@@ -128,8 +142,9 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<E> pagination() {
-        String sql = getRoot().expression();
-        String countSql = SqlUtils.convertSelectToCount(sql);
+        Tuple2<String, String> sqlTuple = getRoot().expressionPage();
+        String sql = sqlTuple.get0();
+        String countSql = sqlTuple.get1();
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
@@ -170,8 +185,9 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<V> valuePagination() {
-        String sql = getRoot().expression();
-        String countSql = SqlUtils.convertSelectToCount(sql);
+        Tuple2<String, String> sqlTuple = getRoot().expressionPage();
+        String sql = sqlTuple.get0();
+        String countSql = sqlTuple.get1();
         Object[] params = getRoot().getParams().toArray();
         SimplePaginationResults<V> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
@@ -495,13 +511,23 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     }
 
     // ****************************************************************************************************************
-    //	private method
+    //	protected method
     // ****************************************************************************************************************
 
-    @SuppressWarnings("unchecked")
-    private SortBuilder getRootSortBuilder() {
-        return ((AbstractMulitiEntitySqlQueryValueConditionsGroupExpression<E, V, C, L>) getRoot()).sortBuilder;
+    /**
+     * Expression page.
+     *
+     * @return the tuple 2
+     */
+    public abstract Tuple2<String, String> expressionPage();
+
+    protected SortBuilder getRootSortBuilder() {
+        return getRoot().sortBuilder;
     }
+
+    // ****************************************************************************************************************
+    //  private method
+    // ****************************************************************************************************************
 
     private Execution getExecution() {
         String sql = getRoot().expression();

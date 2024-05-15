@@ -38,11 +38,11 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlLogicOperatorExpressionBuilder;
  *
  * @author zhongj
  * @param <E1> first filterable entity type
- * @param <C>  condition expression
- * @param <L>  logic expression
+ * @param <C> condition expression
+ * @param <L> logic expression
  * @param <C2> condition config
  * @param <ER> entity sql relation
- * @param <B>  sql builder
+ * @param <B> sql builder
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C extends GroupExpression<C, L>,
@@ -53,8 +53,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param parent            parent group
-     * @param factory           the factory
+     * @param parent parent group
+     * @param factory the factory
      * @param entitySqlRelation the entity sql relation
      */
     protected AbstractMulitiEntitySqlConditionsGroupExpressionBase(L parent, JdbcMappingFactory factory,

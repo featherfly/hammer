@@ -1,9 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
-import cn.featherfly.common.constant.Chars;
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup6;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic6;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -22,34 +22,34 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <RS> the query result type
  */
 public class EntitySqlQueryExpression6<T1, T2, T3, T4, T5, T6, RS> extends
-        AbstractMulitiEntitySqlQueryConditionsGroupExpression6<T1, T2, T3, T4, T5, T6, RS,
-                EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS>,
-                EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS>>
-        implements EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS>,
-        EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> {
+    AbstractMulitiEntitySqlQueryConditionsGroupExpression6<T1, T2, T3, T4, T5, T6, RS,
+        EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS>,
+        EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS>>
+    implements EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS>,
+    EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> {
 
     /**
      * Instantiates a new entity sql query expression.
      *
-     * @param factory        the factory
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     public EntitySqlQueryExpression6(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation queryRelation) {
+        EntitySqlQueryRelation queryRelation) {
         this(null, factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * Instantiates a new entity sql query expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     EntitySqlQueryExpression6(EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> parent,
-            JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, sqlPageFactory, queryRelation);
     }
 
@@ -58,7 +58,7 @@ public class EntitySqlQueryExpression6<T1, T2, T3, T4, T5, T6, RS> extends
      */
     @Override
     protected EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS> createGroup(
-            EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> parent) {
+        EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> parent) {
         return new EntitySqlQueryExpression6<>(parent, factory, sqlPageFactory, entityRelation);
     }
 
@@ -67,18 +67,16 @@ public class EntitySqlQueryExpression6<T1, T2, T3, T4, T5, T6, RS> extends
      */
     @Override
     public String expression() {
-        String condition = super.expression();
-        if (parent == null) {
-            String result = entityRelation.buildSelectSql();
-            String sort = getRootSortBuilder().build();
-            if (Lang.isEmpty(condition)) {
-                return result + Chars.SPACE + sort;
-            } else {
-                return result + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort;
-            }
-        } else {
-            return condition;
-        }
+        return EntitySqlQueryExpression.expression(super.expression(), parent, entityRelation, getRootSortBuilder(),
+            dialect);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Tuple2<String, String> expressionPage() {
+        return EntitySqlQueryExpression.expressionPage(super.expression(), parent, entityRelation, getRootSortBuilder(),
+            dialect);
     }
 }

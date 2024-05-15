@@ -4,6 +4,8 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 import java.util.Arrays;
 import java.util.List;
 
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
@@ -31,8 +33,8 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  *
  * @author zhongj
  * @param <E1> first filterable entity type
- * @param <C>  condition expression
- * @param <L>  logic expression
+ * @param <C> condition expression
+ * @param <L> logic expression
  */
 public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     C extends EntityQueryConditionGroupExpression<E1, C, L, EntityQuerySortExpression<E1>>,
@@ -55,10 +57,10 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     /**
      * Instantiates a new abstract entity sql condition group expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param sqlPageFactory the sql page factory
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      */
     protected AbstractMulitiEntitySqlQueryConditionsGroupExpression(L parent, JdbcMappingFactory factory,
         SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
@@ -67,6 +69,19 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
             entityRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1, C, L> getRoot() {
+        L p = endGroup();
+        while (p != p.endGroup()) {
+            p = p.endGroup();
+        }
+        return (AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1, C, L>) p;
     }
 
     //    /**
@@ -317,7 +332,16 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     }
 
     // ****************************************************************************************************************
-    //	private method
+
+    /**
+     * Expression page.
+     *
+     * @return the tuple 2
+     */
+    public abstract Tuple2<String, String> expressionPage();
+
+    // ****************************************************************************************************************
+    //	protected method
     // ****************************************************************************************************************
 
     /**
@@ -326,6 +350,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      * @return the root sort builder
      */
     protected SortBuilder getRootSortBuilder() {
-        return ((AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1, C, L>) getRoot()).sortBuilder;
+        return getRoot().sortBuilder;
     }
 }
