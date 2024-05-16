@@ -8,6 +8,8 @@
  */
 package cn.featherfly.hammer.config;
 
+import java.util.function.Supplier;
+
 import javax.validation.Validator;
 
 import cn.featherfly.hammer.config.dsl.DslConfig;
@@ -31,6 +33,8 @@ public class HammerConfigImpl implements HammerConfig {
     private TemplateConfigImpl templateConfig = new TemplateConfigImpl();
 
     private final boolean devMode;
+
+    private Supplier<ClassLoader> classLoaderSupplier = () -> Thread.currentThread().getContextClassLoader();
 
     /**
      */
@@ -68,8 +72,9 @@ public class HammerConfigImpl implements HammerConfig {
      *
      * @param dslConfig the new dsl config
      */
-    public void setDslConfig(DslConfig dslConfig) {
+    public HammerConfigImpl setDslConfig(DslConfig dslConfig) {
         this.dslConfig = dslConfig;
+        return this;
     }
 
     /**
@@ -77,8 +82,9 @@ public class HammerConfigImpl implements HammerConfig {
      *
      * @param validator the new validator
      */
-    public void setValidator(Validator validator) {
+    public HammerConfigImpl setValidator(Validator validator) {
         this.validator = validator;
+        return this;
     }
 
     /**
@@ -86,8 +92,14 @@ public class HammerConfigImpl implements HammerConfig {
      *
      * @param templateConfig templateConfig
      */
-    public void setTemplateConfig(TemplateConfigImpl templateConfig) {
+    public HammerConfigImpl setTemplateConfig(TemplateConfigImpl templateConfig) {
         this.templateConfig = templateConfig;
+        return this;
+    }
+
+    public HammerConfigImpl setClassLoaderSupplier(Supplier<ClassLoader> classLoaderSupplier) {
+        this.classLoaderSupplier = classLoaderSupplier;
+        return this;
     }
 
     /**
@@ -114,5 +126,13 @@ public class HammerConfigImpl implements HammerConfig {
     @Override
     public boolean isDevMode() {
         return devMode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Supplier<ClassLoader> getClassLoader() {
+        return classLoaderSupplier;
     }
 }

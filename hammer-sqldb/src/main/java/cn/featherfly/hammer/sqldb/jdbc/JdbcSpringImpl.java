@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
+import cn.featherfly.common.bean.InstantiatorFactory;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
@@ -24,24 +25,27 @@ public class JdbcSpringImpl extends AbstractJdbc {
      * Instantiates a new jdbc impl.
      *
      * @param dataSource dataSource
-     * @param dialect    dialect
-     * @param metadata   the metadata
+     * @param dialect dialect
+     * @param metadata the metadata
+     * @param instantiatorFactory the instantiator factory
      */
-    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata) {
-        this(dataSource, dialect, metadata, new SqlTypeMappingManager());
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
+        InstantiatorFactory instantiatorFactory) {
+        this(dataSource, dialect, metadata, new SqlTypeMappingManager(), instantiatorFactory);
     }
 
     /**
      * Instantiates a new jdbc impl.
      *
-     * @param dataSource            dataSource
-     * @param dialect               dialect
-     * @param metadata              the metadata
+     * @param dataSource dataSource
+     * @param dialect dialect
+     * @param metadata the metadata
      * @param sqlTypeMappingManager the sql type mapping manager
+     * @param instantiatorFactory the instantiator factory
      */
     public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
-            SqlTypeMappingManager sqlTypeMappingManager) {
-        super(dialect, metadata, sqlTypeMappingManager);
+        SqlTypeMappingManager sqlTypeMappingManager, InstantiatorFactory instantiatorFactory) {
+        super(dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
         this.dataSource = dataSource;
     }
 

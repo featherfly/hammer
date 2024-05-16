@@ -45,7 +45,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
         params.add(sex);
         params.add(age);
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
     }
 
     //    @Test

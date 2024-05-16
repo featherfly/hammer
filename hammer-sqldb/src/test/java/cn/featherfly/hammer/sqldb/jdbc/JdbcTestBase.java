@@ -21,6 +21,9 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import cn.featherfly.common.asm.AsmInstantiatorFactory;
+import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.SqlExecutor;
@@ -80,6 +83,8 @@ public class JdbcTestBase extends TestBase {
 
     protected static HammerConfig hammerConfig;
 
+    protected static InstantiatorFactory instantiatorFactory;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
@@ -91,17 +96,20 @@ public class JdbcTestBase extends TestBase {
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
         hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-                .buildValidatorFactory().getValidator());
+            .buildValidatorFactory().getValidator());
         hammerConfig = hammerConfigImpl;
+
+        instantiatorFactory = new ProxyAndReflectionInstantiatorFactory(
+            new AsmInstantiatorFactory(hammerConfig.getClassLoader(), true));
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer");
 
         configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages)
-                .config(hammerConfig.getTemplateConfig())
-                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
+            .config(hammerConfig.getTemplateConfig())
+            .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
 
-        jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager);
+        jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
 
     }
 
@@ -145,12 +153,12 @@ public class JdbcTestBase extends TestBase {
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
         sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", this.getClass())));
 
-        dialect = Dialects.MYSQL;
+        dialect = Dialects.mysql();
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         //        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
-        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
@@ -192,7 +200,7 @@ public class JdbcTestBase extends TestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
-        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
@@ -204,7 +212,7 @@ public class JdbcTestBase extends TestBase {
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(JdbcTestBase.class.getResource("/").getFile(), "hammer.sqlite3.db"))
-                .getPath();
+            .getPath();
         System.out.println(path);
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName("org.sqlite.JDBC");
@@ -218,11 +226,11 @@ public class JdbcTestBase extends TestBase {
         //        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass()).getFile()));
         sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass())));
 
-        dialect = Dialects.SQLITE;
+        dialect = Dialects.sqlite();
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds, "main");
-        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 

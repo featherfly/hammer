@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.bean.Instantiator;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -26,41 +27,18 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class GetOperate<T> extends AbstractQueryOperate<T> {
 
-    //    /**
-    //     * 使用给定数据源以及给定对象生成读取操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成读取操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-    //            String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
-
     /**
      * 使用给定数据源以及给定对象生成读取操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
+     * @param instantiator the instantiator
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
      */
-    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, Instantiator<T> instantiator,
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, instantiator, sqlTypeMappingManager, databaseMetadata);
     }
 
     private List<JdbcPropertyMapping> pkPms;
@@ -81,7 +59,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             return (Serializable) BeanUtils.getProperty(entity, pkPms.get(0).getPropertyName());
         } else if (pkPms.size() > 1) {
             throw new SqldbHammerException("multy id defined in entity [" + entity.getClass().getName()
-                    + "], you can invoke getIds(entity) method instead");
+                + "], you can invoke getIds(entity) method instead");
         } else {
             logger.debug("no id defined in entity {}", entity.getClass().getName());
             return null;
@@ -99,8 +77,8 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             return Collections.emptyList();
         }
         return pkPms.stream()
-                .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
-                .collect(Collectors.toList());
+            .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -124,7 +102,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     /**
      * 返回指定ID的对象.
      *
-     * @param id        对象唯一标识
+     * @param id 对象唯一标识
      * @param forUpdate the for update
      * @return 指定ID的对象
      */
@@ -136,7 +114,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             } else {
                 // TODO 后续加入行为可配置策略
                 throw new SqldbHammerException(Strings.format("unsupport [select...for update] with database {} - {}",
-                        meta.getProductName(), meta.getProductVersion()));
+                    meta.getProductName(), meta.getProductVersion()));
             }
         } else {
             return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
@@ -158,14 +136,14 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     /**
      * 返回指定ID的对象.
      *
-     * @param entity    包含id值得entity对象，支持复合主键
+     * @param entity 包含id值得entity对象，支持复合主键
      * @param forUpdate the for update
      * @return 指定ids的对象
      */
     public T get(final T entity, boolean forUpdate) {
         if (forUpdate) {
             return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
-                    assertAndGetIds(entity));
+                assertAndGetIds(entity));
         } else {
             return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), assertAndGetIds(entity));
         }

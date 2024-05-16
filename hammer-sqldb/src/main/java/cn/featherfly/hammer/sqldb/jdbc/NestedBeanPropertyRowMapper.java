@@ -33,7 +33,9 @@ import org.springframework.util.StringUtils;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.bean.Instantiator;
 import cn.featherfly.common.bean.NoSuchPropertyException;
+import cn.featherfly.common.bean.ReflectionInstantiator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.SqlResultSet;
@@ -104,11 +106,11 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
     @Nullable
     private Set<String> mappedProperties;
 
-    private SqlTypeMappingManager manager;
+    private final SqlTypeMappingManager manager;
 
-    private MapperObjectFactory<T> mapperObjectFactory;
+    private final Instantiator<T> mapperObjectInstantiator;
 
-    private String prefix;
+    private final String prefix;
 
     /**
      * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
@@ -116,7 +118,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * <p>
      *
      * @param mappedClass the class that each row should be mapped to
-     * @param manager     the manager
+     * @param manager the manager
      */
     public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager) {
         this(mappedClass, manager, false);
@@ -125,28 +127,28 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
     /**
      * Create a new {@code BeanPropertyRowMapper}.
      *
-     * @param mappedClass         the class that each row should be mapped to
-     * @param manager             the manager
+     * @param mappedClass the class that each row should be mapped to
+     * @param manager the manager
      * @param checkFullyPopulated whether we're strictly validating that all
-     *                            bean properties have been mapped from
-     *                            corresponding database fields
+     *        bean properties have been mapped from
+     *        corresponding database fields
      */
     public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager,
-            boolean checkFullyPopulated) {
-        this(new ClassMapperObjectFactory<>(mappedClass), manager, checkFullyPopulated);
+        boolean checkFullyPopulated) {
+        this(new ReflectionInstantiator<>(mappedClass), manager, checkFullyPopulated);
     }
 
     /**
      * Instantiates a new nested bean property row mapper.
      *
-     * @param mappedClass         the mapped class
-     * @param manager             the manager
-     * @param prefix              the prefix
+     * @param mappedClass the mapped class
+     * @param manager the manager
+     * @param prefix the prefix
      * @param checkFullyPopulated the check fully populated
      */
     public NestedBeanPropertyRowMapper(Class<T> mappedClass, SqlTypeMappingManager manager, String prefix,
-            boolean checkFullyPopulated) {
-        this(new ClassMapperObjectFactory<>(mappedClass), manager, prefix, checkFullyPopulated);
+        boolean checkFullyPopulated) {
+        this(new ReflectionInstantiator<>(mappedClass), manager, prefix, checkFullyPopulated);
     }
 
     /**
@@ -154,50 +156,50 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * properties in the target bean.
      * <p>
      *
-     * @param mapperObjectFactory the mapper object factory
-     * @param manager             the manager
+     * @param mapperObjectInstantiator the mapper object instantiator
+     * @param manager the manager
      */
-    public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, SqlTypeMappingManager manager) {
-        this(mapperObjectFactory, manager, false);
+    public NestedBeanPropertyRowMapper(Instantiator<T> mapperObjectInstantiator, SqlTypeMappingManager manager) {
+        this(mapperObjectInstantiator, manager, false);
     }
 
     /**
      * Create a new {@code BeanPropertyRowMapper}.
      *
-     * @param mapperObjectFactory the mapper object factory
-     * @param manager             the manager
+     * @param mapperObjectInstantiator the mapper object instantiator
+     * @param manager the manager
      * @param checkFullyPopulated whether we're strictly validating that all
-     *                            bean properties have been mapped from
-     *                            corresponding database fields
+     *        bean properties have been mapped from
+     *        corresponding database fields
      */
-    public NestedBeanPropertyRowMapper(MapperObjectFactory<T> mapperObjectFactory, SqlTypeMappingManager manager,
-            boolean checkFullyPopulated) {
-        this(mapperObjectFactory, manager, null, checkFullyPopulated);
+    public NestedBeanPropertyRowMapper(Instantiator<T> mapperObjectInstantiator, SqlTypeMappingManager manager,
+        boolean checkFullyPopulated) {
+        this(mapperObjectInstantiator, manager, null, checkFullyPopulated);
     }
 
     /**
      * Create a new {@code BeanPropertyRowMapper}.
      *
-     * @param mapperObjectFactory the mapper object factory
-     * @param manager             the manager
-     * @param prefix              the prefix
+     * @param mapperObjectInstantiator the mapper object instantiator
+     * @param manager the manager
+     * @param prefix the prefix
      * @param checkFullyPopulated whether we're strictly validating that all
-     *                            bean properties have been mapped from
-     *                            corresponding database fields
+     *        bean properties have been mapped from
+     *        corresponding database fields
      */
-    public NestedBeanPropertyRowMapper(@Nonnull MapperObjectFactory<T> mapperObjectFactory,
-            @Nonnull SqlTypeMappingManager manager, String prefix, boolean checkFullyPopulated) {
+    public NestedBeanPropertyRowMapper(@Nonnull Instantiator<T> mapperObjectInstantiator,
+        @Nonnull SqlTypeMappingManager manager, String prefix, boolean checkFullyPopulated) {
         //        if (mapperObjectFactory instanceof ClassMapperObjectFactory) {
         //            initialize(((ClassMapperObjectFactory<T>) mapperObjectFactory).getType());
         //        }
-        AssertIllegalArgument.isNotNull(mapperObjectFactory, "MapperObjectFactory");
+        AssertIllegalArgument.isNotNull(mapperObjectInstantiator, "mapperObjectInstantiator");
         AssertIllegalArgument.isNotNull(manager, "SqlTypeMappingManager");
         this.manager = manager;
-        this.mapperObjectFactory = mapperObjectFactory;
+        this.mapperObjectInstantiator = mapperObjectInstantiator;
         this.checkFullyPopulated = checkFullyPopulated;
         this.prefix = prefix;
 
-        initialize(mapperObjectFactory.getMappedClass());
+        initialize(mapperObjectInstantiator.getType());
     }
 
     //    /**
@@ -257,7 +259,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * Java primitives.
      *
      * @param primitivesDefaultedForNullValue the new primitives defaulted for
-     *                                        null value
+     *        null value
      */
     public void setPrimitivesDefaultedForNullValue(boolean primitivesDefaultedForNullValue) {
         this.primitivesDefaultedForNullValue = primitivesDefaultedForNullValue;
@@ -392,14 +394,14 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * <p>
      * Utilizes public setters and result set meta-data.
      *
-     * @param rs        the rs
+     * @param rs the rs
      * @param rowNumber the row number
      * @return the t
      * @throws SQLException the SQL exception
      * @see java.sql.ResultSetMetaData
      */
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
-        T mappedObject = mapperObjectFactory.create(rs);
+        T mappedObject = mapperObjectInstantiator.instantiate();
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
 
@@ -467,7 +469,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                     }
 
                     mappingDebugMessage.debug(m -> m.addMapping(mapping.column, mapping.columnAs, mapping.property,
-                            mapping.propertyTypeName));
+                        mapping.propertyTypeName));
 
                     if (populatedProperties != null) {
                         populatedProperties.add(mapping.propertyDescriptor.getName());
@@ -480,8 +482,8 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
             if (logger.isDebugEnabled()) {
                 StringBuilder debugMessage = new StringBuilder();
                 debugMessage.append("\n---------- Map " + mappedClass.getName() + " Start ----------\n")
-                        .append(mappingDebugMessage.toString())
-                        .append("---------- Map " + mappedClass.getName() + " End ----------");
+                    .append(mappingDebugMessage.toString())
+                    .append("---------- Map " + mappedClass.getName() + " End ----------");
                 logger.debug(debugMessage.toString());
             }
         }
@@ -504,12 +506,13 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                         } catch (TypeMismatchException ex) {
                             if (value == null && primitivesDefaultedForNullValue) {
                                 if (logger.isDebugEnabled()) {
-                                    logger.debug("Intercepted TypeMismatchException for row " + rowNumber
-                                            + " and column '" + mapping.columnAs
-                                            + "' with null value when setting property '"
+                                    logger.debug(
+                                        "Intercepted TypeMismatchException for row " + rowNumber + " and column '"
+                                            + mapping.columnAs + "' with null value when setting property '"
                                             + mapping.propertyDescriptor.getName() + "' of type '"
                                             + ClassUtils.getQualifiedName(mapping.propertyDescriptor.getPropertyType())
-                                            + "' on object: " + mappedObject, ex);
+                                            + "' on object: " + mappedObject,
+                                        ex);
                                 }
                             } else {
                                 throw ex;
@@ -518,15 +521,14 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                     }
                 } catch (NotWritablePropertyException ex) {
                     throw new DataRetrievalFailureException(
-                            "Unable to map column '" + mapping.columnAs + "' to property '" + mapping.property + "'",
-                            ex);
+                        "Unable to map column '" + mapping.columnAs + "' to property '" + mapping.property + "'", ex);
                 }
             }
         }
 
         if (populatedProperties != null && !populatedProperties.equals(mappedProperties)) {
             throw new InvalidDataAccessApiUsageException("Given ResultSet does not contain all fields "
-                    + "necessary to populate object of class [" + mappedClass.getName() + "]: " + mappedProperties);
+                + "necessary to populate object of class [" + mappedClass.getName() + "]: " + mappedProperties);
         }
 
         return mappedObject;
@@ -558,10 +560,10 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * Subclasses may override this to check specific value types upfront, or to
      * post-process values return from {@code getResultSetValue}.
      *
-     * @param rs    is the ResultSet holding the data
+     * @param rs is the ResultSet holding the data
      * @param index is the column index
-     * @param pd    the bean property that each result object is expected to
-     *              match
+     * @param pd the bean property that each result object is expected to
+     *        match
      * @return the Object value
      * @throws SQLException in case of extraction failure
      * @see org.springframework.jdbc.support.JdbcUtils#getResultSetValue(java.sql.ResultSet,

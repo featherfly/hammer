@@ -37,25 +37,42 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
  */
 public class OperatorTest extends JdbcTestBase {
 
+    private GetOperate<Role> roleGet;
+    private GetOperate<UserRole> userRoleGet;
+
+    GetOperate<App> appGet;
+
     @BeforeClass
     void before() {
         PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();
 
+        mappingFactory.getSqlTypeMappingManager()
+            .regist(BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
         mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
-        mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"),
-                platformJavaSqlTypeMapper);
+            BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
+
+        roleGet = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+            instantiatorFactory.create(Role.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
+
+        userRoleGet = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+            instantiatorFactory.create(UserRole.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
+
+        appGet = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+            instantiatorFactory.create(App.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
     }
 
     @Test
     public void testInsert() {
         InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(Role.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
 
         Role r = role();
         insert.execute(r);
@@ -75,11 +92,12 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testInsert2() {
         InsertOperate<UserRole> upsert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(UserRole.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
 
         UserRole ur = new UserRole();
         ur.setUserId(1);
@@ -116,11 +134,12 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testInsertBatch() {
         InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(Role.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
 
         assertInsertBatch(insert, delete, get, null);
         assertInsertBatch(insert, delete, get, 3);
@@ -132,7 +151,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     private void assertInsertBatch(InsertOperate<Role> insert, DeleteOperate<Role> delete, GetOperate<Role> get,
-            Integer batchSize) {
+        Integer batchSize) {
         List<Role> roles = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             roles.add(role());
@@ -163,11 +182,12 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testInsertMultyKey() {
         InsertOperate<UserRole> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(UserRole.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
         UserRole ur = new UserRole();
         ur.setUserId(123);
         ur.setRoleId(321);
@@ -190,9 +210,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpdate() {
         UpdateOperate<Role> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(Role.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
         Role r = new Role();
         r.setId(10);
         r.setName("name_update_" + Randoms.getInt(99));
@@ -209,9 +230,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testMerge() {
         MergeOperate<Role> merge = new MergeOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(Role.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
 
         Integer id = 10;
         Role orginal = get.get(id);
@@ -232,9 +254,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpdateMulityPrimaryKey() {
         UpdateOperate<UserRole> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(UserRole.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
 
         UserRole userRole = new UserRole();
         userRole.setRoleId(3);
@@ -254,7 +277,8 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testGet() {
         GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            instantiatorFactory.create(Role.class), mappingFactory.getSqlTypeMappingManager(),
+            mappingFactory.getMetadata());
         System.out.println(operate.getSql());
         Integer id = 1;
         Role role = operate.get(id);
@@ -276,25 +300,19 @@ public class OperatorTest extends JdbcTestBase {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     public void testGetException() {
-        GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        operate.get((Serializable) null);
+        roleGet.get((Serializable) null);
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
     public void testGetException2() {
-        GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        Role userInfo = null;
-        operate.get(userInfo);
+        Role role = null;
+        roleGet.get(role);
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
     public void testGetException3() {
-        GetOperate<UserRole> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         UserRole ur = new UserRole();
-        operate.getId(ur);
+        userRoleGet.getId(ur);
     }
 
     //    @Test(expectedExceptions = SqldbHammerException.class)
@@ -307,8 +325,7 @@ public class OperatorTest extends JdbcTestBase {
 
     @Test
     public void testGetForUpdate() {
-        GetOperate<Role> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<Role> operate = roleGet;
         Integer id = 1;
         Role role = operate.get(id, true);
         assertEquals(role.getId(), id);
@@ -320,8 +337,7 @@ public class OperatorTest extends JdbcTestBase {
 
     @Test
     public void testGetMulityPrimaryKey() {
-        GetOperate<UserRole> operate = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> operate = userRoleGet;
         UserRole userRole = new UserRole();
         Integer roleId = 2;
         Integer userId = 2;
@@ -338,11 +354,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testDelete() {
         DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<Role> get = roleGet;
         Role r = new Role();
         insert.execute(r);
         assertNotNull(r.getId());
@@ -355,11 +370,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testDeleteMulityPrimaryKey() {
         DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         InsertOperate<UserRole> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> get = userRoleGet;
         UserRole userRole = new UserRole();
         userRole.setRoleId(111);
         userRole.setUserId(111);
@@ -377,11 +391,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testDeleteBatch() {
         DeleteOperate<Role> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         InsertOperate<Role> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<Role> get = roleGet;
 
         Function<Integer, List<Role>> insertRoles = size -> {
             List<Role> roles = new ArrayList<>();
@@ -434,11 +447,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testDeleteBatchMulityPrimaryKey() {
         DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         InsertOperate<UserRole> insert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> get = userRoleGet;
 
         List<UserRole> userRoles = new ArrayList<>();
         int size = 5;
@@ -467,11 +479,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpsert() {
         UpsertOperate<App> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<App> get = appGet;
 
         App app = new App();
         app.setCode("code01");
@@ -498,11 +509,10 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpsert2() {
         UpsertOperate<UserRole> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         DeleteOperate<UserRole> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> get = userRoleGet;
 
         UserRole ur = new UserRole();
         ur.setUserId(1);
@@ -529,11 +539,11 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpsertBatch() {
         UpsertOperate<App> upsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        //        DeleteOperate<App> delete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+        //                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        //        GetOperate<App> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
+        //                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
 
         List<App> apps = new ArrayList<>();
 
@@ -549,8 +559,8 @@ public class OperatorTest extends JdbcTestBase {
 
         upsert.executeBatch(apps);
 
-        Long id = app.getId();
-        Long id2 = app2.getId();
+        //        Long id = app.getId();
+        //        Long id2 = app2.getId();
         String name = "name03";
         String name2 = "name04";
 
@@ -579,14 +589,13 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpdateFetch() {
         UpdateOperate<Role> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<Role> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<Role> get = roleGet;
         UpdateFetchOperate<
-                Role> updateFetch = new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), get, update, key -> {
-                        }, key -> {
-                        });
+            Role> updateFetch = new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), get, update, key -> {
+                }, key -> {
+                });
 
         int id = 10;
         Role role = new Role();
@@ -617,14 +626,13 @@ public class OperatorTest extends JdbcTestBase {
     @Test
     public void testUpdateFetchMulitiPk() {
         UpdateOperate<UserRole> update = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
-        GetOperate<UserRole> get = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+        GetOperate<UserRole> get = userRoleGet;
         UpdateFetchOperate<
-                UserRole> updateFetch = new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-                        mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), get, update, key -> {
-                        }, key -> {
-                        });
+            UserRole> updateFetch = new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), get, update, key -> {
+                }, key -> {
+                });
 
         int rid = 8;
         int uid = 8;

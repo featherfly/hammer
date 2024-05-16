@@ -50,7 +50,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         parser = configFactory.getTemplateConfig().getTplExecuteIdParser();
         hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory,
             new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()),
-            new SimpleSqlPageFactory(), hammerConfig);
+            new SimpleSqlPageFactory(), instantiatorFactory, hammerConfig);
     }
 
     Integer minAge = 5;

@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import cn.featherfly.common.bean.InstantiatorFactory;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -37,26 +38,29 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * Instantiates a new jdbc impl.
      *
      * @param connection the connection
-     * @param dialect    the dialect
-     * @param metadata   the metadata
-     * @param manager    the manager
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param instantiatorFactory the instantiator factory
      */
-    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager) {
-        this(connection, null, dialect, metadata, manager);
+    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        InstantiatorFactory instantiatorFactory) {
+        this(connection, null, dialect, metadata, manager, instantiatorFactory);
     }
 
     /**
      * Instantiates a new jdbc impl.
      *
-     * @param connection       the connection
+     * @param connection the connection
      * @param defaultIsolation the default isolation
-     * @param dialect          the dialect
-     * @param metadata         the metadata
-     * @param manager          the manager
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param instantiatorFactory the instantiator factory
      */
     public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
-        SqlTypeMappingManager manager) {
-        super(dialect, metadata, manager);
+        SqlTypeMappingManager manager, InstantiatorFactory instantiatorFactory) {
+        super(dialect, metadata, manager, instantiatorFactory);
         this.connection = connection;
         if (defaultIsolation != null) {
             this.defaultIsolation = defaultIsolation;

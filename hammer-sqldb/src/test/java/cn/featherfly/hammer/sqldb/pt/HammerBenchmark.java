@@ -20,6 +20,9 @@ import org.hibernate.validator.HibernateValidator;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.asm.AsmInstantiatorFactory;
+import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -61,23 +64,26 @@ public class HammerBenchmark extends AbstractBenchmark {
         HammerConfig config = new HammerConfigImpl();
 
         TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .basePackages(basePackages).config(config.getTemplateConfig())
-                .preCompile(new FreemarkerTemplatePreProcessor(new TemplateConfigImpl())).build();
+            .basePackages(basePackages).config(config.getTemplateConfig())
+            .preCompile(new FreemarkerTemplatePreProcessor(new TemplateConfigImpl())).build();
 
         //        SqlPageFactory sqlPageFactory = new SimpleSqlPageFactory();
 
         //        jdbcFactory = new JdbcFactoryImpl(dialect, sqlTypeMappingManager);
 
+        InstantiatorFactory instantiatorFactory = new ProxyAndReflectionInstantiatorFactory(
+            new AsmInstantiatorFactory(config.getClassLoader(), true));
+
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl();
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-                .buildValidatorFactory().getValidator());
+            .buildValidatorFactory().getValidator());
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
     }
 
     /**

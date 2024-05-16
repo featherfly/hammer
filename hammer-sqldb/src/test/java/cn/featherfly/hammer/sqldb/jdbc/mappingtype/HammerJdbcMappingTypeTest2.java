@@ -33,7 +33,7 @@ public class HammerJdbcMappingTypeTest2 extends JdbcTestBase {
 
     @BeforeClass
     void be() {
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
 
         Class<Article2> type = Article2.class;
 
@@ -51,7 +51,7 @@ public class HammerJdbcMappingTypeTest2 extends JdbcTestBase {
         contentProperty = bd.getBeanProperty("content");
         sqlTypeMappingManager.regist(type, new ArrayToStringSqlTypeMapper());
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
     }
 
     @Test
