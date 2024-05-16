@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 import java.sql.ResultSet;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.bean.Instantiator;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -22,48 +23,27 @@ import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
  */
 public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> implements QueryOperate<T> {
 
-    //    /**
-    //     * 使用给定数据源以及给定对象生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-    //            SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-    //            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
+    private final Instantiator<T> instantiator;
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
+     * @param instantiator the instantiator
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
      */
-    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, Instantiator<T> instantiator,
         SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        this.instantiator = instantiator;
     }
 
     /**
      * 每条记录映射为对象.
      *
-     * @param rs        结果集
+     * @param rs 结果集
      * @param rowNumber 行数
      * @return 映射后的对象
      */
@@ -72,7 +52,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
             SqlResultSet sqlrs = (SqlResultSet) rs;
             return mapRow(sqlrs.getResultSet(), rowNumber);
         }
-        return BeanUtils.instantiateClass(classMapping.getType());
+        return instantiator.instantiate();
     }
 
     /**
@@ -84,7 +64,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
      */
     protected T mapRow(ResultSet resultSet, int rowNumber) {
         int index = 1;
-        T mappedObject = BeanUtils.instantiateClass(classMapping.getType());
+        T mappedObject = instantiator.instantiate();
         MappingDebugMessage mappingDebugMessage = new MappingDebugMessage(isDebug());
         for (JdbcPropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
             if (propertyMapping.getPropertyMappings().isEmpty()) {

@@ -17,6 +17,7 @@ import javax.validation.ConstraintViolation;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
+import cn.featherfly.common.bean.InstantiatorFactory;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -98,103 +99,79 @@ public class SqldbHammerImpl implements SqldbHammer {
 
     private final SqlDeleter deleter;
 
+    private final InstantiatorFactory instantiatorFactory;
+
     /**
      * Instantiates a new hammer jdbc impl.
      *
-     * @param jdbc           the jdbc
+     * @param jdbc the jdbc
      * @param mappingFactory the mapping factory
-     * @param configFactory  the config factory
-     * @param hammerConfig   the hammer config
+     * @param configFactory the config factory
+     * @param instantiatorFactory the instantiator factor
+     * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-        HammerConfig hammerConfig) {
+        InstantiatorFactory instantiatorFactoryy, HammerConfig hammerConfig) {
         this(jdbc, mappingFactory, configFactory,
-            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), hammerConfig);
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), instantiatorFactoryy,
+            hammerConfig);
     }
-
-    //    /**
-    //     * Instantiates a new sqldb hammer impl.
-    //     *
-    //     * @param jdbc               the jdbc
-    //     * @param mappingFactory     the mapping factory
-    //     * @param configFactory      the config factory
-    //     * @param transverterManager the transverter manager
-    //     */
-    //    public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-    //            TransverterManager transverterManager) {
-    //        this(jdbc, mappingFactory, configFactory, new SqldbFreemarkerTemplateEngine(configFactory),
-    //                new SimpleSqlPageFactory(), new TransverterManager(), Validation.byProvider(HibernateValidator.class)
-    //                        .configure().failFast(false).buildValidatorFactory().getValidator());
-    //    }
 
     /**
      * Instantiates a new hammer jdbc impl.
      *
-     * @param jdbc           the jdbc
+     * @param jdbc the jdbc
      * @param mappingFactory the mapping factory
-     * @param configFactory  the config factory
+     * @param configFactory the config factory
      * @param templateEngine the template engine
-     * @param hammerConfig   the hammer config
+     * @param instantiatorFactory the instantiator factor
+     * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-        @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, HammerConfig hammerConfig) {
-        // this(jdbc, mappingFactory, configFactory, Validation.buildDefaultValidatorFactory().getValidator());
-        this(jdbc, mappingFactory, configFactory, templateEngine, new SimpleSqlPageFactory(), hammerConfig);
+        @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, InstantiatorFactory instantiatorFactory,
+        HammerConfig hammerConfig) {
+        this(jdbc, mappingFactory, configFactory, templateEngine, new SimpleSqlPageFactory(), instantiatorFactory,
+            hammerConfig);
     }
 
     /**
      * Instantiates a new hammer jdbc impl.
      *
-     * @param jdbc           the jdbc
+     * @param jdbc the jdbc
      * @param mappingFactory the mapping factory
-     * @param configFactory  the config factory
+     * @param configFactory the config factory
      * @param templateEngine the template processor
      * @param sqlPageFacotry the sql page facotry
-     * @param hammerConfig   the hammer config
+     * @param instantiatorFactory the instantiator factor
+     * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
         @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
-        HammerConfig hammerConfig) {
+        InstantiatorFactory instantiatorFactory, HammerConfig hammerConfig) {
         this(jdbc, mappingFactory, configFactory, templateEngine, sqlPageFacotry,
-            new TransverterManager(new FuzzyQueryTransverter()), hammerConfig);
+            new TransverterManager(new FuzzyQueryTransverter()), instantiatorFactory, hammerConfig);
     }
-
-    //    /**
-    //     * Instantiates a new hammer jdbc impl.
-    //     *
-    //     * @param jdbc               the jdbc
-    //     * @param mappingFactory     the mapping factory
-    //     * @param configFactory      the config factory
-    //     * @param templateEngine     the template processor
-    //     * @param sqlPageFacotry     the sql page facotry
-    //     * @param transverterManager the transverter manager
-    //     */
-    //    public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-    //            @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
-    //            TransverterManager transverterManager) {
-    //        this(jdbc, mappingFactory, configFactory, templateEngine, sqlPageFacotry, transverterManager,
-    //                Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory()
-    //                        .getValidator());
-    //    }
 
     /**
      * Instantiates a new hammer jdbc impl.
      *
-     * @param jdbc               the jdbc
-     * @param mappingFactory     the mapping factory
-     * @param configFactory      the config factory
-     * @param templateEngine     the template processor
-     * @param sqlPageFacotry     the sql page facotry
+     * @param jdbc the jdbc
+     * @param mappingFactory the mapping factory
+     * @param configFactory the config factory
+     * @param templateEngine the template processor
+     * @param sqlPageFacotry the sql page facotry
      * @param transverterManager the transverter manager
-     * @param hammerConfig       the hammer config
+     * @param instantiatorFactory the instantiator factor
+     * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
         @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
-        TransverterManager transverterManager, HammerConfig hammerConfig) {
+        TransverterManager transverterManager, InstantiatorFactory instantiatorFactory, HammerConfig hammerConfig) {
         this.jdbc = jdbc;
         jdbcExecutor = new JdbcExecutor(jdbc, sqlPageFacotry);
         this.mappingFactory = mappingFactory;
         this.hammerConfig = hammerConfig;
+        this.instantiatorFactory = instantiatorFactory;
         sqlTplExecutor = new SqlTplExecutor(hammerConfig, configFactory, templateEngine, jdbc, mappingFactory,
             sqlPageFacotry, transverterManager);
         query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
@@ -461,10 +438,10 @@ public class SqldbHammerImpl implements SqldbHammer {
     /**
      * Merge.
      *
-     * @param  <E>      the element type
-     * @param  entity   the entity
-     * @param  onlyNull the only null
-     * @return          the int
+     * @param <E> the element type
+     * @param entity the entity
+     * @param onlyNull the only null
+     * @return the int
      */
     private <E> int merge(E entity, boolean onlyNull) {
         if (entity == null) {
@@ -803,7 +780,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     /**
      * Validate.
      *
-     * @param <E>    the element type
+     * @param <E> the element type
      * @param entity the entity
      */
     private <E> void validate(E entity) {
@@ -2263,17 +2240,9 @@ public class SqldbHammerImpl implements SqldbHammer {
     @SuppressWarnings("unchecked")
     private <E> GetOperate<E> getOperate(Class<E> entityType) {
         return (GetOperate<E>) getOperates.computeIfAbsent(entityType,
-            type -> new GetOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
-        //        @SuppressWarnings("unchecked")
-        //        GetOperate<E> get = (GetOperate<E>) getOperates.get(entityType);
-        //        if (get == null) {
-        //            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        //            get = new GetOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-        //                    mappingFactory.getMetadata());
-        //            getOperates.put(entityType, get);
-        //        }
-        //        return get;
+            type -> new GetOperate<E>(jdbc, (JdbcClassMapping<E>) mappingFactory.getClassMapping(type),
+                instantiatorFactory.create(entityType), mappingFactory.getSqlTypeMappingManager(),
+                mappingFactory.getMetadata()));
     }
 
     /**
@@ -2292,6 +2261,9 @@ public class SqldbHammerImpl implements SqldbHammer {
         return new ArrayParamedExecutionExecutor<>(jdbcExecutor, execution, params);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TplExecutor template() {
         return sqlTplExecutor;

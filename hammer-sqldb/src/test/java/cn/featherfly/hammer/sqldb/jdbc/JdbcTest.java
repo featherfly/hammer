@@ -106,18 +106,17 @@ public class JdbcTest extends JdbcTestBase {
     void before() {
         selectAvg = Strings.format("select avg(age) from {0}", jdbc.getDialect().wrapName("user"));
         selectAvgNamedParam = Strings.format("select avg(age) from {0} where age > :age",
-                jdbc.getDialect().wrapName("user"));
+            jdbc.getDialect().wrapName("user"));
         selectString = Strings.format("select username from {0} where id = 1", jdbc.getDialect().wrapName("user"));
         selectStringNamedParam = Strings.format("select username from {0} where id = :id",
-                jdbc.getDialect().wrapName("user"));
+            jdbc.getDialect().wrapName("user"));
 
         PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();
 
+        mappingFactory.getSqlTypeMappingManager()
+            .regist(BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
         mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
-        mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"),
-                platformJavaSqlTypeMapper);
+            BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
     }
 
     @Test
@@ -166,7 +165,7 @@ public class JdbcTest extends JdbcTestBase {
     public void queryTuple2() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple2<User, UserInfo>> list = jdbc.query(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                queryTupleListParamsArray);
+            queryTupleListParamsArray);
         for (Tuple2<User, UserInfo> tuple : list) {
             assertEquals(tuple.get0().getId(), tuple.get1().getUser().getId());
             assertNotNull(tuple.get0().getUsername());
@@ -183,7 +182,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         list = jdbc.query(namedParamSql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                queryTupleListParamsMap);
+            queryTupleListParamsMap);
         for (Tuple2<User, UserInfo> tuple : list) {
             assertEquals(tuple.get0().getId(), tuple.get1().getUser().getId());
             assertNotNull(tuple.get0().getUsername());
@@ -195,7 +194,7 @@ public class JdbcTest extends JdbcTestBase {
     public void queryTuple3() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple3<User, UserInfo, UserRole>> list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class,
-                Tuples.of("_user0.", "ui.", "ur."), queryTupleListParamsArray);
+            Tuples.of("_user0.", "ui.", "ur."), queryTupleListParamsArray);
         for (Tuple3<User, UserInfo, UserRole> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -206,7 +205,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
-                queryTupleListParamsMap);
+            queryTupleListParamsMap);
         for (Tuple3<User, UserInfo, UserRole> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -217,7 +216,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         list = jdbc.query(namedParamSql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
-                queryTupleListParamsMap);
+            queryTupleListParamsMap);
         for (Tuple3<User, UserInfo, UserRole> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -231,7 +230,7 @@ public class JdbcTest extends JdbcTestBase {
     public void queryTuple4() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple4<User, UserInfo, UserRole, Role>> list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class,
-                Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsArray);
+            Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsArray);
         for (Tuple4<User, UserInfo, UserRole, Role> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -244,7 +243,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsMap);
+            Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsMap);
         for (Tuple4<User, UserInfo, UserRole, Role> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -257,7 +256,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         list = jdbc.query(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsMap);
+            Tuples.of("_user0.", "ui.", "ur.", "r."), queryTupleListParamsMap);
         for (Tuple4<User, UserInfo, UserRole, Role> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -273,8 +272,8 @@ public class JdbcTest extends JdbcTestBase {
     public void queryTuple5() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple5<User, UserInfo, UserRole, Role, Order>> list = jdbc.query(sql, User.class, UserInfo.class,
-                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."),
-                queryTupleListParamsArray);
+            UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."),
+            queryTupleListParamsArray);
         for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -289,7 +288,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         list = jdbc.query(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), queryTupleListParamsMap);
+            Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), queryTupleListParamsMap);
         for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -304,7 +303,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         list = jdbc.query(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), queryTupleListParamsMap);
+            Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), queryTupleListParamsMap);
         for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -380,7 +379,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.querySingle(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                new ChainMapImpl<String, Object>().putChain("id", id));
+            new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertNotNull(r.get0().getUsername());
@@ -388,7 +387,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                new ChainMapImpl<String, Object>().putChain("id", id));
+            new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertNotNull(r.get0().getUsername());
@@ -400,7 +399,7 @@ public class JdbcTest extends JdbcTestBase {
         Integer id = 1;
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple3<User, UserInfo, UserRole> r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class,
-                Tuples.of("_user0.", "ui.", "ur."), id);
+            Tuples.of("_user0.", "ui.", "ur."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -410,7 +409,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
-                new ChainMapImpl<String, Object>().putChain("id", id));
+            new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -420,7 +419,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, UserRole.class,
-                Tuples.of("_user0.", "ui.", "ur."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -434,7 +433,7 @@ public class JdbcTest extends JdbcTestBase {
         Integer id = 1;
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple4<User, UserInfo, UserRole, Role> r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class,
-                Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), id);
+            Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -446,7 +445,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -458,7 +457,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -474,7 +473,7 @@ public class JdbcTest extends JdbcTestBase {
         Integer id = 1;
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple5<User, UserInfo, UserRole, Role, Order> r = jdbc.querySingle(sql, User.class, UserInfo.class,
-                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
+            UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -488,7 +487,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.querySingle(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -502,7 +501,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.querySingle(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -577,7 +576,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.queryUnique(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                new ChainMapImpl<String, Object>().putChain("id", id));
+            new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertNotNull(r.get0().getUsername());
@@ -585,7 +584,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
-                new ChainMapImpl<String, Object>().putChain("id", id));
+            new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertNotNull(r.get0().getUsername());
@@ -597,7 +596,7 @@ public class JdbcTest extends JdbcTestBase {
         Integer id = 1;
         String sql = getSql("querySingleTuple3").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple3<User, UserInfo, UserRole> r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class,
-                Tuples.of("_user0.", "ui.", "ur."), id);
+            Tuples.of("_user0.", "ui.", "ur."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -607,7 +606,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Tuples.of("_user0.", "ui.", "ur."),
-                new ChainMapImpl<String, Object>().putChain("id", id));
+            new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -617,7 +616,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, UserRole.class,
-                Tuples.of("_user0.", "ui.", "ur."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -631,7 +630,7 @@ public class JdbcTest extends JdbcTestBase {
         Integer id = 1;
         String sql = getSql("querySingleTuple4").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple4<User, UserInfo, UserRole, Role> r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class,
-                Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), id);
+            Role.class, Tuples.of("_user0.", "ui.", "ur.", "r."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -643,7 +642,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -655,7 +654,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -671,7 +670,7 @@ public class JdbcTest extends JdbcTestBase {
         Integer id = 1;
         String sql = getSql("querySingleTuple5").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         Tuple5<User, UserInfo, UserRole, Role, Order> r = jdbc.queryUnique(sql, User.class, UserInfo.class,
-                UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
+            UserRole.class, Role.class, Order.class, Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), id);
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -685,7 +684,7 @@ public class JdbcTest extends JdbcTestBase {
 
         sql = sql.replace("?", ":id");
         r = jdbc.queryUnique(sql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -699,7 +698,7 @@ public class JdbcTest extends JdbcTestBase {
 
         NamedParamSql namedParamSql = NamedParamSql.compile(sql);
         r = jdbc.queryUnique(namedParamSql, User.class, UserInfo.class, UserRole.class, Role.class, Order.class,
-                Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
+            Tuples.of("_user0.", "ui.", "ur.", "r.", "o."), new ChainMapImpl<String, Object>().putChain("id", id));
         assertEquals(r.get0().getId(), id);
         assertEquals(r.get1().getUser().getId(), id);
         assertEquals(r.get2().getUserId(), id);
@@ -737,8 +736,8 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void testNestedPropertyMapper() {
         List<App> appList = jdbc.query(
-                "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",
-                App.class, ArrayUtils.EMPTY_OBJECT_ARRAY);
+            "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",
+            App.class, ArrayUtils.EMPTY_OBJECT_ARRAY);
         for (App app : appList) {
             System.out.println(app);
         }
@@ -746,7 +745,8 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testIntercepor() {
-        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
+        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager,
+            instantiatorFactory);
 
         jdbc.addInterceptor(new JdbcExecutionInterceptor() {
             @Override
@@ -777,15 +777,16 @@ public class JdbcTest extends JdbcTestBase {
         });
 
         List<App> appList = jdbc.query(
-                "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",
-                App.class, ArrayUtils.EMPTY_OBJECT_ARRAY);
+            "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",
+            App.class, ArrayUtils.EMPTY_OBJECT_ARRAY);
         assertNull(appList);
 
     }
 
     @Test
     public void testIntercepor2() {
-        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
+        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager,
+            instantiatorFactory);
 
         List<JdbcExecutionInterceptor> interceptors = new ArrayList<>();
 
@@ -821,8 +822,8 @@ public class JdbcTest extends JdbcTestBase {
         jdbc.addInterceptor(interceptors);
 
         List<App> appList = jdbc.query(
-                "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",
-                App.class, ArrayUtils.EMPTY_OBJECT_ARRAY);
+            "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",
+            App.class, ArrayUtils.EMPTY_OBJECT_ARRAY);
         assertNull(appList);
 
     }
@@ -891,7 +892,7 @@ public class JdbcTest extends JdbcTestBase {
         assertEquals(article.getContent(), "content_01");
 
         result = jdbc.insert(tableName, new ChainMapImpl<String, Object>().putChain(id, null)
-                .putChain(title, "title_02").putChain(content, "content_02"));
+            .putChain(title, "title_02").putChain(content, "content_02"));
         assertEquals(result, 1);
 
         result = jdbc.update("delete from cms_article");
@@ -905,16 +906,16 @@ public class JdbcTest extends JdbcTestBase {
         result = jdbc.update("delete from cms_article");
 
         result = jdbc.insertBatch(tableName, columnNames, null, "title_batch_01", "content_batch_01", null,
-                "title_batch_02", "content_batch_02");
+            "title_batch_02", "content_batch_02");
         assertEquals(result, 2);
 
         List<Map<String, Object>> params = new ArrayList<>();
         params.add(new ChainMapImpl<String, Object>().putChain(id, null).putChain(title, "title_batch_03")
-                .putChain(content, "content_batch_03"));
+            .putChain(content, "content_batch_03"));
         params.add(new ChainMapImpl<String, Object>().putChain(id, null).putChain(title, "title_batch_04")
-                .putChain(content, "content_batch_04"));
+            .putChain(content, "content_batch_04"));
         params.add(new ChainMapImpl<String, Object>().putChain(id, null).putChain(title, "title_batch_05")
-                .putChain(content, "content_batch_05"));
+            .putChain(content, "content_batch_05"));
         result = jdbc.insertBatch(tableName, params);
         assertEquals(result, params.size());
 
@@ -994,8 +995,8 @@ public class JdbcTest extends JdbcTestBase {
         result = jdbc.update("", new Object[0]);
         assertEquals(result, 0);
 
-        result = jdbc.update("", new Object[] { new BeanPropertyValue<>(
-                BeanDescriptor.getBeanDescriptor(User.class).getBeanProperty(User::getId), 1) });
+        result = jdbc.update("", new Object[] {
+            new BeanPropertyValue<>(BeanDescriptor.getBeanDescriptor(User.class).getBeanProperty(User::getId), 1) });
         assertEquals(result, 0);
     }
 
@@ -1010,11 +1011,11 @@ public class JdbcTest extends JdbcTestBase {
         //        String batchInsertSql = jdbc.getDialect().buildInsertBatchSql(tableName, columnNames, batchSize);
 
         String batchInsertSql = Strings.format(
-                "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id1, :title1, :content1),(:id2, :title2, :content2)",
-                jdbc.getDialect().getWrapSymbol());
+            "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id1, :title1, :content1),(:id2, :title2, :content2)",
+            jdbc.getDialect().getWrapSymbol());
         String batchInsertSql2 = Strings.format(
-                "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id1, :title1, :content1),(:id2, :title2, :content2),(:id3, :title3, :content3)",
-                jdbc.getDialect().getWrapSymbol());
+            "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id1, :title1, :content1),(:id2, :title2, :content2),(:id3, :title3, :content3)",
+            jdbc.getDialect().getWrapSymbol());
 
         BiConsumer<Map<String, Object>, Integer> f = (t, index) -> {
             t.put("id" + index, null);
@@ -1046,8 +1047,8 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void testUpdateBatchMulitiSql() { // 一条sql影响一条数据，批量执行
         String insertSql = Strings.format(
-                "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (?, ?, ?)",
-                jdbc.getDialect().getWrapSymbol());
+            "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (?, ?, ?)",
+            jdbc.getDialect().getWrapSymbol());
         List<Object[]> argsList = new ArrayList<>();
         int batchSize = 5;
 
@@ -1096,8 +1097,8 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void testUpdateBatchMulitiSql2() { // 一条sql影响一条数据，批量执行
         String insertSql = Strings.format(
-                "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id, :title, :content)",
-                jdbc.getDialect().getWrapSymbol());
+            "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id, :title, :content)",
+            jdbc.getDialect().getWrapSymbol());
         int batchSize = 5;
         @SuppressWarnings("unchecked")
         Map<String, Object>[] argsArray = new Map[batchSize];
@@ -1105,7 +1106,7 @@ public class JdbcTest extends JdbcTestBase {
         final AtomicInteger id = new AtomicInteger(0);
         final List<Integer> ids = new ArrayList<>();
 
-        GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<Integer>() {
+        GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<>() {
 
             @Override
             public void acceptKey(Integer key) {
@@ -1119,13 +1120,13 @@ public class JdbcTest extends JdbcTestBase {
         };
 
         int result = jdbc.update(insertSql, keyHolder, new ChainMapImpl<String, Object>().putChain("id", null)
-                .putChain("title", "title_batch_start").putChain("content", "content_batch_start"));
+            .putChain("title", "title_batch_start").putChain("content", "content_batch_start"));
 
         assertEquals(result, 1);
 
         for (int i = 0; i < batchSize; i++) {
             argsArray[i] = new ChainMapImpl<String, Object>().putChain("id", null).putChain("title", "title_batch_" + i)
-                    .putChain("content", "content_batch_" + i);
+                .putChain("content", "content_batch_" + i);
         }
         int results[] = jdbc.updateBatch(insertSql, new GeneratedKeysHolder<Integer>() {
 
@@ -1175,11 +1176,11 @@ public class JdbcTest extends JdbcTestBase {
         assertEquals(result, 2);
 
         result = jdbc.upsert(tableName, ukNames, new ChainMapImpl<String, Object>().putChain(id, null)
-                .putChain(code, "code_03").putChain(name, "name_03").putChain(platform, Platforms.IOS));
+            .putChain(code, "code_03").putChain(name, "name_03").putChain(platform, Platforms.IOS));
         assertEquals(result, 1);
 
         result = jdbc.upsert(tableName, ukNames, new ChainMapImpl<String, Object>().putChain(id, null)
-                .putChain(code, "code_03").putChain(name, "name_04").putChain(platform, Platforms.IOS));
+            .putChain(code, "code_03").putChain(name, "name_04").putChain(platform, Platforms.IOS));
         assertEquals(result, 2);
         //
         result = jdbc.update("delete from app where code like ?", "code_%");
@@ -1207,11 +1208,11 @@ public class JdbcTest extends JdbcTestBase {
         assertEquals(result, 2);
 
         result = jdbc.upsert(tableName, code, new ChainMapImpl<String, Object>().putChain(id, null)
-                .putChain(code, "code_03").putChain(name, "name_03").putChain(platform, Platforms.IOS));
+            .putChain(code, "code_03").putChain(name, "name_03").putChain(platform, Platforms.IOS));
         assertEquals(result, 1);
 
         result = jdbc.upsert(tableName, code, new ChainMapImpl<String, Object>().putChain(id, null)
-                .putChain(code, "code_03").putChain(name, "name_04").putChain(platform, Platforms.IOS));
+            .putChain(code, "code_03").putChain(name, "name_04").putChain(platform, Platforms.IOS));
         assertEquals(result, 2);
 
         result = jdbc.update("delete from app where code like ?", "code_%");

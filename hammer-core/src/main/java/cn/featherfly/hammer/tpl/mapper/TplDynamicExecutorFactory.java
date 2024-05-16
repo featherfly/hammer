@@ -69,7 +69,7 @@ import cn.featherfly.hammer.tpl.TplExecutor;
  *
  * @author zhongj
  */
-public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
+public class TplDynamicExecutorFactory implements Opcodes {
 
     /** The Constant HAMMER_FIELD_NAME. */
     public static final String HAMMER_FIELD_NAME = "hammer";
@@ -340,66 +340,66 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             listTypePageMethodDescriptor = Type.getMethodDescriptor(listTypePageMethod);
 
             listTypeLimitMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Map.class, int.class,
-                    int.class);
+                int.class);
             listTypeLimitMethodDescriptor = Type.getMethodDescriptor(listTypeLimitMethod);
 
             listTuple2Method = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class, Map.class);
             listTuple2MethodDescriptor = Type.getMethodDescriptor(listTuple2Method);
 
             listTuple2PageMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Map.class, Page.class);
+                Map.class, Page.class);
             listTuple2PageMethodDescriptor = Type.getMethodDescriptor(listTuple2PageMethod);
 
             listTuple2LimitMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Map.class, int.class, int.class);
+                Map.class, int.class, int.class);
             listTuple2LimitMethodDescriptor = Type.getMethodDescriptor(listTuple2LimitMethod);
 
             listTuple3Method = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class, Class.class,
-                    Map.class);
+                Map.class);
             listTuple3MethodDescriptor = Type.getMethodDescriptor(listTuple3Method);
 
             listTuple3PageMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Map.class, Page.class);
+                Class.class, Map.class, Page.class);
             listTuple3PageMethodDescriptor = Type.getMethodDescriptor(listTuple3PageMethod);
 
             listTuple3LimitMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Map.class, int.class, int.class);
+                Class.class, Map.class, int.class, int.class);
             listTuple3LimitMethodDescriptor = Type.getMethodDescriptor(listTuple3LimitMethod);
 
             listTuple4Method = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class, Class.class,
-                    Class.class, Map.class);
+                Class.class, Map.class);
             listTuple4MethodDescriptor = Type.getMethodDescriptor(listTuple4Method);
 
             listTuple4PageMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Map.class, Page.class);
+                Class.class, Class.class, Map.class, Page.class);
             listTuple4PageMethodDescriptor = Type.getMethodDescriptor(listTuple4PageMethod);
 
             listTuple4LimitMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Map.class, int.class, int.class);
+                Class.class, Class.class, Map.class, int.class, int.class);
             listTuple4LimitMethodDescriptor = Type.getMethodDescriptor(listTuple4LimitMethod);
 
             listTuple5Method = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class, Class.class,
-                    Class.class, Class.class, Map.class);
+                Class.class, Class.class, Map.class);
             listTuple5MethodDescriptor = Type.getMethodDescriptor(listTuple5Method);
 
             listTuple5PageMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Map.class, Page.class);
+                Class.class, Class.class, Class.class, Map.class, Page.class);
             listTuple5PageMethodDescriptor = Type.getMethodDescriptor(listTuple5PageMethod);
 
             listTuple5LimitMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Map.class, int.class, int.class);
+                Class.class, Class.class, Class.class, Map.class, int.class, int.class);
             listTuple5LimitMethodDescriptor = Type.getMethodDescriptor(listTuple5LimitMethod);
 
             listTuple6Method = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Map.class);
+                Class.class, Class.class, Class.class, Map.class);
             listTuple6MethodDescriptor = Type.getMethodDescriptor(listTuple5Method);
 
             listTuple6PageMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Class.class, Map.class, Page.class);
+                Class.class, Class.class, Class.class, Class.class, Map.class, Page.class);
             listTuple6PageMethodDescriptor = Type.getMethodDescriptor(listTuple5PageMethod);
 
             listTuple6LimitMethod = TplExecutor.class.getMethod("list", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
+                Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
             listTuple6LimitMethodDescriptor = Type.getMethodDescriptor(listTuple5LimitMethod);
 
             listMapMethod = TplExecutor.class.getMethod("list", Object.class, Map.class);
@@ -412,75 +412,75 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             listMapLimitMethodDescriptor = Type.getMethodDescriptor(listMapLimitMethod);
 
             paginationTypeMethod = TplExecutor.class.getMethod("pagination", Object.class, Class.class, Map.class,
-                    Page.class);
+                Page.class);
             paginationTypeMethodDescriptor = Type.getMethodDescriptor(paginationTypeMethod);
             paginationTypeLimitMethod = TplExecutor.class.getMethod("pagination", Object.class, Class.class, Map.class,
-                    int.class, int.class);
+                int.class, int.class);
             paginationTypeLimitMethodDescriptor = Type.getMethodDescriptor(paginationTypeLimitMethod);
 
             paginationMapMethod = TplExecutor.class.getMethod("pagination", Object.class, Map.class, Page.class);
             paginationMapMethodDescriptor = Type.getMethodDescriptor(paginationMapMethod);
 
             paginationMapLimitMethod = TplExecutor.class.getMethod("pagination", Object.class, Map.class, int.class,
-                    int.class);
+                int.class);
             paginationMapLimitMethodDescriptor = Type.getMethodDescriptor(paginationMapLimitMethod);
 
             paginationTuple2Method = TplExecutor.class.getMethod("pagination", Object.class, Class.class, Class.class,
-                    Map.class, Page.class);
+                Map.class, Page.class);
             paginationTuple2MethodDescriptor = Type.getMethodDescriptor(paginationTuple2Method);
             paginationTuple2LimitMethod = TplExecutor.class.getMethod("pagination", Object.class, Class.class,
-                    Class.class, Map.class, int.class, int.class);
+                Class.class, Map.class, int.class, int.class);
             paginationTuple2LimitMethodDescriptor = Type.getMethodDescriptor(paginationTuple2LimitMethod);
 
             paginationTuple3Method = TplExecutor.class.getMethod("pagination", Object.class, Class.class, Class.class,
-                    Class.class, Map.class, Page.class);
+                Class.class, Map.class, Page.class);
             paginationTuple3MethodDescriptor = Type.getMethodDescriptor(paginationTuple3Method);
             paginationTuple3LimitMethod = TplExecutor.class.getMethod("pagination", Object.class, Class.class,
-                    Class.class, Class.class, Map.class, int.class, int.class);
+                Class.class, Class.class, Map.class, int.class, int.class);
             paginationTuple3LimitMethodDescriptor = Type.getMethodDescriptor(paginationTuple3LimitMethod);
 
             paginationTuple4Method = TplExecutor.class.getMethod("pagination", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Map.class, Page.class);
+                Class.class, Class.class, Map.class, Page.class);
             paginationTuple4MethodDescriptor = Type.getMethodDescriptor(paginationTuple4Method);
             paginationTuple4LimitMethod = TplExecutor.class.getMethod("pagination", Object.class, Class.class,
-                    Class.class, Class.class, Class.class, Map.class, int.class, int.class);
+                Class.class, Class.class, Class.class, Map.class, int.class, int.class);
             paginationTuple4LimitMethodDescriptor = Type.getMethodDescriptor(paginationTuple4LimitMethod);
 
             paginationTuple5Method = TplExecutor.class.getMethod("pagination", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Map.class, Page.class);
+                Class.class, Class.class, Class.class, Map.class, Page.class);
             paginationTuple5MethodDescriptor = Type.getMethodDescriptor(paginationTuple5Method);
             paginationTuple5LimitMethod = TplExecutor.class.getMethod("pagination", Object.class, Class.class,
-                    Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
+                Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
             paginationTuple5LimitMethodDescriptor = Type.getMethodDescriptor(paginationTuple5LimitMethod);
 
             paginationTuple6Method = TplExecutor.class.getMethod("pagination", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Class.class, Map.class, Page.class);
+                Class.class, Class.class, Class.class, Class.class, Map.class, Page.class);
             paginationTuple6MethodDescriptor = Type.getMethodDescriptor(paginationTuple6Method);
             paginationTuple6LimitMethod = TplExecutor.class.getMethod("pagination", Object.class, Class.class,
-                    Class.class, Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
+                Class.class, Class.class, Class.class, Class.class, Class.class, Map.class, int.class, int.class);
             paginationTuple6LimitMethodDescriptor = Type.getMethodDescriptor(paginationTuple6LimitMethod);
 
             singleTypeMethod = TplExecutor.class.getMethod("single", Object.class, Class.class, Map.class);
             singleTypeMethodDescriptor = Type.getMethodDescriptor(singleTypeMethod);
 
             singleTuple2Method = TplExecutor.class.getMethod("single", Object.class, Class.class, Class.class,
-                    Map.class);
+                Map.class);
             singleTuple2MethodDescriptor = Type.getMethodDescriptor(singleTuple2Method);
 
             singleTuple3Method = TplExecutor.class.getMethod("single", Object.class, Class.class, Class.class,
-                    Class.class, Map.class);
+                Class.class, Map.class);
             singleTuple3MethodDescriptor = Type.getMethodDescriptor(singleTuple3Method);
 
             singleTuple4Method = TplExecutor.class.getMethod("single", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Map.class);
+                Class.class, Class.class, Map.class);
             singleTuple4MethodDescriptor = Type.getMethodDescriptor(singleTuple4Method);
 
             singleTuple5Method = TplExecutor.class.getMethod("single", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Map.class);
+                Class.class, Class.class, Class.class, Map.class);
             singleTuple5MethodDescriptor = Type.getMethodDescriptor(singleTuple5Method);
 
             singleTuple6Method = TplExecutor.class.getMethod("single", Object.class, Class.class, Class.class,
-                    Class.class, Class.class, Class.class, Class.class, Map.class);
+                Class.class, Class.class, Class.class, Class.class, Map.class);
             singleTuple6MethodDescriptor = Type.getMethodDescriptor(singleTuple5Method);
 
             singleMapMethod = TplExecutor.class.getMethod("single", Object.class, Map.class);
@@ -529,9 +529,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
      *
      * @param type configuration interface class
      * @return implemented class name
-     * @throws IOException           Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred.
      * @throws NoSuchMethodException the no such method exception
-     * @throws SecurityException     the security exception
+     * @throws SecurityException the security exception
      */
     public String create(Class<?> type) throws IOException, NoSuchMethodException, SecurityException {
         return create(type, this.getClass().getClassLoader());
@@ -540,15 +540,15 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     /**
      * create mapper interface implemented class.
      *
-     * @param type        configuration interface class
+     * @param type configuration interface class
      * @param classLoader the class loader
      * @return implemented class name
-     * @throws IOException           Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred.
      * @throws NoSuchMethodException the no such method exception
-     * @throws SecurityException     the security exception
+     * @throws SecurityException the security exception
      */
     public String create(Class<?> type, ClassLoader classLoader)
-            throws IOException, NoSuchMethodException, SecurityException {
+        throws IOException, NoSuchMethodException, SecurityException {
         if (classLoader == null) {
             classLoader = this.getClass().getClassLoader();
         }
@@ -581,7 +581,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             cn.interfaces.add(Asm.getName(type));
 
             if (ClassUtils.isParent(GenericHammer.class, type)
-                    || ClassUtils.isParent(GenericHammerSupport.class, type)) {
+                || ClassUtils.isParent(GenericHammerSupport.class, type)) {
                 if (ClassUtils.isParent(GenericHammer.class, type)) {
                     parentHammer = GenericHammer.class;
                     cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
@@ -597,7 +597,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
                     ParameterizedType parameterizedType = (ParameterizedType) implType;
                     if (parameterizedType.getRawType() == GenericHammer.class
-                            || parameterizedType.getRawType() == GenericHammerSupport.class) {
+                        || parameterizedType.getRawType() == GenericHammerSupport.class) {
                         typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
                         genericType = ClassUtils.forName(typeName);
                         idType = ClassUtils.forName(parameterizedType.getActualTypeArguments()[1].getTypeName());
@@ -620,13 +620,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 cn.signature = signature.toString();
 
                 MethodNode constructor = new MethodNode(ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor, null,
-                        null);
+                    null);
                 constructor.visitVarInsn(ALOAD, 0);
                 constructor.visitVarInsn(ALOAD, 1);
                 constructor.visitLdcInsn(Type.getType(genericType));
                 constructor.visitVarInsn(ALOAD, 2);
                 constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD,
-                        Asm.getConstructorDescriptor(Hammer.class, Class.class, HammerConfig.class), false);
+                    Asm.getConstructorDescriptor(Hammer.class, Class.class, HammerConfig.class), false);
                 constructor.visitInsn(RETURN);
                 constructor.visitMaxs(1, 1);
                 constructor.visitEnd();
@@ -640,12 +640,12 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     cn.superName = Type.getInternalName(BasedMapper.class);
                 }
                 MethodNode constructor = new MethodNode(ASM9, ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor,
-                        null, null);
+                    null, null);
                 constructor.visitVarInsn(ALOAD, 0);
                 constructor.visitVarInsn(ALOAD, 1);
                 constructor.visitVarInsn(ALOAD, 2);
                 constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD, constructorDescriptor,
-                        false);
+                    false);
                 constructor.visitInsn(RETURN);
                 constructor.visitMaxs(1, 1);
                 constructor.visitEnd();
@@ -658,7 +658,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
             // 定义类
             final ClassLoader cl = classLoader;
             ClassLoaderUtils.defineClass(cl, implClassName, code, type.getProtectionDomain(), () -> DefineClassHelper
-                    .defineClass(implClassName, code, 0, code.length, type, cl, type.getProtectionDomain()));
+                .defineClass(implClassName, code, 0, code.length, type, cl, type.getProtectionDomain()));
             types.add(type);
         }
         return implClassName;
@@ -670,9 +670,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer)
-            throws NoSuchMethodException, SecurityException {
-        Map<String, java.lang.reflect.Type> genericTypes = ClassUtils.getInterfaceGenericTypeMap(type,
-                GenericHammer.class);
+        throws NoSuchMethodException, SecurityException {
+        Map<String,
+            java.lang.reflect.Type> genericTypes = ClassUtils.getInterfaceGenericTypeMap(type, GenericHammer.class);
         for (Method method : type.getDeclaredMethods()) {
             if (method.isDefault()) {
                 continue;
@@ -700,11 +700,11 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 for (int i = 1; i < size; i++) {
                     methodNode.visitVarInsn(ALOAD, i);
                     ParameterNode parameterNode = new ParameterNode(method.getParameters()[i - 1].getName(),
-                            Opcodes.ACC_MANDATED);
+                        Opcodes.ACC_MANDATED);
                     methodNode.parameters.add(parameterNode);
                 }
                 methodNode.visitMethodInsn(INVOKESPECIAL, classNode.superName, parentMethod.getName(),
-                        parentMethodDescriptor, false);
+                    parentMethodDescriptor, false);
                 if (method.getReturnType().isPrimitive()) {
                     // TODO 基本类型是否需要强制类型转换
                     if (method.getReturnType() == Integer.TYPE) {
@@ -753,7 +753,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 methodNode.visitVarInsn(ALOAD, 0);
                 methodNode.visitFieldInsn(GETFIELD, classNode.name, TPLID_PARSER_NAME, tplExecuteIdParserDescriptor);
                 methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
-                        Asm.getConstructorDescriptor(String.class, String.class, TplExecuteIdParser.class), false);
+                    Asm.getConstructorDescriptor(String.class, String.class, TplExecuteIdParser.class), false);
                 stackSize = 5;
 
                 //                String hammerTpe = Type.getInternalName(AbstractBasedHammer.class);
@@ -766,16 +766,16 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 if (method.getReturnType() == void.class) {
                     setParams(methodNode, method);
                     methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, executeMethod.getName(),
-                            executeMethodDescriptor, true);
+                        executeMethodDescriptor, true);
                     methodNode.visitInsn(POP);
                     methodNode.visitInsn(RETURN);
                     methodNode.visitMaxs(stackSize, localeSize);
                     methodNode.visitEnd();
                 } else if (method.getReturnType() == Integer.TYPE
-                        && (tplType == ExecutionType.AUTO || tplType == ExecutionType.EXECUTE)) {
+                    && (tplType == ExecutionType.AUTO || tplType == ExecutionType.EXECUTE)) {
                     setParams(methodNode, method);
                     methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, executeMethod.getName(),
-                            executeMethodDescriptor, true);
+                        executeMethodDescriptor, true);
                     methodNode.visitInsn(IRETURN);
                     methodNode.visitMaxs(stackSize, localeSize);
                     methodNode.visitEnd();
@@ -787,13 +787,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         ParamPosition position = setParams(methodNode, method);
                         if (position.limitParamPosition > 0) {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listMapLimitMethod.getName(),
-                                    listMapLimitMethodDescriptor, true);
+                                listMapLimitMethodDescriptor, true);
                         } else if (position.pageParamPosition > 0) {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listMapPageMethod.getName(),
-                                    listMapPageMethodDescriptor, true);
+                                listMapPageMethodDescriptor, true);
                         } else {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listMapMethod.getName(),
-                                    listMapMethodDescriptor, true);
+                                listMapMethodDescriptor, true);
                         }
 
                         methodNode.visitInsn(ARETURN);
@@ -810,57 +810,57 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         if (ClassUtils.isParent(Tuple2.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple2LimitMethod.getName(), listTuple2LimitMethodDescriptor, true);
+                                    listTuple2LimitMethod.getName(), listTuple2LimitMethodDescriptor, true);
                             } else if (position.pageParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple2PageMethod.getName(), listTuple2PageMethodDescriptor, true);
+                                    listTuple2PageMethod.getName(), listTuple2PageMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple2Method.getName(),
-                                        listTuple2MethodDescriptor, true);
+                                    listTuple2MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple3.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple3LimitMethod.getName(), listTuple3LimitMethodDescriptor, true);
+                                    listTuple3LimitMethod.getName(), listTuple3LimitMethodDescriptor, true);
                             } else if (position.pageParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple3PageMethod.getName(), listTuple3PageMethodDescriptor, true);
+                                    listTuple3PageMethod.getName(), listTuple3PageMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple3Method.getName(),
-                                        listTuple3MethodDescriptor, true);
+                                    listTuple3MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple4.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple4LimitMethod.getName(), listTuple4LimitMethodDescriptor, true);
+                                    listTuple4LimitMethod.getName(), listTuple4LimitMethodDescriptor, true);
                             } else if (position.pageParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple4PageMethod.getName(), listTuple4PageMethodDescriptor, true);
+                                    listTuple4PageMethod.getName(), listTuple4PageMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple4Method.getName(),
-                                        listTuple4MethodDescriptor, true);
+                                    listTuple4MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple5.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple5LimitMethod.getName(), listTuple5LimitMethodDescriptor, true);
+                                    listTuple5LimitMethod.getName(), listTuple5LimitMethodDescriptor, true);
                             } else if (position.pageParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple5PageMethod.getName(), listTuple5PageMethodDescriptor, true);
+                                    listTuple5PageMethod.getName(), listTuple5PageMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple5Method.getName(),
-                                        listTuple5MethodDescriptor, true);
+                                    listTuple5MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple6LimitMethod.getName(), listTuple6LimitMethodDescriptor, true);
+                                    listTuple6LimitMethod.getName(), listTuple6LimitMethodDescriptor, true);
                             } else if (position.pageParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        listTuple6PageMethod.getName(), listTuple6PageMethodDescriptor, true);
+                                    listTuple6PageMethod.getName(), listTuple6PageMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple6Method.getName(),
-                                        listTuple6MethodDescriptor, true);
+                                    listTuple6MethodDescriptor, true);
                             }
                         } else {
                             throw new HammerException("only support Tuple2...Tuple6");
@@ -876,13 +876,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         }
                         if (position.limitParamPosition > 0) {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTypeLimitMethod.getName(),
-                                    listTypeLimitMethodDescriptor, true);
+                                listTypeLimitMethodDescriptor, true);
                         } else if (position.pageParamPosition > 0) {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTypePageMethod.getName(),
-                                    listTypePageMethodDescriptor, true);
+                                listTypePageMethodDescriptor, true);
                         } else {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTypeMethod.getName(),
-                                    listTypeMethodDescriptor, true);
+                                listTypeMethodDescriptor, true);
                         }
                         methodNode.visitInsn(ARETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
@@ -896,10 +896,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         ParamPosition position = setParams(methodNode, method);
                         if (position.limitParamPosition > 0) {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationMapLimitMethod.getName(), paginationMapLimitMethodDescriptor, true);
+                                paginationMapLimitMethod.getName(), paginationMapLimitMethodDescriptor, true);
                         } else {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, paginationMapMethod.getName(),
-                                    paginationMapMethodDescriptor, true);
+                                paginationMapMethodDescriptor, true);
                         }
                         methodNode.visitInsn(ARETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
@@ -916,47 +916,42 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         if (ClassUtils.isParent(Tuple2.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple2LimitMethod.getName(), paginationTuple2LimitMethodDescriptor,
-                                        true);
+                                    paginationTuple2LimitMethod.getName(), paginationTuple2LimitMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple2Method.getName(), paginationTuple2MethodDescriptor, true);
+                                    paginationTuple2Method.getName(), paginationTuple2MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple3.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple3LimitMethod.getName(), paginationTuple3LimitMethodDescriptor,
-                                        true);
+                                    paginationTuple3LimitMethod.getName(), paginationTuple3LimitMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple3Method.getName(), paginationTuple3MethodDescriptor, true);
+                                    paginationTuple3Method.getName(), paginationTuple3MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple4.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple4LimitMethod.getName(), paginationTuple4LimitMethodDescriptor,
-                                        true);
+                                    paginationTuple4LimitMethod.getName(), paginationTuple4LimitMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple4Method.getName(), paginationTuple4MethodDescriptor, true);
+                                    paginationTuple4Method.getName(), paginationTuple4MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple5.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple5LimitMethod.getName(), paginationTuple5LimitMethodDescriptor,
-                                        true);
+                                    paginationTuple5LimitMethod.getName(), paginationTuple5LimitMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple5Method.getName(), paginationTuple5MethodDescriptor, true);
+                                    paginationTuple5Method.getName(), paginationTuple5MethodDescriptor, true);
                             }
                         } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
                             if (position.limitParamPosition > 0) {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple6LimitMethod.getName(), paginationTuple6LimitMethodDescriptor,
-                                        true);
+                                    paginationTuple6LimitMethod.getName(), paginationTuple6LimitMethodDescriptor, true);
                             } else {
                                 methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                        paginationTuple6Method.getName(), paginationTuple6MethodDescriptor, true);
+                                    paginationTuple6Method.getName(), paginationTuple6MethodDescriptor, true);
                             }
                         } else {
                             throw new HammerException("only support Tuple2...Tuple6");
@@ -973,10 +968,10 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         }
                         if (position.limitParamPosition > 0) {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTypeLimitMethod.getName(), paginationTypeLimitMethodDescriptor, true);
+                                paginationTypeLimitMethod.getName(), paginationTypeLimitMethodDescriptor, true);
                         } else {
                             methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, paginationTypeMethod.getName(),
-                                    paginationTypeMethodDescriptor, true);
+                                paginationTypeMethodDescriptor, true);
                         }
                         methodNode.visitInsn(ARETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
@@ -989,7 +984,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
                     setParams(methodNode, method);
                     methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, numberMethod.getName(),
-                            numberMethodDescriptor, true);
+                        numberMethodDescriptor, true);
                     methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
                     methodNode.visitInsn(ARETURN);
                     methodNode.visitMaxs(stackSize, localeSize);
@@ -998,40 +993,40 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     if (method.getReturnType() == Integer.TYPE) {
                         setParams(methodNode, method);
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, intValueMethod.getName(),
-                                intValueMethodDescriptor, true);
+                            intValueMethodDescriptor, true);
                         methodNode.visitInsn(IRETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
                         methodNode.visitEnd();
                     } else if (method.getReturnType() == Long.TYPE) {
                         setParams(methodNode, method);
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, longValueMethod.getName(),
-                                longValueMethodDescriptor, true);
+                            longValueMethodDescriptor, true);
                         methodNode.visitInsn(LRETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
                         methodNode.visitEnd();
                     } else if (method.getReturnType() == Double.TYPE) {
                         setParams(methodNode, method);
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, doubleValueMethod.getName(),
-                                doubleValueMethodDescriptor, true);
+                            doubleValueMethodDescriptor, true);
                         methodNode.visitInsn(DRETURN);
                         methodNode.visitMaxs(stackSize, localeSize);
                         methodNode.visitEnd();
                     } else {
                         // TODO 使用exception code
                         throw new HammerException("unsupport query return type with primitive type "
-                                + method.getReturnType() + ", you can use wrapper type instead");
+                            + method.getReturnType() + ", you can use wrapper type instead");
                     }
                 } else if (String.class == method.getReturnType()) {
                     setParams(methodNode, method);
                     methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, stringMethod.getName(),
-                            stringMethodDescriptor, true);
+                        stringMethodDescriptor, true);
                     methodNode.visitInsn(ARETURN);
                     methodNode.visitMaxs(stackSize, localeSize);
                     methodNode.visitEnd();
                 } else if (ClassUtils.isParent(Map.class, method.getReturnType())) {
                     setParams(methodNode, method);
                     methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleMapMethod.getName(),
-                            singleMapMethodDescriptor, true);
+                        singleMapMethodDescriptor, true);
                     methodNode.visitInsn(ARETURN);
                     methodNode.visitMaxs(stackSize, localeSize);
                     methodNode.visitEnd();
@@ -1046,19 +1041,19 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     setParams(methodNode, method, gts.size());
                     if (ClassUtils.isParent(Tuple2.class, method.getReturnType())) {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple2Method.getName(),
-                                singleTuple2MethodDescriptor, true);
+                            singleTuple2MethodDescriptor, true);
                     } else if (ClassUtils.isParent(Tuple3.class, method.getReturnType())) {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple3Method.getName(),
-                                singleTuple3MethodDescriptor, true);
+                            singleTuple3MethodDescriptor, true);
                     } else if (ClassUtils.isParent(Tuple4.class, method.getReturnType())) {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple4Method.getName(),
-                                singleTuple4MethodDescriptor, true);
+                            singleTuple4MethodDescriptor, true);
                     } else if (ClassUtils.isParent(Tuple5.class, method.getReturnType())) {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple5Method.getName(),
-                                singleTuple5MethodDescriptor, true);
+                            singleTuple5MethodDescriptor, true);
                     } else if (ClassUtils.isParent(Tuple6.class, method.getReturnType())) {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple6Method.getName(),
-                                singleTuple6MethodDescriptor, true);
+                            singleTuple6MethodDescriptor, true);
                     } else {
                         throw new HammerException("only support Tuple2...Tuple6");
                     }
@@ -1073,7 +1068,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
                     setParams(methodNode, method);
                     methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTypeMethod.getName(),
-                            singleTypeMethodDescriptor, true);
+                        singleTypeMethodDescriptor, true);
                     methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
                     methodNode.visitInsn(ARETURN);
                     methodNode.visitMaxs(stackSize, localeSize);
@@ -1085,14 +1080,13 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                 if (logger.isTraceEnabled()) {
                     StringBuilder javapString = new StringBuilder();
                     javapString.append(methodNode.access + " " + methodNode.name + methodNode.desc)
-                            .append(Chars.NEW_LINE)
-                            .append(Strings.format("stack={0},locales={1}", stackSize, localeSize))
-                            .append(Chars.NEW_LINE);
+                        .append(Chars.NEW_LINE).append(Strings.format("stack={0},locales={1}", stackSize, localeSize))
+                        .append(Chars.NEW_LINE);
                     if (methodNode.visibleAnnotations != null) {
                         for (AnnotationNode annotation : methodNode.visibleAnnotations) {
 
                             javapString.append(annotation.desc).append(Chars.NEW_LINE).append(Chars.TAB)
-                                    .append(ArrayUtils.toString(annotation.values)).append(Chars.NEW_LINE);
+                                .append(ArrayUtils.toString(annotation.values)).append(Chars.NEW_LINE);
                         }
                     }
                     for (AbstractInsnNode node : methodNode.instructions) {
@@ -1122,7 +1116,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
         if (Lang.isNotEmpty(annotations)) {
             for (Annotation annotation : annotations) {
                 AnnotationVisitor visitor = methodNode.visitAnnotation(Type.getDescriptor(annotation.annotationType()),
-                        true);
+                    true);
                 for (Method annotationMethod : annotation.annotationType().getDeclaredMethods()) {
                     Object value = ClassUtils.invokeMethod(annotation, annotationMethod);
                     if (value.getClass().isArray()) {
@@ -1133,7 +1127,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                         }
                     } else if (value.getClass().isEnum()) {
                         visitor.visitEnum(annotationMethod.getName(), Type.getDescriptor(value.getClass()),
-                                ((Enum<?>) value).name());
+                            ((Enum<?>) value).name());
                     } else {
                         visitor.visit(annotationMethod.getName(), value);
                     }
@@ -1144,18 +1138,18 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     private ParamPosition setParams(MethodNode methodNode, Method method)
-            throws NoSuchMethodException, SecurityException {
+        throws NoSuchMethodException, SecurityException {
         return setParams(methodNode, method, 1);
     }
 
     private ParamPosition setParams(MethodNode methodNode, Method method, int commonParamIndex)
-            throws NoSuchMethodException, SecurityException {
+        throws NoSuchMethodException, SecurityException {
         ParamPosition position = new ParamPosition();
 
         methodNode.visitTypeInsn(NEW, paramName);
         methodNode.visitInsn(DUP);
         methodNode.visitMethodInsn(INVOKESPECIAL, paramName, Asm.CONSTRUCT_METHOD, Asm.NONE_PARAMETER_DESCRIPTOR,
-                false);
+            false);
         for (int paramIndex = 0; paramIndex < method.getParameters().length; paramIndex++) {
             Parameter parameter = method.getParameters()[paramIndex];
             ParamType paramType = getParamType(parameter);
@@ -1167,15 +1161,15 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
                     methodNode.visitVarInsn(Asm.getLoadCode(parameter.getType()), paramIndex + 1);
                     if (parameter.getType().isPrimitive()) {
                         methodNode.visitMethodInsn(INVOKESTATIC, Asm.getPrimitiveWrapperName(parameter.getType()),
-                                Asm.PRIMITIVE_WRAPPER_METHOD,
-                                Asm.getPrimitiveWrapperMethodDescriptor(parameter.getType()), false);
+                            Asm.PRIMITIVE_WRAPPER_METHOD, Asm.getPrimitiveWrapperMethodDescriptor(parameter.getType()),
+                            false);
                     }
                     if (commonParamIndex == 1) {
                         methodNode.visitMethodInsn(INVOKEVIRTUAL, paramName, putChainMethod.getName(),
-                                Type.getMethodDescriptor(putChainMethod), false);
+                            Type.getMethodDescriptor(putChainMethod), false);
                     } else {
                         methodNode.visitMethodInsn(INVOKEINTERFACE, paramChainName, putChainMethod.getName(),
-                                Type.getMethodDescriptor(putChainMethod), true);
+                            Type.getMethodDescriptor(putChainMethod), true);
                     }
                     commonParamIndex++;
                     break;
@@ -1207,7 +1201,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     private Method getMethodFromParent(Class<?> parentHammer, Method method,
-            Map<String, java.lang.reflect.Type> genericTypes) {
+        Map<String, java.lang.reflect.Type> genericTypes) {
         // FIXME 这里还没有处理泛型参数问题
         if (parentHammer == null) {
             return null;
@@ -1229,9 +1223,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     private boolean isOverwrite(Method method, Method overwriteMethod,
-            Map<String, java.lang.reflect.Type> genericTypes) {
+        Map<String, java.lang.reflect.Type> genericTypes) {
         if (method.getName().equals(overwriteMethod.getName())
-                && method.getParameterCount() == overwriteMethod.getParameterCount()) {
+            && method.getParameterCount() == overwriteMethod.getParameterCount()) {
             if (method.getParameterTypes().equals(overwriteMethod.getParameterTypes())) {
                 return true;
             } else {
@@ -1242,7 +1236,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     }
 
     private boolean isSameParameter(Method method, Method overwriteMethod,
-            Map<String, java.lang.reflect.Type> genericTypes) {
+        Map<String, java.lang.reflect.Type> genericTypes) {
         Class<?>[] types = new Class[method.getParameterCount()];
         int i = 0;
         for (java.lang.reflect.Type type : method.getGenericParameterTypes()) {
@@ -1262,9 +1256,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     /**
      * always return a new instance.
      *
-     * @param <E>          generic type
-     * @param type         mapper interface type
-     * @param hammer       hammer instance
+     * @param <E> generic type
+     * @param type mapper interface type
+     * @param hammer hammer instance
      * @param hammerConfig the hammer config
      * @return new instance
      */
@@ -1272,7 +1266,7 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     public <E> E newInstance(Class<E> type, Hammer hammer, HammerConfig hammerConfig) {
         try {
             return (E) ClassUtils.forName(create(type)).getConstructor(Hammer.class, HammerConfig.class)
-                    .newInstance(hammer, hammerConfig);
+                .newInstance(hammer, hammerConfig);
         } catch (Exception e) {
             throw new HammerException(e);
         }
@@ -1281,9 +1275,9 @@ public class TplDynamicExecutorFactory extends ClassLoader implements Opcodes {
     /**
      * return a singleton instance, every type only new one instance.
      *
-     * @param <E>          generic type
-     * @param type         mapper interface type
-     * @param hammer       hammer instance
+     * @param <E> generic type
+     * @param type mapper interface type
+     * @param hammer hammer instance
      * @param hammerConfig the hammer config
      * @return instance
      */

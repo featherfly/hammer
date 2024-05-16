@@ -57,7 +57,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
     @BeforeClass
     void before() {
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
     }
 
     @Test
@@ -851,13 +851,13 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         results = hammer.save(roles);
         assertEquals(hammer.delete(roles.stream().map(r -> r.getId()).collect(Collectors.toList()), Role.class),
-                results);
+            results);
 
         results = hammer.save(roles);
         assertEquals(
-                hammer.delete(CollectionUtils.toArray(roles.stream().map(r -> r.getId()).collect(Collectors.toList())),
-                        Role.class),
-                results);
+            hammer.delete(CollectionUtils.toArray(roles.stream().map(r -> r.getId()).collect(Collectors.toList())),
+                Role.class),
+            results);
     }
 
     @Test
@@ -917,7 +917,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         hammer.save(r, r2, r3, r4);
 
         hammer.delete(Role.class).where().in(Role::getId, r2.getId()).or().eq(Role::getId, r3.getId()).or()
-                .ge(Role::getId, r4.getId()).execute();
+            .ge(Role::getId, r4.getId()).execute();
 
         r = hammer.get(r);
         r2 = hammer.get(r2);
@@ -940,16 +940,16 @@ public class HammerJdbcTest extends JdbcTestBase {
         //        Collection<Integer> ids = ArrayUtils.toList(r.getId(), r2.getId());
         //        SerializableFunction<Role, Integer> roleGetId = Role::getId;
         hammer.delete(Role.class).where()
-                // --------------------
-                //                .in(Role::getId, ArrayUtils.toList(r.getId(), r2.getId()))
-                //                .in((SerializableFunction<Role, Integer>) Role::getId, ArrayUtils.toList(r.getId(), r2.getId()))
-                //                .in(roleGetId, r.getId(), r2.getId())
-                //                .in(Role::getId, r.getId(), r2.getId())
-                //            .in(Role::getId, r.getId(), r2.getId())
-                .in((SerializableFunction<Role, Integer>) Role::getId, r.getId(), r2.getId())
-                //                .in((SerializableFunction<Role, Integer>) Role::getId, ids)
-                // --------------------
-                .or().eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
+            // --------------------
+            //                .in(Role::getId, ArrayUtils.toList(r.getId(), r2.getId()))
+            //                .in((SerializableFunction<Role, Integer>) Role::getId, ArrayUtils.toList(r.getId(), r2.getId()))
+            //                .in(roleGetId, r.getId(), r2.getId())
+            //                .in(Role::getId, r.getId(), r2.getId())
+            //            .in(Role::getId, r.getId(), r2.getId())
+            .in((SerializableFunction<Role, Integer>) Role::getId, r.getId(), r2.getId())
+            //                .in((SerializableFunction<Role, Integer>) Role::getId, ids)
+            // --------------------
+            .or().eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
 
         r = hammer.get(r);
         r2 = hammer.get(r2);
@@ -971,10 +971,10 @@ public class HammerJdbcTest extends JdbcTestBase {
         hammer.save(r, r2, r3, r4);
 
         hammer.delete(Role.class).where()
-                // ------
-                .in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
-                //            .in((SerializableFunction<Role, Integer>) Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
-                .eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
+            // ------
+            .in(Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
+            //            .in((SerializableFunction<Role, Integer>) Role::getId, new Integer[] { r.getId(), r2.getId() }).or()
+            .eq(Role::getId, r3.getId()).or().ge(Role::getId, r4.getId()).execute();
 
         r = hammer.get(r);
         r2 = hammer.get(r2);
@@ -1004,7 +1004,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         String newName = "name_updater_" + Randoms.getInt(99);
         String newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
-                .eq(Role::getId, id).execute();
+            .eq(Role::getId, id).execute();
         Role role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
@@ -1013,7 +1013,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         newName = "name_updater_" + Randoms.getInt(90);
         newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
-                .eq(Role::getId, id).execute();
+            .eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
@@ -1022,7 +1022,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         newName = "name_updater_" + Randoms.getInt(90);
         newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
-                .eq(Role::getId, id).execute();
+            .eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
@@ -1056,7 +1056,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         String newName = "name_updater_" + Randoms.getInt(99);
         String newDescp = "descp_updater_" + Randoms.getInt(99);
         hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where()
-                .eq(Role::getId, id).execute();
+            .eq(Role::getId, id).execute();
         Role role = hammer.get(id, Role.class);
         assertEquals(role.getName(), newName);
         assertEquals(role.getDescp(), newDescp);
@@ -1101,14 +1101,14 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         final String setNewName3 = "name_updater_" + Randoms.getInt(90);
         hammer.update(Role.class).property(Role::getName).set(setNewName3, (n) -> true) //
-                .property(Role::getDescp).set(oldRole.getDescp()) //
-                .where().eq(Role::getId, id).execute();
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName2);
 
         hammer.update(Role.class).property(Role::getName).set(setNewName3, (n) -> false) //
-                .property(Role::getDescp).set(oldRole.getDescp()) //
-                .where().eq(Role::getId, id).execute();
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName3);
 
@@ -1116,20 +1116,20 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         final String setNewName4 = "";
         hammer.update(Role.class).property(Role::getName).set(setNewName4, IgnoreStrategy.EMPTY) //
-                .property(Role::getDescp).set(oldRole.getDescp()) //
-                .where().eq(Role::getId, id).execute();
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName3);
 
         hammer.update(Role.class).property(Role::getName).set(null, IgnoreStrategy.NULL) //
-                .property(Role::getDescp).set(oldRole.getDescp()) //
-                .where().eq(Role::getId, id).execute();
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName3);
 
         hammer.update(Role.class).property(Role::getName).set(setNewName4, IgnoreStrategy.NONE) //
-                .property(Role::getDescp).set(oldRole.getDescp()) //
-                .where().eq(Role::getId, id).execute();
+            .property(Role::getDescp).set(oldRole.getDescp()) //
+            .where().eq(Role::getId, id).execute();
         role = hammer.get(id, Role.class);
         assertEquals(role.getName(), setNewName4);
 
@@ -1178,16 +1178,16 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testQuery() {
         List<Map<String, Object>> list = hammer.query("user") //
-                .field(f -> {
-                    f.name("username");
-                })//
-                .field((Consumer<FetchField>) f -> f.name("password")) //
-                .field(f -> {
-                    f.name("age");
-                })
-                //                .field("username", "password", "age")
-                .sort().asc("age") //
-                .list();
+            .field(f -> {
+                f.name("username");
+            })//
+            .field((Consumer<FetchField>) f -> f.name("password")) //
+            .field(f -> {
+                f.name("age");
+            })
+            //                .field("username", "password", "age")
+            .sort().asc("age") //
+            .list();
         int age = Integer.MIN_VALUE;
         for (Map<String, Object> map : list) {
             Integer a = (Integer) map.get("age");
@@ -1198,9 +1198,9 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         age = Integer.MIN_VALUE;
         list = hammer.query("user")
-                .field((q, f) -> q.field(f.name("username")).field(f.name("password")).field(f.name("age"))) //
-                .sort().asc("age") //
-                .list();
+            .field((q, f) -> q.field(f.name("username")).field(f.name("password")).field(f.name("age"))) //
+            .sort().asc("age") //
+            .list();
         for (Map<String, Object> map : list) {
             Integer a = (Integer) map.get("age");
             System.err.println(age + "    " + a);
@@ -1223,8 +1223,8 @@ public class HammerJdbcTest extends JdbcTestBase {
 
     @Test
     public void testQueryLimit() {
-        List<Role> roles = hammer.query(Role.class).where().gt(Role::getId, 5).and().le(Role::getId, 10).limit(2)
-                .list();
+        List<
+            Role> roles = hammer.query(Role.class).where().gt(Role::getId, 5).and().le(Role::getId, 10).limit(2).list();
         assertTrue(roles.size() == 2);
         for (Role role : roles) {
             System.out.println(role);
@@ -1239,9 +1239,9 @@ public class HammerJdbcTest extends JdbcTestBase {
         }
 
         roles = hammer.query(Role.class).where().eq(Role::getId, 4).or().group().gt(Role::getId, 5).and()
-                .le(Role::getId, 10) //
-                .limit(2, 3) //
-                .list();
+            .le(Role::getId, 10) //
+            .limit(2, 3) //
+            .list();
         assertTrue(roles.size() == 3);
         for (Role role : roles) {
             System.out.println(role);
@@ -1251,15 +1251,15 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testQueryLimit2() {
         List<Role> roles = hammer.query(Role.class).where().eq(Role::getId, 4).or().group().gt(Role::getId, 5).and()
-                .le(Role::getId, 10).limit(2, 3).list();
+            .le(Role::getId, 10).limit(2, 3).list();
 
         assertTrue(roles.size() == 3);
         for (Role role : roles) {
             System.out.println(role);
         }
 
-        PaginationResults<Role> rolePage = hammer.query(Role.class).where().le(Role::getId, 10).limit(2, 3)
-                .pagination();
+        PaginationResults<
+            Role> rolePage = hammer.query(Role.class).where().le(Role::getId, 10).limit(2, 3).pagination();
         assertTrue(rolePage.getTotal() == 10);
         assertTrue(rolePage.getPageResults().size() == 3);
     }
@@ -1267,7 +1267,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testQuerySort() {
         List<Role> roles = hammer.query(Role.class).where().eq(Role::getId, 4).or().group().gt(Role::getId, 5).and()
-                .le(Role::getId, 10).sort().asc(Role::getId).desc(Role::getName).list();
+            .le(Role::getId, 10).sort().asc(Role::getId).desc(Role::getName).list();
         for (Role role : roles) {
             System.out.println(role);
         }
@@ -1309,7 +1309,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(user.getId(), id);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and()
-                .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
         assertNull(user);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and().expression("age - ? >= 0", 100).single();
@@ -1319,7 +1319,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertNull(user);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and()
-                .expr("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expr("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
         assertNull(user);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and().expr("age - ? >= 0", 100).single();

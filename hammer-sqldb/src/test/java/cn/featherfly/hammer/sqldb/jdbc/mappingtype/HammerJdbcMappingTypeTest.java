@@ -34,7 +34,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
 
     @BeforeClass
     void be() {
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
 
         Class<Article2> type = Article2.class;
 
@@ -96,7 +96,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         // regist(entityClass, Mapper) 的entity类型是用于分组的
         sqlTypeMappingManager.regist(new ObjectToJsonMapper<>(Content2.class));
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
     }
 
     @Test
@@ -151,7 +151,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         hammer.save(article);
 
         Content2 c2 = jdbc.queryValue("select content2 from cms_article2 where id = ?", Content2.class,
-                article.getId());
+            article.getId());
 
         System.out.println(c2);
     }
@@ -213,7 +213,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
 
         String title = "article_update_" + Randoms.getInt(1000);
         hammer.update(Article2.class).set(article::getContent3).set(Article2::getTitle, title).where()
-                .eq(article::getId).execute();
+            .eq(article::getId).execute();
 
         a = hammer.query(Article2.class).where().eq(article::getId).single();
 

@@ -8,6 +8,8 @@
  */
 package cn.featherfly.hammer.config;
 
+import java.util.function.Supplier;
+
 import javax.validation.Validator;
 
 import cn.featherfly.hammer.config.dsl.DslConfig;
@@ -55,4 +57,6 @@ public interface HammerConfig {
      * @return the template config
      */
     TemplateConfig getTemplateConfig();
+
+    Supplier<ClassLoader> getClassLoader();
 }

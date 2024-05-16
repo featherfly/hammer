@@ -12,6 +12,9 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import cn.featherfly.common.asm.AsmInstantiatorFactory;
+import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
@@ -53,12 +56,17 @@ public class DataSourceTestBase extends TestBase {
 
     protected static HammerConfig hammerConfig;
 
+    protected static InstantiatorFactory instantiatorFactory;
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", DataSourceTestBase.class));
 
         hammerConfig = new HammerConfigImpl(devMode);
+
+        instantiatorFactory = new ProxyAndReflectionInstantiatorFactory(
+            new AsmInstantiatorFactory(hammerConfig.getClassLoader(), true));
 
         initDataBase(dataBase);
     }
@@ -101,16 +109,15 @@ public class DataSourceTestBase extends TestBase {
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
         sqlExecutor
-                .execute(new File(ClassLoaderUtils.getResource("test.mysql.sql", DataSourceTestBase.class).getFile()));
+            .execute(new File(ClassLoaderUtils.getResource("test.mysql.sql", DataSourceTestBase.class).getFile()));
 
         ds = dataSource;
 
-        //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.MYSQL);
-        dialect = Dialects.MYSQL;
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata);
+        dialect = Dialects.mysql();
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
     }
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
@@ -125,23 +132,18 @@ public class DataSourceTestBase extends TestBase {
         dataSource.setUsername("postgres");
         dataSource.setPassword("123456");
 
-        //        PostgreSQLDialect postgreSQLDialect = Dialects.POSTGRESQL;
-        //        postgreSQLDialect.setTableAndColumnNameUppercase(false);
-        //        jdbc = new SpringJdbcTemplateImpl(dataSource, postgreSQLDialect);
-
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
-        sqlExecutor.execute(
-                new File(ClassLoaderUtils.getResource("test.postgresql.sql", DataSourceTestBase.class).getFile()));
+        sqlExecutor
+            .execute(new File(ClassLoaderUtils.getResource("test.postgresql.sql", DataSourceTestBase.class).getFile()));
 
         ds = dataSource;
 
-        //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.POSTGRESQL);
-        dialect = Dialects.POSTGRESQL;
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata);
+        dialect = Dialects.postgresql();
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.POSTGRESQL);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
     }
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
@@ -150,7 +152,7 @@ public class DataSourceTestBase extends TestBase {
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
-                .getPath();
+            .getPath();
         System.out.println(path);
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.sqlite.JDBC");
@@ -161,16 +163,15 @@ public class DataSourceTestBase extends TestBase {
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
         sqlExecutor
-                .execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", DataSourceTestBase.class).getFile()));
+            .execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", DataSourceTestBase.class).getFile()));
 
         ds = dataSource;
 
-        //        jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.SQLITE);
-        dialect = Dialects.SQLITE;
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata);
+        dialect = Dialects.sqlite();
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.SQLITE);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
     }
 
     Role role() {

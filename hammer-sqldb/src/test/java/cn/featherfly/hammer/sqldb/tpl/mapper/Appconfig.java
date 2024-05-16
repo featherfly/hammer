@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.lang.ClassLoaderUtils;
@@ -48,7 +47,7 @@ public class Appconfig extends JdbcTestBase {
         packages.add("cn.featherfly");
         //packages.add("你需要扫描的包路径");
         DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer",
-                "hammerConfig");
+            "hammerConfig");
         //        registor.setClassLoader(classLoader);
         return registor;
     }
@@ -71,16 +70,19 @@ public class Appconfig extends JdbcTestBase {
         //        ConstantConfigurator.config();
 
         //        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        Jdbc jdbc = new JdbcSpringImpl(dataSource, Dialects.MYSQL, metadata);
+        //        Dialect dialect = Dialects.mysql();
 
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, Dialects.MYSQL);
+        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
+
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
         TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
-                .basePackages(basePackages).config(hammerConfig.getTemplateConfig()).build();
+            .basePackages(basePackages).config(hammerConfig.getTemplateConfig()).build();
 
-        SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, hammerConfig);
+        SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory,
+            hammerConfig);
         return hammer;
     }
 
