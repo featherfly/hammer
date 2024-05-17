@@ -129,7 +129,10 @@ public class EntitySqlQueryComparisonSimpleTest extends JdbcTestBase {
 
     @Test
     void eq() {
-        List<User> users = query.find(User.class).where().eq(User::getUsername, username).list();
+        List<User> users = query.find(User.class) //
+            .where() //
+            .eq(User::getUsername, username) //
+            .list();
         for (User user : users) {
             assertTrue(user.getUsername().equals(username));
         }

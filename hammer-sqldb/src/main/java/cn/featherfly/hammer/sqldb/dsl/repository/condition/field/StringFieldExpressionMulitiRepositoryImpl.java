@@ -25,8 +25,8 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
     /**
      * Instantiates a new simple string property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public StringFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
@@ -37,8 +37,8 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
     /**
      * Instantiates a new simple string property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public StringFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {

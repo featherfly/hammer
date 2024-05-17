@@ -83,50 +83,50 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <L> the generic type
  */
 public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<V, C, L> implements EqualsEntityPropertyExpression<V> {
+    extends AbstractMulitiEntityPropertyExpression<V, C, L> implements EqualsEntityPropertyExpression<V> {
 
     /**
      * Instantiates a new equals entity expression impl.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EqualsEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new equals entity property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EqualsEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new equals entity property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EqualsEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?,?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -151,13 +151,13 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public SetIntExpression property(SerializableToIntFunction<V> name) {
         propertyList.add(name);
         return new SetIntExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     private SetIntExpression property(SerializableIntSupplier name) {
         propertyList.add(name);
         return new SetIntExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -167,13 +167,13 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public SetLongExpression property(SerializableToLongFunction<V> name) {
         propertyList.add(name);
         return new SetLongExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     private SetLongExpression property(SerializableLongSupplier name) {
         propertyList.add(name);
         return new SetLongExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -183,13 +183,13 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public SetDoubleExpression property(SerializableToDoubleFunction<V> name) {
         propertyList.add(name);
         return new SetDoubleExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     private SetDoubleExpression property(SerializableDoubleSupplier name) {
         propertyList.add(name);
         return new SetDoubleExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -199,7 +199,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public <D extends Date> SetDateExpression<D> property(SerializableToDateFunction<V, D> name) {
         propertyList.add(name);
         return new SetDateExpressionImpl<>(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -209,7 +209,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public SetLocalDateExpression property(SerializableToLocalDateFunction<V> name) {
         propertyList.add(name);
         return new SetLocalDateExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -219,7 +219,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public SetLocalTimeExpression property(SerializableToLocalTimeFunction<V> name) {
         propertyList.add(name);
         return new SetLocalTimeExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -229,7 +229,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public SetLocalDateTimeExpression property(SerializableToLocalDateTimeFunction<V> name) {
         propertyList.add(name);
         return new SetLocalDateTimeExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -239,7 +239,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public <N extends Number> SetNumberExpression<N> property(SerializableToNumberFunction<V, N> name) {
         propertyList.add(name);
         return new SetNumberExpressionImpl<>(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -249,7 +249,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     public <E extends Enum<E>> SetEnumExpression<E> property(SerializableToEnumFunction<V, E> name) {
         propertyList.add(name);
         return new SetEnumExpressionImpl<>(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.eq(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -258,8 +258,8 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
     @Override
     public SetStringExpression property(SerializableToStringFunction<V> name) {
         propertyList.add(name);
-        return new SetStringExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, match, ignore, pm) -> expression.eq(index, pm, value, match, ignore));
+        return new SetStringExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(), (value, match,
+            ignore, pm) -> expression.eq(index, pm, arithmeticColumnElement.get(), value, match, ignore));
     }
 
     /**
@@ -267,7 +267,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public <R extends Collection<E>,
-            E> EqualsEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name) {
+        E> EqualsEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
@@ -277,7 +277,8 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public void value(V value) {
-        expression.eq(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -285,7 +286,8 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public void value(V value, MatchStrategy matchStrategy) {
-        expression.eq(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -293,7 +295,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public void value(V value, Predicate<V> ignoreStrategy) {
-        expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -301,7 +303,8 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public void value(V value, MatchStrategy matchStrategy, Predicate<V> ignoreStrategy) {
-        expression.eq(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -349,7 +352,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public void accept(SerializableToStringFunction<V> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         property(name).value(value, matchStrategy, ignoreStrategy);
     }
 
@@ -366,7 +369,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         property(property).value(property.get(), matchStrategy, ignoreStrategy);
     }
 
@@ -431,7 +434,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public <N extends Number> void accept(SerializableToNumberFunction<V, N> name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         property(name).value(value, ignoreStrategy);
     }
 
@@ -496,7 +499,7 @@ public class EqualsEntityPropertyExpressionImpl<V, C extends ConditionExpression
      */
     @Override
     public void accept(SerializableToLocalDateTimeFunction<V> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         property(name).value(value, ignoreStrategy);
     }
 

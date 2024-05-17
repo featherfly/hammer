@@ -20,26 +20,26 @@ public class RepositorySqlSortExpressionBuilderTest extends TestBase {
 
     @Test
     public void testStringParam() {
-        RepositorySqlSortExpressionBuilder builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL);
+        RepositorySqlSortExpressionBuilder builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql());
         String result = builder.asc("id", "name").build();
         System.out.println(result);
         assertEquals(result, "ORDER BY `id` ASC, `name` ASC");
         assertEquals(builder.expression(), result);
         System.out.println(builder.toString());
 
-        builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql(), "u");
         result = builder.asc(ArrayUtils.toList("id", "name")).build();
         System.out.println(result);
         assertEquals(result, "ORDER BY u.`id` ASC, u.`name` ASC");
         assertEquals(builder.expression(), result);
 
-        builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL);
+        builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql());
         result = builder.desc("id", "name").build();
         System.out.println(result);
         assertEquals(result, "ORDER BY `id` DESC, `name` DESC");
         assertEquals(builder.expression(), result);
 
-        builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL);
+        builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql());
         builder.setTableAlias("u");
         assertEquals(builder.getTableAlias(), "u");
         result = builder.desc(ArrayUtils.toList("id", "name")).build();
@@ -47,38 +47,38 @@ public class RepositorySqlSortExpressionBuilderTest extends TestBase {
         assertEquals(result, "ORDER BY u.`id` DESC, u.`name` DESC");
         assertEquals(builder.expression(), result);
 
-        builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql(), "u");
         result = builder.asc("id", "name").desc("age", "password").asc("email").desc("mobile").build();
         System.out.println(result);
         assertEquals(result,
-                "ORDER BY u.`id` ASC, u.`name` ASC, u.`age` DESC, u.`password` DESC, u.`email` ASC, u.`mobile` DESC");
+            "ORDER BY u.`id` ASC, u.`name` ASC, u.`age` DESC, u.`password` DESC, u.`email` ASC, u.`mobile` DESC");
         assertEquals(builder.expression(), result);
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testLambdaParam() {
-        RepositorySqlSortExpressionBuilder builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL);
+        RepositorySqlSortExpressionBuilder builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql());
         String result = builder.asc(UserInfo::getId).build();
         System.out.println(result);
         assertEquals(result, "ORDER BY `id` ASC");
         assertEquals(builder.expression(), result);
         System.out.println(builder.toString());
 
-        builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql(), "u");
         result = builder.asc(UserInfo::getId, UserInfo::getName).build();
         System.out.println(result);
         assertEquals(result, "ORDER BY u.`id` ASC, u.`name` ASC");
         assertEquals(builder.expression(), result);
 
-        builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL);
+        builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql());
         result = builder.desc(UserInfo::getId).build();
         System.out.println(result);
         assertEquals(result, "ORDER BY `id` DESC");
         assertEquals(builder.expression(), result);
         System.out.println(builder.toString());
 
-        builder = new RepositorySqlSortExpressionBuilder(Dialects.MYSQL, "u");
+        builder = new RepositorySqlSortExpressionBuilder(Dialects.mysql(), "u");
         result = builder.desc(UserInfo::getId, UserInfo::getName).build();
         System.out.println(result);
         assertEquals(result, "ORDER BY u.`id` DESC, u.`name` DESC");

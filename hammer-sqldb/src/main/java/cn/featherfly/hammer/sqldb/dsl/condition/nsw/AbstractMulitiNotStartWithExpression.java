@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -28,8 +28,8 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public class AbstractMulitiNotStartWithExpression<I extends InternalMulitiCondition<L>, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractInternalMulitiConditionHolder<I, C, L>
-        implements MulitiNotStartWithExpression<C, L> {
+    L extends LogicExpression<C, L>> extends AbstractInternalMulitiConditionHolder<I, C, L>
+    implements MulitiNotStartWithExpression<C, L> {
 
     /**
      * Instantiates a new muliti entity not start with expression impl.
@@ -53,7 +53,7 @@ public class AbstractMulitiNotStartWithExpression<I extends InternalMulitiCondit
      */
     @Override
     public <E> L nsw(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.nsw(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
@@ -61,7 +61,7 @@ public class AbstractMulitiNotStartWithExpression<I extends InternalMulitiCondit
      * {@inheritDoc}
      */
     @Override
-    public L nsw(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
+    public L nsw(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return hold.nsw(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
@@ -69,8 +69,8 @@ public class AbstractMulitiNotStartWithExpression<I extends InternalMulitiCondit
      * {@inheritDoc}
      */
     @Override
-    public L nsw(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+    public L nsw(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
         return hold.nsw(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 

@@ -40,8 +40,8 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulitiCondition<L>,
-        C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiLessEqualsExpression<C, L> {
+    C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiLessEqualsExpression<C, L> {
 
     /**
      * Instantiates a new muliti less equals expression impl.
@@ -113,7 +113,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public <E, N extends Number> L le(int index, SerializableFunction<E, N> name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -146,7 +146,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public <E> L le(int index, SerializableFunction<E, LocalTime> name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -163,7 +163,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public <E> L le(int index, SerializableFunction<E, LocalDate> name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -180,7 +180,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public <E> L le(int index, SerializableFunction<E, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -197,7 +197,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public <E> L le(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
@@ -342,7 +342,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public L le(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 
@@ -359,7 +359,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public <T, E extends Enum<E>> L le(int index, SerializableFunction<T, E> name, E value,
-            Predicate<E> ignoreStrategy) {
+        Predicate<E> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -536,7 +536,7 @@ public abstract class AbstractMulitiLessEqualsExpression<I extends InternalMulit
      */
     @Override
     public L le(int index, String name, String value, MatchStrategy mathMatchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.le(new AtomicInteger(index), name, value, mathMatchStrategy, ignoreStrategy);
     }
 

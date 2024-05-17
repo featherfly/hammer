@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -29,8 +29,8 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiContainsExpression<I extends InternalMulitiCondition<L>,
-        C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiContainsExpression<C, L> {
+    C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiContainsExpression<C, L> {
 
     /**
      * Instantiates a new muliti contains expression impl.
@@ -54,7 +54,7 @@ public abstract class AbstractMulitiContainsExpression<I extends InternalMulitiC
      */
     @Override
     public <E> L co(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.co(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
@@ -62,8 +62,8 @@ public abstract class AbstractMulitiContainsExpression<I extends InternalMulitiC
      * {@inheritDoc}
      */
     @Override
-    public L co(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+    public L co(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
         return hold.co(new AtomicInteger(index), property, property.get(), matchStrategy, ignoreStrategy);
     }
 
@@ -87,7 +87,7 @@ public abstract class AbstractMulitiContainsExpression<I extends InternalMulitiC
      * {@inheritDoc}
      */
     @Override
-    public L co(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
+    public L co(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return hold.co(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 }

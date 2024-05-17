@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -28,8 +28,8 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiEndWithExpression<I extends InternalMulitiCondition<L>,
-        C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiEndWithExpression<C, L> {
+    C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiEndWithExpression<C, L> {
 
     /**
      * Instantiates a new muliti end with expression impl.
@@ -53,7 +53,7 @@ public abstract class AbstractMulitiEndWithExpression<I extends InternalMulitiCo
      */
     @Override
     public <E> L ew(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.ew(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
@@ -61,7 +61,7 @@ public abstract class AbstractMulitiEndWithExpression<I extends InternalMulitiCo
      * {@inheritDoc}
      */
     @Override
-    public L ew(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy) {
+    public L ew(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
         return hold.ew(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
@@ -69,8 +69,8 @@ public abstract class AbstractMulitiEndWithExpression<I extends InternalMulitiCo
      * {@inheritDoc}
      */
     @Override
-    public L ew(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+    public L ew(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
         return hold.ew(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 

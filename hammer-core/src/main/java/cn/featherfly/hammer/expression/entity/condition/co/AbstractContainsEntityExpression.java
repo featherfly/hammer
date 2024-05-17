@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.co;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -29,19 +29,18 @@ import cn.featherfly.hammer.expression.entity.condition.AbstractEntityIndexableC
  * @param <L> the generic type
  */
 public abstract class AbstractContainsEntityExpression<E, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends AbstractEntityIndexableConditionExpression<MulitiContainsExpression<C, L>>
-        implements ContainsEntityExpression<E> {
+    L extends LogicExpression<C, L>> extends AbstractEntityIndexableConditionExpression<MulitiContainsExpression<C, L>>
+    implements ContainsEntityExpression<E> {
 
     /**
      * Instantiates a new abstract contains entity expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractContainsEntityExpression(int index, MulitiContainsExpression<C, L> expression,
-            Predicate<Object> ignoreStrategy) {
+        Predicate<Object> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
     }
 
@@ -74,7 +73,7 @@ public abstract class AbstractContainsEntityExpression<E, C extends ConditionExp
      */
     @Override
     public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         expression.co(index, property, value, matchStrategy, ignoreStrategy);
 
     }
@@ -83,7 +82,7 @@ public abstract class AbstractContainsEntityExpression<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue) {
+    public void accept(SerializableStringSupplier propertyValue) {
         expression.co(index, propertyValue);
     }
 
@@ -91,7 +90,7 @@ public abstract class AbstractContainsEntityExpression<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
         expression.co(index, propertyValue, ignoreStrategy);
     }
 
@@ -99,7 +98,7 @@ public abstract class AbstractContainsEntityExpression<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
         expression.co(index, propertyValue, matchStrategy);
     }
 
@@ -107,8 +106,8 @@ public abstract class AbstractContainsEntityExpression<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
         expression.co(index, propertyValue, matchStrategy, ignoreStrategy);
     }
 

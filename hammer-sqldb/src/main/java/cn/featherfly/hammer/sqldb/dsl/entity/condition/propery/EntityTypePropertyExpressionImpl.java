@@ -224,7 +224,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L in(P value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -232,7 +233,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L in(P value, Predicate<P> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -240,7 +241,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L in(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -248,7 +249,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L in(P[] value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -256,7 +258,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L in(P[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -264,7 +266,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L in(P[] value, Predicate<P[]> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -272,7 +274,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -280,7 +283,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -288,7 +291,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P value, Predicate<P> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -296,7 +299,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P[] value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -304,7 +308,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -312,7 +316,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P[] value, Predicate<P[]> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -321,7 +325,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
 
     @Override
     public L le(P value) {
-        return expression.le(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -329,7 +334,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L le(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -337,7 +342,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L le(P value, Predicate<P> ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -346,7 +351,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
 
     @Override
     public L lt(P value) {
-        return expression.lt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -354,7 +360,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L lt(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -362,7 +368,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L lt(P value, Predicate<P> ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -371,7 +377,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
 
     @Override
     public L ge(P value) {
-        return expression.ge(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -379,7 +386,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ge(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -387,7 +394,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ge(P value, Predicate<P> ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -396,7 +403,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
 
     @Override
     public L gt(P value) {
-        return expression.gt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -404,7 +412,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L gt(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -412,7 +420,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L gt(P value, Predicate<P> ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -420,7 +428,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy) {
-        return expression.sw(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.sw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -428,7 +437,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.sw(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.sw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -436,7 +446,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.sw(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.sw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -444,7 +455,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy) {
-        return expression.co(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.co(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -452,7 +464,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.co(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.co(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -460,7 +473,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.co(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.co(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -468,7 +482,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy) {
-        return expression.ew(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.ew(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -476,7 +491,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.ew(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.ew(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -484,7 +500,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.ew(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.ew(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -492,7 +509,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy) {
-        return expression.lk(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.lk(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -500,7 +518,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.lk(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.lk(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -508,7 +527,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.lk(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.lk(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -532,7 +552,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L eq(P value) {
-        return expression.eq(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -540,7 +561,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L eq(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -548,7 +569,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L eq(P value, Predicate<P> ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -556,7 +577,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ne(P value) {
-        return expression.ne(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -564,7 +586,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ne(P value, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -572,7 +594,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ne(P value, Predicate<P> ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -580,7 +602,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ba(P min, P max) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -589,7 +611,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ba(P min, P max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -597,7 +620,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ba(P min, P max, BiPredicate<P, P> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -605,7 +629,7 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L nba(P min, P max) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -614,7 +638,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L nba(P min, P max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -622,7 +647,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L nba(P min, P max, BiPredicate<P, P> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
 }

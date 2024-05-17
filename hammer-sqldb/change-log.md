@@ -29,7 +29,33 @@ TODO dsl实体查询加入以下（EntityQuery）
        .list();
    ```
 
-5.  模板ID（TplExecuteId）字符串格式从namespace@name变更为name@namespace
+5. 模板ID（TplExecuteId）字符串格式从namespace@name变更为name@namespace
+
+6. 过滤掉件设置的字段（属性）名添加了加、减、乘、除的数学运算
+
+   ```java
+   // add
+   query.find("user").fetch("age").where().fieldAsNumber("age").add(5).eq(10).list();
+   // subtract
+   query.find("user").fetch("age").where().fieldAsNumber("age").subtract(5).eq(0).list();
+   // multiply
+   query.find("user").fetch("age").where().fieldAsNumber("age").multiply(5).eq(25).list();
+   // divide
+   query.find("user").fetch("age").where().fieldAsNumber("age").divide(5).eq(1).list();
+   
+   // add
+   query.find(User.class).fetch(User::getAge).where().property(User::getAge).add(5).eq(10).valueList();
+   // subtract
+   query.find(User.class).fetch(User::getAge).where().property(User::getAge).subtract(5).eq(0).valueList();
+   // multiply
+   query.find(User.class).fetch(User::getAge).where().property(User::getAge).multiply(5).eq(25).valueList();
+   // divide
+   query.find(User.class).fetch(User::getAge).where().property(User::getAge).divide(5).eq(1).valueList();
+   ```
+
+   
+
+   
 
 # 0.7.0 2024-05-05
 

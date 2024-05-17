@@ -32,8 +32,8 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulitiCondition<L>,
-        C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiNotBetweenExpression<C, L> {
+    C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiNotBetweenExpression<C, L> {
 
     /**
      * Instantiates a new muliti not between expression impl.
@@ -57,7 +57,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E> L nba(int index, SerializableToIntFunction<E> name, int min, int max,
-            BiPredicate<Integer, Integer> ignoreStrategy) {
+        BiPredicate<Integer, Integer> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -74,7 +74,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E> L nba(int index, SerializableToLongFunction<E> name, long min, long max,
-            BiPredicate<Long, Long> ignoreStrategy) {
+        BiPredicate<Long, Long> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E> L nba(int index, SerializableToDoubleFunction<E> name, double min, double max,
-            BiPredicate<Double, Double> ignoreStrategy) {
+        BiPredicate<Double, Double> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -108,7 +108,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E, N extends Number> L nba(int index, SerializableToNumberFunction<E, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
+        BiPredicate<N, N> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -125,7 +125,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E, D extends Date> L nba(int index, SerializableToDateFunction<E, D> name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
+        BiPredicate<D, D> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -142,7 +142,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E> L nba(int index, SerializableToLocalTimeFunction<E> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -159,7 +159,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E> L nba(int index, SerializableToLocalDateFunction<E> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -176,7 +176,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E> L nba(int index, SerializableToLocalDateTimeFunction<E> name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <E> L nba(int index, SerializableToStringFunction<E> name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
+        BiPredicate<String, String> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -210,7 +210,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public <T, E extends Enum<E>> L nba(int index, SerializableToEnumFunction<T, E> name, E min, E max,
-            BiPredicate<E, E> ignoreStrategy) {
+        BiPredicate<E, E> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -323,7 +323,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public L nba(int index, String name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -340,7 +340,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public L nba(int index, String name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 
@@ -357,7 +357,7 @@ public abstract class AbstractMulitiNotBetweenExpression<I extends InternalMulit
      */
     @Override
     public L nba(int index, String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return hold.nba(new AtomicInteger(index), name, min, max, ignoreStrategy);
     }
 

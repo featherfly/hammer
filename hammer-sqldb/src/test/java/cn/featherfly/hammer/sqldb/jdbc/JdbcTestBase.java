@@ -90,10 +90,6 @@ public class JdbcTestBase extends TestBase {
     public void init(@Optional("mysql") String dataBase) throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", this.getClass()));
 
-        sqlTypeMappingManager = new SqlTypeMappingManager();
-
-        initDataBase(dataBase);
-
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
         hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
             .buildValidatorFactory().getValidator());
@@ -101,6 +97,10 @@ public class JdbcTestBase extends TestBase {
 
         instantiatorFactory = new ProxyAndReflectionInstantiatorFactory(
             new AsmInstantiatorFactory(hammerConfig.getClassLoader(), true));
+
+        sqlTypeMappingManager = new SqlTypeMappingManager();
+
+        initDataBase(dataBase);
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer");

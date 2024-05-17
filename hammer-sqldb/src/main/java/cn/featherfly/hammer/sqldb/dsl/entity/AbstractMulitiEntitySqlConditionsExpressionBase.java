@@ -2,11 +2,9 @@
 package cn.featherfly.hammer.sqldb.dsl.entity;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +23,7 @@ import com.speedment.common.tuple.Tuple2;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.model.ParamedColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -4282,49 +4281,50 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the in param
      */
     protected Object getInParam(JdbcPropertyMapping pm, Object value) {
-        Object param = null;
-        if (value != null) {
-            if (value.getClass().isArray()) {
-                int length = Array.getLength(value);
-                //                param = Array.newInstance(FieldValueOperator.class, length);
-                param = new FieldValueOperator[length];
-                for (int i = 0; i < length; i++) {
-                    if (value.getClass() == int[].class) {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.getInt(value, i)));
-                    } else if (value.getClass() == long[].class) {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.getLong(value, i)));
-                    } else if (value.getClass() == boolean[].class) {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.getBoolean(value, i)));
-                    } /*
-                       * else if (value.getClass() == char[].class) {
-                       * Array.set(param, i, FieldValueOperator.create(pm, (byte)
-                       * Array.getChar(value, i)));
-                       * // database don't support getChar
-                       * }
-                       */ else if (value.getClass() == byte[].class) {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.getByte(value, i)));
-                    } else if (value.getClass() == short[].class) {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.getShort(value, i)));
-                    } else if (value.getClass() == double[].class) {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.getDouble(value, i)));
-                    } else if (value.getClass() == float[].class) {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.getFloat(value, i)));
-                    } else {
-                        Array.set(param, i, FieldValueOperator.create(pm, Array.get(value, i)));
-                    }
-                }
-            } else if (value instanceof Collection) {
-                param = new ArrayList<>();
-                for (Object op : (Collection<?>) value) {
-                    ((Collection<FieldValueOperator<?>>) param).add(FieldValueOperator.create(pm, op));
-                }
-            } else if (!(value instanceof FieldValueOperator)) {
-                param = FieldValueOperator.create(pm, value);
-            } else {
-                param = value;
-            }
-        }
-        return param;
+        return SqlUtils.flatParamToFieldValueOperator(value, pm);
+        //        Object param = null;
+        //        if (value != null) {
+        //            if (value.getClass().isArray()) {
+        //                int length = Array.getLength(value);
+        //                //                param = Array.newInstance(FieldValueOperator.class, length);
+        //                param = new FieldValueOperator[length];
+        //                for (int i = 0; i < length; i++) {
+        //                    if (value.getClass() == int[].class) {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.getInt(value, i)));
+        //                    } else if (value.getClass() == long[].class) {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.getLong(value, i)));
+        //                    } else if (value.getClass() == boolean[].class) {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.getBoolean(value, i)));
+        //                    } /*
+        //                       * else if (value.getClass() == char[].class) {
+        //                       * Array.set(param, i, FieldValueOperator.create(pm, (byte)
+        //                       * Array.getChar(value, i)));
+        //                       * // database don't support getChar
+        //                       * }
+        //                       */ else if (value.getClass() == byte[].class) {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.getByte(value, i)));
+        //                    } else if (value.getClass() == short[].class) {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.getShort(value, i)));
+        //                    } else if (value.getClass() == double[].class) {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.getDouble(value, i)));
+        //                    } else if (value.getClass() == float[].class) {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.getFloat(value, i)));
+        //                    } else {
+        //                        Array.set(param, i, FieldValueOperator.create(pm, Array.get(value, i)));
+        //                    }
+        //                }
+        //            } else if (value instanceof Collection) {
+        //                param = new ArrayList<>();
+        //                for (Object op : (Collection<?>) value) {
+        //                    ((Collection<FieldValueOperator<?>>) param).add(FieldValueOperator.create(pm, op));
+        //                }
+        //            } else if (!(value instanceof FieldValueOperator)) {
+        //                param = FieldValueOperator.create(pm, value);
+        //            } else {
+        //                param = value;
+        //            }
+        //        }
+        //        return param;
     }
 
     // ********************************************************************
@@ -4372,7 +4372,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
@@ -4388,7 +4388,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
@@ -4404,7 +4404,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
@@ -4420,7 +4420,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
@@ -4436,7 +4436,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, char value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
@@ -4470,7 +4470,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L eq(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -4517,7 +4517,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, char value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
@@ -4533,7 +4533,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
@@ -4549,7 +4549,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
@@ -4565,7 +4565,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
@@ -4581,7 +4581,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
@@ -4615,7 +4615,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L ne(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), value,
+        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -4631,8 +4631,9 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected abstract <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
-        String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
+    protected abstract <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
+        ParamedColumnElement name, R value, String queryAlias, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy);
 
     //    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, JdbcPropertyMapping pm, R value, String queryAlias,
     //            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {

@@ -267,7 +267,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
             : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -303,7 +303,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         //        DataSource ds = getDataSource();
         //        Connection connection = getConnection(ds);
         Connection connection = getConnection();
@@ -448,7 +448,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -671,7 +671,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = new AutoCloseConnection(getConnection());
         try {
             PreparedStatement prep = con.prepareStatement(sql);
@@ -886,7 +886,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection conn = getConnection();
         try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
             ResultSet.CONCUR_UPDATABLE)) {
@@ -1063,7 +1063,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection conn = getConnection();
         try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
             ResultSet.CONCUR_UPDATABLE)) {
@@ -1208,7 +1208,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
 
         if (metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.FORWARD_ONLY,
             ResultSetConcurrency.CONCUR_UPDATABLE)) {
@@ -1445,7 +1445,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1499,7 +1499,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1545,7 +1545,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1591,7 +1591,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1636,7 +1636,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1681,7 +1681,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1726,7 +1726,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}, args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);

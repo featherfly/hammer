@@ -28,8 +28,8 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     /**
      * Instantiates a new date field expression impl.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {
@@ -39,8 +39,8 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     /**
      * Instantiates a new date field expression impl.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,

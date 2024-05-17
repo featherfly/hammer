@@ -26,8 +26,8 @@ public class LocalTimeFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
     /**
      * Instantiates a new simple local time property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public LocalTimeFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
@@ -38,8 +38,8 @@ public class LocalTimeFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
     /**
      * Instantiates a new simple local time property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public LocalTimeFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {

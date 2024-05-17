@@ -5,9 +5,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.operator.CalculationOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryNumberFieldExpression;
 import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
 
@@ -26,8 +28,8 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
     /**
      * Instantiates a new simple number property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public NumberFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
@@ -38,8 +40,8 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
     /**
      * Instantiates a new simple number property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public NumberFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {
@@ -51,7 +53,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L eq(N value) {
-        return expression.eq(index, name, value, expression.getIgnoreStrategy());
+        return expression.eq(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -59,7 +61,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L eq(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.eq(index, name, value, ignoreStrategy);
+        return expression.eq(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -67,7 +69,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L eq(N value, Predicate<N> ignoreStrategy) {
-        return expression.eq(index, name, value, ignoreStrategy);
+        return expression.eq(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -75,7 +77,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ne(N value) {
-        return expression.ne(index, name, value, expression.getIgnoreStrategy());
+        return expression.ne(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -83,7 +85,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ne(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(index, name, value, ignoreStrategy);
+        return expression.ne(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -91,7 +93,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ne(N value, Predicate<N> ignoreStrategy) {
-        return expression.ne(index, name, value, ignoreStrategy);
+        return expression.ne(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -99,7 +101,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L in(N value) {
-        return expression.in(index, name, value, expression.getIgnoreStrategy());
+        return expression.in(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -107,7 +109,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L in(N value, Predicate<N> ignoreStrategy) {
-        return expression.in(index, name, value, ignoreStrategy);
+        return expression.in(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -115,7 +117,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L in(N[] value) {
-        return expression.in(index, name, value, expression.getIgnoreStrategy());
+        return expression.in(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -123,7 +125,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L in(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.in(index, name, value, ignoreStrategy);
+        return expression.in(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -131,7 +133,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ni(N value) {
-        return expression.ni(index, name, value, expression.getIgnoreStrategy());
+        return expression.ni(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -139,7 +141,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ni(N value, Predicate<N> ignoreStrategy) {
-        return expression.ni(index, name, value, ignoreStrategy);
+        return expression.ni(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -147,7 +149,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ni(N[] value) {
-        return expression.ni(index, name, value, expression.getIgnoreStrategy());
+        return expression.ni(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -155,7 +157,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ni(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.ni(index, name, value, ignoreStrategy);
+        return expression.ni(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -163,7 +165,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L le(N value) {
-        return expression.le(index, name, value, expression.getIgnoreStrategy());
+        return expression.le(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -171,7 +173,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L le(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.le(index, name, value, ignoreStrategy);
+        return expression.le(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -179,7 +181,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L le(N value, Predicate<N> ignoreStrategy) {
-        return expression.le(index, name, value, ignoreStrategy);
+        return expression.le(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -187,7 +189,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L lt(N value) {
-        return expression.lt(index, name, value, expression.getIgnoreStrategy());
+        return expression.lt(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -195,7 +197,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L lt(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.lt(index, name, value, ignoreStrategy);
+        return expression.lt(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -203,7 +205,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L lt(N value, Predicate<N> ignoreStrategy) {
-        return expression.lt(index, name, value, ignoreStrategy);
+        return expression.lt(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -211,7 +213,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ge(N value) {
-        return expression.ge(index, name, value, expression.getIgnoreStrategy());
+        return expression.ge(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -219,7 +221,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ge(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.ge(index, name, value, ignoreStrategy);
+        return expression.ge(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -227,7 +229,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ge(N value, Predicate<N> ignoreStrategy) {
-        return expression.ge(index, name, value, ignoreStrategy);
+        return expression.ge(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -235,7 +237,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L gt(N value) {
-        return expression.gt(index, name, value, expression.getIgnoreStrategy());
+        return expression.gt(index, getField(), value, expression.getIgnoreStrategy());
     }
 
     /**
@@ -243,7 +245,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L gt(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.gt(index, name, value, ignoreStrategy);
+        return expression.gt(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -251,7 +253,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L gt(N value, Predicate<N> ignoreStrategy) {
-        return expression.gt(index, name, value, ignoreStrategy);
+        return expression.gt(index, getField(), value, ignoreStrategy);
     }
 
     /**
@@ -291,7 +293,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ba(N min, N max) {
-        return expression.ba(index, name, min, max, expression.getIgnoreStrategy());
+        return expression.ba(index, getField(), min, max, expression.getIgnoreStrategy());
     }
 
     /**
@@ -299,7 +301,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ba(N min, N max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, name, min, max, ignoreStrategy);
+        return expression.ba(index, getField(), min, max, ignoreStrategy);
     }
 
     /**
@@ -307,7 +309,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L ba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return expression.ba(index, name, min, max, ignoreStrategy);
+        return expression.ba(index, getField(), min, max, ignoreStrategy);
     }
 
     /**
@@ -315,7 +317,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L nba(N min, N max) {
-        return expression.nba(index, name, min, max, expression.getIgnoreStrategy());
+        return expression.nba(index, getField(), min, max, expression.getIgnoreStrategy());
     }
 
     /**
@@ -323,7 +325,7 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L nba(N min, N max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, name, min, max, ignoreStrategy);
+        return expression.nba(index, getField(), min, max, ignoreStrategy);
     }
 
     /**
@@ -331,6 +333,46 @@ public class NumberFieldExpressionMulitiRepositoryImpl<N extends Number, C exten
      */
     @Override
     public L nba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return expression.ba(index, name, min, max, ignoreStrategy);
+        return expression.nba(index, getField(), min, max, ignoreStrategy);
+    }
+
+    // ****************************************************************************************************************
+    //	arithmetic
+    // ****************************************************************************************************************
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> add(N value) {
+        column.add(CalculationOperator.PLUS, value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> subtract(N value) {
+        column.add(CalculationOperator.SUBTRACT, value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> multiply(N value) {
+        column.add(CalculationOperator.MULTIPLY, value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> divide(N value) {
+        column.add(CalculationOperator.DIVIDE, value);
+        return this;
     }
 }

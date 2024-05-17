@@ -75,50 +75,50 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <L> the generic type
  */
 public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<V, C, L> implements NotInEntityPropertyExpression<V> {
+    extends AbstractMulitiEntityPropertyExpression<V, C, L> implements NotInEntityPropertyExpression<V> {
 
     /**
      * Instantiates a new not in entity property expression impl.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public NotInEntityPropertyExpressionImpl(int index, SerializableFunction<?, V> name,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new not in entity property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public NotInEntityPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new not in entity property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public NotInEntityPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -129,17 +129,17 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public SetIntArrayExpression property(SerializableToIntFunction<V> name) {
         propertyList.add(name);
         return new SetIntArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     private SetIntArrayExpression property(SerializableIntSupplier name) {
         propertyList.add(name);
         return new SetIntArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -149,17 +149,17 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public SetLongArrayExpression property(SerializableToLongFunction<V> name) {
         propertyList.add(name);
         return new SetLongArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     private SetLongArrayExpression property(SerializableLongSupplier name) {
         propertyList.add(name);
         return new SetLongArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -169,17 +169,17 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public SetDoubleArrayExpression property(SerializableToDoubleFunction<V> name) {
         propertyList.add(name);
         return new SetDoubleArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     private SetDoubleArrayExpression property(SerializableDoubleSupplier name) {
         propertyList.add(name);
         return new SetDoubleArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -189,9 +189,9 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public <N extends Number> SetNumberArrayExpression<N> property(SerializableToNumberFunction<V, N> name) {
         propertyList.add(name);
         return new SetNumberArrayExpressionImpl<>(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -201,9 +201,9 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public <D extends Date> SetDateArrayExpression<D> property(SerializableToDateFunction<V, D> name) {
         propertyList.add(name);
         return new SetDateArrayExpressionImpl<>(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -213,9 +213,9 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public <E extends Enum<E>> SetEnumArrayExpression<E> property(SerializableToEnumFunction<V, E> name) {
         propertyList.add(name);
         return new SetEnumArrayExpressionImpl<>(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -225,9 +225,9 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public SetLocalDateTimeArrayExpression property(SerializableToLocalDateTimeFunction<V> name) {
         propertyList.add(name);
         return new SetLocalDateTimeArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -237,9 +237,9 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public SetLocalDateArrayExpression property(SerializableToLocalDateFunction<V> name) {
         propertyList.add(name);
         return new SetLocalDateArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -249,9 +249,9 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public SetLocalTimeArrayExpression property(SerializableToLocalTimeFunction<V> name) {
         propertyList.add(name);
         return new SetLocalTimeArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore), v -> getPropertyMapping(v),
-                array -> expression.getIgnoreStrategy().test(array),
-                (value, ignore, pm) -> expression.ni(index, pm, value, ignore));
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
+            (value, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, ignore));
     }
 
     /**
@@ -261,17 +261,17 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
     public SetStringArrayExpression property(SerializableToStringFunction<V> name) {
         propertyList.add(name);
         return new SetStringArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, match, ignore, pm) -> expression.ni(index, pm, value, match, ignore),
-                v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
-                (value, match, ignore, pm) -> expression.ni(index, pm, value, match, ignore));
+            (value, match, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, match, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array), (value, match, ignore,
+                pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, match, ignore));
     }
 
     private SetStringArrayExpression property(SerializableStringSupplier name) {
         propertyList.add(name);
         return new SetStringArrayExpressionImpl(v -> getPropertyMapping(v), expression.getIgnoreStrategy(),
-                (value, match, ignore, pm) -> expression.ni(index, pm, value, match, ignore),
-                v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array),
-                (value, match, ignore, pm) -> expression.ni(index, pm, value, match, ignore));
+            (value, match, ignore, pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, match, ignore),
+            v -> getPropertyMapping(v), array -> expression.getIgnoreStrategy().test(array), (value, match, ignore,
+                pm) -> expression.ni(index, pm, arithmeticColumnElement.get(), value, match, ignore));
     }
 
     /**
@@ -293,7 +293,7 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public <R extends Collection<E>,
-            E> NotInEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name) {
+        E> NotInEntityPropertyExpression<E> property(SerializableToCollectionFunction<V, R, E> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
@@ -424,7 +424,7 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public <R> void accept(SerializableFunction<V, R> name, Collection<R> value,
-            Predicate<Collection<R>> ignoreStrategy) {
+        Predicate<Collection<R>> ignoreStrategy) {
         property(name).value(value, ignoreStrategy);
     }
 
@@ -441,7 +441,7 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void accept(SerializableToStringFunction<V> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         property(name).value(value, matchStrategy, ignoreStrategy);
     }
 
@@ -458,7 +458,7 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void accept(SerializableToStringFunction<V> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         property(name).value(value, matchStrategy, ignoreStrategy);
     }
 
@@ -475,7 +475,7 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         property(property).value(property.get(), matchStrategy, ignoreStrategy);
     }
 
@@ -548,7 +548,8 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void value(V value) {
-        expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -556,7 +557,7 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void value(V value, Predicate<V> ignoreStrategy) {
-        expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -564,7 +565,8 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void value(@SuppressWarnings("unchecked") V... value) {
-        expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -572,7 +574,7 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void value(V[] value, Predicate<V[]> ignoreStrategy) {
-        expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -580,7 +582,8 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void value(Collection<V> value) {
-        expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -588,6 +591,6 @@ public class NotInEntityPropertyExpressionImpl<V, C extends ConditionExpression,
      */
     @Override
     public void value(Collection<V> value, Predicate<Collection<V>> ignoreStrategy) {
-        expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 }

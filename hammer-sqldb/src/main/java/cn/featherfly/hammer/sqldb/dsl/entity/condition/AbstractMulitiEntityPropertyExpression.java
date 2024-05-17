@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
+import cn.featherfly.common.db.builder.model.ArithmeticColumnElement;
 import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -53,13 +55,16 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     /** The query relation. */
     protected EntitySqlRelation<?, ?> queryRelation;
 
+    /** The params. */
+    protected Supplier<ArithmeticColumnElement> arithmeticColumnElement = () -> null;
+
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name,
@@ -71,10 +76,10 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, List<Serializable> propertyList,
@@ -89,11 +94,13 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     }
 
     public L eq(Field field) {
-        return expression.eq(index, getPropertyMapping(field), field, expression.getIgnoreStrategy());
+        return expression.eq(index, getPropertyMapping(field), arithmeticColumnElement.get(), field,
+            expression.getIgnoreStrategy());
     }
 
     public L eq(FieldExpression expr) {
-        return expression.eq(index, getPropertyMapping(expr), expr, expression.getIgnoreStrategy());
+        return expression.eq(index, getPropertyMapping(expr), arithmeticColumnElement.get(), expr,
+            expression.getIgnoreStrategy());
     }
 
     /**
