@@ -18,12 +18,11 @@ import cn.featherfly.hammer.expression.condition.field.EnumFieldExpression;
  * EntityEnumExpression.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <EN> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E> the enum type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public interface EntityEnumPropertyExpression<E, EN extends Enum<EN>, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EnumFieldExpression<EN, C, L> {
+public interface EntityEnumPropertyExpression<E extends Enum<E>, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> extends EnumFieldExpression<E, C, L> {
 
 }

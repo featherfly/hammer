@@ -18,11 +18,10 @@ import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
  * EntityStringExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityStringPropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends StringFieldExpression<C, L> {
+public interface EntityStringPropertyExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends StringFieldExpression<C, L> {
 
 }

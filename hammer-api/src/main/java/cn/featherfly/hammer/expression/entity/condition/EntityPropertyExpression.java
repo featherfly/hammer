@@ -34,32 +34,32 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePrope
  * The Interface EntityPropertyExpression.
  *
  * @author zhongj
- * @param <E> the element type
+ * @param <T> the entity type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityPropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+public interface EntityPropertyExpression<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends ConditionExpression {
 
     /**
      * Property.
      *
-     * @param <R>  the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the object expression
      */
-    <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<E, R> name);
+    <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<T, R> name);
 
     /**
      * Property Collection.
      *
-     * @param <R>  the generic type
-     * @param <RE> the generic type
+     * @param <R> the collection type
+     * @param <E> the element type of collection
      * @param name the name
      * @return the object expression
      */
-    <R extends Collection<RE>,
-            RE> EntityTypePropertyExpression<RE, C, L> property(SerializableToCollectionFunction<E, R, RE> name);
+    <R extends Collection<E>,
+        E> EntityTypePropertyExpression<E, C, L> property(SerializableToCollectionFunction<T, R, E> name);
 
     /**
      * int property.
@@ -67,7 +67,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityIntPropertyExpression<E, C, L> property(SerializableToIntFunction<E> name);
+    EntityIntPropertyExpression<C, L> property(SerializableToIntFunction<T> name);
 
     /**
      * long property.
@@ -75,7 +75,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityLongPropertyExpression<E, C, L> property(SerializableToLongFunction<E> name);
+    EntityLongPropertyExpression<C, L> property(SerializableToLongFunction<T> name);
 
     /**
      * double property.
@@ -83,25 +83,25 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityDoublePropertyExpression<E, C, L> property(SerializableToDoubleFunction<E> name);
+    EntityDoublePropertyExpression<C, L> property(SerializableToDoubleFunction<T> name);
 
     /**
      * Property number.
      *
-     * @param <R>  the number type
+     * @param <R> the number type
      * @param name the name
      * @return the number expression
      */
-    <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(SerializableToNumberFunction<E, R> name);
+    <R extends Number> EntityNumberPropertyExpression<R, C, L> property(SerializableToNumberFunction<T, R> name);
 
     /**
      * Property date.
      *
-     * @param <R>  the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the date expression
      */
-    <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(SerializableToDateFunction<E, R> name);
+    <R extends Date> EntityDatePropertyExpression<R, C, L> property(SerializableToDateFunction<T, R> name);
 
     /**
      * Property string.
@@ -109,7 +109,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the string expression
      */
-    EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name);
+    EntityStringPropertyExpression<C, L> property(SerializableToStringFunction<T> name);
 
     /**
      * Property LocalDate.
@@ -117,7 +117,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    EntityLocalDatePropertyExpression<E, C, L> property(SerializableToLocalDateFunction<E> name);
+    EntityLocalDatePropertyExpression<C, L> property(SerializableToLocalDateFunction<T> name);
 
     /**
      * Property date.
@@ -125,7 +125,7 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    EntityLocalDateTimePropertyExpression<E, C, L> property(SerializableToLocalDateTimeFunction<E> name);
+    EntityLocalDateTimePropertyExpression<C, L> property(SerializableToLocalDateTimeFunction<T> name);
 
     /**
      * Property date.
@@ -133,14 +133,14 @@ public interface EntityPropertyExpression<E, C extends ConditionExpression, L ex
      * @param name the name
      * @return the date expression
      */
-    EntityLocalTimePropertyExpression<E, C, L> property(SerializableToLocalTimeFunction<E> name);
+    EntityLocalTimePropertyExpression<C, L> property(SerializableToLocalTimeFunction<T> name);
 
     /**
      * Property enum.
      *
-     * @param <R>  the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the enum expression
      */
-    <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(SerializableToEnumFunction<E, R> name);
+    <R extends Enum<R>> EntityEnumPropertyExpression<R, C, L> property(SerializableToEnumFunction<T, R> name);
 }

@@ -28,52 +28,52 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <L> the generic type
  */
 public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityGenericPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
-        implements EntityNumberPropertyExpression<E, N, C, L> {
+    L extends LogicExpression<C, L>>
+    extends AbstractMulitiEntityGenericPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
+    implements EntityNumberPropertyExpression<N, C, L> {
 
     /**
      * Instantiates a new entity number property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(int index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity number property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity number property expression impl.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityNumberPropertyExpressionImpl(int index, SerializableFunction<E, N> name,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -347,7 +347,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
     @Override
     public L ba(N min, N max) {
         return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
-                expression.getIgnoreStrategy());
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -372,7 +372,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
     @Override
     public L nba(N min, N max) {
         return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
-                expression.getIgnoreStrategy());
+            expression.getIgnoreStrategy());
     }
 
     /**

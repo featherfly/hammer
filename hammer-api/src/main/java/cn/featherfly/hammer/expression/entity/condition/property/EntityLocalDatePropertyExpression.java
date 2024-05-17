@@ -18,11 +18,10 @@ import cn.featherfly.hammer.expression.condition.field.LocalDateFieldExpression;
  * EntityLocalDateExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityLocalDatePropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends LocalDateFieldExpression<C, L> {
+public interface EntityLocalDatePropertyExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends LocalDateFieldExpression<C, L> {
 
 }

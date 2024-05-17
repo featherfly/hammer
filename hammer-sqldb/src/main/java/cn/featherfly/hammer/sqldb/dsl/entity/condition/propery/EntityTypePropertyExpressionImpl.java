@@ -47,57 +47,57 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * entity Type property expression implements.
  *
  * @author zhongj
- * @param <E> the element type
- * @param <P> the element type
- * @param <F> the generic type
+ * @param <T> the entity type
+ * @param <P> the property type
+ * @param <F> the property
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFunction<E, P>, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractMulitiEntityGenericPropertyExpression<E, P, F, C, L>
-        implements EntityTypePropertyExpression<P, C, L> {
+public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFunction<T, P>, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> extends AbstractMulitiEntityGenericPropertyExpression<T, P, F, C, L>
+    implements EntityTypePropertyExpression<P, C, L> {
 
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityTypePropertyExpressionImpl(int index, F name, InternalMulitiEntityCondition<L> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityTypePropertyExpressionImpl(int index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityTypePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
@@ -109,7 +109,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public EntityIntPropertyExpression<P, C, L> property(SerializableToIntFunction<P> name) {
+    public EntityIntPropertyExpression<C, L> property(SerializableToIntFunction<P> name) {
         propertyList.add(name);
         return new EntityIntPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -118,7 +118,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public EntityLongPropertyExpression<P, C, L> property(SerializableToLongFunction<P> name) {
+    public EntityLongPropertyExpression<C, L> property(SerializableToLongFunction<P> name) {
         propertyList.add(name);
         return new EntityLongPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -127,7 +127,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public EntityDoublePropertyExpression<P, C, L> property(SerializableToDoubleFunction<P> name) {
+    public EntityDoublePropertyExpression<C, L> property(SerializableToDoubleFunction<P> name) {
         propertyList.add(name);
         return new EntityDoublePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -136,8 +136,8 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public <PT extends Number> EntityNumberPropertyExpression<P, PT, C, L> property(
-            SerializableToNumberFunction<P, PT> name) {
+    public <
+        V extends Number> EntityNumberPropertyExpression<V, C, L> property(SerializableToNumberFunction<P, V> name) {
         propertyList.add(name);
         return new EntityNumberPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -146,7 +146,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> EntityDatePropertyExpression<P, R, C, L> property(SerializableToDateFunction<P, R> name) {
+    public <V extends Date> EntityDatePropertyExpression<V, C, L> property(SerializableToDateFunction<P, V> name) {
         propertyList.add(name);
         return new EntityDatePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -155,7 +155,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public EntityStringPropertyExpression<P, C, L> property(SerializableToStringFunction<P> name) {
+    public EntityStringPropertyExpression<C, L> property(SerializableToStringFunction<P> name) {
         propertyList.add(name);
         return new EntityStringPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -164,7 +164,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalDatePropertyExpression<P, C, L> property(SerializableToLocalDateFunction<P> name) {
+    public EntityLocalDatePropertyExpression<C, L> property(SerializableToLocalDateFunction<P> name) {
         propertyList.add(name);
         return new EntityLocalDatePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -173,7 +173,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalDateTimePropertyExpression<P, C, L> property(SerializableToLocalDateTimeFunction<P> name) {
+    public EntityLocalDateTimePropertyExpression<C, L> property(SerializableToLocalDateTimeFunction<P> name) {
         propertyList.add(name);
         return new EntityLocalDateTimePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -182,7 +182,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalTimePropertyExpression<P, C, L> property(SerializableToLocalTimeFunction<P> name) {
+    public EntityLocalTimePropertyExpression<C, L> property(SerializableToLocalTimeFunction<P> name) {
         propertyList.add(name);
         return new EntityLocalTimePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -191,8 +191,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> EntityEnumPropertyExpression<P, R, C, L> property(
-            SerializableToEnumFunction<P, R> name) {
+    public <V extends Enum<V>> EntityEnumPropertyExpression<V, C, L> property(SerializableToEnumFunction<P, V> name) {
         propertyList.add(name);
         return new EntityEnumPropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
     }
@@ -210,8 +209,8 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
-    public <R extends Collection<RE>,
-            RE> EntityTypePropertyExpression<RE, C, L> property(SerializableToCollectionFunction<P, R, RE> name) {
+    public <R extends Collection<E>,
+        E> EntityTypePropertyExpression<E, C, L> property(SerializableToCollectionFunction<P, R, E> name) {
         // IMPLSOON 后续来实现集合类型property
         throw new NotImplementedException();
     }
@@ -582,7 +581,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
     @Override
     public L ba(P min, P max) {
         return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
-                expression.getIgnoreStrategy());
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -607,7 +606,7 @@ public class EntityTypePropertyExpressionImpl<E, P, F extends SerializableFuncti
     @Override
     public L nba(P min, P max) {
         return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
-                expression.getIgnoreStrategy());
+            expression.getIgnoreStrategy());
     }
 
     /**

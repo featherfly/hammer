@@ -23,7 +23,7 @@ import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
  * @param <L> the generic type
  */
 //ENHANCE 后续加入LongExpression<C,L>
-public interface EntityLongPropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NumberFieldExpression<Long, C, L> {
+public interface EntityLongPropertyExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends NumberFieldExpression<Long, C, L> {
 
 }
