@@ -7,12 +7,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.db.builder.model.ArithmeticColumnElement;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.operator.CalculationOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPropertyExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.dsl.entity.condition.AbstractMulitiEntityGenericPropertyExpression;
@@ -82,7 +85,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L in(N value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -90,7 +94,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L in(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -98,7 +102,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L in(N value, Predicate<N> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -106,7 +110,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L in(N[] value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -114,7 +119,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L in(N[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -122,7 +127,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L in(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -130,7 +135,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ni(N value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -138,7 +144,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ni(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -146,7 +152,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ni(N value, Predicate<N> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -154,7 +160,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ni(N[] value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -162,7 +169,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ni(N[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -170,7 +177,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ni(N[] value, Predicate<N[]> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -178,7 +185,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L le(N value) {
-        return expression.le(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -186,7 +194,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L le(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -194,7 +202,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L le(N value, Predicate<N> ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -202,7 +210,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L lt(N value) {
-        return expression.lt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -210,7 +219,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L lt(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -218,7 +227,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L lt(N value, Predicate<N> ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -226,7 +235,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ge(N value) {
-        return expression.ge(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -234,7 +244,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ge(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -242,7 +252,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ge(N value, Predicate<N> ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -250,7 +260,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L gt(N value) {
-        return expression.gt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -258,7 +269,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L gt(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -266,7 +277,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L gt(N value, Predicate<N> ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -298,7 +309,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L eq(N value) {
-        return expression.eq(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -306,7 +318,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L eq(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -314,7 +326,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L eq(N value, Predicate<N> ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -322,7 +334,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ne(N value) {
-        return expression.ne(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -330,7 +343,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ne(N value, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -338,7 +351,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ne(N value, Predicate<N> ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -346,7 +359,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ba(N min, N max) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -355,7 +368,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ba(N min, N max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -363,7 +377,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -371,7 +386,7 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L nba(N min, N max) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -380,7 +395,8 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L nba(N min, N max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -388,7 +404,64 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L nba(N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> add(N value) {
+        if (arithmeticColumnElement.get() == null) {
+            arithmeticColumnElement = () -> new ArithmeticColumnElement(expression.getJdbc().getDialect(),
+                getPropertyMapping(value).getRepositoryFieldName(), CalculationOperator.PLUS, value);
+        } else {
+            arithmeticColumnElement.get().add(CalculationOperator.PLUS, value);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> subtract(N value) {
+        if (arithmeticColumnElement.get() == null) {
+            arithmeticColumnElement = () -> new ArithmeticColumnElement(expression.getJdbc().getDialect(),
+                getPropertyMapping(value).getRepositoryFieldName(), CalculationOperator.SUBTRACT, value);
+        } else {
+            arithmeticColumnElement.get().add(CalculationOperator.SUBTRACT, value);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> multiply(N value) {
+        if (arithmeticColumnElement.get() == null) {
+            arithmeticColumnElement = () -> new ArithmeticColumnElement(expression.getJdbc().getDialect(),
+                getPropertyMapping(value).getRepositoryFieldName(), CalculationOperator.MULTIPLY, value);
+        } else {
+            arithmeticColumnElement.get().add(CalculationOperator.MULTIPLY, value);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<N, C, L> divide(N value) {
+        if (arithmeticColumnElement.get() == null) {
+            arithmeticColumnElement = () -> new ArithmeticColumnElement(expression.getJdbc().getDialect(),
+                getPropertyMapping(value).getRepositoryFieldName(), CalculationOperator.DIVIDE, value);
+        } else {
+            arithmeticColumnElement.get().add(CalculationOperator.DIVIDE, value);
+        }
+        return this;
     }
 
 }

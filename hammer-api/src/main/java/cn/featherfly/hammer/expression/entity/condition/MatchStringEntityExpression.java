@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 
@@ -28,15 +28,15 @@ public interface MatchStringEntityExpression<E> {
      * match value. 匹配value.
      *
      * @param property the property
-     * @param value    the value
+     * @param value the value
      */
     void accept(SerializableToStringFunction<E> property, String value);
 
     /**
      * match value. 匹配value.
      *
-     * @param property      the property
-     * @param value         the value
+     * @param property the property
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy);
@@ -44,8 +44,8 @@ public interface MatchStringEntityExpression<E> {
     /**
      * match value. 匹配value.
      *
-     * @param property       the property
-     * @param value          the value
+     * @param property the property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToStringFunction<E> property, String value, Predicate<String> ignoreStrategy);
@@ -53,28 +53,28 @@ public interface MatchStringEntityExpression<E> {
     /**
      * match value. 匹配value.
      *
-     * @param property       the property
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 
     /**
      * match value. 匹配value.
      *
      * @param propertyValue the property value
      */
-    void accept(SerializableSupplier<String> propertyValue);
+    void accept(SerializableStringSupplier propertyValue);
 
     /**
      * match value. 匹配value.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy);
+    void accept(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy);
 
     /**
      * match value. 匹配value.
@@ -82,15 +82,15 @@ public interface MatchStringEntityExpression<E> {
      * @param propertyValue the property value
      * @param matchStrategy the match strategy
      */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy);
+    void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
 
     /**
      * match value. 匹配value.
      *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+    void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

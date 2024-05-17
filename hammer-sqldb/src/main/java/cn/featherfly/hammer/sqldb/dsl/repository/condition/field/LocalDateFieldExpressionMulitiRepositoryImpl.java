@@ -26,8 +26,8 @@ public class LocalDateFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
     /**
      * Instantiates a new simple local date property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public LocalDateFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {
@@ -37,8 +37,8 @@ public class LocalDateFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
     /**
      * Instantiates a new simple local date property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public LocalDateFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,

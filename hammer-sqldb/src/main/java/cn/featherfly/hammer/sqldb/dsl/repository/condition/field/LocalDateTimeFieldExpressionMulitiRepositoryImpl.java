@@ -26,8 +26,8 @@ public class LocalDateTimeFieldExpressionMulitiRepositoryImpl<C extends Conditio
     /**
      * Instantiates a new simple local date time property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public LocalDateTimeFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
@@ -38,8 +38,8 @@ public class LocalDateTimeFieldExpressionMulitiRepositoryImpl<C extends Conditio
     /**
      * Instantiates a new simple local date time property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public LocalDateTimeFieldExpressionMulitiRepositoryImpl(int index, String name,

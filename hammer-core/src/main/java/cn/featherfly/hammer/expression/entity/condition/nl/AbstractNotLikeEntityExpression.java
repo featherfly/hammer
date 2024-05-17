@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.nl;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -29,18 +29,18 @@ import cn.featherfly.hammer.expression.entity.condition.AbstractEntityIndexableC
  * @param <L> the generic type
  */
 public abstract class AbstractNotLikeEntityExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractEntityIndexableConditionExpression<MulitiNotLikeExpression<C, L>>
-        implements NotLikeEntityExpression<E> {
+    extends AbstractEntityIndexableConditionExpression<MulitiNotLikeExpression<C, L>>
+    implements NotLikeEntityExpression<E> {
 
     /**
      * Instantiates a new abstract not like entity expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractNotLikeEntityExpression(int index, MulitiNotLikeExpression<C, L> expression,
-            Predicate<Object> ignoreStrategy) {
+        Predicate<Object> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
     }
 
@@ -73,7 +73,7 @@ public abstract class AbstractNotLikeEntityExpression<E, C extends ConditionExpr
      */
     @Override
     public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         expression.nl(index, property, value, matchStrategy, ignoreStrategy);
 
     }
@@ -82,7 +82,7 @@ public abstract class AbstractNotLikeEntityExpression<E, C extends ConditionExpr
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue) {
+    public void accept(SerializableStringSupplier propertyValue) {
         expression.nl(index, propertyValue);
     }
 
@@ -90,7 +90,7 @@ public abstract class AbstractNotLikeEntityExpression<E, C extends ConditionExpr
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
         expression.nl(index, propertyValue, ignoreStrategy);
     }
 
@@ -98,7 +98,7 @@ public abstract class AbstractNotLikeEntityExpression<E, C extends ConditionExpr
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
         expression.nl(index, propertyValue, matchStrategy);
     }
 
@@ -106,8 +106,8 @@ public abstract class AbstractNotLikeEntityExpression<E, C extends ConditionExpr
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
         expression.nl(index, propertyValue, matchStrategy, ignoreStrategy);
     }
 

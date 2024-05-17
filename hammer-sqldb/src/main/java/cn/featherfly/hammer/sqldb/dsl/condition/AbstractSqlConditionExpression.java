@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.FieldValueOperator;
+import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.BuilderUtils;
 import cn.featherfly.common.db.builder.model.SqlElement;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -48,12 +48,12 @@ import cn.featherfly.hammer.sqldb.Constants;
  * abstract sqldb condition expression.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  * @param <C2> the generic type
  */
 public abstract class AbstractSqlConditionExpression<C extends ConditionExpression, L extends LogicExpression<C, L>,
-        C2 extends ConditionConfig<C2>> extends AbstractConditionExpression<C2> implements ParamedExpression {
+    C2 extends ConditionConfig<C2>> extends AbstractConditionExpression<C2> implements ParamedExpression {
 
     /** The parent. */
     protected L parent;
@@ -71,8 +71,8 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * Instantiates a new abstract sqldb muliti condition expression.
      *
-     * @param parent          the parent
-     * @param dialect         the dialect
+     * @param parent the parent
+     * @param dialect the dialect
      * @param conditionConfig the condition config
      */
     protected AbstractSqlConditionExpression(L parent, Dialect dialect, C2 conditionConfig) {
@@ -101,7 +101,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
             Expression last = conditions.get(conditions.size() - 1);
             if (last instanceof LogicOperatorExpression) {
                 throw new BuilderException(BuilderExceptionCode
-                        .createNoConditionBehindCode(((LogicOperatorExpression) last).getLogicOperator().name()));
+                    .createNoConditionBehindCode(((LogicOperatorExpression) last).getLogicOperator().name()));
             }
         }
 
@@ -210,7 +210,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     public Expression addCondition(Expression condition) {
         if (previousCondition != null && previousCondition.getClass().isInstance(condition)) {
             throw new BuilderException(
-                    BuilderExceptionCode.createNextToSameConditionCode(condition.getClass().getName()));
+                BuilderExceptionCode.createNextToSameConditionCode(condition.getClass().getName()));
         }
         if (condition instanceof MulitiExpression) {
             for (Expression expression : ((MulitiExpression) condition).getExpressions()) {
@@ -226,22 +226,22 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * Supplier.
      *
-     * @param <R>          the generic type
-     * @param info         the info
-     * @param value        the value
+     * @param <R> the generic type
+     * @param info the info
+     * @param value the value
      * @param classMapping the class mapping
      * @return LogicExpressionist
      */
     @SuppressWarnings("unchecked")
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value,
-            JdbcClassMapping<?> classMapping) {
+        JdbcClassMapping<?> classMapping) {
         List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
         if (value != null) {
             String propertyName = info.getPropertyName();
             if (classMapping != null) {
                 JdbcPropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
                 if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
-                        && propertyMapping.getPropertyType() == value.getClass()) {
+                    && propertyMapping.getPropertyType() == value.getClass()) {
                     for (JdbcPropertyMapping pm : propertyMapping.getPropertyMappings()) {
                         Object obj = BeanUtils.getProperty(value, pm.getPropertyName());
                         // TODO 这里的返回值不是R类型
@@ -262,13 +262,13 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * Supplier.
      *
-     * @param <R>          the generic type
-     * @param info         the info
+     * @param <R> the generic type
+     * @param info the info
      * @param classMapping the class mapping
      * @return LogicExpressionist
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
-            JdbcClassMapping<?> classMapping) {
+        JdbcClassMapping<?> classMapping) {
         return supplier(info.getSerializedLambdaInfo(), info.get(), classMapping);
     }
 
@@ -278,30 +278,44 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * {@inheritDoc}
      */
     @Override
+    protected Object getInParam(Object paramsForField, PropertyMapping<?> pm, Object value) {
+        return Lang.isEmpty(paramsForField) ? getInParam(pm, value)
+            : SqlUtils.flatParams(SqlUtils.flatParamToFieldValueOperator(paramsForField), getInParam(pm, value));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected Object getInParam(PropertyMapping<?> pm, Object value) {
-        Object param = null;
-        if (value != null) {
-            if (value.getClass().isArray()) {
-                int length = Array.getLength(value);
-                param = Array.newInstance(FieldValueOperator.class, length);
-                for (int i = 0; i < length; i++) {
-                    Array.set(param, i, getFieldValueOperator(pm, Array.get(value, i)));
-                }
-            } else if (value instanceof Collection) {
-                param = ((Collection<?>) value).stream().map(op -> getFieldValueOperator(pm, op))
-                        .collect(Collectors.toList());
-                //                Collection<FieldValueOperator<?>> paramCollection = new ArrayList<>();
-                //                for (Object op : (Collection<?>) value) {
-                //                    paramCollection.add(getFieldValueOperator(pm, op));
-                //                }
-                //                param = paramCollection;
-            } else if (value instanceof FieldValueOperator) {
-                param = value;
-            } else {
-                param = getFieldValueOperator(pm, value);
-            }
+        if (pm == null) {
+            return SqlUtils.flatParamToFieldValueOperator(value);
+        } else {
+            return SqlUtils.flatParamToFieldValueOperator(value, (JdbcPropertyMapping) pm);
         }
-        return param;
+        //        Object param = null;
+        //        if (value != null) {
+        //            if (value.getClass().isArray()) {
+        //                int length = Array.getLength(value);
+        //                param = Array.newInstance(FieldValueOperator.class, length);
+        //                for (int i = 0; i < length; i++) {
+        //                    Array.set(param, i, getFieldValueOperator(pm, Array.get(value, i)));
+        //                }
+        //            } else if (value instanceof Collection) {
+        //                param = ((Collection<?>) value).stream().map(op -> getFieldValueOperator(pm, op))
+        //                    .collect(Collectors.toList());
+        //                //                Collection<FieldValueOperator<?>> paramCollection = new ArrayList<>();
+        //                //                for (Object op : (Collection<?>) value) {
+        //                //                    paramCollection.add(getFieldValueOperator(pm, op));
+        //                //                }
+        //                //                param = paramCollection;
+        //            } else if (value instanceof FieldValueOperator) {
+        //                param = value;
+        //            } else {
+        //                param = getFieldValueOperator(pm, value);
+        //            }
+        //        }
+        //        return param;
     }
 
     /**
@@ -313,10 +327,19 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object getInParam(Object paramsForField, Object value) {
+        return Lang.isEmpty(paramsForField) ? getInParam(null, value)
+            : SqlUtils.flatParams(SqlUtils.flatParamToFieldValueOperator(paramsForField), getInParam(null, value));
+    }
+
+    /**
      * Gets the field value operator.
      *
-     * @param <R>   the generic type
-     * @param pm    the pm
+     * @param <R> the generic type
+     * @param pm the pm
      * @param value the value
      * @return the field value operator
      */
@@ -330,12 +353,49 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * Gets the field value operator.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
+     * @param pm the pm
+     * @param value the value
+     * @return the field value operator
+     */
+    protected <R> Object getFieldValueOperator(Object paramsForField, PropertyMapping<?> pm, R value) {
+        return Lang.isEmpty(paramsForField) ? getFieldValueOperator(pm, value)
+            : SqlUtils.flatParams(SqlUtils.flatParamToFieldValueOperator(paramsForField, (JdbcPropertyMapping) pm),
+                getFieldValueOperator(pm, value));
+    }
+
+    /**
+     * Gets the field value operator.
+     *
+     * @param <R> the generic type
      * @param value the value
      * @return the field value operator
      */
     protected <R> FieldValueOperator<R> getFieldValueOperator(R value) {
         return FieldValueOperator.create(value);
+    }
+
+    /**
+     * Gets the field value operator.
+     *
+     * @param <R> the generic type
+     * @param value the value
+     * @return the field value operator
+     */
+    protected Object getFieldValueOperator(Object paramsForField, Object value) {
+        return Lang.isEmpty(paramsForField) ? getFieldValueOperator(value)
+            : SqlUtils.flatParams(SqlUtils.flatParamToFieldValueOperator(paramsForField), getFieldValueOperator(value));
+    }
+
+    /**
+     * Prepare field value.
+     *
+     * @param value the value
+     * @return the object
+     */
+    protected Object prepareFieldValue(Object paramsForField, Object value) {
+        return Lang.isEmpty(paramsForField) ? prepareFieldValue(value)
+            : SqlUtils.flatParams(SqlUtils.flatParamToFieldValueOperator(paramsForField), prepareFieldValue(value));
     }
 
     /**

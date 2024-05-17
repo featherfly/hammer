@@ -21,30 +21,30 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public class SerializableFieldExpressionMulitiRepositoryImpl<C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
-        implements RepositorySerializableFieldExpression<C, L> {
+    L extends LogicExpression<C, L>> extends AbstractMulitiRepositoryFieldExpression<C, L>
+    implements RepositorySerializableFieldExpression<C, L> {
 
     /**
      * Instantiates a new simple object property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public SerializableFieldExpressionMulitiRepositoryImpl(int index, String name,
-            InternalMulitiCondition<L> expression) {
+        InternalMulitiCondition<L> expression) {
         super(new AtomicInteger(index), name, expression);
     }
 
     /**
      * Instantiates a new simple object property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public SerializableFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
-            InternalMulitiCondition<L> expression) {
+        InternalMulitiCondition<L> expression) {
         super(index, name, expression);
     }
 

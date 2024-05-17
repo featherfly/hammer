@@ -33,8 +33,8 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiInExpression<I extends InternalMulitiCondition<L>, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends AbstractInternalMulitiConditionHolder<I, C, L>
-        implements MulitiInExpression<C, L> {
+    L extends LogicExpression<C, L>> extends AbstractInternalMulitiConditionHolder<I, C, L>
+    implements MulitiInExpression<C, L> {
 
     /**
      * Instantiates a new muliti in expression impl.
@@ -170,7 +170,7 @@ public abstract class AbstractMulitiInExpression<I extends InternalMulitiConditi
      */
     @Override
     public <E> L in(int index, SerializableToDoubleFunction<E> name, double[] value,
-            Predicate<double[]> ignoreStrategy) {
+        Predicate<double[]> ignoreStrategy) {
         return hold.in(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -187,7 +187,7 @@ public abstract class AbstractMulitiInExpression<I extends InternalMulitiConditi
      */
     @Override
     public <E, R> L in(int index, SerializableFunction<E, R> name, Collection<R> value,
-            Predicate<Collection<R>> ignoreStrategy) {
+        Predicate<Collection<R>> ignoreStrategy) {
         return hold.in(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -268,7 +268,7 @@ public abstract class AbstractMulitiInExpression<I extends InternalMulitiConditi
      */
     @Override
     public <E> L in(int index, SerializableToStringFunction<E> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.in(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
@@ -285,7 +285,7 @@ public abstract class AbstractMulitiInExpression<I extends InternalMulitiConditi
      */
     @Override
     public <E> L in(int index, SerializableToStringFunction<E> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return hold.in(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
@@ -302,7 +302,7 @@ public abstract class AbstractMulitiInExpression<I extends InternalMulitiConditi
      */
     @Override
     public L in(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.in(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 
@@ -463,7 +463,7 @@ public abstract class AbstractMulitiInExpression<I extends InternalMulitiConditi
      */
     @Override
     public L in(int index, String name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return hold.in(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 

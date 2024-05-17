@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cn.featherfly.common.db.builder.model.ArithmeticColumnElement;
 import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.Field;
@@ -31,14 +32,15 @@ public abstract class AbstractMulitiRepositoryFieldExpression<C extends Conditio
     /** The expression. */
     protected InternalMulitiCondition<L> expression;
 
+    protected final ArithmeticColumnElement column;
     //    /** The repository relation. */
     //    protected RepositorySqlRelation<?, ?> repositoryRelation;
 
     /**
      * Instantiates a new abstract muliti repository field expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     protected AbstractMulitiRepositoryFieldExpression(int index, String name, InternalMulitiCondition<L> expression) {
@@ -48,8 +50,8 @@ public abstract class AbstractMulitiRepositoryFieldExpression<C extends Conditio
     /**
      * Instantiates a new abstract muliti repository field expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     protected AbstractMulitiRepositoryFieldExpression(AtomicInteger index, String name,
@@ -57,6 +59,15 @@ public abstract class AbstractMulitiRepositoryFieldExpression<C extends Conditio
         this.index = index;
         this.name = name;
         this.expression = expression;
+        column = new ArithmeticColumnElement(expression.getJdbc().getDialect(), name, expression.getAlias(index.get()));
+    }
+
+    protected Object getField() {
+        if (column.getCalculationOperator().length == 0) {
+            return name;
+        } else {
+            return column;
+        }
     }
 
     /**
@@ -72,10 +83,22 @@ public abstract class AbstractMulitiRepositoryFieldExpression<C extends Conditio
         return expr;
     }
 
+    /**
+     * Eq.
+     *
+     * @param field the field
+     * @return the l
+     */
     public L eq(Field field) {
         return expression.eq(index, name, field, expression.getIgnoreStrategy());
     }
 
+    /**
+     * Eq.
+     *
+     * @param fieldExpression the field expression
+     * @return the l
+     */
     public L eq(FieldExpression fieldExpression) {
         return expression.eq(index, name, fieldExpression, expression.getIgnoreStrategy());
     }

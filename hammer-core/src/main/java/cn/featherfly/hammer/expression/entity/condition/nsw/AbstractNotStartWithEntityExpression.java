@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.nsw;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -29,19 +29,19 @@ import cn.featherfly.hammer.expression.entity.condition.AbstractEntityIndexableC
  * @param <L> the generic type
  */
 public abstract class AbstractNotStartWithEntityExpression<E, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends AbstractEntityIndexableConditionExpression<MulitiNotStartWithExpression<C, L>>
-        implements NotStartWithEntityExpression<E> {
+    L extends LogicExpression<C, L>>
+    extends AbstractEntityIndexableConditionExpression<MulitiNotStartWithExpression<C, L>>
+    implements NotStartWithEntityExpression<E> {
 
     /**
      * Instantiates a new abstract not start with entity expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractNotStartWithEntityExpression(int index, MulitiNotStartWithExpression<C, L> expression,
-            Predicate<Object> ignoreStrategy) {
+        Predicate<Object> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
     }
 
@@ -74,7 +74,7 @@ public abstract class AbstractNotStartWithEntityExpression<E, C extends Conditio
      */
     @Override
     public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         expression.nsw(index, property, value, matchStrategy, ignoreStrategy);
 
     }
@@ -83,7 +83,7 @@ public abstract class AbstractNotStartWithEntityExpression<E, C extends Conditio
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue) {
+    public void accept(SerializableStringSupplier propertyValue) {
         expression.nsw(index, propertyValue);
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractNotStartWithEntityExpression<E, C extends Conditio
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
         expression.nsw(index, propertyValue, ignoreStrategy);
     }
 
@@ -99,7 +99,7 @@ public abstract class AbstractNotStartWithEntityExpression<E, C extends Conditio
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
         expression.nsw(index, propertyValue, matchStrategy);
     }
 
@@ -107,8 +107,8 @@ public abstract class AbstractNotStartWithEntityExpression<E, C extends Conditio
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
         expression.nsw(index, propertyValue, matchStrategy, ignoreStrategy);
     }
 

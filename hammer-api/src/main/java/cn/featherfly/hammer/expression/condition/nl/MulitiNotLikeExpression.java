@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.condition.nl;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
@@ -20,13 +20,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface MulitiNotLikeExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
      * not like value.
      *
      * @param index the index
-     * @param name  field name
+     * @param name field name
      * @param value the value
      * @return LogicExpression
      */
@@ -37,9 +37,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param value         the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -48,9 +48,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param name           field name
-     * @param value          the value
+     * @param index the index
+     * @param name field name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -61,9 +61,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param name           field name
-     * @param value          the value
+     * @param index the index
+     * @param name field name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -74,10 +74,10 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -88,10 +88,10 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -112,9 +112,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index         the index
-     * @param field         the field
-     * @param value         the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -125,9 +125,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -138,9 +138,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -151,10 +151,10 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -165,10 +165,10 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -191,9 +191,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index         the index
-     * @param field         the field
-     * @param value         the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -204,9 +204,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -217,9 +217,9 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -230,39 +230,39 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nl(int index, AliasField field, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return nl(index, field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * not like value.
-     *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nl(int index, AliasField field, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return nl(index, field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * not like value.
-     *
-     * @param <E>   the element type
      * @param index the index
-     * @param name  field name
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl(int index, AliasField field, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return nl(index, field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl(int index, AliasField field, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nl(index, field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param name field name
      * @param value the value
      * @return LogicExpression
      */
@@ -273,10 +273,10 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param <E>           the element type
-     * @param index         the index
-     * @param name          the name
-     * @param value         the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -285,10 +285,10 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           field name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name field name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -299,10 +299,10 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           field name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name field name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -313,101 +313,100 @@ public interface MulitiNotLikeExpression<C extends ConditionExpression, L extend
     /**
      * not like value.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <E> L nl(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return nl(index, name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
     /**
      * not like value.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L nl(int index, SerializableFunction<E, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 
     /**
      * not like value.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    default L nl(int index, SerializableSupplier<String> property) {
+    default L nl(int index, SerializableStringSupplier property) {
         return nl(index, property, MatchStrategy.AUTO);
     }
 
     /**
      * not like value.
      *
-     * @param index         the index
-     * @param property      the property
+     * @param index the index
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L nl(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy);
+    L nl(int index, SerializableStringSupplier property, MatchStrategy matchStrategy);
 
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nl(int index, SerializableSupplier<String> property, IgnoreStrategy ignoreStrategy) {
+    default L nl(int index, SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
         return nl(index, property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nl(int index, SerializableSupplier<String> property, Predicate<String> ignoreStrategy) {
+    default L nl(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
         return nl(index, property, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nl(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+    default L nl(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
         return nl(index, property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
     /**
      * not like value.
      *
-     * @param index          the index
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nl(int index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+    L nl(int index, SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

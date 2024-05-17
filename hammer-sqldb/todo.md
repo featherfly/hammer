@@ -7,7 +7,7 @@
 - [ ] TplExecutor各种方法中的TplTemplateId可以加入直接传入字符串模板的方式（用于jdk17的多行字符串），类似@Template(value = "sql template....")
     使用sha1把编码sql template，作为sql template的name进行模板注册，使用固定的
 
-- [ ] TplExecuteId的字符串表现形式应该从namespace@name改为name@namesapce，这样就和现在url,email等中的@使用方式一致了，表示name at namesapce
+- [x] TplExecuteId的字符串表现形式应该从namespace@name改为name@namesapce，这样就和现在url,email等中的@使用方式一致了，表示name at namesapce
 
 - [ ] 对象映射加入动态表名
 
@@ -69,7 +69,7 @@
 
   ```java
   List<Authorized> authorizeds = query(AuthorizedMapper<Authorized>.class).list();
-
+  
   List<Authorized> authorizeds = query(Authorized.class).mapper(AuthorizedMapper.class).list();
   ```
 
@@ -133,32 +133,32 @@
 
 - [x] dsl api 更新操作集成update(String, BeanPropertyValue<?>...)用于完善自定义属性映射
 
-- [ ] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
-
 - [x] dsl api （eq,ne,co,sw,ew,lk）加入查询大小写敏感的支持（即 = 和 like 支持区分大小写）
 
-- [ ] dsl api 查询条件的表达式加入带运算的条件判断
+- [x] dsl api 条件查询加入表达式支持，（例如 store - :outNum >= 0[这种可以用传入的参数名用一个特殊的类来处理]， u.id = ur.user_id[这种可以用传入的value以一个特殊类来处理，表示传入的是需要拼接的字符串，不需要用占位符]）
+
+- [ ] dsl api 查询条件的表达式加入带运算的条件判断（部分实现，即上面那条）
 
     ```java
     // 带运算的条件判断
-    where().property(Account::getAmount).subtract(10).ge(0)
-    where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
-    where().ge(Calculators.subtract(Account::getAmount, 10), 0)
+    [✔] where().property(Account::getAmount).subtract(10).ge(0)
+    [✗] where().exp(e -> e.property(Account::getAmount).subtract(10).ge(0))
+    [✗] where().ge(Calculators.subtract(Account::getAmount, 10), 0)
     // where acount.amount - 10 >= 0
         
-    where().value(10).subtract(Account::getAmount).ge(0)
-    where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
-    where().ge(Calculators.subtract(10, Account::getAmount), 0)
+    [ ] where().value(10).subtract(Account::getAmount).ge(0)
+    [✗] where().exp(e -> e.value(10).subtract(Account::getAmount).ge(0))
+    [✗] where().ge(Calculators.subtract(10, Account::getAmount), 0)
     // where 10 - acount.amount >= 0
         
-    where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
-    where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
-    where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
+    [ ] where().property(Order::getPrice).subtract(10).ge(Order::getCharge)
+    [✗] where().exp(e -> e.property(Order::getPrice).subtract(10).ge(Order::getCharge))
+    [✗] where().ge(Calculators.subtract(Order::getPrice, 10), Order::getCharge))
     // where order.price - 10 == order.charge
         
-    where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
-    where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
-    where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
+    [ ] where().property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10))
+    [✗] where().exp(e -> e.property(Order::getPrice).subtract(10).eq(e -> e.property(Order::getCharge).add(10)))
+    [✗] where().eq(Calculators.subtract(Order::getPrice, 10), Calculators.add(Order::getCharge, 10))
     // where order.price - 10 == order.charge + 10
     ```
 

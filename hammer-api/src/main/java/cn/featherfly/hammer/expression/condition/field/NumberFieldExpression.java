@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.condition.field;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.operation.ArithmeticOperations;
 
 /**
  * Number field expression..
@@ -18,6 +19,7 @@ public interface NumberFieldExpression<N extends Number, C extends ConditionExpr
     , FieldInExpression<C, L, N>, FieldNotInExpression<C, L, N> //
     , FieldLessEqualsExpression<C, L, N>, FiledLessThanExpression<C, L, N> //
     , FieldGreatEqualsExpression<C, L, N>, FieldGreatThanExpression<C, L, N> //
-    , FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L>, FieldExpression {
+    , FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L>, FieldExpression,
+    ArithmeticOperations<N, NumberFieldExpression<N, C, L>> {
 
 }

@@ -82,7 +82,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L eq(LocalDateTime value) {
-        return expression.eq(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -90,7 +91,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L eq(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -98,7 +99,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L eq(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -106,7 +107,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ne(LocalDateTime value) {
-        return expression.ne(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -114,7 +116,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ne(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -122,7 +124,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ne(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -130,7 +132,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L in(LocalDateTime value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -138,7 +141,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L in(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -146,7 +149,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L in(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -154,7 +157,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L in(LocalDateTime[] value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -162,7 +166,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L in(LocalDateTime[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -170,7 +174,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L in(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -178,7 +182,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -186,7 +191,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -194,7 +199,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -202,7 +207,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime[] value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -210,7 +216,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -218,7 +224,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -226,7 +232,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L le(LocalDateTime value) {
-        return expression.le(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -234,7 +241,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L le(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -242,7 +249,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L le(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -250,7 +257,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L lt(LocalDateTime value) {
-        return expression.lt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -258,7 +266,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L lt(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -266,7 +274,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L lt(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -274,7 +282,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ge(LocalDateTime value) {
-        return expression.ge(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -282,7 +291,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ge(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -290,7 +299,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ge(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -298,7 +307,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L gt(LocalDateTime value) {
-        return expression.gt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -306,7 +316,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L gt(LocalDateTime value, IgnoreStrategy ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -314,7 +324,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L gt(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -338,7 +348,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ba(LocalDateTime min, LocalDateTime max) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -347,7 +357,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ba(LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -355,7 +366,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ba(LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -363,7 +375,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L nba(LocalDateTime min, LocalDateTime max) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -372,7 +384,8 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L nba(LocalDateTime min, LocalDateTime max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -380,6 +393,7 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L nba(LocalDateTime min, LocalDateTime max, BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 }

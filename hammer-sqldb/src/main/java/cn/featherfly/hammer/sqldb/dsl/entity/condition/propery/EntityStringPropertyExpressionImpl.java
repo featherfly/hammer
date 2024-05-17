@@ -98,7 +98,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy) {
-        return expression.co(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.co(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -106,7 +107,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.co(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.co(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -114,7 +116,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L co(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.co(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.co(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -123,8 +126,9 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L eq(String value, MatchStrategy matchStrategy) {
         PropertyMapping<?> pm = getPropertyMapping(value);
-        return expression.eq(index, pm, value, matchStrategy, expression.getIgnoreStrategy());
-        //        return expression.eq(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.eq(index, pm, arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
+        //        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy, expression.getIgnoreStrategy());
     }
 
     /**
@@ -133,8 +137,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L eq(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
         PropertyMapping<?> pm = getPropertyMapping(value);
-        return expression.eq(index, pm, value, matchStrategy, ignoreStrategy);
-        //        return expression.eq(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.eq(index, pm, arithmeticColumnElement.get(), value, matchStrategy, ignoreStrategy);
+        //        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -143,8 +147,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L eq(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
         PropertyMapping<?> pm = getPropertyMapping(value);
-        return expression.eq(index, pm, value, matchStrategy, ignoreStrategy);
-        //        return expression.eq(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.eq(index, pm, arithmeticColumnElement.get(), value, matchStrategy, ignoreStrategy);
+        //        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -152,7 +156,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy) {
-        return expression.ew(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.ew(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -160,7 +165,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.ew(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.ew(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -168,7 +174,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ew(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.ew(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.ew(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -176,7 +183,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ge(String value) {
-        return expression.ge(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -184,7 +192,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ge(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -192,7 +200,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ge(String value, Predicate<String> ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -200,7 +208,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L gt(String value) {
-        return expression.gt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -208,7 +217,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L gt(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -216,7 +225,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L gt(String value, Predicate<String> ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -224,7 +233,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(String value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -232,7 +242,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -240,7 +250,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(String value, Predicate<String> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -248,7 +258,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(String[] value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -256,7 +267,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(String[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -264,7 +275,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -288,7 +299,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L le(String value) {
-        return expression.le(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -296,7 +308,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L le(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -304,7 +316,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L le(String value, Predicate<String> ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -312,7 +324,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy) {
-        return expression.lk(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.lk(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -320,7 +333,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.lk(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.lk(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -328,7 +342,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lk(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.lk(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.lk(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -336,7 +351,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lt(String value) {
-        return expression.lt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -344,7 +360,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lt(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -352,7 +368,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lt(String value, Predicate<String> ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -360,7 +376,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ne(String value, MatchStrategy matchStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -368,7 +385,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ne(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -376,7 +394,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ne(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -384,7 +403,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -392,7 +412,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -400,7 +420,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String value, Predicate<String> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -408,7 +428,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String[] value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -416,7 +437,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -424,7 +445,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -432,7 +453,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy) {
-        return expression.sw(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.sw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -440,7 +462,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.sw(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.sw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -448,7 +471,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L sw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.sw(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.sw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -456,7 +480,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(String min, String max) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -465,7 +489,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(String min, String max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -473,7 +498,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -481,7 +507,7 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(String min, String max) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -490,7 +516,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(String min, String max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -498,7 +525,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(String min, String max, BiPredicate<String, String> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -506,7 +534,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nsw(String value, MatchStrategy matchStrategy) {
-        return expression.nsw(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.nsw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -514,7 +543,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nsw(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.nsw(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.nsw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -522,7 +552,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nsw(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.nsw(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.nsw(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -530,7 +561,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nco(String value, MatchStrategy matchStrategy) {
-        return expression.nco(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.nco(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -538,7 +570,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nco(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.nco(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.nco(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -546,7 +579,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nco(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.nco(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.nco(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -554,7 +588,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L newv(String value, MatchStrategy matchStrategy) {
-        return expression.newv(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.newv(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -562,7 +597,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L newv(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.newv(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.newv(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -570,7 +606,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L newv(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.newv(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.newv(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -578,7 +615,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nl(String value, MatchStrategy matchStrategy) {
-        return expression.nl(index, getPropertyMapping(value), value, matchStrategy, expression.getIgnoreStrategy());
+        return expression.nl(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -586,7 +624,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nl(String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return expression.nl(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.nl(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
     /**
@@ -594,7 +633,8 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nl(String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return expression.nl(index, getPropertyMapping(value), value, matchStrategy, ignoreStrategy);
+        return expression.nl(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, matchStrategy,
+            ignoreStrategy);
     }
 
 }

@@ -55,8 +55,8 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCondition<L>,
-        C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiEqualsExpression<C, L> {
+    C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends AbstractInternalMulitiConditionHolder<I, C, L> implements MulitiEqualsExpression<C, L> {
 
     /**
      * Instantiates a new muliti equals expression impl.
@@ -72,7 +72,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <E, R> L eq(int index, SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy) {
+        Predicate<R> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 
@@ -81,7 +81,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public L eq(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
     }
 
@@ -114,7 +114,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <T, N extends Number> L eq(int index, SerializableToNumberFunction<T, N> name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -123,7 +123,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <T, E extends Enum<E>> L eq(int index, SerializableToEnumFunction<T, E> name, E value,
-            Predicate<E> ignoreStrategy) {
+        Predicate<E> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -132,7 +132,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <T, D extends Date> L eq(int index, SerializableToDateFunction<T, D> name, D value,
-            Predicate<D> ignoreStrategy) {
+        Predicate<D> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -141,7 +141,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <T> L eq(int index, SerializableToLocalTimeFunction<T> name, LocalTime value,
-            Predicate<LocalTime> ignoreStrategy) {
+        Predicate<LocalTime> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -150,7 +150,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <T> L eq(int index, SerializableToLocalDateFunction<T> name, LocalDate value,
-            Predicate<LocalDate> ignoreStrategy) {
+        Predicate<LocalDate> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -159,7 +159,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <T> L eq(int index, SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, ignoreStrategy);
     }
 
@@ -176,7 +176,7 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      */
     @Override
     public <T> L eq(int index, SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return hold.eq(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
     }
 

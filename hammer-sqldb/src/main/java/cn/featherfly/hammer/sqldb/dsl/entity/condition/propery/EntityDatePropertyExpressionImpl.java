@@ -68,7 +68,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L eq(D value) {
-        return expression.eq(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -76,7 +77,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L eq(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -84,7 +85,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L eq(D value, Predicate<D> ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -92,7 +93,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ne(D value) {
-        return expression.ne(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -100,7 +102,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ne(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -108,7 +110,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ne(D value, Predicate<D> ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -116,7 +118,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L in(D value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -124,7 +127,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L in(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -132,7 +135,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L in(D value, Predicate<D> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -140,7 +143,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L in(D[] value) {
-        return expression.in(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -148,7 +152,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L in(D[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -156,7 +160,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L in(D[] value, Predicate<D[]> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -164,7 +168,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ni(D value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -172,7 +177,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ni(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -180,7 +185,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ni(D value, Predicate<D> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -188,7 +193,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ni(D[] value) {
-        return expression.ni(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -196,7 +202,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ni(D[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -204,7 +210,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ni(D[] value, Predicate<D[]> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -212,7 +218,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L le(D value) {
-        return expression.le(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -220,7 +227,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L le(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -228,7 +235,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L le(D value, Predicate<D> ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -236,7 +243,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L lt(D value) {
-        return expression.lt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -244,7 +252,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L lt(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -252,7 +260,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L lt(D value, Predicate<D> ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -260,7 +268,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ge(D value) {
-        return expression.ge(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -268,7 +277,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ge(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -276,7 +285,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ge(D value, Predicate<D> ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -284,7 +293,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L gt(D value) {
-        return expression.gt(index, getPropertyMapping(value), value, expression.getIgnoreStrategy());
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -292,7 +302,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L gt(D value, IgnoreStrategy ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -300,7 +310,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L gt(D value, Predicate<D> ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), value, ignoreStrategy);
+        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
     /**
@@ -324,7 +334,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ba(D min, D max) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -333,7 +343,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ba(D min, D max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -341,7 +352,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ba(D min, D max, BiPredicate<D, D> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -349,7 +361,7 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L nba(D min, D max) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -358,7 +370,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L nba(D min, D max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
     /**
@@ -366,7 +379,8 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L nba(D min, D max, BiPredicate<D, D> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max, ignoreStrategy);
+        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+            ignoreStrategy);
     }
 
 }

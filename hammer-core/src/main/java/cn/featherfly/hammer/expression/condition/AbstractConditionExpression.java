@@ -60,7 +60,7 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <R>  the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the property name
      */
@@ -111,8 +111,8 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the property name
      */
@@ -123,7 +123,7 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <T>  the generic type
+     * @param <T> the generic type
      * @param name the name
      * @return the property name
      */
@@ -134,7 +134,7 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <T>  the generic type
+     * @param <T> the generic type
      * @param name the name
      * @return the property name
      */
@@ -145,7 +145,7 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <T>  the generic type
+     * @param <T> the generic type
      * @param name the name
      * @return the property name
      */
@@ -156,7 +156,7 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the property name.
      *
-     * @param <T>  the generic type
+     * @param <T> the generic type
      * @param name the name
      * @return the property name
      */
@@ -167,7 +167,17 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
     /**
      * Gets the in param.
      *
-     * @param pm    the pm
+     * @param paramsForField the params for field
+     * @param pm the pm
+     * @param value the value
+     * @return the in param
+     */
+    protected abstract Object getInParam(Object paramsForField, PropertyMapping<?> pm, Object value);
+
+    /**
+     * Gets the in param.
+     *
+     * @param pm the pm
      * @param value the value
      * @return the in param
      */
@@ -180,6 +190,15 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
      * @return the in param
      */
     protected abstract Object getInParam(Object value);
+
+    /**
+     * Gets the in param.
+     *
+     * @param paramsForField the params for field
+     * @param value the value
+     * @return the in param
+     */
+    protected abstract Object getInParam(Object paramsForField, Object value);
 
     /**
      * {@inheritDoc}

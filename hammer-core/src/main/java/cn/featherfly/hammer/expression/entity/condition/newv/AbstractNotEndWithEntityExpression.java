@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.entity.condition.newv;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -29,19 +29,19 @@ import cn.featherfly.hammer.expression.entity.condition.AbstractEntityIndexableC
  * @param <L> the generic type
  */
 public abstract class AbstractNotEndWithEntityExpression<E, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends AbstractEntityIndexableConditionExpression<MulitiNotEndWithExpression<C, L>>
-        implements NotEndWithEntityExpression<E> {
+    L extends LogicExpression<C, L>>
+    extends AbstractEntityIndexableConditionExpression<MulitiNotEndWithExpression<C, L>>
+    implements NotEndWithEntityExpression<E> {
 
     /**
      * Instantiates a new abstract not end with entity expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractNotEndWithEntityExpression(int index, MulitiNotEndWithExpression<C, L> expression,
-            Predicate<Object> ignoreStrategy) {
+        Predicate<Object> ignoreStrategy) {
         super(index, expression, ignoreStrategy);
     }
 
@@ -74,7 +74,7 @@ public abstract class AbstractNotEndWithEntityExpression<E, C extends ConditionE
      */
     @Override
     public void accept(SerializableToStringFunction<E> property, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         expression.newv(index, property, value, matchStrategy, ignoreStrategy);
 
     }
@@ -83,7 +83,7 @@ public abstract class AbstractNotEndWithEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue) {
+    public void accept(SerializableStringSupplier propertyValue) {
         expression.newv(index, propertyValue);
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractNotEndWithEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
         expression.newv(index, propertyValue, ignoreStrategy);
     }
 
@@ -99,7 +99,7 @@ public abstract class AbstractNotEndWithEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
         expression.newv(index, propertyValue, matchStrategy);
     }
 
@@ -107,8 +107,8 @@ public abstract class AbstractNotEndWithEntityExpression<E, C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+    public void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
         expression.newv(index, propertyValue, matchStrategy, ignoreStrategy);
     }
 

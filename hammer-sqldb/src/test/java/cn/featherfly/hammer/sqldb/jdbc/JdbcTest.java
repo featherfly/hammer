@@ -1106,7 +1106,7 @@ public class JdbcTest extends JdbcTestBase {
         final AtomicInteger id = new AtomicInteger(0);
         final List<Integer> ids = new ArrayList<>();
 
-        GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<>() {
+        GeneratedKeyHolder<Integer> keyHolder = new GeneratedKeyHolder<Integer>() {
 
             @Override
             public void acceptKey(Integer key) {

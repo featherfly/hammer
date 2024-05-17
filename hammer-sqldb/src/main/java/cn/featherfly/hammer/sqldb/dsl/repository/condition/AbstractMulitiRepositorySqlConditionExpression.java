@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.model.ParamedColumnElement;
 import cn.featherfly.common.function.serializable.SerializableArraySupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableIntSupplier;
@@ -45,11 +46,11 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
  * abstract muliti repository condition expression.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends ConditionExpression,
     L extends LogicExpression<C, L>, C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>,
@@ -68,8 +69,8 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /**
      * Instantiates a new abstract muliti repository condition expression.
      *
-     * @param parent             the parent
-     * @param index              the index
+     * @param parent the parent
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     protected AbstractMulitiRepositorySqlConditionExpression(L parent, int index, S repositoryRelation) {
@@ -87,58 +88,92 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public <V> L ba(AtomicInteger index, Serializable name, V min, V max, BiPredicate<V, V> ignoreStrategy) {
-        return ba(index, getPropertyName(name), min, max, p -> ignoreStrategy.test(min, max));
+    public <V> L ba(AtomicInteger index, Serializable field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return ba(index, getPropertyName(field), min, max, p -> ignoreStrategy.test(min, max));
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L ba(AtomicInteger index, Serializable name, V min, V max, Predicate<?> ignoreStrategy) {
-        return ba(index, getPropertyName(name), min, max, ignoreStrategy);
+    public <V> L ba(AtomicInteger index, Serializable field, V min, V max, Predicate<?> ignoreStrategy) {
+        return ba(index, getPropertyName(field), min, max, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L ba(AtomicInteger index, String name, V min, V max, BiPredicate<V, V> ignoreStrategy) {
-        return ba(index, name, min, max, p -> ignoreStrategy.test(min, max));
+    public <V> L ba(AtomicInteger index, String field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return ba(index, field, min, max, p -> ignoreStrategy.test(min, max));
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L ba(AtomicInteger index, String name, V min, V max, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name,
+    public <V> L ba(AtomicInteger index, String field, V min, V max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field,
             new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }, ComparisonOperator.BA,
             getAlias(index), ignoreStrategy));
+    }
+
+    @Override
+    public <V> L ba(AtomicInteger index, ParamedColumnElement field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return ba(index, field, min, max, p -> ignoreStrategy.test(min, max));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <V> L ba(AtomicInteger index, ParamedColumnElement field, V min, V max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(SqlConditionExpressionBuilder.field(field) //
+            .comparisonOperator(ComparisonOperator.BA) //
+            .value(new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }) //
+            .tableAlias(repositoryAlias) //
+            .ignoreStrategy(ignoreStrategy) //
+            .dialect(dialect).build()); //
     }
 
     // ********************************************************************
 
     /** {@inheritDoc} */
     @Override
-    public <V> L nba(AtomicInteger index, Serializable name, V min, V max, BiPredicate<V, V> ignoreStrategy) {
-        return nba(index, getPropertyName(name), min, max, p -> ignoreStrategy.test(min, max));
+    public <V> L nba(AtomicInteger index, Serializable field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return nba(index, getPropertyName(field), min, max, p -> ignoreStrategy.test(min, max));
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L nba(AtomicInteger index, Serializable name, V min, V max, Predicate<?> ignoreStrategy) {
-        return nba(index, getPropertyName(name), min, max, ignoreStrategy);
+    public <V> L nba(AtomicInteger index, Serializable field, V min, V max, Predicate<?> ignoreStrategy) {
+        return nba(index, getPropertyName(field), min, max, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L nba(AtomicInteger index, String name, V min, V max, BiPredicate<V, V> ignoreStrategy) {
-        return nba(index, name, min, max, p -> ignoreStrategy.test(min, max));
+    public <V> L nba(AtomicInteger index, String field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return nba(index, field, min, max, p -> ignoreStrategy.test(min, max));
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L nba(AtomicInteger index, String name, V min, V max, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name,
+    public <V> L nba(AtomicInteger index, String field, V min, V max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field,
             new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }, ComparisonOperator.NBA,
             getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L nba(AtomicInteger index, ParamedColumnElement field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
+        return nba(index, field, min, max, p -> ignoreStrategy.test(min, max));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <V> L nba(AtomicInteger index, ParamedColumnElement field, V min, V max, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(SqlConditionExpressionBuilder.field(field) //
+            .comparisonOperator(ComparisonOperator.BA) //
+            .value(new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }) //
+            .tableAlias(repositoryAlias) //
+            .ignoreStrategy(ignoreStrategy) //
+            .dialect(dialect).build()); //
     }
 
     // ********************************************************************
@@ -189,33 +224,64 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L eq(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return eq(index, name, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
+    public L eq(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L eq(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return eq(index, name, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
+    public L eq(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L eq(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return eq(index, name, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
+    public L eq(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public <R> L eq(AtomicInteger index, String name, R value, Predicate<?> ignoreStrategy) {
-        return eq(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
+    public <R> L eq(AtomicInteger index, String field, R value, Predicate<?> ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <R> L eq(AtomicInteger index, String name, R value, MatchStrategy matchStrategy,
+    public <R> L eq(AtomicInteger index, String field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return eqOrNe(index, ComparisonOperator.EQ, name, value, matchStrategy, ignoreStrategy);
+        return eqOrNe(index, ComparisonOperator.EQ, field, value, matchStrategy, ignoreStrategy);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L eq(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L eq(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L eq(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <R> L eq(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy) {
+        return eq(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <R> L eq(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return eqOrNe(index, ComparisonOperator.EQ, field, value, matchStrategy, ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -266,51 +332,89 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L ne(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return ne(index, name, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
+    public L ne(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ne(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return ne(index, name, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
+    public L ne(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ne(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return ne(index, name, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
+    public L ne(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public <R> L ne(AtomicInteger index, String name, R value, Predicate<?> ignoreStrategy) {
-        return ne(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
+    public <R> L ne(AtomicInteger index, String field, R value, Predicate<?> ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <R> L ne(AtomicInteger index, String name, R value, MatchStrategy matchStrategy,
+    public <R> L ne(AtomicInteger index, String field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return eqOrNe(index, ComparisonOperator.NE, name, value, matchStrategy, ignoreStrategy);
+        return eqOrNe(index, ComparisonOperator.NE, field, value, matchStrategy, ignoreStrategy);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ne(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ne(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ne(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <R> L ne(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy) {
+        return ne(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <R> L ne(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return eqOrNe(index, ComparisonOperator.NE, field, value, matchStrategy, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, String name, R value,
+    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, String field, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, prepareFieldValue(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, prepareFieldValue(value),
             comparisonOperator, matchStrategy, getAlias(index), ignoreStrategy));
-        //        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
-        //                comparisonOperator, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, ParamedColumnElement field, R value,
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, prepareFieldValue(value),
+            comparisonOperator, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
 
     /** {@inheritDoc} */
     @Override
-    public L sw(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L sw(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return sw(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -325,9 +429,18 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L sw(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L sw(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.SW, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L sw(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.SW, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -335,7 +448,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L nsw(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L nsw(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return nsw(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -350,9 +463,18 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L nsw(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L nsw(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.NSW, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L nsw(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.NSW, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -360,7 +482,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L co(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L co(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return co(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -375,9 +497,18 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L co(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L co(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.CO, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L co(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.CO, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -385,7 +516,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L nco(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L nco(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return nco(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -400,9 +531,18 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L nco(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L nco(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.NCO, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L nco(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.NCO, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -410,7 +550,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L ew(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L ew(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return ew(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -425,9 +565,18 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L ew(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L ew(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.EW, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L ew(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.EW, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -435,7 +584,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L newv(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L newv(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return newv(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -450,9 +599,18 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L newv(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L newv(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.NEW, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L newv(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.NEW, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -460,7 +618,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L lk(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L lk(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return lk(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -475,16 +633,25 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L lk(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L lk(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.LK, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L lk(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.LK, matchStrategy, getAlias(index), ignoreStrategy));
     }
     // ****************************************************************************************************************
 
     /** {@inheritDoc} */
     @Override
-    public L nl(AtomicInteger index, SerializableSupplier<String> property, MatchStrategy matchStrategy,
+    public L nl(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         return nl(index, property, property.get(), matchStrategy, ignoreStrategy);
     }
@@ -499,9 +666,18 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L nl(AtomicInteger index, String name, String value, MatchStrategy matchStrategy,
+    public L nl(AtomicInteger index, String field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.NL, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L nl(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.NL, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -522,7 +698,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     public L in(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return in(index, property, property.getAsLong(), v -> ignoreStrategy.test((Integer) v));
+        return in(index, property, property.getAsLong(), v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
@@ -574,7 +750,7 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @Override
     public <T> L in(AtomicInteger index, SerializableToLongFunction<T> property, long value,
         LongPredicate ignoreStrategy) {
-        return in(index, (Serializable) property, value, v -> ignoreStrategy.test((Integer) v));
+        return in(index, (Serializable) property, value, v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
@@ -599,34 +775,67 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L in(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return in(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    public L in(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return in(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L in(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return in(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    public L in(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return in(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L in(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return in(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    public L in(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return in(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public <R> L in(AtomicInteger index, String name, R value, Predicate<?> ignoreStrategy) {
-        return in(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
+    public <R> L in(AtomicInteger index, String field, R value, Predicate<?> ignoreStrategy) {
+        return in(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <R> L in(AtomicInteger index, String name, R value, MatchStrategy matchStrategy,
+    public <R> L in(AtomicInteger index, String field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getInParam(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getInParam(value),
+            ComparisonOperator.IN, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L in(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return in(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L in(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return in(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L in(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return in(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <R> L in(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy) {
+        return in(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <R> L in(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getInParam(value),
             ComparisonOperator.IN, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -710,42 +919,77 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L ni(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return ni(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    public L ni(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return ni(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ni(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return ni(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    public L ni(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return ni(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ni(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return ni(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    public L ni(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return ni(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public <R> L ni(AtomicInteger index, String name, R value, Predicate<?> ignoreStrategy) {
-        return ni(index, name, value, MatchStrategy.AUTO, ignoreStrategy);
+    public <R> L ni(AtomicInteger index, String field, R value, Predicate<?> ignoreStrategy) {
+        return ni(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <R> L ni(AtomicInteger index, String name, R value, MatchStrategy matchStrategy,
+    public <R> L ni(AtomicInteger index, String field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getInParam(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getInParam(value),
             ComparisonOperator.NI, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     /** {@inheritDoc} */
     @Override
+    public L ni(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return ni(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ni(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return ni(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ni(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return ni(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <R> L ni(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy) {
+        return ni(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     @SuppressWarnings("unchecked")
-    public L isn(AtomicInteger index, String name, Boolean value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, value, ComparisonOperator.ISN,
+    public <R> L ni(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getInParam(value),
+            ComparisonOperator.NI, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public L isn(AtomicInteger index, String field, Boolean value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, value, ComparisonOperator.ISN,
             getAlias(index), getIgnoreStrategy()));
     }
 
@@ -764,8 +1008,8 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public L inn(AtomicInteger index, String name, Boolean value) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, value, ComparisonOperator.INN,
+    public L inn(AtomicInteger index, String field, Boolean value) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, value, ComparisonOperator.INN,
             getAlias(index), getIgnoreStrategy()));
     }
 
@@ -822,68 +1066,99 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
-        return ge(index, getPropertyName(name), value, ignoreStrategy);
+    public L ge(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy) {
+        return ge(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
-        return ge(index, getPropertyName(name), value, ignoreStrategy);
+    public L ge(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy) {
+        return ge(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
+    public L ge(AtomicInteger index, SerializableToDoubleFunction<?> field, double value,
         DoublePredicate ignoreStrategy) {
-        return ge(index, getPropertyName(name), value, ignoreStrategy);
+        return ge(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L ge(AtomicInteger index, Serializable name, V value, Predicate<?> ignoreStrategy) {
-        return ge(index, getPropertyName(name), value, ignoreStrategy);
+    public <V> L ge(AtomicInteger index, Serializable field, V value, Predicate<?> ignoreStrategy) {
+        return ge(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L ge(AtomicInteger index, Serializable name, V value, MatchStrategy matchStrategy,
+    public <V> L ge(AtomicInteger index, Serializable field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return ge(index, getPropertyName(name), value, matchStrategy, ignoreStrategy);
+        return ge(index, getPropertyName(field), value, matchStrategy, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return ge(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    public L ge(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return ge(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return ge(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    public L ge(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return ge(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return ge(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    public L ge(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return ge(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L ge(AtomicInteger index, String field, V value, Predicate<?> ignoreStrategy) {
+        return ge(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L ge(AtomicInteger index, String name, V value, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
-            ComparisonOperator.GE, getAlias(index), ignoreStrategy));
+    public <V> L ge(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.GE, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ge(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return ge(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ge(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return ge(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L ge(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return ge(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L ge(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy) {
+        return ge(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L ge(AtomicInteger index, String name, V value, MatchStrategy matchStrategy,
+    public <V> L ge(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.GE, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -940,68 +1215,99 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
-        return gt(index, getPropertyName(name), value, ignoreStrategy);
+    public L gt(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy) {
+        return gt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
-        return gt(index, getPropertyName(name), value, ignoreStrategy);
+    public L gt(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy) {
+        return gt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
+    public L gt(AtomicInteger index, SerializableToDoubleFunction<?> field, double value,
         DoublePredicate ignoreStrategy) {
-        return gt(index, getPropertyName(name), value, ignoreStrategy);
+        return gt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L gt(AtomicInteger index, Serializable name, V value, Predicate<?> ignoreStrategy) {
-        return gt(index, getPropertyName(name), value, ignoreStrategy);
+    public <V> L gt(AtomicInteger index, Serializable field, V value, Predicate<?> ignoreStrategy) {
+        return gt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L gt(AtomicInteger index, Serializable name, V value, MatchStrategy matchStrategy,
+    public <V> L gt(AtomicInteger index, Serializable field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return gt(index, getPropertyName(name), value, matchStrategy, ignoreStrategy);
+        return gt(index, getPropertyName(field), value, matchStrategy, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return gt(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    public L gt(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return gt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return gt(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    public L gt(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return gt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return gt(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    public L gt(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return gt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L gt(AtomicInteger index, String field, V value, Predicate<?> ignoreStrategy) {
+        return gt(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L gt(AtomicInteger index, String name, V value, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
-            ComparisonOperator.GT, getAlias(index), ignoreStrategy));
+    public <V> L gt(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.GT, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L gt(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return gt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L gt(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return gt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L gt(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return gt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L gt(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy) {
+        return gt(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L gt(AtomicInteger index, String name, V value, MatchStrategy matchStrategy,
+    public <V> L gt(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.GT, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -1058,68 +1364,99 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
-        return le(index, getPropertyName(name), value, ignoreStrategy);
+    public L le(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy) {
+        return le(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
-        return le(index, getPropertyName(name), value, ignoreStrategy);
+    public L le(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy) {
+        return le(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
+    public L le(AtomicInteger index, SerializableToDoubleFunction<?> field, double value,
         DoublePredicate ignoreStrategy) {
-        return le(index, getPropertyName(name), value, ignoreStrategy);
+        return le(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L le(AtomicInteger index, Serializable name, V value, Predicate<?> ignoreStrategy) {
-        return le(index, getPropertyName(name), value, ignoreStrategy);
+    public <V> L le(AtomicInteger index, Serializable field, V value, Predicate<?> ignoreStrategy) {
+        return le(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L le(AtomicInteger index, Serializable name, V value, MatchStrategy matchStrategy,
+    public <V> L le(AtomicInteger index, Serializable field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return le(index, getPropertyName(name), value, matchStrategy, ignoreStrategy);
+        return le(index, getPropertyName(field), value, matchStrategy, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return le(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    public L le(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return le(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return le(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    public L le(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return le(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return le(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    public L le(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return le(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L le(AtomicInteger index, String field, V value, Predicate<?> ignoreStrategy) {
+        return le(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L le(AtomicInteger index, String name, V value, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
-            ComparisonOperator.LE, getAlias(index), ignoreStrategy));
+    public <V> L le(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.LE, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L le(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return le(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L le(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return le(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L le(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return le(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L le(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy) {
+        return le(index, field, value, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L le(AtomicInteger index, String name, V value, MatchStrategy matchStrategy,
+    public <V> L le(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.LE, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
@@ -1176,68 +1513,99 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
-        return lt(index, getPropertyName(name), value, ignoreStrategy);
+    public L lt(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy) {
+        return lt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
-        return lt(index, getPropertyName(name), value, ignoreStrategy);
+    public L lt(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy) {
+        return lt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
+    public L lt(AtomicInteger index, SerializableToDoubleFunction<?> field, double value,
         DoublePredicate ignoreStrategy) {
-        return lt(index, getPropertyName(name), value, ignoreStrategy);
+        return lt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L lt(AtomicInteger index, Serializable name, V value, Predicate<?> ignoreStrategy) {
-        return lt(index, getPropertyName(name), value, ignoreStrategy);
+    public <V> L lt(AtomicInteger index, Serializable field, V value, Predicate<?> ignoreStrategy) {
+        return lt(index, getPropertyName(field), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <V> L lt(AtomicInteger index, Serializable name, V value, MatchStrategy matchStrategy,
+    public <V> L lt(AtomicInteger index, Serializable field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return lt(index, getPropertyName(name), value, matchStrategy, ignoreStrategy);
+        return lt(index, getPropertyName(field), value, matchStrategy, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, String name, int value, IntPredicate ignoreStrategy) {
-        return lt(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    public L lt(AtomicInteger index, String field, int value, IntPredicate ignoreStrategy) {
+        return lt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, String name, long value, LongPredicate ignoreStrategy) {
-        return lt(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    public L lt(AtomicInteger index, String field, long value, LongPredicate ignoreStrategy) {
+        return lt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
     }
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, String name, double value, DoublePredicate ignoreStrategy) {
-        return lt(index, name, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    public L lt(AtomicInteger index, String field, double value, DoublePredicate ignoreStrategy) {
+        return lt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L lt(AtomicInteger index, String field, V value, Predicate<?> ignoreStrategy) {
+        return lt(index, field, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L lt(AtomicInteger index, String name, V value, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
-            ComparisonOperator.LT, getAlias(index), ignoreStrategy));
+    public <V> L lt(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
+            ComparisonOperator.LT, matchStrategy, getAlias(index), ignoreStrategy));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L lt(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy) {
+        return lt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Integer) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L lt(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy) {
+        return lt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Long) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L lt(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy) {
+        return lt(index, field, value, (Predicate<?>) v -> ignoreStrategy.test((Double) v));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <V> L lt(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy) {
+        return lt(index, field, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public <V> L lt(AtomicInteger index, String name, V value, MatchStrategy matchStrategy,
+    public <V> L lt(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), name, getFieldValueOperator(value),
+        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
             ComparisonOperator.LT, matchStrategy, getAlias(index), ignoreStrategy));
     }
 

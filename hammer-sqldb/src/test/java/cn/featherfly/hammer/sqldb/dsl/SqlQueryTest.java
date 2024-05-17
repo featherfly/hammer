@@ -57,6 +57,7 @@ public class SqlQueryTest extends JdbcTestBase {
     @BeforeClass
     public void beforeClass() {
         query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        System.err.println(this.getClass().getName() + " init with beforeClass");
     }
 
     @BeforeMethod
@@ -877,6 +878,98 @@ public class SqlQueryTest extends JdbcTestBase {
 
         user = query.find("user").where().eq(User::getId, id).and().expr("{as0}.username = password").single();
         assertNull(user);
+    }
+
+    @Test
+    void conditionExpr2() {
+        Consumer<List<Integer>> assertAge = (ages) -> ages.forEach((age) -> assertEquals(age, 5));
+
+        Integer id = 1;
+        Map<String, Object> user = query.find("user").where().eq(User::getId, id).single();
+        assertEquals(user.get("id"), id);
+
+        // add
+        assertAge.accept(query.find("user").fetch("age").where() //
+            .expression("{0}.age + :add = :age",
+                new ChainMapImpl<String, Object>().putChain("add", 5).putChain("age", 10))//
+            .list());
+
+        // subtract
+        assertAge.accept(query.find("user").fetch("age").where() //
+            .expression("{0}.age - :subtract = :age",
+                new ChainMapImpl<String, Object>().putChain("subtract", 5).putChain("age", 0))//
+            .list());
+
+        // multiply
+        assertAge.accept(query.find("user").fetch("age").where() //
+            .expression("{0}.age * :multiply = :age",
+                new ChainMapImpl<String, Object>().putChain("multiply", 5).putChain("age", 25))//
+            .list());
+
+        // multiply
+        assertAge.accept(query.find("user").fetch("age").where() //
+            .expression("{0}.age / :divide = :age",
+                new ChainMapImpl<String, Object>().putChain("divide", 5).putChain("age", 1))//
+            .list());
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        // add
+        assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
+            .expression("{0}.age + :add = :age",
+                new ChainMapImpl<String, Object>().putChain("add", 5).putChain("age", 10))//
+            .valueList());
+
+        // subtract
+        assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
+            .expression("{0}.age - :subtract = :age",
+                new ChainMapImpl<String, Object>().putChain("subtract", 5).putChain("age", 0))//
+            .valueList());
+
+        // multiply
+        assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
+            .expression("{0}.age * :multiply = :age",
+                new ChainMapImpl<String, Object>().putChain("multiply", 5).putChain("age", 25))//
+            .valueList());
+
+        // multiply
+        assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
+            .expression("{0}.age / :divide = :age",
+                new ChainMapImpl<String, Object>().putChain("divide", 5).putChain("age", 1))//
+            .valueList());
+    }
+
+    @Test
+    void conditionOperationArithmetic() {
+        Consumer<List<Integer>> assertAge = (ages) -> ages.forEach((age) -> assertEquals(age, 5));
+
+        // add
+        assertAge.accept(query.find("user").fetch("age").where().fieldAsNumber("age").add(5).eq(10).list());
+
+        // subtract
+        assertAge.accept(query.find("user").fetch("age").where().fieldAsNumber("age").subtract(5).eq(0).list());
+
+        // multiply
+        assertAge.accept(query.find("user").fetch("age").where().fieldAsNumber("age").multiply(5).eq(25).list());
+
+        // divide
+        assertAge.accept(query.find("user").fetch("age").where().fieldAsNumber("age").divide(5).eq(1).list());
+
+        // add
+        assertAge.accept(
+            query.find(User.class).fetch(User::getAge).where().property(User::getAge).add(5).eq(10).valueList());
+
+        // subtract
+        assertAge.accept(
+            query.find(User.class).fetch(User::getAge).where().property(User::getAge).subtract(5).eq(0).valueList());
+
+        // multiply
+        assertAge.accept(
+            query.find(User.class).fetch(User::getAge).where().property(User::getAge).multiply(5).eq(25).valueList());
+
+        // divide
+        assertAge.accept(
+            query.find(User.class).fetch(User::getAge).where().property(User::getAge).divide(5).eq(1).valueList());
     }
 
     @Test(expectedExceptions = BuilderException.class)

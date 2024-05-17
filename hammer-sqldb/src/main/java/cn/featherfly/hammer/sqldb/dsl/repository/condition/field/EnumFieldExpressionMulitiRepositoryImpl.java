@@ -25,8 +25,8 @@ public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extend
     /**
      * Instantiates a new simple enum property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public EnumFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {
@@ -36,8 +36,8 @@ public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extend
     /**
      * Instantiates a new simple enum property expression.
      *
-     * @param index      the index
-     * @param name       the name
+     * @param index the index
+     * @param name the name
      * @param expression the expression
      */
     public EnumFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,

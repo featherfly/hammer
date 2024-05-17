@@ -13,6 +13,7 @@ import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.builder.SqlBuilder;
+import cn.featherfly.common.db.builder.model.ParamedColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -211,7 +212,26 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     @Override
     public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(comparisonOperator, pm, value, getAlias(index), matchStrategy, ignoreStrategy);
+        return eqOrNe(comparisonOperator, pm, null, value, getAlias(index), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
+        ParamedColumnElement name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        return eqOrNe(comparisonOperator, pm, name, value, getAlias(index), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, ParamedColumnElement field, R value,
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        // IMPLSOON 未实现
+        throw new NotImplementedException();
     }
 
     /**
@@ -243,8 +263,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     //        }
     //    }
 
-    private <V> L eqOrNeEmbedded(ComparisonOperator comparisonOperator, JdbcPropertyMapping propertyMapping, V value,
-        String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    private <V> L eqOrNeEmbedded(ComparisonOperator comparisonOperator, JdbcPropertyMapping propertyMapping,
+        ParamedColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         List<JdbcPropertyMapping> propertyMappings = propertyMapping.getPropertyMappings();
         L logic = null;
         C condition = (C) this;
@@ -260,7 +281,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
                 condition = logic.and();
             }
             logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E1, C, L, C2, ER, B>) condition)
-                .eqOrNe(comparisonOperator, pm, ov, queryAlias, matchStrategy, ignoreStrategy);
+                .eqOrNe(comparisonOperator, pm, name, ov, queryAlias, matchStrategy, ignoreStrategy);
         }
         if (groupable && logic != null) {
             logic = logic.endGroup();
@@ -269,7 +290,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     }
 
     private <V> L eqOrNeToOne(ComparisonOperator comparisonOperator, PropertyMapping<?> joinFromPropertyMapping,
-        V value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        ParamedColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         JdbcClassMapping<?> joinClassMapping = factory.getClassMapping(joinFromPropertyMapping.getPropertyType());
         Collection<JdbcPropertyMapping> propertyMappings = joinClassMapping.getPropertyMappings();
         L logic = null;
@@ -298,7 +320,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
                     condition = logic.and();
                 }
                 logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E1, C, L, C2, ER, B>) condition)
-                    .eqOrNe(comparisonOperator, tv.get0(), tv.get1(), queryAlias, matchStrategy, ignoreStrategy);
+                    .eqOrNe(comparisonOperator, tv.get0(), name, tv.get1(), queryAlias, matchStrategy, ignoreStrategy);
             }
         } else {
             groupable = joinFromPropertyMapping.getPropertyMappings().size() > 1;
@@ -312,7 +334,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
                     condition = logic.and();
                 }
                 logic = ((AbstractMulitiEntitySqlConditionsExpressionBase<E1, C, L, C2, ER, B>) condition)
-                    .eqOrNe(comparisonOperator, pm, ov, queryAlias, matchStrategy, ignoreStrategy);
+                    .eqOrNe(comparisonOperator, pm, name, ov, queryAlias, matchStrategy, ignoreStrategy);
             }
         }
         if (groupable && logic != null) {
@@ -325,47 +347,60 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
      * {@inheritDoc}
      */
     @Override
-    protected <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ParamedColumnElement field,
+        R value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         if (value == null) {
-            return eqOrNe0(comparisonOperator, pm, value, queryAlias, matchStrategy, ignoreStrategy);
+            return eqOrNe0(comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
         }
         if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
             switch (pm.getMode()) {
                 //                case ONE_TO_ONE: TODO ONE_TO_ONE 支持
                 case MANY_TO_ONE:
-                    return eqOrNeToOne(comparisonOperator, pm, value, queryAlias, matchStrategy, ignoreStrategy);
+                    return eqOrNeToOne(comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
                 case EMBEDDED:
-                    return eqOrNeEmbedded(comparisonOperator, (JdbcPropertyMapping) pm, value, queryAlias,
+                    return eqOrNeEmbedded(comparisonOperator, (JdbcPropertyMapping) pm, field, value, queryAlias,
                         matchStrategy, ignoreStrategy);
                 case ONE_TO_MANY:
                     throw new SqldbHammerException("unsupport ONE_TO_MANY for eq");
                 case SINGLE:
-                    return eqOrNe0(comparisonOperator, pm, value, queryAlias, matchStrategy, ignoreStrategy);
+                    return eqOrNe0(comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
                 default:
                     throw new SqldbHammerException("unsupport default Mapping Mode for eq");
             }
         } else {
             for (PropertyMapping<?> spm : pm.getPropertyMappings()) {
                 if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
-                    return eqOrNe(comparisonOperator, spm, value, queryAlias, matchStrategy, ignoreStrategy);
+                    return eqOrNe(comparisonOperator, spm, field, value, queryAlias, matchStrategy, ignoreStrategy);
                 }
             }
         }
         // YUFEI_TEST 需要分支测试
-        return eqOrNe0(comparisonOperator, pm, value, queryAlias, matchStrategy, ignoreStrategy);
+        return eqOrNe0(comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    private <R> L eqOrNe0(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        if (value instanceof Expression) {
-            return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(), value,
-                comparisonOperator, matchStrategy, queryAlias, ignoreStrategy));
+    private <R> L eqOrNe0(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ParamedColumnElement field,
+        R value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        SqlConditionExpressionBuilder.Builder builder = null;
+        if (field == null) {
+            builder = SqlConditionExpressionBuilder.field(pm.getRepositoryFieldName());
         } else {
-            return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-                getFieldValueOperator(pm, value), comparisonOperator, matchStrategy, queryAlias, ignoreStrategy));
+            builder = SqlConditionExpressionBuilder.field(field);
         }
+        return (L) addCondition(builder.dialect(getDialect()) //
+            .comparisonOperator(comparisonOperator) //
+            .value(value instanceof Expression ? value : getFieldValueOperator(pm, value)) //
+            .tableAlias(queryAlias) //
+            .matchStrategy(matchStrategy) //
+            .ignoreStrategy(ignoreStrategy) //
+            .build());
+        //        if (value instanceof Expression) {
+        //            return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(), value,
+        //                comparisonOperator, matchStrategy, queryAlias, ignoreStrategy));
+        //        } else {
+        //            return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
+        //                getFieldValueOperator(pm, value), comparisonOperator, matchStrategy, queryAlias, ignoreStrategy));
+        //        }
     }
 
     // ********************************************************************
