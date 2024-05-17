@@ -20,12 +20,11 @@ import cn.featherfly.hammer.expression.condition.field.DateFieldExpression;
  * EntityDateExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <D> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface EntityDatePropertyExpression<E, D extends Date, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends DateFieldExpression<D, C, L> {
+public interface EntityDatePropertyExpression<D extends Date, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> extends DateFieldExpression<D, C, L> {
 
 }

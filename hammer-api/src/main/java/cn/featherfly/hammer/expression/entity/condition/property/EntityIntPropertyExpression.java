@@ -18,12 +18,11 @@ import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
  * The Interface EntityIntPropertyExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */
 //ENHANCE 后续加入IntExpression<C,L>
-public interface EntityIntPropertyExpression<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends NumberFieldExpression<Integer, C, L> {
+public interface EntityIntPropertyExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends NumberFieldExpression<Integer, C, L> {
 
 }

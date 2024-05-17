@@ -50,17 +50,17 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityPrope
  * EntityPropertyFunctionImpl.
  *
  * @author zhongj
- * @param <E>  the element type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <E> the element type
+ * @param <C> the generic type
+ * @param <L> the generic type
  * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 @SuppressWarnings("unchecked")
 public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L extends LogicExpression<C, L>,
-        C2 extends ConditionConfig<C2>, S extends EntitySqlRelation<S, B>, B extends SqlBuilder>
-        implements EntityPropertyExpression<E, C, L> {
+    C2 extends ConditionConfig<C2>, S extends EntitySqlRelation<S, B>, B extends SqlBuilder>
+    implements EntityPropertyExpression<E, C, L> {
 
     /** The expression. */
     protected final InternalMulitiEntityPropertyOnlyConditionImpl<E, C2, S, B> expression;
@@ -72,8 +72,8 @@ public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L e
     /**
      * Instantiates a new entity property function impl.
      *
-     * @param index    the index
-     * @param factory  the factory
+     * @param index the index
+     * @param factory the factory
      * @param relation the relation
      */
     public EntityPropertyExpressionImpl2(int index, JdbcMappingFactory factory, S relation) {
@@ -87,92 +87,91 @@ public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L e
      */
 
     @Override
-    public EntityIntPropertyExpression<E, C, L> property(SerializableToIntFunction<E> name) {
+    public EntityIntPropertyExpression<C, L> property(SerializableToIntFunction<E> name) {
         return new EntityIntPropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityLongPropertyExpression<E, C, L> property(SerializableToLongFunction<E> name) {
+    public EntityLongPropertyExpression<C, L> property(SerializableToLongFunction<E> name) {
         return new EntityLongPropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityDoublePropertyExpression<E, C, L> property(SerializableToDoubleFunction<E> name) {
+    public EntityDoublePropertyExpression<C, L> property(SerializableToDoubleFunction<E> name) {
         return new EntityDoublePropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityStringPropertyExpression<E, C, L> property(SerializableToStringFunction<E> name) {
+    public EntityStringPropertyExpression<C, L> property(SerializableToStringFunction<E> name) {
         return new EntityStringPropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> EntityNumberPropertyExpression<E, R, C, L> property(
-            SerializableToNumberFunction<E, R> name) {
+    public <
+        R extends Number> EntityNumberPropertyExpression<R, C, L> property(SerializableToNumberFunction<E, R> name) {
         return new EntityNumberPropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> EntityDatePropertyExpression<E, R, C, L> property(SerializableToDateFunction<E, R> name) {
+    public <R extends Date> EntityDatePropertyExpression<R, C, L> property(SerializableToDateFunction<E, R> name) {
         return new EntityDatePropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalDatePropertyExpression<E, C, L> property(SerializableToLocalDateFunction<E> name) {
+    public EntityLocalDatePropertyExpression<C, L> property(SerializableToLocalDateFunction<E> name) {
         return new EntityLocalDatePropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalDateTimePropertyExpression<E, C, L> property(SerializableToLocalDateTimeFunction<E> name) {
+    public EntityLocalDateTimePropertyExpression<C, L> property(SerializableToLocalDateTimeFunction<E> name) {
         return new EntityLocalDateTimePropertyExpressionImpl<>(index, name,
-                (InternalMulitiEntityCondition<L>) expression, factory, expression.getEntityRelation());
+            (InternalMulitiEntityCondition<L>) expression, factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public EntityLocalTimePropertyExpression<E, C, L> property(SerializableToLocalTimeFunction<E> name) {
+    public EntityLocalTimePropertyExpression<C, L> property(SerializableToLocalTimeFunction<E> name) {
         return new EntityLocalTimePropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Enum<R>> EntityEnumPropertyExpression<E, R, C, L> property(
-            SerializableToEnumFunction<E, R> name) {
+    public <R extends Enum<R>> EntityEnumPropertyExpression<R, C, L> property(SerializableToEnumFunction<E, R> name) {
         return new EntityEnumPropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
@@ -181,7 +180,7 @@ public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L e
     @Override
     public <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<E, R> name) {
         return new EntityTypePropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
-                factory, expression.getEntityRelation());
+            factory, expression.getEntityRelation());
     }
 
     /**
@@ -189,7 +188,7 @@ public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L e
      */
     @Override
     public <R extends Collection<T>,
-            T> EntityTypePropertyExpression<T, C, L> property(SerializableToCollectionFunction<E, R, T> name) {
+        T> EntityTypePropertyExpression<T, C, L> property(SerializableToCollectionFunction<E, R, T> name) {
         //        EntityTypePropertyExpression<R, C,
         //                L> exp = new EntityTypePropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression, factory, expression.getEntityRelation());
         // 下面这个类型才是正确的，但是实例化会报错，所以需要特化的EntityTypePropertyExpression实现

@@ -27,50 +27,50 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <L> the generic type
  */
 public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiEntityPropertyExpression<E, C, L> implements EntityDoublePropertyExpression<E, C, L> {
+    extends AbstractMulitiEntityPropertyExpression<E, C, L> implements EntityDoublePropertyExpression<C, L> {
 
     /**
      * Instantiates a new entity double property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityDoublePropertyExpressionImpl(int index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity double property expression impl.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityDoublePropertyExpressionImpl(AtomicInteger index, List<Serializable> propertyList,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
     }
 
     /**
      * Instantiates a new entity double property expression impl.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public EntityDoublePropertyExpressionImpl(int index, SerializableToDoubleFunction<E> name,
-            InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
-            EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
 
@@ -336,7 +336,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L ba(Double min, Double max) {
         return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
-                expression.getIgnoreStrategy());
+            expression.getIgnoreStrategy());
     }
 
     /**
@@ -361,7 +361,7 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
     @Override
     public L nba(Double min, Double max) {
         return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), min, max,
-                expression.getIgnoreStrategy());
+            expression.getIgnoreStrategy());
     }
 
     /**
