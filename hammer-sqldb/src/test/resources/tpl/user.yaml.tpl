@@ -36,6 +36,8 @@ selectSum2: "select sum(age) from ${tpl_wrap('user')} where age > :age"
 selectString2: "select username from ${tpl_wrap('user')} where id = :id"
 selectById: "select <@prop/> from ${tpl_wrap('user')} where id = :id"
 selectById2: "select <@prop repo='user'/> from ${tpl_wrap('user')} where id = :id"
+selectIntList: "select id from ${tpl_wrap('user')} where id < 5"
+selectIntList2: "select id from ${tpl_wrap('user')} where id < :id"
 selectConditions2: >
     select <@prop repo='user'>*</@prop> from <@wrap>user</@wrap>
     <@where>
