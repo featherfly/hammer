@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
-import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.FieldOperator;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -97,13 +96,13 @@ public abstract class AbstractOperate<T> {
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param jdbc                  jdbc
-     * @param classMapping          classMapping
-     * @param databaseMetadata      databaseMetadata
+     * @param jdbc jdbc
+     * @param classMapping classMapping
+     * @param databaseMetadata databaseMetadata
      * @param sqlTypeMappingManager the sql type mapping manager
      */
     public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata) {
+        DatabaseMetadata databaseMetadata) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         meta = databaseMetadata;
@@ -120,7 +119,7 @@ public abstract class AbstractOperate<T> {
         beanDescriptor = BeanDescriptor.getBeanDescriptor(classMapping.getType());
         for (JdbcPropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
             pkProperties.add(
-                    BeanDescriptor.getBeanDescriptor(classMapping.getType()).getBeanProperty(pm.getPropertyFullName()));
+                BeanDescriptor.getBeanDescriptor(classMapping.getType()).getBeanProperty(pm.getPropertyFullName()));
         }
         initSql();
     }
@@ -251,7 +250,7 @@ public abstract class AbstractOperate<T> {
     /**
      * Gets the parameters.
      *
-     * @param entity            the entity
+     * @param entity the entity
      * @param propertyPositions the property positions
      * @return the parameters
      */
@@ -260,7 +259,9 @@ public abstract class AbstractOperate<T> {
         FieldOperator<?>[] operators = new FieldOperator[propertyPositions.size()];
         for (Entry<Integer, JdbcPropertyMapping> propertyPosition : propertyPositions.entrySet()) {
             operators[i] = FieldValueOperator.create(propertyPosition.getValue(),
-                    BeanUtils.getProperty(entity, propertyPosition.getValue().getPropertyFullName()));
+                beanDescriptor.getProperty(entity, propertyPosition.getValue().getPropertyFullName())
+            //
+            );
             i++;
         }
         return operators;

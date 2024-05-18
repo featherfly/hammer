@@ -31,7 +31,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 5. 模板ID（TplExecuteId）字符串格式从namespace@name变更为name@namespace
 
-6. 过滤掉件设置的字段（属性）名添加了加、减、乘、除的数学运算
+6. 过滤条件设置的字段（属性）名添加了加、减、乘、除的数学运算
 
    ```java
    // add
