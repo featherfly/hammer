@@ -191,6 +191,24 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
 
     @Override
     @Test
+    public void testIntList() {
+        int qid = 5;
+        // where id < 5
+        List<Integer> idList = hammer.template("selectIntList", new ChainMapImpl<>()).list(Integer.class);
+        for (Integer id : idList) {
+            assertTrue(id < qid);
+        }
+
+        // where id < :id    (qid)
+        idList = hammer.template("selectIntList2", new ChainMapImpl<String, Object>().putChain("id", qid))
+            .list(Integer.class);
+        for (Integer id : idList) {
+            assertTrue(id < qid);
+        }
+    }
+
+    @Override
+    @Test
     public void testSingle() {
         String username = "yufei";
         String password = "123456";

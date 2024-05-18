@@ -190,6 +190,22 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
+    public void testIntList() {
+        int qid = 5;
+        // where id < 5
+        List<Integer> idList = executor.list("selectIntList", Integer.class, new ChainMapImpl<>());
+        for (Integer id : idList) {
+            assertTrue(id < qid);
+        }
+
+        // where id < :id    (qid)
+        idList = executor.list("selectIntList2", Integer.class, new ChainMapImpl<String, Object>().putChain("id", qid));
+        for (Integer id : idList) {
+            assertTrue(id < qid);
+        }
+    }
+
+    @Test
     public void testSingle() {
         String username = "yufei";
         String password = "123456";
