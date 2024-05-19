@@ -15,9 +15,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.AndTemplateDirectiveModel;
-import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrTemplateDirectiveModel;
-import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereTemplateDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.AndDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereDirectiveModel;
 import cn.featherfly.hammer.tpl.ExecutionType;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteConfigs;
@@ -103,9 +103,9 @@ public class TestTpl {
         /* Create a data-model */
         ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
         Map<String, Object> root = new HashMap<>();
-        root.put("where", new WhereTemplateDirectiveModel());
-        root.put("and", new AndTemplateDirectiveModel(manager));
-        root.put("or", new OrTemplateDirectiveModel(manager));
+        root.put("where", new WhereDirectiveModel());
+        root.put("and", new AndDirectiveModel(manager));
+        root.put("or", new OrDirectiveModel(manager));
 
         root.put("name", "yufei");
         root.put("age", 18);
@@ -143,9 +143,9 @@ public class TestTpl {
         /* Create a data-model */
         ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
         Map<String, Object> root = new HashMap<>();
-        root.put("where", new WhereTemplateDirectiveModel());
-        root.put("and", new AndTemplateDirectiveModel(manager));
-        root.put("or", new OrTemplateDirectiveModel(manager));
+        root.put("where", new WhereDirectiveModel());
+        root.put("and", new AndDirectiveModel(manager));
+        root.put("or", new OrDirectiveModel(manager));
 
         root.put("name", "yufei");
         root.put("age", 18);

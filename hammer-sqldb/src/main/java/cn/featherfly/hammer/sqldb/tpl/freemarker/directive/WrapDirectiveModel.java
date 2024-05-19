@@ -18,18 +18,18 @@ import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateScalarModel;
 
 /**
- * WrapTemplateDirectiveModel.
+ * WrapDirectiveModel.java.
  *
  * @author zhongj
  */
-public class WrapTemplateDirectiveModel implements FreemarkerDirective, WrapDirective {
+public class WrapDirectiveModel implements FreemarkerDirective, WrapDirective {
 
     private Dialect dialect;
 
     /**
      * @param dialect dialect
      */
-    public WrapTemplateDirectiveModel(Dialect dialect) {
+    public WrapDirectiveModel(Dialect dialect) {
         super();
         this.dialect = dialect;
     }
@@ -39,7 +39,7 @@ public class WrapTemplateDirectiveModel implements FreemarkerDirective, WrapDire
      */
     @Override
     public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-            TemplateDirectiveBody body) throws TemplateException, IOException {
+        TemplateDirectiveBody body) throws TemplateException, IOException {
         @SuppressWarnings("unchecked")
         String value = getValue(params);
         if (value == null) {

@@ -14,18 +14,18 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 /**
- * WhereTemplateDirectiveModel.
+ * WhereDirectiveModel.
  *
  * @author zhongj
  */
-public class WhereTemplateDirectiveModel implements FreemarkerDirective, WhereDirective {
+public class WhereDirectiveModel implements FreemarkerDirective, WhereDirective {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-            TemplateDirectiveBody body) throws TemplateException, IOException {
+        TemplateDirectiveBody body) throws TemplateException, IOException {
 
         Writer out = env.getOut();
         if (body != null) {

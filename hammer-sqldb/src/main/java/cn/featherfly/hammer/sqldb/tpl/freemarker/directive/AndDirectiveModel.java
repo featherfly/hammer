@@ -5,18 +5,18 @@ import cn.featherfly.hammer.tpl.directive.AndDirective;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 
 /**
- * AndTemplateDirectiveModel .
+ * AndDirectiveModel .
  *
  * @author zhongj
  */
-public class AndTemplateDirectiveModel extends LogicTemplateDirectiveModel implements AndDirective {
+public class AndDirectiveModel extends LogicDirectiveModel implements AndDirective {
 
     /**
      * Instantiates a new and template directive model.
      *
      * @param conditionParamsManager the condition params manager
      */
-    public AndTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
+    public AndDirectiveModel(ConditionParamsManager conditionParamsManager) {
         super(conditionParamsManager);
     }
 

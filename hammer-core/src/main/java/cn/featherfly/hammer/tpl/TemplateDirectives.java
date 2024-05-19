@@ -10,7 +10,7 @@ import cn.featherfly.hammer.HammerException;
  * <p>
  * TemplateDirectives
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class TemplateDirectives<D> {
@@ -21,10 +21,10 @@ public class TemplateDirectives<D> {
     public static final String PROPERTIES_DIRECTIVE_KEY = "prop";
     public static final String TEMPLATE_INCLUDE_DIRECTIVE_KEY = "tpl";
     public static final String WRAP_DIRECTIVE_KEY = "wrap";
+    public static final String STRING_REPLACE_DIRECTIVE_KEY = "str";
 
-    private static final String[] REQUIRED_KEYS = { WHERE_DIRECTIVE_KEY,
-            AND_DIRECTIVE_KEY, OR_DIRECTIVE_KEY, PROPERTIES_DIRECTIVE_KEY,
-            TEMPLATE_INCLUDE_DIRECTIVE_KEY, WRAP_DIRECTIVE_KEY };
+    private static final String[] REQUIRED_KEYS = { WHERE_DIRECTIVE_KEY, AND_DIRECTIVE_KEY, OR_DIRECTIVE_KEY,
+        PROPERTIES_DIRECTIVE_KEY, TEMPLATE_INCLUDE_DIRECTIVE_KEY, WRAP_DIRECTIVE_KEY };
 
     protected Map<String, D> directiveMap = new HashMap<>();
 
@@ -39,8 +39,7 @@ public class TemplateDirectives<D> {
     public Map<String, D> getDirectiveMapAfterCheck() {
         for (String key : REQUIRED_KEYS) {
             if (!directiveMap.containsKey(key)) {
-                throw new HammerException(
-                        "directive with key " + key + " is null");
+                throw new HammerException("directive with key " + key + " is null");
             }
         }
         return directiveMap;
@@ -68,6 +67,10 @@ public class TemplateDirectives<D> {
 
     public void addWrapDirective(D directive) {
         directiveMap.put(WRAP_DIRECTIVE_KEY, directive);
+    }
+
+    public void addStringReplaceDirective(D directive) {
+        directiveMap.put(STRING_REPLACE_DIRECTIVE_KEY, directive);
     }
 
 }
