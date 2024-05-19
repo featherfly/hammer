@@ -1,8 +1,9 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -30,7 +31,7 @@ import cn.featherfly.common.lang.Randoms;
 public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
-    void testCallQuery() throws SQLException {
+    void callQuery() throws SQLException {
         Connection conn = dataSource.getConnection();
         CallableStatement call = conn.prepareCall("call call_query_user(?)");
         call.setString(1, "yufei%");
@@ -43,7 +44,66 @@ public class JdbcNativeTest extends JdbcTestBase {
     }
 
     @Test
-    void testCallOutArgu() throws SQLException {
+    void callQuery2() throws SQLException {
+        Connection conn = dataSource.getConnection();
+        CallableStatement call = conn.prepareCall("call call_query_user(?)");
+        call.setString("arg_username", "yufei%");
+        boolean b = call.execute();
+        System.out.println("call.execute() = " + b);
+        List<Map<String, Object>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
+        for (Map<String, Object> map : list) {
+            System.out.println(map);
+        }
+    }
+
+    @Test
+    void callMulityQuery() throws SQLException {
+        Connection conn = dataSource.getConnection();
+        CallableStatement call = conn.prepareCall("call call_query_user_by_id2(?)");
+        call.setInt(1, 1);
+        boolean b = call.execute();
+        System.out.println("call.execute() = " + b);
+        List<Map<String, Object>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
+        for (Map<String, Object> map : list) {
+            System.out.println(map);
+        }
+        boolean hasMore = false;
+        while (call.getMoreResults()) {
+            hasMore = true;
+            list = JdbcUtils.getResultSetMaps(call.getResultSet());
+            for (Map<String, Object> map : list) {
+                System.out.println(map);
+            }
+        }
+
+        assertTrue(hasMore);
+    }
+
+    @Test
+    void callMulityQuery2() throws SQLException {
+        Connection conn = dataSource.getConnection();
+        CallableStatement call = conn.prepareCall("call call_query_user_by_id3(?)");
+        call.setInt(1, 1);
+        boolean b = call.execute();
+        System.out.println("call.execute() = " + b);
+        List<Map<String, Object>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
+        for (Map<String, Object> map : list) {
+            System.out.println(map);
+        }
+        int queryNum = 1;
+        while (call.getMoreResults()) {
+            queryNum++;
+            list = JdbcUtils.getResultSetMaps(call.getResultSet());
+            for (Map<String, Object> map : list) {
+                System.out.println(map);
+            }
+        }
+
+        assertEquals(queryNum, 3);
+    }
+
+    @Test
+    void callOutArgu() throws SQLException {
         Connection conn = dataSource.getConnection();
 
         CallableStatement call = conn.prepareCall("call call_update_user_one(?,?,?)");
@@ -57,6 +117,7 @@ public class JdbcNativeTest extends JdbcTestBase {
         System.out.println("meta.getParameterCount() = " + meta.getParameterCount());
         for (int i = 1; i <= meta.getParameterCount(); i++) {
             System.out.println("param:" + i);
+            System.out.println("meta.isNullable() = " + meta.isNullable(i));
             System.out.println("meta.getParameterMode() = " + meta.getParameterMode(i));
             System.out.println("meta.getParameterType() = " + meta.getParameterType(i));
             System.out.println("meta.getParameterTypeName() = " + meta.getParameterTypeName(i));
@@ -80,7 +141,7 @@ public class JdbcNativeTest extends JdbcTestBase {
     }
 
     @Test
-    void testCallOutArgu2() throws SQLException {
+    void callOutArgu2() throws SQLException {
         Connection conn = dataSource.getConnection();
 
         CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
@@ -95,7 +156,7 @@ public class JdbcNativeTest extends JdbcTestBase {
     }
 
     @Test
-    void testCallOutArgu3() throws SQLException {
+    void callOutArgu3() throws SQLException {
         Connection conn = dataSource.getConnection();
         CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
         call.setString("q_name", "name_init%");
@@ -120,7 +181,7 @@ public class JdbcNativeTest extends JdbcTestBase {
     }
 
     @Test
-    void testCallOutArgu4() throws SQLException {
+    void callOutArgu4() throws SQLException {
         Connection conn = dataSource.getConnection();
 
         LinkedHashMap<String, Object> params = new LinkedHashMap<>();
@@ -150,7 +211,7 @@ public class JdbcNativeTest extends JdbcTestBase {
             System.out.println();
 
             if (meta.getParameterMode(i) == ParameterMetaData.parameterModeInOut
-                    || meta.getParameterMode(i) == ParameterMetaData.parameterModeOut) {
+                || meta.getParameterMode(i) == ParameterMetaData.parameterModeOut) {
                 params.put(keys[i - 1], call.getInt(i));
             }
         }

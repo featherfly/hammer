@@ -129,7 +129,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      */
     public <E> List<E> list(Class<E> type) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), type, execution.getParams());
+        return queryRelation.getJdbc().queryList(execution.getExecution(), type, execution.getParams());
     }
 
     /**
@@ -144,7 +144,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      */
     public <E1, E2> List<Tuple2<E1, E2>> list(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), type1, type2, prefixes, execution.getParams());
+        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, prefixes, execution.getParams());
     }
 
     /**
@@ -162,7 +162,7 @@ public class RepositorySqlQueryConditionGroupQuery {
     public <E1, E2, E3> List<Tuple3<E1, E2, E3>> list(Tuple3<String, String, String> prefixes, Class<E1> type1,
         Class<E2> type2, Class<E3> type3) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), type1, type2, type3, prefixes,
+        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, prefixes,
             execution.getParams());
     }
 
@@ -183,7 +183,7 @@ public class RepositorySqlQueryConditionGroupQuery {
     public <E1, E2, E3, E4> List<Tuple4<E1, E2, E3, E4>> list(Tuple4<String, String, String, String> prefixes,
         Class<E1> type1, Class<E2> type2, Class<E3> type3, Class<E4> type4) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), type1, type2, type3, type4, prefixes,
+        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, type4, prefixes,
             execution.getParams());
     }
 
@@ -207,7 +207,7 @@ public class RepositorySqlQueryConditionGroupQuery {
         Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
         Class<E4> type4, Class<E5> type5) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), type1, type2, type3, type4, type5, prefixes,
+        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, type4, type5, prefixes,
             execution.getParams());
     }
 
@@ -233,7 +233,7 @@ public class RepositorySqlQueryConditionGroupQuery {
         Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
         Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), type1, type2, type3, type4, type5, type6,
+        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, type4, type5, type6,
             prefixes, execution.getParams());
     }
 
@@ -246,7 +246,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      */
     public <E> List<E> list(RowMapper<E> rowMapper) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), rowMapper, execution.getParams());
+        return queryRelation.getJdbc().queryList(execution.getExecution(), rowMapper, execution.getParams());
     }
 
     /**
@@ -256,7 +256,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      */
     public List<Map<String, Object>> list() {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().query(execution.getExecution(), execution.getParams());
+        return queryRelation.getJdbc().queryList(execution.getExecution(), execution.getParams());
     }
 
     /**
@@ -282,7 +282,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, params);
+        list = queryRelation.getJdbc().queryList(sql, params);
         pagination.setPageResults(list);
 
         if (limit != null) {
@@ -320,7 +320,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, type, params);
+        list = queryRelation.getJdbc().queryList(sql, type, params);
         pagination.setPageResults(list);
 
         if (limit != null) {
@@ -362,7 +362,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, type1, type2, prefixes, params);
+        list = queryRelation.getJdbc().queryList(sql, type1, type2, prefixes, params);
         pagination.setPageResults(list);
 
         if (limit != null) {
@@ -406,7 +406,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, type1, type2, type3, prefixes, params);
+        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, prefixes, params);
         pagination.setPageResults(list);
 
         if (limit != null) {
@@ -453,7 +453,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, type1, type2, type3, type4, prefixes, params);
+        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, type4, prefixes, params);
         pagination.setPageResults(list);
 
         if (limit != null) {
@@ -502,7 +502,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, type1, type2, type3, type4, type5, prefixes, params);
+        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, type4, type5, prefixes, params);
         pagination.setPageResults(list);
 
         if (limit != null) {
@@ -553,7 +553,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, type1, type2, type3, type4, type5, type6, prefixes, params);
+        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, type4, type5, type6, prefixes, params);
         pagination.setPageResults(list);
 
         if (limit != null) {
@@ -591,7 +591,7 @@ public class RepositorySqlQueryConditionGroupQuery {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.getJdbc().query(sql, rowMapper, params);
+        list = queryRelation.getJdbc().queryList(sql, rowMapper, params);
         pagination.setPageResults(list);
 
         if (limit != null) {

@@ -134,7 +134,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     @Override
     public List<E> list() {
         Execution execution = getExecution();
-        return entityRelation.getJdbc().query(execution.getExecution(), queryType, execution.getParams());
+        return entityRelation.getJdbc().queryList(execution.getExecution(), queryType, execution.getParams());
     }
 
     /**
@@ -150,12 +150,12 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
         if (limit != null) {
             SqlPageQuery<
                 Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
-            List<E> list = entityRelation.getJdbc().query(pageQuery.getSql(), queryType, pageQuery.getParams());
+            List<E> list = entityRelation.getJdbc().queryList(pageQuery.getSql(), queryType, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = entityRelation.getJdbc().queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            List<E> list = entityRelation.getJdbc().query(sql, queryType, params);
+            List<E> list = entityRelation.getJdbc().queryList(sql, queryType, params);
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
         }
@@ -193,12 +193,12 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
         if (limit != null) {
             SqlPageQuery<
                 Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
-            List<V> list = entityRelation.getJdbc().query(pageQuery.getSql(), valueType, pageQuery.getParams());
+            List<V> list = entityRelation.getJdbc().queryList(pageQuery.getSql(), valueType, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = entityRelation.getJdbc().queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            List<V> list = entityRelation.getJdbc().query(sql, valueType, params);
+            List<V> list = entityRelation.getJdbc().queryList(sql, valueType, params);
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
         }
@@ -220,7 +220,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     @Override
     public List<V> valueList() {
         Execution execution = getExecution();
-        return entityRelation.getJdbc().query(execution.getExecution(), valueType, execution.getParams());
+        return entityRelation.getJdbc().queryList(execution.getExecution(), valueType, execution.getParams());
     }
 
     //    /**

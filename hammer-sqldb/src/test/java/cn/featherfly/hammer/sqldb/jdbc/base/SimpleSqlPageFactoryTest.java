@@ -43,7 +43,7 @@ public class SimpleSqlPageFactoryTest extends JdbcTestBase {
 
         SimplePage page = new SimplePage(size, 1);
         SqlPageQuery<Object[]> pageQuery = f.toPage(jdbc.getDialect(), sql, page, params);
-        List<Role> list = jdbc.query(pageQuery.getSql(), Role.class, pageQuery.getParams());
+        List<Role> list = jdbc.queryList(pageQuery.getSql(), Role.class, pageQuery.getParams());
         for (Role role : list) {
             assertTrue(role.getId() > 1);
         }
@@ -53,7 +53,7 @@ public class SimpleSqlPageFactoryTest extends JdbcTestBase {
         final Map<String, Object> params2 = new ChainMapImpl<String, Object>().putChain("id", id);
 
         SqlPageQuery<Map<String, Object>> pageQuery2 = f.toPage(jdbc.getDialect(), sql2, page, params2);
-        list = jdbc.query(pageQuery2.getSql(), Role.class, pageQuery2.getParams());
+        list = jdbc.queryList(pageQuery2.getSql(), Role.class, pageQuery2.getParams());
         for (Role role : list) {
             assertTrue(role.getId() > 1);
         }

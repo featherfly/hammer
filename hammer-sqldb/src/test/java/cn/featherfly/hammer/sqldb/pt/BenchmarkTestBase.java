@@ -42,8 +42,8 @@ public abstract class BenchmarkTestBase {
     @BeforeSuite
     @Parameters({ "dataBase", "url" })
     public void init(@Optional("mysql") String dataBase,
-            @Optional("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true") String url)
-            throws IOException {
+        @Optional("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true") String url)
+        throws IOException {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_none.xml", this.getClass()));
 
         initDataBase(dataBase, url);
@@ -96,7 +96,7 @@ public abstract class BenchmarkTestBase {
         SqlExecutor sqlExecutor = new SqlExecutor(ds);
         sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", this.getClass())));
 
-        dialect = Dialects.MYSQL;
+        dialect = Dialects.mysql();
     }
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
@@ -134,7 +134,7 @@ public abstract class BenchmarkTestBase {
         //        ConstantConfigurator.config("constant.sqlite.yaml");
 
         String path = new File(UriUtils.linkUri(this.getClass().getResource("/").getFile(), "hammer.sqlite3.db"))
-                .getPath();
+            .getPath();
         System.out.println(path);
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName("org.sqlite.JDBC");
@@ -148,7 +148,7 @@ public abstract class BenchmarkTestBase {
         //        sqlExecutor.execute(new File(ClassLoaderUtils.getResource("test.sqlite.sql", JdbcTestBase.class).getFile()));
         sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass())));
 
-        dialect = Dialects.SQLITE;
+        dialect = Dialects.sqlite();
 
     }
 

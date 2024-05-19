@@ -10,6 +10,12 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.util.Map;
+
+import cn.featherfly.common.db.NamedParamSql;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.ParamedQueryExecutor;
+
 /**
  * JdbcQuery.
  *
@@ -17,4 +23,33 @@ package cn.featherfly.hammer.sqldb.jdbc;
  */
 public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle, JdbcQueryUnique, JdbcQueryValue {
 
+    /**
+     * paramed query.
+     *
+     * @param sql sql
+     * @param args args
+     * @return ParamedQueryExecutor
+     */
+    ParamedQueryExecutor query(String sql, Object... args);
+
+    /**
+     * paramed query.
+     *
+     * @param sql sql
+     * @param args args
+     * @return ParamedQueryExecutor
+     */
+    ParamedQueryExecutor query(String sql, Map<String, Object> args);
+
+    /**
+     * paramed query.
+     *
+     * @param sql sql
+     * @param args args
+     * @return ParamedQueryExecutor
+     */
+    default ParamedQueryExecutor query(NamedParamSql sql, Map<String, Object> args) {
+        Execution execution = sql.getExecution(args);
+        return query(execution.getExecution(), execution.getParams());
+    }
 }

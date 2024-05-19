@@ -26,7 +26,7 @@ public class SqlDbConstant extends HammerConstant {
     @Constant("database dataSource")
     private DataSource dataSource;
     @Constant("database dialect")
-    private Dialect dialect = Dialects.MYSQL;
+    private Dialect dialect = Dialects.mysql();
     //    @Constant("database metadata")
     //    private DatabaseMetadata metadata;
     //    @Constant("object mapping factory")

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.repository.ParamedExecutionExecutor;
+import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryUpdate;
@@ -64,7 +64,7 @@ public interface SqldbHammer extends Hammer {
      * @param  params the params
      * @return        the paramed execution executor
      */
-    default ParamedExecutionExecutor sql(String sql, Map<String, Object> params) {
+    default ParamedExecutionExecutorEx sql(String sql, Map<String, Object> params) {
         return dml(sql, params);
     }
 
@@ -75,7 +75,7 @@ public interface SqldbHammer extends Hammer {
      * @param  params the params
      * @return        the paramed execution executor
      */
-    default ParamedExecutionExecutor sql(String sql, Object... params) {
+    default ParamedExecutionExecutorEx sql(String sql, Object... params) {
         return dml(sql, params);
     }
 }

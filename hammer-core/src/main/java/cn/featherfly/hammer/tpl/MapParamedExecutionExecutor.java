@@ -21,8 +21,8 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.ParamedExecutionExecutor;
 import cn.featherfly.common.repository.ParamedMappedExecutor;
+import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.common.repository.mapping.TupleMapperBuilder;
-import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
  * TemplateParamedExecutionExecutor.
@@ -45,9 +45,9 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
     /**
      * Instantiates a new template paramed execution executor.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
+     * @param params the params
      */
     public MapParamedExecutionExecutor(E1 executor, E2 execution, Map<String, Object> params) {
         super();
@@ -77,7 +77,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      */
     @Override
     public <T1, T2, T3> ParamedMappedExecutor<Tuple3<T1, T2, T3>> mapper(Class<T1> type1, Class<T2> type2,
-            Class<T3> type3) {
+        Class<T3> type3) {
         return new PrefixedBeanMapper3Impl<>(executor, execution, params, type1, type2, type3);
     }
 
@@ -86,7 +86,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      */
     @Override
     public <T1, T2, T3, T4> ParamedMappedExecutor<Tuple4<T1, T2, T3, T4>> mapper(Class<T1> type1, Class<T2> type2,
-            Class<T3> type3, Class<T4> type4) {
+        Class<T3> type3, Class<T4> type4) {
         return new PrefixedBeanMapper4Impl<>(executor, execution, params, type1, type2, type3, type4);
     }
 
@@ -95,7 +95,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      */
     @Override
     public <T1, T2, T3, T4, T5> ParamedMappedExecutor<Tuple5<T1, T2, T3, T4, T5>> mapper(Class<T1> type1,
-            Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5) {
+        Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5) {
         return new PrefixedBeanMapper5Impl<>(executor, execution, params, type1, type2, type3, type4, type5);
     }
 
@@ -104,7 +104,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      */
     @Override
     public <T1, T2, T3, T4, T5, T6> ParamedMappedExecutor<Tuple6<T1, T2, T3, T4, T5, T6>> mapper(Class<T1> type1,
-            Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5, Class<T6> type6) {
+        Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5, Class<T6> type6) {
         return new PrefixedBeanMapper6Impl<>(executor, execution, params, type1, type2, type3, type4, type5, type6);
     }
 
@@ -113,7 +113,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      */
     @Override
     public <T> ParamedMappedExecutor<T> mapper(
-            Function<TupleMapperBuilder, ParamedMappedExecutor<T>> mapperBuilderFunction) {
+        Function<TupleMapperBuilder, ParamedMappedExecutor<T>> mapperBuilderFunction) {
         return mapperBuilderFunction.apply(new MapParamsTupleMapperBuilder<>(executor, execution, params));
     }
 
@@ -185,6 +185,14 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
+    public <T> T single(RowMapper<T> rowMapper) {
+        return executor.single(execution, rowMapper, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Map<String, Object> unique() {
         return executor.unique(execution, params);
     }
@@ -195,6 +203,14 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
     @Override
     public <T> T unique(Class<T> mapType) {
         return executor.unique(execution, mapType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T unique(RowMapper<T> rowMapper) {
+        return executor.unique(execution, rowMapper, params);
     }
 
     /**
@@ -217,31 +233,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(int offset, int limit) {
-        return executor.list(execution, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(Class<E> mapType, int offset, int limit) {
-        return executor.list(execution, mapType, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PaginationResults<Map<String, Object>> pagination(int offset, int limit) {
-        return executor.pagination(execution, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> PaginationResults<T> pagination(Class<T> mapType, int offset, int limit) {
-        return executor.pagination(execution, mapType, params, offset, limit);
+    public <T> List<T> list(RowMapper<T> rowMapper) {
+        return executor.list(execution, rowMapper, params);
     }
 }

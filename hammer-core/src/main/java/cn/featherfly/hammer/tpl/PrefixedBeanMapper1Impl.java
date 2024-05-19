@@ -28,17 +28,17 @@ import cn.featherfly.common.structure.page.PaginationResults;
  * @param <T1> the generic type
  */
 public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
-        extends AbstractPrefixEntityMapper<E1, E2, Object, Tuple1<String>> implements PrefixedBeanMapper1<T1> {
+    extends AbstractPrefixEntityMapper<E1, E2, Object, Tuple1<String>> implements PrefixedBeanMapper1<T1> {
 
     private final Class<T1> type1;
 
     /**
      * Instantiates a new tpl prefix entity mapper 1.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param type1     the type 1
+     * @param params the params
+     * @param type1 the type 1
      */
     public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1) {
         this(executor, execution, params, "", type1);
@@ -47,14 +47,14 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
     /**
      * Instantiates a new tpl prefix entity mapper 1.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param prefix    the prefix
-     * @param type1     the type 1
+     * @param params the params
+     * @param prefix the prefix
+     * @param type1 the type 1
      */
     public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Map<String, Object> params, String prefix,
-            Class<T1> type1) {
+        Class<T1> type1) {
         super(executor, execution, params, Tuples.of(prefix));
         this.type1 = type1;
     }
@@ -62,10 +62,10 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
     /**
      * Instantiates a new tpl prefix entity mapper 1.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param type1     the type 1
+     * @param params the params
+     * @param type1 the type 1
      */
     public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Object[] params, Class<T1> type1) {
         this(executor, execution, params, "", type1);
@@ -74,11 +74,11 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
     /**
      * Instantiates a new tpl prefix entity mapper 1.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param prefix    the prefix
-     * @param type1     the type 1
+     * @param params the params
+     * @param prefix the prefix
+     * @param type1 the type 1
      */
     public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Object[] params, String prefix, Class<T1> type1) {
         super(executor, execution, params, Tuples.of(prefix));
@@ -152,10 +152,10 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
     public <T2> PrefixedBeanMapper2<T1, T2> map(String prefix, Class<T2> type) {
         if (params instanceof Map) {
             return new PrefixedBeanMapper2Impl<>(executor, execution, getParamsMap(), type1, type,
-                    Tuples.of(prefixes.get0(), prefix));
+                Tuples.of(prefixes.get0(), prefix));
         } else {
             return new PrefixedBeanMapper2Impl<>(executor, execution, getParams(), type1, type,
-                    Tuples.of(prefixes.get0(), prefix));
+                Tuples.of(prefixes.get0(), prefix));
         }
     }
 }

@@ -135,7 +135,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        return jdbc.query(sql, type, params);
+        return jdbc.queryList(sql, type, params);
     }
 
     /**
@@ -150,12 +150,12 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         if (limit != null) {
             SqlPageQuery<
                 Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
-            List<Map<String, Object>> list = jdbc.query(pageQuery.getSql(), pageQuery.getParams());
+            List<Map<String, Object>> list = jdbc.queryList(pageQuery.getSql(), pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            List<Map<String, Object>> list = jdbc.query(sql, params);
+            List<Map<String, Object>> list = jdbc.queryList(sql, params);
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
         }
@@ -174,12 +174,12 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         if (limit != null) {
             SqlPageQuery<
                 Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
-            List<E> list = jdbc.query(pageQuery.getSql(), type, pageQuery.getParams());
+            List<E> list = jdbc.queryList(pageQuery.getSql(), type, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            List<E> list = jdbc.query(sql, type, params);
+            List<E> list = jdbc.queryList(sql, type, params);
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
         }
@@ -198,12 +198,12 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         if (limit != null) {
             SqlPageQuery<
                 Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
-            List<E> list = jdbc.query(pageQuery.getSql(), rowMapper, pageQuery.getParams());
+            List<E> list = jdbc.queryList(pageQuery.getSql(), rowMapper, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            List<E> list = jdbc.query(sql, rowMapper, params);
+            List<E> list = jdbc.queryList(sql, rowMapper, params);
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
         }

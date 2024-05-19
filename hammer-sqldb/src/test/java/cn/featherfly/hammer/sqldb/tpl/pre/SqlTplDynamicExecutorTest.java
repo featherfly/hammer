@@ -227,55 +227,55 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         assertEquals(list.size(), 0);
 
         list = roleMapper.selectByNameCo("\\_init\\_");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameCo("_init_");
         }
         assertEquals(list.size(), 9);
 
         list = roleMapper.selectByNameSw("n\\_init");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameSw("n_init");
         }
         assertEquals(list.size(), 6);
 
         list = roleMapper.selectByNameEw("init\\_98");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameEw("init_98");
         }
         assertEquals(list.size(), 1);
 
         list = roleMapper.selectByNameCo2("\\_init\\_");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameCo2("_init_");
         }
         assertEquals(list.size(), 9);
 
         list = roleMapper.selectByNameSw2("n\\_init");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameSw2("n_init");
         }
         assertEquals(list.size(), 6);
 
         list = roleMapper.selectByNameEw2("init\\_98");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameEw2("init_98");
         }
         assertEquals(list.size(), 1);
 
         list = roleMapper.selectByNameCo3("\\_init\\_");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameCo3("_init_");
         }
         assertEquals(list.size(), 9);
 
         list = roleMapper.selectByNameSw3("n\\_init");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameSw3("n_init");
         }
         assertEquals(list.size(), 6);
 
         list = roleMapper.selectByNameEw3("init\\_98");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameEw3("init_98");
         }
         assertEquals(list.size(), 1);
@@ -286,7 +286,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         List<Role> list = null;
 
         list = roleMapper.selectByNameCo4("\\_init\\_");
-        if (dialect == Dialects.SQLITE) {
+        if (dialect == Dialects.sqlite()) {
             list = roleMapper.selectByNameCo4("_init_");
         }
         assertEquals(list.size(), 9);

@@ -256,27 +256,48 @@ INSERT INTO `order_info` (`id`, `descp`, `order_id`, `create_user`, `update_user
 
 -- 存储过程
 DROP PROCEDURE if EXISTS `call_query_user`;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `call_query_user`(IN `arg_username` varchar(255))
+CREATE  PROCEDURE `call_query_user`(IN arg_username varchar(255))
 BEGIN
     select * from user where username like arg_username;
 END; 
 
 DROP PROCEDURE if EXISTS `call_query_user_by_id` ;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `call_query_user_by_id`(INOUT `arg_id` varchar(255))
+CREATE  PROCEDURE `call_query_user_by_id`(INOUT `arg_id` varchar(255))
 BEGIN
     select * from user where id = arg_id;
     set arg_id = arg_id + 1;
 END;
 
+DROP PROCEDURE if EXISTS `call_query_user_by_id2` ;
+CREATE  PROCEDURE `call_query_user_by_id2`(INOUT `arg_id` varchar(255))
+BEGIN
+    select * from user where id = arg_id;
+    select * from user_info where user_id = arg_id;
+    select * from `order` where create_user = arg_id;
+    set arg_id = arg_id + 1;
+END;
+
+DROP PROCEDURE if EXISTS `call_query_user_by_id6` ;
+CREATE  PROCEDURE `call_query_user_by_id6`(INOUT `arg_id` varchar(255))
+BEGIN
+    select * from user where id = arg_id;
+    select * from user_info where user_id = arg_id;
+    select * from `order` where create_user = arg_id;
+    select * from `order_info` where create_user = arg_id;
+    select * from `user_role` where user_id = arg_id;
+    select * from `user` where id = arg_id;
+    set arg_id = arg_id + 1;
+END;
+
 DROP PROCEDURE if EXISTS `call_update_user_one` ;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `call_update_user_one`(IN `arg_id` int(0), IN `arg_username` varchar(255), OUT `out_row_count` int(0))
+CREATE  PROCEDURE `call_update_user_one`(IN `arg_id` int(0), IN `arg_username` varchar(255), OUT `out_row_count` int(0))
 BEGIN   
     update user set username = arg_username where id = arg_id;  
     set out_row_count = ROW_COUNT();
 END;
 
 DROP PROCEDURE if EXISTS `call_update_role_more` ;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `call_update_role_more`(IN `q_name` varchar(255), IN `u_descp` varchar(255), OUT `out_row_count` int(0))
+CREATE  PROCEDURE `call_update_role_more`(IN `q_name` varchar(255), IN `u_descp` varchar(255), OUT `out_row_count` int(0))
 BEGIN   
     update role set `descp` = u_descp where `name` like q_name;
     set out_row_count = ROW_COUNT();

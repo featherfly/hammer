@@ -30,15 +30,14 @@ public class JdbcEachTest extends JdbcTestBase {
     void before() {
         PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();
 
+        mappingFactory.getSqlTypeMappingManager()
+            .regist(BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
         mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(App.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
-        mappingFactory.getSqlTypeMappingManager().regist(
-                BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"),
-                platformJavaSqlTypeMapper);
+            BeanDescriptor.getBeanDescriptor(AppVersion.class).getBeanProperty("platform"), platformJavaSqlTypeMapper);
     }
 
     @Test
-    public void testQueryStream() {
+    public void queryEach() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
         Iterator<Map<String, Object>> iter = ids.iterator();
@@ -52,7 +51,7 @@ public class JdbcEachTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQueryStream2() {
+    public void queryEach2() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         //        JdbcTransaction tran = jdbc.beginTransation();
         Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
@@ -66,7 +65,7 @@ public class JdbcEachTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQueryStreamEntity() {
+    public void queryEachEntity() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         Iterable<User> users = jdbc.queryEach("select id,username from user where id in (?,?)", User.class, 1, 2);
         Iterator<User> iter = users.iterator();
@@ -82,7 +81,7 @@ public class JdbcEachTest extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = JdbcException.class, expectedExceptionsMessageRegExp = "[\\s\\S]+close[\\s\\S]*")
-    public void testQueryStreamExceptionConnClosed() {
+    public void queryEachExceptionConnClosed() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
         Iterator<Map<String, Object>> iter = ids.iterator();
@@ -99,7 +98,7 @@ public class JdbcEachTest extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = NoSuchElementException.class)
-    public void testQueryStreamNoSuchElementException() {
+    public void queryEachNoSuchElementException() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id in (?,?)", 1, 2);
         Iterator<Map<String, Object>> iter = ids.iterator();
@@ -113,10 +112,10 @@ public class JdbcEachTest extends JdbcTestBase {
     }
 
     @Test
-    public void testQuery() {
+    public void queryEach3() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         JdbcTransaction tran = jdbc.beginTransation();
-        List<Map<String, Object>> ids = jdbc.query("select * from role where id = ?", 1);
+        List<Map<String, Object>> ids = jdbc.queryList("select * from role where id = ?", 1);
         Iterator<Map<String, Object>> iter = ids.iterator();
         int size = 0;
         while (iter.hasNext()) {

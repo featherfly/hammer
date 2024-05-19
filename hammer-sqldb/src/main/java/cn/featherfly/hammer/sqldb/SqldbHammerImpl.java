@@ -25,7 +25,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.common.repository.ParamedExecutionExecutor;
+import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
@@ -53,8 +53,8 @@ import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.transverter.FuzzyQueryTransverter;
-import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutor;
-import cn.featherfly.hammer.tpl.MapParamedExecutionExecutor;
+import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutorEx;
+import cn.featherfly.hammer.tpl.MapParamedExecutionExecutorEx;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteIdBuilder;
@@ -168,7 +168,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
         TransverterManager transverterManager, InstantiatorFactory instantiatorFactory, HammerConfig hammerConfig) {
         this.jdbc = jdbc;
-        jdbcExecutor = new JdbcExecutor(jdbc, sqlPageFacotry);
+        jdbcExecutor = new JdbcExecutor(jdbc, instantiatorFactory, sqlPageFacotry);
         this.mappingFactory = mappingFactory;
         this.hammerConfig = hammerConfig;
         this.instantiatorFactory = instantiatorFactory;
@@ -2249,16 +2249,16 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor dml(String execution, Map<String, Object> params) {
-        return new MapParamedExecutionExecutor<>(jdbcExecutor, execution, params);
+    public ParamedExecutionExecutorEx dml(String execution, Map<String, Object> params) {
+        return new MapParamedExecutionExecutorEx<>(jdbcExecutor, execution, params);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor dml(String execution, Object... params) {
-        return new ArrayParamedExecutionExecutor<>(jdbcExecutor, execution, params);
+    public ParamedExecutionExecutorEx dml(String execution, Object... params) {
+        return new ArrayParamedExecutionExecutorEx<>(jdbcExecutor, execution, params);
     }
 
     /**
@@ -2273,7 +2273,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(String templateId, Map<String, Object> params) {
+    public ParamedExecutionExecutorEx template(String templateId, Map<String, Object> params) {
         return template(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(templateId), params);
     }
 
@@ -2281,7 +2281,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(String templateId, Object... params) {
+    public ParamedExecutionExecutorEx template(String templateId, Object... params) {
         return template(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(templateId), params);
     }
 
@@ -2289,7 +2289,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+    public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
         Map<String, Object> params) {
         return template(tplExecuteIdBuilder
             .apply(new TplExecuteIdBuilderImpl(hammerConfig.getTemplateConfig().getTplExecuteIdParser())), params);
@@ -2299,7 +2299,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+    public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
         Object... params) {
         return template(tplExecuteIdBuilder
             .apply(new TplExecuteIdBuilderImpl(hammerConfig.getTemplateConfig().getTplExecuteIdParser())), params);
@@ -2309,15 +2309,15 @@ public class SqldbHammerImpl implements SqldbHammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Map<String, Object> params) {
-        return new MapParamedExecutionExecutor<>(sqlTplExecutor, tplExecuteId, params);
+    public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Object> params) {
+        return new MapParamedExecutionExecutorEx<>(sqlTplExecutor, tplExecuteId, params);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params) {
-        return new ArrayParamedExecutionExecutor<>(sqlTplExecutor, tplExecuteId, params);
+    public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Object... params) {
+        return new ArrayParamedExecutionExecutorEx<>(sqlTplExecutor, tplExecuteId, params);
     }
 }
