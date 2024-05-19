@@ -24,17 +24,17 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateScalarModel;
 
 /**
- * LogicTemplateDirectiveModel.
+ * LogicDirectiveModel.
  *
  * @author zhongj
  */
-public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective, LogicDirective {
+public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicDirective {
 
     private static final String BETWEEN = "between";
 
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
-            "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
-            Pattern.CASE_INSENSITIVE);
+        "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
+        Pattern.CASE_INSENSITIVE);
 
     private ConditionParamsManager conditionParamsManager;
 
@@ -43,7 +43,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
      *
      * @param conditionParamsManager conditionParamsManager
      */
-    protected LogicTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
+    protected LogicDirectiveModel(ConditionParamsManager conditionParamsManager) {
         this.conditionParamsManager = conditionParamsManager;
     }
 
@@ -55,7 +55,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
      */
     @Override
     public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-            TemplateDirectiveBody body) throws TemplateException, IOException {
+        TemplateDirectiveBody body) throws TemplateException, IOException {
 
         Boolean ifParam = null;
         String nameParam = null;
@@ -177,7 +177,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
             m = CONDITION_PATTERN.matcher(condition);
             if (!m.matches()) {
                 throw new IllegalArgumentException(
-                        "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
+                    "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
             }
 
             String paramType = null;
@@ -198,7 +198,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 name = m.group(1);
                 if (org.apache.commons.lang3.StringUtils.isBlank(name) || betweenAnd) {
                     throw new IllegalArgumentException("[" + condition + "] "
-                            + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
+                        + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
                 }
             } else if (paramType.startsWith(":")) {
                 if (conditionParamsManager.getParamNamed() != null && conditionParamsManager.getParamNamed() == false) {

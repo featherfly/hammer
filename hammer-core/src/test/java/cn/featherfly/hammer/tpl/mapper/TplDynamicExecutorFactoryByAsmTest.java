@@ -28,7 +28,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.common.repository.ParamedExecutionExecutor;
+import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfigImpl;
@@ -392,13 +392,13 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public ParamedExecutionExecutor dml(String execution, Map<String, Object> params) {
+            public ParamedExecutionExecutorEx dml(String execution, Map<String, Object> params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutor dml(String execution, Object... params) {
+            public ParamedExecutionExecutorEx dml(String execution, Object... params) {
 
                 return null;
             }
@@ -410,39 +410,39 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public ParamedExecutionExecutor template(String templateContent, Map<String, Object> params) {
+            public ParamedExecutionExecutorEx template(String templateContent, Map<String, Object> params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+            public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
                     Map<String, Object> params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Map<String, Object> params) {
+            public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Object> params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutor template(String tplExecuteId, Object... params) {
+            public ParamedExecutionExecutorEx template(String tplExecuteId, Object... params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+            public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
                     Object... params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params) {
+            public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Object... params) {
 
                 return null;
             }

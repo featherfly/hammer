@@ -15,7 +15,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.common.repository.ParamedExecutionExecutor;
+import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
@@ -509,7 +509,7 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor dml(String dml, Map<String, Object> params);
+    ParamedExecutionExecutorEx dml(String dml, Map<String, Object> params);
 
     /**
      * Execution.
@@ -518,7 +518,7 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor dml(String dml, Object... params);
+    ParamedExecutionExecutorEx dml(String dml, Object... params);
 
     /**
      * Template.
@@ -534,7 +534,7 @@ public interface Hammer {
      * @param params       the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor template(String tplExecuteId, Map<String, Object> params);
+    ParamedExecutionExecutorEx template(String tplExecuteId, Map<String, Object> params);
 
     /**
      * Template.
@@ -543,7 +543,7 @@ public interface Hammer {
      * @param params       the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor template(String tplExecuteId, Object... params);
+    ParamedExecutionExecutorEx template(String tplExecuteId, Object... params);
 
     /**
      * Template.
@@ -552,7 +552,7 @@ public interface Hammer {
      * @param params              the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+    ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
             Map<String, Object> params);
 
     /**
@@ -562,7 +562,7 @@ public interface Hammer {
      * @param params              the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+    ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
             Object... params);
 
     /**
@@ -572,7 +572,7 @@ public interface Hammer {
      * @param params       the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Map<String, Object> params);
+    ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Object> params);
 
     /**
      * Template.
@@ -581,5 +581,5 @@ public interface Hammer {
      * @param params       the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params);
+    ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Object... params);
 }

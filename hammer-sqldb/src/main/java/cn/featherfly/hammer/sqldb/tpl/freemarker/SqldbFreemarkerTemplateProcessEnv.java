@@ -2,12 +2,14 @@
 package cn.featherfly.hammer.sqldb.tpl.freemarker;
 
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateProcessEnv;
-import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.AndTemplateDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.AndDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.IncludeDirectiveModel;
-import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrTemplateDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.PropertiesMappingDirectiveModel;
-import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereTemplateDirectiveModel;
-import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WrapTemplateDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.StringReplaceDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WrapDirectiveModel;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.method.StringReplaceMethodModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.method.WrapMethodModel;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerMethod;
@@ -31,7 +33,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createWhereDirective() {
-        return new WhereTemplateDirectiveModel();
+        return new WhereDirectiveModel();
 
     }
 
@@ -40,7 +42,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createAndDirective() {
-        return new AndTemplateDirectiveModel(conditionParamsManager);
+        return new AndDirectiveModel(conditionParamsManager);
     }
 
     /**
@@ -48,7 +50,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createOrDirective() {
-        return new OrTemplateDirectiveModel(conditionParamsManager);
+        return new OrDirectiveModel(conditionParamsManager);
     }
 
     /**
@@ -72,7 +74,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createWrapDirective() {
-        return new WrapTemplateDirectiveModel(dialect);
+        return new WrapDirectiveModel(dialect);
     }
 
     /**
@@ -81,5 +83,21 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
     @Override
     protected FreemarkerMethod createWrapMethode() {
         return new WrapMethodModel(dialect);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FreemarkerDirective createStringReplaceDirective() {
+        return new StringReplaceDirectiveModel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FreemarkerMethod createStringReplaceMethode() {
+        return new StringReplaceMethodModel();
     }
 }

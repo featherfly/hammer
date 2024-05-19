@@ -21,7 +21,7 @@ import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
  * @param <M> the generic type
  */
 public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M extends TemplateMethod>
-        implements TemplateProcessEnv<D, M> {
+    implements TemplateProcessEnv<D, M> {
 
     /** The condition params manager. */
     protected ConditionParamsManager conditionParamsManager;
@@ -165,9 +165,11 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
         directives.addAndDirective(createAndDirective());
         directives.addOrDirective(createOrDirective());
         directives.addPropertiesDirective(createPropertiesDirective());
-        directives.addTemplateIncludeDirective(createIncludeDirective());
         directives.addWrapDirective(createWrapDirective());
+        directives.addStringReplaceDirective(createStringReplaceDirective());
 
+        // include
+        directives.addTemplateIncludeDirective(createIncludeDirective());
         directives.addDirective("sql", createIncludeDirective());
         D directive = createPropertiesDirective();
         if (directive instanceof PropertiesMappingDirective) {
@@ -175,6 +177,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
             p.setParamName("table");
             directives.addDirective("columns", directive);
         }
+        // include
         return directives;
     }
 
@@ -185,6 +188,7 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     public TemplateMethods<M> createMethods() {
         TemplateMethods<M> methods = new TemplateMethods<>();
         methods.addWrapMethode(createWrapMethode());
+        methods.addStringReplaceMethode(createStringReplaceMethode());
         return methods;
     }
 
@@ -236,4 +240,18 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
      * @return WrapMethode
      */
     protected abstract M createWrapMethode();
+
+    /**
+     * Creates the string replace directive.
+     *
+     * @return StringReplaceDirective
+     */
+    protected abstract D createStringReplaceDirective();
+
+    /**
+     * Creates the string replace methode.
+     *
+     * @return StringReplaceMethode
+     */
+    protected abstract M createStringReplaceMethode();
 }

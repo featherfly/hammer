@@ -24,6 +24,7 @@ selectAvg2: select avg(age) from /*<<wrap*/user where age > :age
 selectString2: select username from /*<<wrap*/user where id = :id
 selectById: select /*<<prop*/* from /*<<wrap*/user where id = :id
 selectById2: select /*<<prop repo='user'*/* from /*<<wrap*/user where id = :id
+selectListOrderByAge: select age from /*<<wrap*/user order by age ${sortable}
 selectConditions2: |
     select /*<<prop repo='user'*/* from /*<<wrap*/user
     /*<where*/ where

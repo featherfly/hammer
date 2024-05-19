@@ -11,7 +11,7 @@ import cn.featherfly.hammer.HammerException;
  * <p>
  * TemplateMethodes
  * </p>
- * 
+ *
  * @author zhongj
  */
 public class TemplateMethods<M> {
@@ -21,7 +21,9 @@ public class TemplateMethods<M> {
     // public static final String PROPERTIES_METHOD_KEY = "prop";
     public static final String WRAP_METHOD_KEY = "wrap";
 
-    private static final String[] REQUIRED_KEYS = { WRAP_METHOD_KEY };
+    public static final String STRING_REPLACE_METHOD_KEY = "str";
+
+    private static final String[] REQUIRED_KEYS = { WRAP_METHOD_KEY, STRING_REPLACE_METHOD_KEY };
 
     protected Map<String, M> methodMap = new HashMap<>();
 
@@ -29,7 +31,7 @@ public class TemplateMethods<M> {
 
     /**
      * get prefix
-     * 
+     *
      * @return prefix
      */
     public String getPrefix() {
@@ -38,9 +40,9 @@ public class TemplateMethods<M> {
 
     /**
      * set prefix
-     * 
+     *
      * @param prefix
-     *            prefix
+     *        prefix
      */
     public void setPrefix(String prefix) {
         if (Lang.isNotEmpty(prefix)) {
@@ -67,6 +69,10 @@ public class TemplateMethods<M> {
 
     public void addWrapMethode(M method) {
         addMethode(WRAP_METHOD_KEY, method);
+    }
+
+    public void addStringReplaceMethode(M method) {
+        addMethode(STRING_REPLACE_METHOD_KEY, method);
     }
 
     private String getKey(String key) {

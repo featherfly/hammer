@@ -1,5 +1,9 @@
 新功能
 
+- [x] 存储过程可以有多个查询返回结果，JdbcProcedure加入支持多个查询返回的处理
+
+- [ ] Jdbc加入多语句/多返回值的支持
+
 - [x] 预加载sql模板进行优化，把count sql在加载期预加载到count sql配置属性中（如果能够确定）
 
 - [ ] hammer加入update(entity, Predicate<BeanProperty> ignore)对在更新时需要忽略的对象属性进行帅选
@@ -112,7 +116,7 @@
   ```
 
 - [x] dsl api 更新操作set方法加入set(Consumer<UpdateSetDsl>)用于在链式调用中进行条件帅选
-  
+
   > 例如
 
   ```
@@ -337,7 +341,7 @@
 - [ ] StringConditionExpression加入expression( ...  ,  Consumer<T extends Tuple>)能获取Tuple的重载方法
 
 - [ ] ~~查询返回支持Map支持多对象映射~~ （因为已经实现了Tuple对象映射类型（强类型），所以此功能暂时不考虑了（弱类型，还需要类型转换））
-    map的key为别名,value为映射对象
+  map的key为别名,value为映射对象
 
   > 例如
 
@@ -366,7 +370,7 @@
   ```
 
 - [ ] 查询返回支持Tuple值类型
-  
+
   > 类似Map，但是可以支持强类型，因为是强类型，所以返回数据的个数要与Tuple对象的个数匹配，例如
 
   ```java
@@ -382,11 +386,11 @@
 - [x] Jdbc执行sql加入intercptor
 
 - [x] 分页功能重构，加入PageFactory接口，方便后续扩展，提供默认实现（相当于之前的分页功能）
-  
+
 - [ ] 分页实现高性能分页功能（PageFactory接口的一个实现） 
 
 - [x] 预编译实现对sql hints的支持，即不过滤/*+ */的内容
-  
+
 - [x] 移除对constant模块的强依赖，使用简单的java属性来设置开发模式
 
 - [x] 自定义数据映射加入数据库返回数据到java对象映射时，加入其相关元数据（如列名，表名）进行更具体的映射
@@ -413,10 +417,10 @@
 
 - [x] 实现预编译程序，把下面定义的模板定义预编译为freemarker模板
 
-    1. 快捷实现的标签替换为标签对,例如`/*<<keyword*/user[\n ]`替换为`/*<keyword*/user/*>keyword*/[\n ]`
-    2. 预编译替换替换掉，例如`mobile = /*$=:mobile*/13212345678[\n]`替换为`mobile = :mobile[\n]`
-    3. 条件查询明确[if and or]并替换标签对，例如`/*id??*/id = ?[\n ]`替换为`/*<? id?*/id = ?/*>?*/[\n ]`,`/*name??*/and name = ?[\n ]`替换为`/*<and name??*/name = ?/*>and*/[\n ]`,`/*??*/ or email = ?[\n ]`替换为`/*<or email??*/email = ?/*>or*/[\n ]`
-    4. 条件查询明确条件，例如`/*??*/ username = :username[\n ]`替换为`/*<? username??*/ username = :username/*>?*/[\n ]`
+  1. 快捷实现的标签替换为标签对,例如`/*<<keyword*/user[\n ]`替换为`/*<keyword*/user/*>keyword*/[\n ]`
+  2. 预编译替换替换掉，例如`mobile = /*$=:mobile*/13212345678[\n]`替换为`mobile = :mobile[\n]`
+  3. 条件查询明确[if and or]并替换标签对，例如`/*id??*/id = ?[\n ]`替换为`/*<? id?*/id = ?/*>?*/[\n ]`,`/*name??*/and name = ?[\n ]`替换为`/*<and name??*/name = ?/*>and*/[\n ]`,`/*??*/ or email = ?[\n ]`替换为`/*<or email??*/email = ?/*>or*/[\n ]`
+  4. 条件查询明确条件，例如`/*??*/ username = :username[\n ]`替换为`/*<? username??*/ username = :username/*>?*/[\n ]`
 
   > 例如
 

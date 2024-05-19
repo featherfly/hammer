@@ -38,6 +38,10 @@ selectById: "select <@prop/> from ${tpl_wrap('user')} where id = :id"
 selectById2: "select <@prop repo='user'/> from ${tpl_wrap('user')} where id = :id"
 selectIntList: "select id from ${tpl_wrap('user')} where id < 5"
 selectIntList2: "select id from ${tpl_wrap('user')} where id < :id"
+selectListOrderByAge: "select age from ${tpl_wrap('user')} order by age ${sortable}"
+selectListOrderByAge2: "select age from ${tpl_wrap('user')} order by age ${tpl_str(sortable)}"
+selectListOrderByAge3: "select age from ${tpl_wrap('user')} order by age <@str value=sortable></@str>"
+selectListOrderByAge4: "select age from ${tpl_wrap('user')} order by age <@str>${sortable}</@str>"
 selectConditions2: >
     select <@prop repo='user'>*</@prop> from <@wrap>user</@wrap>
     <@where>

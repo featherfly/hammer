@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.SqlResultSet;
-import cn.featherfly.common.repository.mapping.ResultSet;
+import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.mapping.RowMapper;
 
 /**
@@ -26,19 +26,19 @@ import cn.featherfly.common.repository.mapping.RowMapper;
  * @author zhongj
  * @param <T> the generic type
  */
-public class RowIterable<T> implements Iterable<T> {
+public class RowIterable<T> implements AutoCloseableIterable<T> {
 
-    private @Nonnull ResultSet res;
+    private @Nonnull SqlResultSet res;
 
     private @Nonnull RowMapper<T> mapper;
 
     /**
      * Instantiates a new map row iterable.
      *
-     * @param res    the res
+     * @param res the res
      * @param mapper the mapper
      */
-    public RowIterable(ResultSet res, RowMapper<T> mapper) {
+    public RowIterable(SqlResultSet res, RowMapper<T> mapper) {
         super();
         this.res = res;
         this.mapper = mapper;
@@ -54,7 +54,7 @@ public class RowIterable<T> implements Iterable<T> {
 
     private static class MapRowLazyIterator<T> implements Iterator<T> {
 
-        private @Nonnull ResultSet res;
+        private @Nonnull SqlResultSet res;
 
         private @Nonnull RowMapper<T> mapper;
 
@@ -67,10 +67,10 @@ public class RowIterable<T> implements Iterable<T> {
         /**
          * Instantiates a new map row lazy iterator.
          *
-         * @param res    the res
+         * @param res the res
          * @param mapper the mapper
          */
-        private MapRowLazyIterator(ResultSet res, RowMapper<T> mapper) {
+        private MapRowLazyIterator(SqlResultSet res, RowMapper<T> mapper) {
             super();
             this.res = res;
             this.mapper = mapper;
@@ -89,7 +89,7 @@ public class RowIterable<T> implements Iterable<T> {
             }
             try {
                 forward = true;
-                hasNext = ((SqlResultSet) res).getResultSet().next();
+                hasNext = res.getResultSet().next();
                 return hasNext;
             } catch (SQLException e) {
                 throw new JdbcException(e);
@@ -117,4 +117,15 @@ public class RowIterable<T> implements Iterable<T> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() throws Exception {
+        if (!res.getResultSet().isClosed() && !res.getResultSet().getStatement().isClosed()
+            && !res.getResultSet().getStatement().getConnection().isClosed()) {
+            // AutoCloseConnection, auto close it create object
+            res.getResultSet().getStatement().getConnection().close();
+        }
+    }
 }

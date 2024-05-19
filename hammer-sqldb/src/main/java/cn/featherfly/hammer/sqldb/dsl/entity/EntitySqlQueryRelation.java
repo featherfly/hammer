@@ -341,28 +341,28 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
     public <R> List<R> list(String sql, Object[] params) {
         switch (entityQueryFetchMapping.size()) {
             case 1:
-                return (List<R>) jdbc.query(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
+                return (List<R>) jdbc.queryList(sql, entityFilterableMappingTuple.getOrNull0().getClassMapping().getType(),
                     params);
             case 2:
-                return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
+                return (List<R>) jdbc.queryList(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
                     entityQueryFetchMapping.get(1).getClassMapping().getType(), getFetchAliasTuple2(), params);
             case 3:
-                return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
+                return (List<R>) jdbc.queryList(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
                     entityQueryFetchMapping.get(1).getClassMapping().getType(),
                     entityQueryFetchMapping.get(2).classMapping.getType(), getFetchAliasTuple3(), params);
             case 4:
-                return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
+                return (List<R>) jdbc.queryList(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
                     entityQueryFetchMapping.get(1).getClassMapping().getType(),
                     entityQueryFetchMapping.get(2).classMapping.getType(),
                     entityQueryFetchMapping.get(3).classMapping.getType(), getFetchAliasTuple4(), params);
             case 5:
-                return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
+                return (List<R>) jdbc.queryList(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
                     entityQueryFetchMapping.get(1).getClassMapping().getType(),
                     entityQueryFetchMapping.get(2).classMapping.getType(),
                     entityQueryFetchMapping.get(3).classMapping.getType(),
                     entityQueryFetchMapping.get(4).classMapping.getType(), getFetchAliasTuple5(), params);
             case 6:
-                return (List<R>) jdbc.query(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
+                return (List<R>) jdbc.queryList(sql, entityQueryFetchMapping.get(0).getClassMapping().getType(),
                     entityQueryFetchMapping.get(1).getClassMapping().getType(),
                     entityQueryFetchMapping.get(2).classMapping.getType(),
                     entityQueryFetchMapping.get(3).classMapping.getType(),

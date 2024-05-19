@@ -38,16 +38,16 @@ public class LogicTemplateDirectiveModelTest {
 
     Method getParamName;
 
-    AndTemplateDirectiveModel templateDirectiveModel = new AndTemplateDirectiveModel(
+    AndDirectiveModel templateDirectiveModel = new AndDirectiveModel(
             new ConditionParamsManager(i -> "argu" + i));
 
     public LogicTemplateDirectiveModelTest()
             throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException {
-        Field field = ClassUtils.getField(LogicTemplateDirectiveModel.class, "CONDITION_PATTERN");
+        Field field = ClassUtils.getField(LogicDirectiveModel.class, "CONDITION_PATTERN");
         field.setAccessible(true);
-        conditionPattern = (Pattern) field.get(LogicTemplateDirectiveModel.class);
+        conditionPattern = (Pattern) field.get(LogicDirectiveModel.class);
 
-        getParamName = LogicTemplateDirectiveModel.class.getDeclaredMethod("getParamName", String.class, String.class);
+        getParamName = LogicDirectiveModel.class.getDeclaredMethod("getParamName", String.class, String.class);
         getParamName.setAccessible(true);
     }
 

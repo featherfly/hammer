@@ -33,6 +33,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
+import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
 import cn.featherfly.hammer.tpl.TplExecutor;
@@ -202,6 +203,122 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         idList = executor.list("selectIntList2", Integer.class, new ChainMapImpl<String, Object>().putChain("id", qid));
         for (Integer id : idList) {
             assertTrue(id < qid);
+        }
+    }
+
+    @Test
+    public void testListOrderByAge() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = executor.list("selectListOrderByAge", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "asc"));
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
+        }
+
+        previous = Integer.MAX_VALUE;
+        // where id < :id    (qid)
+        idList = executor.list("selectListOrderByAge", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "desc"));
+        for (Integer id : idList) {
+            assertTrue(previous >= id);
+        }
+    }
+
+    @Test
+    public void testListOrderByAge2() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = executor.list("selectListOrderByAge2", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "asc"));
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
+        }
+
+        previous = Integer.MAX_VALUE;
+        // where id < :id    (qid)
+        idList = executor.list("selectListOrderByAge2", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "desc"));
+        for (Integer id : idList) {
+            assertTrue(previous >= id);
+        }
+    }
+
+    @Test(expectedExceptions = TplException.class)
+    public void testListOrderByAge2Invalid() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = executor.list("selectListOrderByAge2", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "asc; delete from user;"));
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
+        }
+    }
+
+    @Test
+    public void testListOrderByAge3() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = executor.list("selectListOrderByAge3", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "asc"));
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
+        }
+
+        previous = Integer.MAX_VALUE;
+        // where id < :id    (qid)
+        idList = executor.list("selectListOrderByAge3", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "desc"));
+        for (Integer id : idList) {
+            assertTrue(previous >= id);
+        }
+    }
+
+    @Test(expectedExceptions = TplException.class)
+    public void testListOrderByAge3Invalid() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = executor.list("selectListOrderByAge3", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "asc; delete from user;"));
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
+        }
+    }
+
+    @Test
+    public void testListOrderByAge4() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = executor.list("selectListOrderByAge4", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "asc"));
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
+        }
+
+        previous = Integer.MAX_VALUE;
+        // where id < :id    (qid)
+        idList = executor.list("selectListOrderByAge4", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "desc"));
+        for (Integer id : idList) {
+            assertTrue(previous >= id);
+        }
+    }
+
+    @Test(expectedExceptions = TplException.class)
+    public void testListOrderByAge4Invalid() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = executor.list("selectListOrderByAge3", Integer.class,
+            new ChainMapImpl<String, Object>().putChain("sortable", "asc; delete from user;"));
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
         }
     }
 

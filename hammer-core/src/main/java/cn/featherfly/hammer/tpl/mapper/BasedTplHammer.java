@@ -10,7 +10,7 @@ import java.util.function.UnaryOperator;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.common.repository.ParamedExecutionExecutor;
+import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
@@ -361,7 +361,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor dml(String execution, Map<String, Object> params) {
+    public ParamedExecutionExecutorEx dml(String execution, Map<String, Object> params) {
         return hammer.dml(execution, params);
     }
 
@@ -369,7 +369,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor dml(String execution, Object... params) {
+    public ParamedExecutionExecutorEx dml(String execution, Object... params) {
         return hammer.dml(execution, params);
     }
 
@@ -385,7 +385,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(String templateContent, Map<String, Object> params) {
+    public ParamedExecutionExecutorEx template(String templateContent, Map<String, Object> params) {
         return hammer.template(templateContent, params);
     }
 
@@ -393,7 +393,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+    public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
             Map<String, Object> params) {
         return hammer.template(tplExecuteIdBuilder, params);
     }
@@ -402,7 +402,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Object> params) {
         return hammer.template(tplExecuteId, params);
     }
 
@@ -410,7 +410,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(String tplExecuteId, Object... params) {
+    public ParamedExecutionExecutorEx template(String tplExecuteId, Object... params) {
         return hammer.template(tplExecuteId, params);
     }
 
@@ -418,7 +418,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+    public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
             Object... params) {
         return hammer.template(tplExecuteIdBuilder, params);
     }
@@ -427,7 +427,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
-    public ParamedExecutionExecutor template(TplExecuteId tplExecuteId, Object... params) {
+    public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Object... params) {
         return hammer.template(tplExecuteId, params);
     }
 

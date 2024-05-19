@@ -209,6 +209,29 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
 
     @Override
     @Test
+    public void testListOrderByAge() {
+        // where id < 5
+        int previous = -1;
+        List<Integer> idList = hammer
+            .template("selectListOrderByAge", new ChainMapImpl<String, Object>().putChain("sortable", "asc"))
+            .list(Integer.class);
+        for (Integer id : idList) {
+            assertTrue(previous <= id);
+            previous = id;
+        }
+
+        previous = Integer.MAX_VALUE;
+        // where id < :id    (qid)
+        idList = hammer
+            .template("selectListOrderByAge", new ChainMapImpl<String, Object>().putChain("sortable", "desc"))
+            .list(Integer.class);
+        for (Integer id : idList) {
+            assertTrue(previous >= id);
+        }
+    }
+
+    @Override
+    @Test
     public void testSingle() {
         String username = "yufei";
         String password = "123456";

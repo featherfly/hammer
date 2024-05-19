@@ -5,18 +5,18 @@ import cn.featherfly.hammer.tpl.directive.OrDirective;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 
 /**
- * OrTemplateDirectiveModel.
+ * OrDirectiveModel.
  *
  * @author zhongj
  */
-public class OrTemplateDirectiveModel extends LogicTemplateDirectiveModel implements OrDirective {
+public class OrDirectiveModel extends LogicDirectiveModel implements OrDirective {
 
     /**
      * Instantiates a new or template directive model.
      *
      * @param conditionParamsManager conditionParamsManager
      */
-    public OrTemplateDirectiveModel(ConditionParamsManager conditionParamsManager) {
+    public OrDirectiveModel(ConditionParamsManager conditionParamsManager) {
         super(conditionParamsManager);
     }
 
