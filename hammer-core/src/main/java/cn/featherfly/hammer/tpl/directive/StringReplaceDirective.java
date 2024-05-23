@@ -14,5 +14,7 @@ package cn.featherfly.hammer.tpl.directive;
  * @author zhongj
  */
 public interface StringReplaceDirective extends TemplateDirective {
+
+    /** The param name value. */
     String PARAM_NAME_VALUE = "value";
 }

@@ -18,7 +18,9 @@ public class OperatorConfigImpl implements OperatorConfig {
     private int batchSize = 2000;
 
     /**
-     * @param batchSize
+     * Instantiates a new operator config impl.
+     *
+     * @param batchSize the batch size
      */
     public OperatorConfigImpl(int batchSize) {
         super();

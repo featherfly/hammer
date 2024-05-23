@@ -40,7 +40,7 @@ public interface ParamedQueryListExecutor {
      * query list.
      *
      * @param <T> the generic type
-     * @param mappingType the mapping type
+     * @param rowMapper the row mapper
      * @return mapped object
      */
     <T> List<T> list(RowMapper<T> rowMapper);

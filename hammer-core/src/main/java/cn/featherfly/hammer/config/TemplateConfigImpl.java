@@ -180,9 +180,10 @@ public class TemplateConfigImpl implements TemplateConfig {
     }
 
     /**
-     * set includeDirectiveTagNames value
+     * set includeDirectiveTagNames value.
      *
      * @param includeDirectiveTagNames includeDirectiveTagNames
+     * @return the template config impl
      */
     public TemplateConfigImpl setIncludeDirectiveTagNames(String[] includeDirectiveTagNames) {
         this.includeDirectiveTagNames = includeDirectiveTagNames;

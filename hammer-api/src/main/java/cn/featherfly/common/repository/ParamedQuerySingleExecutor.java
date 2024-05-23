@@ -39,7 +39,7 @@ public interface ParamedQuerySingleExecutor {
      * query single.
      *
      * @param <T> the generic type
-     * @param mappingType the mapping type
+     * @param rowMapper the row mapper
      * @return mapped object
      */
     <T> T single(RowMapper<T> rowMapper);

@@ -23,16 +23,17 @@ import cn.featherfly.hammer.sqldb.jdbc.NestedBeanPropertyRowMapper;
  *
  * @author zhongj
  * @param <T1> the generic type
- * @param <T2> the generic type
  */
 public class MulitiQueryRowMapper1Impl<T1> extends AbstractMulitiQueryRowMapper implements MulitiQueryRowMapper1<T1> {
 
     private RowMapper<T1> rowMapper;
 
     /**
-     * @param rowMappers
-     * @param jdbc
-     * @param instantiatorFactory
+     * Instantiates a new muliti query row mapper 1 impl.
+     *
+     * @param rowMapper the row mapper
+     * @param jdbc the jdbc
+     * @param instantiatorFactory the instantiator factory
      */
     public MulitiQueryRowMapper1Impl(RowMapper<T1> rowMapper, Jdbc jdbc, InstantiatorFactory instantiatorFactory) {
         super(new RowMapper[] { rowMapper }, jdbc, instantiatorFactory);

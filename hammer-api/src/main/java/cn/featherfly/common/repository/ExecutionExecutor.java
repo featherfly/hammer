@@ -11,28 +11,28 @@ package cn.featherfly.common.repository;
 import java.util.Map;
 
 /**
- * The Interface ExecutionExecutor.
+ * execution executor.
  *
- * @author     zhongj
- * @param  <E> the element type
+ * @author zhongj
+ * @param <E> the element type
  */
 public interface ExecutionExecutor<E> extends QueryExecutor<E> {
 
     /**
      * execute.
      *
-     * @param  execution the execution
-     * @param  params    the params
-     * @return           executed success size
+     * @param execution the execution
+     * @param params the params
+     * @return executed success size
      */
     int execute(E execution, Object... params);
 
     /**
      * execute.
      *
-     * @param  execution the execution
-     * @param  params    the params
-     * @return           executed success size
+     * @param execution the execution
+     * @param params the params
+     * @return executed success size
      */
     int execute(E execution, Map<String, Object> params);
 }

@@ -39,7 +39,7 @@ public abstract class AbstractElement implements Element {
      * Instantiates a new abstract element.
      *
      * @param namedParamPlaceholder the named param placeholder
-     * @param parser                the parser
+     * @param parser the parser
      */
     public AbstractElement(boolean namedParamPlaceholder, Parser parser) {
         this.parser = parser;
@@ -50,8 +50,8 @@ public abstract class AbstractElement implements Element {
      * Instantiates a new abstract element.
      *
      * @param namedParamPlaceholder the named param placeholder
-     * @param previous              the previous
-     * @param parser                the parser
+     * @param previous the previous
+     * @param parser the parser
      */
     public AbstractElement(boolean namedParamPlaceholder, Element previous, Parser parser) {
         this.parser = parser;
@@ -62,9 +62,9 @@ public abstract class AbstractElement implements Element {
     /**
      * Instantiates a new abstract element.
      *
-     * @param source                the source
+     * @param source the source
      * @param namedParamPlaceholder the named param placeholder
-     * @param parser                the parser
+     * @param parser the parser
      */
     public AbstractElement(CharSequence source, boolean namedParamPlaceholder, Parser parser) {
         super();
@@ -76,9 +76,10 @@ public abstract class AbstractElement implements Element {
     /**
      * Instantiates a new abstract element.
      *
-     * @param source                the source
+     * @param source the source
      * @param namedParamPlaceholder the named param placeholder
-     * @param parser                the parser
+     * @param previous the previous
+     * @param parser the parser
      */
     public AbstractElement(CharSequence source, boolean namedParamPlaceholder, Element previous, Parser parser) {
         super();
@@ -103,7 +104,7 @@ public abstract class AbstractElement implements Element {
      * Instantiates a new abstract element.
      *
      * @param parent the parent
-     * @param value  the value
+     * @param value the value
      */
     public AbstractElement(Element parent, CharSequence value) {
         super();

@@ -17,8 +17,6 @@ public class StringReplaceMethodModel implements FreemarkerMethod, StringReplace
 
     /**
      * Instantiates a new string replace method model.
-     *
-     * @param dialect dialect
      */
     public StringReplaceMethodModel() {
         super();

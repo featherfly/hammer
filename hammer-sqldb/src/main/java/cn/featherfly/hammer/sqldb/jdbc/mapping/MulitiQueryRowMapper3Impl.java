@@ -32,9 +32,11 @@ public class MulitiQueryRowMapper3Impl<T1, T2, T3> extends AbstractMulitiQueryRo
     implements MulitiQueryRowMapper3<T1, T2, T3> {
 
     /**
-     * @param rowMappers
-     * @param jdbc
-     * @param instantiatorFactory
+     * Instantiates a new muliti query row mapper 3 impl.
+     *
+     * @param rowMappers the row mappers
+     * @param jdbc the jdbc
+     * @param instantiatorFactory the instantiator factory
      */
     public MulitiQueryRowMapper3Impl(RowMapper<?>[] rowMappers, Jdbc jdbc, InstantiatorFactory instantiatorFactory) {
         super(rowMappers, jdbc, instantiatorFactory);

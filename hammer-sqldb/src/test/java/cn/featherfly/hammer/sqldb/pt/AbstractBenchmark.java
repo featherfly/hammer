@@ -49,7 +49,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         batchTimes = (total + batchSize - 1) / batchSize;
     }
 
-    @Test
+    @Test(groups = { "prepare", "insert" })
     @Override
     public void insertOne() {
         UserInfo2 userInfo = new UserInfo2();
@@ -81,7 +81,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         System.out.println(Strings.format("{0} testInsertOne second use {1} {2}", getName(), time, unit));
     }
 
-    @Test(dependsOnMethods = "insertOne")
+    @Test(groups = { "prepare", "insert" }, dependsOnMethods = "insertOne")
     @Override
     public void insertOneMulitiTimes() {
         List<UserInfo2> list = new ArrayList<>();
@@ -103,10 +103,10 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         }
         long time = timer.stop();
         System.out.println(Strings.format("{0} testInsertOneMulitiTimes use {1} {2} with {3} loop times", getName(),
-                time, unit, total));
+            time, unit, total));
     }
 
-    @Test(dependsOnMethods = "insertOneMulitiTimes")
+    @Test(groups = { "prepare", "insert" }, dependsOnMethods = "insertOneMulitiTimes")
     @Override
     public void insertBatch() {
         List<List<UserInfo2>> list = new ArrayList<>();
@@ -135,10 +135,10 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         }
         long time = timer.stop();
         System.out.println(Strings.format("{0} testInsertBatch({1}) use {2} {3} with batchSize[{4}] {5} loop times",
-                getName(), total, time, unit, batchSize, batchTimes));
+            getName(), total, time, unit, batchSize, batchTimes));
     }
 
-    @Test(dependsOnMethods = "insertBatch")
+    @Test(groups = "query", dependsOnMethods = "insertBatch")
     @Override
     public void selectById() {
         Timer timer = start();
@@ -153,7 +153,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
     }
 
     @Override
-    @Test(dependsOnMethods = "selectById")
+    @Test(groups = "query", dependsOnMethods = "selectById")
     public void selectByIdMulitiTimes() {
         Timer timer = start();
         Serializable[] ids = new Serializable[total];
@@ -163,14 +163,14 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         doSelectById(ids);
         long time = timer.stop();
         System.out.println(Strings.format("{0} testSelectByIdMulitiTimes use {1} {2} with {3} loop times", getName(),
-                time, unit, total));
+            time, unit, total));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Test(dependsOnMethods = "selectByIdMulitiTimes")
+    @Test(groups = "update", dependsOnMethods = "selectByIdMulitiTimes")
     public void updateOneMulitiTimes() {
         Timer timer = start();
         Serializable[] ids = new Serializable[total];
@@ -179,15 +179,15 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         }
         System.out.println("updateOneMulitiTimes results: " + ArrayUtils.toString(doUpdateById(false, ids)));
         long time = timer.stop();
-        System.out.println(Strings.format("{0} updateOneMulitiTimes use {1} {2} with {3} loop times", getName(), time,
-                unit, total));
+        System.out.println(
+            Strings.format("{0} updateOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Test(dependsOnMethods = "updateOneMulitiTimes")
+    @Test(groups = "update", dependsOnMethods = "updateOneMulitiTimes")
     public void updateBatch() {
         Timer timer = start();
         Serializable[] ids = new Serializable[total];
@@ -196,15 +196,15 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         }
         System.out.println("updateBatch results: " + ArrayUtils.toString(doUpdateById(true, ids)));
         long time = timer.stop();
-        System.out.println(
-                Strings.format("{0} updateBatch use {1} {2} with {3} loop times", getName(), time, unit, total));
+        System.out
+            .println(Strings.format("{0} updateBatch use {1} {2} with {3} loop times", getName(), time, unit, total));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Test(dependsOnMethods = "updateBatch", alwaysRun = true)
+    @Test(groups = "delete", dependsOnMethods = "updateBatch", alwaysRun = true)
     public void deleteOneMulitiTimes() {
         Timer timer = start();
         Serializable[] ids = new Serializable[total];
@@ -213,15 +213,15 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         }
         System.out.println("deleteOneMulitiTimes results: " + ArrayUtils.toString(doDeleteById(false, ids)));
         long time = timer.stop();
-        System.out.println(Strings.format("{0} deleteOneMulitiTimes use {1} {2} with {3} loop times", getName(), time,
-                unit, total));
+        System.out.println(
+            Strings.format("{0} deleteOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Test(dependsOnMethods = "deleteOneMulitiTimes")
+    @Test(groups = "delete", dependsOnMethods = "deleteOneMulitiTimes")
     public void deleteBatch() {
         Timer timer = start();
         Serializable[] ids = new Serializable[total];

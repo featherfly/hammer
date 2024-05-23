@@ -32,8 +32,6 @@ public class StringReplaceDirectiveModel implements FreemarkerDirective, StringR
 
     /**
      * Instantiates a new string replace template directive model.
-     *
-     * @param dialect dialect
      */
     public StringReplaceDirectiveModel() {
         super();

@@ -112,11 +112,11 @@ public interface JdbcProcedure {
      * // use try with resource, auto close
      * try (MulitiQuery query = jdbc.callMultiQuery("procedurename", params)) {
      *      while (query.hasNext()) {
-     *          Map<String,Object> map = query.next();
+     *          Map&lt;String,Object&gt; map = query.next();
      *          // or
      *          User user =  query.next(User.class);
      *          // or
-     *          RowMapper<User> userRowMapper = new ... // your custome RowMapper
+     *          RowMapper&lt;User&gt; userRowMapper = new ... // your custome RowMapper
      *          User user =  query.next(userRowMapper);
      *      }
      * } catch (Exception e) {
@@ -134,7 +134,9 @@ public interface JdbcProcedure {
     /**
      * call procedure muliti-query.
      *
+     * @param <T> the generic type
      * @param name the procedure name
+     * @param mapperFunction the mapper function
      * @param args the args
      * @return muliti-query object
      */

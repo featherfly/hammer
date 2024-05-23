@@ -15,15 +15,12 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
- * ExecutionExecutor.
+ * ParamedMappedExecutor.
  *
- * @author     zhongj
- * @param  <T> the generic type
+ * @author zhongj
+ * @param <T> the generic type
  */
 public interface ParamedMappedExecutor<T> {
-
-    // ----------------------------------------------------------------------------------------------------------------
-
     /**
      * query single.
      *
@@ -48,17 +45,17 @@ public interface ParamedMappedExecutor<T> {
     /**
      * query list.
      *
-     * @param  offset the offset
-     * @param  limit  the limit
-     * @return        mapped object list
+     * @param offset the offset
+     * @param limit the limit
+     * @return mapped object list
      */
     List<T> list(int offset, int limit);
 
     /**
      * query list.
      *
-     * @param  page the page
-     * @return      mapped object list
+     * @param page the page
+     * @return mapped object list
      */
     default List<T> list(Page page) {
         Limit limit = new Limit(page);
@@ -68,17 +65,17 @@ public interface ParamedMappedExecutor<T> {
     /**
      * query page.
      *
-     * @param  offset the offset
-     * @param  limit  the limit
-     * @return        mapped object pagination
+     * @param offset the offset
+     * @param limit the limit
+     * @return mapped object pagination
      */
     PaginationResults<T> pagination(int offset, int limit);
 
     /**
      * query page.
      *
-     * @param  page the page
-     * @return      mapped object pagination
+     * @param page the page
+     * @return mapped object pagination
      */
     default PaginationResults<T> pagination(Page page) {
         Limit limit = new Limit(page);
