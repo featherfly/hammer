@@ -107,7 +107,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param jdbc the jdbc
      * @param mappingFactory the mapping factory
      * @param configFactory the config factory
-     * @param instantiatorFactory the instantiator factor
+     * @param instantiatorFactoryy the instantiator factoryy
      * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,

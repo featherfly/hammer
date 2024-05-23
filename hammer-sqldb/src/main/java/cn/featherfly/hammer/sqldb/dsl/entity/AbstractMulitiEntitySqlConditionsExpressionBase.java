@@ -4625,6 +4625,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param <R> the generic type
      * @param comparisonOperator the comparison operator
      * @param pm the pm
+     * @param name the name
      * @param value the value
      * @param queryAlias the query alias
      * @param matchStrategy the match strategy

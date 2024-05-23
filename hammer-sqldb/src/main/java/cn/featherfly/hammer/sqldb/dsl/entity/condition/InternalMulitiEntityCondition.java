@@ -36,7 +36,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy
@@ -50,7 +49,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy1Object paramsInName,
@@ -64,7 +62,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy
@@ -79,7 +77,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy1Object paramsInName,
@@ -96,7 +94,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy
@@ -110,7 +107,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy
@@ -124,7 +120,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy
@@ -139,7 +135,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param min the min
      * @param max the max
      * @param ignoreStrategy the ignore strategy
@@ -155,7 +151,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -167,7 +162,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -179,7 +173,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -192,7 +185,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -205,7 +197,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -219,7 +210,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -231,7 +222,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -244,7 +235,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -258,7 +249,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -272,7 +263,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -288,7 +279,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -300,7 +290,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -312,7 +301,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -325,7 +313,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -338,7 +325,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -352,7 +338,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -364,7 +350,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -377,7 +363,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -391,7 +377,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -405,7 +391,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -423,7 +409,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param index the index
      * @param comparisonOperator the comparison operator
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -439,7 +424,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param index the index
      * @param comparisonOperator the comparison operator
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -455,7 +440,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -469,7 +453,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -483,7 +467,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -497,7 +480,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -513,7 +496,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -527,7 +509,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -541,7 +523,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -555,7 +536,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -571,7 +552,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -585,7 +565,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -599,7 +579,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -613,7 +592,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -629,7 +608,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -643,7 +621,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -657,7 +635,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -671,7 +648,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -687,7 +664,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -699,7 +675,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -711,7 +686,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -724,7 +698,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -737,7 +710,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -751,7 +723,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -763,7 +735,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -776,7 +748,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -790,7 +762,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -804,7 +776,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -820,7 +792,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -832,7 +803,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -844,7 +814,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -857,7 +826,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -870,7 +838,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -884,7 +851,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -896,7 +863,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -909,7 +876,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -923,7 +890,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -937,7 +904,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <R> the generic type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -975,7 +942,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -987,7 +953,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -999,7 +964,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1012,7 +976,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1025,7 +988,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -1039,7 +1001,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1051,7 +1013,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1064,7 +1026,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1078,7 +1040,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1092,7 +1054,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -1108,7 +1070,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1120,7 +1081,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1132,7 +1092,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1145,7 +1104,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1158,7 +1116,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -1172,7 +1129,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1184,7 +1141,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1197,7 +1154,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1211,7 +1168,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1225,7 +1182,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -1241,7 +1198,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1253,7 +1209,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1265,7 +1220,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1278,7 +1232,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1291,7 +1244,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -1305,7 +1257,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1317,7 +1269,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1330,7 +1282,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1344,7 +1296,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1358,7 +1310,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -1374,7 +1326,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1386,7 +1337,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1398,7 +1348,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1411,7 +1360,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1424,7 +1372,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
@@ -1438,7 +1385,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1450,7 +1397,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1463,7 +1410,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      *
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1477,7 +1424,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
@@ -1491,7 +1438,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param <V> the value type
      * @param index the index
      * @param pm the pm
-     * @param paramsForProperty the params for property
+     * @param name the name
      * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy

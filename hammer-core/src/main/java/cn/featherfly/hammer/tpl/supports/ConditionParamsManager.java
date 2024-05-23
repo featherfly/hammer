@@ -28,6 +28,8 @@ public class ConditionParamsManager {
 
         /**
          * Instantiates a new param.
+         *
+         * @param name the name
          */
         public Param(String name) {
             this(name, null);
@@ -36,7 +38,7 @@ public class ConditionParamsManager {
         /**
          * Instantiates a new param.
          *
-         * @param name        the name
+         * @param name the name
          * @param transverter the transverter
          */
         public Param(String name, String transverter) {
@@ -265,7 +267,7 @@ public class ConditionParamsManager {
     /**
      * Filter name.
      *
-     * @param paramName the param name
+     * @param index the index
      * @return true, if successful
      */
     public boolean filterParamIndex(int index) {
@@ -273,7 +275,7 @@ public class ConditionParamsManager {
     }
 
     /**
-     * get indexToName value
+     * get indexToName value.
      *
      * @return indexToName
      */

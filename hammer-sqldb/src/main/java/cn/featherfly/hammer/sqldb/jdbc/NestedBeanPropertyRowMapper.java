@@ -405,13 +405,13 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
 
-        ResultSetMetaData rsmd = rs.getMetaData();
-        int columnCount = rsmd.getColumnCount();
         Set<String> populatedProperties = isCheckFullyPopulated() ? new HashSet<>() : null;
 
         MappingDebugMessage mappingDebugMessage = new MappingDebugMessage(logger.isDebugEnabled());
 
         if (rowNumber == 0) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
             mappings = new ArrayList<>();
             //            @SuppressWarnings("unchecked")
             //            Class<T> mappedType = (Class<T>) mappedObject.getClass();

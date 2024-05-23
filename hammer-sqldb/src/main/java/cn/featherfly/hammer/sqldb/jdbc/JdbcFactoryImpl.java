@@ -36,6 +36,7 @@ public class JdbcFactoryImpl implements JdbcFactory {
     /** The metadata. */
     protected final DatabaseMetadata metadata;
 
+    /** The instantiator factory. */
     protected final InstantiatorFactory instantiatorFactory;
 
     /**
@@ -45,7 +46,6 @@ public class JdbcFactoryImpl implements JdbcFactory {
      * @param metadata the metadata
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param instantiatorFactory the instantiator factory
-     * @param classLoader the class loader
      */
     public JdbcFactoryImpl(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager sqlTypeMappingManager,
         InstantiatorFactory instantiatorFactory) {

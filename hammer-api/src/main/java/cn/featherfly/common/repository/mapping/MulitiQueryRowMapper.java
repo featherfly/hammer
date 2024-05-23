@@ -14,8 +14,14 @@ import com.speedment.common.tuple.Tuple;
  * MulitiQueryRowMapper.
  *
  * @author zhongj
+ * @param <T> the generic type
  */
 public interface MulitiQueryRowMapper<T extends Tuple> {
 
+    /**
+     * Gets the row mappers.
+     *
+     * @return the row mappers
+     */
     RowMapper<?>[] getRowMappers();
 }

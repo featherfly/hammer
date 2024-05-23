@@ -354,6 +354,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * Gets the field value operator.
      *
      * @param <R> the generic type
+     * @param paramsForField the params for field
      * @param pm the pm
      * @param value the value
      * @return the field value operator
@@ -378,7 +379,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * Gets the field value operator.
      *
-     * @param <R> the generic type
+     * @param paramsForField the params for field
      * @param value the value
      * @return the field value operator
      */
@@ -390,6 +391,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * Prepare field value.
      *
+     * @param paramsForField the params for field
      * @param value the value
      * @return the object
      */

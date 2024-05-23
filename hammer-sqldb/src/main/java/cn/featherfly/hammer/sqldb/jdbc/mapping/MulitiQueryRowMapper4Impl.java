@@ -33,9 +33,11 @@ public class MulitiQueryRowMapper4Impl<T1, T2, T3, T4> extends AbstractMulitiQue
     implements MulitiQueryRowMapper4<T1, T2, T3, T4> {
 
     /**
-     * @param rowMappers
-     * @param jdbc
-     * @param instantiatorFactory
+     * Instantiates a new muliti query row mapper 4 impl.
+     *
+     * @param rowMappers the row mappers
+     * @param jdbc the jdbc
+     * @param instantiatorFactory the instantiator factory
      */
     public MulitiQueryRowMapper4Impl(RowMapper<?>[] rowMappers, Jdbc jdbc, InstantiatorFactory instantiatorFactory) {
         super(rowMappers, jdbc, instantiatorFactory);

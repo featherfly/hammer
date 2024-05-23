@@ -42,6 +42,7 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
      * Instantiates a new jdbc executor.
      *
      * @param jdbc the jdbc
+     * @param instantiatorFactory the instantiator factory
      * @param sqlPageFactory the sql page factory
      */
     public JdbcExecutor(Jdbc jdbc, InstantiatorFactory instantiatorFactory, SqlPageFactory sqlPageFactory) {
@@ -1089,7 +1090,7 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
     }
 
     /**
-     * get jdbc value
+     * get jdbc value.
      *
      * @return jdbc
      */
@@ -1098,7 +1099,7 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
     }
 
     /**
-     * get sqlPageFactory value
+     * get sqlPageFactory value.
      *
      * @return sqlPageFactory
      */

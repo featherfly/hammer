@@ -15,6 +15,7 @@ import java.util.List;
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <R> the generic type
  */
 public interface ResultSetExtractor<E, R extends ResultSet> {
 

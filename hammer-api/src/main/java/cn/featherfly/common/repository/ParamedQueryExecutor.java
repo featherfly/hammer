@@ -21,7 +21,7 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.repository.mapping.TupleMapperBuilder;
 
 /**
- * ExecutionExecutor.
+ * ParamedQueryExecutor.
  *
  * @author zhongj
  */

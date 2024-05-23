@@ -12,7 +12,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
-import cn.featherfly.common.asm.AsmInstantiatorFactory;
+import cn.featherfly.common.bean.AsmInstantiatorFactory;
 import cn.featherfly.common.bean.InstantiatorFactory;
 import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
 import cn.featherfly.common.db.SqlExecutor;

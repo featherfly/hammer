@@ -12,6 +12,7 @@ public class CommentElement extends AbstractElement {
      * Instantiates a new comment element.
      *
      * @param source the source
+     * @param previous the previous
      * @param parser the parser
      */
     public CommentElement(CharSequence source, Element previous, Parser parser) {

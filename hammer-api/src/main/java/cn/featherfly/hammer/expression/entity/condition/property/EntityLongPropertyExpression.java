@@ -18,7 +18,6 @@ import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
  * The Interface EntityLongPropertyExpression.
  *
  * @author zhongj
- * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
  */

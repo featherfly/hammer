@@ -37,6 +37,7 @@ public class HammerConfigImpl implements HammerConfig {
     private Supplier<ClassLoader> classLoaderSupplier = () -> Thread.currentThread().getContextClassLoader();
 
     /**
+     * Instantiates a new hammer config impl.
      */
     public HammerConfigImpl() {
         this(false);
@@ -71,6 +72,7 @@ public class HammerConfigImpl implements HammerConfig {
      * Sets the dsl config.
      *
      * @param dslConfig the new dsl config
+     * @return the hammer config impl
      */
     public HammerConfigImpl setDslConfig(DslConfig dslConfig) {
         this.dslConfig = dslConfig;
@@ -81,6 +83,7 @@ public class HammerConfigImpl implements HammerConfig {
      * Sets the validator.
      *
      * @param validator the new validator
+     * @return the hammer config impl
      */
     public HammerConfigImpl setValidator(Validator validator) {
         this.validator = validator;
@@ -88,15 +91,22 @@ public class HammerConfigImpl implements HammerConfig {
     }
 
     /**
-     * set templateConfig value
+     * set templateConfig value.
      *
      * @param templateConfig templateConfig
+     * @return the hammer config impl
      */
     public HammerConfigImpl setTemplateConfig(TemplateConfigImpl templateConfig) {
         this.templateConfig = templateConfig;
         return this;
     }
 
+    /**
+     * Sets the class loader supplier.
+     *
+     * @param classLoaderSupplier the class loader supplier
+     * @return the hammer config impl
+     */
     public HammerConfigImpl setClassLoaderSupplier(Supplier<ClassLoader> classLoaderSupplier) {
         this.classLoaderSupplier = classLoaderSupplier;
         return this;
@@ -119,7 +129,7 @@ public class HammerConfigImpl implements HammerConfig {
     }
 
     /**
-     * get devMode value
+     * get devMode value.
      *
      * @return devMode
      */

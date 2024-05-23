@@ -1161,7 +1161,7 @@ public class TplDynamicExecutorFactory implements Opcodes {
                     methodNode.visitVarInsn(Asm.getLoadCode(parameter.getType()), paramIndex + 1);
                     if (parameter.getType().isPrimitive()) {
                         methodNode.visitMethodInsn(INVOKESTATIC, Asm.getPrimitiveWrapperName(parameter.getType()),
-                            Asm.PRIMITIVE_WRAPPER_METHOD, Asm.getPrimitiveWrapperMethodDescriptor(parameter.getType()),
+                            Asm.PRIMITIVE_BOXING_METHOD, Asm.getPrimitiveBoxingMethodDescriptor(parameter.getType()),
                             false);
                     }
                     if (commonParamIndex == 1) {

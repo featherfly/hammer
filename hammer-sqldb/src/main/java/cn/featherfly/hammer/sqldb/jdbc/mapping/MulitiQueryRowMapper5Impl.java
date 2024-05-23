@@ -34,9 +34,11 @@ public class MulitiQueryRowMapper5Impl<T1, T2, T3, T4, T5> extends AbstractMulit
     implements MulitiQueryRowMapper5<T1, T2, T3, T4, T5> {
 
     /**
-     * @param rowMappers
-     * @param jdbc
-     * @param instantiatorFactory
+     * Instantiates a new muliti query row mapper 5 impl.
+     *
+     * @param rowMappers the row mappers
+     * @param jdbc the jdbc
+     * @param instantiatorFactory the instantiator factory
      */
     public MulitiQueryRowMapper5Impl(RowMapper<?>[] rowMappers, Jdbc jdbc, InstantiatorFactory instantiatorFactory) {
         super(rowMappers, jdbc, instantiatorFactory);

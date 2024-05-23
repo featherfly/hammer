@@ -9,7 +9,7 @@
 package cn.featherfly.common.repository;
 
 /**
- * ExecutionExecutor.
+ * ParamedExecutionExecutor.
  *
  * @author zhongj
  */

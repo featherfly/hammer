@@ -25,7 +25,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
- * QueryExecutor.
+ * MapParamsQueryExecutor.
  *
  * @author zhongj
  * @param <E0> the generic type

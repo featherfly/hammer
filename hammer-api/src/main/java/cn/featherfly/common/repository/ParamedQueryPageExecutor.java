@@ -17,7 +17,7 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
- * ParamedQueryListExecutor.
+ * ParamedQueryPageExecutor.
  *
  * @author zhongj
  */

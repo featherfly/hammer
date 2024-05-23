@@ -20,7 +20,7 @@ import org.hibernate.validator.HibernateValidator;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.asm.AsmInstantiatorFactory;
+import cn.featherfly.common.bean.AsmInstantiatorFactory;
 import cn.featherfly.common.bean.InstantiatorFactory;
 import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
