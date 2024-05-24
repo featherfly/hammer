@@ -35,24 +35,24 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
      * Instantiates a new properties mapping directive model.
      *
      * @param mappingFactory mappingFactory
-     * @param manager        the manager
-     * @param resultTypes    the result types
+     * @param manager the manager
+     * @param resultTypes the result types
      */
     public PropertiesMappingDirectiveModel(JdbcMappingFactory mappingFactory, PropertiesMappingManager manager,
-            Class<?>... resultTypes) {
+        Class<?>... resultTypes) {
         this(DEFAULT_PARAM_NAME_NAME, mappingFactory, manager, resultTypes);
     }
 
     /**
      * Instantiates a new properties mapping directive model.
      *
-     * @param paramName      paramName
+     * @param paramName paramName
      * @param mappingFactory mappingFactory
-     * @param manager        the manager
-     * @param resultTypes    the result types
+     * @param manager the manager
+     * @param resultTypes the result types
      */
     public PropertiesMappingDirectiveModel(String paramName, JdbcMappingFactory mappingFactory,
-            PropertiesMappingManager manager, Class<?>... resultTypes) {
+        PropertiesMappingManager manager, Class<?>... resultTypes) {
         super(paramName, mappingFactory, manager, resultTypes);
         // FIXME 这里暂时还没有把接口抽出来，暂时只定义了一个接口符号，后续来改
         this.mappingFactory = mappingFactory;
@@ -63,7 +63,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
      */
     @Override
     public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-            TemplateDirectiveBody body) throws TemplateException, IOException {
+        TemplateDirectiveBody body) throws TemplateException, IOException {
         String nameParam = null;
         String aliasParam = null;
         Class<?> mappingType = null;
@@ -93,7 +93,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
                     mappingType = Class.forName(mappingClassName);
                 } catch (ClassNotFoundException e) {
                     throw new TplException("The \"" + PARAM_NAME_MAPPING + "\" parameter " + mappingClassName
-                            + " exception -> " + e.getMessage());
+                        + " exception -> " + e.getMessage());
                 }
             } else {
                 throw new TplException("Unsupported parameter: " + paramName);
@@ -112,7 +112,7 @@ public class PropertiesMappingDirectiveModel extends PropertiesMappingDirective 
         if (mappingType == null) {
             if (Lang.isEmpty(nameParam)) {
                 throw new TplException(
-                        "The \"" + paramName + "\" parameter " + "can not be null when result type is not mapped");
+                    "The \"" + paramName + "\" parameter " + "can not be null when result type is not mapped");
             }
         } else {
             classMapping = mappingFactory.getClassMapping(mappingType);

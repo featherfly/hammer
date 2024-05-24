@@ -17,28 +17,28 @@ public class DynamicTplExecutorScanSpringRegistor extends DynamicTplExecutorSpri
     /**
      * Instantiates a new dynamic tpl executor scan spring registor.
      *
-     * @param basePackages          basePackages
-     * @param hammerReference       hammerReference
+     * @param basePackages basePackages
+     * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
      */
     public DynamicTplExecutorScanSpringRegistor(Set<String> basePackages, String hammerReference,
-            String hammerConfigReference) {
+        String hammerConfigReference) {
         this(basePackages, hammerReference, hammerConfigReference, null);
     }
 
     /**
      * Instantiates a new dynamic tpl executor scan spring registor.
      *
-     * @param basePackages          the base packages
-     * @param hammerReference       hammerReference
+     * @param basePackages the base packages
+     * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
-     * @param classLoader           the class loader
+     * @param classLoader the class loader
      */
     public DynamicTplExecutorScanSpringRegistor(Set<String> basePackages, String hammerReference,
-            String hammerConfigReference, ClassLoader classLoader) {
+        String hammerConfigReference, ClassLoader classLoader) {
         super(hammerReference, hammerConfigReference, classLoader);
         Set<MetadataReader> metadataReaders = new ClassPathScanningProvider()
-                .findMetadata(basePackages.toArray(new String[] {}));
+            .findMetadata(basePackages.toArray(new String[basePackages.size()]));
         CollectionUtils.addAll(getMetadataReaders(), metadataReaders);
         setClassLoader(classLoader);
     }

@@ -1,10 +1,10 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.util.List;
-import java.util.Map;
 
 import com.speedment.common.tuple.Tuple2;
 
+import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -23,41 +23,18 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
 
-    //    /**
-    //     * 使用给定数据源以及给定对象生成更新操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成更新操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-    //            String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
-
     /**
      * 使用给定数据源以及给定对象生成更新操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
      */
     public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
     }
 
     /**
@@ -65,11 +42,12 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getUpdateSqlAndParamPositions(classMapping, jdbc.getDialect());
+        Tuple2<String,
+            JdbcPropertyMapping[]> tuple = ClassMappingUtils.getUpdateSqlAndMappings(classMapping, jdbc.getDialect());
         sql = tuple.get0();
-        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
+
+        setParamsPropertyAndMappings(tuple.get1());
     }
 
     /**

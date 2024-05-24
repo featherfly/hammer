@@ -2,9 +2,12 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.sql.ResultSet;
+import java.util.function.BiConsumer;
 
-import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.bean.Instantiator;
+import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuples;
+
+import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -18,26 +21,44 @@ import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
  * 数据库操作的抽象类.
  *
  * @author zhongj
- * @since 0.1.0
  * @param <T> 对象类型
+ * @since 0.1.0
  */
 public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> implements QueryOperate<T> {
 
-    private final Instantiator<T> instantiator;
+    /** The entity property mappings order by sql select. */
+    protected Tuple2<BiConsumer<T, Object>, JdbcPropertyMapping>[] fetchPropertyMappings;
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
      * @param jdbc the jdbc
      * @param classMapping the class mapping
-     * @param instantiator the instantiator
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
      */
-    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, Instantiator<T> instantiator,
-        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
-        this.instantiator = instantiator;
+    @SuppressWarnings("unchecked")
+    public AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata,
+        PropertyAccessor<T> propertyAccessor) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
+
+        Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getSelectColumnsSqlAndMappings(classMapping,
+            null, jdbc.getDialect());
+        fetchPropertyMappings = new Tuple2[tuple.get1().length];
+        int i = 0;
+        for (JdbcPropertyMapping mapping : tuple.get1()) {
+            if (mapping.getPropertyIndexes().length > 1) {
+                fetchPropertyMappings[i] = Tuples.of(
+                    (entity, value) -> propertyAccessor.setPropertyValue(entity, mapping.getPropertyIndexes(), value),
+                    mapping);
+            } else {
+                fetchPropertyMappings[i] = Tuples.of(propertyAccessor.getProperty(mapping.getPropertyIndex())::set,
+                    mapping);
+            }
+            i++;
+        }
     }
 
     /**
@@ -52,7 +73,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
             SqlResultSet sqlrs = (SqlResultSet) rs;
             return mapRow(sqlrs.getResultSet(), rowNumber);
         }
-        return instantiator.instantiate();
+        return null;
     }
 
     /**
@@ -64,28 +85,21 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
      */
     protected T mapRow(ResultSet resultSet, int rowNumber) {
         int index = 1;
-        T mappedObject = instantiator.instantiate();
+        T mappedObject = propertyAccessor.instantiate();
         MappingDebugMessage mappingDebugMessage = new MappingDebugMessage(isDebug());
-        for (JdbcPropertyMapping propertyMapping : classMapping.getPropertyMappings()) {
-            if (propertyMapping.getPropertyMappings().isEmpty()) {
-                // YUFEI_TEST 后续来测试
-                Object value = propertyMapping.getJavaTypeSqlTypeOperator().get(resultSet, index);
-                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value, mappingDebugMessage);
-                //                BeanProperty<?> bp = getBeanProperty(propertyMapping, rowNumber);
-                //                Object value = sqlTypeMappingManager.get(resultSet, index, bp);
-                //                index = setProperty(rowNumber, mappedObject, index, propertyMapping, value, mappingDebugMessage);
-            } else {
-                for (JdbcPropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
-                    //                    BeanProperty<?> bp = getBeanProperty(subPropertyMapping, rowNumber);
-                    //                    Object value = sqlTypeMappingManager.get(resultSet, index, bp);
-                    //                    //                    Object value = getColumnValue(rs, index, subPropertyMapping.getPropertyType());
-                    //                    index = setProperty(rowNumber, mappedObject, index, subPropertyMapping, value, mappingDebugMessage);
-                    // YUFEI_TEST 后续来测试
-                    Object value = subPropertyMapping.getJavaTypeSqlTypeOperator().get(resultSet, index);
-                    index = setProperty(rowNumber, mappedObject, index, subPropertyMapping, value, mappingDebugMessage);
-                }
+        for (Tuple2<BiConsumer<T, Object>, JdbcPropertyMapping> param : fetchPropertyMappings) {
+            //
+            if (logger.isDebugEnabled() && rowNumber == 0) {
+                mappingDebugMessage
+                    .debug(m -> m.addMapping(param.get1().getRepositoryFieldName(), param.get1().getPropertyFullName(),
+                        param.get1().getPropertyFullName(), param.get1().getPropertyType().getName()));
             }
+            //
+            Object value = param.get1().getJavaTypeSqlTypeOperator().get(resultSet, index);
+            param.get0().accept(mappedObject, value);
+            index++;
         }
+
         if (rowNumber == 0 && logger.isDebugEnabled()) {
             StringBuilder debugMessage = new StringBuilder();
             debugMessage.append("\n---------- Mapping " + classMapping.getType().getName() + " Start ----------\n")
@@ -94,23 +108,6 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> impleme
             logger.debug(debugMessage.toString());
         }
         return mappedObject;
-    }
-
-    //    private BeanProperty<?> getBeanProperty(PropertyMapping propertyMapping, int rowNumber) {
-    //        String propertyName = ClassMappingUtils.getPropertyAliasName(propertyMapping);
-    //        return beanDescriptor.getChildBeanProperty(propertyName);
-    //    }
-
-    private int setProperty(int rowNumber, T mappedObject, int index, JdbcPropertyMapping propertyMapping, Object value,
-        MappingDebugMessage mappingDebugMessage) {
-        String propertyName = ClassMappingUtils.getPropertyAliasName(propertyMapping);
-        if (logger.isDebugEnabled() && rowNumber == 0) {
-            mappingDebugMessage.debug(m -> m.addMapping(propertyMapping.getRepositoryFieldName(), propertyName,
-                propertyName, propertyMapping.getPropertyType().getName()));
-        }
-        BeanUtils.setProperty(mappedObject, propertyName, value);
-        index++;
-        return index;
     }
 
     // ********************************************************************

@@ -42,7 +42,7 @@ public class RoleMapperDefineTemplatesTest extends JdbcTestBase {
             // YUFEI_TEST 后续单独测试setPrecompileNamedParamPlaceholder(false)的情况，主要测试不是include机制
             )).build();
 
-        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
+        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
         roleMapper = mapperFactory.newInstance(RoleMapperDefineTemplates.class, hammer, hammerConfig);
     }
 

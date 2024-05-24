@@ -8,6 +8,8 @@
  */
 package cn.featherfly.hammer.config.entity;
 
+import java.util.Set;
+
 /**
  * EntityConfig.
  *
@@ -16,10 +18,25 @@ package cn.featherfly.hammer.config.entity;
 public interface EntityConfig {
 
     /**
+     * Sets the base packages.
+     *
+     * @param basePackages the base packages
+     * @return the entity config
+     */
+    EntityConfig setBasePackages(Set<String> basePackages);
+
+    /**
+     * Gets the base packages.
+     *
+     * @return the base packages
+     */
+    String[] getBasePackages();
+
+    /**
      * Sets the all operator(insert,udpate,delete and so on) batch size.
      *
-     * @param  batchSize the batch size
-     * @return           the batch config
+     * @param batchSize the batch size
+     * @return the batch config
      */
     EntityConfig setBatchSize(int batchSize);
 

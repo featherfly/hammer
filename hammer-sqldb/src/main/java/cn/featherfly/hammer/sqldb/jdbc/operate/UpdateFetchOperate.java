@@ -12,6 +12,7 @@ import java.util.function.UnaryOperator;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
@@ -55,50 +56,52 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     /**
      * Instantiates a new update fetch operate.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
-     * @param getOperate            the get operate
-     * @param updateOperate         the update operate
-     * @param doLock                the do lock
-     * @param doUnLock              the do un lock
+     * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
+     * @param getOperate the get operate
+     * @param updateOperate the update operate
+     * @param doLock the do lock
+     * @param doUnLock the do un lock
      */
     public UpdateFetchOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata, GetOperate<T> getOperate, UpdateOperate<T> updateOperate,
-            Consumer<String> doLock, Consumer<String> doUnLock) {
-        this(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, getOperate, updateOperate, doLock, doUnLock,
-                true);
+        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor, GetOperate<T> getOperate,
+        UpdateOperate<T> updateOperate, Consumer<String> doLock, Consumer<String> doUnLock) {
+        this(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor, getOperate, updateOperate,
+            doLock, doUnLock, true);
     }
 
     /**
      * Instantiates a new update fetch operate.
      *
-     * @param jdbc                       the jdbc
-     * @param classMapping               the class mapping
-     * @param sqlTypeMappingManager      the sql type mapping manager
-     * @param databaseMetadata           the database metadata
-     * @param getOperate                 the get operate
-     * @param updateOperate              the update operate
-     * @param doLock                     the do lock
-     * @param doUnLock                   the do un lock
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
+     * @param getOperate the get operate
+     * @param updateOperate the update operate
+     * @param doLock the do lock
+     * @param doUnLock the do un lock
      * @param priorityUseDatabaseRowLock the priority use database row lock
      */
     public UpdateFetchOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata, GetOperate<T> getOperate, UpdateOperate<T> updateOperate,
-            Consumer<String> doLock, Consumer<String> doUnLock, boolean priorityUseDatabaseRowLock) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor, GetOperate<T> getOperate,
+        UpdateOperate<T> updateOperate, Consumer<String> doLock, Consumer<String> doUnLock,
+        boolean priorityUseDatabaseRowLock) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
         this.getOperate = getOperate;
         this.updateOperate = updateOperate;
         this.doLock = doLock;
         this.doUnLock = doUnLock;
         this.priorityUseDatabaseRowLock = priorityUseDatabaseRowLock;
-
     }
 
     private boolean initSupportsResultSetUpdatable() {
-        supportsResultSetUpdatable = meta.getFeatures().supportsResultSetConcurrency(ResultSetType.FORWARD_ONLY,
-                ResultSetConcurrency.CONCUR_UPDATABLE);
+        supportsResultSetUpdatable = databaseMetadata.getFeatures()
+            .supportsResultSetConcurrency(ResultSetType.FORWARD_ONLY, ResultSetConcurrency.CONCUR_UPDATABLE);
         return supportsResultSetUpdatable;
     }
 
@@ -125,7 +128,7 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
             return executeResultSetUpdatable(lock, updateOperator, () -> getLockKey(id), id);
         } else {
             return executeCustom(lock, updateOperator, () -> getLockKey(id),
-                    forUpdate -> getOperate.get(id, forUpdate));
+                forUpdate -> getOperate.get(id, forUpdate));
         }
     }
 
@@ -137,17 +140,17 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
         if (supportsResultSetUpdatable) {
             // driver support update ResultSet
             return executeResultSetUpdatable(lock, updateOperator, () -> getLockKey(entity),
-                    getOperate.assertAndGetIds(entity));
+                getOperate.assertAndGetIds(entity));
         } else {
             return executeCustom(lock, updateOperator, () -> getLockKey(entity),
-                    forUpdate -> getOperate.get(entity, forUpdate));
+                forUpdate -> getOperate.get(entity, forUpdate));
         }
     }
 
     private T executeCustom(boolean lock, UnaryOperator<T> updateOperator, Supplier<String> keySupplier,
-            Function<Boolean, T> entitySupplier) {
+        Function<Boolean, T> entitySupplier) {
         if (lock) {
-            if (priorityUseDatabaseRowLock && meta.getFeatures().supportsSelectForUpdate()) {
+            if (priorityUseDatabaseRowLock && databaseMetadata.getFeatures().supportsSelectForUpdate()) {
                 // database support select ... for update
                 //                T result = updateOperator.apply(getOperate.get(id, true));
                 return executeCustom(updateOperator.apply(entitySupplier.apply(true)));
@@ -180,14 +183,14 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     }
 
     private T executeResultSetUpdatable(boolean lock, UnaryOperator<T> updateOperator, Supplier<String> keySupplier,
-            Object... args) {
+        Object... args) {
         if (lock) {
-            if (priorityUseDatabaseRowLock && meta.getFeatures().supportsSelectForUpdate()) {
+            if (priorityUseDatabaseRowLock && databaseMetadata.getFeatures().supportsSelectForUpdate()) {
                 Tuple2<T, Integer> result = jdbc.querySingleUpdate(sql + jdbc.getDialect().getKeyword(" for update"),
-                        getOperate::mapRow, (res, e) -> {
-                            return updateResultSet(res, updateOperator.apply(e),
-                                    fullUpdate() ? e : getOperate.mapRow(res, 1));
-                        }, args);
+                    getOperate::mapRow, (res, e) -> {
+                        return updateResultSet(res, updateOperator.apply(e),
+                            fullUpdate() ? e : getOperate.mapRow(res, 1));
+                    }, args);
                 return result.get0();
             } else {
                 String key = keySupplier.get();
@@ -219,15 +222,15 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
             } else {
                 for (JdbcPropertyMapping subPropertyMapping : propertyMapping.getPropertyMappings()) {
                     index = updateValue(res, updateEntity, originalEntity, subPropertyMapping, index,
-                            updateDebugMessage);
+                        updateDebugMessage);
                 }
             }
         }
         if (isDebug()) {
             StringBuilder debugMessage = new StringBuilder();
             debugMessage.append("\n---------- Update " + classMapping.getType().getName() + " Start ----------\n")
-                    .append(updateDebugMessage.toString())
-                    .append("---------- Update " + classMapping.getType().getName() + " End ----------\n");
+                .append(updateDebugMessage.toString())
+                .append("---------- Update " + classMapping.getType().getName() + " End ----------\n");
             logger.debug(debugMessage.toString());
         }
         try {
@@ -239,18 +242,18 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     }
 
     private int updateValue(ResultSet res, T mappedObject, T originalEntity, JdbcPropertyMapping propertyMapping,
-            int index, UpdateDebugMessage updateDebugMessage) {
+        int index, UpdateDebugMessage updateDebugMessage) {
         Object value = BeanUtils.getProperty(mappedObject, propertyMapping.getPropertyFullName());
         if (fullUpdate()) {
             updateDebugMessage.debug(m -> m.addPropertyUpdate(propertyMapping.getPropertyFullName(),
-                    propertyMapping.getRepositoryFieldName(),
-                    BeanUtils.getProperty(originalEntity, propertyMapping.getPropertyFullName()), value));
+                propertyMapping.getRepositoryFieldName(),
+                BeanUtils.getProperty(originalEntity, propertyMapping.getPropertyFullName()), value));
             JdbcUtils.setParameter(res, index, FieldValueOperator.create(propertyMapping, value));
         } else {
             Object original = BeanUtils.getProperty(originalEntity, propertyMapping.getPropertyFullName());
             if (!Lang.equals(original, value)) {
                 updateDebugMessage.debug(m -> m.addPropertyUpdate(propertyMapping.getPropertyFullName(),
-                        propertyMapping.getRepositoryFieldName(), original, value));
+                    propertyMapping.getRepositoryFieldName(), original, value));
                 JdbcUtils.setParameter(res, index, FieldValueOperator.create(propertyMapping, value));
             }
         }

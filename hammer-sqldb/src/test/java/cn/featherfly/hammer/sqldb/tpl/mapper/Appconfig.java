@@ -72,7 +72,7 @@ public class Appconfig extends JdbcTestBase {
         //        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
         //        Dialect dialect = Dialects.mysql();
 
-        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
+        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
 
@@ -81,7 +81,7 @@ public class Appconfig extends JdbcTestBase {
         TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
             .basePackages(basePackages).config(hammerConfig.getTemplateConfig()).build();
 
-        SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory,
+        SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory,
             hammerConfig);
         return hammer;
     }

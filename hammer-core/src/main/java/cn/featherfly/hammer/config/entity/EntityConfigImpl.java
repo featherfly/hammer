@@ -8,6 +8,9 @@
  */
 package cn.featherfly.hammer.config.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * EntityConfigImpl.
  *
@@ -20,6 +23,33 @@ public class EntityConfigImpl implements EntityConfig {
     private final OperatorConfig insert = new OperatorConfigImpl(batchSize);
     private final OperatorConfig update = new OperatorConfigImpl(batchSize);
     private final OperatorConfig delete = new OperatorConfigImpl(batchSize);
+    private final Set<String> basePackages = new HashSet<>(0);
+
+    /**
+     */
+    public EntityConfigImpl() {
+        super();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityConfig setBasePackages(Set<String> basePackages) {
+        this.basePackages.clear();
+        this.basePackages.addAll(basePackages);
+        return this;
+    }
+
+    /**
+     * get basePackages value
+     *
+     * @return basePackages
+     */
+    @Override
+    public String[] getBasePackages() {
+        return basePackages.toArray(new String[basePackages.size()]);
+    }
 
     /**
      * {@inheritDoc}
@@ -56,5 +86,4 @@ public class EntityConfigImpl implements EntityConfig {
     public OperatorConfig getDelete() {
         return delete;
     }
-
 }

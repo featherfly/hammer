@@ -37,7 +37,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
     /**
      * Instantiates a new based hammer tpl executor.
      *
-     * @param hammer       the hammer
+     * @param hammer the hammer
      * @param hammerConfig the hammer config
      */
     public BasedTplHammer(Hammer hammer, HammerConfig hammerConfig) {
@@ -241,6 +241,14 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      * {@inheritDoc}
      */
     @Override
+    public <E> int[] update(E[] entities, int batchSize) {
+        return hammer.update(entities, batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <E> int update(E entity, IgnoreStrategy ignoreStrategy) {
         return hammer.update(entity, ignoreStrategy);
     }
@@ -394,7 +402,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      */
     @Override
     public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-            Map<String, Object> params) {
+        Map<String, Object> params) {
         return hammer.template(tplExecuteIdBuilder, params);
     }
 
@@ -419,7 +427,7 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
      */
     @Override
     public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-            Object... params) {
+        Object... params) {
         return hammer.template(tplExecuteIdBuilder, params);
     }
 

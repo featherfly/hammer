@@ -17,7 +17,7 @@ import javax.validation.ConstraintViolation;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
-import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -99,7 +99,7 @@ public class SqldbHammerImpl implements SqldbHammer {
 
     private final SqlDeleter deleter;
 
-    private final InstantiatorFactory instantiatorFactory;
+    private final PropertyAccessorFactory propertyAccessorFactory;
 
     /**
      * Instantiates a new hammer jdbc impl.
@@ -107,13 +107,13 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param jdbc the jdbc
      * @param mappingFactory the mapping factory
      * @param configFactory the config factory
-     * @param instantiatorFactoryy the instantiator factoryy
+     * @param propertyAccessorFactory the property accessor factory
      * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-        InstantiatorFactory instantiatorFactoryy, HammerConfig hammerConfig) {
+        PropertyAccessorFactory propertyAccessorFactory, HammerConfig hammerConfig) {
         this(jdbc, mappingFactory, configFactory,
-            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), instantiatorFactoryy,
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), propertyAccessorFactory,
             hammerConfig);
     }
 
@@ -124,13 +124,13 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param mappingFactory the mapping factory
      * @param configFactory the config factory
      * @param templateEngine the template engine
-     * @param instantiatorFactory the instantiator factor
+     * @param propertyAccessorFactory the property accessor factory
      * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
-        @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, InstantiatorFactory instantiatorFactory,
-        HammerConfig hammerConfig) {
-        this(jdbc, mappingFactory, configFactory, templateEngine, new SimpleSqlPageFactory(), instantiatorFactory,
+        @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine,
+        PropertyAccessorFactory propertyAccessorFactory, HammerConfig hammerConfig) {
+        this(jdbc, mappingFactory, configFactory, templateEngine, new SimpleSqlPageFactory(), propertyAccessorFactory,
             hammerConfig);
     }
 
@@ -142,14 +142,14 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param configFactory the config factory
      * @param templateEngine the template processor
      * @param sqlPageFacotry the sql page facotry
-     * @param instantiatorFactory the instantiator factor
+     * @param propertyAccessorFactory the property accessor factory
      * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
         @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
-        InstantiatorFactory instantiatorFactory, HammerConfig hammerConfig) {
+        PropertyAccessorFactory propertyAccessorFactory, HammerConfig hammerConfig) {
         this(jdbc, mappingFactory, configFactory, templateEngine, sqlPageFacotry,
-            new TransverterManager(new FuzzyQueryTransverter()), instantiatorFactory, hammerConfig);
+            new TransverterManager(new FuzzyQueryTransverter()), propertyAccessorFactory, hammerConfig);
     }
 
     /**
@@ -161,17 +161,19 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @param templateEngine the template processor
      * @param sqlPageFacotry the sql page facotry
      * @param transverterManager the transverter manager
-     * @param instantiatorFactory the instantiator factor
+     * @param propertyAccessorFactory the property accessor factory
      * @param hammerConfig the hammer config
      */
     public SqldbHammerImpl(Jdbc jdbc, JdbcMappingFactory mappingFactory, TplConfigFactory configFactory,
         @SuppressWarnings("rawtypes") SqlDbTemplateEngine templateEngine, SqlPageFactory sqlPageFacotry,
-        TransverterManager transverterManager, InstantiatorFactory instantiatorFactory, HammerConfig hammerConfig) {
+        TransverterManager transverterManager, PropertyAccessorFactory propertyAccessorFactory,
+        HammerConfig hammerConfig) {
         this.jdbc = jdbc;
-        jdbcExecutor = new JdbcExecutor(jdbc, instantiatorFactory, sqlPageFacotry);
         this.mappingFactory = mappingFactory;
         this.hammerConfig = hammerConfig;
-        this.instantiatorFactory = instantiatorFactory;
+        this.propertyAccessorFactory = propertyAccessorFactory;
+
+        jdbcExecutor = new JdbcExecutor(jdbc, propertyAccessorFactory, sqlPageFacotry);
         sqlTplExecutor = new SqlTplExecutor(hammerConfig, configFactory, templateEngine, jdbc, mappingFactory,
             sqlPageFacotry, transverterManager);
         query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
@@ -379,10 +381,18 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int[] update(@SuppressWarnings("unchecked") E... entities) {
+        return update(entities, hammerConfig.getEntityConfig().getUpdate().getBatchSize());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] update(E[] entities, int batchSize) {
         if (Lang.isEmpty(entities)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        return update(Lang.toList(entities));
+        return update(Lang.list(entities), batchSize);
     }
 
     /**
@@ -390,6 +400,9 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int[] update(List<E> entities) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        }
         return update(entities, hammerConfig.getEntityConfig().getUpdate().getBatchSize());
     }
 
@@ -408,7 +421,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             if (update == null) {
                 JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(type);
                 update = new UpdateOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata());
+                    mappingFactory.getMetadata(), propertyAccessorFactory.create(type));
                 updateOperates.put(type, update);
             }
             for (E entity : entities) {
@@ -451,9 +464,10 @@ public class SqldbHammerImpl implements SqldbHammer {
         MergeOperate<E> update = (MergeOperate<E>) mergeOperates.get(entity.getClass());
         if (update == null) {
             @SuppressWarnings("unchecked")
-            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
+            Class<E> type = (Class<E>) entity.getClass();
+            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(type);
             update = new MergeOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                mappingFactory.getMetadata());
+                mappingFactory.getMetadata(), propertyAccessorFactory.create(type));
             mergeOperates.put(entity.getClass(), update);
         }
         validate(entity);
@@ -2141,22 +2155,11 @@ public class SqldbHammerImpl implements SqldbHammer {
     }
 
     @SuppressWarnings("unchecked")
-    private <E> UpdateOperate<E> getUpdate(Class<E> entityType) {
+    private <E> UpdateOperate<E> getUpdate(final Class<E> entityType) {
         return (UpdateOperate<E>) updateOperates.computeIfAbsent(entityType,
-            type -> new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
-    }
-
-    @SuppressWarnings("unchecked")
-    private <E> UpdateFetchOperate<E> getUpdateFetch(Class<E> entityType) {
-        return (UpdateFetchOperate<E>) updateFetchOperates.computeIfAbsent(entityType,
-            type -> new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), getOperate((Class<E>) type),
-                getUpdate((Class<E>) type), key -> {
-                    // IMPLSOON 后续来从配置创建锁并进行加锁操作
-                }, key -> {
-                    // IMPLSOON 后续来从配置创建锁并进行解锁操作
-                }));
+            type -> new UpdateOperate<E>(jdbc, mappingFactory.getClassMapping(entityType),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                propertyAccessorFactory.create(entityType)));
     }
 
     @SuppressWarnings("unchecked")
@@ -2165,47 +2168,41 @@ public class SqldbHammerImpl implements SqldbHammer {
     }
 
     @SuppressWarnings("unchecked")
-    private <E> InsertOperate<E> getInsert(Class<E> entityType) {
-        return (InsertOperate<E>) insertOperates.computeIfAbsent(entityType,
-            type -> new InsertOperate<>(jdbc, mappingFactory.getClassMapping((Class<E>) type),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+    private <E> UpdateFetchOperate<E> getUpdateFetch(final Class<E> entityType) {
+        return (UpdateFetchOperate<E>) updateFetchOperates.computeIfAbsent(entityType,
+            type -> new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                propertyAccessorFactory.create(entityType), getOperate(entityType), getUpdate(entityType), key -> {
+                    // IMPLSOON 后续来从配置创建锁并进行加锁操作
+                }, key -> {
+                    // IMPLSOON 后续来从配置创建锁并进行解锁操作
+                }));
     }
 
     @SuppressWarnings("unchecked")
     private <E> InsertOperate<E> getInsert(E entity) {
         return getInsert((Class<E>) entity.getClass());
-        //        @SuppressWarnings("unchecked")
-        //        InsertOperate<E> insert = (InsertOperate<E>) insertOperates.get(entity.getClass());
-        //        if (insert == null) {
-        //            @SuppressWarnings("unchecked")
-        //            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping((Class<E>) entity.getClass());
-        //            insert = new InsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-        //                    mappingFactory.getMetadata());
-        //            insertOperates.put(entity.getClass(), insert);
-        //        }
-        //        return insert;
     }
 
     @SuppressWarnings("unchecked")
-    private <E> UpsertOperate<E> getUpsert(Class<E> entityType) {
-        return (UpsertOperate<E>) upsertOperates.computeIfAbsent(entityType,
-            type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+    private <E> InsertOperate<E> getInsert(final Class<E> entityType) {
+        return (InsertOperate<E>) insertOperates.computeIfAbsent(entityType,
+            type -> new InsertOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                propertyAccessorFactory.create(entityType)));
     }
 
     @SuppressWarnings("unchecked")
     private <E> UpsertOperate<E> getUpsert(E entity) {
         return getUpsert((Class<E>) entity.getClass());
-        //        @SuppressWarnings("unchecked")
-        //        UpsertOperate<E> upsert = (UpsertOperate<E>) upsertOperates.get(entity.getClass());
-        //        if (upsert == null) {
-        //            @SuppressWarnings("unchecked")
-        //            JdbcClassMapping<E> mapping = (JdbcClassMapping<E>) mappingFactory.getClassMapping(entity.getClass());
-        //            upsert = new UpsertOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-        //                    mappingFactory.getMetadata());
-        //            upsertOperates.put(entity.getClass(), upsert);
-        //        }
-        //        return upsert;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <E> UpsertOperate<E> getUpsert(final Class<E> entityType) {
+        return (UpsertOperate<E>) upsertOperates.computeIfAbsent(entityType,
+            type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                propertyAccessorFactory.create(entityType)));
     }
 
     private <E> DeleteOperate<E> getDelete(Collection<E> entities) {
@@ -2222,27 +2219,19 @@ public class SqldbHammerImpl implements SqldbHammer {
     }
 
     @SuppressWarnings("unchecked")
-    private <E> DeleteOperate<E> getDelete(Class<E> entityType) {
+    private <E> DeleteOperate<E> getDelete(final Class<E> entityType) {
         return (DeleteOperate<E>) deleteOperates.computeIfAbsent(entityType,
-            type -> new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(type),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
-        //        @SuppressWarnings("unchecked")
-        //        DeleteOperate<E> delete = (DeleteOperate<E>) deleteOperates.get(entityType);
-        //        if (delete == null) {
-        //            JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-        //            delete = new DeleteOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-        //                    mappingFactory.getMetadata());
-        //            deleteOperates.put(entityType, delete);
-        //        }
-        //        return delete;
+            type -> new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                propertyAccessorFactory.create(entityType)));
     }
 
     @SuppressWarnings("unchecked")
-    private <E> GetOperate<E> getOperate(Class<E> entityType) {
+    private <E> GetOperate<E> getOperate(final Class<E> entityType) {
         return (GetOperate<E>) getOperates.computeIfAbsent(entityType,
-            type -> new GetOperate<E>(jdbc, (JdbcClassMapping<E>) mappingFactory.getClassMapping(type),
-                instantiatorFactory.create(entityType), mappingFactory.getSqlTypeMappingManager(),
-                mappingFactory.getMetadata()));
+            type -> new GetOperate<E>(jdbc, mappingFactory.getClassMapping(entityType),
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                propertyAccessorFactory.create(entityType)));
     }
 
     /**

@@ -46,7 +46,7 @@ import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
-import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.SqlUtils;
@@ -84,16 +84,19 @@ public abstract class AbstractJdbc implements Jdbc {
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /** The dialect. */
-    private final Dialect dialect;
-
     private final Set<JdbcExecutionInterceptor> interceptors = new LinkedHashSet<>(0);
 
-    private final SqlTypeMappingManager manager;
+    /** The dialect. */
+    protected final Dialect dialect;
 
-    private final DatabaseMetadata metadata;
+    /** The manager. */
+    protected final SqlTypeMappingManager manager;
 
-    private final InstantiatorFactory instantiatorFactory;
+    /** The metadata. */
+    protected final DatabaseMetadata metadata;
+
+    /** The property accessor factory. */
+    protected final PropertyAccessorFactory propertyAccessorFactory;
 
     /**
      * Instantiates a new abstract jdbc.
@@ -101,15 +104,15 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param dialect the dialect
      * @param metadata the metadata
      * @param manager the manager
-     * @param instantiatorFactory the instantiator factory
+     * @param propertyAccessorFactory the property accessor factory
      */
     protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
-        InstantiatorFactory instantiatorFactory) {
+        PropertyAccessorFactory propertyAccessorFactory) {
         super();
         this.dialect = dialect;
         this.manager = manager;
         this.metadata = metadata;
-        this.instantiatorFactory = instantiatorFactory;
+        this.propertyAccessorFactory = propertyAccessorFactory;
     }
 
     /**
@@ -418,16 +421,22 @@ public abstract class AbstractJdbc implements Jdbc {
         return value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParamedQueryExecutor query(String sql, Object... args) {
         // ArrayParamedExecutionExecutor has no page query api, so SqlPageFactory may be null
-        return new ArrayParamedExecutionExecutor<>(new JdbcExecutor(this, instantiatorFactory, null), sql, args);
+        return new ArrayParamedExecutionExecutor<>(new JdbcExecutor(this, propertyAccessorFactory, null), sql, args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParamedQueryExecutor query(String sql, Map<String, Object> args) {
         // MapParamedExecutionExecutor has no page query api, so SqlPageFactory may be null
-        return new MapParamedExecutionExecutor<>(new JdbcExecutor(this, instantiatorFactory, null), sql, args);
+        return new MapParamedExecutionExecutor<>(new JdbcExecutor(this, propertyAccessorFactory, null), sql, args);
     }
 
     /**
@@ -1975,6 +1984,9 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public <T extends Tuple> T callMultiQuery(String name,
@@ -1988,7 +2000,7 @@ public abstract class AbstractJdbc implements Jdbc {
             CallableStatement call = con.prepareCall(procedure);
             Map<Integer, Class<?>> outParams = setParams(call, args);
             MulitiQueryRowMapper<T> mulitiQueryRowMapper = mapperFunction
-                .apply(new MulitiQueryTupleMapperBuilderImpl(this, instantiatorFactory));
+                .apply(new MulitiQueryTupleMapperBuilderImpl(this, propertyAccessorFactory));
             RowMapper<?>[] rowMappers = mulitiQueryRowMapper.getRowMappers();
 
             List<List<?>> all = new ArrayList<>();
@@ -2477,7 +2489,7 @@ public abstract class AbstractJdbc implements Jdbc {
     private <T> RowMapper<T> getTypeMapper(Class<T> elementType) {
         return Lang.ifTrue(elementType == Object.class || manager.getSqlType(elementType) != null,
             () -> new SingleColumnRowMapper<>(elementType, manager),
-            () -> new NestedBeanPropertyRowMapper<>(instantiatorFactory.create(elementType), manager));
+            () -> new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager));
     }
 
     /**

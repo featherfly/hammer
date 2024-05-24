@@ -62,7 +62,7 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
             .buildValidatorFactory().getValidator());
 
-        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
+        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer, hammerConfig);
         roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer, hammerConfig);
     }

@@ -779,7 +779,7 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void testIntercepor() {
         JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager,
-            instantiatorFactory);
+            propertyAccessorFactory);
 
         jdbc.addInterceptor(new JdbcExecutionInterceptor() {
             @Override
@@ -819,7 +819,7 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void testIntercepor2() {
         JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager,
-            instantiatorFactory);
+            propertyAccessorFactory);
 
         List<JdbcExecutionInterceptor> interceptors = new ArrayList<>();
 

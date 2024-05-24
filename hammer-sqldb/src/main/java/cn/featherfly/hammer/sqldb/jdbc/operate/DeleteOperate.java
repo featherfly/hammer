@@ -5,12 +5,10 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -24,46 +22,23 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * 删除操作.
  *
  * @author zhongj
- * @since 0.1.0
  * @param <T> 对象类型
+ * @since 0.1.0
  */
 public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements BatchExecuteOperate<T> {
-
-    //    /**
-    //     * 使用给定数据源以及给定对象生成删除操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成删除操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-    //            String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
 
     /**
      * 使用给定数据源以及给定对象生成删除操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
      */
     public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
     }
 
     /**
@@ -90,91 +65,53 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
      * 删除指定ids列表.
      *
      * @param <ID> the generic type
-     * @param ids  id list
+     * @param ids id list
      * @return 操作影响的数据行数
      */
     public <ID extends Serializable> int[] deleteBatch(List<ID> ids) {
         if (Lang.isEmpty(ids)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getDeleteSqlAndParamPositions(ids.size(), classMapping, jdbc.getDialect());
+        // FIXME 后续优化，只需要动态确定where 后面的内容就行了
+        Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(ids.size(),
+            classMapping, jdbc.getDialect());
 
         return new int[] { jdbc.update(tuple.get0(), ids.toArray()) };
     }
 
-    //    @Override
-    //    public int[] executeBatch(final List<T> entities, int batchSize) {
-    //        if (Lang.isEmpty(entities)) {
-    //            return ArrayUtils.EMPTY_INT_ARRAY;
-    //        }
-    //        if (entities.size() <= batchSize) {
-    //            return new int[] { _executeBatch(entities, batchSize) };
-    //        } else {
-    //            int times = entities.size() / batchSize;
-    //            if (entities.size() % batchSize == 0) {
-    //                times++;
-    //            }
-    //            int results[] = new int[times];
-    //            for (int i = 0; i < times; i++) {
-    //                results[i] = _executeBatch(entities.subList(i * batchSize, batchSize), batchSize);
-    //            }
-    //            return results;
-    //            //            return executeBatch(entities.subList(0, batchSize), batchSize)
-    //            //                    + executeBatch(entities.subList(batchSize, entities.size()), batchSize);
-    //        }
-    //    }
-
-    //    private int _executeBatch(final List<T> entities, int batchSize) {
-    //        if (Lang.isEmpty(entities)) {
-    //            return Chars.ZERO;
-    //        }
-    //        if (entities.size() <= batchSize) {
-    //            int bs = entities.size();
-    //            Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-    //                    .getDeleteSqlAndParamPositions(bs, classMapping, jdbc.getDialect());
-    //            return jdbc.updateBatch(tuple.get0(), bs, getBatchParameters(entities, tuple.get1()));
-    //        } else {
-    //            return _executeBatch(entities.subList(0, batchSize), batchSize)
-    //                    + _executeBatch(entities.subList(batchSize, entities.size()), batchSize);
-    //        }
-    //    }
-
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getDeleteSqlAndParamPositions(classMapping, jdbc.getDialect());
+        Tuple2<String,
+            JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(classMapping, jdbc.getDialect());
         sql = tuple.get0();
-        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
-
+        // tuple.get1() 就是 pk JdbcPropertyMapping
+        paramsPropertyAndMappings = pkProperties.toArray(new Tuple2[pkProperties.size()]);
         // ENHANCE 后续使用batchSql template优化，只需要替换动态参数部分
     }
 
     /**
      * Gets the batch parameters.
      *
-     * @param entities          the entities
+     * @param entities the entities
      * @param propertyPositions the property positions
      * @return the batch parameters
      */
     @Override
-    protected Object[] getBatchParameters(List<T> entities, Map<Integer, JdbcPropertyMapping> propertyPositions) {
-        //        if (Lang.isEmpty(entities)) {
-        //            return new Object[] {};
-        //        }
-        Object[] params = new Object[propertyPositions.size()];
-        int pkNum = propertyPositions.size() / entities.size();
+    protected Object[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
+        Object[] params = new Object[propertyPositions.length];
+        int pkNum = propertyPositions.length / entities.size();
         int i = 0;
         T entity = null;
-        for (Entry<Integer, JdbcPropertyMapping> propertyPosition : propertyPositions.entrySet()) {
+        for (JdbcPropertyMapping propertyPosition : propertyPositions) {
             if (i % pkNum == 0) {
                 entity = entities.get(i / pkNum);
             }
-            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue().getPropertyFullName());
+            params[i] = propertyAccessor.getPropertyValue(entity, propertyPosition.getPropertyIndexes());
             i++;
         }
         return params;
@@ -194,8 +131,9 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
     @Override
     protected int doSqlExecuteBatch(List<T> entities) {
         int bs = entities.size();
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils.getDeleteSqlAndParamPositions(bs,
-                classMapping, jdbc.getDialect());
+        // FIXME 后续优化，只需要动态确定where 后面的内容就行了
+        Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(bs, classMapping,
+            jdbc.getDialect());
         return jdbc.updateBatch(tuple.get0(), bs, getBatchParameters(entities, tuple.get1()));
     }
 

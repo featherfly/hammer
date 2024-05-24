@@ -34,7 +34,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
 
     @BeforeClass
     void be() {
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
         Class<Article2> type = Article2.class;
 
@@ -96,7 +96,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         // regist(entityClass, Mapper) 的entity类型是用于分组的
         sqlTypeMappingManager.regist(new ObjectToJsonMapper<>(Content2.class));
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
     }
 
     @Test

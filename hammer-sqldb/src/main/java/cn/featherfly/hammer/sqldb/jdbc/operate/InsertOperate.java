@@ -2,12 +2,12 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -23,8 +23,8 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * 插入操作.
  *
  * @author zhongj
- * @since 0.1.0
  * @param <T> 对象类型
+ * @since 0.1.0
  */
 public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
@@ -55,25 +55,29 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     /**
      * 使用给定数据源以及给定对象生成插入操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
      */
     public InsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int doSqlExecuteBatch(final List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getInsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
+        Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getInsertBatchSqlAndMappings(entities.size(),
+            classMapping, jdbc.getDialect());
         String sql = tuple.get0();
         if (pks.size() == 1) {
             return jdbc.updateBatch(sql, entities.size(), createGeneratedKeysHolder(entities, pks),
-                    getBatchParameters(entities, tuple.get1()));
+                getBatchParameters(entities, tuple.get1()));
         } else {
             return jdbc.updateBatch(sql, entities.size(), getBatchParameters(entities, tuple.get1()));
         }
@@ -117,7 +121,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                 @Override
                 public Type<Serializable> getType() {
                     return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-                            .getBeanProperty(pks.get(0).getPropertyName());
+                        .getBeanProperty(pks.get(0).getPropertyName());
                 }
             }, getParameters(entity));
         } else {
@@ -159,15 +163,16 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getInsertSqlAndParamPositions(classMapping, jdbc.getDialect());
+        Tuple2<String,
+            JdbcPropertyMapping[]> tuple = ClassMappingUtils.getInsertSqlAndMappings(classMapping, jdbc.getDialect());
         sql = tuple.get0();
-        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
+
+        setParamsPropertyAndMappings(tuple.get1());
     }
 
     private GeneratedKeysHolder<Serializable> createGeneratedKeysHolder(List<T> entities,
-            List<JdbcPropertyMapping> pks) {
+        List<JdbcPropertyMapping> pks) {
         return new GeneratedKeysHolder<Serializable>() {
             public void acceptKey(Serializable key, int row) {
                 // YUFEI_TEST 需要更多测试各种情况是否正确
@@ -179,7 +184,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             @Override
             public Type<Serializable> getType() {
                 return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-                        .getBeanProperty(pks.get(0).getPropertyName());
+                    .getBeanProperty(pks.get(0).getPropertyName());
             }
 
             @Override

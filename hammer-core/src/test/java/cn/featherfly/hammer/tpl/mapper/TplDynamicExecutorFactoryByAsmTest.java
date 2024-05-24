@@ -67,7 +67,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
     @Test
     public void testNoExtends() throws Exception {
         Class<?> type = ClassUtils
-                .forName(factory.create(TeMapper.class, Thread.currentThread().getContextClassLoader()));
+            .forName(factory.create(TeMapper.class, Thread.currentThread().getContextClassLoader()));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -117,7 +117,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         for (Method method : type.getMethods()) {
             if (method.getParameterCount() > 0) {
                 System.out.println(type.getName() + "." + method.getName() + " " + method.getParameters()[0].getName()
-                        + " " + method.getParameters()[0].getType().getName());
+                    + " " + method.getParameters()[0].getType().getName());
             }
         }
         assertEquals(type.getMethod("save", Object.class).getParameters()[0].getName(), "entity");
@@ -129,7 +129,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
     public void testGenericHammerSupport() throws Exception {
         @SuppressWarnings("unchecked")
         Class<GenericHammerSupportMapper> type = (Class<GenericHammerSupportMapper>) ClassUtils
-                .forName(factory.create(GenericHammerSupportMapper.class));
+            .forName(factory.create(GenericHammerSupportMapper.class));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -140,7 +140,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         Long userId = 1L;
 
         GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
-                new HammerConfigImpl(true));
+            new HammerConfigImpl(true));
 
         User u = mapper.get(userId);
         assertNull(u);
@@ -160,7 +160,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
     public void testHammerSupport2() throws Exception {
         @SuppressWarnings("unchecked")
         Class<HammerSupportMapper> type = (Class<HammerSupportMapper>) ClassUtils
-                .forName(factory.create(HammerSupportMapper.class));
+            .forName(factory.create(HammerSupportMapper.class));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -171,7 +171,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         Long userId = 1L;
 
         HammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
-                new HammerConfigImpl(true));
+            new HammerConfigImpl(true));
 
         User u = mapper.get(userId);
         assertNull(u);
@@ -417,7 +417,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
             @Override
             public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-                    Map<String, Object> params) {
+                Map<String, Object> params) {
 
                 return null;
             }
@@ -436,7 +436,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
             @Override
             public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-                    Object... params) {
+                Object... params) {
 
                 return null;
             }
@@ -444,6 +444,11 @@ public class TplDynamicExecutorFactoryByAsmTest {
             @Override
             public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Object... params) {
 
+                return null;
+            }
+
+            @Override
+            public <E> int[] update(E[] entities, int batchSize) {
                 return null;
             }
         };
@@ -455,7 +460,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         ClassNode classNode = new ClassNode();
         // 1
         InputStream is = new FileInputStream(
-                "D:\\workspace\\eclipse_workspace\\eclipse_ff\\featherfly-projects\\hammer\\hammer-core\\bin\\test\\cn\\featherfly\\hammer\\tpl\\mapper\\TMapperImpl.class");
+            "D:\\workspace\\eclipse_workspace\\eclipse_ff\\featherfly-projects\\hammer\\hammer-core\\bin\\test\\cn\\featherfly\\hammer\\tpl\\mapper\\TMapperImpl.class");
         ClassReader classReader = new ClassReader(is); // 2
         classReader.accept(classNode, 0);
         for (MethodNode method : classNode.methods) {

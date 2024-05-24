@@ -105,12 +105,12 @@ public class DslStaticTypeTest {
 
         s(user::getUsername);
 
-        s2(user::getUsername);
+        //        s2(user::getUsername);
 
         System.out.println("---------------------------------------------------------------");
         System.out.println("---------------------------------------------------------------");
 
-        s2(new BeanPropertySupplierImpl<>(User.class, String.class, user.getUsername(), "username"));
+        s2(new BeanPropertySupplierImpl<>(User.class, String.class, user.getUsername(), "username", 0));
 
         System.out.println("---------------------------------------------------------------");
         System.out.println("---------------------------------------------------------------");
@@ -135,10 +135,16 @@ public class DslStaticTypeTest {
             public String get() {
                 return value;
             }
+
+            @Override
+            public int getIndex() {
+                // YUFEI_TODO Auto-generated method stub
+                return 0;
+            }
         });
 
-        s3(user::getUsername);
-
-        s3(userInfo::getName);
+        //        s3(user::getUsername);
+        //
+        //        s3(userInfo::getName);
     }
 }

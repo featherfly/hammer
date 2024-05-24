@@ -17,7 +17,7 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
-import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.mapping.RowMapper;
@@ -36,24 +36,25 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
 
     private final SqlPageFactory sqlPageFactory;
 
-    private final InstantiatorFactory instantiatorFactory;
+    private final PropertyAccessorFactory propertyAccessorFactory;
 
     /**
      * Instantiates a new jdbc executor.
      *
      * @param jdbc the jdbc
-     * @param instantiatorFactory the instantiator factory
+     * @param propertyAccessorFactory the property accessor factory
      * @param sqlPageFactory the sql page factory
      */
-    public JdbcExecutor(Jdbc jdbc, InstantiatorFactory instantiatorFactory, SqlPageFactory sqlPageFactory) {
+    public JdbcExecutor(Jdbc jdbc, PropertyAccessorFactory propertyAccessorFactory, SqlPageFactory sqlPageFactory) {
         super();
         this.jdbc = jdbc;
-        this.instantiatorFactory = instantiatorFactory;
+        this.propertyAccessorFactory = propertyAccessorFactory;
         this.sqlPageFactory = sqlPageFactory;
     }
 
     private <T> NestedBeanPropertyRowMapper<T> beanMapper(Class<T> element) {
-        return new NestedBeanPropertyRowMapper<>(instantiatorFactory.create(element), jdbc.getSqlTypeMappingManager());
+        return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(element),
+            jdbc.getSqlTypeMappingManager());
     }
 
     // ****************************************************************************************************************

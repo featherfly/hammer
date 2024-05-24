@@ -10,6 +10,7 @@
 package cn.featherfly.hammer.sqldb.pt;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,9 +21,8 @@ import org.hibernate.validator.HibernateValidator;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.bean.AsmInstantiatorFactory;
-import cn.featherfly.common.bean.InstantiatorFactory;
-import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
+import cn.featherfly.common.bean.AsmPropertyAccessorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -32,6 +32,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.config.TemplateConfigImpl;
+import cn.featherfly.hammer.entity.EntityPreparer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
@@ -71,11 +72,15 @@ public class HammerBenchmark extends AbstractBenchmark {
 
         //        jdbcFactory = new JdbcFactoryImpl(dialect, sqlTypeMappingManager);
 
-        InstantiatorFactory instantiatorFactory = new ProxyAndReflectionInstantiatorFactory(
-            new AsmInstantiatorFactory(config.getClassLoader(), true));
+        PropertyAccessorFactory propertyAccessorFactory = new AsmPropertyAccessorFactory(
+            Thread.currentThread().getContextClassLoader());
+
+        EntityPreparer entityPreparer = EntityPreparer.builder().basePackages("cn.featherfly")
+            .propertyAccessorFactory(propertyAccessorFactory).build();
+        entityPreparer.prepare();
 
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
 
@@ -83,7 +88,7 @@ public class HammerBenchmark extends AbstractBenchmark {
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
             .buildValidatorFactory().getValidator());
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
     }
 
     /**
@@ -157,13 +162,15 @@ public class HammerBenchmark extends AbstractBenchmark {
      */
     @Override
     protected int[] doUpdateById(boolean batch, Serializable... ids) {
-        UserInfo2[] uis = new UserInfo2[ids.length];
-        int i = 0;
+        //        UserInfo2[] uis = new UserInfo2[ids.length];
+        List<UserInfo2> uis = new ArrayList<>(ids.length);
+        //        int i = 0;
         for (Serializable id : ids) {
             UserInfo2 ui = userInfo();
             ui.setId((Integer) id);
-            uis[i] = ui;
-            i++;
+            //            uis[i] = ui;
+            uis.add(ui);
+            //            i++;
         }
         return hammer.update(uis);
     }

@@ -12,9 +12,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
-import cn.featherfly.common.bean.AsmInstantiatorFactory;
-import cn.featherfly.common.bean.InstantiatorFactory;
-import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.SqlExecutor;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
@@ -27,6 +25,7 @@ import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.entity.EntityPreparer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 
 /**
@@ -56,7 +55,7 @@ public class DataSourceTestBase extends TestBase {
 
     protected static HammerConfig hammerConfig;
 
-    protected static InstantiatorFactory instantiatorFactory;
+    protected static PropertyAccessorFactory propertyAccessorFactory;
 
     @BeforeSuite
     @Parameters({ "dataBase" })
@@ -65,8 +64,12 @@ public class DataSourceTestBase extends TestBase {
 
         hammerConfig = new HammerConfigImpl(devMode);
 
-        instantiatorFactory = new ProxyAndReflectionInstantiatorFactory(
-            new AsmInstantiatorFactory(hammerConfig.getClassLoader(), true));
+        //        propertyAccessorFactory = new AsmPropertyAccessorFactory(Thread.currentThread().getContextClassLoader());
+        propertyAccessorFactory = PROPERTY_ACCESSOR_FACTORY;
+
+        EntityPreparer entityPreparer = EntityPreparer.builder().basePackages("cn.featherfly")
+            .propertyAccessorFactory(propertyAccessorFactory).build();
+        entityPreparer.prepare();
 
         initDataBase(dataBase);
     }
@@ -114,7 +117,7 @@ public class DataSourceTestBase extends TestBase {
         ds = dataSource;
 
         dialect = Dialects.mysql();
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
@@ -140,7 +143,7 @@ public class DataSourceTestBase extends TestBase {
         ds = dataSource;
 
         dialect = Dialects.postgresql();
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
@@ -168,7 +171,7 @@ public class DataSourceTestBase extends TestBase {
         ds = dataSource;
 
         dialect = Dialects.sqlite();
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);

@@ -5,16 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.bean.Instantiator;
+import com.speedment.common.tuple.Tuple2;
+
+import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
-import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.repository.mapping.RowMapper;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -32,16 +31,14 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      *
      * @param jdbc the jdbc
      * @param classMapping the class mapping
-     * @param instantiator the instantiator
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
      */
-    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, Instantiator<T> instantiator,
-        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, instantiator, sqlTypeMappingManager, databaseMetadata);
+    public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
     }
-
-    private List<JdbcPropertyMapping> pkPms;
 
     /**
      * <p>
@@ -55,9 +52,9 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (entity == null) {
             return null;
         }
-        if (pkPms.size() == 1) {
-            return (Serializable) BeanUtils.getProperty(entity, pkPms.get(0).getPropertyName());
-        } else if (pkPms.size() > 1) {
+        if (pkProperties.size() == 1) {
+            return pkProperties.get(0).get0().apply(entity);
+        } else if (pkProperties.size() > 1) {
             throw new SqldbHammerException("multy id defined in entity [" + entity.getClass().getName()
                 + "], you can invoke getIds(entity) method instead");
         } else {
@@ -76,9 +73,9 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
         if (entity == null) {
             return Collections.emptyList();
         }
-        return pkPms.stream()
-            .map(p -> (Serializable) BeanUtils.getProperty(entity, ClassMappingUtils.getPropertyAliasName(p)))
-            .collect(Collectors.toList());
+        return pkProperties.stream().map(property -> {
+            return property.get0().apply(entity);
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -109,18 +106,16 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     public T get(final Serializable id, boolean forUpdate) {
         assertId(id);
         if (forUpdate) {
-            if (meta.getFeatures().supportsSelectForUpdate()) {
-                return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+            if (databaseMetadata.getFeatures().supportsSelectForUpdate()) {
+                return jdbc.querySingle(sql + " for update", this::mapRow, id);
             } else {
                 // TODO 后续加入行为可配置策略
                 throw new SqldbHammerException(Strings.format("unsupport [select...for update] with database {} - {}",
-                    meta.getProductName(), meta.getProductVersion()));
+                    databaseMetadata.getProductName(), databaseMetadata.getProductVersion()));
             }
         } else {
-            return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), id);
+            return jdbc.querySingle(sql, this::mapRow, id);
         }
-        //        return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
-        //                new BeanPropertyValue<>(pkProperties.get(0), id));
     }
 
     /**
@@ -142,48 +137,44 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      */
     public T get(final T entity, boolean forUpdate) {
         if (forUpdate) {
-            return jdbc.querySingle(sql + " for update", (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum),
-                assertAndGetIds(entity));
+            return jdbc.querySingle(sql + " for update", this::mapRow, assertAndGetIds(entity));
         } else {
-            return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), assertAndGetIds(entity));
+            return jdbc.querySingle(sql, this::mapRow, assertAndGetIds(entity));
         }
-        //        BeanPropertyValue<?>[] bpvs = new BeanPropertyValue[ids.size()];
-        //        Lang.each(ids, (id, i) -> {
-        //            bpvs[i] = new BeanPropertyValue<>(pkProperties.get(i), id);
-        //        });
-        //        return jdbc.querySingle(sql, (RowMapper<T>) (res, rowNum) -> mapRow(res, rowNum), bpvs);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void initSql() {
         sql = ClassMappingUtils.getSelectByPkSql(classMapping, jdbc.getDialect());
-        pkPms = classMapping.getPrivaryKeyPropertyMappings();
+        paramsPropertyAndMappings = pkProperties.toArray(new Tuple2[pkProperties.size()]);
         logger.debug("sql: {}", sql);
     }
 
+    /**
+     * Assert id.
+     *
+     * @param id the id
+     */
     protected void assertId(Object id) {
         if (Lang.isEmpty(id)) {
             throw new SqldbHammerException("#get.id.null");
         }
     }
 
+    /**
+     * Assert and get ids.
+     *
+     * @param entity the entity
+     * @return the object[]
+     */
     protected Object[] assertAndGetIds(T entity) {
-        assertId(entity);
+        assertEntity(entity);
         List<Serializable> ids = getIds(entity);
         assertId(ids);
         return ids.toArray();
     }
-
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    protected String initCondition() {
-    //        // 重写了initSql，此方法在此类已经没用了
-    //        return "";
-    //    }
 }

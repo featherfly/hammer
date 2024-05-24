@@ -14,7 +14,7 @@ import java.sql.Connection;
 
 import javax.sql.DataSource;
 
-import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -36,8 +36,8 @@ public class JdbcFactoryImpl implements JdbcFactory {
     /** The metadata. */
     protected final DatabaseMetadata metadata;
 
-    /** The instantiator factory. */
-    protected final InstantiatorFactory instantiatorFactory;
+    /** The property accessor factory. */
+    protected final PropertyAccessorFactory propertyAccessorFactory;
 
     /**
      * Instantiates a new jdbc factory impl.
@@ -45,15 +45,15 @@ public class JdbcFactoryImpl implements JdbcFactory {
      * @param dialect the dialect
      * @param metadata the metadata
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param instantiatorFactory the instantiator factory
+     * @param propertyAccessorFactory the property accessor factory
      */
     public JdbcFactoryImpl(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager sqlTypeMappingManager,
-        InstantiatorFactory instantiatorFactory) {
+        PropertyAccessorFactory propertyAccessorFactory) {
         super();
         this.dialect = dialect;
         this.metadata = metadata;
         this.sqlTypeMappingManager = sqlTypeMappingManager;
-        this.instantiatorFactory = instantiatorFactory;
+        this.propertyAccessorFactory = propertyAccessorFactory;
     }
 
     /**
@@ -77,7 +77,7 @@ public class JdbcFactoryImpl implements JdbcFactory {
      */
     @Override
     public Jdbc create(Connection connection) {
-        return new JdbcImpl(connection, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        return new JdbcImpl(connection, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
     }
 
     /**
@@ -93,6 +93,6 @@ public class JdbcFactoryImpl implements JdbcFactory {
      */
     @Override
     public JdbcSession createSession(Connection connection) {
-        return new JdbcImpl(connection, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        return new JdbcImpl(connection, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
     }
 }
