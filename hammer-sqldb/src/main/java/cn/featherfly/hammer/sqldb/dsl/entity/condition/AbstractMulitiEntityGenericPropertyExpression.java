@@ -28,10 +28,10 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
     /**
      * Instantiates a new entity property type expression impl.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     protected AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, F name,
@@ -43,10 +43,10 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
     /**
      * Instantiates a new abstract muliti entity generic property expression.
      *
-     * @param index         the index
-     * @param propertyList  the property list
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param propertyList the property list
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     public AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, List<Serializable> propertyList,

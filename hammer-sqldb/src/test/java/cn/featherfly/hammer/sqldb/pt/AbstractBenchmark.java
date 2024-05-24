@@ -12,7 +12,6 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.Timer;
@@ -43,7 +42,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
 
     @BeforeClass
     @Parameters({ "total", "batchSize" })
-    public void init(@Optional("1000") int total, @Optional("1000") int batchSize) throws IOException {
+    public void init(@Optional("5000") int total, @Optional("5000") int batchSize) throws IOException {
         this.total = total;
         this.batchSize = batchSize;
         batchTimes = (total + batchSize - 1) / batchSize;
@@ -177,7 +176,9 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         for (int i = 0; i < total; i++) {
             ids[i] = i + 1;
         }
-        System.out.println("updateOneMulitiTimes results: " + ArrayUtils.toString(doUpdateById(false, ids)));
+        int[] res = doUpdateById(false, ids);
+        System.out.println("updateOneMulitiTimes results.length: " + res.length);
+        //        System.out.println("updateOneMulitiTimes results: " + ArrayUtils.toString(doUpdateById(false, ids)));
         long time = timer.stop();
         System.out.println(
             Strings.format("{0} updateOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
@@ -194,7 +195,9 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         for (int i = 0; i < total; i++) {
             ids[i] = i + 1;
         }
-        System.out.println("updateBatch results: " + ArrayUtils.toString(doUpdateById(true, ids)));
+        int res[] = doUpdateById(true, ids);
+        System.out.println("updateBatch results.length: " + res.length);
+        //        System.out.println("updateBatch results: " + ArrayUtils.toString(doUpdateById(true, ids)));
         long time = timer.stop();
         System.out
             .println(Strings.format("{0} updateBatch use {1} {2} with {3} loop times", getName(), time, unit, total));
@@ -211,7 +214,9 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         for (int i = 0; i < total; i++) {
             ids[i] = i + 1;
         }
-        System.out.println("deleteOneMulitiTimes results: " + ArrayUtils.toString(doDeleteById(false, ids)));
+        int[] res = doDeleteById(false, ids);
+        System.out.println("deleteOneMulitiTimes results.length: " + res.length);
+        //        System.out.println("deleteOneMulitiTimes results: " + ArrayUtils.toString(doDeleteById(false, ids)));
         long time = timer.stop();
         System.out.println(
             Strings.format("{0} deleteOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
@@ -228,7 +233,9 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         for (int i = 0; i < total; i++) {
             ids[i] = total + i + 1;
         }
-        System.out.println("deleteBatch results: " + ArrayUtils.toString(doDeleteById(true, ids)));
+        int[] res = doDeleteById(true, ids);
+        System.out.println("deleteBatch results.length: " + res.length);
+        //        System.out.println("deleteBatch results: " + ArrayUtils.toString(doDeleteById(true, ids)));
         long time = timer.stop();
         System.out.println(Strings.format("{0} testDeleteBatch({1}) use {2} {3} ", getName(), ids.length, time, unit));
     }
@@ -244,9 +251,9 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         return Timer.start(unit);
     }
 
-    private int total = 1000;
+    private int total = 5000;
 
-    private int batchSize = 1000;
+    private int batchSize = 5000;
 
     private int batchTimes = (total + batchSize - 1) / batchSize;
 

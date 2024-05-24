@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition.eq;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,6 +25,7 @@ import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.eq.EqualsSupplierExpression3;
@@ -32,40 +34,53 @@ import cn.featherfly.hammer.expression.condition.eq.EqualsSupplierExpression3;
  * The Interface EntityEqualsExpressionBase3.
  *
  * @author zhongj
- * @param <T>  the first comparable type
+ * @param <T> the first comparable type
  * @param <T2> the second comparable type
  * @param <T3> the third comparable type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityEqualsExpressionBase2<T, T2, C, L>, EqualsSupplierExpression3<C, L> {
+    extends EntityEqualsExpressionBase2<T, T2, C, L>, EqualsSupplierExpression3<C, L> {
 
     /**
      * equals. 等于.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    <R> L eq3(SerializableFunction<T3, R> name, R value);
+    <R extends Serializable> L eq3(SerializableFunction<T3, R> name, R value);
 
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq3(SerializableFunction<T3, R> name, R value, Predicate<R> ignoreStrategy);
+    default <R extends Serializable> L eq3(SerializableFunction<T3, R> name, R value, IgnoreStrategy ignoreStrategy) {
+        return eq3(name, value, ignoreStrategy::test);
+    }
 
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L eq3(SerializableFunction<T3, R> name, R value, Predicate<R> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -74,8 +89,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -84,7 +99,7 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -93,8 +108,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -103,7 +118,7 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -112,8 +127,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -122,7 +137,7 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -131,8 +146,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -141,8 +156,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param <N>   number type
-     * @param name  the name
+     * @param <N> number type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -151,9 +166,9 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -162,8 +177,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -172,9 +187,9 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -183,8 +198,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param <D>   date type
-     * @param name  the name
+     * @param <D> date type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -193,9 +208,9 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -204,7 +219,7 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -213,8 +228,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -223,7 +238,7 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -232,8 +247,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -242,7 +257,7 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -251,8 +266,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -261,7 +276,7 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -272,8 +287,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -284,8 +299,8 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -294,12 +309,26 @@ public interface EntityEqualsExpressionBase3<T, T2, T3, C extends ConditionExpre
     /**
      * equals. 等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return eq3(name, value, matchStrategy, ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L eq3(SerializableToStringFunction<T3> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 }

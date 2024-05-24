@@ -50,13 +50,13 @@ public class SqlQueryTest extends JdbcTestBase {
 
     SqlQuery query;
 
-    List<Map<String, Object>> list = null;
+    List<Map<String, Serializable>> list = null;
 
-    Map<String, Object> map = null;
+    Map<String, Serializable> map = null;
 
     @BeforeClass
     public void beforeClass() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
         System.err.println(this.getClass().getName() + " init with beforeClass");
     }
 
@@ -70,13 +70,13 @@ public class SqlQueryTest extends JdbcTestBase {
     void aggregateFunction() {
         Object result = null;
 
-        //        List<Map<String, Object>> ages = query.find("user").field("age").list();
+        //        List<Map<String, Serializable>> ages = query.find("user").field("age").list();
         List<Integer> ages = query.find("user").field("age").list();
 
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         int sum = 0;
-        //        for (Map<String, Object> m : ages) {
+        //        for (Map<String, Serializable> m : ages) {
         //        int i = (int) m.get("age");
         for (Integer age : ages) {
             sum += age;
@@ -232,9 +232,9 @@ public class SqlQueryTest extends JdbcTestBase {
         }
     }
 
-    BiConsumer<List<Map<String, Object>>, String> compareAge = (list, name) -> {
+    BiConsumer<List<Map<String, Serializable>>, String> compareAge = (list, name) -> {
         int min = Integer.MIN_VALUE;
-        for (Map<String, Object> map : list) {
+        for (Map<String, Serializable> map : list) {
             Integer a = (Integer) map.get(name);
             //            System.err.println(min + "    " + a);
             assertTrue(min <= a);
@@ -338,8 +338,8 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void conditionField() {
-        List<Map<String, Object>> list = null;
-        Map<String, Object> map = null;
+        List<Map<String, Serializable>> list = null;
+        Map<String, Serializable> map = null;
         String username = "yufei";
 
         list = query.find("user").fields("username", "password", "age") //
@@ -367,9 +367,9 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void conditionNull() {
-        List<Map<String, Object>> list = query.find("user").where().eq("a", (Serializable) null).and()
+        List<Map<String, Serializable>> list = query.find("user").where().eq("a", (Serializable) null).and()
             .eq("b", (Serializable) null).and().sw("username", "yufei").and().eq("d", (Serializable) null).list();
-        for (Map<String, Object> map : list) {
+        for (Map<String, Serializable> map : list) {
             String username = (String) map.get("username");
             System.err.println(username);
             assertTrue(Strings.startsWith(username, "yufei"));
@@ -856,11 +856,11 @@ public class SqlQueryTest extends JdbcTestBase {
     @Test
     void conditionExpr() {
         Integer id = 1;
-        Map<String, Object> user = query.find("user").where().eq(User::getId, id).single();
+        Map<String, Serializable> user = query.find("user").where().eq(User::getId, id).single();
         assertEquals(user.get("id"), id);
 
         user = query.find("user").where().eq(User::getId, id).and()
-            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100)).single();
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and().expression("{0}.age - ? >= 0", 100).single();
@@ -870,7 +870,7 @@ public class SqlQueryTest extends JdbcTestBase {
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and()
-            .expr("{as0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expr("{as0}.age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100)).single();
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and().expr("{as0}.age - ? >= 0", 100).single();
@@ -885,31 +885,31 @@ public class SqlQueryTest extends JdbcTestBase {
         Consumer<List<Integer>> assertAge = (ages) -> ages.forEach((age) -> assertEquals(age, 5));
 
         Integer id = 1;
-        Map<String, Object> user = query.find("user").where().eq(User::getId, id).single();
+        Map<String, Serializable> user = query.find("user").where().eq(User::getId, id).single();
         assertEquals(user.get("id"), id);
 
         // add
         assertAge.accept(query.find("user").fetch("age").where() //
             .expression("{0}.age + :add = :age",
-                new ChainMapImpl<String, Object>().putChain("add", 5).putChain("age", 10))//
+                new ChainMapImpl<String, Serializable>().putChain("add", 5).putChain("age", 10))//
             .list());
 
         // subtract
         assertAge.accept(query.find("user").fetch("age").where() //
             .expression("{0}.age - :subtract = :age",
-                new ChainMapImpl<String, Object>().putChain("subtract", 5).putChain("age", 0))//
+                new ChainMapImpl<String, Serializable>().putChain("subtract", 5).putChain("age", 0))//
             .list());
 
         // multiply
         assertAge.accept(query.find("user").fetch("age").where() //
             .expression("{0}.age * :multiply = :age",
-                new ChainMapImpl<String, Object>().putChain("multiply", 5).putChain("age", 25))//
+                new ChainMapImpl<String, Serializable>().putChain("multiply", 5).putChain("age", 25))//
             .list());
 
         // multiply
         assertAge.accept(query.find("user").fetch("age").where() //
             .expression("{0}.age / :divide = :age",
-                new ChainMapImpl<String, Object>().putChain("divide", 5).putChain("age", 1))//
+                new ChainMapImpl<String, Serializable>().putChain("divide", 5).putChain("age", 1))//
             .list());
 
         // ----------------------------------------------------------------------------------------------------------------
@@ -917,25 +917,25 @@ public class SqlQueryTest extends JdbcTestBase {
         // add
         assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
             .expression("{0}.age + :add = :age",
-                new ChainMapImpl<String, Object>().putChain("add", 5).putChain("age", 10))//
+                new ChainMapImpl<String, Serializable>().putChain("add", 5).putChain("age", 10))//
             .valueList());
 
         // subtract
         assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
             .expression("{0}.age - :subtract = :age",
-                new ChainMapImpl<String, Object>().putChain("subtract", 5).putChain("age", 0))//
+                new ChainMapImpl<String, Serializable>().putChain("subtract", 5).putChain("age", 0))//
             .valueList());
 
         // multiply
         assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
             .expression("{0}.age * :multiply = :age",
-                new ChainMapImpl<String, Object>().putChain("multiply", 5).putChain("age", 25))//
+                new ChainMapImpl<String, Serializable>().putChain("multiply", 5).putChain("age", 25))//
             .valueList());
 
         // multiply
         assertAge.accept(query.find(User.class).fetch(User::getAge).where() //
             .expression("{0}.age / :divide = :age",
-                new ChainMapImpl<String, Object>().putChain("divide", 5).putChain("age", 1))//
+                new ChainMapImpl<String, Serializable>().putChain("divide", 5).putChain("age", 1))//
             .valueList());
     }
 
@@ -1054,12 +1054,12 @@ public class SqlQueryTest extends JdbcTestBase {
     void limit() {
 
         int pageSize = 3;
-        Integer total = 10;
+        Long total = 10L;
         List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
             .list(Role.class);
         assertEquals(roleList.size(), pageSize);
 
-        List<Map<String, Object>> roleList2 = query.find(new SimpleRepository("role")).where().le("id", total)
+        List<Map<String, Serializable>> roleList2 = query.find(new SimpleRepository("role")).where().le("id", total)
             .limit(2, pageSize).list();
         assertEquals(roleList2.size(), pageSize);
 
@@ -1072,7 +1072,7 @@ public class SqlQueryTest extends JdbcTestBase {
         assertEquals(rolePage.getTotal(), total);
         assertEquals(rolePage.getPageResults().size(), pageSize);
 
-        PaginationResults<Map<String, Object>> rolePage2 = query.find(new SimpleRepository("role")).where()
+        PaginationResults<Map<String, Serializable>> rolePage2 = query.find(new SimpleRepository("role")).where()
             .le("id", total).limit(2, pageSize).pagination();
         assertEquals(rolePage2.getTotal(), total);
         assertEquals(rolePage2.getPageResults().size(), pageSize);
@@ -1179,7 +1179,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void classMappingFactorNull() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory, hammerConfig);
         query.find(User.class);
     }
 

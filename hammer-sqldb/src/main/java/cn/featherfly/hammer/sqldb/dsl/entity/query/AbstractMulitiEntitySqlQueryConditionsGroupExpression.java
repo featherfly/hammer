@@ -1,10 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple6;
+import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
@@ -17,6 +21,8 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
@@ -50,25 +56,30 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     private SqlSortBuilder sortBuilder;
 
     /** The sql page factory. */
-    protected SqlPageFactory sqlPageFactory;
+    protected final SqlPageFactory sqlPageFactory;
 
     private EntitySqlQueryConditionGroupQuery<E1> entitySqlQueryConditionGroupQuery;
+
+    /** The hammer config. */
+    protected final HammerConfig hammerConfig;
 
     /**
      * Instantiates a new abstract entity sql condition group expression.
      *
      * @param parent the parent
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
-    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression(L parent, JdbcMappingFactory factory,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression(L parent, HammerConfig hammerConfig,
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
-            entityRelation);
+            entityRelation, hammerConfig.getCacheConfig().getQueryPageResultCache());
+        this.hammerConfig = hammerConfig;
     }
 
     /**
@@ -115,7 +126,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     @Override
     public long count() {
         entityRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
-        return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
+        return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -156,7 +167,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     //    @Override
     //    public List<E> list() {
     //        String sql = getRoot().expression();
-    //        Object[] params = getRoot().getParams().toArray();
+    //        Object[] params = getRoot().getParamsArray();
     //        if (limit != null) {
     //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
     //                    params);
@@ -173,7 +184,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     //    public PaginationResults<E> pagination() {
     //        String sql = getRoot().expression();
     //        String countSql = SqlUtils.convertSelectToCount(sql);
-    //        Object[] params = getRoot().getParams().toArray();
+    //        Object[] params = getRoot().getParamsArray();
     //        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
     //        if (limit != null) {
     //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
@@ -202,7 +213,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     //    @Override
     //    public E single() {
     //        String sql = getRoot().expression();
-    //        Object[] params = getRoot().getParams().toArray();
+    //        Object[] params = getRoot().getParamsArray();
     //        if (limit != null) {
     //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
     //                    params);
@@ -220,7 +231,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     //    @Override
     //    public E unique() {
     //        String sql = getRoot().expression();
-    //        Object[] params = getRoot().getParams().toArray();
+    //        Object[] params = getRoot().getParamsArray();
     //        if (limit != null) {
     //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
     //                    params);
@@ -249,6 +260,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     //        @Override
     public EntityQuerySortedExpression<E1> asc(String... names) {
+        // ENHANCE 后续来把ClassMappingUtils.getColumnName去掉，这里已经是确定的了
         getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -334,11 +346,39 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     // ****************************************************************************************************************
 
     /**
-     * Expression page.
+     * Prepare list.
      *
-     * @return the tuple 2
+     * @param limit the limit
+     * @return the tuple 6
+     *         <ol>
+     *         <li>query sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function&lt;Object, Object&gt; getId value
+     *         </ol>
      */
-    public abstract Tuple2<String, String> expressionPage();
+    public abstract Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> prepareList(Limit limit);
+
+    /**
+     * Prepare pagination.
+     *
+     * @param limit the limit
+     * @return the tuple 7
+     *         <ol>
+     *         <li>query sql
+     *         <li>count sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function&lt;Object, Object&gt; getId value
+     *         </ol>
+     */
+    public abstract Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> preparePagination(Limit limit);
 
     // ****************************************************************************************************************
     //	protected method

@@ -47,7 +47,7 @@ public interface DslConfig {
      *
      * @return the query config
      */
-    QueryConfig getQueryConfig();
+    DslQueryConfig getQueryConfig();
 
     /**
      * Gets the update config.

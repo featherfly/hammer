@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.featherfly.common.db.JdbcException;
-import cn.featherfly.common.db.mapping.SqlResultSet;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.db.mapper.SqlResultSet;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * AbstractResultSetExtractor.

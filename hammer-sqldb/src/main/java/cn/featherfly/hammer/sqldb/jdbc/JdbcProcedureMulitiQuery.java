@@ -9,6 +9,7 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,10 +19,10 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 import cn.featherfly.common.db.JdbcException;
-import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.repository.MulitiQuery;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * jdbc procedure muliti-query.
@@ -65,7 +66,7 @@ public class JdbcProcedureMulitiQuery implements MulitiQuery, AutoCloseable {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> next() {
+    public List<Map<String, Serializable>> next() {
         return next(new MapRowMapper(manager));
     }
 

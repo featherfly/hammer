@@ -9,7 +9,8 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.query.Query;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -28,49 +29,53 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public class SqlQuery implements Query {
 
-    private Jdbc jdbc;
+    private final Jdbc jdbc;
 
-    private DatabaseMetadata databaseMetadata;
+    private final DatabaseMetadata databaseMetadata;
 
     private JdbcMappingFactory mappingFactory;
 
-    private SqlPageFactory sqlPageFactory;
+    private final SqlPageFactory sqlPageFactory;
 
-    private QueryConfig queryConfig;
+    private final HammerConfig hammerConfig;
+
+    private final DslQueryConfig queryConfig;
 
     /**
      * Instantiates a new sql query.
      *
-     * @param jdbc             jdbc
+     * @param jdbc jdbc
      * @param databaseMetadata databaseMetadata
-     * @param sqlPageFactory   the sql page factory
-     * @param queryConfig      the query config
+     * @param sqlPageFactory the sql page factory
+     * @param hammerConfig the hammer config
      */
     public SqlQuery(Jdbc jdbc, DatabaseMetadata databaseMetadata, SqlPageFactory sqlPageFactory,
-            QueryConfig queryConfig) {
+        HammerConfig hammerConfig) {
         super();
         this.jdbc = jdbc;
         this.databaseMetadata = databaseMetadata;
         this.sqlPageFactory = sqlPageFactory;
-        this.queryConfig = queryConfig;
+        this.hammerConfig = hammerConfig;
+        queryConfig = hammerConfig.getDslConfig().getQueryConfig();
     }
 
     /**
      * Instantiates a new sql query.
      *
-     * @param jdbc           jdbc
+     * @param jdbc jdbc
      * @param mappingFactory mappingFactory
      * @param sqlPageFactory the sql page factory
-     * @param queryConfig    the query config
+     * @param hammerConfig the hammer config
      */
     public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory,
-            QueryConfig queryConfig) {
+        HammerConfig hammerConfig) {
         super();
         this.jdbc = jdbc;
         this.mappingFactory = mappingFactory;
         databaseMetadata = mappingFactory.getMetadata();
         this.sqlPageFactory = sqlPageFactory;
-        this.queryConfig = queryConfig;
+        this.hammerConfig = hammerConfig;
+        queryConfig = hammerConfig.getDslConfig().getQueryConfig();
     }
 
     //    /**
@@ -121,7 +126,7 @@ public class SqlQuery implements Query {
     /**
      * Find.
      *
-     * @param tableName  the table name
+     * @param tableName the table name
      * @param tableAlias the table alias
      * @return the repository sql query fetch
      */
@@ -134,9 +139,9 @@ public class SqlQuery implements Query {
             tableAlias = aliasManager.put(tableName);
         }
         return new RepositorySqlQueryFetchImpl(
-                new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone())
-                        .query(tableName, tableAlias).fetch(0),
-                sqlPageFactory);
+            new RepositorySqlQueryRelation(jdbc, aliasManager, databaseMetadata, queryConfig.clone())
+                .query(tableName, tableAlias).fetch(0),
+            sqlPageFactory);
     }
 
     /**
@@ -153,8 +158,8 @@ public class SqlQuery implements Query {
         //        }
 
         EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
-                queryConfig.clone());
-        return new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
+            queryConfig.clone());
+        return new EntitySqlQueryFetch<>(hammerConfig, mappingFactory, sqlPageFactory, queryRelation, mapping);
     }
 
     //    /**

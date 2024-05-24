@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.tpl.freemarker;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +93,7 @@ public abstract class AbstractFreemarkerTemplateEngine<
      * {@inheritDoc}
      */
     @Override
-    public String process(String templateName, String sourceCode, Map<String, Object> params,
+    public String process(String templateName, String sourceCode, Map<String, Serializable> params,
         TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> templateProcessEnv) {
         logger.debug("execute template name : {}", templateName);
         Map<String, Object> root = new HashMap<>();

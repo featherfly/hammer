@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
@@ -17,8 +15,8 @@ import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.EntityOnExpression1;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate1P;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate1R;
@@ -37,6 +35,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  * @param <E> the element type
  * @param <P> the generic type
+ * @param <L> the generic type
  */
 public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends EntityQueryFetchedPropertiesExpression<E, P>,
     L> extends AbstractEntitySqlQueryBase<E, L>
@@ -46,13 +45,14 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     /**
      * Instantiates a new abstract entity sql query fetched.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
-    protected AbstractEntitySqlQueryFetchedProperties(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation entitySqlQueryRelation) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+    protected AbstractEntitySqlQueryFetchedProperties(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
     /**
@@ -60,8 +60,8 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      */
     @Override
     public <J> EntityOnExpression1<E, J, EntityQueryRelate1R<E, J>> join(Class<J> joinType) {
-        return new EntitySqlOn1<>(joinType, new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation),
-            factory, queryRelation);
+        return new EntitySqlOn1<>(joinType,
+            new EntitySqlQueryRelate1R<>(hammerConfig, factory, sqlPageFactory, queryRelation), factory, queryRelation);
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     public <R> EntityQueryRelate1P<E, R> join(SerializableFunction1<E, R> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return new EntitySqlQueryRelate1P<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate1P<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
-        return new EntitySqlQueryRelate1R<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate1R<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -92,7 +92,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     public EntityQueryRelate1P<E, E> join(SerializableUnaryOperator1<E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
         queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
-        return new EntitySqlQueryRelate1P<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelate1P<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -138,19 +138,20 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     /**
      * Property.
      *
-     * @param distinct     the distinct
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the e
      */
     @SuppressWarnings("unchecked")
     public P property(boolean distinct, String propertyName) {
-        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
-        if (Lang.isEmpty(columnAndProperty.get1())) {
-            queryRelation.getBuilder().addColumn(distinct, columnAndProperty.get0());
-        } else {
-            queryRelation.getBuilder().addColumn(distinct, columnAndProperty.get0(), columnAndProperty.get1());
-        }
+        //        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
+        //            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
+        //        if (Lang.isEmpty(columnAndProperty.get1())) {
+        //            queryRelation.getBuilder().addColumn(distinct, columnAndProperty.get0());
+        //        } else {
+        //            queryRelation.getBuilder().addColumn(distinct, columnAndProperty.get0(), columnAndProperty.get1());
+        //        }
+        queryRelation.fetchProperty(0, distinct, propertyName);
         return (P) this;
     }
 
@@ -158,30 +159,31 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * Property.
      *
      * @param aggregateFunction the aggregate function
-     * @param distinct          the distinct
-     * @param propertyName      the property name
+     * @param distinct the distinct
+     * @param propertyName the property name
      * @return the e
      */
     @SuppressWarnings("unchecked")
     public P property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
-        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
-            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
-        if (Lang.isEmpty(columnAndProperty.get1())) {
-            queryRelation.getBuilder().addColumn(aggregateFunction, distinct, columnAndProperty.get0());
-        } else {
-            queryRelation.getBuilder().addColumn(aggregateFunction, distinct, columnAndProperty.get0(),
-                columnAndProperty.get1());
-        }
+        queryRelation.fetchProperty(0, aggregateFunction, distinct, propertyName);
+        //        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
+        //            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
+        //        if (Lang.isEmpty(columnAndProperty.get1())) {
+        //            queryRelation.getBuilder().addColumn(aggregateFunction, distinct, columnAndProperty.get0());
+        //        } else {
+        //            queryRelation.getBuilder().addColumn(aggregateFunction, distinct, columnAndProperty.get0(),
+        //                columnAndProperty.get1());
+        //        }
         return (P) this;
     }
 
     /**
      * Property.
      *
-     * @param <R>               the generic type
+     * @param <R> the generic type
      * @param aggregateFunction the aggregate function
-     * @param distinct          the distinct
-     * @param propertyName      the property name
+     * @param distinct the distinct
+     * @param propertyName the property name
      * @return the e
      */
     @Override
@@ -193,8 +195,8 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     /**
      * Property.
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the e
      */
@@ -206,9 +208,9 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     /**
      * Property alias.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
-     * @param alias        the alias
+     * @param alias the alias
      * @return the e
      */
     public <R> P propertyAlias(SerializableFunction<E, R> propertyName, String alias) {
@@ -218,14 +220,15 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     /**
      * Property alias.
      *
-     * @param columnName the column name
-     * @param alias      the alias
+     * @param propertyName the column name
+     * @param alias the alias
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P propertyAlias(String columnName, String alias) {
-        queryRelation.getBuilder().addColumn(ClassMappingUtils.getColumnName(columnName,
-            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping()), alias);
+    public P propertyAlias(String propertyName, String alias) {
+        //        queryRelation.getBuilder().addColumn(ClassMappingUtils.getColumnName(columnName,
+        //            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping()), alias);
+        queryRelation.fetchProperty(0, propertyName);
         return (P) this;
     }
 
@@ -261,7 +264,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     /**
      * Id.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the e
      */

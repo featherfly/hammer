@@ -8,15 +8,17 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import com.speedment.common.tuple.Tuple1;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutor;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper1;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper2;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper2;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
@@ -40,7 +42,7 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
      * @param params the params
      * @param type1 the type 1
      */
-    public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1) {
+    public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Map<String, Serializable> params, Class<T1> type1) {
         this(executor, execution, params, "", type1);
     }
 
@@ -53,7 +55,7 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
      * @param prefix the prefix
      * @param type1 the type 1
      */
-    public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Map<String, Object> params, String prefix,
+    public PrefixedBeanMapper1Impl(E1 executor, E2 execution, Map<String, Serializable> params, String prefix,
         Class<T1> type1) {
         super(executor, execution, params, Tuples.of(prefix));
         this.type1 = type1;
@@ -130,6 +132,30 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
             return executor.list(execution, type1, getParamsMap(), offset, limit);
         } else {
             return executor.list(execution, type1, getParams(), offset, limit);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<T1> each() {
+        if (params instanceof Map) {
+            return executor.each(execution, type1, getParamsMap());
+        } else {
+            return executor.each(execution, type1, getParams());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<T1> each(int offset, int limit) {
+        if (params instanceof Map) {
+            return executor.each(execution, type1, getParamsMap(), offset, limit);
+        } else {
+            return executor.each(execution, type1, getParams(), offset, limit);
         }
     }
 

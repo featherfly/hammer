@@ -40,7 +40,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
     @BeforeTest
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
     }
 
     @BeforeMethod
@@ -66,7 +66,9 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         assertEquals(userInfo.getId(), uid);
         assertNull(userInfo.getUser().getUsername());
 
-        userInfo = query.find(UserInfo.class).join(UserInfo::getUser).fetch().where().eq(UserInfo::getId, uid).single();
+        userInfo = query.find(UserInfo.class).join(UserInfo::getUser) //
+            .fetch() //
+            .where().eq(UserInfo::getId, uid).single();
         System.err.println(userInfo);
         assertEquals(userInfo.getId(), uid);
         assertNotNull(userInfo.getUser().getUsername());
@@ -295,13 +297,20 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
             assertEquals(v.get0().getParentId(), v.get1().getId());
         });
 
-        List<Tree> list3 = query.find(Tree.class).join(Tree::getParent).fetch().list();
+        List<Tree> list3 = query.find(Tree.class).join(Tree::getParent) //
+            .fetch() //
+            .list();
         list3.forEach(v -> {
             assertNotNull(v.getParent().getId());
             assertNotNull(v.getParent().getName());
         });
 
-        List<Tree> list4 = query.find(Tree.class).join(Tree::getParent).fetch().join2(Tree::getParent).fetch().list();
+        List<Tree> list4 = query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .fetch() //
+            .join2(Tree::getParent) //
+            .fetch() //
+            .list();
         list4.forEach(v -> {
             assertNotNull(v.getParent().getId());
             assertNotNull(v.getParent().getName());
@@ -328,18 +337,25 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         // .join(UserRole2::getRole);
         // query.find(User.class).join(UserRole2::getUser).join(UserRole2::getRole).where();
         // query.find(UserInfo.class).join(UserInfo::getUser).on(propertyName);
+
+        //        List<Tree> list4 = query.find(Tree.class) //
+        //            .join(Tree::getParent) //
+        //            .fetch() //
+        //            .join2(Tree::getParent) //
+        //            .fetch() //
+        //            .join3(Tree::getParent) //
+        //            .fetch() //
+        //            .list();
     }
 
     @Test
     void testJoinMulity2() {
-        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
-        // userInfo.user.userRole 这里没有userRole
-
         List<Tuple2<UserInfo, UserRole2>> listTuple2 = null;
         listTuple2 = query.find(UserInfo.class) //
             .join(UserInfo::getUser).fetch() //
             .join2(UserRole2::getUser).fetch() //
-            .join3(UserRole2::getRole).list();
+            .join3(UserRole2::getRole) //
+            .list();
         listTuple2.forEach(t -> {
             assertNotNull(t.get0().getUser().getId());
             assertNotNull(t.get0().getUser().getUsername());

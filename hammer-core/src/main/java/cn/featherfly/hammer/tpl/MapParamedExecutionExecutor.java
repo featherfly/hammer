@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -18,11 +19,12 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
+import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.ParamedExecutionExecutor;
 import cn.featherfly.common.repository.ParamedMappedExecutor;
-import cn.featherfly.common.repository.mapping.RowMapper;
-import cn.featherfly.common.repository.mapping.TupleMapperBuilder;
+import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
 
 /**
  * TemplateParamedExecutionExecutor.
@@ -40,7 +42,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
     protected final E2 execution;
 
     /** The params. */
-    protected final Map<String, Object> params;
+    protected final Map<String, Serializable> params;
 
     /**
      * Instantiates a new template paramed execution executor.
@@ -49,7 +51,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * @param execution the execution
      * @param params the params
      */
-    public MapParamedExecutionExecutor(E1 executor, E2 execution, Map<String, Object> params) {
+    public MapParamedExecutionExecutor(E1 executor, E2 execution, Map<String, Serializable> params) {
         super();
         this.executor = executor;
         this.execution = execution;
@@ -169,7 +171,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single() {
+    public Map<String, Serializable> single() {
         return executor.single(execution, params);
     }
 
@@ -193,7 +195,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique() {
+    public Map<String, Serializable> unique() {
         return executor.unique(execution, params);
     }
 
@@ -217,7 +219,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list() {
+    public List<Map<String, Serializable>> list() {
         return executor.list(execution, params);
     }
 
@@ -235,5 +237,29 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
     @Override
     public <T> List<T> list(RowMapper<T> rowMapper) {
         return executor.list(execution, rowMapper, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Serializable>> each() {
+        return executor.each(execution, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(Class<T> mappingType) {
+        return executor.each(execution, mappingType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(RowMapper<T> rowMapper) {
+        return executor.each(execution, rowMapper, params);
     }
 }

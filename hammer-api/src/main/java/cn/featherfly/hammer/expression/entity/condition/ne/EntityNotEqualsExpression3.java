@@ -13,14 +13,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityNotEqualsExpression3.
  *
  * @author zhongj
- * @param <E>  the element type
+ * @param <E> the element type
  * @param <E2> the generic type
  * @param <E3> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityNotEqualsExpressionBase3<E, E2, E3, C, L> {
+    extends EntityNotEqualsExpressionBase3<E, E2, E3, C, L> {
 
     /**
      * equals. 等于.
@@ -29,7 +29,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
      * @return the LogicExpression
      */
     L ne(Consumer<Tuple3<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
-            NotEqualsEntityExpression<E3>>> notEqualsEntityExpressions);
+        NotEqualsEntityExpression<E3>>> notEqualsEntityExpressions);
 
     /**
      * equals. 等于.
@@ -38,7 +38,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
      * @return the LogicExpression
      */
     L ne(ThreeArgusConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>,
-            NotEqualsEntityExpression<E3>> notEqualsEntityExpressions);
+        NotEqualsEntityExpression<E3>> notEqualsEntityExpressions);
 
     //    /**
     //     * equals. 等于.
@@ -49,7 +49,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param value the value
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    default <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableFunction<E, R> name, R value) {
     //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
@@ -64,7 +64,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(
+    //    default <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, R> name, R value, Predicate<?> ignoreStrategy) {
@@ -81,7 +81,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy);
@@ -97,7 +97,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableFunction<E, R> name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
@@ -110,7 +110,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param property  bean property
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    default <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableSupplier<R> property) {
     //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
@@ -124,7 +124,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(
+    //    default <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableSupplier<R> property, Predicate<?> ignoreStrategy) {
@@ -140,7 +140,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E>> entities, SerializableSupplier<R> property, MatchStrategy matchStrategy);
     //
     //    /**
@@ -153,7 +153,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E>> entities,
     //            SerializableSupplier<R> property, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
@@ -202,7 +202,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param value the value
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    default <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E2>> entities, SerializableFunction2<E2, R> name, R value) {
     //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
@@ -217,7 +217,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(
+    //    default <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, R> name, R value, Predicate<?> ignoreStrategy) {
@@ -234,7 +234,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, R> name, R value, MatchStrategy matchStrategy);
@@ -250,7 +250,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableFunction2<E2, R> name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
@@ -263,7 +263,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param property  bean property
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    default <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E2>> entities, SerializableSupplier2<R> property) {
     //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
@@ -277,7 +277,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(
+    //    default <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableSupplier2<R> property, Predicate<?> ignoreStrategy) {
@@ -293,7 +293,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E2>> entities, SerializableSupplier2<R> property, MatchStrategy matchStrategy);
     //
     //    /**
@@ -306,7 +306,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E2>> entities,
     //            SerializableSupplier2<R> property, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
@@ -355,7 +355,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param value the value
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    default <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E3>> entities, SerializableFunction3<E3, R> name, R value) {
     //        return ne(entities, name, value, MatchStrategy.AUTO);
     //    }
@@ -370,7 +370,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(
+    //    default <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, R> name, R value, Predicate<?> ignoreStrategy) {
@@ -387,7 +387,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, R> name, R value, MatchStrategy matchStrategy);
@@ -403,7 +403,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableFunction3<E3, R> name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
@@ -416,7 +416,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param property  bean property
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    default <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E3>> entities, SerializableSupplier3<R> property) {
     //        return ne(entities, property, MatchStrategy.AUTO);
     //    }
@@ -430,7 +430,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    default <R> L ne(
+    //    default <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableSupplier3<R> property, Predicate<?> ignoreStrategy) {
@@ -446,7 +446,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param queryPolicy the query policy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
+    //    <R extends Serializable> L ne(Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //            QueryEntityRepository<E3>> entities, SerializableSupplier3<R> property, MatchStrategy matchStrategy);
     //
     //    /**
@@ -459,7 +459,7 @@ public interface EntityNotEqualsExpression3<E, E2, E3, C extends ConditionExpres
     //     * @param ignoreStrategy the ignore strategy
     //     * @return LogicExpression
     //     */
-    //    <R> L ne(
+    //    <R extends Serializable> L ne(
     //            Function<Tuple3<QueryEntityRepository<E>, QueryEntityRepository<E2>, QueryEntityRepository<E3>>,
     //                    QueryEntityRepository<E3>> entities,
     //            SerializableSupplier3<R> property, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);

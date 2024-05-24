@@ -38,7 +38,7 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
 
     final String deleteSql = "delete from `user_info` where id = ?";
 
-    final String updateSql = "update `user_info` set  descp = CONCAT(descp, '_update') where id = ?";
+    final String updateSql = "update `user_info` set  user_id = ?, name = ?, descp = ?, province = ?, city = ?, district = ?  where id = ?";
 
     final String selectUserInfoByIdSql = "select `id`, `user_id` , `name`, `descp`, `province`, `city`, `district` from `user_info` where `id` = ?";
 
@@ -95,7 +95,7 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
     @Override
     protected void doInsertBatch(List<UserInfo2> userInfos) {
         String insertSql = Dialects.mysql().dml().insert("user_info",
-                new String[] { "id", "user_id", "name", "descp", "province", "city", "district" });
+            new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, true);
         try {
             PreparedStatement prep = conn.prepareStatement(insertSql);
             for (int index = 0; index < userInfos.size(); index++) {
@@ -214,7 +214,15 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
         if (batch) {
             try (PreparedStatement prep = conn.prepareStatement(updateSql)) {
                 for (Serializable id : ids) {
-                    prep.setInt(1, (Integer) id);
+                    UserInfo2 userInfo = userInfo();
+                    userInfo.setId((Integer) id);
+                    prep.setInt(1, userInfo.getUserId());
+                    prep.setString(2, userInfo.getName());
+                    prep.setString(3, userInfo.getDescp());
+                    prep.setString(4, userInfo.getProvince());
+                    prep.setString(5, userInfo.getCity());
+                    prep.setString(6, userInfo.getDistrict());
+                    prep.setInt(7, userInfo.getId());
                     prep.addBatch();
                 }
                 return prep.executeBatch();
@@ -224,9 +232,17 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
         } else {
             int[] res = new int[ids.length];
             for (int i = 0; i < res.length; i++) {
-                try (PreparedStatement prep = conn.prepareStatement(deleteSql)) {
+                try (PreparedStatement prep = conn.prepareStatement(updateSql)) {
                     Serializable id = ids[i];
-                    prep.setInt(1, (Integer) id);
+                    UserInfo2 userInfo = userInfo();
+                    userInfo.setId((Integer) id);
+                    prep.setInt(1, userInfo.getUserId());
+                    prep.setString(2, userInfo.getName());
+                    prep.setString(3, userInfo.getDescp());
+                    prep.setString(4, userInfo.getProvince());
+                    prep.setString(5, userInfo.getCity());
+                    prep.setString(6, userInfo.getDistrict());
+                    prep.setInt(7, userInfo.getId());
                     res[i] = prep.executeUpdate();
                 } catch (SQLException e) {
                     throw new JdbcException(e);

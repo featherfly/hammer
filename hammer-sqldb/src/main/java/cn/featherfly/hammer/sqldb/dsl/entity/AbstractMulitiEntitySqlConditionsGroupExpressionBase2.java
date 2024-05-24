@@ -52,7 +52,7 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
+import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation.EntityRelation;
 import cn.featherfly.hammer.sqldb.dsl.entity.condition.propery.EntityPropertyOnlyExpressionImpl;
 
@@ -62,15 +62,15 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.propery.EntityPropertyOnl
  * @author zhongj
  * @param <E1> first filterable entity type
  * @param <E2> second filterable entity type
- * @param <C>  condition expression
- * @param <L>  logic expression
+ * @param <C> condition expression
+ * @param <L> logic expression
  * @param <C2> condition config
  * @param <ER> entity sql relation
- * @param <B>  sql builder
+ * @param <B> sql builder
  */
 public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, E2, C extends GroupExpression<C, L>,
-        L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>, ER extends EntitySqlRelation<ER, B>,
-        B extends SqlBuilder> extends AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C, L, C2, ER, B>
+    L extends GroupEndExpression<C, L>, C2 extends ConditionConfig<C2>, ER extends EntitySqlRelation<ER, B>,
+    B extends SqlBuilder> extends AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C, L, C2, ER, B>
 //    implements EntityBetweenExpressionBase2<T1, T2, C, L>, EntityNotBetweenExpressionBase2<T1, T2, C, L> //
 //    , EntityContainsExpressionBase2<T1, T2, C, L>, EntityNotContainsExpressionBase2<T1, T2, C, L> //
 //    , EntityEndWithExpressionBase2<T1, T2, C, L>, EntityNotEndWithExpressionBase2<T1, T2, C, L>//
@@ -94,13 +94,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Instantiates a new abstract entity sql condition group expression base 2.
      *
-     * @param parent            the parent
-     * @param factory           the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param entitySqlRelation the entity sql relation
      */
     @SuppressWarnings("unchecked")
     protected AbstractMulitiEntitySqlConditionsGroupExpressionBase2(L parent, JdbcMappingFactory factory,
-            ER entitySqlRelation) {
+        ER entitySqlRelation) {
         super(parent, factory, entitySqlRelation);
         EntityRelation<?> erm = entitySqlRelation.getEntityRelationTuple().getOrNull1();
         classMapping2 = (JdbcClassMapping<E2>) erm.getClassMapping();
@@ -114,33 +114,33 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L eq2(SerializableFunction<E2, R> name, R value) {
+    public <R extends Serializable> L eq2(SerializableFunction<E2, R> name, R value) {
         return eq(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * Eq 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L eq2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L eq2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
         return eq(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Eq 2.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -151,9 +151,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -164,7 +164,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -175,8 +175,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -187,8 +187,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -199,9 +199,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -212,7 +212,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -223,8 +223,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -235,7 +235,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -246,8 +246,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -258,7 +258,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -269,8 +269,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -281,7 +281,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -292,20 +292,20 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L eq2(SerializableToLocalDateTimeFunction<E2> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return eq(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Eq 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -316,8 +316,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -328,7 +328,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -339,8 +339,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -351,8 +351,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -363,9 +363,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -376,8 +376,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -388,21 +388,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L eq2(SerializableToStringFunction<E2> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return eq(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Eq 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -413,8 +413,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -435,7 +435,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -446,7 +446,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property the property
      * @return the l
      */
@@ -457,8 +457,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <E>            the element type
-     * @param property       the property
+     * @param <E> the element type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -489,7 +489,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -510,7 +510,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -531,7 +531,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -552,7 +552,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -573,7 +573,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -594,7 +594,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -615,7 +615,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -626,7 +626,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -637,8 +637,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -649,7 +649,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -660,8 +660,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -672,7 +672,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -683,8 +683,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Eq 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -699,33 +699,33 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L ne2(SerializableFunction<E2, R> name, R value) {
+    public <R extends Serializable> L ne2(SerializableFunction<E2, R> name, R value) {
         return ne(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * Ne 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L ne2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L ne2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
         return ne(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ne 2.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -736,9 +736,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -749,7 +749,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -760,8 +760,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -772,8 +772,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -784,9 +784,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -797,7 +797,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -808,8 +808,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -820,7 +820,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -831,8 +831,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -843,7 +843,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -854,20 +854,20 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ne2(SerializableToLocalDateTimeFunction<E2> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return ne(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ne 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -878,8 +878,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -890,7 +890,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -901,8 +901,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -913,8 +913,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -925,9 +925,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -938,8 +938,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -950,21 +950,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ne2(SerializableToStringFunction<E2> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ne(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Ne 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -975,8 +975,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -997,7 +997,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1008,7 +1008,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property the property
      * @return the l
      */
@@ -1019,8 +1019,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <E>            the element type
-     * @param property       the property
+     * @param <E> the element type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1051,7 +1051,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1072,7 +1072,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1093,7 +1093,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1114,7 +1114,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1135,7 +1135,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1156,7 +1156,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1177,7 +1177,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1188,7 +1188,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -1199,8 +1199,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1211,7 +1211,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1222,8 +1222,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1234,7 +1234,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -1245,8 +1245,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ne 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1259,8 +1259,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lk 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1271,21 +1271,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lk 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L lk2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lk(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Lk 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1296,8 +1296,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lk 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1310,8 +1310,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nl 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1322,21 +1322,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nl 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nl2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nl(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Nl 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1347,8 +1347,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nl 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1361,8 +1361,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Sw 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1373,21 +1373,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Sw 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L sw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return sw(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Sw 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1398,8 +1398,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Sw 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1412,8 +1412,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nsw 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1424,21 +1424,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nsw 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nsw2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nsw(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Nsw 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1449,8 +1449,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nsw 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1463,8 +1463,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ew 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1475,21 +1475,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ew 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ew2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ew(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Ew 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1500,8 +1500,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ew 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1514,8 +1514,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * New 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1526,21 +1526,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * New 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L new2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return newv(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * New 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1551,8 +1551,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * New 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1565,8 +1565,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Co 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1577,21 +1577,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Co 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L co2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return co(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Co 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1602,8 +1602,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Co 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1616,8 +1616,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nco 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1628,21 +1628,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nco 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nco2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return nco(classMapping, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Nco 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1653,8 +1653,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nco 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1667,8 +1667,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1679,9 +1679,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1692,8 +1692,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1704,9 +1704,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1717,8 +1717,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1729,21 +1729,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ge2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ge(classMapping2, name, value, queryAlias2, matchStrategy, ignoreStrategy);
     }
 
     /**
      * Ge 2.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property the property
      * @return the l
      */
@@ -1754,8 +1754,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <E>            the element type
-     * @param property       the property
+     * @param <E> the element type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1766,7 +1766,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1777,8 +1777,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1789,8 +1789,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1801,9 +1801,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1814,7 +1814,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1825,8 +1825,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1837,7 +1837,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1848,8 +1848,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1860,7 +1860,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1871,20 +1871,20 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ge2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return ge(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ge 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1895,8 +1895,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1907,7 +1907,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1918,8 +1918,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1930,7 +1930,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1941,8 +1941,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1953,7 +1953,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1964,8 +1964,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1976,7 +1976,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -1987,8 +1987,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1999,7 +1999,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -2010,8 +2010,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2032,7 +2032,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2053,7 +2053,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2074,7 +2074,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2095,7 +2095,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2116,7 +2116,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2137,7 +2137,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2158,7 +2158,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ge 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2171,8 +2171,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2183,9 +2183,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2196,8 +2196,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2208,9 +2208,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2221,8 +2221,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2233,21 +2233,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L gt2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return gt(classMapping2, name, value, matchStrategy, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Gt 2.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property the property
      * @return the l
      */
@@ -2258,8 +2258,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <E>            the element type
-     * @param property       the property
+     * @param <E> the element type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2270,7 +2270,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2281,8 +2281,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2293,8 +2293,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2305,9 +2305,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2318,7 +2318,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2329,8 +2329,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2341,7 +2341,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2352,8 +2352,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2364,7 +2364,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2375,20 +2375,20 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L gt2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return gt(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Gt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2399,8 +2399,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2411,7 +2411,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2422,8 +2422,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2434,7 +2434,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2445,8 +2445,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2457,7 +2457,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2468,8 +2468,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2480,7 +2480,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -2491,8 +2491,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2503,7 +2503,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -2514,8 +2514,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2536,7 +2536,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2557,7 +2557,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2578,7 +2578,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2599,7 +2599,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2620,7 +2620,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2641,7 +2641,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2662,7 +2662,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Gt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2675,8 +2675,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2687,9 +2687,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2700,8 +2700,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2712,9 +2712,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2725,7 +2725,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2736,8 +2736,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2748,7 +2748,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2759,8 +2759,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2771,7 +2771,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2782,20 +2782,20 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L le2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return le(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Le 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2806,8 +2806,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2818,8 +2818,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -2830,9 +2830,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2843,8 +2843,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2855,21 +2855,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L le2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return le(classMapping2, name, value, matchStrategy, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Le 2.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property the property
      * @return the l
      */
@@ -2880,8 +2880,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <E>            the element type
-     * @param property       the property
+     * @param <E> the element type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2892,7 +2892,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2903,8 +2903,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2915,7 +2915,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -2926,8 +2926,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2938,7 +2938,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -2949,8 +2949,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2971,7 +2971,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2992,7 +2992,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3013,7 +3013,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3034,7 +3034,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3045,7 +3045,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3056,8 +3056,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3068,7 +3068,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3079,8 +3079,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3091,7 +3091,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3102,8 +3102,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3124,7 +3124,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3145,7 +3145,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3166,7 +3166,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Le 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3179,8 +3179,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3191,9 +3191,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3204,8 +3204,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3216,9 +3216,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3229,8 +3229,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3241,9 +3241,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3254,7 +3254,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3265,8 +3265,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3277,7 +3277,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3288,8 +3288,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3300,7 +3300,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3311,20 +3311,20 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L lt2(SerializableFunction<E2, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy) {
+        Predicate<LocalDateTime> ignoreStrategy) {
         return lt(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Lt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3335,8 +3335,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3347,8 +3347,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -3359,21 +3359,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L lt2(SerializableFunction<E2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lt(classMapping2, name, value, matchStrategy, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Lt 2.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property the property
      * @return the l
      */
@@ -3384,8 +3384,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <E>            the element type
-     * @param property       the property
+     * @param <E> the element type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3396,7 +3396,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -3407,8 +3407,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3419,7 +3419,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -3430,8 +3430,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3442,7 +3442,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
@@ -3453,8 +3453,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3475,7 +3475,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3496,7 +3496,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3517,7 +3517,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3538,7 +3538,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3549,7 +3549,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3560,8 +3560,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3572,7 +3572,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3583,8 +3583,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3595,7 +3595,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3606,8 +3606,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3628,7 +3628,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3649,7 +3649,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3670,7 +3670,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Lt 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3683,105 +3683,106 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L in2(SerializableFunction<E2, R> name, R value) {
+    public <R extends Serializable> L in2(SerializableFunction<E2, R> name, R value) {
         return in(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * In 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L in2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L in2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
         return in(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * In 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L in2(SerializableFunction<E2, R> name, @SuppressWarnings("unchecked") R... value) {
+    public <R extends Serializable> L in2(SerializableFunction<E2, R> name, @SuppressWarnings("unchecked") R... value) {
         return in(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * In 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L in2(SerializableFunction<E2, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+    public <R extends Serializable> L in2(SerializableFunction<E2, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return in(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * In 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L in2(SerializableFunction<E2, R> name, Collection<R> value) {
+    public <R extends Serializable> L in2(SerializableFunction<E2, R> name, Collection<R> value) {
         return in(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * In 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L in2(SerializableFunction<E2, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+    public <R extends Serializable> L in2(SerializableFunction<E2, R> name, Collection<R> value,
+        Predicate<Collection<R>> ignoreStrategy) {
         return in(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * In 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
-    public <R> L in2(SerializableSupplier<R> property) {
+    public <R extends Serializable> L in2(SerializableSupplier<R> property) {
         return in(classMapping2, property, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * In 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L in2(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L in2(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return in(classMapping2, property, queryAlias2, ignoreStrategy);
     }
 
     /**
      * In 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3792,8 +3793,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3804,7 +3805,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3815,8 +3816,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3827,7 +3828,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3838,8 +3839,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3850,7 +3851,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3861,7 +3862,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3872,7 +3873,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -3883,8 +3884,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3895,8 +3896,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3907,8 +3908,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3929,7 +3930,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3950,7 +3951,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3971,7 +3972,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -3982,8 +3983,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -3994,22 +3995,22 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L in2(SerializableToStringFunction<E2> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return in(classMapping2, name, value, matchStrategy, queryAlias2, ignoreStrategy);
     }
 
     /**
      * In 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -4020,21 +4021,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L in2(SerializableToStringFunction<E2> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return in(classMapping2, name, value, matchStrategy, queryAlias2, ignoreStrategy);
     }
 
     /**
      * In 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -4045,8 +4046,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * In 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4059,105 +4060,106 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L ni2(SerializableFunction<E2, R> name, R value) {
+    public <R extends Serializable> L ni2(SerializableFunction<E2, R> name, R value) {
         return ni(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * Ni 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L ni2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L ni2(SerializableFunction<E2, R> name, R value, Predicate<R> ignoreStrategy) {
         return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ni 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L ni2(SerializableFunction<E2, R> name, @SuppressWarnings("unchecked") R... value) {
+    public <R extends Serializable> L ni2(SerializableFunction<E2, R> name, @SuppressWarnings("unchecked") R... value) {
         return ni(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * Ni 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L ni2(SerializableFunction<E2, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+    public <R extends Serializable> L ni2(SerializableFunction<E2, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ni 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
-    public <R> L ni2(SerializableFunction<E2, R> name, Collection<R> value) {
+    public <R extends Serializable> L ni2(SerializableFunction<E2, R> name, Collection<R> value) {
         return ni(classMapping2, name, value, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * Ni 2.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L ni2(SerializableFunction<E2, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+    public <R extends Serializable> L ni2(SerializableFunction<E2, R> name, Collection<R> value,
+        Predicate<Collection<R>> ignoreStrategy) {
         return ni(classMapping2, name, value, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ni 2.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
      * @return the l
      */
-    public <R> L ni2(SerializableSupplier<R> property) {
+    public <R extends Serializable> L ni2(SerializableSupplier<R> property) {
         return ni(classMapping2, property, queryAlias2, getIgnoreStrategy());
     }
 
     /**
      * Ni 2.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    public <R> L ni2(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L ni2(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         return ni(classMapping2, property, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ni 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -4168,8 +4170,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4180,7 +4182,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -4191,8 +4193,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4203,7 +4205,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -4214,8 +4216,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4226,7 +4228,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -4237,7 +4239,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -4248,7 +4250,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -4259,8 +4261,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4271,8 +4273,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4283,8 +4285,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4305,7 +4307,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4326,7 +4328,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4347,7 +4349,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param property       the property
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4358,8 +4360,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -4370,22 +4372,22 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ni2(SerializableToStringFunction<E2> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ni(classMapping2, name, value, matchStrategy, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ni 2.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -4396,21 +4398,21 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ni2(SerializableToStringFunction<E2> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy) {
+        Predicate<String[]> ignoreStrategy) {
         return ni(classMapping2, name, value, matchStrategy, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ni 2.
      *
-     * @param property      the property
+     * @param property the property
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -4421,8 +4423,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ni 2.
      *
-     * @param property       the property
-     * @param matchStrategy  the match strategy
+     * @param property the property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4436,8 +4438,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Ba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba2(SerializableToIntFunction<E2> name, int min, int max) {
@@ -4447,9 +4449,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4461,8 +4463,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Ba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba2(SerializableToLongFunction<E2> name, long min, long max) {
@@ -4472,9 +4474,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4486,8 +4488,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Ba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba2(SerializableToDoubleFunction<E2> name, double min, double max) {
@@ -4497,24 +4499,24 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ba2(SerializableToDoubleFunction<E2> name, double min, double max,
-            BiPredicate<Double, Double> ignoreStrategy) {
+        BiPredicate<Double, Double> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ba 2.
      *
-     * @param <N>  the number type
+     * @param <N> the number type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <N extends Number> L ba2(SerializableToNumberFunction<E2, N> name, N min, N max) {
@@ -4524,25 +4526,25 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <N> the number type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <N extends Number> L ba2(SerializableToNumberFunction<E2, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
+        BiPredicate<N, N> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ba 2.
      *
-     * @param <D>  the generic type
+     * @param <D> the generic type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <D extends Date> L ba2(SerializableToDateFunction<E2, D> name, D min, D max) {
@@ -4552,25 +4554,25 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <D> the generic type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <D extends Date> L ba2(SerializableToDateFunction<E2, D> name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
+        BiPredicate<D, D> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Ba 2.
      *
-     * @param <E>  the element type
+     * @param <E> the element type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <E extends Enum<E>> L ba2(SerializableToEnumFunction<E2, E> name, E min, E max) {
@@ -4580,15 +4582,15 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <E> the element type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <E extends Enum<E>> L ba2(SerializableToEnumFunction<E2, E> name, E min, E max,
-            BiPredicate<E, E> ignoreStrategy) {
+        BiPredicate<E, E> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4596,8 +4598,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Ba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba2(SerializableToLocalTimeFunction<E2> name, LocalTime min, LocalTime max) {
@@ -4607,14 +4609,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ba2(SerializableToLocalTimeFunction<E2> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4622,8 +4624,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Ba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba2(SerializableToLocalDateFunction<E2> name, LocalDate min, LocalDate max) {
@@ -4633,14 +4635,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ba2(SerializableToLocalDateFunction<E2> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4648,8 +4650,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Ba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba2(SerializableToLocalDateTimeFunction<E2> name, LocalDateTime min, LocalDateTime max) {
@@ -4659,14 +4661,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ba2(SerializableToLocalDateTimeFunction<E2> name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4674,8 +4676,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Ba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba2(SerializableToStringFunction<E2> name, String min, String max) {
@@ -4685,14 +4687,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Ba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L ba2(SerializableToStringFunction<E2> name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
+        BiPredicate<String, String> ignoreStrategy) {
         return ba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4702,8 +4704,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Nba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba2(SerializableToIntFunction<E2> name, int min, int max) {
@@ -4713,9 +4715,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4727,8 +4729,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Nba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba2(SerializableToLongFunction<E2> name, long min, long max) {
@@ -4738,9 +4740,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4752,8 +4754,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Nba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba2(SerializableToDoubleFunction<E2> name, double min, double max) {
@@ -4763,24 +4765,24 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nba2(SerializableToDoubleFunction<E2> name, double min, double max,
-            BiPredicate<Double, Double> ignoreStrategy) {
+        BiPredicate<Double, Double> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Nba 2.
      *
-     * @param <N>  the number type
+     * @param <N> the number type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <N extends Number> L nba2(SerializableToNumberFunction<E2, N> name, N min, N max) {
@@ -4790,25 +4792,25 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <N> the number type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <N extends Number> L nba2(SerializableToNumberFunction<E2, N> name, N min, N max,
-            BiPredicate<N, N> ignoreStrategy) {
+        BiPredicate<N, N> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Nba 2.
      *
-     * @param <D>  the generic type
+     * @param <D> the generic type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <D extends Date> L nba2(SerializableToDateFunction<E2, D> name, D min, D max) {
@@ -4818,25 +4820,25 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <D> the generic type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <D extends Date> L nba2(SerializableToDateFunction<E2, D> name, D min, D max,
-            BiPredicate<D, D> ignoreStrategy) {
+        BiPredicate<D, D> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
     /**
      * Nba 2.
      *
-     * @param <E>  the element type
+     * @param <E> the element type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <E extends Enum<E>> L nba2(SerializableToEnumFunction<E2, E> name, E min, E max) {
@@ -4846,15 +4848,15 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <E> the element type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <E extends Enum<E>> L nba2(SerializableToEnumFunction<E2, E> name, E min, E max,
-            BiPredicate<E, E> ignoreStrategy) {
+        BiPredicate<E, E> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4862,8 +4864,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Nba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba2(SerializableToLocalTimeFunction<E2> name, LocalTime min, LocalTime max) {
@@ -4873,14 +4875,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nba2(SerializableToLocalTimeFunction<E2> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4888,8 +4890,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Nba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba2(SerializableToLocalDateFunction<E2> name, LocalDate min, LocalDate max) {
@@ -4899,14 +4901,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nba2(SerializableToLocalDateFunction<E2> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4914,8 +4916,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Nba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba2(SerializableToLocalDateTimeFunction<E2> name, LocalDateTime min, LocalDateTime max) {
@@ -4925,14 +4927,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nba2(SerializableToLocalDateTimeFunction<E2> name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4940,8 +4942,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * Nba 2.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba2(SerializableToStringFunction<E2> name, String min, String max) {
@@ -4951,14 +4953,14 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Nba 2.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public L nba2(SerializableToStringFunction<E2> name, String min, String max,
-            BiPredicate<String, String> ignoreStrategy) {
+        BiPredicate<String, String> ignoreStrategy) {
         return nba(classMapping, name, min, max, queryAlias2, ignoreStrategy);
     }
 
@@ -4967,8 +4969,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Inn 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -4979,8 +4981,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
     /**
      * Isn 2.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -5009,11 +5011,11 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase2<E1, 
      * @return the l
      */
     @SuppressWarnings("unchecked")
-    public L property(
-            BiFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>, LogicExpression<?, ?>> entitiesPropertyFunction) {
+    public L property(BiFunction<EntityPropertyExpression<E1, ?, ?>, EntityPropertyExpression<E2, ?, ?>,
+        LogicExpression<?, ?>> entitiesPropertyFunction) {
         return (L) entitiesPropertyFunction.apply(
-                new EntityPropertyOnlyExpressionImpl<>(0, this, factory, entityRelation),
-                new EntityPropertyOnlyExpressionImpl<>(1, this, factory, entityRelation));
+            new EntityPropertyOnlyExpressionImpl<>(0, this, factory, entityRelation),
+            new EntityPropertyOnlyExpressionImpl<>(1, this, factory, entityRelation));
     }
 
     // ********************************************************************

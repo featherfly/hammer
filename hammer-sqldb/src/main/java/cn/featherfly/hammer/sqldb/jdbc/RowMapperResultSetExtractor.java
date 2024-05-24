@@ -8,7 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * MapResultSetExtractor.

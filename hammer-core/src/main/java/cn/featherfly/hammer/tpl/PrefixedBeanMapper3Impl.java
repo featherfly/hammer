@@ -8,15 +8,17 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutor;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper3;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper4;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper3;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper4;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
@@ -30,8 +32,8 @@ import cn.featherfly.common.structure.page.PaginationResults;
  * @param <T3> the generic type
  */
 public class PrefixedBeanMapper3Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T2, T3>
-        extends AbstractPrefixEntityMapper<E1, E2, Object, Tuple3<String, String, String>>
-        implements PrefixedBeanMapper3<T1, T2, T3> {
+    extends AbstractPrefixEntityMapper<E1, E2, Object, Tuple3<String, String, String>>
+    implements PrefixedBeanMapper3<T1, T2, T3> {
 
     private final Class<T1> type1;
     private final Class<T2> type2;
@@ -40,31 +42,31 @@ public class PrefixedBeanMapper3Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
     /**
      * Instantiates a new tpl prefix entity mapper 3.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param type1     the type 1
-     * @param type2     the type 2
-     * @param type3     the type 3
+     * @param params the params
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
      */
-    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1,
-            Class<T2> type2, Class<T3> type3) {
+    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Serializable> params, Class<T1> type1,
+        Class<T2> type2, Class<T3> type3) {
         this(executor, execution, params, type1, type2, type3, null);
     }
 
     /**
      * Instantiates a new tpl prefix entity mapper 3.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param type1     the type 1
-     * @param type2     the type 2
-     * @param type3     the type 3
-     * @param prefixes  the prefixes
+     * @param params the params
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
+     * @param prefixes the prefixes
      */
-    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1,
-            Class<T2> type2, Class<T3> type3, Tuple3<String, String, String> prefixes) {
+    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Serializable> params, Class<T1> type1,
+        Class<T2> type2, Class<T3> type3, Tuple3<String, String, String> prefixes) {
         super(executor, execution, params, prefixes);
         this.type1 = type1;
         this.type2 = type2;
@@ -74,31 +76,31 @@ public class PrefixedBeanMapper3Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
     /**
      * Instantiates a new tpl prefix entity mapper 3.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param type1     the type 1
-     * @param type2     the type 2
-     * @param type3     the type 3
+     * @param params the params
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
      */
     public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Object[] params, Class<T1> type1, Class<T2> type2,
-            Class<T3> type3) {
+        Class<T3> type3) {
         this(executor, execution, params, type1, type2, type3, null);
     }
 
     /**
      * Instantiates a new tpl prefix entity mapper 3.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param type1     the type 1
-     * @param type2     the type 2
-     * @param type3     the type 3
-     * @param prefixes  the prefixes
+     * @param params the params
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
+     * @param prefixes the prefixes
      */
     public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Object[] params, Class<T1> type1, Class<T2> type2,
-            Class<T3> type3, Tuple3<String, String, String> prefixes) {
+        Class<T3> type3, Tuple3<String, String, String> prefixes) {
         super(executor, execution, params, prefixes);
         this.type1 = type1;
         this.type2 = type2;
@@ -157,6 +159,30 @@ public class PrefixedBeanMapper3Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
      * {@inheritDoc}
      */
     @Override
+    public AutoCloseableIterable<Tuple3<T1, T2, T3>> each() {
+        if (params instanceof Map) {
+            return executor.each(execution, type1, type2, type3, prefixes, getParamsMap());
+        } else {
+            return executor.each(execution, type1, type2, type3, prefixes, getParams());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Tuple3<T1, T2, T3>> each(int offset, int limit) {
+        if (params instanceof Map) {
+            return executor.each(execution, type1, type2, type3, prefixes, getParamsMap(), offset, limit);
+        } else {
+            return executor.each(execution, type1, type2, type3, prefixes, getParams(), offset, limit);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PaginationResults<Tuple3<T1, T2, T3>> pagination(int offset, int limit) {
         if (params instanceof Map) {
             return executor.pagination(execution, type1, type2, type3, prefixes, getParamsMap(), offset, limit);
@@ -172,10 +198,10 @@ public class PrefixedBeanMapper3Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
     public <T4> PrefixedBeanMapper4<T1, T2, T3, T4> map(String prefix, Class<T4> type) {
         if (params instanceof Map) {
             return new PrefixedBeanMapper4Impl<>(executor, execution, getParamsMap(), type1, type2, type3, type,
-                    Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefix));
+                Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefix));
         } else {
             return new PrefixedBeanMapper4Impl<>(executor, execution, getParams(), type1, type2, type3, type,
-                    Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefix));
+                Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefix));
         }
     }
 

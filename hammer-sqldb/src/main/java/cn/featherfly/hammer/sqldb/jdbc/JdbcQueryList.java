@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * jdbc query list.
@@ -36,7 +37,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return map list
      */
-    List<Map<String, Object>> queryList(String sql, Object... args);
+    List<Map<String, Serializable>> queryList(String sql, Serializable... args);
 
     /**
      * Query.
@@ -45,7 +46,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return map list
      */
-    List<Map<String, Object>> queryList(String sql, Map<String, Object> args);
+    List<Map<String, Serializable>> queryList(String sql, Map<String, Serializable> args);
 
     /**
      * Query.
@@ -54,7 +55,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return map list
      */
-    default List<Map<String, Object>> queryList(NamedParamSql sql, Map<String, Object> args) {
+    default List<Map<String, Serializable>> queryList(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), execution.getParams());
     }
@@ -68,7 +69,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return elementType object list
      */
-    <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Object... args);
+    <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Serializable... args);
 
     /**
      * Query.
@@ -79,7 +80,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return elementType object list
      */
-    <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
+    <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args);
 
     /**
      * Query.
@@ -90,7 +91,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return elementType object list
      */
-    default <T> List<T> queryList(NamedParamSql sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    default <T> List<T> queryList(NamedParamSql sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), rowMapper, execution.getParams());
     }
@@ -115,7 +116,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return elementType object list
      */
-    <T> List<T> queryList(String sql, Class<T> elementType, Object... args);
+    <T> List<T> queryList(String sql, Class<T> elementType, Serializable... args);
 
     /**
      * Query.
@@ -129,7 +130,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Object... args) {
+        Serializable... args) {
         return queryList(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
@@ -146,7 +147,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args);
+        Tuple2<String, String> prefixes, Serializable... args);
 
     /**
      * Query.
@@ -162,7 +163,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Object... args) {
+        Class<T3> elementType3, Serializable... args) {
         return queryList(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
     }
 
@@ -181,7 +182,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args);
 
     /**
      * Query.
@@ -199,7 +200,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Object... args) {
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Serializable... args) {
         return queryList(sql, elementType1, elementType2, elementType3, elementType4,
             (Tuple4<String, String, String, String>) null, args);
     }
@@ -222,7 +223,7 @@ public interface JdbcQueryList {
      */
     <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
-        Object... args);
+        Serializable... args);
 
     /**
      * Query.
@@ -243,7 +244,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Object... args) {
+        Serializable... args) {
         return queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             (Tuple5<String, String, String, String, String>) null, args);
     }
@@ -268,7 +269,7 @@ public interface JdbcQueryList {
      */
     <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args);
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args);
 
     /**
      * Query .
@@ -291,7 +292,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Class<T6> elementType6, Object... args) {
+        Class<T6> elementType6, Serializable... args) {
         return queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
             (Tuple6<String, String, String, String, String, String>) null, args);
     }
@@ -318,7 +319,7 @@ public interface JdbcQueryList {
      */
     <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args);
+        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Serializable... args);
 
     //    /**
     //     * Query.
@@ -340,7 +341,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return elementType object list
      */
-    <T> List<T> queryList(String sql, Class<T> elementType, Map<String, Object> args);
+    <T> List<T> queryList(String sql, Class<T> elementType, Map<String, Serializable> args);
 
     /**
      * Query.
@@ -351,7 +352,7 @@ public interface JdbcQueryList {
      * @param args args
      * @return elementType object list
      */
-    default <T> List<T> queryList(NamedParamSql sql, Class<T> elementType, Map<String, Object> args) {
+    default <T> List<T> queryList(NamedParamSql sql, Class<T> elementType, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType, execution.getParams());
     }
@@ -368,7 +369,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         return queryList(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
@@ -384,7 +385,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> queryList(NamedParamSql sql, Class<T1> elementType1, Class<T2> elementType2,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, execution.getParams());
     }
@@ -402,7 +403,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Map<String, Object> args);
+        Tuple2<String, String> prefixes, Map<String, Serializable> args);
 
     /**
      * Query.
@@ -417,7 +418,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> queryList(NamedParamSql sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Map<String, Object> args) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
     }
@@ -436,7 +437,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Map<String, Object> args) {
+        Class<T3> elementType3, Map<String, Serializable> args) {
         return queryList(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
     }
 
@@ -454,7 +455,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(NamedParamSql sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Map<String, Object> args) {
+        Class<T2> elementType2, Class<T3> elementType3, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, execution.getParams());
     }
@@ -474,7 +475,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args);
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> args);
 
     /**
      * Query.
@@ -492,7 +493,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, execution.getParams());
     }
@@ -513,7 +514,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Object> args) {
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Serializable> args) {
         return queryList(sql, elementType1, elementType2, elementType3, elementType4,
             (Tuple4<String, String, String, String>) null, args);
     }
@@ -534,7 +535,7 @@ public interface JdbcQueryList {
      * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(NamedParamSql sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Object> args) {
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
             execution.getParams());
@@ -558,7 +559,7 @@ public interface JdbcQueryList {
      */
     <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
-        Map<String, Object> args);
+        Map<String, Serializable> args);
 
     /**
      * Query.
@@ -578,7 +579,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
             execution.getParams());
@@ -603,7 +604,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         return queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             (Tuple5<String, String, String, String, String>) null, args);
     }
@@ -627,7 +628,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
             execution.getParams());
@@ -653,7 +654,7 @@ public interface JdbcQueryList {
      */
     <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args);
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args);
 
     /**
      * Query.
@@ -675,7 +676,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
             prefixes, execution.getParams());
@@ -702,7 +703,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Class<T6> elementType6, Map<String, Object> args) {
+        Class<T6> elementType6, Map<String, Serializable> args) {
         return queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
             (Tuple6<String, String, String, String, String, String>) null, args);
     }
@@ -728,7 +729,7 @@ public interface JdbcQueryList {
      */
     default <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(NamedParamSql sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Class<T6> elementType6, Map<String, Object> args) {
+        Class<T5> elementType5, Class<T6> elementType6, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
             elementType6, execution.getParams());
@@ -757,7 +758,7 @@ public interface JdbcQueryList {
     <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
         Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> args);
+        Map<String, Serializable> args);
 
     /**
      * Query .
@@ -782,7 +783,7 @@ public interface JdbcQueryList {
     default <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(NamedParamSql sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, elementType5,
             elementType6, prefixes, execution.getParams());

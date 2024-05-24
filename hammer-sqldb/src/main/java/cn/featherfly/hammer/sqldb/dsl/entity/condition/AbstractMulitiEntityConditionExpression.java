@@ -89,7 +89,8 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     public <V> L ba(AtomicInteger index, PropertyMapping<?> pm, V min, V max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-            new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) },
+            new FieldValueOperator[] { getFieldValueOperator(pm, (Serializable) min),
+                getFieldValueOperator(pm, (Serializable) max) },
             ComparisonOperator.BA, getAlias(index), ignoreStrategy));
     }
 
@@ -107,7 +108,8 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
         Predicate<?> ignoreStrategy) {
         return (L) addCondition(builder(pm, name).dialect(getDialect()) //
             .comparisonOperator(ComparisonOperator.BA) //
-            .value(new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) }) //
+            .value(new FieldValueOperator[] { getFieldValueOperator(pm, (Serializable) min),
+                getFieldValueOperator(pm, (Serializable) max) }) //
             .tableAlias(getAlias(index))//
             .ignoreStrategy(ignoreStrategy) //
             .build());
@@ -167,7 +169,8 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
     @SuppressWarnings("unchecked")
     public <V> L nba(AtomicInteger index, PropertyMapping<?> pm, V min, V max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), pm.getRepositoryFieldName(),
-            new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) },
+            new FieldValueOperator[] { getFieldValueOperator(pm, (Serializable) min),
+                getFieldValueOperator(pm, (Serializable) max) },
             ComparisonOperator.NBA, getAlias(index), ignoreStrategy));
     }
 
@@ -197,7 +200,8 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
         Predicate<?> ignoreStrategy) {
         return (L) addCondition(builder(pm, name).dialect(getDialect()) //
             .comparisonOperator(ComparisonOperator.NBA) //
-            .value(new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) }) //
+            .value(new FieldValueOperator[] { getFieldValueOperator(pm, (Serializable) min),
+                getFieldValueOperator(pm, (Serializable) max) }) //
             .tableAlias(getAlias(index))//
             .ignoreStrategy(ignoreStrategy) //
             .build());

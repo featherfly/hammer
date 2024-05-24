@@ -8,7 +8,8 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
@@ -32,14 +33,15 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
     /**
      * Instantiates a new entity sql query fetch.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
-     * @param classMapping           the class mapping
+     * @param classMapping the class mapping
      */
-    public EntitySqlQueryFetch(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+    public EntitySqlQueryFetch(HammerConfig hammerConfig, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
         EntitySqlQueryRelation entitySqlQueryRelation, JdbcClassMapping<E> classMapping) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
         // 第一个查询对象，自动获取（fetch）
         entitySqlQueryRelation.query(classMapping).fetch(0);
     }
@@ -49,7 +51,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public EntityQueryConditionGroup<E> where() {
-        return new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryExpression<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -58,7 +60,8 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
     @Override
     public EntityQueryConditionGroupLogic<E> where(
         Function<EntityConditionsGroupExpression<E, ?, ?>, LogicExpression<?, ?>> function) {
-        EntitySqlQueryExpression<E> exp = new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
+        EntitySqlQueryExpression<
+            E> exp = new EntitySqlQueryExpression<>(hammerConfig, factory, sqlPageFactory, queryRelation);
         if (function != null) {
             exp.addCondition(function.apply(new EntitySqlQueryConditionsGroupExpression<>(0, factory, queryRelation)));
         }
@@ -70,7 +73,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public EntityQuerySortExpression<E> sort() {
-        return new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryExpression<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -79,7 +82,8 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
     @Override
     public EntityQueryFetchedProperties<E> property(
         @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
-        return new EntitySqlQueryFetchedProperties<>(factory, sqlPageFactory, queryRelation, propertyNames);
+        return new EntitySqlQueryFetchedProperties<>(hammerConfig, factory, sqlPageFactory, queryRelation,
+            propertyNames);
     }
 
     /**
@@ -87,7 +91,8 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public <V> EntityQueryOneFetchedProperty<E, V> property(boolean distinct, SerializableFunction<E, V> propertyName) {
-        return new EntitySqlQueryFetchedOneProperty<>(factory, sqlPageFactory, queryRelation, distinct, propertyName);
+        return new EntitySqlQueryFetchedOneProperty<>(hammerConfig, factory, sqlPageFactory, queryRelation, distinct,
+            propertyName);
     }
 
     /**
@@ -96,8 +101,8 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
     @Override
     public <V> EntityQueryOneFetchedProperty<E, V> property(AggregateFunction aggregateFunction, boolean distinct,
         SerializableFunction<E, V> propertyName) {
-        return new EntitySqlQueryFetchedOneProperty<>(factory, sqlPageFactory, queryRelation, aggregateFunction,
-            distinct, propertyName);
+        return new EntitySqlQueryFetchedOneProperty<>(hammerConfig, factory, sqlPageFactory, queryRelation,
+            aggregateFunction, distinct, propertyName);
     }
 
     /**
@@ -105,7 +110,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public EntityQueryExpression<E, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
-        EntityQuerySortExpression<E>> configure(Consumer<QueryConfig> configure) {
+        EntityQuerySortExpression<E>> configure(Consumer<DslQueryConfig> configure) {
         if (configure != null) {
             configure.accept(queryRelation.getConfig());
         }

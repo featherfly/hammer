@@ -8,12 +8,13 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**
@@ -33,7 +34,7 @@ public class MapParamedExecutionExecutorEx<E1 extends ExecutionExecutor<E2>, E2>
      * @param execution the execution
      * @param params the params
      */
-    public MapParamedExecutionExecutorEx(E1 executor, E2 execution, Map<String, Object> params) {
+    public MapParamedExecutionExecutorEx(E1 executor, E2 execution, Map<String, Serializable> params) {
         super(executor, execution, params);
     }
 
@@ -41,7 +42,7 @@ public class MapParamedExecutionExecutorEx<E1 extends ExecutionExecutor<E2>, E2>
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(int offset, int limit) {
+    public List<Map<String, Serializable>> list(int offset, int limit) {
         return executor.list(execution, params, offset, limit);
     }
 
@@ -65,7 +66,7 @@ public class MapParamedExecutionExecutorEx<E1 extends ExecutionExecutor<E2>, E2>
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(int offset, int limit) {
+    public PaginationResults<Map<String, Serializable>> pagination(int offset, int limit) {
         return executor.pagination(execution, params, offset, limit);
     }
 

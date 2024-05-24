@@ -88,7 +88,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     void testPaginationTuple2() {
         PaginationResults<
             Tuple2<UserInfo, User>> page = tupleMapper.selectUserInfoAndUserPage(new SimplePagination(0, 10));
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -99,7 +99,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
         }
 
         page = tupleMapper.selectUserInfoAndUserPage(new SimplePagination(0, 1));
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -113,7 +113,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
     @Test
     void testPaginationLimitTuple2() {
         PaginationResults<Tuple2<UserInfo, User>> page = tupleMapper.selectUserInfoAndUserPage(0, 10);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -124,7 +124,7 @@ public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringC
         }
 
         page = tupleMapper.selectUserInfoAndUserPage(0, 1);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {

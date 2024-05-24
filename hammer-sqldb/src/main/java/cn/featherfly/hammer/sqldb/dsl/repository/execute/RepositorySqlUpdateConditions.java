@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.execute;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class RepositorySqlUpdateConditions extends AbstractMulitiRepositorySqlEx
     /**
      * Instantiates a new repository sql update conditions.
      *
-     * @param parent         the parent
+     * @param parent the parent
      * @param updateRelation the update relation
      */
     RepositorySqlUpdateConditions(RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig> parent,
@@ -64,16 +65,16 @@ public class RepositorySqlUpdateConditions extends AbstractMulitiRepositorySqlEx
      * {@inheritDoc}
      */
     @Override
-    public List<Object> getParams() {
+    public List<Serializable> getParams() {
         return getParams(parent, repositoryRelation, super.getParams());
     }
 
     /**
      * Expression.
      *
-     * @param condition       the condition
-     * @param parent          the parent
-     * @param relation        the relation
+     * @param condition the condition
+     * @param parent the parent
+     * @param relation the relation
      * @param conditionConfig the condition config
      * @return the string
      */
@@ -108,14 +109,14 @@ public class RepositorySqlUpdateConditions extends AbstractMulitiRepositorySqlEx
     /**
      * Gets the params.
      *
-     * @param parent      the parent
-     * @param relation    the relation
+     * @param parent the parent
+     * @param relation the relation
      * @param superParams the super params
      * @return the params
      */
-    static List<Object> getParams(LogicExpression<?, ?> parent, RepositorySqlUpdateRelation relation,
-        List<Object> superParams) {
-        List<Object> params = new ArrayList<>();
+    static List<Serializable> getParams(LogicExpression<?, ?> parent, RepositorySqlUpdateRelation relation,
+        List<Serializable> superParams) {
+        List<Serializable> params = new ArrayList<>();
         if (parent == null) {
             params.addAll(relation.getBuilder().getParams());
         }

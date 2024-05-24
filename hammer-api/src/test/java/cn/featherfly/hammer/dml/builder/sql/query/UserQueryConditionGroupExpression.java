@@ -24,7 +24,7 @@
 //import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 //import cn.featherfly.common.operator.LogicOperator;
 //import cn.featherfly.common.repository.IgnoreStrategy;
-//import cn.featherfly.common.repository.mapping.RowMapper;
+//import cn.featherfly.common.repository.mapper.RowMapper;
 //import cn.featherfly.common.structure.page.Page;
 //import cn.featherfly.hammer.dsl.query.QueryConditionsGroupExpression;
 //import cn.featherfly.hammer.dsl.query.QueryConditionsGroupLogicExpression;
@@ -2607,7 +2607,6 @@
 //     */
 //    @Override
 //    public double doubleValue() {
-//        // YUFEI_TODO Auto-generated method stub
 //        return 0;
 //    }
 //

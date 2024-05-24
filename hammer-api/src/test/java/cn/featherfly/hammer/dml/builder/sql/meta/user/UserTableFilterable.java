@@ -102,7 +102,6 @@ public class UserTableFilterable
      */
     @Override
     public UserTableFilterable group() {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -111,7 +110,6 @@ public class UserTableFilterable
      */
     @Override
     public UserTableLogic group(Function<UserTableFilterable, UserTableLogic> group) {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 

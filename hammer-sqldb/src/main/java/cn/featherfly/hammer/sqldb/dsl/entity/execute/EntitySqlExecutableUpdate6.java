@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.execute;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -28,7 +29,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlConditionsGroupExpression;
  * sql entity executable update .
  *
  * @author zhongj
- * @param <E>  the update type
+ * @param <E> the update type
  * @param <J1> the join type 1
  * @param <J2> the join type 2
  * @param <J3> the join type 3
@@ -53,7 +54,7 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R> UpdateValueExpression<R, EntityExecutableUpdate6<E, J1, J2, J3, J4, J5>,
+    public <R extends Serializable> UpdateValueExpression<R, EntityExecutableUpdate6<E, J1, J2, J3, J4, J5>,
         EntityExecutableConditionGroup6<E, J1, J2, J3, J4, J5, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic6<E, J1, J2, J3, J4, J5, UpdateConditionConfig>> property(
             SerializableFunction<E, R> property) {
@@ -65,7 +66,7 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      */
     @Override
     public <R,
-        O> UpdateValueExpression<O, EntityExecutableUpdate6<E, J1, J2, J3, J4, J5>,
+        O extends Serializable> UpdateValueExpression<O, EntityExecutableUpdate6<E, J1, J2, J3, J4, J5>,
             EntityExecutableConditionGroup6<E, J1, J2, J3, J4, J5, UpdateConditionConfig>,
             EntityExecutableConditionGroupLogic6<E, J1, J2, J3, J4, J5, UpdateConditionConfig>> property(
                 SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
@@ -101,7 +102,8 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableFunction<E, R> property, R value) {
+    public <R extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(
+        SerializableFunction<E, R> property, R value) {
         update.set(property, value);
         return this;
     }
@@ -110,8 +112,8 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableFunction<E, R> property, R value,
-        Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(
+        SerializableFunction<E, R> property, R value, Predicate<R> ignoreStrategy) {
         update.set(property, value, ignoreStrategy);
         return this;
     }
@@ -120,8 +122,8 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R, O> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableFunction<E, R> property,
-        SerializableFunction<R, O> nestedProperty, O value) {
+    public <R, O extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(
+        SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty, O value) {
         update.set(property, nestedProperty, value);
         return this;
     }
@@ -130,8 +132,9 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R, O> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableFunction<E, R> property,
-        SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
+    public <R, O extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(
+        SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty, O value,
+        Predicate<O> ignoreStrategy) {
         update.set(property, nestedProperty, value, ignoreStrategy);
         return this;
     }
@@ -140,7 +143,8 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableSupplier<R> property) {
+    public <
+        R extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableSupplier<R> property) {
         update.set(property);
         return this;
     }
@@ -149,7 +153,7 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableSupplier<R> property,
+    public <R extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableSupplier<R> property,
         Predicate<R> ignoreStrategy) {
         update.set(property, ignoreStrategy);
         return this;
@@ -159,8 +163,8 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R, O> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableSupplier<R> property,
-        SerializableFunction<R, O> nestedProperty) {
+    public <R, O extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(
+        SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty) {
         update.set(property, nestedProperty);
         return this;
     }
@@ -169,8 +173,8 @@ public class EntitySqlExecutableUpdate6<E, J1, J2, J3, J4, J5>
      * {@inheritDoc}
      */
     @Override
-    public <R, O> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(SerializableSupplier<R> property,
-        SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
+    public <R, O extends Serializable> EntityExecutableUpdate6<E, J1, J2, J3, J4, J5> set(
+        SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
         update.set(property, nestedProperty, ignoreStrategy);
         return this;
     }

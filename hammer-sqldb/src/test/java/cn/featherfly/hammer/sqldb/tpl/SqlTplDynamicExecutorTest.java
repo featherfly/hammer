@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.tpl;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
     @BeforeClass
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
-        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
+        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
         userMapper = mapperFactory.newInstance(UserMapper.class, hammer, hammerConfig);
     }
 
@@ -78,7 +79,7 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
     @Test
     void testMapperSingleMap() {
         String username = "yufei";
-        Map<String, Object> u = userMapper.selectByUsername2(username);
+        Map<String, Serializable> u = userMapper.selectByUsername2(username);
         System.out.println(u);
         assertEquals(u.get("username"), username);
     }
@@ -92,7 +93,7 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
 
     @Test
     void testMapperListMap() {
-        List<Map<String, Object>> us = userMapper.select2();
+        List<Map<String, Serializable>> us = userMapper.select2();
         System.out.println(us);
         assertEquals(us.size(), TestConstants.USER_INFO_INIT_ROWS);
 
@@ -133,7 +134,7 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
         int limit = 1;
         Page page = new SimplePagination(0, limit);
 
-        List<Map<String, Object>> list = userMapper.select2(page);
+        List<Map<String, Serializable>> list = userMapper.select2(page);
         System.out.println(list.size());
         System.out.println(list);
         assertEquals(list.size(), limit);
@@ -143,7 +144,7 @@ public class SqlTplDynamicExecutorTest extends JdbcTestBase {
         System.out.println(list);
         assertEquals(list.size(), limit);
 
-        PaginationResults<Map<String, Object>> us = userMapper.select2Page(page);
+        PaginationResults<Map<String, Serializable>> us = userMapper.select2Page(page);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
 

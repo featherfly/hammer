@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl.mapper;
 
+import java.io.Serializable;
+
 import javax.annotation.Resource;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -31,6 +33,6 @@ public class UserInfoMapper2 {
     @Cacheable(key = "'userInfo:id:'+ #id", value = "userInfoCache")
     public UserInfo selectById(Integer id) {
         return hammer.template().single("user_info@selectById", UserInfo.class,
-            new ChainMapImpl<String, Object>().putChain("id", id));
+            new ChainMapImpl<String, Serializable>().putChain("id", id));
     }
 }

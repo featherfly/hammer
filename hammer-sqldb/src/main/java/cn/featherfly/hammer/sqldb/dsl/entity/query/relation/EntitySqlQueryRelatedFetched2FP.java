@@ -16,6 +16,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.EntityOnExpression3;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate3FRP;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate3FRR;
@@ -28,7 +29,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * The Class EntitySqlQueryRelatedFetched2RF.
  *
  * @author zhongj
- * @param <E>  the element type
+ * @param <E> the element type
  * @param <R1> query or joined type
  * @param <R2> query or joined type
  */
@@ -40,14 +41,16 @@ public class EntitySqlQueryRelatedFetched2FP<E, R1, R2> extends AbstractEntitySq
     /**
      * Instantiates a new entity sql query related fetched 2 RF.
      *
-     * @param entitySqlQueryRelate   the entity sql query relate
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param entitySqlQueryRelate the entity sql query relate
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
     public EntitySqlQueryRelatedFetched2FP(EntitySqlQueryRelate2FP<E, R1, R2> entitySqlQueryRelate,
-        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+        HammerConfig hammerConfig, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+        EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
         proxy = entitySqlQueryRelate;
     }
 

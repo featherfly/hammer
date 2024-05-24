@@ -12,7 +12,7 @@ package cn.featherfly.hammer.tpl.mapper;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.tpl.TplExecuteIdEmailStyleParser;
@@ -41,7 +41,7 @@ public class TuplesMapperImpl extends BasedTplHammer implements TuplesMapper {
     @Override
     public Tuple2<User, User2> selectUserInfoByUserId(Integer userId) {
         return hammer.template().single(new TplExecuteIdFileImpl("selectUserInfoByUserId", "TuplesMapper", parser),
-                User.class, User2.class, new ChainMapImpl<String, Object>().putChain("userId", userId));
+            User.class, User2.class, new Params().set("userId", userId));
     }
 
     //    /**

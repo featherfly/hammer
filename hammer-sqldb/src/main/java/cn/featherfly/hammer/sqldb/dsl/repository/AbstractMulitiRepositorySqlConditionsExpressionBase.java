@@ -90,37 +90,37 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
  * abstract muliti repository condition expression.
  *
  * @author zhongj
- * @param <C>  the generic type
- * @param <L>  the generic type
- * @param <T>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
+ * @param <T> the generic type
  * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C extends ConditionExpression,
-        L extends LogicExpression<C, L>, T extends Tuple, C2 extends ConditionConfig<C2>,
-        S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
-        extends AbstractMulitiRepositorySqlConditionExpression<C, L, C2, S, B>
-        implements RepositoryBetweenExpression<C, L>, RepositoryNotBetweenExpression<C, L> //
-        , RepositoryContainsExpression<C, L>, RepositoryNotContainsExpression<C, L>//
-        , RepositoryEndWithExpression<C, L>, RepositoryNotEndWithExpression<C, L> //
-        , RepositoryEqualsExpression<C, L>, RepositoryIsNotNullExpression<C, L>//
-        , RepositoryGreatEqualsExpression<C, L>, RepositoryGreatThanExpression<C, L> //
-        , RepositoryInExpression<C, L>, RepositoryNotInExpression<C, L>//
-        , RepositoryIsNullExpression<C, L>, RepositoryNotEqualsExpression<C, L> //
-        , RepositoryLessEqualsExpression<C, L>, RepositoryLessThanExpression<C, L> //
-        , RepositoryStartWithExpression<C, L>, RepositoryNotStartWithExpression<C, L>//
-        , RepositoryLikeExpression<C, L>, RepositoryNotLikeExpression<C, L>//
-        , NativeStringConditionExpression<C, L> //
-        , RepositoryFieldExpression<C, L>, MulitiRepositoryFieldExpression<T, C, L> //
+    L extends LogicExpression<C, L>, T extends Tuple, C2 extends ConditionConfig<C2>,
+    S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
+    extends AbstractMulitiRepositorySqlConditionExpression<C, L, C2, S, B>
+    implements RepositoryBetweenExpression<C, L>, RepositoryNotBetweenExpression<C, L> //
+    , RepositoryContainsExpression<C, L>, RepositoryNotContainsExpression<C, L>//
+    , RepositoryEndWithExpression<C, L>, RepositoryNotEndWithExpression<C, L> //
+    , RepositoryEqualsExpression<C, L>, RepositoryIsNotNullExpression<C, L>//
+    , RepositoryGreatEqualsExpression<C, L>, RepositoryGreatThanExpression<C, L> //
+    , RepositoryInExpression<C, L>, RepositoryNotInExpression<C, L>//
+    , RepositoryIsNullExpression<C, L>, RepositoryNotEqualsExpression<C, L> //
+    , RepositoryLessEqualsExpression<C, L>, RepositoryLessThanExpression<C, L> //
+    , RepositoryStartWithExpression<C, L>, RepositoryNotStartWithExpression<C, L>//
+    , RepositoryLikeExpression<C, L>, RepositoryNotLikeExpression<C, L>//
+    , NativeStringConditionExpression<C, L> //
+    , RepositoryFieldExpression<C, L>, MulitiRepositoryFieldExpression<T, C, L> //
 {
 
     /**
      * Instantiates a new abstract muliti repository condition expression.
      *
-     * @param parent             the parent
-     * @param index              the index
+     * @param parent the parent
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     protected AbstractMulitiRepositorySqlConditionsExpressionBase(L parent, int index, S repositoryRelation) {
@@ -913,32 +913,32 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * In.
      *
-     * @param <R>             the generic type
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected <R> L in(String name, R value, Predicate<R> ignoreStrategy, String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
-                ComparisonOperator.IN, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.IN, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * In.
      *
-     * @param name            the name
-     * @param values          the values
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param values the values
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L in(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
-                ComparisonOperator.IN, matchStrategy, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.IN, matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
@@ -952,14 +952,14 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Inn.
      *
-     * @param name            the name
-     * @param value           the value
+     * @param name the name
+     * @param value the value
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L inn(String name, Boolean value, String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.INN,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     /**
@@ -973,14 +973,14 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Isn.
      *
-     * @param name            the name
-     * @param value           the value
+     * @param name the name
+     * @param value the value
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L isn(String name, Boolean value, String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.ISN,
-                repositoryAlias, getIgnoreStrategy()));
+            repositoryAlias, getIgnoreStrategy()));
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1419,32 +1419,32 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ni.
      *
-     * @param <R>             the generic type
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected <R> L ni(String name, R value, Predicate<R> ignoreStrategy, String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(value),
-                ComparisonOperator.NI, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.NI, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Ni.
      *
-     * @param name            the name
-     * @param values          the values
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param values the values
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L ni(String name, String[] values, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, getInParam(values),
-                ComparisonOperator.NI, matchStrategy, repositoryAlias, ignoreStrategy));
+            ComparisonOperator.NI, matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -1526,7 +1526,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public L ba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba0(name, min, max, ignoreStrategy);
     }
 
@@ -1548,44 +1548,46 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    private L ba0(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+    private L ba0(String name, Serializable min, Serializable max, BiPredicate<?, ?> ignoreStrategy) {
         return ba(name, min, max, ignoreStrategy, repositoryAlias);
     }
 
-    private L ba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
+    private L ba0(String name, Serializable min, Serializable max, Predicate<?> ignoreStrategy) {
         return ba(name, min, max, ignoreStrategy, repositoryAlias);
     }
 
     /**
      * Ba.
      *
-     * @param name            the name
-     * @param min             the min
-     * @param max             the max
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param min the min
+     * @param max the max
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
-    protected L ba(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy, String repositoryAlias) {
+    protected L ba(String name, Serializable min, Serializable max, BiPredicate<?, ?> ignoreStrategy,
+        String repositoryAlias) {
         return ba(name, min, max, v -> {
-            Object[] params = (Object[]) v;
-            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+            Serializable[] params = (Serializable[]) v;
+            return ((BiPredicate<Serializable, Serializable>) ignoreStrategy).test(params[0], params[1]);
         }, repositoryAlias);
     }
 
     /**
      * Ba.
      *
-     * @param name            the name
-     * @param min             the min
-     * @param max             the max
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param min the min
+     * @param max the max
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
-    protected L ba(String name, Object min, Object max, Predicate<?> ignoreStrategy, String repositoryAlias) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
-                ComparisonOperator.BA, repositoryAlias, ignoreStrategy));
+    protected L ba(String name, Serializable min, Serializable max, Predicate<?> ignoreStrategy,
+        String repositoryAlias) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Serializable[] { min, max },
+            ComparisonOperator.BA, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -1667,7 +1669,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public L nba(String name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return nba0(name, min, max, ignoreStrategy);
     }
 
@@ -1689,44 +1691,46 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    private L nba0(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy) {
+    private L nba0(String name, Serializable min, Serializable max, BiPredicate<?, ?> ignoreStrategy) {
         return nba(name, min, max, ignoreStrategy, repositoryAlias);
     }
 
-    private L nba0(String name, Object min, Object max, Predicate<?> ignoreStrategy) {
+    private L nba0(String name, Serializable min, Serializable max, Predicate<?> ignoreStrategy) {
         return nba(name, min, max, ignoreStrategy, repositoryAlias);
     }
 
     /**
      * Nba.
      *
-     * @param name            the name
-     * @param min             the min
-     * @param max             the max
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param min the min
+     * @param max the max
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
-    protected L nba(String name, Object min, Object max, BiPredicate<?, ?> ignoreStrategy, String repositoryAlias) {
+    protected L nba(String name, Serializable min, Serializable max, BiPredicate<?, ?> ignoreStrategy,
+        String repositoryAlias) {
         return nba(name, min, max, v -> {
-            Object[] params = (Object[]) v;
-            return ((BiPredicate<Object, Object>) ignoreStrategy).test(params[0], params[1]);
+            Serializable[] params = (Serializable[]) v;
+            return ((BiPredicate<Serializable, Serializable>) ignoreStrategy).test(params[0], params[1]);
         }, repositoryAlias);
     }
 
     /**
      * Nba.
      *
-     * @param name            the name
-     * @param min             the min
-     * @param max             the max
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param min the min
+     * @param max the max
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
-    protected L nba(String name, Object min, Object max, Predicate<?> ignoreStrategy, String repositoryAlias) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Object[] { min, max },
-                ComparisonOperator.NBA, repositoryAlias, ignoreStrategy));
+    protected L nba(String name, Serializable min, Serializable max, Predicate<?> ignoreStrategy,
+        String repositoryAlias) {
+        return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, new Serializable[] { min, max },
+            ComparisonOperator.NBA, repositoryAlias, ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -1742,9 +1746,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ge.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1755,9 +1759,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ge.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1768,9 +1772,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ge.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1781,9 +1785,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ge.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1794,17 +1798,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ge.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L ge(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GE,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     private L gt0(String name, Object value, Predicate<?> ignoreStrategy) {
@@ -1818,9 +1822,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Gt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1831,9 +1835,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Gt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1844,9 +1848,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Gt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1857,9 +1861,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Gt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1870,17 +1874,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Gt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L gt(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.GT,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     private L le0(String name, Object value, Predicate<?> ignoreStrategy) {
@@ -1894,9 +1898,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Le.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1907,9 +1911,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Le.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1920,9 +1924,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Le.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1933,9 +1937,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Le.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1946,17 +1950,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Le.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L le(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LE,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     private L lt0(String name, Object value, Predicate<?> ignoreStrategy) {
@@ -1970,9 +1974,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Lt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1983,9 +1987,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Lt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -1996,9 +2000,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Lt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2009,9 +2013,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Lt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2022,17 +2026,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Lt.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L lt(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LT,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -2043,9 +2047,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Eq.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2056,9 +2060,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Eq.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2069,9 +2073,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Eq.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2082,9 +2086,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Eq.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2095,9 +2099,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Eq.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2108,25 +2112,25 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Eq.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L eq(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EQ,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Ne.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2137,9 +2141,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ne.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2150,9 +2154,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ne.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2163,9 +2167,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ne.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2176,9 +2180,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ne.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
@@ -2189,17 +2193,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Ne.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L ne(String name, Object value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NE,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -2207,129 +2211,129 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     /**
      * Lk.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L lk(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.LK,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Nl.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L nl(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NL,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Sw.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L sw(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.SW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Nsw.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L nsw(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NSW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Co.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L co(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.CO,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Nco.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L nco(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NCO,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Ew.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L ew(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.EW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     /**
      * Newv.
      *
-     * @param name            the name
-     * @param value           the value
-     * @param matchStrategy   the match strategy
-     * @param ignoreStrategy  the ignore strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
      * @param repositoryAlias the repository alias
      * @return the l
      */
     protected L newv(String name, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy,
-            String repositoryAlias) {
+        String repositoryAlias) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, name, value, ComparisonOperator.NEW,
-                matchStrategy, repositoryAlias, ignoreStrategy));
+            matchStrategy, repositoryAlias, ignoreStrategy));
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -2418,7 +2422,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     @Override
     public RepositorySerializableFieldExpression<C, L> field(ToIntFunction<T> repositoiesFunction, String name) {
         return new SerializableFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()),
-                name, this);
+            name, this);
     }
 
     /**
@@ -2427,7 +2431,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     @Override
     public RepositoryStringFieldExpression<C, L> fieldAsString(ToIntFunction<T> repositoiesFunction, String name) {
         return new StringFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()), name,
-                this);
+            this);
     }
 
     /**
@@ -2435,9 +2439,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public <N extends Number> RepositoryNumberFieldExpression<N, C, L> fieldAsNumber(
-            ToIntFunction<T> repositoiesFunction, String name) {
+        ToIntFunction<T> repositoiesFunction, String name) {
         return new NumberFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()), name,
-                this);
+            this);
     }
 
     /**
@@ -2445,7 +2449,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public <R extends Enum<R>> RepositoryEnumFieldExpression<R, C, L> fieldAsEnum(ToIntFunction<T> repositoiesFunction,
-            String name) {
+        String name) {
         return new EnumFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()), name, this);
     }
 
@@ -2454,7 +2458,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public <D extends Date> RepositoryDateFieldExpression<D, C, L> fieldAsDate(ToIntFunction<T> repositoiesFunction,
-            String name) {
+        String name) {
         return new DateFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()), name, this);
     }
 
@@ -2463,9 +2467,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public RepositoryLocalDateFieldExpression<C, L> fieldAsLocalDate(ToIntFunction<T> repositoiesFunction,
-            String name) {
+        String name) {
         return new LocalDateFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()), name,
-                this);
+            this);
     }
 
     /**
@@ -2473,9 +2477,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public RepositoryLocalDateTimeFieldExpression<C, L> fieldAsLocalDateTime(ToIntFunction<T> repositoiesFunction,
-            String name) {
+        String name) {
         return new LocalDateTimeFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()),
-                name, this);
+            name, this);
     }
 
     /**
@@ -2483,9 +2487,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public RepositoryLocalTimeFieldExpression<C, L> fieldAsLocalTime(ToIntFunction<T> repositoiesFunction,
-            String name) {
+        String name) {
         return new LocalTimeFieldExpressionMulitiRepositoryImpl<>(repositoiesFunction.applyAsInt(createTuple()), name,
-                this);
+            this);
     }
 
     // ****************************************************************************************************************
@@ -2494,7 +2498,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      * {@inheritDoc}
      */
     @Override
-    public L expression(String expression, final Map<String, Object> params) {
+    public L expression(String expression, final Map<String, Serializable> params) {
         final Execution execution = SqlUtils.convertNamedParamSql(expression, params);
         return expression(execution.getExecution(), execution.getParams());
     }
@@ -2503,12 +2507,12 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      * {@inheritDoc}
      */
     @Override
-    public L expression(String expression, Object... params) {
+    public L expression(String expression, Serializable... params) {
         return (L) addCondition(new ParamedExpression() {
 
             @Override
             public String expression() {
-                final Map<String, Object> argus = new HashMap<>();
+                final Map<String, Serializable> argus = new HashMap<>();
                 Lang.each(repositoryRelation.getFilterableRepositoryRelations(), (m, index) -> {
                     argus.put("" + index, m.getRepositoryAlias());
                     argus.put("as" + index, m.getRepositoryAlias());

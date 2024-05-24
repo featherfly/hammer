@@ -77,7 +77,7 @@
   List<Authorized> authorizeds = query(Authorized.class).mapper(AuthorizedMapper.class).list();
   ```
 
-- [ ] 优化page查询，缓存total_size，在相同查询条件下，使用缓存的total_size
+- [x] 优化page查询，缓存total_size，在相同查询条件下，使用缓存的total_size
 
 - [ ] 加入查询结果缓存翻译功能
 

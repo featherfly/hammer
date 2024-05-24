@@ -10,11 +10,9 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -26,9 +24,9 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 /**
  * AbstractBatchExecuteOperate.
  *
- * @author     zhongj
- * @param  <T> the generic type
- * @since      0.5.25
+ * @author zhongj
+ * @param <T> the generic type
+ * @since 0.5.25
  */
 public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOperate<T>
     implements BatchExecuteOperate<T> {
@@ -36,10 +34,10 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
     /**
      * Instantiates a new abstract batch execute operate.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
      */
     protected AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
         SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
@@ -54,7 +52,7 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
         if (Lang.isEmpty(entities)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        if (meta.getFeatures().supportsBatchUpdates()) {
+        if (databaseMetadata.getFeatures().supportsBatchUpdates()) {
             return doJdbcExecuteBatch(entities, batchSize);
         } else if (supportBatch()) {
             return doSqlExecuteBatch(entities, batchSize);
@@ -77,17 +75,17 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
     /**
      * Execute batch. single sql.
      *
-     * @param  entities the entities
-     * @return          the int
+     * @param entities the entities
+     * @return the int
      */
     protected abstract int doSqlExecuteBatch(final List<T> entities);
 
     /**
      * Execute batch. single sql.
      *
-     * @param  entities  the entities
-     * @param  batchSize the batch size
-     * @return           the int
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @return the int
      */
     protected int[] doSqlExecuteBatch(final List<T> entities, int batchSize) {
         if (entities.size() <= batchSize) {
@@ -110,9 +108,9 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
     /**
      * execute. mulity sql.
      *
-     * @param  entities  the entities
-     * @param  batchSize the batch size
-     * @return           the int
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @return the int
      */
     protected int[] doJdbcExecuteBatch(final List<T> entities, int batchSize) {
         if (entities.size() <= batchSize) {
@@ -138,27 +136,28 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
     /**
      * execute. mulity sql.
      *
-     * @param  entities the entities
-     * @return          the int
+     * @param entities the entities
+     * @return the int
      */
     protected abstract int[] doJdbcExecuteBatch(final List<T> entities);
 
     /**
      * Gets the batch parameters.
      *
-     * @param  entities          the entities
-     * @param  propertyPositions the property positions
-     * @return                   the batch parameters
+     * @param entities the entities
+     * @param propertyPositions the property positions
+     * @return the batch parameters
      */
-    protected Object[] getBatchParameters(List<T> entities, Map<Integer, JdbcPropertyMapping> propertyPositions) {
-        Object[] params = new Object[propertyPositions.size() * entities.size()];
+    protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
+        Serializable[] params = new Serializable[propertyPositions.length * entities.size()];
         for (int i = 0; i < entities.size(); i++) {
             T entity = entities.get(i);
-            int index = 0;
-            for (Entry<Integer, JdbcPropertyMapping> propertyPosition : propertyPositions.entrySet()) {
-                params[i * propertyPositions.size() + index] = BeanUtils.getProperty(entity,
-                    propertyPosition.getValue().getPropertyFullName());
-                index++;
+            int columnNum = 0;
+            for (JdbcPropertyMapping propertyMapping : propertyPositions) {
+                //                params[i * propertyPositions.length + index] = propertyAccessor.getPropertyValue(entity,
+                //                    propertyMapping.getPropertyIndexes());
+                params[i * propertyPositions.length + columnNum] = propertyMapping.getGetter().apply(entity);
+                columnNum++;
             }
         }
         return params;

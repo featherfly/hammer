@@ -11,6 +11,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query.relation;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4RFFR;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched4RFFF;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -19,25 +20,26 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 /**
  * The Class EntitySqlQueryRelate4RFFR.
  *
- * @param <E>  query type
+ * @param <E> query type
  * @param <R1> query or joined type
  * @param <R2> query or joined type
  * @param <R3> query or joined type
  * @param <R4> query or joined type
  */
 public class EntitySqlQueryRelate4RFFR<E, R1, R2, R3, R4> extends AbstractEntitySqlQueryRelate4RFFX<E, R1, R2, R3, R4>
-        implements EntityQueryRelate4RFFR<E, R1, R2, R3, R4> {
+    implements EntityQueryRelate4RFFR<E, R1, R2, R3, R4> {
 
     /**
      * Instantiates a new entity sql query relate 4 RFFR.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
-    public EntitySqlQueryRelate4RFFR(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+    public EntitySqlQueryRelate4RFFR(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
     /**
@@ -46,7 +48,7 @@ public class EntitySqlQueryRelate4RFFR<E, R1, R2, R3, R4> extends AbstractEntity
     @Override
     public EntityQueryRelatedFetched4RFFF<E, R1, R2, R3, R4> fetch() {
         queryRelation.fetch(4);
-        return new EntitySqlQueryRelatedFetched4RFFF<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelatedFetched4RFFF<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
 }

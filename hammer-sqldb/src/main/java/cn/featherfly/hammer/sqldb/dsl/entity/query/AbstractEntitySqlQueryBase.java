@@ -8,6 +8,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionLimit;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
@@ -24,7 +25,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <L> the generic type
  */
 public abstract class AbstractEntitySqlQueryBase<E, L>
-        implements EntityQueryConditionLimit<L>, EntityQueryLimitExecutor<E>, QueryCountExecutor {
+    implements EntityQueryConditionLimit<L>, EntityQueryLimitExecutor<E>, QueryCountExecutor {
 
     /** The factory. */
     protected final JdbcMappingFactory factory;
@@ -38,20 +39,25 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
     /** The limit. */
     protected Limit limit;
 
+    /** The hammer config. */
+    protected final HammerConfig hammerConfig;
+
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
-    protected AbstractEntitySqlQueryBase(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
+    protected AbstractEntitySqlQueryBase(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
         //        this(factory, sqlPageFactory, entitySqlQueryRelation, null);
         AssertIllegalArgument.isNotNull(entitySqlQueryRelation, "entitySqlQueryRelation");
         queryRelation = entitySqlQueryRelation;
         this.factory = factory;
         this.sqlPageFactory = sqlPageFactory;
+        this.hammerConfig = hammerConfig;
     }
 
     //    /**
@@ -86,7 +92,8 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
      */
     @Override
     public List<E> list() {
-        return new EntitySqlQueryExpression<E>(factory, sqlPageFactory, queryRelation).limit(limit).list();
+        return new EntitySqlQueryExpression<E>(hammerConfig, factory, sqlPageFactory, queryRelation).limit(limit)
+            .list();
         //        if (valueType != null) {
         //            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
         //                    .list();
@@ -100,7 +107,8 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
      */
     @Override
     public E single() {
-        return new EntitySqlQueryExpression<E>(factory, sqlPageFactory, queryRelation).limit(limit).single();
+        return new EntitySqlQueryExpression<E>(hammerConfig, factory, sqlPageFactory, queryRelation).limit(limit)
+            .single();
         //        if (valueType != null) {
         //            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
         //                    .single();
@@ -114,7 +122,8 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
      */
     @Override
     public E unique() {
-        return new EntitySqlQueryExpression<E>(factory, sqlPageFactory, queryRelation).limit(limit).unique();
+        return new EntitySqlQueryExpression<E>(hammerConfig, factory, sqlPageFactory, queryRelation).limit(limit)
+            .unique();
         //        if (valueType != null) {
         //            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
         //                    .unique();
@@ -128,7 +137,8 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
      */
     @Override
     public PaginationResults<E> pagination() {
-        return new EntitySqlQueryExpression<E>(factory, sqlPageFactory, queryRelation).limit(limit).pagination();
+        return new EntitySqlQueryExpression<E>(hammerConfig, factory, sqlPageFactory, queryRelation).limit(limit)
+            .pagination();
         //        if (valueType != null) {
         //            return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType).limit(limit)
         //                    .pagination();
@@ -142,10 +152,10 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
      */
     @Override
     public long count() {
-        return new RepositorySqlQueryValueExpression(new RepositorySqlQueryRelation(queryRelation.getJdbc(),
-                new AliasManager(), factory.getMetadata(), queryRelation.getConfig())
-                        .query(queryRelation.getEntityRelation(0).getClassMapping().getRepositoryName())
-                        .fetch(0),
-                sqlPageFactory).count();
+        return new RepositorySqlQueryValueExpression(
+            new RepositorySqlQueryRelation(queryRelation.getJdbc(), new AliasManager(), factory.getMetadata(),
+                queryRelation.getConfig())
+                .query(queryRelation.getEntityRelation(0).getClassMapping().getRepositoryName()).fetch(0),
+            sqlPageFactory).count();
     }
 }

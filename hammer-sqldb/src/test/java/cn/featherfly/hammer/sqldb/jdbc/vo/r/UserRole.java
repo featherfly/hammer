@@ -1,8 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import cn.featherfly.common.repository.id.IdGeneratorManager;
 
 /**
  * The Class UserRole.
@@ -13,8 +16,10 @@ import javax.persistence.Table;
 public class UserRole {
 
     @Id
+    @GeneratedValue(generator = IdGeneratorManager.ASSIGN)
     private Integer userId;
     @Id
+    @GeneratedValue(generator = IdGeneratorManager.ASSIGN)
     private Integer roleId;
 
     private String descp;

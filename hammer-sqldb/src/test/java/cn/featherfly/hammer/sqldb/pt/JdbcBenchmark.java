@@ -101,7 +101,7 @@ public class JdbcBenchmark extends AbstractBenchmark {
     @Override
     protected void doInsertBatch(List<UserInfo2> userInfos) {
         String insertSql = Dialects.mysql().dml().insertBatch("user_info",
-                new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, userInfos.size());
+            new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, userInfos.size(), true);
         //        ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
         try {
             int total = 0;
@@ -206,7 +206,7 @@ public class JdbcBenchmark extends AbstractBenchmark {
     @Override
     protected int[] doDeleteById(boolean batch, Serializable... ids) {
         if (batch) {
-            Execution exec = deleteSqlBatch.getExecution(new ChainMapImpl<String, Object>().putChain("ids", ids));
+            Execution exec = deleteSqlBatch.getExecution(new ChainMapImpl<String, Serializable>().putChain("ids", ids));
             try (PreparedStatement prep = conn.prepareStatement(exec.getExecution())) {
                 for (int i = 0; i < ids.length; i++) {
                     Serializable id = ids[i];
@@ -243,7 +243,15 @@ public class JdbcBenchmark extends AbstractBenchmark {
             for (int i = 0; i < res.length; i++) {
                 try (PreparedStatement prep = conn.prepareStatement(updateSql)) {
                     Serializable id = ids[i];
-                    prep.setInt(1, (Integer) id);
+                    UserInfo2 userInfo = userInfo();
+                    userInfo.setId((Integer) id);
+                    prep.setObject(1, userInfo.getId());
+                    prep.setInt(2, userInfo.getUserId());
+                    prep.setString(3, userInfo.getName());
+                    prep.setString(4, userInfo.getDescp());
+                    prep.setString(5, userInfo.getProvince());
+                    prep.setString(6, userInfo.getCity());
+                    prep.setString(7, userInfo.getDistrict());
                     res[i] = prep.executeUpdate();
                 } catch (SQLException e) {
                     throw new JdbcException(e);

@@ -29,7 +29,7 @@ public class HammerJdbcTestSpec extends JdbcTestBase {
 
     @BeforeClass
     void before() {
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, instantiatorFactory, hammerConfig);
+        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
     }
 
     @Test(expectedExceptions = JdbcMappingException.class)

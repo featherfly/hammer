@@ -358,13 +358,15 @@ public class DslEntityConditionOtherTest {
         query.find(UserInfo.class).join(User::getUserInfo).where().ni(UserInfo::getId, (Integer) 1, value -> ignore)
             .list();
 
-        query.find(User.class).join(User::getUserInfo).where().ni(User::getId, 1, 2).list();
+        query.find(User.class).join(User::getUserInfo).where().ni((SerializableToIntFunction<User>) User::getId, 1, 2)
+            .list();
         query.find(User.class).join(User::getUserInfo).where().ni(User::getId, new int[] { 1, 2 }, value -> ignore)
             .list();
 
-        query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, 1, 2).list();
-        query.find(User.class).join(User::getUserInfo).where().ni(User::getAge, Integer.valueOf(1), Integer.valueOf(2))
+        query.find(User.class).join(User::getUserInfo).where().ni((SerializableToIntFunction<User>) User::getAge, 1, 2)
             .list();
+        query.find(User.class).join(User::getUserInfo).where()
+            .ni((SerializableFunction<User, Integer>) User::getAge, Integer.valueOf(1), Integer.valueOf(2)).list();
         query.find(User.class).join(User::getUserInfo).where()
             .ni((SerializableFunction<User, Integer>) User::getAge, 1, 2).list();
         query.find(User.class).join(User::getUserInfo).where()

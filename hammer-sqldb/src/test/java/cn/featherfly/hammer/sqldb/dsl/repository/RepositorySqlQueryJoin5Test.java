@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.testng.annotations.Test;
@@ -17,7 +18,7 @@ public class RepositorySqlQueryJoin5Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void testJoin1() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .where() //
@@ -29,7 +30,7 @@ public class RepositorySqlQueryJoin5Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void testJoin2() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //
@@ -42,7 +43,7 @@ public class RepositorySqlQueryJoin5Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void testJoin3() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //
@@ -56,7 +57,7 @@ public class RepositorySqlQueryJoin5Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void testJoin4() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //
@@ -71,7 +72,7 @@ public class RepositorySqlQueryJoin5Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void testJoin5() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         //        order = query.find(ORDER_REPO) //
         //            .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
         //            .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //
@@ -111,7 +112,7 @@ public class RepositorySqlQueryJoin5Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void testJoin5_2() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on("id", "create_user").fetch() //
             .join(USER_REPO).on("id", "update_user").fetch() //

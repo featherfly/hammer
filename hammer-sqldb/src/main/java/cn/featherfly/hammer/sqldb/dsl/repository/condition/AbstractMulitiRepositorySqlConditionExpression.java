@@ -108,9 +108,11 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @Override
     @SuppressWarnings("unchecked")
     public <V> L ba(AtomicInteger index, String field, V min, V max, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field,
-            new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }, ComparisonOperator.BA,
-            getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field,
+                new FieldValueOperator[] { getFieldValueOperator((Serializable) min),
+                    getFieldValueOperator((Serializable) max) },
+                ComparisonOperator.BA, getAlias(index), ignoreStrategy));
     }
 
     @Override
@@ -123,7 +125,8 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     public <V> L ba(AtomicInteger index, ParamedColumnElement field, V min, V max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(SqlConditionExpressionBuilder.field(field) //
             .comparisonOperator(ComparisonOperator.BA) //
-            .value(new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }) //
+            .value(new FieldValueOperator[] { getFieldValueOperator((Serializable) min),
+                getFieldValueOperator((Serializable) max) }) //
             .tableAlias(repositoryAlias) //
             .ignoreStrategy(ignoreStrategy) //
             .dialect(dialect).build()); //
@@ -153,9 +156,11 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @Override
     @SuppressWarnings("unchecked")
     public <V> L nba(AtomicInteger index, String field, V min, V max, Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field,
-            new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }, ComparisonOperator.NBA,
-            getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field,
+                new FieldValueOperator[] { getFieldValueOperator((Serializable) min),
+                    getFieldValueOperator((Serializable) max) },
+                ComparisonOperator.NBA, getAlias(index), ignoreStrategy));
     }
 
     /** {@inheritDoc} */
@@ -170,7 +175,8 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     public <V> L nba(AtomicInteger index, ParamedColumnElement field, V min, V max, Predicate<?> ignoreStrategy) {
         return (L) addCondition(SqlConditionExpressionBuilder.field(field) //
             .comparisonOperator(ComparisonOperator.BA) //
-            .value(new FieldValueOperator[] { getFieldValueOperator(min), getFieldValueOperator(max) }) //
+            .value(new FieldValueOperator[] { getFieldValueOperator((Serializable) min),
+                getFieldValueOperator((Serializable) max) }) //
             .tableAlias(repositoryAlias) //
             .ignoreStrategy(ignoreStrategy) //
             .dialect(dialect).build()); //
@@ -1125,8 +1131,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L ge(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.GE, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.GE, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     /** {@inheritDoc} */
@@ -1158,8 +1165,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L ge(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.GE, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.GE, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     // ********************************************************************
@@ -1274,8 +1282,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L gt(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.GT, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.GT, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     /** {@inheritDoc} */
@@ -1307,8 +1316,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L gt(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.GT, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.GT, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     // ********************************************************************
@@ -1423,8 +1433,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L le(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.LE, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.LE, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     /** {@inheritDoc} */
@@ -1456,8 +1467,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L le(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.LE, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.LE, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************
@@ -1572,8 +1584,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L lt(AtomicInteger index, String field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.LT, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.LT, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     /** {@inheritDoc} */
@@ -1605,8 +1618,9 @@ public abstract class AbstractMulitiRepositorySqlConditionExpression<C extends C
     @SuppressWarnings("unchecked")
     public <V> L lt(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return (L) addCondition(new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator(value),
-            ComparisonOperator.LT, matchStrategy, getAlias(index), ignoreStrategy));
+        return (L) addCondition(
+            new SqlConditionExpressionBuilder(getDialect(), field, getFieldValueOperator((Serializable) value),
+                ComparisonOperator.LT, matchStrategy, getAlias(index), ignoreStrategy));
     }
 
     // ****************************************************************************************************************

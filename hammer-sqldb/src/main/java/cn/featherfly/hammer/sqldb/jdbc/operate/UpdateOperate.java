@@ -1,7 +1,8 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
+import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import com.speedment.common.tuple.Tuple2;
 
@@ -11,7 +12,6 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.exception.UnsupportedException;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -23,40 +23,16 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
 
-    //    /**
-    //     * 使用给定数据源以及给定对象生成更新操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成更新操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-    //            String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
-
     /**
      * 使用给定数据源以及给定对象生成更新操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
      */
     public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata) {
+        DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
@@ -65,11 +41,12 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getUpdateSqlAndParamPositions(classMapping, jdbc.getDialect());
+        Tuple2<String,
+            JdbcPropertyMapping[]> tuple = ClassMappingUtils.getUpdateSqlAndMappings(classMapping, jdbc.getDialect());
         sql = tuple.get0();
-        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
+
+        setParamsPropertyAndMappings(tuple.get1());
     }
 
     /**
@@ -97,8 +74,26 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
         //        for (T entity : entities) {
         //            argsList.add(getParameters(entity));
         //        }
-        Object[][] argsList = new Object[entities.size()][];
-        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
-        return jdbc.updateBatch(sql, argsList);
+        //        Object[][] argsList = new Object[entities.size()][];
+        //        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
+        //        return jdbc.updateBatch(sql, argsList);
+
+        return jdbc.updateBatch(sql, () -> new Iterator<Serializable[]>() {
+
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return entities.size() > index;
+            }
+
+            @Override
+            public Serializable[] next() {
+                return getParameters(entities.get(index++));
+            }
+        });
+
+        // YUFEI_TEST 性能没有明显变化，后续再测试
+        // return jdbc.updateBatch(sql, (prep, setArgs) -> setBatchParameters(entities, paramsPropertyAndMappings, prep, setArgs));
     }
 }

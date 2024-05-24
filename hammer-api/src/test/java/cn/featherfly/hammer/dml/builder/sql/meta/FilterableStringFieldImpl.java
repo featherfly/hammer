@@ -628,7 +628,7 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L eq(FieldExpression expression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 }

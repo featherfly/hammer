@@ -1,10 +1,11 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
@@ -19,12 +20,12 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQuery<C extends ConditionExpression, Q>
-        extends AbstractRepositorySqlQueryBase<C, Q> implements QueryLimitExecutor {
+    extends AbstractRepositorySqlQueryBase<C, Q> implements QueryLimitExecutor {
 
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQuery(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -34,12 +35,12 @@ public abstract class AbstractRepositorySqlQuery<C extends ConditionExpression, 
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param index          the index
-     * @param queryRelation  the query relation
+     * @param index the index
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQuery(int index, RepositorySqlQueryRelation queryRelation,
-            SqlPageFactory sqlPageFactory) {
+        SqlPageFactory sqlPageFactory) {
         super(index, queryRelation, sqlPageFactory);
     }
 
@@ -56,7 +57,7 @@ public abstract class AbstractRepositorySqlQuery<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list() {
+    public List<Map<String, Serializable>> list() {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit).list();
     }
 
@@ -80,7 +81,7 @@ public abstract class AbstractRepositorySqlQuery<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single() {
+    public Map<String, Serializable> single() {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit).single();
     }
 
@@ -104,7 +105,7 @@ public abstract class AbstractRepositorySqlQuery<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique() {
+    public Map<String, Serializable> unique() {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit).unique();
     }
 
@@ -128,7 +129,7 @@ public abstract class AbstractRepositorySqlQuery<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination() {
+    public PaginationResults<Map<String, Serializable>> pagination() {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit).pagination();
     }
 

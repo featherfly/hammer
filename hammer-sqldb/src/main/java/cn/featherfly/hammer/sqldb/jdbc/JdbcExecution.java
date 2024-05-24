@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
+
 import cn.featherfly.common.repository.InterceptionExecution;
 
 /**
@@ -17,9 +19,9 @@ public class JdbcExecution implements InterceptionExecution {
 
     protected String originalExecution;
 
-    protected Object[] params;
+    protected Serializable[] params;
 
-    protected Object[] originalParams;
+    protected Serializable[] originalParams;
 
     protected Object result;
 
@@ -28,11 +30,11 @@ public class JdbcExecution implements InterceptionExecution {
     /**
      * Instantiates a new jdbc execution.
      *
-     * @param jdbc      the jdbc
+     * @param jdbc the jdbc
      * @param execution execution string
-     * @param params    params
+     * @param params params
      */
-    JdbcExecution(Jdbc jdbc, String execution, Object... params) {
+    JdbcExecution(Jdbc jdbc, String execution, Serializable... params) {
         this.jdbc = jdbc;
         originalExecution = execution;
         this.execution = execution;
@@ -71,7 +73,7 @@ public class JdbcExecution implements InterceptionExecution {
      * @return originalParams
      */
     @Override
-    public Object[] getOriginalParams() {
+    public Serializable[] getOriginalParams() {
         return originalParams;
     }
 
@@ -101,7 +103,7 @@ public class JdbcExecution implements InterceptionExecution {
      * @return params
      */
     @Override
-    public Object[] getParams() {
+    public Serializable[] getParams() {
         return params;
     }
 
@@ -111,7 +113,7 @@ public class JdbcExecution implements InterceptionExecution {
      * @param params params
      */
     @Override
-    public void setParams(Object[] params) {
+    public void setParams(Serializable[] params) {
         this.params = params;
     }
 

@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.JDBCType;
@@ -37,8 +38,8 @@ public class JdbcNativeTest extends JdbcTestBase {
         call.setString(1, "yufei%");
         boolean b = call.execute();
         System.out.println("call.execute() = " + b);
-        List<Map<String, Object>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
-        for (Map<String, Object> map : list) {
+        List<Map<String, Serializable>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
+        for (Map<String, Serializable> map : list) {
             System.out.println(map);
         }
     }
@@ -50,8 +51,8 @@ public class JdbcNativeTest extends JdbcTestBase {
         call.setString("arg_username", "yufei%");
         boolean b = call.execute();
         System.out.println("call.execute() = " + b);
-        List<Map<String, Object>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
-        for (Map<String, Object> map : list) {
+        List<Map<String, Serializable>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
+        for (Map<String, Serializable> map : list) {
             System.out.println(map);
         }
     }
@@ -63,15 +64,15 @@ public class JdbcNativeTest extends JdbcTestBase {
         call.setInt(1, 1);
         boolean b = call.execute();
         System.out.println("call.execute() = " + b);
-        List<Map<String, Object>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
-        for (Map<String, Object> map : list) {
+        List<Map<String, Serializable>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
+        for (Map<String, Serializable> map : list) {
             System.out.println(map);
         }
         boolean hasMore = false;
         while (call.getMoreResults()) {
             hasMore = true;
             list = JdbcUtils.getResultSetMaps(call.getResultSet());
-            for (Map<String, Object> map : list) {
+            for (Map<String, Serializable> map : list) {
                 System.out.println(map);
             }
         }
@@ -86,15 +87,15 @@ public class JdbcNativeTest extends JdbcTestBase {
         call.setInt(1, 1);
         boolean b = call.execute();
         System.out.println("call.execute() = " + b);
-        List<Map<String, Object>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
-        for (Map<String, Object> map : list) {
+        List<Map<String, Serializable>> list = JdbcUtils.getResultSetMaps(call.getResultSet());
+        for (Map<String, Serializable> map : list) {
             System.out.println(map);
         }
         int queryNum = 1;
         while (call.getMoreResults()) {
             queryNum++;
             list = JdbcUtils.getResultSetMaps(call.getResultSet());
-            for (Map<String, Object> map : list) {
+            for (Map<String, Serializable> map : list) {
                 System.out.println(map);
             }
         }
@@ -184,7 +185,7 @@ public class JdbcNativeTest extends JdbcTestBase {
     void callOutArgu4() throws SQLException {
         Connection conn = dataSource.getConnection();
 
-        LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+        LinkedHashMap<String, Serializable> params = new LinkedHashMap<>();
         params.put("q_name", "name_init%");
         params.put("u_descp", "call_update_batch_" + Randoms.getInt(1000));
         params.put("out_row_count", null); // 使用map必须把所有的参数都加进来，包含out参数
@@ -192,7 +193,7 @@ public class JdbcNativeTest extends JdbcTestBase {
         String[] keys = Lang.toArray(params.keySet());
 
         CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
-        for (Entry<String, Object> param : params.entrySet()) {
+        for (Entry<String, Serializable> param : params.entrySet()) {
             JdbcUtils.setParameter(call, param.getKey(), param.getValue());
         }
         boolean b = call.execute();

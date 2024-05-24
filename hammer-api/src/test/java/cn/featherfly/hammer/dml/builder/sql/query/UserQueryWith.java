@@ -5,7 +5,7 @@
 //import java.util.Map;
 //import java.util.function.Consumer;
 //
-//import cn.featherfly.common.repository.mapping.RowMapper;
+//import cn.featherfly.common.repository.mapper.RowMapper;
 //import cn.featherfly.common.structure.page.Page;
 //import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 //import cn.featherfly.hammer.expression.query.QueryRelateExpression;

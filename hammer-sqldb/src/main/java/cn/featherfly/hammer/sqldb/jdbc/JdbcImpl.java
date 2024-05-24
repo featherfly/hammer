@@ -13,7 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import cn.featherfly.common.bean.InstantiatorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -41,11 +41,11 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param dialect the dialect
      * @param metadata the metadata
      * @param manager the manager
-     * @param instantiatorFactory the instantiator factory
+     * @param propertyAccessorFactory the property accessor factory
      */
     public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
-        InstantiatorFactory instantiatorFactory) {
-        this(connection, null, dialect, metadata, manager, instantiatorFactory);
+        PropertyAccessorFactory propertyAccessorFactory) {
+        this(connection, null, dialect, metadata, manager, propertyAccessorFactory);
     }
 
     /**
@@ -56,11 +56,11 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param dialect the dialect
      * @param metadata the metadata
      * @param manager the manager
-     * @param instantiatorFactory the instantiator factory
+     * @param propertyAccessorFactory the property accessor factory
      */
     public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
-        SqlTypeMappingManager manager, InstantiatorFactory instantiatorFactory) {
-        super(dialect, metadata, manager, instantiatorFactory);
+        SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory) {
+        super(dialect, metadata, manager, propertyAccessorFactory);
         this.connection = connection;
         if (defaultIsolation != null) {
             this.defaultIsolation = defaultIsolation;

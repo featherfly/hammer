@@ -534,7 +534,7 @@ public class TplDynamicExecutorFactory implements Opcodes {
      * @throws SecurityException the security exception
      */
     public String create(Class<?> type) throws IOException, NoSuchMethodException, SecurityException {
-        return create(type, this.getClass().getClassLoader());
+        return create(type, Thread.currentThread().getContextClassLoader());
     }
 
     /**
@@ -550,7 +550,7 @@ public class TplDynamicExecutorFactory implements Opcodes {
     public String create(Class<?> type, ClassLoader classLoader)
         throws IOException, NoSuchMethodException, SecurityException {
         if (classLoader == null) {
-            classLoader = this.getClass().getClassLoader();
+            classLoader = Thread.currentThread().getContextClassLoader();
         }
         if (this.classLoader == null) {
             // 第一次加载

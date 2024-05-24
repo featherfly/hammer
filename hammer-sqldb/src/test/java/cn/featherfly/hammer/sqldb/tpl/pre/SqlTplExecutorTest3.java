@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -74,12 +75,12 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
 
     @Test
     public void selectConditions2() {
-        Map<String,
-            Object> u = executor.single("selectById2@user", new ChainMapImpl<String, Object>().putChain("id", 1));
+        Map<String, Serializable> u = executor.single("selectById2@user",
+            new ChainMapImpl<String, Serializable>().putChain("id", 1));
 
         Map<String,
-            Object> uis = executor.single("selectConditions2@user",
-                new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
+            Serializable> uis = executor.single("selectConditions2@user",
+                new ChainMapImpl<String, Serializable>().putChain("username", u.get("username")) //
                     .putChain("mobile", u.get("mobileNo")) //
                     .putChain("age", null) //
                     .putChain("id", u.get("id")) //
@@ -90,15 +91,15 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
         assertEquals(uis.get("password"), u.get("password"));
         assertEquals(uis.get("username"), u.get("username"));
 
-        PaginationResults<Map<String, Object>> up = executor.pagination("selectConditions2@user",
-            new ChainMapImpl<String, Object>().putChain("username", u.get("username")) //
+        PaginationResults<Map<String, Serializable>> up = executor.pagination("selectConditions2@user",
+            new ChainMapImpl<String, Serializable>().putChain("username", u.get("username")) //
                 .putChain("mobile", u.get("mobileNo")) //
                 .putChain("age", null) //
                 .putChain("id", u.get("id")) //
                 .putChain("password", u.get("password")),
             0, 1);
         assertNotNull(up);
-        assertTrue(up.getTotal().equals(1));
+        assertTrue(up.getTotal() == 1L);
 
         //        <@and if=age??>id = :id</@and>
         //        <@and if=age??>age > :age</@and>

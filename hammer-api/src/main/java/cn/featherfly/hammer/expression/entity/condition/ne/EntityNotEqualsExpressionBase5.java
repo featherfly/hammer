@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition.ne;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,6 +23,7 @@ import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression5;
@@ -30,43 +32,56 @@ import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression5
  * The Interface EntityNotEqualsExpressionBase5.
  *
  * @author zhongj
- * @param <T>  the first comparable type
+ * @param <T> the first comparable type
  * @param <T2> the second comparable type
  * @param <T3> the third comparable type
  * @param <T4> the fourth comparable type
  * @param <T5> the fifth comparable type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends EntityNotEqualsExpressionBase4<T, T2, T3, T4, C, L>, NotEqualsSupplierExpression5<C, L> {
+    L extends LogicExpression<C, L>>
+    extends EntityNotEqualsExpressionBase4<T, T2, T3, T4, C, L>, NotEqualsSupplierExpression5<C, L> {
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    <R> L ne5(SerializableFunction<T5, R> name, R value);
+    <R extends Serializable> L ne5(SerializableFunction<T5, R> name, R value);
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne5(SerializableFunction<T5, R> name, R value, Predicate<R> ignoreStrategy);
+    default <R extends Serializable> L ne5(SerializableFunction<T5, R> name, R value, IgnoreStrategy ignoreStrategy) {
+        return ne5(name, value, ignoreStrategy::test);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ne5(SerializableFunction<T5, R> name, R value, Predicate<R> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -75,8 +90,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -85,7 +100,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -94,8 +109,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -104,7 +119,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -113,8 +128,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -123,8 +138,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param <N>   number type
-     * @param name  the name
+     * @param <N> number type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -133,9 +148,9 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -144,8 +159,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -154,9 +169,9 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -165,8 +180,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param <D>   date type
-     * @param name  the name
+     * @param <D> date type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -175,9 +190,9 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -186,7 +201,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -195,8 +210,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -205,7 +220,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -214,8 +229,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -224,7 +239,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -233,8 +248,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -243,7 +258,7 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -254,8 +269,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -266,8 +281,8 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -276,12 +291,26 @@ public interface EntityNotEqualsExpressionBase5<T, T2, T3, T4, T5, C extends Con
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableToStringFunction<T5> name, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return ne5(name, value, matchStrategy, ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ne5(SerializableToStringFunction<T5> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 }

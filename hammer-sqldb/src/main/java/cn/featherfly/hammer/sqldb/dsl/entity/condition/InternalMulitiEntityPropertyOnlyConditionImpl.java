@@ -45,7 +45,6 @@ public class InternalMulitiEntityPropertyOnlyConditionImpl<E, C2 extends Conditi
      * Instantiates a new internal muliti repository condition impl.
      *
      * @param parent the parent
-     * @param index the index
      */
     private InternalMulitiEntityPropertyOnlyConditionImpl(EntityPropertyOnlyLogicExpression<E> parent,
         JdbcMappingFactory factory, S entitySqlRelation) {

@@ -9,6 +9,7 @@
  */
 package cn.featherfly.hammer.sqldb.pt;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -63,13 +64,13 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         }
         conn.close();
         System.out.println(Strings.format("testInsertBatch use {0} time with insertBatch[{1}] times {2}", timer.stop(),
-                batchSize, batchTimes));
+            batchSize, batchTimes));
     }
 
     @Test
     public void testInsertBatchSingleSql() {
         String insertSql = Dialects.mysql().dml().insertBatch("user_info",
-                new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize);
+            new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize, true);
         Timer timer = Timer.start();
         ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
         int index = 0;
@@ -92,21 +93,21 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         }
         conn.close();
         System.out.println(Strings.format("testInsertBatchSingleSql use {0} time with insertBatch[{1}] times {2}",
-                timer.stop(), batchSize, batchTimes));
+            timer.stop(), batchSize, batchTimes));
     }
 
     // ****************************************************************************************************************
     //
     // ****************************************************************************************************************
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer, Object> prepSetObject = (prep, index, value) -> prep
-            .setObject(index, value);
+    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
+        Object> prepSetObject = (prep, index, value) -> prep.setObject(index, value);
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer, Integer> prepSetInt = (prep, index, value) -> prep
-            .setInt(index, value);
+    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
+        Integer> prepSetInt = (prep, index, value) -> prep.setInt(index, value);
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer, String> prepSetString = (prep, index, value) -> prep
-            .setString(index, value);
+    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
+        String> prepSetString = (prep, index, value) -> prep.setString(index, value);
 
     @Test
     public void testInsertBatch2() {
@@ -142,13 +143,13 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         }
         conn.close();
         System.out.println(Strings.format("testInsertBatch2 use {0} time with insertBatch[{1}] times {2}", timer.stop(),
-                batchSize, batchTimes));
+            batchSize, batchTimes));
     }
 
     @Test
     public void testInsertBatchSingleSql2() {
         String insertSql = Dialects.mysql().dml().insertBatch("user_info",
-                new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize);
+            new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize, true);
         Timer timer = Timer.start();
         ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
         int index = 0;
@@ -171,7 +172,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         }
         conn.close();
         System.out.println(Strings.format("testInsertBatchSingleSql2 use {0} time with insertBatch[{1}] times {2}",
-                timer.stop(), batchSize, batchTimes));
+            timer.stop(), batchSize, batchTimes));
     }
 
     // ****************************************************************************************************************
@@ -187,8 +188,8 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         for (int i = 0; i < batchTimes; i++) {
             PreparedStatementWrapper prep = conn.prepareStatement(insertSql);
             for (int j = 0; j < batchSize; j++) {
-                Object[] params = new Object[] { null, 1, "yufei_" + index, "yufei_descp_" + index, "省_" + index,
-                        "市_" + index, "区_" + index };
+                Serializable[] params = new Serializable[] { null, 1, "yufei_" + index, "yufei_descp_" + index,
+                    "省_" + index, "市_" + index, "区_" + index };
                 JdbcUtils.setParameters(prep, params);
                 prep.addBatch();
                 index++;
@@ -200,7 +201,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         }
         conn.close();
         System.out.println(Strings.format("testInsertBatch3 use {0} time with insertBatch[{1}] times {2}", timer.stop(),
-                batchSize, batchTimes));
+            batchSize, batchTimes));
     }
 
     // ****************************************************************************************************************
@@ -229,6 +230,6 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         Timer timer = Timer.start();
         hammer.save(list);
         System.out.println(Strings.format("testInsertBatchHammer use {0} time with insertBatch[{1}] times {2}",
-                timer.stop(), batchSize, batchTimes));
+            timer.stop(), batchSize, batchTimes));
     }
 }

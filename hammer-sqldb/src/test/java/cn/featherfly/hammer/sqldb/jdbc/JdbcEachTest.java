@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,8 @@ public class JdbcEachTest extends JdbcTestBase {
     @Test
     public void queryEach() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
-        Iterator<Map<String, Object>> iter = ids.iterator();
+        Iterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1);
+        Iterator<Map<String, Serializable>> iter = ids.iterator();
         int size = 0;
         while (iter.hasNext()) {
             size++;
@@ -54,9 +55,9 @@ public class JdbcEachTest extends JdbcTestBase {
     public void queryEach2() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         //        JdbcTransaction tran = jdbc.beginTransation();
-        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
+        Iterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1);
         int size = 0;
-        for (Map<String, Object> value : ids) {
+        for (Map<String, Serializable> value : ids) {
             System.out.println(value);
             size++;
         }
@@ -83,8 +84,8 @@ public class JdbcEachTest extends JdbcTestBase {
     @Test(expectedExceptions = JdbcException.class, expectedExceptionsMessageRegExp = "[\\s\\S]+close[\\s\\S]*")
     public void queryEachExceptionConnClosed() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id = ?", 1);
-        Iterator<Map<String, Object>> iter = ids.iterator();
+        Iterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1);
+        Iterator<Map<String, Serializable>> iter = ids.iterator();
 
         jdbc.close(); // 手动关闭链接
 
@@ -100,8 +101,8 @@ public class JdbcEachTest extends JdbcTestBase {
     @Test(expectedExceptions = NoSuchElementException.class)
     public void queryEachNoSuchElementException() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
-        Iterable<Map<String, Object>> ids = jdbc.queryEach("select * from role where id in (?,?)", 1, 2);
-        Iterator<Map<String, Object>> iter = ids.iterator();
+        Iterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id in (?,?)", 1, 2);
+        Iterator<Map<String, Serializable>> iter = ids.iterator();
         System.out.println(iter.hasNext());
         System.out.println(iter.hasNext());
         System.out.println(iter.hasNext());
@@ -115,8 +116,8 @@ public class JdbcEachTest extends JdbcTestBase {
     public void queryEach3() {
         JdbcSession jdbc = jdbcFactory.createSession(dataSource);
         JdbcTransaction tran = jdbc.beginTransation();
-        List<Map<String, Object>> ids = jdbc.queryList("select * from role where id = ?", 1);
-        Iterator<Map<String, Object>> iter = ids.iterator();
+        List<Map<String, Serializable>> ids = jdbc.queryList("select * from role where id = ?", 1);
+        Iterator<Map<String, Serializable>> iter = ids.iterator();
         int size = 0;
         while (iter.hasNext()) {
             size++;

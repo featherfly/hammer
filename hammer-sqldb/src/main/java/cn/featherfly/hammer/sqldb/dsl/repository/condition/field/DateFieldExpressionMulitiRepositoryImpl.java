@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
@@ -295,7 +296,7 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     @Override
     public L ba(D min, D max) {
         return expression.ba(index, name, min, max,
-            (m1, m2) -> expression.getIgnoreStrategy().test(new Object[] { m1, m2 }));
+            (m1, m2) -> expression.getIgnoreStrategy().test(new Serializable[] { m1, m2 }));
     }
 
     /**
@@ -320,7 +321,7 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     @Override
     public L nba(D min, D max) {
         return expression.nba(index, name, min, max,
-            (m1, m2) -> expression.getIgnoreStrategy().test(new Object[] { m1, m2 }));
+            (m1, m2) -> expression.getIgnoreStrategy().test(new Serializable[] { m1, m2 }));
     }
 
     /**

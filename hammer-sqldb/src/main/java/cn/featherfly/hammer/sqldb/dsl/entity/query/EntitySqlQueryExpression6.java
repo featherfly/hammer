@@ -1,9 +1,18 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
-import com.speedment.common.tuple.Tuple2;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import com.speedment.common.tuple.Tuple6;
+import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup6;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic6;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -31,26 +40,29 @@ public class EntitySqlQueryExpression6<T1, T2, T3, T4, T5, T6, RS> extends
     /**
      * Instantiates a new entity sql query expression.
      *
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
-    public EntitySqlQueryExpression6(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation queryRelation) {
-        this(null, factory, sqlPageFactory, queryRelation);
+    public EntitySqlQueryExpression6(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        this(null, hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * Instantiates a new entity sql query expression.
      *
      * @param parent the parent
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
     EntitySqlQueryExpression6(EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> parent,
-        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
-        super(parent, factory, sqlPageFactory, queryRelation);
+        HammerConfig hammerConfig, JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
+        EntitySqlQueryRelation queryRelation) {
+        super(parent, hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -59,7 +71,7 @@ public class EntitySqlQueryExpression6<T1, T2, T3, T4, T5, T6, RS> extends
     @Override
     protected EntityQueryConditionGroup6<T1, T2, T3, T4, T5, T6, RS> createGroup(
         EntityQueryConditionGroupLogic6<T1, T2, T3, T4, T5, T6, RS> parent) {
-        return new EntitySqlQueryExpression6<>(parent, factory, sqlPageFactory, entityRelation);
+        return new EntitySqlQueryExpression6<>(parent, hammerConfig, factory, sqlPageFactory, entityRelation);
     }
 
     /**
@@ -75,8 +87,19 @@ public class EntitySqlQueryExpression6<T1, T2, T3, T4, T5, T6, RS> extends
      * {@inheritDoc}
      */
     @Override
-    public Tuple2<String, String> expressionPage() {
-        return EntitySqlQueryExpression.expressionPage(super.expression(), parent, entityRelation, getRootSortBuilder(),
-            dialect);
+    public Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> preparePagination(Limit limit) {
+        return EntitySqlQueryExpression.preparePage(hammerConfig, this, super.expression(), parent, entityRelation,
+            getRootSortBuilder(), dialect, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> prepareList(Limit limit) {
+        return EntitySqlQueryExpression.prepareList(hammerConfig, this, super.expression(), parent, entityRelation,
+            getRootSortBuilder(), dialect, limit);
     }
 }

@@ -20,8 +20,7 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
     @Test(groups = "mysql")
     void testQueryEqCaseInsensitive() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory,
-                hammerConfig.getDslConfig().getQueryConfig());
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
 
         Long one = 1L;
         Long zero = 0L;
@@ -57,17 +56,17 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
         assertEquals(count, one);
 
         count = query.find(User.class).where().property(User::getUsername).eq("yufei", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertEquals(count, one);
 
         count = query.find(User.class).where().property(User::getUsername).eq("YUfei", MatchStrategy.CASE_INSENSITIVE)
-                .count();
+            .count();
 
         assertEquals(count, one);
 
         count = query.find(User.class).where().property(User::getUsername).eq("YUfei", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertEquals(count, zero);
 
@@ -75,8 +74,7 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
     @Test(groups = "mysql")
     void testQueryLikeCaseInsensitive() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory,
-                hammerConfig.getDslConfig().getQueryConfig());
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
 
         long zero = 0L;
 
@@ -111,17 +109,17 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).lk("y%", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).lk("Y%", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count == zero);
 
         count = query.find(User.class).where().property(User::getUsername).lk("Y%", MatchStrategy.CASE_INSENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
 
@@ -129,8 +127,7 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
     @Test(groups = "mysql")
     void testQuerySwCaseInsensitive() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory,
-                hammerConfig.getDslConfig().getQueryConfig());
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
 
         long zero = 0L;
 
@@ -165,17 +162,17 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).sw("y", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).sw("Y", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count == zero);
 
         count = query.find(User.class).where().property(User::getUsername).sw("Y", MatchStrategy.CASE_INSENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
 
@@ -183,8 +180,7 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
 
     @Test(groups = "mysql")
     void testQueryEwCaseInsensitive() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory,
-                hammerConfig.getDslConfig().getQueryConfig());
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
 
         long zero = 0L;
 
@@ -219,25 +215,24 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).ew("ei", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).ew("EI", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count == zero);
 
         count = query.find(User.class).where().property(User::getUsername).ew("EI", MatchStrategy.CASE_INSENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
     }
 
     @Test(groups = "mysql")
     void testQueryCoCaseInsensitive() {
-        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory,
-                hammerConfig.getDslConfig().getQueryConfig());
+        SqlQuery query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
 
         long zero = 0L;
 
@@ -272,17 +267,17 @@ public class SqlQueryStringCaseTest extends JdbcTestBase {
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).co("uf", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
 
         count = query.find(User.class).where().property(User::getUsername).co("UF", MatchStrategy.CASE_SENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count == zero);
 
         count = query.find(User.class).where().property(User::getUsername).co("UF", MatchStrategy.CASE_INSENSITIVE)
-                .count();
+            .count();
 
         assertTrue(count > zero);
     }

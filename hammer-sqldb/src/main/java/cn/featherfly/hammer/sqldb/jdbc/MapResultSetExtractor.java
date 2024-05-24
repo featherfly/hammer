@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -17,7 +18,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
  *
  * @author zhongj
  */
-public class MapResultSetExtractor extends AbstractResultSetExtractor<Map<String, Object>> {
+public class MapResultSetExtractor extends AbstractResultSetExtractor<Map<String, Serializable>> {
 
     /**
      * Instantiates a new map result set extractor.

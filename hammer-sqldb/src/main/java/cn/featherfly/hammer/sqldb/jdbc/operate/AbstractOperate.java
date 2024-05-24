@@ -2,125 +2,79 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.bean.BeanDescriptor;
-import cn.featherfly.common.bean.BeanProperty;
-import cn.featherfly.common.db.FieldOperator;
+import com.speedment.common.tuple.Tuple2;
+
 import cn.featherfly.common.db.FieldValueOperator;
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
  * 数据库操作的抽象类.
  *
  * @author zhongj
- * @since 0.1.0
  * @param <T> entity type
+ * @since 0.1.0
  */
 public abstract class AbstractOperate<T> {
 
     /** logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /** jdbc. */
+    protected final Jdbc jdbc;
+
+    /** 类型映射. */
+    protected final JdbcClassMapping<T> classMapping;
+
+    /** The sql type mapping manager. */
+    protected final SqlTypeMappingManager sqlTypeMappingManager;
+
+    /** 数据库元数据. */
+    protected final DatabaseMetadata databaseMetadata;
+
     /** sql 语句. */
     protected String sql;
 
-    /** jdbc. */
-    protected Jdbc jdbc;
-
-    /** 类型映射. */
-    protected JdbcClassMapping<T> classMapping;
-
-    /** The bean descriptor. */
-    protected BeanDescriptor<T> beanDescriptor;
-
-    /** The sql type mapping manager. */
-    protected SqlTypeMappingManager sqlTypeMappingManager;
-
-    /** 数据库元数据. */
-    protected DatabaseMetadata meta;
-
-    /** 属性在SQL中出现的位置，即SQL语句中每个问号对应的对象属性. */
-    protected Map<Integer, JdbcPropertyMapping> propertyPositions = new HashMap<>(0);
+    /** The properties order by sql with placeholder parameter. */
+    protected JdbcPropertyMapping[] paramsPropertyAndMappings;
 
     /** The pk properties. */
-    protected List<BeanProperty<T, Serializable>> pkProperties = new ArrayList<>();
-
-    //    /**
-    //     * 使用给定数据源以及给定对象映射生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager) {
-    //        this(jdbc, classMapping, sqlTypeMappingManager, "");
-    //    }
-
-    //    /**
-    //     * 使用给定数据源以及给定对象生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-    //            String dataBase) {
-    //        if (Lang.isEmpty(dataBase)) {
-    //            meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource());
-    //        } else {
-    //            meta = DatabaseMetadataManager.getDefaultManager().create(jdbc.getDataSource(), dataBase);
-    //        }
-    //        this.jdbc = jdbc;
-    //        this.classMapping = classMapping;
-    //        if (sqlTypeMappingManager == null) {
-    //            this.sqlTypeMappingManager = new SqlTypeMappingManager();
-    //        } else {
-    //            this.sqlTypeMappingManager = sqlTypeMappingManager;
-    //        }
-    //        init();
-    //    }
+    protected final List<JdbcPropertyMapping> pkProperties = new ArrayList<>();
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
      * @param jdbc jdbc
      * @param classMapping classMapping
-     * @param databaseMetadata databaseMetadata
      * @param sqlTypeMappingManager the sql type mapping manager
+     * @param databaseMetadata databaseMetadata
      */
-    public AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
+    protected AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
         DatabaseMetadata databaseMetadata) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
-        meta = databaseMetadata;
+        this.databaseMetadata = databaseMetadata;
         this.sqlTypeMappingManager = sqlTypeMappingManager;
-        //        if (sqlTypeMappingManager == null) {
-        //            this.sqlTypeMappingManager = new SqlTypeMappingManager();
-        //        } else {
-        //            this.sqlTypeMappingManager = sqlTypeMappingManager;
-        //        }
-        init();
-    }
-
-    private void init() {
-        beanDescriptor = BeanDescriptor.getBeanDescriptor(classMapping.getType());
-        for (JdbcPropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
-            pkProperties.add(
-                BeanDescriptor.getBeanDescriptor(classMapping.getType()).getBeanProperty(pm.getPropertyFullName()));
+        for (JdbcPropertyMapping pm : classMapping.getPrimaryKeyPropertyMappings()) {
+            pkProperties.add(pm);
         }
+
         initSql();
     }
 
@@ -206,65 +160,93 @@ public abstract class AbstractOperate<T> {
     //        return params;
     //    }
 
-    //    /**
-    //     * Sets the batch parameters.
-    //     *
-    //     * @param entities          the entities
-    //     * @param propertyPositions the property positions
-    //     * @param prep              the prep
-    //     * @param manager           the manager
-    //     * @return the object[]
-    //     */
-    //    protected Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
-    //            PreparedStatement prep, SqlTypeMappingManager manager) {
-    //        if (Lang.isEmpty(entities)) {
-    //            return new Object[] {};
-    //        }
-    //        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entities.get(0).getClass());
-    //        Object[] params = new Object[propertyPositions.size()];
-    //        int pkNum = propertyPositions.size() / entities.size();
-    //        int i = 0;
-    //        T entity = null;
-    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-    //            if (i % pkNum == 0) {
-    //                entity = entities.get(i / pkNum);
-    //            }
-    //            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
-    //            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-    //            manager.set(prep, i + 1, params[i], property);
-    //            i++;
-    //        }
-    //        return params;
-    //    }
-
     /**
-     * Gets the parameters.
+     * Sets the batch parameters.
      *
-     * @param entity the entity
-     * @return the parameters
+     * @param entities the entities
+     * @param paramsPropertyAndMappings the params property and mappings
+     * @param prep the prep
+     * @param setArgs the set args
      */
-    public Object[] getParameters(T entity) {
-        return getParameters(entity, propertyPositions);
+    protected void setBatchParameters(List<T> entities,
+        Tuple2<Function<T, Serializable>, JdbcPropertyMapping>[] paramsPropertyAndMappings, PreparedStatement prep,
+        Consumer<Serializable[]> setArgs) {
+        if (Lang.isEmpty(entities)) {
+            return;
+        }
+        try {
+            Serializable[] args = new Serializable[paramsPropertyAndMappings.length];
+            for (T entity : entities) {
+                for (int i = 0; i < paramsPropertyAndMappings.length; i++) {
+                    Tuple2<Function<T, Serializable>, JdbcPropertyMapping> paramMapping = paramsPropertyAndMappings[i];
+                    Serializable value = paramMapping.get0().apply(entity);
+                    paramMapping.get1().getJavaTypeSqlTypeOperator().set(prep, i + 1, value);
+                    args[i] = value;
+                }
+                setArgs.accept(args);
+                prep.addBatch();
+            }
+            //prep.executeBatch();
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
     }
 
     /**
      * Gets the parameters.
      *
      * @param entity the entity
-     * @param propertyPositions the property positions
      * @return the parameters
      */
-    protected Object[] getParameters(T entity, Map<Integer, JdbcPropertyMapping> propertyPositions) {
+    protected Serializable[] getParameters(T entity) {
+        return getParameters(entity, paramsPropertyAndMappings);
+    }
+
+    /**
+     * Gets the parameters.
+     *
+     * @param entity the entity
+     * @param paramsPropertyAndMappings the params property and mappings
+     * @return the parameters
+     */
+    protected Serializable[] getParameters(T entity,
+        Tuple2<Function<T, Object>, JdbcPropertyMapping>[] paramsPropertyAndMappings) {
+        Serializable[] operators = new Serializable[paramsPropertyAndMappings.length];
         int i = 0;
-        FieldOperator<?>[] operators = new FieldOperator[propertyPositions.size()];
-        for (Entry<Integer, JdbcPropertyMapping> propertyPosition : propertyPositions.entrySet()) {
-            operators[i] = FieldValueOperator.create(propertyPosition.getValue(),
-                beanDescriptor.getProperty(entity, propertyPosition.getValue().getPropertyFullName())
-            //
-            );
+        for (Tuple2<Function<T, Object>, JdbcPropertyMapping> paramsPropertyAndMapping : paramsPropertyAndMappings) {
+            operators[i] = FieldValueOperator.create(paramsPropertyAndMapping.get1(),
+                paramsPropertyAndMapping.get0().apply(entity));
             i++;
         }
         return operators;
+    }
+
+    /**
+     * Gets the parameters.
+     *
+     * @param entity the entity
+     * @param mappings the mappings
+     * @return the parameters
+     */
+    protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] mappings) {
+        Serializable[] operators = new Serializable[mappings.length];
+        int i = 0;
+        for (JdbcPropertyMapping mapping : mappings) {
+            //            operators[i] = FieldValueOperator.create(mapping,
+            //                propertyAccessor.getPropertyValue(entity, mapping.getPropertyIndexes()));
+            operators[i] = FieldValueOperator.create(mapping, mapping.getGetter().apply(entity));
+            i++;
+        }
+        return operators;
+    }
+
+    /**
+     * Sets the params property and mappings.
+     *
+     * @param mappings the new params property and mappings
+     */
+    protected void setParamsPropertyAndMappings(JdbcPropertyMapping[] mappings) {
+        paramsPropertyAndMappings = mappings;
     }
 
     /**
@@ -272,6 +254,22 @@ public abstract class AbstractOperate<T> {
      */
     protected abstract void initSql();
 
+    /**
+     * sssert entity.
+     *
+     * @param entity entity obj
+     */
+    protected void assertEntity(T entity) {
+        if (entity == null) {
+            throw new SqldbHammerException("#entity.null");
+        }
+    }
+
+    /**
+     * Checks if is debug.
+     *
+     * @return true, if is debug
+     */
     protected boolean isDebug() {
         // IMPLSOON 后续使用配置
         return logger.isDebugEnabled();

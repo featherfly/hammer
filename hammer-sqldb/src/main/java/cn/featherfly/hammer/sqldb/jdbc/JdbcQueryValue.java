@@ -10,12 +10,13 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
 
 import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * jdbc query value.
@@ -27,32 +28,32 @@ public interface JdbcQueryValue {
     /**
      * Query value.
      *
-     * @param <T>  the generic type
-     * @param sql  the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param args the args
      * @return the t
      */
-    <T> T queryValue(String sql, Object... args);
+    <T> T queryValue(String sql, Serializable... args);
 
     /**
      * Query value.
      *
-     * @param <T>  the generic type
-     * @param sql  the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param args the args
      * @return the t
      */
-    <T> T queryValue(String sql, Map<String, Object> args);
+    <T> T queryValue(String sql, Map<String, Serializable> args);
 
     /**
      * Query value.
      *
-     * @param <T>  the generic type
-     * @param sql  the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param args the args
      * @return the t
      */
-    default <T> T queryValue(NamedParamSql sql, Map<String, Object> args) {
+    default <T> T queryValue(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryValue(execution.getExecution(), execution.getParams());
     }
@@ -60,13 +61,13 @@ public interface JdbcQueryValue {
     /**
      * Query value.
      *
-     * @param <T>       the generic type
-     * @param sql       the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param valueType the value type
-     * @param args      the args
+     * @param args the args
      * @return the t
      */
-    <T> T queryValue(String sql, Class<T> valueType, Object... args);
+    <T> T queryValue(String sql, Class<T> valueType, Serializable... args);
 
     //    /** IMPLSOON 后续来实现多个值得查询
     //     * Query value.
@@ -79,29 +80,29 @@ public interface JdbcQueryValue {
     //     * @param args       the args
     //     * @return the t
     //     */
-    //    <T1, T2> Tuple2<T1, T2> queryValue(String sql, Class<T1> valueType1, Class<T2> valueType2, Object... args);
+    //    <T1, T2> Tuple2<T1, T2> queryValue(String sql, Class<T1> valueType1, Class<T2> valueType2, Serializable... args);
 
     /**
      * Query value.
      *
-     * @param <T>       the generic type
-     * @param sql       the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param valueType the value type
-     * @param args      the args
+     * @param args the args
      * @return the t
      */
-    <T> T queryValue(String sql, Class<T> valueType, Map<String, Object> args);
+    <T> T queryValue(String sql, Class<T> valueType, Map<String, Serializable> args);
 
     /**
      * Query value.
      *
-     * @param <T>       the generic type
-     * @param sql       the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param valueType the value type
-     * @param args      the args
+     * @param args the args
      * @return the t
      */
-    default <T> T queryValue(NamedParamSql sql, Class<T> valueType, Map<String, Object> args) {
+    default <T> T queryValue(NamedParamSql sql, Class<T> valueType, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryValue(execution.getExecution(), valueType, execution.getParams());
     }
@@ -109,35 +110,35 @@ public interface JdbcQueryValue {
     /**
      * Query value.
      *
-     * @param <T>       the generic type
-     * @param sql       the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param rowMapper the row mapper
-     * @param args      the args
+     * @param args the args
      * @return the t
      */
-    <T> T queryValue(String sql, RowMapper<T> rowMapper, Object... args);
+    <T> T queryValue(String sql, RowMapper<T> rowMapper, Serializable... args);
 
     /**
      * Query value.
      *
-     * @param <T>       the generic type
-     * @param sql       the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param rowMapper the row mapper
-     * @param args      the args
+     * @param args the args
      * @return the t
      */
-    <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Object> args);
+    <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args);
 
     /**
      * Query value.
      *
-     * @param <T>       the generic type
-     * @param sql       the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param rowMapper the row mapper
-     * @param args      the args
+     * @param args the args
      * @return the t
      */
-    default <T> T queryValue(NamedParamSql sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    default <T> T queryValue(NamedParamSql sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryValue(execution.getExecution(), execution.getParams());
     }
@@ -145,194 +146,194 @@ public interface JdbcQueryValue {
     /**
      * query Integer.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the integer
      */
-    default Integer queryInteger(String sql, Object... args) {
+    default Integer queryInteger(String sql, Serializable... args) {
         return queryValue(sql, Integer.class, args);
     }
 
     /**
      * query Integer.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the integer
      */
-    default Integer queryInteger(String sql, Map<String, Object> args) {
+    default Integer queryInteger(String sql, Map<String, Serializable> args) {
         return queryValue(sql, Integer.class, args);
     }
 
     /**
      * query Integer.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the integer
      */
-    default Integer queryInteger(NamedParamSql sql, Map<String, Object> args) {
+    default Integer queryInteger(NamedParamSql sql, Map<String, Serializable> args) {
         return queryValue(sql, Integer.class, args);
     }
 
     /**
      * Query long.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return LogicExpressionong
      */
-    default Long queryLongWrapper(String sql, Object... args) {
+    default Long queryLongWrapper(String sql, Serializable... args) {
         return queryValue(sql, Long.class, args);
     }
 
     /**
      * Query long.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return LogicExpressionong
      */
-    default Long queryLongWrapper(String sql, Map<String, Object> args) {
+    default Long queryLongWrapper(String sql, Map<String, Serializable> args) {
         return queryValue(sql, Long.class, args);
     }
 
     /**
      * Query long.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return LogicExpressionong
      */
-    default Long queryLongWrapper(NamedParamSql sql, Map<String, Object> args) {
+    default Long queryLongWrapper(NamedParamSql sql, Map<String, Serializable> args) {
         return queryValue(sql, Long.class, args);
     }
 
     /**
      * Query double.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the double
      */
-    default Double queryDoubleWrapper(String sql, Object... args) {
+    default Double queryDoubleWrapper(String sql, Serializable... args) {
         return queryValue(sql, Double.class, args);
     }
 
     /**
      * Query double.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the double
      */
-    default Double queryDoubleWrapper(String sql, Map<String, Object> args) {
+    default Double queryDoubleWrapper(String sql, Map<String, Serializable> args) {
         return queryValue(sql, Double.class, args);
     }
 
     /**
      * Query double.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the double
      */
-    default Double queryDoubleWrapper(NamedParamSql sql, Map<String, Object> args) {
+    default Double queryDoubleWrapper(NamedParamSql sql, Map<String, Serializable> args) {
         return queryValue(sql, Double.class, args);
     }
 
     /**
      * Query big decimal.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the big decimal
      */
-    default BigDecimal queryBigDecimal(String sql, Object... args) {
+    default BigDecimal queryBigDecimal(String sql, Serializable... args) {
         return queryValue(sql, BigDecimal.class, args);
     }
 
     /**
      * Query big decimal.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the big decimal
      */
-    default BigDecimal queryBigDecimal(String sql, Map<String, Object> args) {
+    default BigDecimal queryBigDecimal(String sql, Map<String, Serializable> args) {
         return queryValue(sql, BigDecimal.class, args);
     }
 
     /**
      * Query big decimal.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the big decimal
      */
-    default BigDecimal queryBigDecimal(NamedParamSql sql, Map<String, Object> args) {
+    default BigDecimal queryBigDecimal(NamedParamSql sql, Map<String, Serializable> args) {
         return queryValue(sql, BigDecimal.class, args);
     }
 
     /**
      * Query string.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the string
      */
-    default String queryString(String sql, Object... args) {
+    default String queryString(String sql, Serializable... args) {
         return queryValue(sql, String.class, args);
     }
 
     /**
      * Query string.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the string
      */
-    default String queryString(String sql, Map<String, Object> args) {
+    default String queryString(String sql, Map<String, Serializable> args) {
         return queryValue(sql, String.class, args);
     }
 
     /**
      * Query string.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the string
      */
-    default String queryString(NamedParamSql sql, Map<String, Object> args) {
+    default String queryString(NamedParamSql sql, Map<String, Serializable> args) {
         return queryValue(sql, String.class, args);
     }
 
     /**
      * Query bool.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return true, if successful
      */
-    boolean queryBool(String sql, Object... args);
+    boolean queryBool(String sql, Serializable... args);
 
     /**
      * Query bool.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return true, if successful
      */
-    boolean queryBool(String sql, Map<String, Object> args);
+    boolean queryBool(String sql, Map<String, Serializable> args);
 
     /**
      * Query bool.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return true, if successful
      */
-    default boolean queryBool(NamedParamSql sql, Map<String, Object> args) {
+    default boolean queryBool(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryBool(execution.getExecution(), execution.getParams());
     }
@@ -340,29 +341,29 @@ public interface JdbcQueryValue {
     /**
      * Query byte.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the byte
      */
-    byte queryByte(String sql, Object... args);
+    byte queryByte(String sql, Serializable... args);
 
     /**
      * Query byte.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the byte
      */
-    byte queryByte(String sql, Map<String, Object> args);
+    byte queryByte(String sql, Map<String, Serializable> args);
 
     /**
      * Query byte.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the byte
      */
-    default byte queryByte(NamedParamSql sql, Map<String, Object> args) {
+    default byte queryByte(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryByte(execution.getExecution(), execution.getParams());
     }
@@ -370,29 +371,29 @@ public interface JdbcQueryValue {
     /**
      * Query bytes.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the byte
      */
-    byte[] queryBytes(String sql, Object... args);
+    byte[] queryBytes(String sql, Serializable... args);
 
     /**
      * Query bytes.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the byte
      */
-    byte[] queryBytes(String sql, Map<String, Object> args);
+    byte[] queryBytes(String sql, Map<String, Serializable> args);
 
     /**
      * Query bytes.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the byte
      */
-    default byte[] queryBytes(NamedParamSql sql, Map<String, Object> args) {
+    default byte[] queryBytes(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryBytes(execution.getExecution(), execution.getParams());
     }
@@ -400,29 +401,29 @@ public interface JdbcQueryValue {
     /**
      * Query short.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the short
      */
-    short queryShort(String sql, Object... args);
+    short queryShort(String sql, Serializable... args);
 
     /**
      * Query short.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the short
      */
-    short queryShort(String sql, Map<String, Object> args);
+    short queryShort(String sql, Map<String, Serializable> args);
 
     /**
      * Query short.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the short
      */
-    default short queryShort(NamedParamSql sql, Map<String, Object> args) {
+    default short queryShort(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryShort(execution.getExecution(), execution.getParams());
     }
@@ -430,29 +431,29 @@ public interface JdbcQueryValue {
     /**
      * query int.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the int value
      */
-    int queryInt(String sql, Object... args);
+    int queryInt(String sql, Serializable... args);
 
     /**
      * Query int.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the int value
      */
-    int queryInt(String sql, Map<String, Object> args);
+    int queryInt(String sql, Map<String, Serializable> args);
 
     /**
      * Query int.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the int value
      */
-    default int queryInt(NamedParamSql sql, Map<String, Object> args) {
+    default int queryInt(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryInt(execution.getExecution(), execution.getParams());
     }
@@ -460,29 +461,29 @@ public interface JdbcQueryValue {
     /**
      * query long.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return LogicExpressionong value
      */
-    long queryLong(String sql, Object... args);
+    long queryLong(String sql, Serializable... args);
 
     /**
      * query long.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return LogicExpressionong value
      */
-    long queryLong(String sql, Map<String, Object> args);
+    long queryLong(String sql, Map<String, Serializable> args);
 
     /**
      * query long.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return LogicExpressionong value
      */
-    default long queryLong(NamedParamSql sql, Map<String, Object> args) {
+    default long queryLong(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryLong(execution.getExecution(), execution.getParams());
     }
@@ -490,29 +491,29 @@ public interface JdbcQueryValue {
     /**
      * Query double.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the double
      */
-    double queryDouble(String sql, Object... args);
+    double queryDouble(String sql, Serializable... args);
 
     /**
      * Query double.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the double
      */
-    double queryDouble(String sql, Map<String, Object> args);
+    double queryDouble(String sql, Map<String, Serializable> args);
 
     /**
      * Query double.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the double
      */
-    default double queryDouble(NamedParamSql sql, Map<String, Object> args) {
+    default double queryDouble(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryDouble(execution.getExecution(), execution.getParams());
     }

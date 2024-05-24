@@ -8,8 +8,8 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import cn.featherfly.common.db.mapping.SqlResultSet;
-import cn.featherfly.common.repository.mapping.ResultSetExtractor;
+import cn.featherfly.common.db.mapper.SqlResultSet;
+import cn.featherfly.common.repository.mapper.ResultSetExtractor;
 
 /**
  * SqlResultSetExtractor.

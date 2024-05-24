@@ -7,7 +7,7 @@ import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.function.SixArgusFunction;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
@@ -80,7 +80,7 @@ public abstract class AbstractRepositorySqlQuery6<R extends RepositoryQueryRelat
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryExpression6<C, L, S, Q> configure(Consumer<QueryConfig> configure) {
+    public RepositoryQueryExpression6<C, L, S, Q> configure(Consumer<DslQueryConfig> configure) {
         configure.accept(queryRelation.getConfig());
         return this;
     }

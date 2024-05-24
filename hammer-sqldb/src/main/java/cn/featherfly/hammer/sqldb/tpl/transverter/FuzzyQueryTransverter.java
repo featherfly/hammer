@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.tpl.transverter;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,10 +47,11 @@ public class FuzzyQueryTransverter implements AutoRegistTransverter {
         super();
         this.upperCase = upperCase;
         if (upperCase) {
-            CollectionUtils.addAll(supports, ComparisonOperator.CO.name(), ComparisonOperator.SW.name(), ComparisonOperator.EW.name());
+            CollectionUtils.addAll(supports, ComparisonOperator.CO.name(), ComparisonOperator.SW.name(),
+                ComparisonOperator.EW.name());
         } else {
             CollectionUtils.addAll(supports, ComparisonOperator.CO.name().toLowerCase(),
-                    ComparisonOperator.SW.name().toLowerCase(), ComparisonOperator.EW.name().toLowerCase());
+                ComparisonOperator.SW.name().toLowerCase(), ComparisonOperator.EW.name().toLowerCase());
         }
     }
 
@@ -65,7 +67,7 @@ public class FuzzyQueryTransverter implements AutoRegistTransverter {
      * {@inheritDoc}
      */
     @Override
-    public Object transvert(String operator, Object value) {
+    public Serializable transvert(String operator, Serializable value) {
         //        if (Lang.isNotEmpty(operator)) {
         if (ComparisonOperator.CO.name().equals(operator)) {
             return "%" + value + "%";
@@ -74,8 +76,8 @@ public class FuzzyQueryTransverter implements AutoRegistTransverter {
         } else if (ComparisonOperator.EW.name().equals(operator)) {
             return "%" + value;
         } else {
-            throw new SqldbHammerException(Strings.format("{0} can not transvert value with operator {1}",
-                    this.getClass().getName(), operator));
+            throw new SqldbHammerException(
+                Strings.format("{0} can not transvert value with operator {1}", this.getClass().getName(), operator));
         }
         //        }
         //        return value;

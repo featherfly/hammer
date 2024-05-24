@@ -1,9 +1,10 @@
 
 package cn.featherfly.hammer.expression.query;
 
+import java.io.Serializable;
 import java.util.Map;
 
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * dsl for query single executor .
@@ -17,19 +18,19 @@ public interface QuerySingleExecutor {
      *
      * @return map
      */
-    Map<String, Object> single();
+    Map<String, Serializable> single();
 
     /**
      * query for unique, throw exception when not found.
      *
      * @return map
      */
-    Map<String, Object> unique();
+    Map<String, Serializable> unique();
 
     /**
      * query for single, return null when not found.
      *
-     * @param <E>  wrapper type
+     * @param <E> wrapper type
      * @param type wrapper type
      * @return object
      */
@@ -38,7 +39,7 @@ public interface QuerySingleExecutor {
     /**
      * query for unique, throw exception when not found.
      *
-     * @param <E>  the element type
+     * @param <E> the element type
      * @param type the type
      * @return the e
      */
@@ -47,7 +48,7 @@ public interface QuerySingleExecutor {
     /**
      * query for single, return null when not found.
      *
-     * @param <E>       wrapper type
+     * @param <E> wrapper type
      * @param rowMapper rowMapper
      * @return object
      */
@@ -56,7 +57,7 @@ public interface QuerySingleExecutor {
     /**
      * query for unique, throw exception when not found.
      *
-     * @param <E>       the element type
+     * @param <E> the element type
      * @param rowMapper the row mapper
      * @return the e
      */

@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc.base;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +38,12 @@ public class SimpleSqlPageFactoryTest extends JdbcTestBase {
         SimpleSqlPageFactory f = new SimpleSqlPageFactory();
         int id = 1;
         final String sql = "select * from role where id > ?";
-        final Object[] params = new Object[] { id };
+        final Serializable[] params = new Serializable[] { id };
 
         int size = 2;
 
         SimplePage page = new SimplePage(size, 1);
-        SqlPageQuery<Object[]> pageQuery = f.toPage(jdbc.getDialect(), sql, page, params);
+        SqlPageQuery<Serializable[]> pageQuery = f.toPage(jdbc.getDialect(), sql, page, params);
         List<Role> list = jdbc.queryList(pageQuery.getSql(), Role.class, pageQuery.getParams());
         for (Role role : list) {
             assertTrue(role.getId() > 1);
@@ -50,9 +51,9 @@ public class SimpleSqlPageFactoryTest extends JdbcTestBase {
         assertEquals(list.size(), size);
 
         final String sql2 = "select * from role where id > :id";
-        final Map<String, Object> params2 = new ChainMapImpl<String, Object>().putChain("id", id);
+        final Map<String, Serializable> params2 = new ChainMapImpl<String, Serializable>().putChain("id", id);
 
-        SqlPageQuery<Map<String, Object>> pageQuery2 = f.toPage(jdbc.getDialect(), sql2, page, params2);
+        SqlPageQuery<Map<String, Serializable>> pageQuery2 = f.toPage(jdbc.getDialect(), sql2, page, params2);
         list = jdbc.queryList(pageQuery2.getSql(), Role.class, pageQuery2.getParams());
         for (Role role : list) {
             assertTrue(role.getId() > 1);

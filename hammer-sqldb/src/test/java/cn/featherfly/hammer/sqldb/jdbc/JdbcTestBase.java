@@ -21,9 +21,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
-import cn.featherfly.common.bean.AsmInstantiatorFactory;
-import cn.featherfly.common.bean.InstantiatorFactory;
-import cn.featherfly.common.bean.ProxyAndReflectionInstantiatorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.SqlExecutor;
@@ -39,8 +37,10 @@ import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
+import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.entity.EntityPreparer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
@@ -79,11 +79,13 @@ public class JdbcTestBase extends TestBase {
 
     protected static SqlTypeMappingManager sqlTypeMappingManager;
 
+    protected static IdGeneratorManager idGeneratorManager;
+
     protected static JdbcFactory jdbcFactory;
 
     protected static HammerConfig hammerConfig;
 
-    protected static InstantiatorFactory instantiatorFactory;
+    protected static PropertyAccessorFactory propertyAccessorFactory;
 
     @BeforeSuite
     @Parameters({ "dataBase" })
@@ -95,10 +97,15 @@ public class JdbcTestBase extends TestBase {
             .buildValidatorFactory().getValidator());
         hammerConfig = hammerConfigImpl;
 
-        instantiatorFactory = new ProxyAndReflectionInstantiatorFactory(
-            new AsmInstantiatorFactory(hammerConfig.getClassLoader(), true));
+        //        propertyAccessorFactory = new AsmPropertyAccessorFactory(Thread.currentThread().getContextClassLoader());
+        propertyAccessorFactory = PROPERTY_ACCESSOR_FACTORY;
+
+        EntityPreparer entityPreparer = EntityPreparer.builder().basePackages("cn.featherfly")
+            .propertyAccessorFactory(propertyAccessorFactory).build();
+        entityPreparer.prepare();
 
         sqlTypeMappingManager = new SqlTypeMappingManager();
+        idGeneratorManager = new IdGeneratorManager();
 
         initDataBase(dataBase);
 
@@ -109,7 +116,7 @@ public class JdbcTestBase extends TestBase {
             .config(hammerConfig.getTemplateConfig())
             .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
 
-        jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
     }
 
@@ -158,9 +165,10 @@ public class JdbcTestBase extends TestBase {
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         //        jdbc = new JdbcImpl(ds, dialect, sqlTypeMappingManager);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
-        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
+            propertyAccessorFactory);
 
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
@@ -200,9 +208,10 @@ public class JdbcTestBase extends TestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
-        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
+            propertyAccessorFactory);
 
     }
 
@@ -230,9 +239,10 @@ public class JdbcTestBase extends TestBase {
 
         //        jdbc = new SpringJdbcTemplateImpl(ds, dialect);
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds, "main");
-        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, instantiatorFactory);
+        jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
+            propertyAccessorFactory);
 
     }
 

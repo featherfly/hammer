@@ -2,7 +2,6 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import com.speedment.common.tuple.Tuple2;
 
@@ -31,13 +30,13 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     /**
      * 使用给定数据源以及给定对象生成插入操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
      */
     public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-            DatabaseMetadata databaseMetadata) {
+        DatabaseMetadata databaseMetadata) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
@@ -49,14 +48,17 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         return jdbc.getDialect().supportUpsertBatch();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int doSqlExecuteBatch(final List<T> entities) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getUpsertBatchSqlAndParamPositions(entities.size(), classMapping, jdbc.getDialect());
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
+        Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getUpsertBatchSqlAndMappings(entities.size(),
+            classMapping, jdbc.getDialect());
         String sql = tuple.get0();
         return jdbc.updateBatch(sql, entities.size(), createGeneratedKeysHolder(entities, pks),
-                getBatchParameters(entities, tuple.get1()));
+            getBatchParameters(entities, tuple.get1()));
         // TODO 批量upsert时， 返回值不确定，所以无法设置自动生成的id值，后续再研究
     }
 
@@ -83,7 +85,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     public int execute(final T entity) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
         if (pks.size() == 1) {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
@@ -97,7 +99,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                 @Override
                 public Type<Serializable> getType() {
                     return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-                            .getBeanProperty(pks.get(0).getPropertyName());
+                        .getBeanProperty(pks.get(0).getPropertyName());
                 }
 
             }, getParameters(entity));
@@ -111,8 +113,8 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected int[] doJdbcExecuteBatch(List<T> entities) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
-        Object[][] argsList = new Object[entities.size()][];
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
+        Serializable[][] argsList = new Serializable[entities.size()][];
         Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
 
         int[] results;
@@ -129,15 +131,16 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected void initSql() {
-        Tuple2<String, Map<Integer, JdbcPropertyMapping>> tuple = ClassMappingUtils
-                .getUpsertSqlAndParamPositions(classMapping, jdbc.getDialect());
+        Tuple2<String,
+            JdbcPropertyMapping[]> tuple = ClassMappingUtils.getUpsertSqlAndMappings(classMapping, jdbc.getDialect());
         sql = tuple.get0();
-        propertyPositions.putAll(tuple.get1());
         logger.debug("sql: {}", sql);
+
+        setParamsPropertyAndMappings(tuple.get1());
     }
 
     private GeneratedKeysHolder<Serializable> createGeneratedKeysHolder(List<T> entities,
-            List<JdbcPropertyMapping> pks) {
+        List<JdbcPropertyMapping> pks) {
         return new GeneratedKeysHolder<Serializable>() {
             public void acceptKey(Serializable key, int row) {
                 if (row < entities.size()) {
@@ -151,7 +154,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             @Override
             public Type<Serializable> getType() {
                 return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-                        .getBeanProperty(pks.get(0).getPropertyName());
+                    .getBeanProperty(pks.get(0).getPropertyName());
             }
 
             @Override
@@ -162,7 +165,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                     }
                 } else {
                     logger.warn("entities.size[{}] != genereteKeys.size[{}], can not set generate key to entity object",
-                            entities.size(), keys.size());
+                        entities.size(), keys.size());
                 }
             }
         };

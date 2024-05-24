@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Timestamp;
@@ -19,9 +20,10 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
@@ -110,7 +112,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     @Override
     public long count() {
         repositoryRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
-        return repositoryRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
+        return repositoryRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -128,10 +130,10 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     @Override
     public <E> List<E> list(Class<E> type) {
         String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
+        Serializable[] params = getRoot().getParamsArray();
         if (limit != null) {
-            SqlPageQuery<
-                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
+                limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
@@ -142,20 +144,20 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination() {
+    public PaginationResults<Map<String, Serializable>> pagination() {
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
-        Object[] params = getRoot().getParams().toArray();
-        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(limit);
+        Serializable[] params = getRoot().getParamsArray();
+        SimplePaginationResults<Map<String, Serializable>> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            SqlPageQuery<
-                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
-            List<Map<String, Object>> list = jdbc.queryList(pageQuery.getSql(), pageQuery.getParams());
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
+                limit.getLimit(), params);
+            List<Map<String, Serializable>> list = jdbc.queryList(pageQuery.getSql(), pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            List<Map<String, Object>> list = jdbc.queryList(sql, params);
+            List<Map<String, Serializable>> list = jdbc.queryList(sql, params);
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
         }
@@ -169,11 +171,11 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     public <E> PaginationResults<E> pagination(Class<E> type) {
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
-        Object[] params = getRoot().getParams().toArray();
+        Serializable[] params = Lang.toArray(getRoot().getParams(), Serializable.class);
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            SqlPageQuery<
-                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
+                limit.getLimit(), params);
             List<E> list = jdbc.queryList(pageQuery.getSql(), type, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
@@ -193,11 +195,11 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
-        Object[] params = getRoot().getParams().toArray();
+        Serializable[] params = Lang.toArray(getRoot().getParams(), Serializable.class);
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
-            SqlPageQuery<
-                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
+                limit.getLimit(), params);
             List<E> list = jdbc.queryList(pageQuery.getSql(), rowMapper, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = jdbc.queryInt(countSql, params);
@@ -215,7 +217,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public String string() {
-        return jdbc.queryString(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryString(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -223,7 +225,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public Date date() {
-        return jdbc.queryValue(getRoot().expression(), Date.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), Date.class, getRoot().getParamsArray());
     }
 
     /**
@@ -231,7 +233,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public LocalDate localDate() {
-        return jdbc.queryValue(getRoot().expression(), LocalDate.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), LocalDate.class, getRoot().getParamsArray());
     }
 
     /**
@@ -239,7 +241,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public LocalDateTime localDateTime() {
-        return jdbc.queryValue(getRoot().expression(), LocalDateTime.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), LocalDateTime.class, getRoot().getParamsArray());
     }
 
     /**
@@ -247,7 +249,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public LocalTime localTime() {
-        return jdbc.queryValue(getRoot().expression(), LocalTime.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), LocalTime.class, getRoot().getParamsArray());
     }
 
     /**
@@ -255,7 +257,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public Timestamp timestamp() {
-        return jdbc.queryValue(getRoot().expression(), Timestamp.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), Timestamp.class, getRoot().getParamsArray());
     }
 
     /**
@@ -263,7 +265,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public byte[] bytes() {
-        return jdbc.queryBytes(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryBytes(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -271,7 +273,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public Clob clob() {
-        return jdbc.queryValue(getRoot().expression(), Clob.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), Clob.class, getRoot().getParamsArray());
     }
 
     /**
@@ -279,7 +281,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public Blob blob() {
-        return jdbc.queryValue(getRoot().expression(), Blob.class, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), Blob.class, getRoot().getParamsArray());
     }
 
     /**
@@ -287,7 +289,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public boolean bool() {
-        return jdbc.queryBool(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryBool(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -295,7 +297,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public byte byteValue() {
-        return jdbc.queryByte(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryByte(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -303,7 +305,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public short shortValue() {
-        return jdbc.queryShort(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryShort(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -311,7 +313,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public int intValue() {
-        return jdbc.queryInt(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryInt(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -319,7 +321,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public long longValue() {
-        return jdbc.queryLong(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryLong(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -327,7 +329,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public double doubleValue() {
-        return jdbc.queryDouble(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryDouble(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -335,7 +337,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public <T> T value(Class<T> type) {
-        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), type, getRoot().getParamsArray());
     }
 
     /**
@@ -343,7 +345,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public <T> T value() {
-        return jdbc.queryValue(getRoot().expression(), getRoot().getParams().toArray());
+        return jdbc.queryValue(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -351,7 +353,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public <T> T single(Class<T> type) {
-        return jdbc.querySingle(getRoot().expression(), type, getRoot().getParams().toArray());
+        return jdbc.querySingle(getRoot().expression(), type, getRoot().getParamsArray());
     }
 
     /**
@@ -368,7 +370,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      */
     @Override
     public <T> T unique(Class<T> type) {
-        return jdbc.queryUnique(getRoot().expression(), type, getRoot().getParams().toArray());
+        return jdbc.queryUnique(getRoot().expression(), type, getRoot().getParamsArray());
     }
 
     /**

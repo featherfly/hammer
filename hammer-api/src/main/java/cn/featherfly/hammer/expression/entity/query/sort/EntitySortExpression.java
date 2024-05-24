@@ -15,7 +15,7 @@ public interface EntitySortExpression<E, S extends EntitySortedExpression<E, S>>
     /**
      * add ascending order value. 添加升序条件.
      *
-     * @param <R>  the generic type
+     * @param <R> the generic type
      * @param name 名称
      * @return this
      */
@@ -32,7 +32,7 @@ public interface EntitySortExpression<E, S extends EntitySortedExpression<E, S>>
     /**
      * add descending order value. 添加降序条件 .
      *
-     * @param <R>  the generic type
+     * @param <R> the generic type
      * @param name 名称
      * @return this
      */

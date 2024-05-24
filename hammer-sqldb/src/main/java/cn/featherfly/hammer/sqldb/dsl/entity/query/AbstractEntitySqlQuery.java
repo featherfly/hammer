@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -14,25 +15,17 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractEntitySqlQuery<E> extends AbstractEntitySqlQueryBase<E, EntityQueryLimitExecutor<E>> {
 
-    //    protected JdbcMappingFactory factory;
-    //
-    //    protected SqlPageFactory sqlPageFactory;
-    //
-    //    protected EntitySqlQueryRelation queryRelation;
-    //
-    //    /** The limit. */
-    //    protected Limit limit;
-    //
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
-    protected AbstractEntitySqlQuery(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+    protected AbstractEntitySqlQuery(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
     }
     //
     //    //    /**

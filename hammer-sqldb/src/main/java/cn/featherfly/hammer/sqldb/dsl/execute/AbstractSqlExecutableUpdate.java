@@ -37,27 +37,27 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param jdbc         jdbc
+     * @param tableName tableName
+     * @param jdbc jdbc
      * @param aliasManager the alias manager
      * @param updateConfig the update config
      */
     protected AbstractSqlExecutableUpdate(String tableName, Jdbc jdbc, AliasManager aliasManager,
-            UpdateConfig updateConfig) {
+        UpdateConfig updateConfig) {
         this(tableName, null, jdbc, aliasManager, updateConfig);
     }
 
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param tableAlias   the table alias
-     * @param jdbc         jdbc
+     * @param tableName tableName
+     * @param tableAlias the table alias
+     * @param jdbc jdbc
      * @param aliasManager the alias manager
      * @param updateConfig the update config
      */
     protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
-            UpdateConfig updateConfig) {
+        UpdateConfig updateConfig) {
         this.jdbc = jdbc;
         this.aliasManager = aliasManager;
         this.updateConfig = updateConfig;
@@ -73,15 +73,15 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName    tableName
-     * @param tableAlias   the table alias
-     * @param jdbc         jdbc
+     * @param tableName tableName
+     * @param tableAlias the table alias
+     * @param jdbc jdbc
      * @param aliasManager the alias manager
      * @param updateConfig the update config
-     * @param builder      the builder
+     * @param builder the builder
      */
     protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
-            UpdateConfig updateConfig, SqlUpdateSetBasicBuilder builder) {
+        UpdateConfig updateConfig, SqlUpdateSetBasicBuilder builder) {
         this.jdbc = jdbc;
         this.aliasManager = aliasManager;
         this.updateConfig = updateConfig.clone();
@@ -89,7 +89,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
             tableAlias = aliasManager.put(tableName);
         }
         builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias,
-                v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
+            v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
         //        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias, this::test);
         // YUFEI_TEST 需要测试这个逻辑
     }
@@ -97,12 +97,13 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
-     * @param name  the name
+     * @param <V> the value type
+     * @param name the name
      * @param value the value
      * @return the u
      */
     @SuppressWarnings("unchecked")
-    protected U set0(String name, FieldValueOperator<?> value) {
+    protected <V> U set0(String name, FieldValueOperator<V> value) {
         builder.setValue(name, value);
         return (U) this;
     }
@@ -110,14 +111,14 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
-     * @param <O>               the generic type
-     * @param name              the name
-     * @param value             the value
+     * @param <V> the generic type
+     * @param name the name
+     * @param value the value
      * @param setIgnoreStrategy the set ignore strategy
      * @return the u
      */
     @SuppressWarnings("unchecked")
-    protected <O> U set0(String name, FieldValueOperator<O> value, Predicate<O> setIgnoreStrategy) {
+    protected <V> U set0(String name, FieldValueOperator<V> value, Predicate<V> setIgnoreStrategy) {
         builder.setValue(name, value, setIgnoreStrategy);
         return (U) this;
     }
@@ -125,21 +126,21 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
-     * @param <O>   the generic type
-     * @param name  the name
+     * @param <O> the generic type
+     * @param name the name
      * @param value the value
      * @return the u
      */
     protected <O> U set0(String name, O value) {
-        return set0(name, value, updateConfig.getSetValueIgnoreStrategy());
+        return set0(name, value, updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
     /**
      * Sets value.
      *
-     * @param <O>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <O> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */
@@ -156,8 +157,8 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Increase.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the u
      */
@@ -170,9 +171,9 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Increase.
      *
-     * @param <N>               the number type
-     * @param name              the name
-     * @param value             the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param setIgnoreStrategy the set ignore strategy
      * @return the u
      */
@@ -185,8 +186,8 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Increase.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the u
      */
@@ -197,9 +198,9 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Increase.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */
@@ -216,8 +217,8 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Gets the property name.
      *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the property name
      */
@@ -228,7 +229,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Gets the property name.
      *
-     * @param <R>  the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the property name
      */

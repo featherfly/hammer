@@ -9,44 +9,19 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 /**
  * 数据库操作的抽象类.
  *
- * @author     zhongj
- * @since      0.1.0
- * @param  <T> entity type
+ * @author zhongj
+ * @param <T> the generic type
+ * @since 0.1.0
  */
 public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
-
-    //    /**
-    //     * 使用给定数据源以及给定对象生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     */
-    //    public AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-    //            SqlTypeMappingManager sqlTypeMappingManager) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager);
-    //    }
-    //
-    //    /**
-    //     * 使用给定数据源以及给定对象生成其相应的操作.
-    //     *
-    //     * @param jdbc                  jdbc
-    //     * @param classMapping          classMapping
-    //     * @param sqlTypeMappingManager the sql type mapping manager
-    //     * @param dataBase              具体库
-    //     */
-    //    public AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-    //            SqlTypeMappingManager sqlTypeMappingManager, String dataBase) {
-    //        super(jdbc, classMapping, sqlTypeMappingManager, dataBase);
-    //    }
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
      *
-     * @param jdbc                  the jdbc
-     * @param classMapping          the class mapping
+     * @param jdbc the jdbc
+     * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
-     * @param databaseMetadata      the database metadata
+     * @param databaseMetadata the database metadata
      */
     protected AbstractExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
         SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
@@ -58,8 +33,8 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      * 执行操作. 操作的类型由具体子类构造的不同SQL来区分.
      * </p>
      *
-     * @param  entity 对象
-     * @return        操作影响的数据行数
+     * @param entity the entity
+     * @return 操作影响的数据行数
      */
     @Override
     public int execute(final T entity) {

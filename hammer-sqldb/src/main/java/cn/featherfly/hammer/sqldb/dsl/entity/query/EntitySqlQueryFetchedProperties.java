@@ -6,7 +6,8 @@ import java.util.function.Function;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
@@ -31,27 +32,29 @@ public class EntitySqlQueryFetchedProperties<E>
     /**
      * Instantiates a new entity sql query fetch.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
-    public EntitySqlQueryFetchedProperties(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation entitySqlQueryRelation) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+    public EntitySqlQueryFetchedProperties(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
     /**
      * Instantiates a new entity sql query fetch.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
-     * @param properties             the properties
+     * @param properties the properties
      */
-    public EntitySqlQueryFetchedProperties(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation entitySqlQueryRelation,
+    public EntitySqlQueryFetchedProperties(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation,
         @SuppressWarnings("unchecked") SerializableFunction<E, ?>... properties) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
         property(properties);
     }
 
@@ -60,7 +63,7 @@ public class EntitySqlQueryFetchedProperties<E>
      */
     @Override
     public EntityQueryConditionGroup<E> where() {
-        return new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryExpression<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -69,7 +72,8 @@ public class EntitySqlQueryFetchedProperties<E>
     @Override
     public EntityQueryConditionGroupLogic<E> where(
         Function<EntityConditionsGroupExpression<E, ?, ?>, LogicExpression<?, ?>> function) {
-        EntitySqlQueryExpression<E> exp = new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
+        EntitySqlQueryExpression<
+            E> exp = new EntitySqlQueryExpression<>(hammerConfig, factory, sqlPageFactory, queryRelation);
         if (function != null) {
             exp.addCondition(function.apply(new EntitySqlQueryConditionsGroupExpression<>(0, factory, queryRelation)));
         }
@@ -81,7 +85,7 @@ public class EntitySqlQueryFetchedProperties<E>
      */
     @Override
     public EntityQuerySortExpression<E> sort() {
-        return new EntitySqlQueryExpression<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryExpression<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -89,7 +93,7 @@ public class EntitySqlQueryFetchedProperties<E>
      */
     @Override
     public EntityQueryExpression<E, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
-        EntityQuerySortExpression<E>> configure(Consumer<QueryConfig> configure) {
+        EntityQuerySortExpression<E>> configure(Consumer<DslQueryConfig> configure) {
         if (configure != null) {
             configure.accept(queryRelation.getConfig());
         }

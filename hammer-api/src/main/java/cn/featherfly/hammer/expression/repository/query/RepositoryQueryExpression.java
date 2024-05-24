@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.repository.query;
 
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.expression.ConfigureExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 
@@ -17,6 +17,6 @@ import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 public interface RepositoryQueryExpression<C extends RepositoryQueryConditionsGroupExpression<C, L, S>,
     L extends RepositoryQueryConditionsGroupLogicExpression<C, L, S>, S extends RepositoryQuerySortExpression>
     extends RepositoryQueryWhereExpression<C, L, S>,
-    ConfigureExpression<RepositoryQueryExpression<C, L, S>, QueryConfig, QueryConditionConfig>,
+    ConfigureExpression<RepositoryQueryExpression<C, L, S>, DslQueryConfig, QueryConditionConfig>,
     RepositoryQueryableExpression<S, QueryLimitExecutor> {
 }

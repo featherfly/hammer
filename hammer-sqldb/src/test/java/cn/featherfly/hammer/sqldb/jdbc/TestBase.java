@@ -24,6 +24,8 @@ import org.testng.annotations.TestInstance;
 import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.bean.AsmPropertyAccessorFactory;
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.common.lang.debug.TableMessage;
 import cn.featherfly.common.structure.ChainMapImpl;
@@ -51,6 +53,9 @@ public class TestBase {
     protected static final String MYSQL_USER = "root";
     protected static final String MYSQL_PWD = "123456";
 
+    protected static final PropertyAccessorFactory PROPERTY_ACCESSOR_FACTORY = new AsmPropertyAccessorFactory(
+        Thread.currentThread().getContextClassLoader());
+
     @BeforeSuite
     @Parameters({ "devMode" })
     public void _beforeSuite(@Optional("mysql") boolean devMode) throws IOException {
@@ -60,7 +65,7 @@ public class TestBase {
     @BeforeTest
     public void _beforeTest() {
         System.err
-                .println("currentThread: " + Thread.currentThread().getId() + " - " + Thread.currentThread().getName());
+            .println("currentThread: " + Thread.currentThread().getId() + " - " + Thread.currentThread().getName());
     }
 
     Timer timer;
@@ -93,10 +98,10 @@ public class TestBase {
     public void _afterClass() {
         String type = this.getClass().getName();
         TableMessage tableMessage = new TableMessage(
-                new ChainSetImpl<String>(new LinkedHashSet<>()).addChain("class", "method", "time"));
+            new ChainSetImpl<String>(new LinkedHashSet<>()).addChain("class", "method", "time"));
         for (Tuple3<String, String, Long> testInfo : TEST_INFOS.get(type)) {
             tableMessage.addRow(new ChainMapImpl<String, Object>().putChain("class", testInfo.get0())
-                    .putChain("method", testInfo.get1()).putChain("time", testInfo.get2()));
+                .putChain("method", testInfo.get1()).putChain("time", testInfo.get2()));
         }
         MESSAGES.put(type, tableMessage);
         //        System.err.println(tableMessage.toString());

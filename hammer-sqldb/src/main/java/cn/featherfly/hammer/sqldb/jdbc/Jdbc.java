@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -47,6 +48,8 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @return the sql type mapping manager
      */
     SqlTypeMappingManager getSqlTypeMappingManager();
+
+    PropertyAccessorFactory getPropertyAccessorFactory();
 
     //    /**
     //     * Adds the interceptor.
@@ -84,54 +87,54 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert.
      *
-     * @param tableName   the table name
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param args        the args
+     * @param args the args
      * @return the int
      */
-    default int insert(String tableName, String[] columnNames, Object... args) {
+    default int insert(String tableName, String[] columnNames, Serializable... args) {
         return insert(tableName, columnNames, null, args);
     }
 
     /**
      * Insert.
      *
-     * @param <T>         the generic type
-     * @param tableName   the table name
+     * @param <T> the generic type
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param keyHolder   the key holder
-     * @param args        the args
+     * @param keyHolder the key holder
+     * @param args the args
      * @return the int
      */
     <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
-            Object... args);
+        Serializable... args);
 
     /**
      * Insert.
      *
-     * @param tableName    the table name
+     * @param tableName the table name
      * @param columnParams the column params
      * @return the int
      */
-    default int insert(String tableName, Map<String, Object> columnParams) {
+    default int insert(String tableName, Map<String, Serializable> columnParams) {
         return insert(tableName, columnParams, null);
     }
 
     /**
      * Insert.
      *
-     * @param <T>          the generic type
-     * @param tableName    the table name
+     * @param <T> the generic type
+     * @param tableName the table name
      * @param columnParams the column params
-     * @param keyHolder    the key holder
+     * @param keyHolder the key holder
      * @return the int
      */
-    default <T extends Serializable> int insert(String tableName, Map<String, Object> columnParams,
-            GeneratedKeyHolder<T> keyHolder) {
+    default <T extends Serializable> int insert(String tableName, Map<String, Serializable> columnParams,
+        GeneratedKeyHolder<T> keyHolder) {
         int i = 0;
         String[] columns = new String[columnParams.size()];
-        Object[] params = new Object[columnParams.size()];
-        for (Map.Entry<String, Object> entry : columnParams.entrySet()) {
+        Serializable[] params = new Serializable[columnParams.size()];
+        for (Map.Entry<String, Serializable> entry : columnParams.entrySet()) {
             columns[i] = entry.getKey();
             params[i] = entry.getValue();
             i++;
@@ -142,12 +145,12 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert batch.
      *
-     * @param tableName   the table name
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param args        the args
+     * @param args the args
      * @return the int
      */
-    default int insertBatch(String tableName, String[] columnNames, Object... args) {
+    default int insertBatch(String tableName, String[] columnNames, Serializable... args) {
         if (args.length % columnNames.length != 0) {
             throw new JdbcException("batch size is not explicit (args.length % columnNames.length != 0)");
         }
@@ -157,11 +160,11 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert batch.
      *
-     * @param tableName    the table name
+     * @param tableName the table name
      * @param columnParams the column params
      * @return the int
      */
-    default int insertBatch(String tableName, List<Map<String, Object>> columnParams) {
+    default int insertBatch(String tableName, List<Map<String, Serializable>> columnParams) {
         if (Lang.isEmpty(columnParams)) {
             return 0;
         }
@@ -169,15 +172,15 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
         int columnLen = columnParams.get(0).size();
         int paramLen = columnLen * columnParams.size();
         String[] columns = new String[columnLen];
-        Object[] params = new Object[paramLen];
+        Serializable[] params = new Serializable[paramLen];
 
         Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
             columns[index] = entry.getKey();
         });
 
         int i = 0;
-        for (Map<String, Object> cp : columnParams) {
-            for (Map.Entry<String, Object> entry : cp.entrySet()) {
+        for (Map<String, Serializable> cp : columnParams) {
+            for (Map.Entry<String, Serializable> entry : cp.entrySet()) {
                 params[i] = entry.getValue();
                 i++;
             }
@@ -189,63 +192,63 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert batch.
      *
-     * @param tableName   the table name
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param batchSize   the batch size
-     * @param args        the args
+     * @param batchSize the batch size
+     * @param args the args
      * @return the int
      */
-    int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args);
+    int insertBatch(String tableName, String[] columnNames, int batchSize, Serializable... args);
 
     /**
      * Upsert.
      *
-     * @param tableName    the table name
-     * @param columnNames  the column names
+     * @param tableName the table name
+     * @param columnNames the column names
      * @param uniqueColumn the unique column
-     * @param args         the args
+     * @param args the args
      * @return the int
      */
-    default int upsert(String tableName, String[] columnNames, String uniqueColumn, Object... args) {
+    default int upsert(String tableName, String[] columnNames, String uniqueColumn, Serializable... args) {
         return upsert(tableName, columnNames, new String[] { uniqueColumn }, args);
     }
 
     /**
      * Upsert.
      *
-     * @param tableName     the table name
-     * @param columnNames   the column names
+     * @param tableName the table name
+     * @param columnNames the column names
      * @param uniqueColumns the unique columns
-     * @param args          the args
+     * @param args the args
      * @return the int
      */
-    int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args);
+    int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Serializable... args);
 
     /**
      * Upsert.
      *
-     * @param tableName    the table name
+     * @param tableName the table name
      * @param uniqueColumn the unique column
-     * @param params       the params
+     * @param params the params
      * @return the int
      */
-    default int upsert(String tableName, String uniqueColumn, Map<String, Object> params) {
+    default int upsert(String tableName, String uniqueColumn, Map<String, Serializable> params) {
         return upsert(tableName, new String[] { uniqueColumn }, params);
     }
 
     /**
      * Upsert.
      *
-     * @param tableName     the table name
+     * @param tableName the table name
      * @param uniqueColumns the unique columns
-     * @param params        the params
+     * @param params the params
      * @return the int
      */
-    default int upsert(String tableName, String[] uniqueColumns, Map<String, Object> params) {
-        Object[] ps = new Object[params.size()];
+    default int upsert(String tableName, String[] uniqueColumns, Map<String, Serializable> params) {
+        Serializable[] ps = new Serializable[params.size()];
         String[] columnNames = new String[params.size()];
         int i = 0;
-        for (Entry<String, Object> e : params.entrySet()) {
+        for (Entry<String, Serializable> e : params.entrySet()) {
             columnNames[i] = e.getKey();
             ps[i] = e.getValue();
             i++;

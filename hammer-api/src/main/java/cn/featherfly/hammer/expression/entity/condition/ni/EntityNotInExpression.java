@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition.ni;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
@@ -31,46 +32,46 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EntityNotInExpression<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    <R> L ni(SerializableFunction<T, R> name, R value);
+    <R extends Serializable> L ni(SerializableFunction<T, R> name, R value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <R> L ni(SerializableFunction<T, R> name, R value, IgnoreStrategy ignoreStrategy) {
+    default <R extends Serializable> L ni(SerializableFunction<T, R> name, R value, IgnoreStrategy ignoreStrategy) {
         return ni(name, value, ignoreStrategy::test);
     }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(SerializableFunction<T, R> name, R value, Predicate<R> ignoreStrategy);
+    <R extends Serializable> L ni(SerializableFunction<T, R> name, R value, Predicate<R> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -79,8 +80,8 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -89,7 +90,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -98,8 +99,8 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -108,7 +109,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -117,8 +118,8 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -127,17 +128,17 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    <R> L ni(SerializableFunction<T, R> name, @SuppressWarnings("unchecked") R... value);
+    <R extends Serializable> L ni(SerializableFunction<T, R> name, @SuppressWarnings("unchecked") R... value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -146,7 +147,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -155,7 +156,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -164,19 +165,19 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(SerializableFunction<T, R> name, R[] value, Predicate<R[]> ignoreStrategy);
+    <R extends Serializable> L ni(SerializableFunction<T, R> name, R[] value, Predicate<R[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -185,8 +186,8 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -195,8 +196,8 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -205,29 +206,30 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    <R> L ni(SerializableFunction<T, R> name, Collection<R> value);
+    <R extends Serializable> L ni(SerializableFunction<T, R> name, Collection<R> value);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(SerializableFunction<T, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy);
+    <R extends Serializable> L ni(SerializableFunction<T, R> name, Collection<R> value,
+        Predicate<Collection<R>> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -236,20 +238,20 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ni(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -258,45 +260,45 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ni(SerializableToStringFunction<T> name, String[] value, MatchStrategy matchStrategy,
-            Predicate<String[]> ignoreStrategy);
+        Predicate<String[]> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property bean property
      * @return LogicExpression
      */
-    <R> L ni(SerializableSupplier<R> property);
+    <R extends Serializable> L ni(SerializableSupplier<R> property);
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param property       bean property
+     * @param <R> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default <R> L ni(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
+    default <R extends Serializable> L ni(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
         return ni(property, ignoreStrategy::test);
     }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param property       bean property
+     * @param <R> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Serializable> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -309,7 +311,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -326,7 +328,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -343,7 +345,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -352,7 +354,7 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property      bean property
+     * @param property bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -361,8 +363,8 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

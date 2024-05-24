@@ -31,7 +31,7 @@ public class RepositorySqlDeleteConditions extends AbstractMulitiRepositorySqlEx
     /**
      * Instantiates a new repository sql delete expression.
      *
-     * @param parent         the parent
+     * @param parent the parent
      * @param deleteRelatoin the delete relatoin
      */
     RepositorySqlDeleteConditions(RepositoryExecutableConditionsGroupLogic<DeleteConditionConfig> parent,
@@ -60,17 +60,16 @@ public class RepositorySqlDeleteConditions extends AbstractMulitiRepositorySqlEx
     /**
      * Expression.
      *
-     * @param condition       the condition
-     * @param parent          the parent
-     * @param relation        the relation
+     * @param condition the condition
+     * @param parent the parent
+     * @param relation the relation
      * @param conditionConfig the condition config
      * @return the string
      */
     static String expression(String condition, LogicExpression<?, ?> parent, RepositorySqlDeleteRelation relation,
         DeleteConditionConfig conditionConfig) {
-        // TODO 后续加入设置参数，是否允许无条件筛选参数的删除操作（因为无条件帅选参数删除是危险操作），默认为不允许
-        // 当前没有参数返回的0
         if (parent == null) {
+            // 是否允许无条件筛选参数的删除操作（因为无条件帅选参数删除是危险操作），默认为不允许
             if (Lang.isEmpty(condition)) {
                 switch (conditionConfig.getEmptyConditionStrategy()) {
                     case EXCEPTION:

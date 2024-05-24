@@ -1,5 +1,6 @@
 package cn.featherfly.hammer.dml.builder.sql.vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,7 +17,8 @@ import javax.persistence.OneToOne;
  *
  * @author zhongj
  */
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -5714752829167764854L;
 
     private int id;
 

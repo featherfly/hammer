@@ -1,10 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple6;
+import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
@@ -19,6 +23,8 @@ import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression6;
@@ -66,23 +72,28 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
     private EntitySqlQueryConditionGroupQuery<RS> entitySqlQueryConditionGroupQuery;
 
     /** The sql page factory. */
-    protected SqlPageFactory sqlPageFactory;
+    protected final SqlPageFactory sqlPageFactory;
+
+    /** The hammer config. */
+    protected final HammerConfig hammerConfig;
 
     /**
      * Instantiates a new abstract entity sql condition group expression 2.
      *
      * @param parent the parent
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the relation
      */
-    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression6(L parent, JdbcMappingFactory factory,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression6(L parent, HammerConfig hammerConfig,
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, queryRelation);
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         this.sqlPageFactory = sqlPageFactory;
         entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
-            entityRelation);
+            entityRelation, hammerConfig.getCacheConfig().getQueryPageResultCache());
+        this.hammerConfig = hammerConfig;
     }
 
     // ****************************************************************************************************************
@@ -155,7 +166,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
     @Override
     public long count() {
         entityRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
-        return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
+        return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
     }
 
     // ****************************************************************************************************************
@@ -167,6 +178,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     @Override
     public EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS> sort() {
+
         return this;
     }
 
@@ -180,6 +192,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> asc(String... names) {
         getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
+
         //        getRootSortBuilder().asc(queryAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -192,6 +205,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> asc2(String... names) {
         getRootSortBuilder().asc(queryAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+
         return this;
     }
 
@@ -203,6 +217,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> asc3(String... names) {
         getRootSortBuilder().asc(queryAlias3, () -> ClassMappingUtils.getColumnNames(classMapping3, names));
+
         return this;
     }
 
@@ -214,6 +229,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> asc4(String... names) {
         getRootSortBuilder().asc(queryAlias4, () -> ClassMappingUtils.getColumnNames(classMapping4, names));
+
         return this;
     }
 
@@ -225,6 +241,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> asc5(String... names) {
         getRootSortBuilder().asc(queryAlias5, () -> ClassMappingUtils.getColumnNames(classMapping5, names));
+
         return this;
     }
 
@@ -236,6 +253,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> asc6(String... names) {
         getRootSortBuilder().asc(queryAlias6, () -> ClassMappingUtils.getColumnNames(classMapping6, names));
+
         return this;
     }
 
@@ -247,6 +265,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> desc(String... names) {
         getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
+
         //        getRootSortBuilder().desc(queryAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -259,6 +278,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> desc2(String... names) {
         getRootSortBuilder().desc(queryAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+
         return this;
     }
 
@@ -270,6 +290,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> desc3(String... names) {
         getRootSortBuilder().desc(queryAlias3, () -> ClassMappingUtils.getColumnNames(classMapping3, names));
+
         return this;
     }
 
@@ -281,6 +302,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> desc4(String... names) {
         getRootSortBuilder().desc(queryAlias4, () -> ClassMappingUtils.getColumnNames(classMapping4, names));
+
         return this;
     }
 
@@ -292,6 +314,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> desc5(String... names) {
         getRootSortBuilder().desc(queryAlias5, () -> ClassMappingUtils.getColumnNames(classMapping5, names));
+
         return this;
     }
 
@@ -303,6 +326,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> desc6(String... names) {
         getRootSortBuilder().desc(queryAlias6, () -> ClassMappingUtils.getColumnNames(classMapping6, names));
+
         return this;
     }
 
@@ -328,6 +352,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
                 classMapping5),
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), queryAlias6, SortOperator.ASC,
                 classMapping6));
+
         return this;
     }
 
@@ -351,6 +376,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
                 classMapping5),
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), queryAlias6, SortOperator.DESC,
                 classMapping6));
+
         return this;
     }
 
@@ -585,11 +611,39 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
     // ****************************************************************************************************************
 
     /**
-     * Expression page.
+     * Prepare list.
      *
-     * @return the tuple 2
+     * @param limit the limit
+     * @return the tuple 6
+     *         <ol>
+     *         <li>query sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function&lt;Object, Object&gt; getId value
+     *         </ol>
      */
-    public abstract Tuple2<String, String> expressionPage();
+    public abstract Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> prepareList(Limit limit);
+
+    /**
+     * Prepare pagination.
+     *
+     * @param limit the limit
+     * @return the tuple 7
+     *         <ol>
+     *         <li>query sql
+     *         <li>count sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function&lt;Object, Object&gt; getId value
+     *         </ol>
+     */
+    public abstract Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> preparePagination(Limit limit);
 
     // ****************************************************************************************************************
     //  protected method

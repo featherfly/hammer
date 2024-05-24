@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 
 import javax.validation.Validator;
 
+import cn.featherfly.hammer.config.cache.CacheConfig;
 import cn.featherfly.hammer.config.dsl.DslConfig;
 import cn.featherfly.hammer.config.entity.EntityConfig;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
@@ -58,5 +59,24 @@ public interface HammerConfig {
      */
     TemplateConfig getTemplateConfig();
 
+    /**
+     * Gets the cache config.
+     *
+     * @return the cache config
+     */
+    CacheConfig getCacheConfig();
+
+    /**
+     * Gets the class loader.
+     *
+     * @return the class loader
+     */
     Supplier<ClassLoader> getClassLoader();
+
+    /**
+     * Gets the query config.
+     *
+     * @return the query config
+     */
+    QueryConfig getQueryConfig();
 }

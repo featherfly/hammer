@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
-import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
@@ -22,7 +22,7 @@ public class HammerSupportMapperImpl extends BasedMapper implements HammerSuppor
     @Override
     public User getByUsername(String username) {
         return tplExecutor.single(new TplExecuteIdFileImpl("getByUsername", "HammerSupport", parser), User.class,
-                new ChainMapImpl<String, Object>().putChain("username", username));
+            new Params().set("username", username));
     }
 
 }

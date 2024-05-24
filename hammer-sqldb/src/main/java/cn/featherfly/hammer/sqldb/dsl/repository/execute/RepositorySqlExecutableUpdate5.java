@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.execute;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -173,7 +174,7 @@ public class RepositorySqlExecutableUpdate5 implements RepositorySqlUpdate5, Rep
      * {@inheritDoc}
      */
     @Override
-    public UpdateValueExpression<Object, RepositoryExecutableUpdate5,
+    public UpdateValueExpression<Serializable, RepositoryExecutableUpdate5,
         RepositoryExecutableConditionsGroup5<UpdateConditionConfig>,
         RepositoryExecutableConditionsGroupLogic5<UpdateConditionConfig>> field(String name) {
         return new RepositoryUpdateValueImpl<>(name, this);
@@ -194,7 +195,7 @@ public class RepositorySqlExecutableUpdate5 implements RepositorySqlUpdate5, Rep
      */
     @Override
     public <T,
-        R> UpdateValueExpression<R, RepositoryExecutableUpdate5,
+        R extends Serializable> UpdateValueExpression<R, RepositoryExecutableUpdate5,
             RepositoryExecutableConditionsGroup5<UpdateConditionConfig>,
             RepositoryExecutableConditionsGroupLogic5<UpdateConditionConfig>> field(SerializableFunction<T, R> name) {
         return new RepositoryUpdateValueImpl<>(LambdaUtils.getLambdaPropertyName(name), this);

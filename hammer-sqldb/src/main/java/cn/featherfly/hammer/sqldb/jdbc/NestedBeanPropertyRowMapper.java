@@ -38,10 +38,10 @@ import cn.featherfly.common.bean.NoSuchPropertyException;
 import cn.featherfly.common.bean.ReflectionInstantiator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
 
 /**
@@ -80,7 +80,7 @@ import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
  * @param <T> the result type
  * @since 0.1.0
  */
-public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repository.mapping.RowMapper<T> {
+public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repository.mapper.RowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -370,7 +370,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * {@inheritDoc}
      */
     @Override
-    public T mapRow(cn.featherfly.common.repository.mapping.ResultSet res, int rowNum) {
+    public T mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
         ResultSet rs = null;
         if (res instanceof SqlResultSet) {
             SqlResultSet sqlrs = (SqlResultSet) res;
