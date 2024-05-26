@@ -14,7 +14,7 @@ import java.util.Map;
 import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.repository.ExecutionExecutor;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper6;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper6;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**

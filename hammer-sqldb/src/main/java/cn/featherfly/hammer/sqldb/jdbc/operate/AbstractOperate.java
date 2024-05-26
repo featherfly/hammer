@@ -1,25 +1,27 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
 
-import cn.featherfly.common.bean.Property;
-import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.FieldOperator;
 import cn.featherfly.common.db.FieldValueOperator;
+import cn.featherfly.common.db.JdbcException;
+import cn.featherfly.common.db.mapping.JavaTypeSqlTypeOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -50,14 +52,11 @@ public abstract class AbstractOperate<T> {
     /** sql 语句. */
     protected String sql;
 
-    /** The property accessor. */
-    protected PropertyAccessor<T> propertyAccessor;
-
     /** The properties order by sql with placeholder parameter. */
-    protected Tuple2<Function<T, Object>, JdbcPropertyMapping>[] paramsPropertyAndMappings;
+    protected JdbcPropertyMapping[] paramsPropertyAndMappings;
 
     /** The pk properties. */
-    protected final List<Tuple2<Function<T, Serializable>, JdbcPropertyMapping>> pkProperties = new ArrayList<>();
+    protected final List<JdbcPropertyMapping> pkProperties = new ArrayList<>();
 
     /**
      * 使用给定数据源以及给定对象生成其相应的操作.
@@ -66,23 +65,16 @@ public abstract class AbstractOperate<T> {
      * @param classMapping classMapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata databaseMetadata
-     * @param propertyAccessor the property accessor
+     * @param instantiator the instantiator
      */
     protected AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
+        DatabaseMetadata databaseMetadata) {
         this.jdbc = jdbc;
         this.classMapping = classMapping;
         this.databaseMetadata = databaseMetadata;
         this.sqlTypeMappingManager = sqlTypeMappingManager;
-        this.propertyAccessor = propertyAccessor;
         for (JdbcPropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
-            if (pm.getParent() != null) {
-                pkProperties.add(Tuples.of(
-                    entity -> (Serializable) propertyAccessor.getPropertyValue(entity, pm.getPropertyIndexes()), pm));
-            } else {
-                Property<T, ?> property = propertyAccessor.getProperty(pm.getPropertyIndexes());
-                pkProperties.add(Tuples.of(entity -> (Serializable) property.get(entity), pm));
-            }
+            pkProperties.add(pm);
         }
 
         initSql();
@@ -170,36 +162,41 @@ public abstract class AbstractOperate<T> {
     //        return params;
     //    }
 
-    //    /**
-    //     * Sets the batch parameters.
-    //     *
-    //     * @param entities          the entities
-    //     * @param propertyPositions the property positions
-    //     * @param prep              the prep
-    //     * @param manager           the manager
-    //     * @return the object[]
-    //     */
-    //    protected Object[] setBatchParameters(List<T> entities, Map<Integer, String> propertyPositions,
-    //            PreparedStatement prep, SqlTypeMappingManager manager) {
-    //        if (Lang.isEmpty(entities)) {
-    //            return new Object[] {};
-    //        }
-    //        BeanDescriptor<?> beanDescriptor = BeanDescriptor.getBeanDescriptor(entities.get(0).getClass());
-    //        Object[] params = new Object[propertyPositions.size()];
-    //        int pkNum = propertyPositions.size() / entities.size();
-    //        int i = 0;
-    //        T entity = null;
-    //        for (Entry<Integer, String> propertyPosition : propertyPositions.entrySet()) {
-    //            if (i % pkNum == 0) {
-    //                entity = entities.get(i / pkNum);
-    //            }
-    //            params[i] = BeanUtils.getProperty(entity, propertyPosition.getValue());
-    //            BeanProperty<Object> property = beanDescriptor.getBeanProperty(propertyPosition.getValue());
-    //            manager.set(prep, i + 1, params[i], property);
-    //            i++;
-    //        }
-    //        return params;
-    //    }
+    /**
+     * Sets the batch parameters.
+     *
+     * @param entities the entities
+     * @param paramsPropertyAndMappings the params property and mappings
+     * @param prep the prep
+     * @param setArgs the set args
+     * @return the object[]
+     */
+    @SuppressWarnings("unchecked")
+    protected void setBatchParameters(List<T> entities,
+        Tuple2<Function<T, Object>, JdbcPropertyMapping>[] paramsPropertyAndMappings, PreparedStatement prep,
+        Consumer<Object[]> setArgs) {
+        if (Lang.isEmpty(entities)) {
+            //            return ArrayUtils.EMPTY_OBJECT_ARRAY;
+            return;
+        }
+        try {
+            Object[] args = new Object[paramsPropertyAndMappings.length];
+            for (T entity : entities) {
+                for (int i = 0; i < paramsPropertyAndMappings.length; i++) {
+                    Tuple2<Function<T, Object>, JdbcPropertyMapping> paramMapping = paramsPropertyAndMappings[i];
+                    Object value = paramMapping.get0().apply(entity);
+                    ((JavaTypeSqlTypeOperator<Object>) paramMapping.get1().getJavaTypeSqlTypeOperator()).set(prep,
+                        i + 1, value);
+                    args[i] = value;
+                }
+                setArgs.accept(args);
+                prep.addBatch();
+            }
+            //prep.executeBatch();
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
 
     /**
      * Gets the parameters.
@@ -241,8 +238,9 @@ public abstract class AbstractOperate<T> {
         FieldOperator<?>[] operators = new FieldOperator[mappings.length];
         int i = 0;
         for (JdbcPropertyMapping mapping : mappings) {
-            operators[i] = FieldValueOperator.create(mapping,
-                propertyAccessor.getPropertyValue(entity, mapping.getPropertyIndexes()));
+            //            operators[i] = FieldValueOperator.create(mapping,
+            //                propertyAccessor.getPropertyValue(entity, mapping.getPropertyIndexes()));
+            operators[i] = FieldValueOperator.create(mapping, mapping.getGetter().apply(entity));
             i++;
         }
         return operators;
@@ -253,22 +251,8 @@ public abstract class AbstractOperate<T> {
      *
      * @param mappings the new params property and mappings
      */
-    @SuppressWarnings("unchecked")
     protected void setParamsPropertyAndMappings(JdbcPropertyMapping[] mappings) {
-        paramsPropertyAndMappings = new Tuple2[mappings.length];
-        int i = 0;
-        for (JdbcPropertyMapping mapping : mappings) {
-            if (mapping.getParent() != null) {
-                paramsPropertyAndMappings[i] = Tuples.of(
-                    entity -> (Serializable) propertyAccessor.getPropertyValue(entity, mapping.getPropertyIndexes()),
-                    mapping);
-            } else {
-                paramsPropertyAndMappings[i] = Tuples.of(
-                    entity -> (Serializable) propertyAccessor.getProperty(mapping.getPropertyIndexes()).get(entity),
-                    mapping);
-            }
-            i++;
-        }
+        paramsPropertyAndMappings = mappings;
     }
 
     /**

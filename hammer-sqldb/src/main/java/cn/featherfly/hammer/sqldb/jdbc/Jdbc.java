@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -47,6 +48,8 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @return the sql type mapping manager
      */
     SqlTypeMappingManager getSqlTypeMappingManager();
+
+    PropertyAccessorFactory getPropertyAccessorFactory();
 
     //    /**
     //     * Adds the interceptor.
@@ -84,9 +87,9 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert.
      *
-     * @param tableName   the table name
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param args        the args
+     * @param args the args
      * @return the int
      */
     default int insert(String tableName, String[] columnNames, Object... args) {
@@ -96,20 +99,20 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert.
      *
-     * @param <T>         the generic type
-     * @param tableName   the table name
+     * @param <T> the generic type
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param keyHolder   the key holder
-     * @param args        the args
+     * @param keyHolder the key holder
+     * @param args the args
      * @return the int
      */
     <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
-            Object... args);
+        Object... args);
 
     /**
      * Insert.
      *
-     * @param tableName    the table name
+     * @param tableName the table name
      * @param columnParams the column params
      * @return the int
      */
@@ -120,14 +123,14 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert.
      *
-     * @param <T>          the generic type
-     * @param tableName    the table name
+     * @param <T> the generic type
+     * @param tableName the table name
      * @param columnParams the column params
-     * @param keyHolder    the key holder
+     * @param keyHolder the key holder
      * @return the int
      */
     default <T extends Serializable> int insert(String tableName, Map<String, Object> columnParams,
-            GeneratedKeyHolder<T> keyHolder) {
+        GeneratedKeyHolder<T> keyHolder) {
         int i = 0;
         String[] columns = new String[columnParams.size()];
         Object[] params = new Object[columnParams.size()];
@@ -142,9 +145,9 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert batch.
      *
-     * @param tableName   the table name
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param args        the args
+     * @param args the args
      * @return the int
      */
     default int insertBatch(String tableName, String[] columnNames, Object... args) {
@@ -157,7 +160,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert batch.
      *
-     * @param tableName    the table name
+     * @param tableName the table name
      * @param columnParams the column params
      * @return the int
      */
@@ -189,10 +192,10 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Insert batch.
      *
-     * @param tableName   the table name
+     * @param tableName the table name
      * @param columnNames the column names
-     * @param batchSize   the batch size
-     * @param args        the args
+     * @param batchSize the batch size
+     * @param args the args
      * @return the int
      */
     int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args);
@@ -200,10 +203,10 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Upsert.
      *
-     * @param tableName    the table name
-     * @param columnNames  the column names
+     * @param tableName the table name
+     * @param columnNames the column names
      * @param uniqueColumn the unique column
-     * @param args         the args
+     * @param args the args
      * @return the int
      */
     default int upsert(String tableName, String[] columnNames, String uniqueColumn, Object... args) {
@@ -213,10 +216,10 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Upsert.
      *
-     * @param tableName     the table name
-     * @param columnNames   the column names
+     * @param tableName the table name
+     * @param columnNames the column names
      * @param uniqueColumns the unique columns
-     * @param args          the args
+     * @param args the args
      * @return the int
      */
     int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args);
@@ -224,9 +227,9 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Upsert.
      *
-     * @param tableName    the table name
+     * @param tableName the table name
      * @param uniqueColumn the unique column
-     * @param params       the params
+     * @param params the params
      * @return the int
      */
     default int upsert(String tableName, String uniqueColumn, Map<String, Object> params) {
@@ -236,9 +239,9 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     /**
      * Upsert.
      *
-     * @param tableName     the table name
+     * @param tableName the table name
      * @param uniqueColumns the unique columns
-     * @param params        the params
+     * @param params the params
      * @return the int
      */
     default int upsert(String tableName, String[] uniqueColumns, Map<String, Object> params) {

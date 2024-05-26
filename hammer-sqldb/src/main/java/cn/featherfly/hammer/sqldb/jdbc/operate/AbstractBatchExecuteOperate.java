@@ -12,7 +12,6 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.util.List;
 
-import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -38,12 +37,10 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param propertyAccessor the property accessor
      */
     protected AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata,
-        PropertyAccessor<T> propertyAccessor) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
     /**
@@ -154,11 +151,12 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
         Object[] params = new Object[propertyPositions.length * entities.size()];
         for (int i = 0; i < entities.size(); i++) {
             T entity = entities.get(i);
-            int index = 0;
-            for (JdbcPropertyMapping propertyPosition : propertyPositions) {
-                params[i * propertyPositions.length + index] = propertyAccessor.getPropertyValue(entity,
-                    propertyPosition.getPropertyIndexes());
-                index++;
+            int columnNum = 0;
+            for (JdbcPropertyMapping propertyMapping : propertyPositions) {
+                //                params[i * propertyPositions.length + index] = propertyAccessor.getPropertyValue(entity,
+                //                    propertyMapping.getPropertyIndexes());
+                params[i * propertyPositions.length + columnNum] = propertyMapping.getGetter().apply(entity);
+                columnNum++;
             }
         }
         return params;

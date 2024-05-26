@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;

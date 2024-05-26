@@ -11,8 +11,11 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.repository.Execution;
@@ -26,7 +29,7 @@ public interface JdbcUpdate {
     /**
      * Update.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the int
      */
@@ -37,7 +40,7 @@ public interface JdbcUpdate {
     /**
      * Update.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the int
      */
@@ -48,7 +51,7 @@ public interface JdbcUpdate {
     /**
      * Update.
      *
-     * @param sql  the sql
+     * @param sql the sql
      * @param args the args
      * @return the int
      */
@@ -60,10 +63,10 @@ public interface JdbcUpdate {
     /**
      * Update.
      *
-     * @param <T>                the generic type
-     * @param sql                sql
+     * @param <T> the generic type
+     * @param sql sql
      * @param generatedKeyHolder the key supplier
-     * @param args               args
+     * @param args args
      * @return map list
      */
     <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object... args);
@@ -71,10 +74,10 @@ public interface JdbcUpdate {
     /**
      * Update.
      *
-     * @param <T>                the generic type
-     * @param sql                sql
+     * @param <T> the generic type
+     * @param sql sql
      * @param generatedKeyHolder the key supplier
-     * @param args               args
+     * @param args args
      * @return map list
      */
     <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Map<String, Object> args);
@@ -82,14 +85,14 @@ public interface JdbcUpdate {
     /**
      * Update.
      *
-     * @param <T>                the generic type
-     * @param sql                sql
+     * @param <T> the generic type
+     * @param sql sql
      * @param generatedKeyHolder the key supplier
-     * @param args               args
+     * @param args args
      * @return map list
      */
     default <T extends Serializable> int update(NamedParamSql sql, GeneratedKeyHolder<T> generatedKeyHolder,
-            Map<String, Object> args) {
+        Map<String, Object> args) {
         Execution execution = sql.getExecution(args);
         return update(execution.getExecution(), generatedKeyHolder, execution.getParams());
     }
@@ -97,19 +100,18 @@ public interface JdbcUpdate {
     /**
      * batch update. use jdbc batch execute.
      *
-     * @param <T>       the generic type
-     * @param sql       the sql
+     * @param sql the sql
      * @param argsArray the batch args array
      * @return the int
      */
-    default <T extends Serializable> int[] updateBatch(String sql, Object[]... argsArray) {
-        return updateBatch(sql, (GeneratedKeysHolder<T>) null, argsArray);
+    default int[] updateBatch(String sql, Object[]... argsArray) {
+        return updateBatch(sql, (GeneratedKeysHolder<Serializable>) null, argsArray);
     }
 
     /**
      * batch update. use jdbc batch execute.
      *
-     * @param sql      the sql
+     * @param sql the sql
      * @param argsList the batch args list
      * @return the int
      */
@@ -120,33 +122,79 @@ public interface JdbcUpdate {
     /**
      * batch update. use jdbc batch execute.
      *
-     * @param <T>                the generic type
-     * @param sql                the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param generatedKeyHolder the generated key holder
-     * @param argsList           the batch args list
+     * @param argsList the batch args list
      * @return the int
      */
     <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-            Object[]... argsList);
+        Object[]... argsList);
 
     /**
      * batch update. use jdbc batch execute.
      *
-     * @param <T>                the generic type
-     * @param sql                the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param generatedKeyHolder the generated key holder
-     * @param argsList           the batch args list
+     * @param argsList the batch args list
      * @return the int
      */
     default <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-            List<Object[]> argsList) {
+        List<Object[]> argsList) {
         return updateBatch(sql, generatedKeyHolder, argsList.toArray(new Object[argsList.size()][]));
     }
 
     /**
      * batch update. use jdbc batch execute.
      *
-     * @param sql       the sql
+     * @param sql the sql
+     * @param argsIter the args iter
+     * @return the int
+     */
+    default int[] updateBatch(String sql, Iterable<Object[]> argsIter) {
+        return updateBatch(sql, (GeneratedKeysHolder<Serializable>) null, argsIter);
+    }
+
+    /**
+     * batch update. use jdbc batch execute.
+     *
+     * @param <T> the generic type
+     * @param sql the sql
+     * @param generatedKeyHolder the generated key holder
+     * @param argsIter the args iter
+     * @return the int
+     */
+    <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
+        Iterable<Object[]> argsIter);
+
+    /**
+     * batch update. use jdbc batch execute.
+     *
+     * @param sql the sql
+     * @param setArgs the set args
+     * @return the int
+     */
+    default int[] updateBatch(String sql, BiConsumer<PreparedStatement, Consumer<Object[]>> setArgs) {
+        return updateBatch(sql, (GeneratedKeysHolder<Serializable>) null, setArgs);
+    }
+
+    /**
+     * batch update. use jdbc batch execute.
+     *
+     * @param <T> the generic type
+     * @param sql the sql
+     * @param generatedKeyHolder the generated key holder
+     * @param setArgs the set args
+     * @return the int
+     */
+    <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
+        BiConsumer<PreparedStatement, Consumer<Object[]>> setArgs);
+
+    /**
+     * batch update. use jdbc batch execute.
+     *
+     * @param sql the sql
      * @param batchArgs the batch args array
      * @return the int
      */
@@ -157,21 +205,21 @@ public interface JdbcUpdate {
     /**
      * batch update. use jdbc batch execute.
      *
-     * @param <T>                the generic type
-     * @param sql                the sql
+     * @param <T> the generic type
+     * @param sql the sql
      * @param generatedKeyHolder the generated key holder
-     * @param batchArgs          the batch args array
+     * @param batchArgs the batch args array
      * @return the int
      */
     <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-            Map<String, Object>[] batchArgs);
+        Map<String, Object>[] batchArgs);
 
     /**
      * batch update.
      *
-     * @param sql       sql
+     * @param sql sql
      * @param batchSize the batch size
-     * @param args      args
+     * @param args args
      * @return map list
      */
     default int updateBatch(String sql, int batchSize, Object... args) {
@@ -181,9 +229,9 @@ public interface JdbcUpdate {
     /**
      * batch update.
      *
-     * @param sql       the sql
+     * @param sql the sql
      * @param batchSize the batch size
-     * @param args      the args
+     * @param args the args
      * @return the int
      */
     default int updateBatch(String sql, int batchSize, Map<String, Object> args) {
@@ -193,26 +241,26 @@ public interface JdbcUpdate {
     /**
      * batch update.
      *
-     * @param <T>                the generic type
-     * @param sql                the sql
-     * @param batchSize          the batch size
+     * @param <T> the generic type
+     * @param sql the sql
+     * @param batchSize the batch size
      * @param generatedKeyHolder the generated key holder
-     * @param args               the args
+     * @param args the args
      * @return the int
      */
     <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> generatedKeyHolder,
-            Map<String, Object> args);
+        Map<String, Object> args);
 
     /**
      * Update.
      *
-     * @param <T>                the generic type
-     * @param sql                sql
-     * @param batchSize          the batch size
+     * @param <T> the generic type
+     * @param sql sql
+     * @param batchSize the batch size
      * @param generatedKeyHolder the key supplier
-     * @param args               args
+     * @param args args
      * @return map list
      */
     <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> generatedKeyHolder,
-            Object... args);
+        Object... args);
 }

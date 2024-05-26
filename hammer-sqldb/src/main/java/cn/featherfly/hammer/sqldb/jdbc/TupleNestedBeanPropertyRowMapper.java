@@ -17,7 +17,7 @@ import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
@@ -30,7 +30,7 @@ import cn.featherfly.common.lang.Lang;
  * @since 0.7.0
  */
 public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
-    implements cn.featherfly.common.repository.mapping.RowMapper<T> {
+    implements cn.featherfly.common.repository.mapper.RowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -103,7 +103,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public T mapRow(cn.featherfly.common.repository.mapping.ResultSet res, int rowNum) {
+    public T mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
         List<Object> results = new ArrayList<>();
         if (rowMappers.size() > 0) {
             // ENHANCE 后续再进行优化，不需要多次映射

@@ -16,9 +16,9 @@ import java.util.NoSuchElementException;
 import javax.annotation.Nonnull;
 
 import cn.featherfly.common.db.JdbcException;
-import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.lang.AutoCloseableIterable;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * MapRowIterable.

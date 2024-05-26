@@ -15,7 +15,7 @@
 //
 //import cn.featherfly.common.function.serializable.SerializableFunction;
 //import cn.featherfly.common.operator.AggregateFunction;
-//import cn.featherfly.common.repository.mapping.RowMapper;
+//import cn.featherfly.common.repository.mapper.RowMapper;
 //import cn.featherfly.common.structure.page.Page;
 //import cn.featherfly.hammer.dsl.query.QuerySortExpression;
 //import cn.featherfly.hammer.expression.query.QueryEntityPropertiesExpression;

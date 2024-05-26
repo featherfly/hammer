@@ -20,7 +20,7 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.repository.ExecutionExecutor;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;

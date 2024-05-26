@@ -12,7 +12,6 @@ import java.util.function.UnaryOperator;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
@@ -60,17 +59,16 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param propertyAccessor the property accessor
      * @param getOperate the get operate
      * @param updateOperate the update operate
      * @param doLock the do lock
      * @param doUnLock the do un lock
      */
     public UpdateFetchOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor, GetOperate<T> getOperate,
-        UpdateOperate<T> updateOperate, Consumer<String> doLock, Consumer<String> doUnLock) {
-        this(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor, getOperate, updateOperate,
-            doLock, doUnLock, true);
+        DatabaseMetadata databaseMetadata, GetOperate<T> getOperate, UpdateOperate<T> updateOperate,
+        Consumer<String> doLock, Consumer<String> doUnLock) {
+        this(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, getOperate, updateOperate, doLock, doUnLock,
+            true);
     }
 
     /**
@@ -80,7 +78,6 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param propertyAccessor the property accessor
      * @param getOperate the get operate
      * @param updateOperate the update operate
      * @param doLock the do lock
@@ -88,10 +85,9 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
      * @param priorityUseDatabaseRowLock the priority use database row lock
      */
     public UpdateFetchOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor, GetOperate<T> getOperate,
-        UpdateOperate<T> updateOperate, Consumer<String> doLock, Consumer<String> doUnLock,
-        boolean priorityUseDatabaseRowLock) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
+        DatabaseMetadata databaseMetadata, GetOperate<T> getOperate, UpdateOperate<T> updateOperate,
+        Consumer<String> doLock, Consumer<String> doUnLock, boolean priorityUseDatabaseRowLock) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
         this.getOperate = getOperate;
         this.updateOperate = updateOperate;
         this.doLock = doLock;

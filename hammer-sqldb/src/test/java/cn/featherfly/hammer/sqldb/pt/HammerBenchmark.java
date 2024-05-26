@@ -82,7 +82,8 @@ public class HammerBenchmark extends AbstractBenchmark {
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager,
+            propertyAccessorFactory);
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl();
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)

@@ -420,8 +420,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(type);
             if (update == null) {
                 JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(type);
-                update = new UpdateOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                    mappingFactory.getMetadata(), propertyAccessorFactory.create(type));
+                update = getUpdate(type);
                 updateOperates.put(type, update);
             }
             for (E entity : entities) {
@@ -467,7 +466,7 @@ public class SqldbHammerImpl implements SqldbHammer {
             Class<E> type = (Class<E>) entity.getClass();
             JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(type);
             update = new MergeOperate<>(jdbc, mapping, mappingFactory.getSqlTypeMappingManager(),
-                mappingFactory.getMetadata(), propertyAccessorFactory.create(type));
+                mappingFactory.getMetadata());
             mergeOperates.put(entity.getClass(), update);
         }
         validate(entity);
@@ -2158,8 +2157,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> UpdateOperate<E> getUpdate(final Class<E> entityType) {
         return (UpdateOperate<E>) updateOperates.computeIfAbsent(entityType,
             type -> new UpdateOperate<E>(jdbc, mappingFactory.getClassMapping(entityType),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                propertyAccessorFactory.create(entityType)));
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
     }
 
     @SuppressWarnings("unchecked")
@@ -2171,8 +2169,8 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> UpdateFetchOperate<E> getUpdateFetch(final Class<E> entityType) {
         return (UpdateFetchOperate<E>) updateFetchOperates.computeIfAbsent(entityType,
             type -> new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                propertyAccessorFactory.create(entityType), getOperate(entityType), getUpdate(entityType), key -> {
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), getOperate(entityType),
+                getUpdate(entityType), key -> {
                     // IMPLSOON 后续来从配置创建锁并进行加锁操作
                 }, key -> {
                     // IMPLSOON 后续来从配置创建锁并进行解锁操作
@@ -2188,8 +2186,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> InsertOperate<E> getInsert(final Class<E> entityType) {
         return (InsertOperate<E>) insertOperates.computeIfAbsent(entityType,
             type -> new InsertOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                propertyAccessorFactory.create(entityType)));
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
     }
 
     @SuppressWarnings("unchecked")
@@ -2201,8 +2198,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> UpsertOperate<E> getUpsert(final Class<E> entityType) {
         return (UpsertOperate<E>) upsertOperates.computeIfAbsent(entityType,
             type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                propertyAccessorFactory.create(entityType)));
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
     }
 
     private <E> DeleteOperate<E> getDelete(Collection<E> entities) {
@@ -2222,8 +2218,7 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> DeleteOperate<E> getDelete(final Class<E> entityType) {
         return (DeleteOperate<E>) deleteOperates.computeIfAbsent(entityType,
             type -> new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                propertyAccessorFactory.create(entityType)));
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
     }
 
     @SuppressWarnings("unchecked")

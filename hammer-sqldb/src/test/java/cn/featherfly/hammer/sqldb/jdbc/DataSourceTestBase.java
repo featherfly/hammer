@@ -120,7 +120,7 @@ public class DataSourceTestBase extends TestBase {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
     }
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
@@ -146,7 +146,7 @@ public class DataSourceTestBase extends TestBase {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
     }
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
@@ -174,7 +174,7 @@ public class DataSourceTestBase extends TestBase {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
     }
 
     Role role() {

@@ -30,7 +30,7 @@ import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.common.repository.Params;
+import cn.featherfly.common.repository.Params.ParamType;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
@@ -165,7 +165,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
             }
 
             Object param = ((ParamedExpression) condition).getParam();
-            if (param == Params.NONE) { // ignore param
+            if (param == ParamType.NONE) { // ignore param
             } else if (param == null) {
                 params.add(param);
             } else if (param instanceof Collection) {

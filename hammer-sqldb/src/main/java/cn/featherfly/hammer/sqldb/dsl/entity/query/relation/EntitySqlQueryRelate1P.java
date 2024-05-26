@@ -11,21 +11,21 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * The Class EntitySqlQueryRelation1P.
  *
  * @author zhongj
- * @param <E>  the element type
+ * @param <E> the element type
  * @param <R1> query or joined type
  */
 public class EntitySqlQueryRelate1P<E, R1> extends AbstractEntitySqlQueryRelate1X<E, R1>
-        implements EntityQueryRelate1P<E, R1> {
+    implements EntityQueryRelate1P<E, R1> {
 
     /**
      * Instantiates a new entity sql query relate 1 P.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
     public EntitySqlQueryRelate1P(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
+        EntitySqlQueryRelation entitySqlQueryRelation) {
         super(factory, sqlPageFactory, entitySqlQueryRelation);
     }
 

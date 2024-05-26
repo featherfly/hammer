@@ -11,11 +11,11 @@ import org.springframework.util.ClassUtils;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Strings;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * {@link RowMapper} implementation that converts a single column into a single
@@ -44,7 +44,7 @@ import cn.featherfly.common.repository.mapping.RowMapper;
  * @see Jdbc#queryString(String, Object...)
  * @since 0.5.7
  */
-public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository.mapping.RowMapper<T> {
+public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository.mapper.RowMapper<T> {
 
     private Class<?> requiredType;
 
@@ -96,7 +96,7 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
      * {@inheritDoc}
      */
     @Override
-    public T mapRow(cn.featherfly.common.repository.mapping.ResultSet res, int rowNum) {
+    public T mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
         ResultSet rs = null;
         if (res instanceof SqlResultSet) {
             SqlResultSet sqlrs = (SqlResultSet) res;

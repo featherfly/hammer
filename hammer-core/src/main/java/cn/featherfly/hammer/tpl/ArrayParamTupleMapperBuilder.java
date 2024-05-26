@@ -9,8 +9,8 @@
 package cn.featherfly.hammer.tpl;
 
 import cn.featherfly.common.repository.ExecutionExecutor;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper1;
-import cn.featherfly.common.repository.mapping.TupleMapperBuilder;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
+import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
 
 /**
  * TemplateTupleMapperBuilder.

@@ -1,17 +1,16 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.exception.UnsupportedException;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -30,11 +29,10 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param propertyAccessor the property accessor
      */
     public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
+        DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
     /**
@@ -75,8 +73,26 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
         //        for (T entity : entities) {
         //            argsList.add(getParameters(entity));
         //        }
-        Object[][] argsList = new Object[entities.size()][];
-        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
-        return jdbc.updateBatch(sql, argsList);
+        //        Object[][] argsList = new Object[entities.size()][];
+        //        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
+        //        return jdbc.updateBatch(sql, argsList);
+
+        return jdbc.updateBatch(sql, () -> new Iterator<Object[]>() {
+
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return entities.size() > index;
+            }
+
+            @Override
+            public Object[] next() {
+                return getParameters(entities.get(index++));
+            }
+        });
+
+        // YUFEI_TEST 性能没有明显变化，后续再测试
+        // return jdbc.updateBatch(sql, (prep, setArgs) -> setBatchParameters(entities, paramsPropertyAndMappings, prep, setArgs));
     }
 }

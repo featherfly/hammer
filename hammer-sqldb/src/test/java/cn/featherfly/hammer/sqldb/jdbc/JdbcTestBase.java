@@ -163,7 +163,7 @@ public class JdbcTestBase extends TestBase {
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
         jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, propertyAccessorFactory);
 
         // factory.getClassNameConversions().add(new ClassNameJpaConversion());
         // factory.getClassNameConversions().add(new
@@ -205,7 +205,7 @@ public class JdbcTestBase extends TestBase {
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds);
         jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, propertyAccessorFactory);
 
     }
 
@@ -235,7 +235,7 @@ public class JdbcTestBase extends TestBase {
         metadata = DatabaseMetadataManager.getDefaultManager().create(ds, "main");
         jdbc = new JdbcSpringImpl(ds, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, propertyAccessorFactory);
 
     }
 

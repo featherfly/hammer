@@ -7,7 +7,6 @@ import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -35,11 +34,10 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param propertyAccessor the property accessor
      */
     public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
+        DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
     /**

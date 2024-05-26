@@ -6,10 +6,10 @@
  * @date: 2022-02-20 01:28:20
  * @Copyright: 2022 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.hammer.sqldb.jdbc.mapping;
+package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
 import cn.featherfly.common.bean.InstantiatorFactory;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**

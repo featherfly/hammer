@@ -15,8 +15,8 @@ import com.speedment.common.tuple.Tuple1;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.repository.ExecutionExecutor;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper1;
-import cn.featherfly.common.repository.mapping.PrefixedBeanMapper2;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper2;
 import cn.featherfly.common.structure.page.PaginationResults;
 
 /**

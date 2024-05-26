@@ -21,8 +21,8 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.ParamedExecutionExecutor;
 import cn.featherfly.common.repository.ParamedMappedExecutor;
-import cn.featherfly.common.repository.mapping.RowMapper;
-import cn.featherfly.common.repository.mapping.TupleMapperBuilder;
+import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
 
 /**
  * TemplateParamedExecutionExecutor.

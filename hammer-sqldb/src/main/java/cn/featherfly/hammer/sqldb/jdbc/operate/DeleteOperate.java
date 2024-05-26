@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -34,11 +33,10 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param propertyAccessor the property accessor
      */
     public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, propertyAccessor);
+        DatabaseMetadata databaseMetadata) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
     }
 
     /**
@@ -82,7 +80,6 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void initSql() {
         Tuple2<String,
@@ -90,7 +87,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
         sql = tuple.get0();
         logger.debug("sql: {}", sql);
         // tuple.get1() 就是 pk JdbcPropertyMapping
-        paramsPropertyAndMappings = pkProperties.toArray(new Tuple2[pkProperties.size()]);
+        paramsPropertyAndMappings = pkProperties.toArray(new JdbcPropertyMapping[pkProperties.size()]);
         // ENHANCE 后续使用batchSql template优化，只需要替换动态参数部分
     }
 
@@ -107,11 +104,12 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
         int pkNum = propertyPositions.length / entities.size();
         int i = 0;
         T entity = null;
-        for (JdbcPropertyMapping propertyPosition : propertyPositions) {
+        for (JdbcPropertyMapping propertyMapping : propertyPositions) {
             if (i % pkNum == 0) {
                 entity = entities.get(i / pkNum);
             }
-            params[i] = propertyAccessor.getPropertyValue(entity, propertyPosition.getPropertyIndexes());
+            //            params[i] = propertyAccessor.getPropertyValue(entity, propertyMapping.getPropertyIndexes());
+            params[i] = propertyMapping.getGetter().apply(entity);
             i++;
         }
         return params;

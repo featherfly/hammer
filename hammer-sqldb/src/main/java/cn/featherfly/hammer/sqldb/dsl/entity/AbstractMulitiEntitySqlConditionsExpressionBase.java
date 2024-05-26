@@ -4188,8 +4188,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
             public String expression() {
                 final Map<String, Object> argus = new HashMap<>();
                 Lang.each(getEntityRelation().getFilterableEntityRelations(), (m, index) -> {
-                    argus.put("" + index, m.getRepositoryAlias());
-                    argus.put("as" + index, m.getRepositoryAlias());
+                    argus.put("" + index, m.getTableAlias());
+                    argus.put("as" + index, m.getTableAlias());
                 });
                 return Strings.format(expression, argus);
             }

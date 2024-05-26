@@ -19,7 +19,7 @@ import java.util.Map.Entry;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
-import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.builder.AliasManager;
@@ -30,7 +30,7 @@ import cn.featherfly.common.repository.builder.AliasManager.AliasGeneretor;
  *
  * @author zhongj
  */
-public class MapRowMapper implements cn.featherfly.common.repository.mapping.RowMapper<Map<String, Object>> {
+public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowMapper<Map<String, Object>> {
 
     private SqlTypeMappingManager manager;
 
@@ -48,7 +48,7 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapping.Row
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> mapRow(cn.featherfly.common.repository.mapping.ResultSet res, int rowNum) {
+    public Map<String, Object> mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
         ResultSet rs = null;
         if (res instanceof SqlResultSet) {
             SqlResultSet sqlrs = (SqlResultSet) res;

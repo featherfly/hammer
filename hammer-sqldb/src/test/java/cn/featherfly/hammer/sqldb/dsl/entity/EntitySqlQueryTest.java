@@ -326,7 +326,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @SuppressWarnings("unchecked")
     @Test
-    void propertyExpression() {
+    void condition_property() {
 
         query.find(User.class).where()//
             .property(User::getUsername).eq("yufei") //
@@ -349,7 +349,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void propertyExpressionJoin() {
+    void condition_property_join() {
         List<User> users = null;
         final int id = 1;
         final int min = id;
@@ -772,7 +772,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void property_in() {
+    void condition_property_in() {
         Integer id = null;
         Integer[] ids = null;
         String username = null;

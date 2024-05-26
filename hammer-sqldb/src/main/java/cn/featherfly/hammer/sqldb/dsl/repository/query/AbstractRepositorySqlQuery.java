@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 import java.util.List;
 import java.util.Map;
 
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;

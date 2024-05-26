@@ -22,9 +22,9 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 
 import cn.featherfly.common.repository.MulitiQuery;
-import cn.featherfly.common.repository.mapping.MulitiQueryRowMapper;
-import cn.featherfly.common.repository.mapping.MulitiQueryTupleMapperBuilder;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper;
+import cn.featherfly.common.repository.mapper.MulitiQueryTupleMapperBuilder;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * jdbc procedure.

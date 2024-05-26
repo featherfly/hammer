@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
@@ -24,7 +23,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @param <T> 对象类型
  * @since 0.1.0
  */
-public class GetOperate<T> extends AbstractQueryOperate<T> {
+public class GetOperate<T> extends AbstractQueryOperate<T> implements QueryOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成读取操作.
@@ -33,7 +32,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param propertyAccessor the property accessor
+     * @param instantiator the instantiator
      */
     public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
         DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
@@ -53,7 +52,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             return null;
         }
         if (pkProperties.size() == 1) {
-            return pkProperties.get(0).get0().apply(entity);
+            return (Serializable) pkProperties.get(0).getGetter().apply(entity);
         } else if (pkProperties.size() > 1) {
             throw new SqldbHammerException("multy id defined in entity [" + entity.getClass().getName()
                 + "], you can invoke getIds(entity) method instead");
@@ -74,7 +73,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
             return Collections.emptyList();
         }
         return pkProperties.stream().map(property -> {
-            return property.get0().apply(entity);
+            return (Serializable) property.getGetter().apply(entity);
         }).collect(Collectors.toList());
     }
 
@@ -146,11 +145,10 @@ public class GetOperate<T> extends AbstractQueryOperate<T> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void initSql() {
         sql = ClassMappingUtils.getSelectByPkSql(classMapping, jdbc.getDialect());
-        paramsPropertyAndMappings = pkProperties.toArray(new Tuple2[pkProperties.size()]);
+        paramsPropertyAndMappings = pkProperties.toArray(new JdbcPropertyMapping[pkProperties.size()]);
         logger.debug("sql: {}", sql);
     }
 

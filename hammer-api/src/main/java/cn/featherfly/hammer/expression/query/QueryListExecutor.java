@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.query;
 import java.util.List;
 import java.util.Map;
 
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * query list executor.
@@ -22,7 +22,7 @@ public interface QueryListExecutor extends QueryTypeListExecutor {
     /**
      * query for list
      *
-     * @param <E>       mapping type
+     * @param <E> mapping type
      * @param rowMapper rowMapper
      * @return list
      */

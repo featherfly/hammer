@@ -74,7 +74,7 @@ public class Appconfig extends JdbcTestBase {
 
         Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
 
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect);
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");

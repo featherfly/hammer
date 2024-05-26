@@ -18,10 +18,10 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 import cn.featherfly.common.db.JdbcException;
-import cn.featherfly.common.db.mapping.SqlResultSet;
+import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.repository.MulitiQuery;
-import cn.featherfly.common.repository.mapping.RowMapper;
+import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * jdbc procedure muliti-query.
