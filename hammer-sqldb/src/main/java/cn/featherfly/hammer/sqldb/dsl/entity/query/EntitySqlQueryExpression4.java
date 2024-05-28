@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup4;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic4;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -27,26 +28,28 @@ public class EntitySqlQueryExpression4<T1, T2, T3, T4, RS> extends
     /**
      * Instantiates a new entity sql query expression.
      *
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
-    public EntitySqlQueryExpression4(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation queryRelation) {
-        this(null, factory, sqlPageFactory, queryRelation);
+    public EntitySqlQueryExpression4(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        this(null, hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * Instantiates a new entity sql query expression.
      *
      * @param parent the parent
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
-    EntitySqlQueryExpression4(EntityQueryConditionGroupLogic4<T1, T2, T3, T4, RS> parent, JdbcMappingFactory factory,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
-        super(parent, factory, sqlPageFactory, queryRelation);
+    EntitySqlQueryExpression4(EntityQueryConditionGroupLogic4<T1, T2, T3, T4, RS> parent, HammerConfig hammerConfig,
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        super(parent, hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -55,7 +58,7 @@ public class EntitySqlQueryExpression4<T1, T2, T3, T4, RS> extends
     @Override
     protected EntityQueryConditionGroup4<T1, T2, T3, T4, RS> createGroup(
         EntityQueryConditionGroupLogic4<T1, T2, T3, T4, RS> parent) {
-        return new EntitySqlQueryExpression4<>(parent, factory, sqlPageFactory, entityRelation);
+        return new EntitySqlQueryExpression4<>(parent, hammerConfig, factory, sqlPageFactory, entityRelation);
     }
 
     /**

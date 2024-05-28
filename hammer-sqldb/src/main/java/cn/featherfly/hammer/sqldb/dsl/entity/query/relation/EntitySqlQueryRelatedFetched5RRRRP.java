@@ -11,6 +11,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query.relation;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched5RRRRP;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.entity.query.AbstractEntitySqlQueryFetch6;
@@ -20,7 +21,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * The Class EntitySqlQueryRelatedFetched5RRRRP.
  *
  * @author zhongj
- * @param <E>  query type
+ * @param <E> query type
  * @param <R1> query or joined type
  * @param <R2> query or joined type
  * @param <R3> query or joined type
@@ -28,18 +29,19 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <R5> query or joined type
  */
 public class EntitySqlQueryRelatedFetched5RRRRP<E, R1, R2, R3, R4, R5>
-        extends AbstractEntitySqlQueryFetch6<E, R1, R2, R3, R4, R5, E>
-        implements EntityQueryRelatedFetched5RRRRP<E, R1, R2, R3, R4, R5> {
+    extends AbstractEntitySqlQueryFetch6<E, R1, R2, R3, R4, R5, E>
+    implements EntityQueryRelatedFetched5RRRRP<E, R1, R2, R3, R4, R5> {
 
     /**
      * Instantiates a new entity sql query related fetched 5 RRRRP.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
-    public EntitySqlQueryRelatedFetched5RRRRP(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+    public EntitySqlQueryRelatedFetched5RRRRP(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
     }
 }

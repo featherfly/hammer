@@ -13,6 +13,11 @@ package cn.featherfly.hammer.sqldb.dsl.entity;
 import java.util.List;
 import java.util.function.Supplier;
 
+import javax.cache.Cache;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
@@ -38,6 +43,8 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
  */
 public class EntitySqlQueryConditionGroupQuery<R> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntitySqlQueryConditionGroupQuery.class);
+
     private AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp;
 
     private Limit limit;
@@ -50,17 +57,20 @@ public class EntitySqlQueryConditionGroupQuery<R> {
 
     private Supplier<Tuple2<String, String>> expressionPage;
 
+    private final Cache<Object, Integer> countResultCache;
+
     /**
      * Instantiates a new entity sql query condition group query.
      *
      * @param entitySqlConditionGroupExpression the entity sql condition group expression
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
+     * @param countResultCache the count result cache
      */
     public EntitySqlQueryConditionGroupQuery(
         AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
-        this(entitySqlConditionGroupExpression, sqlPageFactory, queryRelation, null);
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Cache<Object, Integer> countResultCache) {
+        this(entitySqlConditionGroupExpression, sqlPageFactory, queryRelation, countResultCache, null);
     }
 
     /**
@@ -69,15 +79,18 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      * @param entitySqlConditionGroupExpression the entity sql condition group expression
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
+     * @param countResultCache the count result cache
      * @param limit the limit
      */
     public EntitySqlQueryConditionGroupQuery(
         AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Limit limit) {
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Cache<Object, Integer> countResultCache,
+        Limit limit) {
         super();
         this.limit = limit;
         this.queryRelation = queryRelation;
         this.sqlPageFactory = sqlPageFactory;
+        this.countResultCache = countResultCache;
         exp = entitySqlConditionGroupExpression;
 
         if (exp instanceof AbstractMulitiEntitySqlQueryConditionsGroupExpression) {
@@ -153,7 +166,8 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), "");
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        List<Object> paramList = exp.getRoot().getParams();
+        Object[] oraginalParams = paramList.toArray();
         String sql = sqlTuple.get0();
         Object[] params = oraginalParams;
         SimplePaginationResults<R> pagination = new SimplePaginationResults<>(limit);
@@ -168,9 +182,20 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         pagination.setPageResults(list);
 
         if (limit != null) {
-            //            String countSql = SqlUtils.convertSelectToCount(oraginalSql);
-            //            int total = queryRelation.getJdbc().queryInt(countSql, oraginalParams);
-            int total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
+            Integer total = null;
+            if (countResultCache != null) {
+                // 因为geParams()每次都是一个新对象，所以这里可以直接用，不怕副作用，因为其他需要使用参数的都已经使用Array[]
+                paramList.add(0, sqlTuple.get1());
+                total = countResultCache.get(paramList);
+            }
+            if (total == null) {
+                total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
+                if (countResultCache != null) {
+                    countResultCache.put(paramList, total);
+                }
+            } else {
+                LOGGER.debug("pagination count result [{}] found in cache", total);
+            }
             pagination.setTotal(total);
         } else {
             // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了

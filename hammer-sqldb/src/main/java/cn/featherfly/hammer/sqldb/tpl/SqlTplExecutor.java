@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.cache.Cache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -2364,6 +2365,20 @@ public class SqlTplExecutor implements TplExecutor {
 
     private int count(String sql, Map<String, Object> effectiveParams, ConditionParamsManager conditionParamsManager,
         TplExecuteConfig config) {
+        Integer total = null;
+        Map<String, Object> key = null;
+        Cache<Object, Integer> countResultCache = hammerConfig.getCacheConfig().getCountResultCache();
+        if (countResultCache != null) {
+            key = new HashMap<>(effectiveParams.size() + 1);
+            key.put("__SQL__", sql);
+            key.putAll(effectiveParams);
+            total = countResultCache.get(key);
+            if (total != null) {
+                logger.debug("pagination count result [{}] found in cache", total);
+                return total;
+            }
+        }
+
         String countSql = null;
         ConditionParamsManager manager = null;
         if (Lang.isEmpty(config.getCount())) {
@@ -2374,11 +2389,16 @@ public class SqlTplExecutor implements TplExecutor {
             countSql = countTuple.get0();
             manager = countTuple.get1();
         }
+
         if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryInt(countSql, getEffectiveParamArray(effectiveParams, manager, config));
+            total = jdbc.queryInt(countSql, getEffectiveParamArray(effectiveParams, manager, config));
         } else {
-            return jdbc.queryInt(countSql, effectiveParams);
+            total = jdbc.queryInt(countSql, effectiveParams);
         }
+        if (countResultCache != null) {
+            countResultCache.put(key, total);
+        }
+        return total;
     }
 
     private Object[] getEffectiveParamArray(Object[] params, ConditionParamsManager manager) {

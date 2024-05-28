@@ -20,14 +20,17 @@ import cn.featherfly.hammer.config.dsl.UpdateConfig;
  */
 public class DslConfigImpl implements DslConfig {
 
-    private QueryConfig queryConfig = new QueryConfigImpl();
-    private DeleteConfig deleteConfig = new DeleteConfigImpl();
-    private UpdateConfig updateConfig = new UpdateConfigImpl();
+    private final QueryConfig queryConfig;
+    private final DeleteConfig deleteConfig;
+    private final UpdateConfig updateConfig;
 
     /**
      * Instantiates a new dsl config impl.
      */
     public DslConfigImpl() {
+        queryConfig = new QueryConfigImpl();
+        deleteConfig = new DeleteConfigImpl();
+        updateConfig = new UpdateConfigImpl();
     }
 
     /**
@@ -53,4 +56,5 @@ public class DslConfigImpl implements DslConfig {
     public DeleteConfig getDeleteConfig() {
         return deleteConfig;
     }
+
 }

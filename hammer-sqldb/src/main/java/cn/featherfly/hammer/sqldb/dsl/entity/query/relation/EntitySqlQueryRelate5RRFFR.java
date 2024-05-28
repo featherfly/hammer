@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query.relation;
 import com.speedment.common.tuple.Tuple3;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate5RRFFR;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched5RRFFF;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -23,7 +24,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * The Class EntitySqlQueryRelate5RRFFR.
  *
  * @author zhongj
- * @param <E>  query type
+ * @param <E> query type
  * @param <R1> query or joined type
  * @param <R2> query or joined type
  * @param <R3> query or joined type
@@ -31,19 +32,20 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <R5> query or joined type
  */
 public class EntitySqlQueryRelate5RRFFR<E, R1, R2, R3, R4, R5>
-        extends AbstractEntitySqlQueryFetch6<E, R1, R2, R3, R4, R5, Tuple3<E, R3, R4>>
-        implements EntityQueryRelate5RRFFR<E, R1, R2, R3, R4, R5> {
+    extends AbstractEntitySqlQueryFetch6<E, R1, R2, R3, R4, R5, Tuple3<E, R3, R4>>
+    implements EntityQueryRelate5RRFFR<E, R1, R2, R3, R4, R5> {
 
     /**
      * Instantiates a new entity sql query relate 5 RRFFR.
      *
-     * @param factory                the factory
-     * @param sqlPageFactory         the sql page factory
+     * @param hammerConfig the hammer config
+     * @param factory the factory
+     * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation
      */
-    public EntitySqlQueryRelate5RRFFR(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-            EntitySqlQueryRelation entitySqlQueryRelation) {
-        super(factory, sqlPageFactory, entitySqlQueryRelation);
+    public EntitySqlQueryRelate5RRFFR(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation) {
+        super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
     }
 
     /**
@@ -52,7 +54,7 @@ public class EntitySqlQueryRelate5RRFFR<E, R1, R2, R3, R4, R5>
     @Override
     public EntityQueryRelatedFetched5RRFFF<E, R1, R2, R3, R4, R5> fetch() {
         queryRelation.fetch(5);
-        return new EntitySqlQueryRelatedFetched5RRFFF<>(factory, sqlPageFactory, queryRelation);
+        return new EntitySqlQueryRelatedFetched5RRFFF<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
 }

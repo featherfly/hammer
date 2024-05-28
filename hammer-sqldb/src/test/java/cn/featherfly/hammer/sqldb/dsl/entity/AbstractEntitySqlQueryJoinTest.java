@@ -48,7 +48,7 @@ public class AbstractEntitySqlQueryJoinTest extends HammerJdbcTestBase {
 
     @BeforeClass
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
     }
 
     @BeforeMethod

@@ -17,6 +17,7 @@ import java.util.function.Predicate;
  * @param <C> the generic type
  */
 public interface ConditionConfig<C extends ConditionConfig<C>> {
+
     /**
      * Gets the ignore strategy.
      *

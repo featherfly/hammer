@@ -26,6 +26,13 @@ public class QueryConfigImpl implements QueryConfig, Cloneable {
     private Predicate<Object> ignoreStrategy = IgnoreStrategy.EMPTY;
 
     /**
+     * Instantiates a new query config impl.
+     */
+    public QueryConfigImpl() {
+        super();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -57,6 +64,9 @@ public class QueryConfigImpl implements QueryConfig, Cloneable {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "QueryConfigImpl [clone=" + clone + ", ignoreStrategy=" + ignoreStrategy + "] " + super.toString();

@@ -29,6 +29,13 @@ public class DeleteConfigImpl implements DeleteConfig, Cloneable {
     private EmptyConditionStrategy emptyConditionStrategy = EmptyConditionStrategy.NON_EXECUTION;
 
     /**
+     * Instantiates a new delete config impl.
+     */
+    public DeleteConfigImpl() {
+        super();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -78,9 +85,12 @@ public class DeleteConfigImpl implements DeleteConfig, Cloneable {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "DeleteConfigImpl [clone=" + clone + ", ignoreStrategy=" + ignoreStrategy + ", emptyConditionStrategy="
-                + emptyConditionStrategy + "] " + super.toString();
+            + emptyConditionStrategy + "] " + super.toString();
     }
 }

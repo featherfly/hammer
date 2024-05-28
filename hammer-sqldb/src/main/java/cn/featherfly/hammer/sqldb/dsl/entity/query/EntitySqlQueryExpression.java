@@ -9,6 +9,7 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -29,26 +30,28 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
     /**
      * Instantiates a new entity sql query expression.
      *
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
-    public EntitySqlQueryExpression(JdbcMappingFactory factory, SqlPageFactory sqlPageFactory,
-        EntitySqlQueryRelation queryRelation) {
-        this(null, factory, sqlPageFactory, queryRelation);
+    public EntitySqlQueryExpression(HammerConfig hammerConfig, JdbcMappingFactory factory,
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        this(null, hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
      * Instantiates a new entity sql query expression.
      *
      * @param parent the parent
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
-    EntitySqlQueryExpression(EntityQueryConditionGroupLogic<T> parent, JdbcMappingFactory factory,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
-        super(parent, factory, sqlPageFactory, queryRelation);
+    EntitySqlQueryExpression(EntityQueryConditionGroupLogic<T> parent, HammerConfig hammerConfig,
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+        super(parent, hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
     /**
@@ -56,7 +59,7 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      */
     @Override
     protected EntitySqlQueryExpression<T> createGroup(EntityQueryConditionGroupLogic<T> parent) {
-        return new EntitySqlQueryExpression<>(parent, factory, sqlPageFactory, entityRelation);
+        return new EntitySqlQueryExpression<>(parent, hammerConfig, factory, sqlPageFactory, entityRelation);
     }
 
     //    /**
@@ -85,6 +88,16 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
         return expressionPage(super.expression(), parent, entityRelation, getRootSortBuilder(), dialect);
     }
 
+    /**
+     * Expression.
+     *
+     * @param condition the condition
+     * @param parent the parent
+     * @param queryRelation the query relation
+     * @param sortBuilder the sort builder
+     * @param dialect the dialect
+     * @return the string
+     */
     static String expression(String condition, LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation,
         SortBuilder sortBuilder, Dialect dialect) {
         if (parent == null) {
@@ -100,6 +113,16 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
         }
     }
 
+    /**
+     * Expression page.
+     *
+     * @param condition the condition
+     * @param parent the parent
+     * @param queryRelation the query relation
+     * @param sortBuilder the sort builder
+     * @param dialect the dialect
+     * @return the tuple 2
+     */
     static Tuple2<String, String> expressionPage(String condition, LogicExpression<?, ?> parent,
         EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder, Dialect dialect) {
         if (parent == null) {

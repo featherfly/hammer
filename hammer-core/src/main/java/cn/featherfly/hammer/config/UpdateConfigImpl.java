@@ -31,6 +31,13 @@ public class UpdateConfigImpl implements UpdateConfig, Cloneable {
     private EmptyConditionStrategy emptyConditionStrategy = EmptyConditionStrategy.NON_EXECUTION;
 
     /**
+     * Instantiates a new query config impl.
+     */
+    public UpdateConfigImpl() {
+        super();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -98,10 +105,12 @@ public class UpdateConfigImpl implements UpdateConfig, Cloneable {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "UpdateConfigImpl [clone=" + clone + ", ignoreStrategy=" + ignoreStrategy + ", setValueIgnoreStrategy="
-                + setValueIgnoreStrategy + ", emptyConditionStrategy=" + emptyConditionStrategy + "] "
-                + super.toString();
+            + setValueIgnoreStrategy + ", emptyConditionStrategy=" + emptyConditionStrategy + "] " + super.toString();
     }
 }

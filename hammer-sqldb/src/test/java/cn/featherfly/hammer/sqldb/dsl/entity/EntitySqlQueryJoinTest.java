@@ -40,7 +40,7 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
     @BeforeTest
     void setupTest() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
     }
 
     @BeforeMethod

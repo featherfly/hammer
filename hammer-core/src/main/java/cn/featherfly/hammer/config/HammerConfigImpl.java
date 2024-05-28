@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 
 import javax.validation.Validator;
 
+import cn.featherfly.hammer.config.cache.CacheConfig;
+import cn.featherfly.hammer.config.cache.CacheConfigImpl;
 import cn.featherfly.hammer.config.dsl.DslConfig;
 import cn.featherfly.hammer.config.entity.EntityConfig;
 import cn.featherfly.hammer.config.entity.EntityConfigImpl;
@@ -35,6 +37,8 @@ public class HammerConfigImpl implements HammerConfig {
     private final boolean devMode;
 
     private Supplier<ClassLoader> classLoaderSupplier = () -> Thread.currentThread().getContextClassLoader();
+
+    private CacheConfig cacheConfig = new CacheConfigImpl();
 
     /**
      * Instantiates a new hammer config impl.
@@ -144,5 +148,23 @@ public class HammerConfigImpl implements HammerConfig {
     @Override
     public Supplier<ClassLoader> getClassLoader() {
         return classLoaderSupplier;
+    }
+
+    /**
+     * set cacheConfig value
+     *
+     * @param cacheConfig cacheConfig
+     */
+    public HammerConfigImpl setCacheConfig(CacheConfig cacheConfig) {
+        this.cacheConfig = cacheConfig;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CacheConfig getCacheConfig() {
+        return cacheConfig;
     }
 }

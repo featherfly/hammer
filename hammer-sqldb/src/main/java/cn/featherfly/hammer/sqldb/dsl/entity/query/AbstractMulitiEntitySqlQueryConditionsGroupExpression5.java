@@ -19,6 +19,7 @@ import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression5;
@@ -65,23 +66,28 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
     private EntitySqlQueryConditionGroupQuery<RS> entitySqlQueryConditionGroupQuery;
 
     /** The sql page factory. */
-    protected SqlPageFactory sqlPageFactory;
+    protected final SqlPageFactory sqlPageFactory;
+
+    /** The hammer config. */
+    protected final HammerConfig hammerConfig;
 
     /**
      * Instantiates a new abstract entity sql condition group expression 2.
      *
      * @param parent the parent
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the relation
      */
-    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression5(L parent, JdbcMappingFactory factory,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression5(L parent, HammerConfig hammerConfig,
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, queryRelation);
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         this.sqlPageFactory = sqlPageFactory;
         entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
-            entityRelation);
+            entityRelation, hammerConfig.getCacheConfig().getCountResultCache());
+        this.hammerConfig = hammerConfig;
     }
 
     // ****************************************************************************************************************

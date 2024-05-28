@@ -17,6 +17,7 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
@@ -50,25 +51,30 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     private SqlSortBuilder sortBuilder;
 
     /** The sql page factory. */
-    protected SqlPageFactory sqlPageFactory;
+    protected final SqlPageFactory sqlPageFactory;
 
     private EntitySqlQueryConditionGroupQuery<E1> entitySqlQueryConditionGroupQuery;
+
+    /** The hammer config. */
+    protected final HammerConfig hammerConfig;
 
     /**
      * Instantiates a new abstract entity sql condition group expression.
      *
      * @param parent the parent
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param queryRelation the query relation
      */
-    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression(L parent, JdbcMappingFactory factory,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
+    protected AbstractMulitiEntitySqlQueryConditionsGroupExpression(L parent, HammerConfig hammerConfig,
+        JdbcMappingFactory factory, SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation) {
         super(parent, factory, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
-            entityRelation);
+            entityRelation, hammerConfig.getCacheConfig().getCountResultCache());
+        this.hammerConfig = hammerConfig;
     }
 
     /**

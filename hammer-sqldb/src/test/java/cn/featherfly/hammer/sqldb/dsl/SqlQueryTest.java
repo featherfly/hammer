@@ -56,7 +56,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @BeforeClass
     public void beforeClass() {
-        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
         System.err.println(this.getClass().getName() + " init with beforeClass");
     }
 
@@ -1179,7 +1179,7 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test(expectedExceptions = SqldbHammerException.class)
     void classMappingFactorNull() {
-        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory, hammerConfig.getDslConfig().getQueryConfig());
+        SqlQuery query = new SqlQuery(jdbc, metadata, sqlPageFactory, hammerConfig);
         query.find(User.class);
     }
 

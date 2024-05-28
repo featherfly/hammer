@@ -176,8 +176,7 @@ public class SqldbHammerImpl implements SqldbHammer {
         jdbcExecutor = new JdbcExecutor(jdbc, propertyAccessorFactory, sqlPageFacotry);
         sqlTplExecutor = new SqlTplExecutor(hammerConfig, configFactory, templateEngine, jdbc, mappingFactory,
             sqlPageFacotry, transverterManager);
-        query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(),
-            hammerConfig.getDslConfig().getQueryConfig());
+        query = new SqlQuery(jdbc, mappingFactory, sqlTplExecutor.getSqlPageFactory(), hammerConfig);
         updater = new SqlUpdater(jdbc, mappingFactory, hammerConfig.getDslConfig().getUpdateConfig());
         deleter = new SqlDeleter(jdbc, mappingFactory, hammerConfig.getDslConfig().getDeleteConfig());
     }
