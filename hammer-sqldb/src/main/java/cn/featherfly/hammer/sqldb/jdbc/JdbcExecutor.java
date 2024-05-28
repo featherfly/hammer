@@ -19,6 +19,7 @@ import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.SqlUtils;
+import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -412,6 +413,8 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
             pageQuery.getParams());
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -771,6 +774,8 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
             params);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -923,6 +928,338 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
         return jdbc.queryList(pageQuery.getSql(), mapType1, mapType2, mapType3, mapType4, mapType5, mapType6, prefixes,
             pageQuery.getParams());
     }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Object>> each(String execution, Map<String, Object> params) {
+        return jdbc.queryEach(execution, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Map<String, Object> params) {
+        return jdbc.queryEach(execution, mappingType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper, Map<String, Object> params) {
+        return jdbc.queryEach(execution, rowMapper, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Object>> each(String execution, Map<String, Object> params, int offset,
+        int limit) {
+        SqlPageQuery<Map<String, Object>> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Map<String, Object> params,
+        int offset, int limit) {
+        return each(execution, beanMapper(mappingType), params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper, Map<String, Object> params,
+        int offset, int limit) {
+        SqlPageQuery<Map<String, Object>> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), rowMapper, pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Tuple2<String, String> prefixes, Map<String, Object> params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        SqlPageQuery<Map<String, Object>> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, prefixes, pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes,
+        Map<String, Object> params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
+        SqlPageQuery<Map<String, Object>> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, prefixes,
+            pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        SqlPageQuery<Map<String, Object>> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, prefixes,
+            pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, mappingType5, prefixes,
+            params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
+        int offset, int limit) {
+        SqlPageQuery<Map<String, Object>> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
+            prefixes, pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
+            mappingType6, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Object> params, int offset, int limit) {
+        SqlPageQuery<Map<String, Object>> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
+            mappingType6, prefixes, pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Object>> each(String execution, Object... params) {
+        return jdbc.queryEach(execution, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Object... params) {
+        return jdbc.queryEach(execution, mappingType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper, Object... params) {
+        return jdbc.queryEach(execution, rowMapper, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Object>> each(String execution, Object[] params, int offset, int limit) {
+        SqlPageQuery<Object[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Object[] params, int offset,
+        int limit) {
+        return each(execution, beanMapper(mappingType), params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper, Object[] params, int offset,
+        int limit) {
+        SqlPageQuery<Object[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), rowMapper, pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Tuple2<String, String> prefixes, Object... params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Tuple2<String, String> prefixes, Object[] params, int offset, int limit) {
+        SqlPageQuery<Object[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, prefixes, pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes, Object... params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes, Object[] params,
+        int offset, int limit) {
+        SqlPageQuery<Object[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, prefixes,
+            pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Tuple4<String, String, String, String> prefixes, Object... params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Tuple4<String, String, String, String> prefixes, Object[] params, int offset, int limit) {
+        SqlPageQuery<Object[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, prefixes,
+            pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Object... params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, mappingType5, prefixes,
+            params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Object[] params, int offset,
+        int limit) {
+        SqlPageQuery<Object[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
+            prefixes, pageQuery.getParams());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Object... params) {
+        return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
+            mappingType6, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
+        Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Object[] params, int offset, int limit) {
+        SqlPageQuery<Object[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
+        return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
+            mappingType6, prefixes, pageQuery.getParams());
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}

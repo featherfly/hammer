@@ -18,6 +18,7 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
+import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.ParamedExecutionExecutor;
 import cn.featherfly.common.repository.ParamedMappedExecutor;
@@ -235,5 +236,29 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
     @Override
     public <T> List<T> list(RowMapper<T> rowMapper) {
         return executor.list(execution, rowMapper, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Object>> each() {
+        return executor.each(execution, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(Class<T> mappingType) {
+        return executor.each(execution, mappingType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(RowMapper<T> rowMapper) {
+        return executor.each(execution, rowMapper, params);
     }
 }

@@ -419,7 +419,6 @@ public class SqldbHammerImpl implements SqldbHammer {
             @SuppressWarnings("unchecked")
             UpdateOperate<E> update = (UpdateOperate<E>) updateOperates.get(type);
             if (update == null) {
-                JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(type);
                 update = getUpdate(type);
                 updateOperates.put(type, update);
             }

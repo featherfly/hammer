@@ -14,6 +14,7 @@ import java.util.Map;
 import com.speedment.common.tuple.Tuple1;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper2;
@@ -130,6 +131,30 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutor<E2>, E2, T1>
             return executor.list(execution, type1, getParamsMap(), offset, limit);
         } else {
             return executor.list(execution, type1, getParams(), offset, limit);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<T1> each() {
+        if (params instanceof Map) {
+            return executor.each(execution, type1, getParamsMap());
+        } else {
+            return executor.each(execution, type1, getParams());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<T1> each(int offset, int limit) {
+        if (params instanceof Map) {
+            return executor.each(execution, type1, getParamsMap(), offset, limit);
+        } else {
+            return executor.each(execution, type1, getParams(), offset, limit);
         }
     }
 
