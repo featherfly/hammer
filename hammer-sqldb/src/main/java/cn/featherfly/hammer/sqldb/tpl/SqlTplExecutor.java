@@ -27,6 +27,7 @@ import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.QueryPageResults;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
@@ -1673,6 +1674,10 @@ public class SqlTplExecutor implements TplExecutor {
 
         Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager,
             Map<String, Object>> listTuple = findList(tplExecuteId, entityType, params, offset, limit);
+        // IMPLSOON 这里加入分页sql的优化处理
+        // 方案一，在模板中加入特定标签
+        // 方案二，在预编译时，加入特定标签，就是方案一的加强版
+        // 方案三，在这里进行sql解析
         pagination.setPageResults(listTuple.get0());
         pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
 
@@ -2363,16 +2368,20 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
-    private int count(String sql, Map<String, Object> effectiveParams, ConditionParamsManager conditionParamsManager,
+    private long count(String sql, Map<String, Object> effectiveParams, ConditionParamsManager conditionParamsManager,
         TplExecuteConfig config) {
-        Integer total = null;
+        Long total = null;
         Map<String, Object> key = null;
-        Cache<Object, Integer> countResultCache = hammerConfig.getCacheConfig().getCountResultCache();
-        if (countResultCache != null) {
+        Cache<Object, QueryPageResults> queryPageResultCache = hammerConfig.getCacheConfig().getCountResultCache();
+        QueryPageResults result = null;
+        if (queryPageResultCache != null) {
             key = new HashMap<>(effectiveParams.size() + 1);
-            key.put("__SQL__", sql);
+            key.put("$@#SQL#$@", sql);
             key.putAll(effectiveParams);
-            total = countResultCache.get(key);
+            result = queryPageResultCache.get(key);
+            if (result != null) {
+                total = result.getTotal();
+            }
             if (total != null) {
                 logger.debug("pagination count result [{}] found in cache", total);
                 return total;
@@ -2391,12 +2400,17 @@ public class SqlTplExecutor implements TplExecutor {
         }
 
         if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            total = jdbc.queryInt(countSql, getEffectiveParamArray(effectiveParams, manager, config));
+            total = jdbc.queryLong(countSql, getEffectiveParamArray(effectiveParams, manager, config));
         } else {
-            total = jdbc.queryInt(countSql, effectiveParams);
+            total = jdbc.queryLong(countSql, effectiveParams);
         }
-        if (countResultCache != null) {
-            countResultCache.put(key, total);
+        if (queryPageResultCache != null) {
+            if (result != null) {
+                result.setTotal(total);
+            } else {
+                result = new QueryPageResults(total);
+            }
+            queryPageResultCache.put(key, result);
         }
         return total;
     }

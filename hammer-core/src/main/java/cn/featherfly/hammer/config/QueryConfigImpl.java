@@ -23,6 +23,8 @@ public class QueryConfigImpl implements QueryConfig, Cloneable {
 
     private boolean clone;
 
+    private boolean optimizationPage = true;  // default true
+
     private Predicate<Object> ignoreStrategy = IgnoreStrategy.EMPTY;
 
     /**
@@ -53,22 +55,39 @@ public class QueryConfigImpl implements QueryConfig, Cloneable {
      * {@inheritDoc}
      */
     @Override
-    public QueryConfig clone() {
-        if (clone) {
-            return this;
-        } else {
-            QueryConfigImpl config = new QueryConfigImpl();
-            config.setIgnoreStrategy(ignoreStrategy);
-            config.clone = true;
-            return config;
-        }
+    public QueryConfig setPagingOptimization(boolean optimizationPage) {
+        this.optimizationPage = optimizationPage;
+        return this;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
-        return "QueryConfigImpl [clone=" + clone + ", ignoreStrategy=" + ignoreStrategy + "] " + super.toString();
+    public boolean isPagingOptimization() {
+        return optimizationPage;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConfig clone() {
+        if (clone) {
+            return this;
+        } else {
+            QueryConfigImpl config = new QueryConfigImpl();
+            config.setIgnoreStrategy(ignoreStrategy);
+            config.setPagingOptimization(optimizationPage);
+            config.clone = true;
+            return config;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "QueryConfigImpl [clone=" + clone + ", optimizationPage=" + optimizationPage + ", ignoreStrategy="
+            + ignoreStrategy + "]";
+    }
+
 }

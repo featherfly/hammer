@@ -143,7 +143,14 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
         Object... args) {
-        return update(getDialect().dml().insert(tableName, columnNames), keyHolder, args);
+        if (metadata.getTable(tableName).getPrimaryColumns().size() == 1) {
+            return update(
+                getDialect().dml().insert(tableName, metadata.getTable(tableName).getPrimaryColumns().get(0).getName(),
+                    columnNames, metadata.getTable(tableName).getPrimaryColumns().get(0).isAutoincrement()),
+                keyHolder, args);
+        } else {
+            return update(getDialect().dml().insert(tableName, columnNames, false), keyHolder, args);
+        }
     }
 
     /**
@@ -155,12 +162,20 @@ public abstract class AbstractJdbc implements Jdbc {
             throw new JdbcException("batch size is not explicit (args.length % columnNames.length != 0)");
         }
         int actualBatchSize = args.length / columnNames.length;
+        String pkColumn = null;
+        boolean autoincrement = false;
+        if (metadata.getTable(tableName).getPrimaryColumns().size() == 1) {
+            pkColumn = metadata.getTable(tableName).getPrimaryColumns().get(0).getName();
+            autoincrement = metadata.getTable(tableName).getPrimaryColumns().get(0).isAutoincrement();
+        }
         if (batchSize >= actualBatchSize) { // 表示批量执行数的最大限制小于等于参数计算出的实际需要的批量执行数
-            return updateBatch(getDialect().dml().insertBatch(tableName, columnNames, actualBatchSize), actualBatchSize,
-                args);
+            return updateBatch(
+                getDialect().dml().insertBatch(tableName, pkColumn, columnNames, actualBatchSize, autoincrement),
+                actualBatchSize, args);
         } else {
             int index = batchSize * columnNames.length;
-            return updateBatch(getDialect().dml().insertBatch(tableName, columnNames, batchSize), batchSize,
+            return updateBatch(
+                getDialect().dml().insertBatch(tableName, pkColumn, columnNames, batchSize, autoincrement), batchSize,
                 Arrays.copyOfRange(args, 0, index))
                 + insertBatch(tableName, columnNames, actualBatchSize - batchSize,
                     Arrays.copyOfRange(args, index, args.length));
@@ -172,7 +187,13 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args) {
-        return update(getDialect().dml().upsert(tableName, columnNames, uniqueColumns), args);
+        if (metadata.getTable(tableName).getPrimaryColumns().size() == 1) {
+            return update(getDialect().dml().upsert(tableName,
+                metadata.getTable(tableName).getPrimaryColumns().get(0).getName(), columnNames, uniqueColumns,
+                metadata.getTable(tableName).getPrimaryColumns().get(0).isAutoincrement()), args);
+        } else {
+            return update(getDialect().dml().upsert(tableName, columnNames, uniqueColumns, false), args);
+        }
     }
 
     /**

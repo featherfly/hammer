@@ -196,13 +196,13 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, boolean returnType) {
-        if (joinClassMapping.getPrivaryKeyPropertyMappings().size() == 1) {
+        if (joinClassMapping.getPrimaryKeyPropertyMappings().size() == 1) {
             return join(sourceIndex, propertyName, joinClassMapping,
-                joinClassMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName(), returnType);
+                joinClassMapping.getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName(), returnType);
         }
         throw new SqldbHammerException(
             Strings.format("only support one privary key, but more than one privary key found {0}",
-                joinClassMapping.getPrivaryKeyPropertyMappings().size()));
+                joinClassMapping.getPrimaryKeyPropertyMappings().size()));
     }
 
     /**
@@ -426,8 +426,8 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
 
             tableAlias = aliasManager.put(classMapping.getRepositoryName());
 
-            if (classMapping.getPrivaryKeyPropertyMappings().size() == 1) {
-                idName = classMapping.getPrivaryKeyPropertyMappings().get(0).getRepositoryFieldName();
+            if (classMapping.getPrimaryKeyPropertyMappings().size() == 1) {
+                idName = classMapping.getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName();
             }
 
             if (Lang.isEmpty(joinPropertyName)) {

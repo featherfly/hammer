@@ -11,16 +11,18 @@
 package cn.featherfly.hammer.sqldb.dsl.entity;
 
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.Optional;
+import java.util.function.Function;
 
 import javax.cache.Cache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
+import com.speedment.common.tuple.Tuple7;
 
+import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.repository.QueryPageResults.QueryPageResult;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
@@ -55,9 +57,10 @@ public class EntitySqlQueryConditionGroupQuery<R> {
 
     private SqlPageFactory sqlPageFactory;
 
-    private Supplier<Tuple2<String, String>> expressionPage;
+    private Function<Limit, Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
+        Function<Object, Object>>> expressionPage;
 
-    private final Cache<Object, Integer> countResultCache;
+    private final Cache<Object, QueryPageResults> countResultCache;
 
     /**
      * Instantiates a new entity sql query condition group query.
@@ -69,7 +72,8 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      */
     public EntitySqlQueryConditionGroupQuery(
         AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Cache<Object, Integer> countResultCache) {
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation,
+        Cache<Object, QueryPageResults> countResultCache) {
         this(entitySqlConditionGroupExpression, sqlPageFactory, queryRelation, countResultCache, null);
     }
 
@@ -84,8 +88,8 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      */
     public EntitySqlQueryConditionGroupQuery(
         AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> entitySqlConditionGroupExpression,
-        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation, Cache<Object, Integer> countResultCache,
-        Limit limit) {
+        SqlPageFactory sqlPageFactory, EntitySqlQueryRelation queryRelation,
+        Cache<Object, QueryPageResults> countResultCache, Limit limit) {
         super();
         this.limit = limit;
         this.queryRelation = queryRelation;
@@ -95,25 +99,25 @@ public class EntitySqlQueryConditionGroupQuery<R> {
 
         if (exp instanceof AbstractMulitiEntitySqlQueryConditionsGroupExpression) {
             expressionPage = ((AbstractMulitiEntitySqlQueryConditionsGroupExpression<?, ?, ?>) exp
-                .getRoot())::expressionPage;
+                .getRoot())::expressionPagination;
         } else if (exp instanceof AbstractMulitiEntitySqlQueryValueConditionsGroupExpression) {
             expressionPage = ((AbstractMulitiEntitySqlQueryValueConditionsGroupExpression<?, ?, ?, ?>) exp
-                .getRoot())::expressionPage;
+                .getRoot())::expressionPagination;
         } else if (exp instanceof AbstractMulitiEntitySqlQueryConditionsGroupExpression2) {
             expressionPage = ((AbstractMulitiEntitySqlQueryConditionsGroupExpression2<?, ?, ?, ?, ?>) exp
-                .getRoot())::expressionPage;
+                .getRoot())::expressionPagination;
         } else if (exp instanceof AbstractMulitiEntitySqlQueryConditionsGroupExpression3) {
             expressionPage = ((AbstractMulitiEntitySqlQueryConditionsGroupExpression3<?, ?, ?, ?, ?, ?>) exp
-                .getRoot())::expressionPage;
+                .getRoot())::expressionPagination;
         } else if (exp instanceof AbstractMulitiEntitySqlQueryConditionsGroupExpression4) {
             expressionPage = ((AbstractMulitiEntitySqlQueryConditionsGroupExpression4<?, ?, ?, ?, ?, ?, ?>) exp
-                .getRoot())::expressionPage;
+                .getRoot())::expressionPagination;
         } else if (exp instanceof AbstractMulitiEntitySqlQueryConditionsGroupExpression5) {
             expressionPage = ((AbstractMulitiEntitySqlQueryConditionsGroupExpression5<?, ?, ?, ?, ?, ?, ?, ?>) exp
-                .getRoot())::expressionPage;
+                .getRoot())::expressionPagination;
         } else if (exp instanceof AbstractMulitiEntitySqlQueryConditionsGroupExpression6) {
             expressionPage = ((AbstractMulitiEntitySqlQueryConditionsGroupExpression6<?, ?, ?, ?, ?, ?, ?, ?, ?>) exp
-                .getRoot())::expressionPage;
+                .getRoot())::expressionPagination;
         } else {
             throw new SqldbHammerException("unknow expression type " + exp.getClass().getName());
         }
@@ -144,14 +148,6 @@ public class EntitySqlQueryConditionGroupQuery<R> {
             params = pageQuery.getParams();
         }
         return queryRelation.list(sql, params);
-        //        Class<R> resultType = (Class<R>) exp.queryRelation.getResultType();
-        //        if (ClassUtils.isParent(Tuple.class, resultType)) {
-        //            return queryTuple.list(sql, resultType, params);
-        //            //            return (List<R>) jdbc.query(sql, classMapping.getType(), classMapping2.getType(),
-        //            //                    Tuples.of(queryAlias + ".", queryAlias2 + "."), params);
-        //        } else {
-        //            return jdbc.query(sql, resultType, params);
-        //        }
     }
 
     /**
@@ -160,48 +156,67 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      * @return the pagination results
      */
     public PaginationResults<R> pagination() {
-        Tuple2<String, String> sqlTuple = null;
-        if (limit != null) {
-            sqlTuple = expressionPage.get();
-        } else {
-            sqlTuple = Tuples.of(exp.getRoot().expression(), "");
-        }
-        List<Object> paramList = exp.getRoot().getParams();
+        Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
+            Function<Object, Object>> tupleResult = expressionPage.apply(limit);
+        String sql = tupleResult.get0();
+        Limit newLimit = tupleResult.get3();
+        List<Object> paramList = tupleResult.get2();
         Object[] oraginalParams = paramList.toArray();
-        String sql = sqlTuple.get0();
         Object[] params = oraginalParams;
-        SimplePaginationResults<R> pagination = new SimplePaginationResults<>(limit);
+        QueryPageResults queryPageResults = tupleResult.get4().orElse(null);
+        SimplePaginationResults<R> pagination = new SimplePaginationResults<>(newLimit);
         List<R> list = null;
-        if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
-                limit.getLimit(), params);
+        if (newLimit != null) {
+            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, newLimit.getOffset(),
+                newLimit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
         list = queryRelation.list(sql, params);
         pagination.setPageResults(list);
 
-        if (limit != null) {
-            Integer total = null;
-            if (countResultCache != null) {
-                // 因为geParams()每次都是一个新对象，所以这里可以直接用，不怕副作用，因为其他需要使用参数的都已经使用Array[]
-                paramList.add(0, sqlTuple.get1());
-                total = countResultCache.get(paramList);
+        if (queryRelation.getConfig().isPagingOptimization() && queryPageResults != null && !list.isEmpty()) { // cache enable
+            queryPageResults
+                .addQueryPageResult(new QueryPageResult(limit, (Number) tupleResult.get6().apply(list.get(0)),
+                    (Number) tupleResult.get6().apply(list.get(list.size() - 1))));
+        }
+
+        // cache key
+        if (newLimit != null) {
+            paramList.add(0, tupleResult.get5());
+            Long total = null;
+            queryPageResults = queryPageResults(queryPageResults, paramList);
+            if (queryPageResults != null) {
+                total = queryPageResults.getTotal();
             }
             if (total == null) {
-                total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
-                if (countResultCache != null) {
-                    countResultCache.put(paramList, total);
-                }
+                total = queryRelation.getJdbc().queryLong(tupleResult.get1(), oraginalParams);
             } else {
                 LOGGER.debug("pagination count result [{}] found in cache", total);
             }
             pagination.setTotal(total);
+
+            if (countResultCache != null) {
+                if (queryPageResults == null) {
+                    queryPageResults = new QueryPageResults(pagination.getTotal());
+                } else {
+                    queryPageResults.setTotal(pagination.getTotal());
+                }
+                countResultCache.put(paramList, queryPageResults);
+            }
+
         } else {
             // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
             pagination.setTotal(list.size());
         }
         return pagination;
+    }
+
+    private QueryPageResults queryPageResults(QueryPageResults queryPageResults, List<Object> sqlAndParamsList) {
+        if (queryPageResults == null && countResultCache != null) {
+            return countResultCache.get(sqlAndParamsList);
+        }
+        return queryPageResults;
     }
 
     /**
@@ -219,12 +234,6 @@ public class EntitySqlQueryConditionGroupQuery<R> {
             params = pageQuery.getParams();
         }
         return queryRelation.single(sql, params);
-        //        Class<R> resultType = (Class<R>) exp.queryRelation.getResultType();
-        //        if (ClassUtils.isParent(Tuple.class, resultType)) {
-        //            return queryTuple.single(sql, resultType, params);
-        //        } else {
-        //            return jdbc.querySingle(sql, resultType, params);
-        //        }
     }
 
     /**
@@ -242,52 +251,5 @@ public class EntitySqlQueryConditionGroupQuery<R> {
             params = pageQuery.getParams();
         }
         return queryRelation.unique(sql, params);
-        //        Class<R> resultType = (Class<R>) exp.queryRelation.getResultType();
-        //        if (ClassUtils.isParent(Tuple.class, resultType)) {
-        //            //            return (R) jdbc.queryUnique(sql, classMapping.getType(), classMapping2.getType(),
-        //            //                    Tuples.of(queryAlias + ".", queryAlias2 + "."), params);
-        //            return queryTuple.unique(sql, resultType, params);
-        //        } else {
-        //            return jdbc.queryUnique(sql, resultType, params);
-        //        }
     }
-
-    //    /**
-    //     * The Interface EntitySqlQueryTuple.
-    //     *
-    //     * @author zhongj
-    //     * @param <R> the generic type
-    //     */
-    //    public interface EntitySqlQueryTuple<R> {
-    //
-    //        /**
-    //         * Single tuple.
-    //         *
-    //         * @param sql        the sql
-    //         * @param resultType the result type
-    //         * @param params     the params
-    //         * @return the r
-    //         */
-    //        R single(String sql, Class<R> resultType, Object[] params);
-    //
-    //        /**
-    //         * Unique tuple.
-    //         *
-    //         * @param sql        the sql
-    //         * @param resultType the result type
-    //         * @param params     the params
-    //         * @return the r
-    //         */
-    //        R unique(String sql, Class<R> resultType, Object[] params);
-    //
-    //        /**
-    //         * List tuple.
-    //         *
-    //         * @param sql        the sql
-    //         * @param resultType the result type
-    //         * @param params     the params
-    //         * @return LogicExpressionist
-    //         */
-    //        List<R> list(String sql, Class<R> resultType, Object[] params);
-    //    }
 }

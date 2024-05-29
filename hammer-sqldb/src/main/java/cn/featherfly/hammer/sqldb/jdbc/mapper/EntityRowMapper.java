@@ -106,8 +106,9 @@ public class EntityRowMapper<T> implements RowMapper<T> {
 
         for (Tuple2<int[], JdbcPropertyMapping> tuple : fetchPropertyMappings) {
             if (tuple.get0().length == 1) {
-                fetchProperties
-                    .add(Tuples.of((obj, value) -> tuple.get1().getSetter().accept(obj, value), tuple.get1()));
+                @SuppressWarnings("unchecked")
+                BiConsumer<T, Object> setter = (BiConsumer<T, Object>) tuple.get1().getSetter();
+                fetchProperties.add(Tuples.of(setter, tuple.get1()));
             } else {
                 fetchProperties.add(Tuples
                     .of((obj, value) -> propertyAccessor.setPropertyValue(obj, tuple.get0(), value), tuple.get1()));

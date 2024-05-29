@@ -73,7 +73,7 @@ public abstract class AbstractOperate<T> {
         this.classMapping = classMapping;
         this.databaseMetadata = databaseMetadata;
         this.sqlTypeMappingManager = sqlTypeMappingManager;
-        for (JdbcPropertyMapping pm : classMapping.getPrivaryKeyPropertyMappings()) {
+        for (JdbcPropertyMapping pm : classMapping.getPrimaryKeyPropertyMappings()) {
             pkProperties.add(pm);
         }
 

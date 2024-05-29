@@ -53,7 +53,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected int doSqlExecuteBatch(final List<T> entities) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
         Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getUpsertBatchSqlAndMappings(entities.size(),
             classMapping, jdbc.getDialect());
         String sql = tuple.get0();
@@ -85,7 +85,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     public int execute(final T entity) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
         if (pks.size() == 1) {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
                 @Override
@@ -113,7 +113,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected int[] doJdbcExecuteBatch(List<T> entities) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
         Object[][] argsList = new Object[entities.size()][];
         Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
 

@@ -1251,15 +1251,18 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testQueryLimit2() {
         List<Role> roles = hammer.query(Role.class).where().eq(Role::getId, 4).or().group().gt(Role::getId, 5).and()
-            .le(Role::getId, 10).limit(2, 3).list();
+            .le(Role::getId, 10) //
+            .limit(2, 3) //
+            .list();
 
         assertTrue(roles.size() == 3);
         for (Role role : roles) {
             System.out.println(role);
         }
 
-        PaginationResults<
-            Role> rolePage = hammer.query(Role.class).where().le(Role::getId, 10).limit(2, 3).pagination();
+        PaginationResults<Role> rolePage = hammer.query(Role.class).where().le(Role::getId, 10) //
+            .limit(2, 3) //
+            .pagination();
         assertTrue(rolePage.getTotal() == 10);
         assertTrue(rolePage.getPageResults().size() == 3);
     }

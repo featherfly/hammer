@@ -1054,7 +1054,7 @@ public class SqlQueryTest extends JdbcTestBase {
     void limit() {
 
         int pageSize = 3;
-        Integer total = 10;
+        Long total = 10L;
         List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
             .list(Role.class);
         assertEquals(roleList.size(), pageSize);

@@ -1,20 +1,36 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import javax.cache.Cache;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple3;
+import com.speedment.common.tuple.Tuple7;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.repository.QueryPageResults.QueryPageResult;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
+import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
+import cn.featherfly.hammer.sqldb.dsl.entity.AbstractMulitiEntitySqlConditionsGroupExpressionBase;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation.EntityRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
@@ -84,8 +100,10 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * {@inheritDoc}
      */
     @Override
-    public Tuple2<String, String> expressionPage() {
-        return expressionPage(super.expression(), parent, entityRelation, getRootSortBuilder(), dialect);
+    public Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
+        Function<Object, Object>> expressionPagination(Limit limit) {
+        return expressionPageAndParams(hammerConfig, this, super.expression(), parent, entityRelation,
+            getRootSortBuilder(), dialect, limit);
     }
 
     /**
@@ -116,33 +134,187 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
     /**
      * Expression page.
      *
+     * @param hammerConfig the hammer config
+     * @param exp the exp
      * @param condition the condition
      * @param parent the parent
      * @param queryRelation the query relation
      * @param sortBuilder the sort builder
      * @param dialect the dialect
+     * @param limit the limit
      * @return the tuple 2
      */
-    static Tuple2<String, String> expressionPage(String condition, LogicExpression<?, ?> parent,
-        EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder, Dialect dialect) {
+    static Tuple3<String, List<Object>, Limit> expressionListAndParams(HammerConfig hammerConfig,
+        AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
+        LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder, Dialect dialect,
+        Limit limit) {
         if (parent == null) {
-            String select;
-            String selectCount;
-            select = queryRelation.buildSelectSql();
-            selectCount = queryRelation.buildSelectCountSql();
+            String select = null;
+            String selectSql = null;
 
             String sort = sortBuilder.build();
-            if (Lang.isEmpty(condition)) {
-                return Tuples.of(select + Chars.SPACE + sort, selectCount + Chars.SPACE + sort);
+
+            Cache<Object, QueryPageResults> queryPageResultCache = hammerConfig.getCacheConfig().getCountResultCache();
+            QueryPageResults cacheResult = null;
+            List<Object> params = exp.getParams();
+
+            if (queryPageResultCache != null
+                && queryRelation.getEntityRelation(0).getClassMapping().isPrimaryKeyOrdered()
+                && StringUtils.isBlank(sort)) {
+                List<Object> key = new ArrayList<>(params);
+                // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
+                selectSql = expression(condition, parent, queryRelation, sortBuilder, dialect);
+                key.add(0, selectSql);
+                cacheResult = queryPageResultCache.get(key);
+
+                if (cacheResult != null
+                    && (cacheResult.getLimit() == null || cacheResult.getLimit() == limit.getLimit())) {
+                    Tuple2<String,
+                        Limit> conditionAndLimit = processLimit(queryRelation, condition, limit, cacheResult, dialect);
+
+                    select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
+                        + conditionAndLimit.get0() + Chars.SPACE + sort;
+
+                    return Tuples.of(select, params, conditionAndLimit.get1());
+                }
+            }
+
+            if (selectSql == null) {
+                select = queryRelation.buildSelectSql();
             } else {
-                return Tuples.of(
-                    select + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE + sort,
-                    selectCount + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE
-                        + sort);
+                select = selectSql;
+            }
+            return Tuples.of(select, params, limit);
+        } else {
+            // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
+            throw new SqldbHammerException("not root expression, only root expression can invoke this method");
+        }
+    }
+
+    /**
+     * Expression page.
+     *
+     * @param hammerConfig the hammer config
+     * @param exp the exp
+     * @param condition the condition
+     * @param parent the parent
+     * @param queryRelation the query relation
+     * @param sortBuilder the sort builder
+     * @param dialect the dialect
+     * @param limit the limit
+     * @return the tuple 7
+     */
+    static Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
+        Function<Object, Object>> expressionPageAndParams(HammerConfig hammerConfig,
+            AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
+            LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder,
+            Dialect dialect, Limit limit) {
+        if (parent == null) {
+            String select = null;
+            String selectCount = null;
+            String selectSql = null;
+            QueryPageResults queryPageResults = null;
+
+            String sort = sortBuilder.build();
+            List<Object> params = exp.getParams();
+
+            if (queryRelation.getConfig().isPagingOptimization() && limit != null) {
+                Cache<Object,
+                    QueryPageResults> queryPageResultCache = hammerConfig.getCacheConfig().getCountResultCache();
+
+                if (queryPageResultCache != null
+                    && queryRelation.getEntityRelation(0).getClassMapping().isPrimaryKeyOrdered()
+                    && StringUtils.isBlank(sort)) {
+                    List<Object> key = new ArrayList<>(params);
+                    // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
+                    selectSql = expression(condition, parent, queryRelation, sortBuilder, dialect);
+                    key.add(0, selectSql);
+                    queryPageResults = queryPageResultCache.get(key);
+
+                    if (queryPageResults == null) { // query first time
+                        // new QueryPageResult for Follow Up, then only need decide queryPageResult is null
+                        queryPageResults = new QueryPageResults();
+                    } else if (queryPageResults.getLimit() != null && queryPageResults.getLimit() == limit.getLimit()) {
+                        Tuple2<String, Limit> conditionAndLimit = processLimit(queryRelation, condition, limit,
+                            queryPageResults, dialect);
+
+                        select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where()
+                            + Chars.SPACE + conditionAndLimit.get0() + Chars.SPACE + sort;
+                        if (Lang.isEmpty(condition)) {
+                            selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE + sort;
+                        } else {
+                            selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE
+                                + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE + sort;
+                        }
+                        return Tuples.of(select, selectCount, params, conditionAndLimit.get1(),
+                            Optional.of(queryPageResults), selectSql, queryRelation.getEntityRelation(0)
+                                .getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter());
+                    }
+                }
+            }
+
+            if (selectSql == null) {
+                if (Lang.isEmpty(condition)) {
+                    select = queryRelation.buildSelectSql() + Chars.SPACE + sort;
+                } else {
+                    select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
+                        + condition + Chars.SPACE + sort;
+                }
+            } else {
+                select = selectSql;
+            }
+            if (limit != null) {
+                if (Lang.isEmpty(condition)) {
+                    selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE + sort;
+                } else {
+                    selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE + dialect.getKeywords().where()
+                        + Chars.SPACE + condition + Chars.SPACE + sort;
+                }
+            }
+            if (queryPageResults == null) {
+                return Tuples.of(select, selectCount, params, limit, Optional.empty(), select, (e) -> null);
+            } else {
+                return Tuples.of(select, selectCount, params, limit, Optional.of(queryPageResults), select,
+                    queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0)
+                        .getGetter());
             }
         } else {
             // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
             throw new SqldbHammerException("not root expression, only root expression can invoke this method");
+        }
+    }
+
+    private static Tuple2<String, Limit> processLimit(EntitySqlQueryRelation queryRelation, String condition,
+        Limit limit, QueryPageResults queryPageResults, Dialect dialect) {
+        String pageCondition = null;
+        EntityRelation<?> er = queryRelation.getEntityRelation(0);
+        String idField = er.getClassMapping().getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName();
+        QueryPageResult queryPageResult = queryPageResults.getNearestQueryPageResult(limit);
+        if (limit.getOffset() > queryPageResult.getOffset().intValue()) {
+            // 向前翻页 where id > result.getLastId()
+            pageCondition = er.getTableAlias() + Chars.DOT + dialect.wrapName(idField) + " > "
+                + queryPageResult.getLastId().longValue() + Chars.SPACE
+                + Lang.ifNotEmpty(condition, c -> Chars.SPACE + dialect.keywords().and() + Chars.SPACE + c);
+            // 添加到参数可能遇到参数位置不对的情况，有可能在查询条件前就有?占位符了，所以这里先用sql拼接
+            // 而且id是框架内部从实体对象id拿到的，应该是不会有sql注入风险
+            // params.add(0, result.getLastId()); // 添加到第一个参数
+            return Tuples.of(pageCondition, new Limit(
+                limit.getOffset() - queryPageResult.getOffset() - queryPageResult.getLimit(), limit.getLimit()));
+        } else if (limit.getOffset() < queryPageResult.getOffset().intValue()) {
+            // 往回翻页 where id < result.getFirstId()
+            pageCondition = er.getTableAlias() + Chars.DOT
+                + er.getClassMapping().getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName() + " < "
+                + queryPageResult.getFirstId().longValue() + Chars.SPACE
+                + Lang.ifNotEmpty(condition, c -> Chars.SPACE + dialect.keywords().and() + Chars.SPACE + c);
+            return Tuples.of(pageCondition,
+                new Limit(queryPageResult.getOffset() - limit.getOffset() - limit.getLimit(), limit.getLimit()));
+        } else {
+            // 当前页 where id >= result.getFirstId()
+            pageCondition = er.getTableAlias() + Chars.DOT + dialect.wrapName(idField) + " >= "
+                + queryPageResult.getFirstId().longValue()
+                + Lang.ifNotEmpty(condition, c -> Chars.SPACE + dialect.keywords().and() + Chars.SPACE + c);
+            // 不需要更改limit
+            return Tuples.of(pageCondition, limit);
         }
     }
 }

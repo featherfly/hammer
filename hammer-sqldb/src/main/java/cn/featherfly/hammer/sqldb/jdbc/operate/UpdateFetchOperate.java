@@ -108,7 +108,7 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     protected void initSql() {
         if (initSupportsResultSetUpdatable()) {
             sql = ClassMappingUtils.getSelectByPkSql(classMapping, jdbc.getDialect());
-            pkPms = classMapping.getPrivaryKeyPropertyMappings();
+            pkPms = classMapping.getPrimaryKeyPropertyMappings();
             logger.debug("sql: {}", sql);
         }
     }

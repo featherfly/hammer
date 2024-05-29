@@ -647,7 +647,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         //  pagination
         PaginationResults<User> p = hammer.template("selectIn", params).pagination(User.class, 0, 2);
         assertEquals(p.getPageResults().size(), resultSize);
-        assertEquals(p.getTotal(), Integer.valueOf(ids.length));
+        assertEquals(p.getTotal(), Long.valueOf(ids.length));
 
         // single
         User user = hammer
@@ -792,7 +792,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         PaginationResults<
             Tuple2<UserInfo, User>> page = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
                 .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).pagination(0, 10);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -804,7 +804,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
 
         page = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
             .mapper(b -> b.map("ui.", UserInfo.class).map("u.", User.class)).pagination(0, 1);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -822,7 +822,7 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
         PaginationResults<
             Tuple2<UserInfo, User>> page = hammer.template("selectUserInfoAndUserList", new ChainMapImpl<>())
                 .mapper(UserInfo.class, User.class).pagination(0, pageSize);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), pageSize);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {

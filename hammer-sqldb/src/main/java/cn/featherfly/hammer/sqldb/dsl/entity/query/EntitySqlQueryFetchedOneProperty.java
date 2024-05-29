@@ -185,7 +185,7 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      */
     @Override
     public EntityQueryValueConditionGroup<E, V> where() {
-        return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType);
+        return new EntitySqlQueryValueExpression<>(factory, hammerConfig, sqlPageFactory, queryRelation, valueType);
     }
 
     /**
@@ -194,8 +194,8 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
     @Override
     public EntityQueryValueConditionGroupLogic<E, V> where(
         Function<EntityConditionsGroupExpression<E, ?, ?>, LogicExpression<?, ?>> function) {
-        EntitySqlQueryValueExpression<E,
-            V> exp = new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType);
+        EntitySqlQueryValueExpression<E, V> exp = new EntitySqlQueryValueExpression<>(factory, hammerConfig,
+            sqlPageFactory, queryRelation, valueType);
         if (function != null) {
             exp.addCondition(function.apply(new EntitySqlQueryConditionsGroupExpression<>(0, factory, queryRelation)));
         }
@@ -207,7 +207,7 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      */
     @Override
     public EntityQueryValueSortExpression<E, V> sort() {
-        return new EntitySqlQueryValueExpression<>(factory, sqlPageFactory, queryRelation, valueType);
+        return new EntitySqlQueryValueExpression<>(factory, hammerConfig, sqlPageFactory, queryRelation, valueType);
     }
 
     /**
@@ -215,7 +215,8 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      */
     @Override
     public V value() {
-        return new EntitySqlQueryValueExpression<E, V>(factory, sqlPageFactory, queryRelation, valueType).value();
+        return new EntitySqlQueryValueExpression<E, V>(factory, hammerConfig, sqlPageFactory, queryRelation, valueType)
+            .value();
     }
 
     /**
@@ -223,6 +224,7 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      */
     @Override
     public List<V> valueList() {
-        return new EntitySqlQueryValueExpression<E, V>(factory, sqlPageFactory, queryRelation, valueType).valueList();
+        return new EntitySqlQueryValueExpression<E, V>(factory, hammerConfig, sqlPageFactory, queryRelation, valueType)
+            .valueList();
     }
 }

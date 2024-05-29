@@ -34,10 +34,12 @@ import javax.cache.spi.CachingProvider;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.repository.Params;
+import cn.featherfly.common.repository.QueryPageResults;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.config.HammerConfigImpl;
@@ -65,7 +67,7 @@ public class QueryCacheTest extends JdbcTestBase {
 
     CacheManager cacheManager;
 
-    CacheProxy<Object, Integer> countResultCache;
+    CacheProxy<Object, QueryPageResults> countResultCache;
 
     protected TplExecutor executor;
 
@@ -75,11 +77,12 @@ public class QueryCacheTest extends JdbcTestBase {
             .getCachingProvider("com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider");
         cacheManager = cachingProvider.getCacheManager();
         MutableConfiguration<Object,
-            Integer> mutableConfiguration = new MutableConfiguration<Object, Integer>()
-                .setTypes(Object.class, Integer.class) //
+            QueryPageResults> mutableConfiguration = new MutableConfiguration<Object, QueryPageResults>()
+                .setTypes(Object.class, QueryPageResults.class) //
                 .setStoreByValue(false) //
                 .setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(new Duration(TimeUnit.MINUTES, 30)));
-        Cache<Object, Integer> countResultCache = cacheManager.createCache("countResultCache", mutableConfiguration);
+        Cache<Object,
+            QueryPageResults> countResultCache = cacheManager.createCache("countResultCache", mutableConfiguration);
 
         this.countResultCache = new CacheProxy<>(countResultCache);
 
@@ -105,44 +108,99 @@ public class QueryCacheTest extends JdbcTestBase {
         cacheManager.close();
     }
 
+    @BeforeMethod
+    void bm() {
+        countResultCache.resetIndex();
+    }
+
     @Test
-    public void entityQueryPaginationCountCache() {
+    public void entityQueryPagination_CountCache() {
         SimplePage page = new SimplePage();
         page.setSize(2);
         page.setNumber(1);
 
         PaginationResults<User2> results = null;
 
-        results = query.find(User2.class).where().gt(User2::getAge, 0).limit(page).pagination();
+        results = query.find(User2.class).configure(q -> q.setPagingOptimization(false)).where().gt(User2::getAge, 0)
+            .limit(page).pagination();
         assertEquals(results.getPageResults().size(), page.getSize());
         assertTrue(countResultCache.getIndex() == 0);
 
         page.setNumber(2);
-        results = query.find(User2.class).where().gt(User2::getAge, 0).limit(page).pagination();
+        results = query.find(User2.class).configure(q -> q.setPagingOptimization(false)).where().gt(User2::getAge, 0)
+            .limit(page).pagination();
         assertEquals(results.getPageResults().size(), page.getSize());
         assertTrue(countResultCache.getIndex() == 1);
 
         page.setNumber(3);
-        results = query.find(User2.class).where().gt(User2::getAge, 0).limit(page).pagination();
+        results = query.find(User2.class).configure(q -> q.setPagingOptimization(false)).where().gt(User2::getAge, 0)
+            .limit(page).pagination();
         assertEquals(results.getPageResults().size(), page.getSize());
         assertTrue(countResultCache.getIndex() == 2);
 
         page.setNumber(4);
-        results = query.find(User2.class).where().gt(User2::getAge, 0).limit(page).pagination();
+        results = query.find(User2.class).configure(q -> q.setPagingOptimization(false)).where().gt(User2::getAge, 0)
+            .limit(page).pagination();
         assertEquals(results.getPageResults().size(), page.getSize());
         assertTrue(countResultCache.getIndex() == 3);
 
         // ----------------------------------------------------------------------------------------------------------------
 
         page.setNumber(1);
-        results = query.find(User2.class).where().gt(User2::getAge, 5).limit(page).pagination();
+        results = query.find(User2.class).configure(q -> q.setPagingOptimization(false)).where().gt(User2::getAge, 5)
+            .limit(page).pagination();
         assertEquals(results.getPageResults().size(), page.getSize());
         assertTrue(countResultCache.getIndex() == 0);
 
         page.setNumber(2);
-        results = query.find(User2.class).where().gt(User2::getAge, 5).limit(page).pagination();
+        results = query.find(User2.class).configure(q -> q.setPagingOptimization(false)).where().gt(User2::getAge, 5)
+            .limit(page).pagination();
         assertEquals(results.getPageResults().size(), page.getSize());
         assertTrue(countResultCache.getIndex() == 1);
+    }
+
+    @Test(dependsOnMethods = "entityQueryPagination_CountCache")
+    public void entityQueryPagination_CountCache_OptimizationPage() {
+        SimplePage page = new SimplePage();
+        page.setSize(2);
+        page.setNumber(1);
+
+        PaginationResults<User2> results = null;
+
+        results = query.find(User2.class).where().gt(User2::getAge, 0) //
+            .limit(page) //
+            .pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertTrue(countResultCache.getIndex() == 1); // 因为entityQueryPagination_CountCache已经设置了缓存，所以计数从1开始
+
+        page.setNumber(2);
+        results = query.find(User2.class).where().gt(User2::getAge, 0).limit(page).pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertTrue(countResultCache.getIndex() == 2);
+
+        page.setNumber(3);
+        results = query.find(User2.class).where().gt(User2::getAge, 0).limit(page).pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertTrue(countResultCache.getIndex() == 3);
+
+        page.setNumber(4);
+        results = query.find(User2.class).where().gt(User2::getAge, 0).limit(page).pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertTrue(countResultCache.getIndex() == 4);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        countResultCache.resetIndex(); // 重置
+
+        page.setNumber(1);
+        results = query.find(User2.class).where().gt(User2::getAge, 5).limit(page).pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertTrue(countResultCache.getIndex() == 1); // 因为entityQueryPagination_CountCache已经设置了缓存，所以计数从1开
+
+        page.setNumber(2);
+        results = query.find(User2.class).where().gt(User2::getAge, 5).limit(page).pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertTrue(countResultCache.getIndex() == 2);
 
     }
 
@@ -206,6 +264,10 @@ class CacheProxy<K, V> implements Cache<K, V> {
     public CacheProxy(Cache<K, V> proxy) {
         super();
         this.proxy = proxy;
+    }
+
+    public void resetIndex() {
+        index = 0;
     }
 
     /**

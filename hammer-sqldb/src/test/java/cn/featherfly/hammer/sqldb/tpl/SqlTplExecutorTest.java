@@ -703,7 +703,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         //  pagination
         PaginationResults<User> p = executor.pagination("selectIn", User.class, params, 0, 2);
         assertEquals(p.getPageResults().size(), resultSize);
-        assertEquals(p.getTotal(), Integer.valueOf(ids.length));
+        assertEquals(p.getTotal(), Long.valueOf(ids.length));
 
         // single
         User user = executor.single("selectInSingle", User.class,
@@ -834,7 +834,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     public void testSingleTuple2Page() {
         PaginationResults<Tuple2<UserInfo, User>> page = executor.pagination("selectUserInfoAndUserList",
             UserInfo.class, User.class, Tuples.of("ui.", "u."), new ChainMapImpl<>(), 0, 10);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), TestConstants.USER_INFO_INIT_ROWS);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -846,7 +846,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
 
         page = executor.pagination("selectUserInfoAndUserList", UserInfo.class, User.class, Tuples.of("ui.", "u."),
             new ChainMapImpl<>(), 0, 1);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), 1);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {
@@ -862,7 +862,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         int pageSize = 2;
         PaginationResults<Tuple2<UserInfo, User>> page = executor.pagination("selectUserInfoAndUserList",
             UserInfo.class, User.class, new ChainMapImpl<>(), 0, pageSize);
-        assertEquals(page.getTotal(), Integer.valueOf(TestConstants.USER_INFO_INIT_ROWS));
+        assertEquals(page.getTotal(), Long.valueOf(TestConstants.USER_INFO_INIT_ROWS));
         assertEquals(page.getPageResults().size(), pageSize);
 
         for (Tuple2<UserInfo, User> tuple2 : page.getPageResults()) {

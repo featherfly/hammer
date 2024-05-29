@@ -14,4 +14,18 @@ package cn.featherfly.hammer.config.dsl;
  * @author zhongj
  */
 public interface QueryConfig extends DslConfigBase<QueryConfig, QueryConditionConfig>, QueryConditionConfig {
+    /**
+     * Sets the paging optimization.
+     *
+     * @param pagingOptimization the paging optimization
+     * @return the query config
+     */
+    QueryConfig setPagingOptimization(boolean pagingOptimization);
+
+    /**
+     * Checks if is paging optimization.
+     *
+     * @return true, if is paging optimization
+     */
+    boolean isPagingOptimization();
 }

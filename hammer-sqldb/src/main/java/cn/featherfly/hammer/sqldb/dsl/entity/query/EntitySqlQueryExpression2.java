@@ -1,9 +1,15 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
-import com.speedment.common.tuple.Tuple2;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup2;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic2;
@@ -71,8 +77,9 @@ public class EntitySqlQueryExpression2<T1, T2, RS> extends
      * {@inheritDoc}
      */
     @Override
-    public Tuple2<String, String> expressionPage() {
-        return EntitySqlQueryExpression.expressionPage(super.expression(), parent, entityRelation, getRootSortBuilder(),
-            dialect);
+    public Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
+        Function<Object, Object>> expressionPagination(Limit limit) {
+        return EntitySqlQueryExpression.expressionPageAndParams(hammerConfig, this, super.expression(), parent,
+            entityRelation, getRootSortBuilder(), dialect, limit);
     }
 }

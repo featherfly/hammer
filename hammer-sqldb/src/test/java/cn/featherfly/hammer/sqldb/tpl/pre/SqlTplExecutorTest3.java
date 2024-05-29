@@ -98,7 +98,7 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
                 .putChain("password", u.get("password")),
             0, 1);
         assertNotNull(up);
-        assertTrue(up.getTotal().equals(1));
+        assertTrue(up.getTotal() == 1L);
 
         //        <@and if=age??>id = :id</@and>
         //        <@and if=age??>age > :age</@and>

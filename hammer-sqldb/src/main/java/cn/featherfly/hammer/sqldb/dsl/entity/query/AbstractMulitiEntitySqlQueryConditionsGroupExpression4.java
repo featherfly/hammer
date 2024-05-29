@@ -3,8 +3,10 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
@@ -16,6 +18,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
+import cn.featherfly.common.repository.QueryPageResults;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -169,6 +172,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public EntityQuerySortExpression4<E1, E2, E3, E4, RS> sort() {
+
         return this;
     }
 
@@ -182,6 +186,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc(String... names) {
         getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
+
         return this;
     }
 
@@ -193,6 +198,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc2(String... names) {
         getRootSortBuilder().asc(queryAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+
         return this;
     }
 
@@ -204,6 +210,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc3(String... names) {
         getRootSortBuilder().asc(queryAlias3, () -> ClassMappingUtils.getColumnNames(classMapping3, names));
+
         return this;
     }
 
@@ -215,6 +222,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc4(String... names) {
         getRootSortBuilder().asc(queryAlias4, () -> ClassMappingUtils.getColumnNames(classMapping4, names));
+
         return this;
     }
 
@@ -226,6 +234,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc(String... names) {
         getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
+
         return this;
     }
 
@@ -237,6 +246,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc2(String... names) {
         getRootSortBuilder().desc(queryAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+
         return this;
     }
 
@@ -248,6 +258,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc3(String... names) {
         getRootSortBuilder().desc(queryAlias3, () -> ClassMappingUtils.getColumnNames(classMapping3, names));
+
         return this;
     }
 
@@ -259,6 +270,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc4(String... names) {
         getRootSortBuilder().desc(queryAlias4, () -> ClassMappingUtils.getColumnNames(classMapping4, names));
+
         return this;
     }
 
@@ -279,6 +291,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
                 classMapping3),
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), queryAlias4, SortOperator.ASC,
                 classMapping4));
+
         return this;
     }
 
@@ -297,6 +310,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
                 classMapping3),
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), queryAlias4, SortOperator.DESC,
                 classMapping4));
+
         return this;
     }
 
@@ -455,11 +469,22 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
     // ****************************************************************************************************************
 
     /**
-     * Expression page.
+     * Expression pagination.
      *
-     * @return the tuple 2
+     * @param limit the limit
+     * @return the tuple 7
+     *         <ol>
+     *         <li>query sql
+     *         <li>count sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function<Object, Object> getId value
+     *         </ol>
      */
-    public abstract Tuple2<String, String> expressionPage();
+    public abstract Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
+        Function<Object, Object>> expressionPagination(Limit limit);
 
     // ****************************************************************************************************************
     //  protected method

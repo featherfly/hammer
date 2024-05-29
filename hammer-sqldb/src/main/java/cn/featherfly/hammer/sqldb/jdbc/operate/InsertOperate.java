@@ -45,7 +45,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected int doSqlExecuteBatch(final List<T> entities) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
         Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getInsertBatchSqlAndMappings(entities.size(),
             classMapping, jdbc.getDialect());
         String sql = tuple.get0();
@@ -80,7 +80,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     public int execute(final T entity) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
         if (pks.size() == 1) {
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
 
@@ -108,7 +108,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     @Override
     protected int[] doJdbcExecuteBatch(List<T> entities) {
-        List<JdbcPropertyMapping> pks = classMapping.getPrivaryKeyPropertyMappings();
+        List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
         //        List<Object[]> argsList = new ArrayList<>(entities.size());
         //        for (T entity : entities) {
         //            argsList.add(getParameters(entity));

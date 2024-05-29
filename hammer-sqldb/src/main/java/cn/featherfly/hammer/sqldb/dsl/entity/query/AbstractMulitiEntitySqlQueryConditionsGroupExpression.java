@@ -3,8 +3,10 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple2;
+import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
@@ -14,6 +16,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.QueryPageResults;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -255,6 +258,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     //        @Override
     public EntityQuerySortedExpression<E1> asc(String... names) {
+        // ENHANCE 后续来把ClassMappingUtils.getColumnName去掉，这里已经是确定的了
         getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
@@ -340,11 +344,22 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     // ****************************************************************************************************************
 
     /**
-     * Expression page.
+     * Expression pagination.
      *
-     * @return the tuple 2
+     * @param limit the limit
+     * @return the tuple 7
+     *         <ol>
+     *         <li>query sql
+     *         <li>count sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function<Object, Object> getId value
+     *         </ol>
      */
-    public abstract Tuple2<String, String> expressionPage();
+    public abstract Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
+        Function<Object, Object>> expressionPagination(Limit limit);
 
     // ****************************************************************************************************************
     //	protected method

@@ -10,6 +10,8 @@ package cn.featherfly.hammer.config.cache;
 
 import javax.cache.Cache;
 
+import cn.featherfly.common.repository.QueryPageResults;
+
 /**
  * CacheConfigImpl.
  *
@@ -17,7 +19,7 @@ import javax.cache.Cache;
  */
 public class CacheConfigImpl implements CacheConfig {
 
-    private Cache<Object, Integer> countResultCache;
+    private Cache<Object, QueryPageResults> countResultCache;
 
     /**
      * set countResultCache value.
@@ -25,7 +27,7 @@ public class CacheConfigImpl implements CacheConfig {
      * @param countResultCache countResultCache
      * @return the cache config impl
      */
-    public CacheConfigImpl setCountResultCache(Cache<Object, Integer> countResultCache) {
+    public CacheConfigImpl setCountResultCache(Cache<Object, QueryPageResults> countResultCache) {
         this.countResultCache = countResultCache;
         return this;
     }
@@ -34,7 +36,7 @@ public class CacheConfigImpl implements CacheConfig {
      * {@inheritDoc}
      */
     @Override
-    public Cache<Object, Integer> getCountResultCache() {
+    public Cache<Object, QueryPageResults> getCountResultCache() {
         return countResultCache;
     }
 

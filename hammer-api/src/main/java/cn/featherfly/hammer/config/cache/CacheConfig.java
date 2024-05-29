@@ -10,6 +10,8 @@ package cn.featherfly.hammer.config.cache;
 
 import javax.cache.Cache;
 
+import cn.featherfly.common.repository.QueryPageResults;
+
 /**
  * CacheConfig.
  *
@@ -21,5 +23,5 @@ public interface CacheConfig {
      *
      * @return the count result cache
      */
-    Cache<Object, Integer> getCountResultCache();
+    Cache<Object, QueryPageResults> getCountResultCache();
 }
