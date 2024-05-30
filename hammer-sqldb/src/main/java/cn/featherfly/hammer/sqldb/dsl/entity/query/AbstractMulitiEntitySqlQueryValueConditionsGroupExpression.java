@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.constant.Chars;
@@ -18,7 +19,7 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.repository.SimpleExecution;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
@@ -147,6 +148,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     @Override
     public List<E> list() {
         Execution execution = getExecution();
+        // IMPLSOON 缓存列表没有处理
+        // FIXME prepareList(limit)  process limit if (limit != null)
         return entityRelation.getJdbc().queryList(execution.getExecution(), queryType, execution.getParams());
     }
 
@@ -155,13 +158,15 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<E> pagination() {
-        Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
-            Function<Object, Object>> tupleResult = getRoot().expressionPagination(limit);
+        Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Object>> tupleResult = getRoot().preparePagination(limit);
         String sql = tupleResult.get0();
         String countSql = tupleResult.get1();
         Object[] params = tupleResult.get2().toArray();
-        Limit limit = tupleResult.get3();
+        Limit limit = tupleResult.get3().orElse(null);
         SimplePaginationResults<E> pagination = null;
+
+        // IMPLSOON 缓存列表没有处理
 
         if (limit != null) {
             pagination = new SimplePaginationResults<>(limit);
@@ -203,13 +208,15 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<V> valuePagination() {
-        Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
-            Function<Object, Object>> tupleResult = getRoot().expressionPagination(limit);
+        Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Object>> tupleResult = getRoot().preparePagination(limit);
         String sql = tupleResult.get0();
         String countSql = tupleResult.get1();
         Object[] params = tupleResult.get2().toArray();
-        Limit limit = tupleResult.get3();
+        Limit limit = tupleResult.get3().orElse(null);
         SimplePaginationResults<V> pagination = null;
+
+        // IMPLSOON 缓存列表没有处理
 
         if (limit != null) {
             pagination = new SimplePaginationResults<>(limit);
@@ -536,7 +543,24 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     // ****************************************************************************************************************
 
     /**
-     * Expression pagination.
+     * Prepare list.
+     *
+     * @param limit the limit
+     * @return the tuple 6
+     *         <ol>
+     *         <li>query sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function<Object, Object> getId value
+     *         </ol>
+     */
+    public abstract Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Object>> prepareList(Limit limit);
+
+    /**
+     * Prepare pagination.
      *
      * @param limit the limit
      * @return the tuple 7
@@ -547,11 +571,11 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      *         <li>changed Limit if necessary
      *         <li>QueryPageResult may be null
      *         <li>orginal query sql
-     *         <li>EntitySqlQueryRelation
+     *         <li>Function<Object, Object> getId value
      *         </ol>
      */
-    public abstract Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
-        Function<Object, Object>> expressionPagination(Limit limit);
+    public abstract Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Object>> preparePagination(Limit limit);
 
     /**
      * Gets the root sort builder.

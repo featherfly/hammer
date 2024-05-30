@@ -10,7 +10,7 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.QueryableField;
 import cn.featherfly.common.repository.Repository;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
@@ -76,7 +76,7 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      */
     @Override
     public RepositoryQueryExpression<RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic,
-        RepositoryQuerySortExpression> configure(Consumer<QueryConfig> configure) {
+        RepositoryQuerySortExpression> configure(Consumer<DslQueryConfig> configure) {
         if (configure == null) {
             return this;
         }

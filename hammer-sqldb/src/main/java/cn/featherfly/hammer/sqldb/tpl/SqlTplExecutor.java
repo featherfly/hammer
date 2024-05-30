@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -27,7 +28,7 @@ import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
@@ -1672,14 +1673,15 @@ public class SqlTplExecutor implements TplExecutor {
         Map<String, Object> params, int offset, int limit) {
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(offset, limit);
 
-        Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> listTuple = findList(tplExecuteId, entityType, params, offset, limit);
+        Tuple6<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>,
+            Optional<QueryPageResult>> listTuple = findList(tplExecuteId, entityType, params, offset, limit);
         // IMPLSOON 这里加入分页sql的优化处理
         // 方案一，在模板中加入特定标签
         // 方案二，在预编译时，加入特定标签，就是方案一的加强版
         // 方案三，在这里进行sql解析
         pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2(),
+            listTuple.get5().orElse(null)));
 
         return pagination;
     }
@@ -2213,8 +2215,9 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
-    private <E> Tuple5<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>> findList(
-        TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset, int limit) {
+    private <E> Tuple6<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>,
+        Optional<QueryPageResult>> findList(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
+            int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple3 = getQueryExecution(tplExecuteId, params, entityType);
         List<E> list = null;
@@ -2222,17 +2225,64 @@ public class SqlTplExecutor implements TplExecutor {
         ConditionParamsManager manager = tuple3.get2();
         TplExecuteConfig config = tuple3.get1();
         // after getQueryExecution
+
+        Map<String, Object> key = null;
+        QueryPageResult queryPageResult = null;
+        Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
+        if (hammerConfig.getTemplateConfig().getQueryConfig().isCachePageResults() && queryPageResultCache != null) {
+            key = getKey(sql, params);
+            queryPageResult = queryPageResultCache.get(key);
+            list = getCacheList(queryPageResult, offset);
+        }
+
         if (config.getParamsFormat() == ParamsFormat.INDEX) {
             SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamArray(params, manager, config));
-            list = jdbc.queryList(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
-            return Tuples.of(list, sql, tuple3.get1(), manager, getEffectiveParamMap(params, manager));
+            if (list == null) {
+                list = jdbc.queryList(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
+                queryPageResult = setCacheList(queryPageResultCache, list, queryPageResult, offset);
+            }
+            return Tuples.of(list, sql, tuple3.get1(), manager, getEffectiveParamMap(params, manager),
+                Optional.ofNullable(queryPageResult));
         } else {
             SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
                 limit, getEffectiveParamMap(params, manager));
-            list = jdbc.queryList(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
-            return Tuples.of(list, sql, tuple3.get1(), manager, sqlPageQuery.getParams());
+            if (list == null) {
+                list = jdbc.queryList(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
+                queryPageResult = setCacheList(queryPageResultCache, list, queryPageResult, offset);
+            }
+            return Tuples.of(list, sql, tuple3.get1(), manager, sqlPageQuery.getParams(),
+                Optional.ofNullable(queryPageResult));
         }
+    }
+
+    private <R> List<R> getCacheList(QueryPageResult queryPageResult, int offset) {
+        if (hammerConfig.getTemplateConfig().getQueryConfig().isCachePageResults() && queryPageResult != null) {
+            return queryPageResult.getPageList(offset);
+        }
+        return null;
+    }
+
+    private <R> QueryPageResult setCacheList(Cache<Object, QueryPageResult> queryPageResultCache, List<R> list,
+        QueryPageResult queryPageResult, int offset) {
+        if (queryPageResultCache != null) {
+            //            if (hammerConfig.getTemplateConfig().getQueryConfig().isPagingOptimization()) { // cache id
+            //                queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
+            //                PageInfo pageInfo = null;
+            //                if (list.isEmpty()) {
+            //                    pageInfo = new PageInfo(limit);
+            //                } else {
+            //                    pageInfo = new PageInfo(limit, (Number) getId.apply(list.get(0)),
+            //                        (Number) getId.apply(list.get(list.size() - 1)));
+            //                }
+            //                queryPageResult.addQueryPageResult(pageInfo);
+            //            }
+            if (hammerConfig.getTemplateConfig().getQueryConfig().isCachePageResults()) { // cache enable
+                queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
+                queryPageResult.addPageList(offset, list);
+            }
+        }
+        return queryPageResult;
     }
 
     private <E1,
@@ -2368,19 +2418,30 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    private Map<String, Object> getKey(String sql, Map<String, Object> params) {
+        Map<String, Object> key = new HashMap<>(params.size() + 1);
+        key.put("$@#SQL#$@", sql);
+        key.putAll(params);
+        return key;
+    }
+
     private long count(String sql, Map<String, Object> effectiveParams, ConditionParamsManager conditionParamsManager,
         TplExecuteConfig config) {
+        return count(sql, effectiveParams, conditionParamsManager, config, null);
+    }
+
+    private long count(String sql, Map<String, Object> effectiveParams, ConditionParamsManager conditionParamsManager,
+        TplExecuteConfig config, QueryPageResult queryPageResult) {
         Long total = null;
         Map<String, Object> key = null;
-        Cache<Object, QueryPageResults> queryPageResultCache = hammerConfig.getCacheConfig().getCountResultCache();
-        QueryPageResults result = null;
-        if (queryPageResultCache != null) {
-            key = new HashMap<>(effectiveParams.size() + 1);
-            key.put("$@#SQL#$@", sql);
-            key.putAll(effectiveParams);
-            result = queryPageResultCache.get(key);
-            if (result != null) {
-                total = result.getTotal();
+        Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
+        if (hammerConfig.getTemplateConfig().getQueryConfig().isCachePageCount() && queryPageResultCache != null) {
+            key = getKey(sql, effectiveParams);
+            if (queryPageResult == null) {
+                queryPageResult = queryPageResultCache.get(key);
+            }
+            if (queryPageResult != null) {
+                total = queryPageResult.getTotal();
             }
             if (total != null) {
                 logger.debug("pagination count result [{}] found in cache", total);
@@ -2404,13 +2465,15 @@ public class SqlTplExecutor implements TplExecutor {
         } else {
             total = jdbc.queryLong(countSql, effectiveParams);
         }
-        if (queryPageResultCache != null) {
-            if (result != null) {
-                result.setTotal(total);
+        if (hammerConfig.getTemplateConfig().getQueryConfig().isCachePageCount() && queryPageResultCache != null) {
+            if (queryPageResult != null) {
+                queryPageResult.setTotal(total);
             } else {
-                result = new QueryPageResults(total);
+                queryPageResult = new QueryPageResult(total);
             }
-            queryPageResultCache.put(key, result);
+        }
+        if (queryPageResult != null) {
+            queryPageResultCache.put(key, queryPageResult);
         }
         return total;
     }

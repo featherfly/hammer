@@ -146,11 +146,40 @@ public interface TemplateConfig {
     //
     //    boolean isPrecompileInParamPlaceholder();
 
+    /**
+     * Sets the count sql converte strategy.
+     *
+     * @param countSqlConverteStrategy the count sql converte strategy
+     * @return the template config
+     */
     TemplateConfig setCountSqlConverteStrategy(CountSqlConverteStrategy countSqlConverteStrategy);
 
+    /**
+     * Gets the count sql converte strategy.
+     *
+     * @return the count sql converte strategy
+     */
     CountSqlConverteStrategy getCountSqlConverteStrategy();
 
+    /**
+     * Sets the pre include formmater.
+     *
+     * @param Formatter the formatter
+     * @return the template config
+     */
     TemplateConfig setPreIncludeFormmater(StringFormatter Formatter);
 
+    /**
+     * Gets the pre include formmater.
+     *
+     * @return the pre include formmater
+     */
     StringFormatter getPreIncludeFormmater();
+
+    /**
+     * Gets the query config.
+     *
+     * @return the query config
+     */
+    TemplateQueryConfig getQueryConfig();
 }

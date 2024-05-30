@@ -72,4 +72,11 @@ public interface HammerConfig {
      * @return the class loader
      */
     Supplier<ClassLoader> getClassLoader();
+
+    /**
+     * Gets the query config.
+     *
+     * @return the query config
+     */
+    QueryConfig getQueryConfig();
 }

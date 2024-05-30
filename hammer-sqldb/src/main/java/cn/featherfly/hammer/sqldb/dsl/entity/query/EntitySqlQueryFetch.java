@@ -9,7 +9,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.config.HammerConfig;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
@@ -110,7 +110,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      */
     @Override
     public EntityQueryExpression<E, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
-        EntityQuerySortExpression<E>> configure(Consumer<QueryConfig> configure) {
+        EntityQuerySortExpression<E>> configure(Consumer<DslQueryConfig> configure) {
         if (configure != null) {
             configure.accept(queryRelation.getConfig());
         }

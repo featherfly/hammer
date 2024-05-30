@@ -6,12 +6,7 @@
  * @date: 2023-10-23 18:48:23
  * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.hammer.config;
-
-import cn.featherfly.hammer.config.dsl.DeleteConfig;
-import cn.featherfly.hammer.config.dsl.DslConfig;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
-import cn.featherfly.hammer.config.dsl.UpdateConfig;
+package cn.featherfly.hammer.config.dsl;
 
 /**
  * DslConfigImpl.
@@ -20,7 +15,7 @@ import cn.featherfly.hammer.config.dsl.UpdateConfig;
  */
 public class DslConfigImpl implements DslConfig {
 
-    private final QueryConfig queryConfig;
+    private final DslQueryConfig queryConfig;
     private final DeleteConfig deleteConfig;
     private final UpdateConfig updateConfig;
 
@@ -28,7 +23,7 @@ public class DslConfigImpl implements DslConfig {
      * Instantiates a new dsl config impl.
      */
     public DslConfigImpl() {
-        queryConfig = new QueryConfigImpl();
+        queryConfig = new DslQueryConfigImpl();
         deleteConfig = new DeleteConfigImpl();
         updateConfig = new UpdateConfigImpl();
     }
@@ -37,7 +32,7 @@ public class DslConfigImpl implements DslConfig {
      * {@inheritDoc}
      */
     @Override
-    public QueryConfig getQueryConfig() {
+    public DslQueryConfig getQueryConfig() {
         return queryConfig;
     }
 

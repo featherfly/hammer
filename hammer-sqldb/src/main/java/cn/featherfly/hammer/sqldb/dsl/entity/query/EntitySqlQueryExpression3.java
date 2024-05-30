@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup3;
@@ -79,9 +80,19 @@ public class EntitySqlQueryExpression3<T1, T2, T3, RS> extends
      * {@inheritDoc}
      */
     @Override
-    public Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
-        Function<Object, Object>> expressionPagination(Limit limit) {
-        return EntitySqlQueryExpression.expressionPageAndParams(hammerConfig, this, super.expression(), parent,
-            entityRelation, getRootSortBuilder(), dialect, limit);
+    public Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Object>> preparePagination(Limit limit) {
+        return EntitySqlQueryExpression.preparePage(hammerConfig, this, super.expression(), parent, entityRelation,
+            getRootSortBuilder(), dialect, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Object>> prepareList(Limit limit) {
+        return EntitySqlQueryExpression.prepareList(hammerConfig, this, super.expression(), parent, entityRelation,
+            getRootSortBuilder(), dialect, limit);
     }
 }

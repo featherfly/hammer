@@ -6,14 +6,11 @@
  * @date: 2023-10-23 18:48:23
  * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.hammer.config;
+package cn.featherfly.hammer.config.dsl;
 
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
-import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
-import cn.featherfly.hammer.config.dsl.DeleteConfig;
-import cn.featherfly.hammer.config.dsl.EmptyConditionStrategy;
 
 /**
  * The Class DeleteConfigImpl.

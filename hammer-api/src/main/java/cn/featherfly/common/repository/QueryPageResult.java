@@ -9,6 +9,7 @@
 package cn.featherfly.common.repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.featherfly.common.structure.page.Limit;
@@ -18,18 +19,20 @@ import cn.featherfly.common.structure.page.Limit;
  *
  * @author zhongj
  */
-public class QueryPageResults {
+public class QueryPageResult {
 
-    private Map<Integer, QueryPageResult> pageResults = new HashMap<>();
+    private Map<Integer, PageInfo> pageResults = new HashMap<>();
+
+    private Map<Integer, List<?>> pageLists = new HashMap<>();
 
     private Long total;
 
-    private QueryPageResult last = null;
+    private PageInfo last = null;
 
     /**
      * Instantiates a new query page result.
      */
-    public QueryPageResults() {
+    public QueryPageResult() {
     }
 
     /**
@@ -37,7 +40,7 @@ public class QueryPageResults {
      *
      * @param total the count
      */
-    public QueryPageResults(Long total) {
+    public QueryPageResult(Long total) {
         this.total = total;
     }
 
@@ -46,7 +49,7 @@ public class QueryPageResults {
      *
      * @param queryPageResult the query page result
      */
-    public QueryPageResults(QueryPageResult queryPageResult) {
+    public QueryPageResult(PageInfo queryPageResult) {
         this(queryPageResult, null);
     }
 
@@ -56,7 +59,7 @@ public class QueryPageResults {
      * @param queryPageResult the query page result
      * @param total the count
      */
-    public QueryPageResults(QueryPageResult queryPageResult, Long total) {
+    public QueryPageResult(PageInfo queryPageResult, Long total) {
         this.total = total;
         addQueryPageResult(queryPageResult);
     }
@@ -66,7 +69,7 @@ public class QueryPageResults {
      *
      * @param queryPageResult the query page result
      */
-    public void addQueryPageResult(QueryPageResult queryPageResult) {
+    public void addQueryPageResult(PageInfo queryPageResult) {
         last = queryPageResult;
         pageResults.put(queryPageResult.getOffset(), queryPageResult);
     }
@@ -77,10 +80,10 @@ public class QueryPageResults {
      * @param limit the limit
      * @return the nearest
      */
-    public QueryPageResult getNearestQueryPageResult(Limit limit) {
-        QueryPageResult nearest = null;
+    public PageInfo getNearestQueryPageResult(Limit limit) {
+        PageInfo nearest = null;
         int value = Integer.MIN_VALUE;
-        for (QueryPageResult qpr : pageResults.values()) {
+        for (PageInfo qpr : pageResults.values()) {
             int diff = qpr.getOffset().intValue() - limit.getOffset();
             if (value < diff) {
                 value = diff;
@@ -88,6 +91,29 @@ public class QueryPageResults {
             }
         }
         return nearest;
+    }
+
+    /**
+     * Adds the page list.
+     *
+     * @param <E> the element type
+     * @param offset the offset
+     * @param pageList the page list
+     */
+    public <E> void addPageList(int offset, List<E> pageList) {
+        pageLists.put(offset, pageList);
+    }
+
+    /**
+     * Adds the page list.
+     *
+     * @param <E> the element type
+     * @param offset the offset
+     * @param pageList the page list
+     */
+    @SuppressWarnings("unchecked")
+    public <E> List<E> getPageList(int offset) {
+        return (List<E>) pageLists.get(offset);
     }
 
     /**
@@ -126,7 +152,7 @@ public class QueryPageResults {
      *
      * @author zhongj
      */
-    public static class QueryPageResult {
+    public static class PageInfo {
 
         private Integer limit;
 
@@ -140,10 +166,20 @@ public class QueryPageResults {
          * Instantiates a new query page result.
          *
          * @param limit the limit
+         */
+        public PageInfo(Limit limit) {
+            offset = limit.getOffset();
+            this.limit = limit.getLimit();
+        }
+
+        /**
+         * Instantiates a new query page result.
+         *
+         * @param limit the limit
          * @param firstId the first id
          * @param lastId the last id
          */
-        public QueryPageResult(Limit limit, Number firstId, Number lastId) {
+        public PageInfo(Limit limit, Number firstId, Number lastId) {
             this(limit.getLimit(), limit.getOffset(), firstId, lastId);
         }
 
@@ -155,7 +191,7 @@ public class QueryPageResults {
          * @param firstId the first
          * @param lastId the last
          */
-        public QueryPageResult(Integer limit, Integer offset, Number firstId, Number lastId) {
+        public PageInfo(Integer limit, Integer offset, Number firstId, Number lastId) {
             super();
             this.limit = limit;
             this.offset = offset;

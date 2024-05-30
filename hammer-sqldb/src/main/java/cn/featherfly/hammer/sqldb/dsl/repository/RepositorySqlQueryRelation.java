@@ -26,7 +26,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -54,7 +54,7 @@ public class RepositorySqlQueryRelation
      * @param queryConfig the query config
      */
     public RepositorySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, DatabaseMetadata metadata,
-        QueryConfig queryConfig) {
+        DslQueryConfig queryConfig) {
         super(jdbc, aliasManager, metadata, queryConfig);
     }
 
@@ -416,7 +416,7 @@ public class RepositorySqlQueryRelation
      */
     @SuppressWarnings("unchecked")
     @Override
-    public QueryConfig getConfig() {
-        return (QueryConfig) conditionConfig;
+    public DslQueryConfig getConfig() {
+        return (DslQueryConfig) conditionConfig;
     }
 }

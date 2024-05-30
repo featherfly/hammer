@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.entity.query;
 
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.expression.ConfigureExpression;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.Queryable;
@@ -20,5 +20,5 @@ public interface EntityQueryExpression<E1, C extends EntityQueryConditionGroupEx
     L extends EntityQueryConditionGroupLogicExpression<E1, C, L, S>, S extends EntityQuerySortExpression<E1>>
     extends EntityQueryWhereExpression<E1, C, L, S>, EntityQueryListExecutor<E1>, QueryCountExecutor,
     EntityQueryConditionLimit<EntityQueryLimitExecutor<E1>>, Queryable<S>,
-    ConfigureExpression<EntityQueryExpression<E1, C, L, S>, QueryConfig, QueryConditionConfig> {
+    ConfigureExpression<EntityQueryExpression<E1, C, L, S>, DslQueryConfig, QueryConditionConfig> {
 }

@@ -8,19 +8,23 @@
  */
 package cn.featherfly.hammer.config.dsl;
 
+import cn.featherfly.hammer.config.QueryConfig;
+
 /**
  * The Interface QueryConfig.
  *
  * @author zhongj
  */
-public interface QueryConfig extends DslConfigBase<QueryConfig, QueryConditionConfig>, QueryConditionConfig {
+public interface DslQueryConfig
+    extends DslConfigBase<DslQueryConfig, QueryConditionConfig>, QueryConditionConfig, QueryConfig {
+
     /**
      * Sets the paging optimization.
      *
      * @param pagingOptimization the paging optimization
      * @return the query config
      */
-    QueryConfig setPagingOptimization(boolean pagingOptimization);
+    DslQueryConfig setPagingOptimization(boolean pagingOptimization);
 
     /**
      * Checks if is paging optimization.
@@ -28,4 +32,18 @@ public interface QueryConfig extends DslConfigBase<QueryConfig, QueryConditionCo
      * @return true, if is paging optimization
      */
     boolean isPagingOptimization();
+
+    /**
+     * Checks if is cache page count.
+     *
+     * @return true, if is cache page count
+     */
+    boolean isCachePageCount();
+
+    /**
+     * Checks if is cache page results.
+     *
+     * @return true, if is cache page results
+     */
+    boolean isCachePageResults();
 }

@@ -15,6 +15,7 @@ import javax.validation.Validator;
 import cn.featherfly.hammer.config.cache.CacheConfig;
 import cn.featherfly.hammer.config.cache.CacheConfigImpl;
 import cn.featherfly.hammer.config.dsl.DslConfig;
+import cn.featherfly.hammer.config.dsl.DslConfigImpl;
 import cn.featherfly.hammer.config.entity.EntityConfig;
 import cn.featherfly.hammer.config.entity.EntityConfigImpl;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
@@ -166,5 +167,27 @@ public class HammerConfigImpl implements HammerConfig {
     @Override
     public CacheConfig getCacheConfig() {
         return cacheConfig;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public QueryConfig getQueryConfig() {
+        return new QueryConfig() {
+            @Override
+            public QueryConfig setCachePageResults(boolean cachePageResults) {
+                getDslConfig().getQueryConfig().setCachePageResults(cachePageResults);
+                getTemplateConfig().getQueryConfig().setCachePageResults(cachePageResults);
+                return this;
+            }
+
+            @Override
+            public QueryConfig setCachePageCount(boolean cachePageCount) {
+                getDslConfig().getQueryConfig().setCachePageCount(cachePageCount);
+                getTemplateConfig().getQueryConfig().setCachePageCount(cachePageCount);
+                return this;
+            }
+        };
     }
 }

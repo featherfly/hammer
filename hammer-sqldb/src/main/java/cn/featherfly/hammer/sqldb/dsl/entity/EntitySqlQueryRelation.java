@@ -29,7 +29,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -56,7 +56,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @param aliasManager aliasManager
      * @param queryConfig the query config
      */
-    public EntitySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, QueryConfig queryConfig) {
+    public EntitySqlQueryRelation(Jdbc jdbc, AliasManager aliasManager, DslQueryConfig queryConfig) {
         super(jdbc, aliasManager, queryConfig);
     }
 
@@ -666,7 +666,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      */
     @SuppressWarnings("unchecked")
     @Override
-    public QueryConfig getConfig() {
-        return (QueryConfig) conditionConfig;
+    public DslQueryConfig getConfig() {
+        return (DslQueryConfig) conditionConfig;
     }
 }

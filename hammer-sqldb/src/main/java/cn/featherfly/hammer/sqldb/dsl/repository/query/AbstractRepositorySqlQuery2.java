@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery2;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
@@ -74,7 +74,7 @@ public abstract class AbstractRepositorySqlQuery2<R extends RepositoryQueryRelat
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryExpression2<C, L, S, Q> configure(Consumer<QueryConfig> configure) {
+    public RepositoryQueryExpression2<C, L, S, Q> configure(Consumer<DslQueryConfig> configure) {
         configure.accept(queryRelation.getConfig());
         return this;
     }

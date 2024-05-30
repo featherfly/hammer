@@ -16,6 +16,8 @@ import java.util.function.IntFunction;
 
 import cn.featherfly.common.lang.string.StringFormatter;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
+import cn.featherfly.hammer.config.tpl.TemplateQueryConfig;
+import cn.featherfly.hammer.config.tpl.TemplateQueryConfigImpl;
 import cn.featherfly.hammer.tpl.TemplateDirectives;
 import cn.featherfly.hammer.tpl.TplExecuteIdEmailStyleParser;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
@@ -47,6 +49,8 @@ public class TemplateConfigImpl implements TemplateConfig {
     private Charset charset = StandardCharsets.UTF_8;
 
     private String[] includeDirectiveTagNames = new String[] { TemplateDirectives.TEMPLATE_INCLUDE_DIRECTIVE_KEY };
+
+    private TemplateQueryConfig templateQueryConfig = new TemplateQueryConfigImpl();
 
     //    private boolean precompileInParamPlaceholder = true;
 
@@ -239,5 +243,13 @@ public class TemplateConfigImpl implements TemplateConfig {
     @Override
     public StringFormatter getPreIncludeFormmater() {
         return formatter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TemplateQueryConfig getQueryConfig() {
+        return templateQueryConfig;
     }
 }

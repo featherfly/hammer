@@ -10,7 +10,7 @@ package cn.featherfly.hammer.config.cache;
 
 import javax.cache.Cache;
 
-import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.repository.QueryPageResult;
 
 /**
  * CacheConfig.
@@ -18,10 +18,11 @@ import cn.featherfly.common.repository.QueryPageResults;
  * @author zhongj
  */
 public interface CacheConfig {
+
     /**
-     * Gets the count result cache.
+     * Gets the query page result cache.
      *
-     * @return the count result cache
+     * @return the query page result cache
      */
-    Cache<Object, QueryPageResults> getCountResultCache();
+    Cache<Object, QueryPageResult> getQueryPageResultCache();
 }

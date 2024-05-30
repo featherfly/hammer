@@ -10,7 +10,7 @@ import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.config.HammerConfig;
-import cn.featherfly.hammer.config.dsl.QueryConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.query.Query;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -39,7 +39,7 @@ public class SqlQuery implements Query {
 
     private final HammerConfig hammerConfig;
 
-    private final QueryConfig queryConfig;
+    private final DslQueryConfig queryConfig;
 
     /**
      * Instantiates a new sql query.

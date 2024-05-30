@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.constant.Chars;
@@ -18,7 +19,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
-import cn.featherfly.common.repository.QueryPageResults;
+import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -89,7 +90,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         this.sqlPageFactory = sqlPageFactory;
         entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
-            entityRelation, hammerConfig.getCacheConfig().getCountResultCache());
+            entityRelation, hammerConfig.getCacheConfig().getQueryPageResultCache());
         this.hammerConfig = hammerConfig;
     }
 
@@ -538,7 +539,24 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
     // ****************************************************************************************************************
 
     /**
-     * Expression pagination.
+     * Prepare list.
+     *
+     * @param limit the limit
+     * @return the tuple 6
+     *         <ol>
+     *         <li>query sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function<Object, Object> getId value
+     *         </ol>
+     */
+    public abstract Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Object>> prepareList(Limit limit);
+
+    /**
+     * Prepare pagination.
      *
      * @param limit the limit
      * @return the tuple 7
@@ -552,8 +570,8 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      *         <li>Function<Object, Object> getId value
      *         </ol>
      */
-    public abstract Tuple7<String, String, List<Object>, Limit, Optional<QueryPageResults>, String,
-        Function<Object, Object>> expressionPagination(Limit limit);
+    public abstract Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Object>> preparePagination(Limit limit);
 
     // ****************************************************************************************************************
     //  protected method
