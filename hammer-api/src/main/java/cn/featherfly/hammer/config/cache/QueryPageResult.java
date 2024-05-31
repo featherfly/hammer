@@ -6,7 +6,7 @@
  * @date: 2024-05-29 18:51:29
  * @Copyright: 2024 www.featherfly.cn Inc. All rights reserved.
  */
-package cn.featherfly.common.repository;
+package cn.featherfly.hammer.config.cache;
 
 import java.util.HashMap;
 import java.util.List;

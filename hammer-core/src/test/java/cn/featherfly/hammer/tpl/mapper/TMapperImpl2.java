@@ -3,7 +3,7 @@ package cn.featherfly.hammer.tpl.mapper;
 
 import java.util.List;
 
-import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
@@ -457,6 +457,6 @@ public class TMapperImpl2 extends BasedTplGenericHammer<User, Long> implements T
     @Override
     public List<User> getGtAge(int age) {
         return tplExecutor.list(new TplExecuteIdFileImpl("getGtAge", "TMapper", parser), User.class,
-                new ChainMapImpl<String, Object>().putChain("age", age));
+            new Params().set("age", age));
     }
 }

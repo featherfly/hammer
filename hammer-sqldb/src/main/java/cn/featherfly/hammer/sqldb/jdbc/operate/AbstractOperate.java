@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,10 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import com.speedment.common.tuple.Tuple2;
 
-import cn.featherfly.common.db.FieldOperator;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
-import cn.featherfly.common.db.mapping.JavaTypeSqlTypeOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -171,22 +170,19 @@ public abstract class AbstractOperate<T> {
      * @param setArgs the set args
      * @return the object[]
      */
-    @SuppressWarnings("unchecked")
     protected void setBatchParameters(List<T> entities,
-        Tuple2<Function<T, Object>, JdbcPropertyMapping>[] paramsPropertyAndMappings, PreparedStatement prep,
-        Consumer<Object[]> setArgs) {
+        Tuple2<Function<T, Serializable>, JdbcPropertyMapping>[] paramsPropertyAndMappings, PreparedStatement prep,
+        Consumer<Serializable[]> setArgs) {
         if (Lang.isEmpty(entities)) {
-            //            return ArrayUtils.EMPTY_OBJECT_ARRAY;
             return;
         }
         try {
-            Object[] args = new Object[paramsPropertyAndMappings.length];
+            Serializable[] args = new Serializable[paramsPropertyAndMappings.length];
             for (T entity : entities) {
                 for (int i = 0; i < paramsPropertyAndMappings.length; i++) {
-                    Tuple2<Function<T, Object>, JdbcPropertyMapping> paramMapping = paramsPropertyAndMappings[i];
-                    Object value = paramMapping.get0().apply(entity);
-                    ((JavaTypeSqlTypeOperator<Object>) paramMapping.get1().getJavaTypeSqlTypeOperator()).set(prep,
-                        i + 1, value);
+                    Tuple2<Function<T, Serializable>, JdbcPropertyMapping> paramMapping = paramsPropertyAndMappings[i];
+                    Serializable value = paramMapping.get0().apply(entity);
+                    paramMapping.get1().getJavaTypeSqlTypeOperator().set(prep, i + 1, value);
                     args[i] = value;
                 }
                 setArgs.accept(args);
@@ -204,7 +200,7 @@ public abstract class AbstractOperate<T> {
      * @param entity the entity
      * @return the parameters
      */
-    protected Object[] getParameters(T entity) {
+    protected Serializable[] getParameters(T entity) {
         return getParameters(entity, paramsPropertyAndMappings);
     }
 
@@ -215,9 +211,9 @@ public abstract class AbstractOperate<T> {
      * @param paramsPropertyAndMappings the params property and mappings
      * @return the parameters
      */
-    protected Object[] getParameters(T entity,
+    protected Serializable[] getParameters(T entity,
         Tuple2<Function<T, Object>, JdbcPropertyMapping>[] paramsPropertyAndMappings) {
-        FieldOperator<?>[] operators = new FieldOperator[paramsPropertyAndMappings.length];
+        Serializable[] operators = new Serializable[paramsPropertyAndMappings.length];
         int i = 0;
         for (Tuple2<Function<T, Object>, JdbcPropertyMapping> paramsPropertyAndMapping : paramsPropertyAndMappings) {
             operators[i] = FieldValueOperator.create(paramsPropertyAndMapping.get1(),
@@ -234,8 +230,8 @@ public abstract class AbstractOperate<T> {
      * @param mappings the mappings
      * @return the parameters
      */
-    protected Object[] getParameters(T entity, JdbcPropertyMapping[] mappings) {
-        FieldOperator<?>[] operators = new FieldOperator[mappings.length];
+    protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] mappings) {
+        Serializable[] operators = new Serializable[mappings.length];
         int i = 0;
         for (JdbcPropertyMapping mapping : mappings) {
             //            operators[i] = FieldValueOperator.create(mapping,

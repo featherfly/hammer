@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.execute;
 
+import java.io.Serializable;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -16,7 +17,8 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public interface UpdateValueExpressionBase<T, U, C extends ConditionExpression, L extends LogicExpression<C, L>> {
+public interface UpdateValueExpressionBase<T extends Serializable, U, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> {
 
     /**
      * Sets the.
@@ -29,7 +31,7 @@ public interface UpdateValueExpressionBase<T, U, C extends ConditionExpression, 
     /**
      * Sets the.
      *
-     * @param value          the value
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */
@@ -40,7 +42,7 @@ public interface UpdateValueExpressionBase<T, U, C extends ConditionExpression, 
     /**
      * Sets the.
      *
-     * @param value          the value
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */

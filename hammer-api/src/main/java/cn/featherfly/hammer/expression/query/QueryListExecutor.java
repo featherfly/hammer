@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public interface QueryListExecutor extends QueryTypeListExecutor {
      *
      * @return list
      */
-    List<Map<String, Object>> list();
+    List<Map<String, Serializable>> list();
 
     /**
      * query for list

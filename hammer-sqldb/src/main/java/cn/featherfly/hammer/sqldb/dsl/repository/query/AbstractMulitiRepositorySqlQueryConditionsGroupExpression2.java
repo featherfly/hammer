@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -100,14 +101,14 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
     @Override
     public long count() {
         repositoryRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
-        return repositoryRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
+        return repositoryRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list() {
+    public List<Map<String, Serializable>> list() {
         return repositorySqlQueryConditionGroupQuery.list();
     }
 
@@ -133,7 +134,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination() {
+    public PaginationResults<Map<String, Serializable>> pagination() {
         return repositorySqlQueryConditionGroupQuery.pagination();
     }
 
@@ -159,7 +160,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single() {
+    public Map<String, Serializable> single() {
         return repositorySqlQueryConditionGroupQuery.single();
     }
 
@@ -185,7 +186,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique() {
+    public Map<String, Serializable> unique() {
         return repositorySqlQueryConditionGroupQuery.unique();
     }
 

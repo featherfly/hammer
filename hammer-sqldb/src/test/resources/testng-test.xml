@@ -26,6 +26,8 @@
         </packages>
         <classes>
             <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest2" />
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcEachTest" />
             <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTransactionTest" />
         </classes>
     </test>
@@ -40,6 +42,8 @@
                 name="cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTemplateTest" />
             <class
                 name="cn.featherfly.hammer.sqldb.jdbc.OperatorTest" />
+            <class
+                name="cn.featherfly.hammer.sqldb.jdbc.IdGeneratorTest" />
             <!-- <class name="cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest" 
                 /> -->
         </classes>

@@ -530,7 +530,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression expression(String expression, Map<String, Object> params) {
+    public UserQueryRepositoryConditionGroupExpression expression(String expression, Map<String, Serializable> params) {
 
         return null;
     }
@@ -539,7 +539,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      * {@inheritDoc}
      */
     @Override
-    public UserQueryRepositoryConditionGroupExpression expression(String expression, Object... params) {
+    public UserQueryRepositoryConditionGroupExpression expression(String expression, Serializable... params) {
 
         return null;
     }

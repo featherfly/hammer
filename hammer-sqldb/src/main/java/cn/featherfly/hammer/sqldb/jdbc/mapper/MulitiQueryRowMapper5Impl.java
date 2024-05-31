@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -48,7 +49,7 @@ public class MulitiQueryRowMapper5Impl<T1, T2, T3, T4, T5> extends AbstractMulit
      * {@inheritDoc}
      */
     @Override
-    public MulitiQueryRowMapper6<T1, T2, T3, T4, T5, Map<String, Object>> map() {
+    public MulitiQueryRowMapper6<T1, T2, T3, T4, T5, Map<String, Serializable>> map() {
         return map(new MapRowMapper(jdbc.getSqlTypeMappingManager()));
     }
 

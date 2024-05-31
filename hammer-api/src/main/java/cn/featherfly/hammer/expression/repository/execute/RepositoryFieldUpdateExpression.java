@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.repository.execute;
 
+import java.io.Serializable;
+
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -23,7 +25,7 @@ public interface RepositoryFieldUpdateExpression<U, C extends ConditionExpressio
      * @param name the name
      * @return the v
      */
-    UpdateValueExpression<Object, U, C, L> field(String name);
+    UpdateValueExpression<Serializable, U, C, L> field(String name);
 
     /**
      * field as number.
@@ -36,18 +38,18 @@ public interface RepositoryFieldUpdateExpression<U, C extends ConditionExpressio
     /**
      * field.
      *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the UpdateValueExpression
      */
-    <T, R> UpdateValueExpression<R, U, C, L> field(SerializableFunction<T, R> name);
+    <T, R extends Serializable> UpdateValueExpression<R, U, C, L> field(SerializableFunction<T, R> name);
 
     /**
      * field as number.
      *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return the UpdateNumberValueExpression
      */

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +20,11 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.QueryPageResult;
-import cn.featherfly.common.repository.QueryPageResult.PageInfo;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
+import cn.featherfly.hammer.config.cache.QueryPageResult.PageInfo;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -84,7 +85,7 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
     //    @Override
     //    public long count() {
     //        queryRelation.getSelectBuilder().addColumn(AggregateFunction.COUNT, Chars.STAR);
-    //        return queryRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
+    //        return queryRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
     //    }
 
     /**
@@ -100,8 +101,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * {@inheritDoc}
      */
     @Override
-    public Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> prepareList(Limit limit) {
+    public Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> prepareList(Limit limit) {
         return prepareList(hammerConfig, this, super.expression(), parent, entityRelation, getRootSortBuilder(),
             dialect, limit);
     }
@@ -110,8 +111,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * {@inheritDoc}
      */
     @Override
-    public Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> preparePagination(Limit limit) {
+    public Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> preparePagination(Limit limit) {
         return preparePage(hammerConfig, this, super.expression(), parent, entityRelation, getRootSortBuilder(),
             dialect, limit);
     }
@@ -154,8 +155,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param limit the limit
      * @return the tuple 6
      */
-    static Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> prepareList(HammerConfig hammerConfig,
+    static Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> prepareList(HammerConfig hammerConfig,
             AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
             LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder,
             Dialect dialect, Limit limit) {
@@ -166,14 +167,15 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
 
             String sort = sortBuilder.build();
 
-            Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
+            Cache<Object,
+                QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
             QueryPageResult queryPageResult = null;
-            List<Object> params = exp.getParams();
+            List<Serializable> params = exp.getParams();
 
             if (queryPageResultCache != null
                 && queryRelation.getEntityRelation(0).getClassMapping().isPrimaryKeyOrdered()
                 && StringUtils.isBlank(sort)) {
-                List<Object> key = new ArrayList<>(params);
+                List<Serializable> key = new ArrayList<>(params);
                 // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
                 selectSql = expression(condition, parent, queryRelation, sortBuilder, dialect);
                 key.add(0, selectSql);
@@ -223,8 +225,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param limit the limit
      * @return the tuple 7
      */
-    static Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> preparePage(HammerConfig hammerConfig,
+    static Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> preparePage(HammerConfig hammerConfig,
             AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
             LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder,
             Dialect dialect, Limit limit) {
@@ -235,7 +237,7 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
             QueryPageResult queryPageResult = null;
 
             String sort = sortBuilder.build();
-            List<Object> params = exp.getParams();
+            List<Serializable> params = exp.getParams();
 
             if (queryRelation.getConfig().isPagingOptimization() && limit != null) {
                 Cache<Object,

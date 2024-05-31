@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -23,11 +24,11 @@ import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.QueryPageResult;
-import cn.featherfly.common.repository.QueryPageResult.PageInfo;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
+import cn.featherfly.hammer.config.cache.QueryPageResult.PageInfo;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.entity.query.AbstractMulitiEntitySqlQueryConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.query.AbstractMulitiEntitySqlQueryConditionsGroupExpression2;
@@ -59,11 +60,11 @@ public class EntitySqlQueryConditionGroupQuery<R> {
 
     private SqlPageFactory sqlPageFactory;
 
-    private Function<Limit, Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>>> preparePagination;
+    private Function<Limit, Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>,
+        String, Function<Object, Serializable>>> preparePagination;
 
-    private Function<Limit, Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>>> prepareList;
+    private Function<Limit, Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>>> prepareList;
 
     private final Cache<Object, QueryPageResult> queryPageResultCache;
 
@@ -157,12 +158,12 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      * @return LogicExpressionist
      */
     public List<R> list() {
-        Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Object>> tupleResult = prepareList.apply(limit);
+        Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>> tupleResult = prepareList.apply(limit);
         String sql = tupleResult.get0();
         Limit newLimit = tupleResult.get2().orElse(null);
-        List<Object> paramList = tupleResult.get1();
-        Object[] params = paramList.toArray();
+        List<Serializable> paramList = tupleResult.get1();
+        Serializable[] params = paramList.toArray(new Serializable[paramList.size()]);
         paramList.add(0, tupleResult.get4());
         QueryPageResult queryPageResults = tupleResult.get3().orElse(null);
 
@@ -173,7 +174,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
             if (list != null) {
                 return list;
             }
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, newLimit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, newLimit.getOffset(),
                 newLimit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -211,13 +212,13 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      * @return the pagination results
      */
     public PaginationResults<R> pagination() {
-        Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Object>> tupleResult = preparePagination.apply(limit);
+        Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>> tupleResult = preparePagination.apply(limit);
         String sql = tupleResult.get0();
         Limit newLimit = tupleResult.get3().orElse(null);
-        List<Object> paramList = tupleResult.get2();
-        Object[] oraginalParams = paramList.toArray();
-        Object[] params = oraginalParams;
+        List<Serializable> paramList = tupleResult.get2();
+        Serializable[] oraginalParams = paramList.toArray(new Serializable[paramList.size()]);
+        Serializable[] params = oraginalParams;
         paramList.add(0, tupleResult.get5()); // cache key
         QueryPageResult queryPageResult = tupleResult.get4().orElse(null);
         SimplePaginationResults<R> pagination = new SimplePaginationResults<>(newLimit);
@@ -226,8 +227,8 @@ public class EntitySqlQueryConditionGroupQuery<R> {
             queryPageResult = queryPageResults(queryPageResult, paramList);
             list = getCacheList(queryPageResult, limit);
             if (list == null) {
-                SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, newLimit.getOffset(),
-                    newLimit.getLimit(), params);
+                SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql,
+                    newLimit.getOffset(), newLimit.getLimit(), params);
                 sql = pageQuery.getSql();
                 params = pageQuery.getParams();
                 list = queryRelation.list(sql, params);
@@ -290,7 +291,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     }
 
     private QueryPageResult setCacheList(List<R> list, QueryPageResult queryPageResult, Limit limit,
-        Function<Object, Object> getId) {
+        Function<Object, Serializable> getId) {
         if (queryPageResultCache != null && limit != null) {
             if (queryRelation.getConfig().isPagingOptimization()) { // cache id
                 queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
@@ -311,7 +312,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         return queryPageResult;
     }
 
-    private Long getTotal(QueryPageResult queryPageResult, List<Object> sqlAndParamsList) {
+    private Long getTotal(QueryPageResult queryPageResult, List<Serializable> sqlAndParamsList) {
         if (queryRelation.getConfig().isCachePageCount()) {
             queryPageResult = queryPageResults(queryPageResult, sqlAndParamsList);
             if (queryPageResult != null) {
@@ -321,7 +322,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         return null;
     }
 
-    private void setTotal(QueryPageResult queryPageResult, List<Object> sqlAndParamsList,
+    private void setTotal(QueryPageResult queryPageResult, List<Serializable> sqlAndParamsList,
         SimplePaginationResults<R> pagination) {
         if (queryRelation.getConfig().isCachePageCount() && queryPageResultCache != null) {
             if (queryPageResult == null) {
@@ -333,7 +334,7 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         }
     }
 
-    private QueryPageResult queryPageResults(QueryPageResult queryPageResults, List<Object> sqlAndParamsList) {
+    private QueryPageResult queryPageResults(QueryPageResult queryPageResults, List<Serializable> sqlAndParamsList) {
         if (queryPageResults == null && queryPageResultCache != null) {
             return queryPageResultCache.get(sqlAndParamsList);
         }
@@ -347,9 +348,9 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      */
     public R single() {
         String sql = exp.getRoot().expression();
-        Object[] params = exp.getRoot().getParams().toArray();
+        Serializable[] params = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -364,9 +365,9 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      */
     public R unique() {
         String sql = exp.getRoot().expression();
-        Object[] params = exp.getRoot().getParams().toArray();
+        Serializable[] params = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();

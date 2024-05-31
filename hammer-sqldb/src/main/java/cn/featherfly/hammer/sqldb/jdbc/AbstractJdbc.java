@@ -47,6 +47,7 @@ import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
+import cn.featherfly.common.bean.Property;
 import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
@@ -142,7 +143,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
-        Object... args) {
+        Serializable... args) {
         if (metadata.getTable(tableName).getPrimaryColumns().size() == 1) {
             return update(
                 getDialect().dml().insert(tableName, metadata.getTable(tableName).getPrimaryColumns().get(0).getName(),
@@ -157,7 +158,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args) {
+    public int insertBatch(String tableName, String[] columnNames, int batchSize, Serializable... args) {
         if (args.length % columnNames.length != 0) {
             throw new JdbcException("batch size is not explicit (args.length % columnNames.length != 0)");
         }
@@ -186,7 +187,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args) {
+    public int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Serializable... args) {
         if (metadata.getTable(tableName).getPrimaryColumns().size() == 1) {
             return update(getDialect().dml().upsert(tableName,
                 metadata.getTable(tableName).getPrimaryColumns().get(0).getName(), columnNames, uniqueColumns,
@@ -200,7 +201,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keyHolder, Object... args) {
+    public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keyHolder, Serializable... args) {
         return executeUpdate(sql, keyHolder, args);
     }
 
@@ -209,7 +210,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> keySupplier,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return 0;
@@ -224,7 +225,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> keySupplier,
-        Object... args) {
+        Serializable... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return 0;
@@ -237,7 +238,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> keySupplier,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return 0;
@@ -252,7 +253,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeysHolder,
-        Object[]... argsList) {
+        Serializable[]... argsList) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
@@ -262,7 +263,7 @@ public abstract class AbstractJdbc implements Jdbc {
 
     @Override
     public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        Iterable<Object[]> argsIter) {
+        Iterable<Serializable[]> argsIter) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
@@ -272,7 +273,7 @@ public abstract class AbstractJdbc implements Jdbc {
 
     @Override
     public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        BiConsumer<PreparedStatement, Consumer<Object[]>> setArgs) {
+        BiConsumer<PreparedStatement, Consumer<Serializable[]>> setArgs) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
@@ -285,13 +286,13 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        Map<String, Object>[] batchArgs) {
+        Map<String, Serializable>[] batchArgs) {
         if (Lang.isNotEmpty(sql) && Lang.isNotEmpty(batchArgs)) {
             logger.debug("sql -> {}", sql);
             sql = sql.trim();
-            List<Object[]> argsList = new ArrayList<>(batchArgs.length);
+            List<Serializable[]> argsList = new ArrayList<>(batchArgs.length);
             Execution execution = null;
-            for (Map<String, Object> arg : batchArgs) {
+            for (Map<String, Serializable> arg : batchArgs) {
                 execution = SqlUtils.convertNamedParamSql(sql, arg);
                 argsList.add(execution.getParams());
             }
@@ -313,7 +314,7 @@ public abstract class AbstractJdbc implements Jdbc {
     //    }
 
     private <T extends Serializable> int executeUpdate(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
-        Object... args) {
+        Serializable... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return 0;
@@ -323,7 +324,7 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T extends Serializable> int executeUpdate(Consumer<PreparedStatement> setParams, String sql,
-        GeneratedKeyHolder<T> generatedKeyHolder, Object... args) {
+        GeneratedKeyHolder<T> generatedKeyHolder, Serializable... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
@@ -353,13 +354,13 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T extends Serializable> int executeUpdateBatch(String sql, int batchSize,
-        GeneratedKeysHolder<T> generatedKeysHolder, Object... args) {
+        GeneratedKeysHolder<T> generatedKeysHolder, Serializable... args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         return executeUpdateBatch(prep -> setParams(prep, args), sql, batchSize, generatedKeysHolder, args);
     }
 
     private <T extends Serializable> int executeUpdateBatch(Consumer<PreparedStatement> setParams, String sql,
-        int batchSize, GeneratedKeysHolder<T> generatedKeysHolder, Object... args) {
+        int batchSize, GeneratedKeysHolder<T> generatedKeysHolder, Serializable... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
@@ -392,8 +393,8 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
-    private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Object[]> setParams,
-        String sql, GeneratedKeysHolder<T> generatedKeysHolder, Object[][] batchArgs) {
+    private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Serializable[]> setParams,
+        String sql, GeneratedKeysHolder<T> generatedKeysHolder, Serializable[][] batchArgs) {
         return executeUpdateBatch(setParams, sql, generatedKeysHolder, () -> new ArrayIterator<>(batchArgs),
             batchArgs.length);
         //        StringBuilder message = new StringBuilder();
@@ -407,7 +408,7 @@ public abstract class AbstractJdbc implements Jdbc {
         //        try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
         //            : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
         //            List<JdbcExecution> jdbcExecutions = new ArrayList<>(batchArgs.length);
-        //            for (Object[] args : batchArgs) {
+        //            for (Serializable[] args : batchArgs) {
         //                JdbcExecution execution = preHandle(sql, args);
         //                jdbcExecutions.add(execution);
         //                if (logger.isDebugEnabled()) {
@@ -439,7 +440,7 @@ public abstract class AbstractJdbc implements Jdbc {
         //            releaseConnection(connection);
         //            StringBuilder strArgs = new StringBuilder();
         //            int index = 0;
-        //            for (Object[] args : batchArgs) {
+        //            for (Serializable[] args : batchArgs) {
         //                strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
         //            }
         //            throw new JdbcException(
@@ -449,8 +450,8 @@ public abstract class AbstractJdbc implements Jdbc {
         //        }
     }
 
-    private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Object[]> setParams,
-        String sql, GeneratedKeysHolder<T> generatedKeysHolder, Iterable<Object[]> argsIter, int batchSize) {
+    private <T extends Serializable> int[] executeUpdateBatch(BiConsumer<PreparedStatement, Serializable[]> setParams,
+        String sql, GeneratedKeysHolder<T> generatedKeysHolder, Iterable<Serializable[]> argsIter, int batchSize) {
         StringBuilder message = new StringBuilder();
         if (logger.isDebugEnabled()) {
             message.append("execute batch -> ").append(sql).append("\n");
@@ -462,7 +463,7 @@ public abstract class AbstractJdbc implements Jdbc {
         try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
             : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<JdbcExecution> jdbcExecutions = new ArrayList<>();
-            for (Object[] args : argsIter) {
+            for (Serializable[] args : argsIter) {
                 JdbcExecution execution = preHandle(sql, args);
                 jdbcExecutions.add(execution);
                 if (logger.isDebugEnabled()) {
@@ -495,7 +496,7 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(connection);
             StringBuilder strArgs = new StringBuilder();
             int index = 0;
-            for (Object[] args : argsIter) {
+            for (Serializable[] args : argsIter) {
                 strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
             }
             throw new JdbcException(
@@ -506,7 +507,7 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T extends Serializable> int[] executeUpdateBatch(String sql, GeneratedKeysHolder<T> generatedKeysHolder,
-        BiConsumer<PreparedStatement, Consumer<Object[]>> setArgs) {
+        BiConsumer<PreparedStatement, Consumer<Serializable[]>> setArgs) {
         StringBuilder message = new StringBuilder();
         if (logger.isDebugEnabled()) {
             message.append("execute batch -> ").append(sql).append("\n");
@@ -544,7 +545,7 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(connection);
             //            StringBuilder strArgs = new StringBuilder();
             //            int index = 0;
-            //            for (Object[] args : argsIter) {
+            //            for (Serializable[] args : argsIter) {
             //                strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
             //            }
             //            throw new JdbcException(Strings.format("executeUpdateBatch: \n  sql: {0} \n  args: {1}", sql, strArgs.toString()), e);
@@ -564,8 +565,8 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     private <T extends Serializable> T getGenereteKey(Type<T> type, ResultSet res) {
         T value;
-        if (type instanceof BeanProperty) {
-            value = manager.get(res, 1, (BeanProperty<?, T>) type);
+        if (type instanceof Property) {
+            value = manager.get(res, 1, (Property<?, T>) type);
         } else {
             value = manager.get(res, 1, type.getType());
         }
@@ -577,7 +578,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public ParamedQueryExecutor query(String sql, Object... args) {
+    public ParamedQueryExecutor query(String sql, Serializable... args) {
         // ArrayParamedExecutionExecutor has no page query api, so SqlPageFactory may be null
         return new ArrayParamedExecutionExecutor<>(new JdbcExecutor(this, propertyAccessorFactory, null), sql, args);
     }
@@ -586,7 +587,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public ParamedQueryExecutor query(String sql, Map<String, Object> args) {
+    public ParamedQueryExecutor query(String sql, Map<String, Serializable> args) {
         // MapParamedExecutionExecutor has no page query api, so SqlPageFactory may be null
         return new MapParamedExecutionExecutor<>(new JdbcExecutor(this, propertyAccessorFactory, null), sql, args);
     }
@@ -595,7 +596,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> queryList(String sql, Map<String, Object> args) {
+    public List<Map<String, Serializable>> queryList(String sql, Map<String, Serializable> args) {
         return queryList(sql, new MapRowMapper(manager), args);
     }
 
@@ -603,7 +604,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> queryList(String sql, Object... args) {
+    public List<Map<String, Serializable>> queryList(String sql, Serializable... args) {
         return queryList(sql, new MapRowMapper(manager), args);
     }
 
@@ -611,7 +612,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    public <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryList(execution.getExecution(), rowMapper, execution.getParams());
@@ -621,7 +622,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Object... args) {
+    public <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Serializable... args) {
         List<T> list = new ArrayList<>();
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -656,7 +657,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> queryList(String sql, Class<T> elementType, Map<String, Object> args) {
+    public <T> List<T> queryList(String sql, Class<T> elementType, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType -> {}", sql, args, elementType);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryList(execution.getExecution(), elementType, execution.getParams());
@@ -666,7 +667,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> queryList(String sql, Class<T> elementType, Object... args) {
+    public <T> List<T> queryList(String sql, Class<T> elementType, Serializable... args) {
         return queryList(sql, getTypeMapper(elementType), args);
     }
 
@@ -675,7 +676,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Map<String, Object> args) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
             elementType2);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -687,7 +688,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
             elementType1, elementType2, elementType3);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -701,7 +702,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4);
@@ -716,7 +717,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
@@ -732,7 +733,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
         Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}, elementType6 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6);
@@ -746,7 +747,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args) {
+        Tuple2<String, String> prefixes, Serializable... args) {
         //        SQLType sqlType = manager.getSqlType(elementType);
         //        RowMapper<T> rowMapper = null;
         //        if (sqlType == null) {
@@ -765,7 +766,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return queryList(sql, new TupleNestedBeanPropertyRowMapper<>(
             ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
     }
@@ -776,7 +777,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Object... args) {
+        Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return queryList(sql, new TupleNestedBeanPropertyRowMapper<>(
             ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager), args);
     }
@@ -787,7 +788,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return queryList(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
@@ -801,7 +802,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Serializable... args) {
         return queryList(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5, elementType6),
@@ -813,7 +814,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Object>> queryEach(String sql, Map<String, Object> args) {
+    public AutoCloseableIterable<Map<String, Serializable>> queryEach(String sql, Map<String, Serializable> args) {
         return queryEach(sql, new MapRowMapper(manager), args);
     }
 
@@ -821,7 +822,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Object>> queryEach(String sql, Object... args) {
+    public AutoCloseableIterable<Map<String, Serializable>> queryEach(String sql, Serializable... args) {
         return queryEach(sql, new MapRowMapper(manager), args);
     }
 
@@ -829,7 +830,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    public <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return new RowIterable<>(null, rowMapper);
@@ -843,7 +844,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Object... args) {
+    public <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Serializable... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return new RowIterable<>(null, rowMapper);
@@ -851,7 +852,7 @@ public abstract class AbstractJdbc implements Jdbc {
         return queryEach0(sql, rowMapper, args);
     }
 
-    private <T> AutoCloseableIterable<T> queryEach0(String sql, RowMapper<T> rowMapper, Object... args) {
+    private <T> AutoCloseableIterable<T> queryEach0(String sql, RowMapper<T> rowMapper, Serializable... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
@@ -877,7 +878,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Map<String, Object> args) {
+    public <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Map<String, Serializable> args) {
         return queryEach(sql, getTypeMapper(elementType), args);
     }
 
@@ -885,7 +886,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Object... args) {
+    public <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Serializable... args) {
         return queryEach(sql, getTypeMapper(elementType), args);
     }
 
@@ -894,7 +895,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Tuple2<String, String> prefixes, Map<String, Object> args) {
+        Class<T2> elementType2, Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
             elementType2);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -907,7 +908,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
             elementType1, elementType2, elementType3);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -921,7 +922,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4);
@@ -936,7 +937,8 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
@@ -952,7 +954,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}, elementType6 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6);
@@ -966,7 +968,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Tuple2<String, String> prefixes, Object... args) {
+        Class<T2> elementType2, Tuple2<String, String> prefixes, Serializable... args) {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes, manager),
             args);
@@ -977,7 +979,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
             ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
     }
@@ -988,7 +990,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Object... args) {
+        Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
             ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager), args);
     }
@@ -999,7 +1001,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
@@ -1014,7 +1016,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Object... args) {
+        Serializable... args) {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5, elementType6),
@@ -1047,7 +1049,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> querySingle(String sql, Map<String, Object> args) {
+    public Map<String, Serializable> querySingle(String sql, Map<String, Serializable> args) {
         return querySingle(sql, new MapRowMapper(manager), args);
     }
 
@@ -1055,7 +1057,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> querySingle(String sql, Object... args) {
+    public Map<String, Serializable> querySingle(String sql, Serializable... args) {
         return querySingle(sql, new MapRowMapper(manager), args);
     }
 
@@ -1063,7 +1065,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, RowMapper<T> rowMapper, Object... args) {
+    public <T> T querySingle(String sql, RowMapper<T> rowMapper, Serializable... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return null;
@@ -1101,7 +1103,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    public <T> T querySingle(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return querySingle(execution.getExecution(), rowMapper, execution.getParams());
@@ -1111,7 +1113,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, Class<T> elementType, Object... args) {
+    public <T> T querySingle(String sql, Class<T> elementType, Serializable... args) {
         return querySingle(sql, getTypeMapper(elementType), args);
     }
 
@@ -1119,7 +1121,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, Class<T> elementType, Map<String, Object> args) {
+    public <T> T querySingle(String sql, Class<T> elementType, Map<String, Serializable> args) {
         return querySingle(sql, getTypeMapper(elementType), args);
     }
 
@@ -1128,7 +1130,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Map<String, Object> args) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         return singleResult(queryList(sql, elementType1, elementType2, prefixes, args));
     }
 
@@ -1137,7 +1139,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> args) {
         return singleResult(queryList(sql, elementType1, elementType2, elementType3, prefixes, args));
     }
 
@@ -1147,7 +1149,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args) {
         return singleResult(queryList(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
     }
 
@@ -1157,7 +1159,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args) {
         return singleResult(
             queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
@@ -1167,7 +1169,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args) {
+        Tuple2<String, String> prefixes, Serializable... args) {
         return singleResult(queryList(sql, elementType1, elementType2, prefixes, args));
     }
 
@@ -1176,7 +1178,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> Tuple3<T1, T2, T3> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return singleResult(queryList(sql, elementType1, elementType2, elementType3, prefixes, args));
     }
 
@@ -1186,7 +1188,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> querySingle(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Object... args) {
+        Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return singleResult(queryList(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
     }
 
@@ -1196,7 +1198,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> querySingle(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return singleResult(
             queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
@@ -1208,7 +1210,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
         Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         return singleResult(queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             elementType6, prefixes, args));
     }
@@ -1225,7 +1227,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> queryUnique(String sql, Map<String, Object> args) {
+    public Map<String, Serializable> queryUnique(String sql, Map<String, Serializable> args) {
         return queryUnique(sql, new MapRowMapper(manager), args);
     }
 
@@ -1233,7 +1235,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> queryUnique(String sql, Object... args) {
+    public Map<String, Serializable> queryUnique(String sql, Serializable... args) {
         return queryUnique(sql, new MapRowMapper(manager), args);
     }
 
@@ -1241,7 +1243,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryUnique(String sql, RowMapper<T> rowMapper, Object... args) {
+    public <T> T queryUnique(String sql, RowMapper<T> rowMapper, Serializable... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return null;
@@ -1280,7 +1282,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryUnique(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    public <T> T queryUnique(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryUnique(execution.getExecution(), rowMapper, execution.getParams());
@@ -1290,7 +1292,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryUnique(String sql, Class<T> elementType, Map<String, Object> args) {
+    public <T> T queryUnique(String sql, Class<T> elementType, Map<String, Serializable> args) {
         return queryUnique(sql, getTypeMapper(elementType), args);
     }
 
@@ -1298,7 +1300,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryUnique(String sql, Class<T> elementType, Object... args) {
+    public <T> T queryUnique(String sql, Class<T> elementType, Serializable... args) {
         return queryUnique(sql, getTypeMapper(elementType), args);
     }
 
@@ -1307,7 +1309,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> Tuple2<T1, T2> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Map<String, Object> args) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         return nullableSingleResult(queryList(sql, elementType1, elementType2, prefixes, args));
     }
 
@@ -1316,7 +1318,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> Tuple3<T1, T2, T3> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Object> args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> args) {
         return nullableSingleResult(queryList(sql, elementType1, elementType2, elementType3, prefixes, args));
     }
 
@@ -1326,7 +1328,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> queryUnique(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args) {
         return nullableSingleResult(
             queryList(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
     }
@@ -1337,7 +1339,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> queryUnique(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> args) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args) {
         return nullableSingleResult(
             queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
@@ -1349,7 +1351,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> queryUnique(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
         Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         return nullableSingleResult(queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             elementType6, prefixes, args));
     }
@@ -1360,7 +1362,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> querySingle(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Serializable... args) {
         return singleResult(queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             elementType6, prefixes, args));
     }
@@ -1369,8 +1371,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Tuple2<Map<String, Object>, Integer> querySingleUpdate(String sql,
-        ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Map<String, Object> args) {
+    public Tuple2<Map<String, Serializable>, Integer> querySingleUpdate(String sql,
+        ToIntBiFunction<ResultSet, Map<String, Serializable>> setValueOperator, Map<String, Serializable> args) {
         return querySingleUpdate(sql, new MapRowMapper(manager), setValueOperator, args);
     }
 
@@ -1378,8 +1380,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Tuple2<Map<String, Object>, Integer> querySingleUpdate(String sql,
-        ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Object... args) {
+    public Tuple2<Map<String, Serializable>, Integer> querySingleUpdate(String sql,
+        ToIntBiFunction<ResultSet, Map<String, Serializable>> setValueOperator, Serializable... args) {
         return querySingleUpdate(sql, new MapRowMapper(manager), setValueOperator, args);
     }
 
@@ -1388,7 +1390,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> Tuple2<T, Integer> querySingleUpdate(String sql, RowMapper<T> rowMapper,
-        ToIntBiFunction<ResultSet, T> setValueOperator, Object... args) {
+        ToIntBiFunction<ResultSet, T> setValueOperator, Serializable... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
             return null;
@@ -1504,7 +1506,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> Tuple2<T, Integer> querySingleUpdate(String sql, RowMapper<T> rowMapper,
-        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args) {
+        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return querySingleUpdate(execution.getExecution(), rowMapper, setValueOperator, execution.getParams());
@@ -1515,7 +1517,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> Tuple2<T, Integer> querySingleUpdate(String sql, Class<T> elementType,
-        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args) {
+        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Serializable> args) {
         return querySingleUpdate(sql, new NestedBeanPropertyRowMapper<>(elementType, manager), setValueOperator, args);
     }
 
@@ -1524,7 +1526,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> Tuple2<T, Integer> querySingleUpdate(String sql, Class<T> elementType,
-        ToIntBiFunction<ResultSet, T> setValueOperator, Object... args) {
+        ToIntBiFunction<ResultSet, T> setValueOperator, Serializable... args) {
         return querySingleUpdate(sql, new NestedBeanPropertyRowMapper<>(elementType, manager), setValueOperator, args);
     }
 
@@ -1533,7 +1535,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> Tuple2<T1, T2> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args) {
+        Tuple2<String, String> prefixes, Serializable... args) {
         return nullableSingleResult(queryList(sql, elementType1, elementType2, prefixes, args));
     }
 
@@ -1542,7 +1544,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> Tuple3<T1, T2, T3> queryUnique(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return nullableSingleResult(queryList(sql, elementType1, elementType2, elementType3, prefixes, args));
     }
 
@@ -1552,7 +1554,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> queryUnique(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Object... args) {
+        Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return nullableSingleResult(
             queryList(sql, elementType1, elementType2, elementType3, elementType4, prefixes, args));
     }
@@ -1563,7 +1565,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> queryUnique(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return nullableSingleResult(
             queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
@@ -1574,7 +1576,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> queryUnique(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Object... args) {
+        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Serializable... args) {
         return nullableSingleResult(queryList(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             elementType6, prefixes, args));
     }
@@ -1584,7 +1586,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T queryValue(String sql, Map<String, Object> args) {
+    public <T> T queryValue(String sql, Map<String, Serializable> args) {
         return (T) queryValue(sql, Object.class, args);
     }
 
@@ -1593,7 +1595,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T queryValue(String sql, Object... args) {
+    public <T> T queryValue(String sql, Serializable... args) {
         return (T) queryValue(sql, Object.class, args);
     }
 
@@ -1601,7 +1603,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryValue(String sql, Class<T> valueType, Map<String, Object> args) {
+    public <T> T queryValue(String sql, Class<T> valueType, Map<String, Serializable> args) {
         return queryValue(sql, new SingleColumnRowMapper<>(valueType, manager), args);
     }
 
@@ -1609,7 +1611,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryValue(String sql, Class<T> valueType, Object... args) {
+    public <T> T queryValue(String sql, Class<T> valueType, Serializable... args) {
         return queryValue(sql, new SingleColumnRowMapper<>(valueType, manager), args);
     }
 
@@ -1617,7 +1619,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Object> args) {
+    public <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryValue(execution.getExecution(), rowMapper, execution.getParams());
@@ -1627,7 +1629,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public boolean queryBool(String sql, Object... args) {
+    public boolean queryBool(String sql, Serializable... args) {
         boolean result = false;
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -1662,7 +1664,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public boolean queryBool(String sql, Map<String, Object> args) {
+    public boolean queryBool(String sql, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, boolean.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryBool(execution.getExecution(), execution.getParams());
@@ -1672,7 +1674,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryValue(String sql, RowMapper<T> rowMapper, Object... args) {
+    public <T> T queryValue(String sql, RowMapper<T> rowMapper, Serializable... args) {
         List<T> results = queryList(sql, rowMapper, args);
         return nullableSingleResult(results);
     }
@@ -1681,7 +1683,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public byte queryByte(String sql, Object... args) {
+    public byte queryByte(String sql, Serializable... args) {
         byte result = 0;
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -1716,7 +1718,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public byte queryByte(String sql, Map<String, Object> args) {
+    public byte queryByte(String sql, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, byte.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryByte(execution.getExecution(), execution.getParams());
@@ -1726,7 +1728,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public byte[] queryBytes(String sql, Object... args) {
+    public byte[] queryBytes(String sql, Serializable... args) {
         byte[] result = new byte[0];
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -1762,7 +1764,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public byte[] queryBytes(String sql, Map<String, Object> args) {
+    public byte[] queryBytes(String sql, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, byte[].class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryBytes(execution.getExecution(), execution.getParams());
@@ -1772,7 +1774,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public short queryShort(String sql, Object... args) {
+    public short queryShort(String sql, Serializable... args) {
         short result = 0;
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -1808,7 +1810,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public short queryShort(String sql, Map<String, Object> args) {
+    public short queryShort(String sql, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, short.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryShort(execution.getExecution(), execution.getParams());
@@ -1818,7 +1820,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public int queryInt(String sql, Object... args) {
+    public int queryInt(String sql, Serializable... args) {
         int result = 0;
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -1853,7 +1855,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public int queryInt(String sql, Map<String, Object> args) {
+    public int queryInt(String sql, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, int.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryInt(execution.getExecution(), execution.getParams());
@@ -1863,7 +1865,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public long queryLong(String sql, Object... args) {
+    public long queryLong(String sql, Serializable... args) {
         long result = 0;
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -1898,7 +1900,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public long queryLong(String sql, Map<String, Object> args) {
+    public long queryLong(String sql, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, long.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryLong(execution.getExecution(), execution.getParams());
@@ -1908,7 +1910,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public double queryDouble(String sql, Object... args) {
+    public double queryDouble(String sql, Serializable... args) {
         double result = 0;
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
@@ -1943,7 +1945,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public double queryDouble(String sql, Map<String, Object> args) {
+    public double queryDouble(String sql, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, double.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryDouble(execution.getExecution(), execution.getParams());
@@ -1957,14 +1959,14 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public int call(String name, Object... args) {
+    public int call(String name, Serializable... args) {
         String procedure = getProcedure(name, args.length);
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
         Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, Class<?>> outParams = setParams(call, args);
+            Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             call.execute();
             setOutParams(call, outParams, args);
             postHandle(execution);
@@ -1984,11 +1986,11 @@ public abstract class AbstractJdbc implements Jdbc {
     //     * {@inheritDoc}
     //     */
     //    @Override
-    //    public int call(String name, SequencedMap<String, Object> args) {
+    //    public int call(String name, SequencedMap<String, Serializable> args) {
     //        String procedure = getProcedure(name, args.size());
     //        JdbcExecution execution = preHandle(procedure, args.values().toArray());
     //        procedure = execution.getExecution();
-    //        Object[] newArgs = execution.getParams();
+    //        Serializable[] newArgs = execution.getParams();
     //        Connection con = getConnection();
     //        try (CallableStatement call = con.prepareCall(procedure)) {
     //            Map<Integer, Class<?>> outParams = setParams(call, newArgs);
@@ -2013,12 +2015,13 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T extends MutableTuple> int call(String name, T args) {
         String procedure = getProcedure(name, args.degree());
-        JdbcExecution execution = preHandle(procedure, args.stream().map(opt -> opt.orElse(null)).toArray());
+        JdbcExecution execution = preHandle(procedure,
+            args.stream().map(opt -> opt.orElse(null)).toArray(n -> new Serializable[n]));
         procedure = execution.getExecution();
-        Object[] newArgs = execution.getParams();
+        Serializable[] newArgs = execution.getParams();
         Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, Class<?>> outParams = setParams(call, newArgs);
+            Map<Integer, Class<? extends Serializable>> outParams = setParams(call, newArgs);
             call.execute();
             setOutParams(call, outParams, args);
             postHandle(execution);
@@ -2039,7 +2042,7 @@ public abstract class AbstractJdbc implements Jdbc {
     //     */
     //    @SuppressWarnings("rawtypes")
     //    @Override
-    //    public int call(String name, Map<String, Object> args) {
+    //    public int call(String name, Map<String, Serializable> args) {
     //        String procedure = getProcedure(name, args.size());
     //        Connection con = getConnection(dataSource);
     //        try (CallableStatement call = con.prepareCall(procedure)) {
@@ -2061,7 +2064,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> callQuery(String name, Object... args) {
+    public List<Map<String, Serializable>> callQuery(String name, Serializable... args) {
         return callQuery(name, new MapRowMapper(manager), args);
     }
 
@@ -2069,14 +2072,14 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> callQuery(String name, RowMapper<T> rowMapper, Object... args) {
+    public <T> List<T> callQuery(String name, RowMapper<T> rowMapper, Serializable... args) {
         String procedure = getProcedure(name, args.length);
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
         Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, Class<?>> outParams = setParams(call, args);
+            Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
                 setOutParams(call, outParams, args);
                 //                postHandle(execution, procedure, args);
@@ -2103,7 +2106,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> callQuery(String name, Class<T> elementType, Object... args) {
+    public <T> List<T> callQuery(String name, Class<T> elementType, Serializable... args) {
         return callQuery(name, getTypeMapper(elementType), args);
     }
 
@@ -2111,7 +2114,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public MulitiQuery callMultiQuery(String name, Object... args) {
+    public MulitiQuery callMultiQuery(String name, Serializable... args) {
         String procedure = getProcedure(name, args.length);
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
@@ -2119,7 +2122,7 @@ public abstract class AbstractJdbc implements Jdbc {
         Connection con = new AutoCloseConnection(getConnection());
         try {
             CallableStatement call = con.prepareCall(procedure);
-            Map<Integer, Class<?>> outParams = setParams(call, args);
+            Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             call.execute();
             setOutParams(call, outParams, args);
             return new JdbcProcedureMulitiQuery(call, manager, this::getTypeMapper,
@@ -2142,7 +2145,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends Tuple> T callMultiQuery(String name,
-        Function<MulitiQueryTupleMapperBuilder, MulitiQueryRowMapper<T>> mapperFunction, Object... args) {
+        Function<MulitiQueryTupleMapperBuilder, MulitiQueryRowMapper<T>> mapperFunction, Serializable... args) {
         String procedure = getProcedure(name, args.length);
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
@@ -2150,7 +2153,7 @@ public abstract class AbstractJdbc implements Jdbc {
         Connection con = getConnection();
         try {
             CallableStatement call = con.prepareCall(procedure);
-            Map<Integer, Class<?>> outParams = setParams(call, args);
+            Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             MulitiQueryRowMapper<T> mulitiQueryRowMapper = mapperFunction
                 .apply(new MulitiQueryTupleMapperBuilderImpl(this, propertyAccessorFactory));
             RowMapper<?>[] rowMappers = mulitiQueryRowMapper.getRowMappers();
@@ -2202,7 +2205,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> List<Tuple2<T1, T2>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args) {
+        Tuple2<String, String> prefixes, Serializable... args) {
         return callQuery(name,
             new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes, manager),
             args);
@@ -2213,7 +2216,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> List<Tuple3<T1, T2, T3>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return callQuery(name, new TupleNestedBeanPropertyRowMapper<>(
             ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
     }
@@ -2224,7 +2227,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> callQuery(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Object... args) {
+        Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return callQuery(name, new TupleNestedBeanPropertyRowMapper<>(
             ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager), args);
     }
@@ -2235,7 +2238,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> callQuery(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return callQuery(name,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
@@ -2247,7 +2250,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> callQuerySingle(String name, Object... args) {
+    public Map<String, Serializable> callQuerySingle(String name, Serializable... args) {
         return callQuerySingle(name, new MapRowMapper(manager), args);
     }
 
@@ -2255,7 +2258,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T callQuerySingle(String name, RowMapper<T> rowMapper, Object... args) {
+    public <T> T callQuerySingle(String name, RowMapper<T> rowMapper, Serializable... args) {
         if (Lang.isEmpty(name)) {
             return null;
         }
@@ -2266,7 +2269,7 @@ public abstract class AbstractJdbc implements Jdbc {
         args = execution.getParams();
         Connection con = getConnection();
         try (CallableStatement call = con.prepareCall(procedure)) {
-            Map<Integer, Class<?>> outParams = setParams(call, args);
+            Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
                 setOutParams(call, outParams, args);
                 int i = 0;
@@ -2293,7 +2296,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T callQuerySingle(String name, Class<T> elementType, Object... args) {
+    public <T> T callQuerySingle(String name, Class<T> elementType, Serializable... args) {
         return callQuerySingle(name, new NestedBeanPropertyRowMapper<>(elementType, manager), args);
     }
 
@@ -2302,7 +2305,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2> Tuple2<T1, T2> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args) {
+        Tuple2<String, String> prefixes, Serializable... args) {
         return singleResult(callQuery(name, elementType1, elementType2, prefixes, args));
     }
 
@@ -2311,7 +2314,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T1, T2, T3> Tuple3<T1, T2, T3> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args) {
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return singleResult(callQuery(name, elementType1, elementType2, elementType3, prefixes, args));
     }
 
@@ -2321,7 +2324,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> callQuerySingle(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Object... args) {
+        Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return singleResult(callQuery(name, elementType1, elementType2, elementType3, elementType4, prefixes, args));
     }
 
@@ -2331,7 +2334,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> callQuerySingle(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return singleResult(
             callQuery(name, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
     }
@@ -2365,13 +2368,13 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param index the index
      * @param argu the arg
      */
-    protected void setParam(PreparedStatement prep, int index, Object argu) {
+    protected void setParam(PreparedStatement prep, int index, Serializable argu) {
         if (argu instanceof FieldValueOperator) {
             ((FieldValueOperator<?>) argu).set(prep, index);
         } else if (argu instanceof BeanPropertyValue) {
             @SuppressWarnings("unchecked")
-            BeanPropertyValue<?, Object> bpv = (BeanPropertyValue<?, Object>) argu;
-            BeanProperty<?, Object> bp = bpv.getBeanProperty();
+            BeanPropertyValue<?, Serializable> bpv = (BeanPropertyValue<?, Serializable>) argu;
+            BeanProperty<?, Serializable> bp = bpv.getBeanProperty();
             manager.set(prep, index, bpv.getValue(), bp);
         } else {
             manager.set(prep, index, argu);
@@ -2406,9 +2409,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param prep the prep
      * @param args the args
      */
-    protected void setParams(PreparedStatement prep, Object... args) {
+    protected void setParams(PreparedStatement prep, Serializable... args) {
         for (int i = 0; i < args.length; i++) {
-            Object arg = args[i];
+            Serializable arg = args[i];
             setParam(prep, i + 1, arg);
         }
     }
@@ -2419,10 +2422,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param prep the prep
      * @param args the args
      */
-    protected void setParams(PreparedStatement prep, BeanPropertyValue<?, ?>... args) {
+    protected void setParams(PreparedStatement prep,
+        @SuppressWarnings("unchecked") BeanPropertyValue<?, Serializable>... args) {
         for (int i = 0; i < args.length; i++) {
-            @SuppressWarnings("unchecked")
-            BeanProperty<?, Object> argBp = (BeanProperty<?, Object>) args[i].getBeanProperty();
+            BeanProperty<?, Serializable> argBp = args[i].getBeanProperty();
             manager.set(prep, i + 1, args[i].getValue(), argBp);
         }
     }
@@ -2434,8 +2437,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param args the args
      * @return the out parameter index and class map
      */
-    protected Map<Integer, Class<?>> setParams(CallableStatement call, Object... args) {
-        Map<Integer, Class<?>> outParamMap = new HashMap<>(0);
+    protected Map<Integer, Class<? extends Serializable>> setParams(CallableStatement call, Serializable... args) {
+        Map<Integer, Class<? extends Serializable>> outParamMap = new HashMap<>(0);
         try {
             ParameterMetaData meta = call.getParameterMetaData();
             if (meta.getParameterCount() != args.length) {
@@ -2446,7 +2449,7 @@ public abstract class AbstractJdbc implements Jdbc {
                 if (meta.isNullable(i) == ParameterMetaData.parameterNoNulls) {
                     throw new JdbcException(Strings.format("procedure parameter[{0}] can not be null", i));
                 }
-                Object arg = args[i - 1];
+                Serializable arg = args[i - 1];
                 int mode = meta.getParameterMode(i);
                 if (mode == ParameterMetaData.parameterModeOut) {
                     setOutParamMap(outParamMap, i, arg, meta);
@@ -2463,10 +2466,11 @@ public abstract class AbstractJdbc implements Jdbc {
         return outParamMap;
     }
 
-    private void setOutParamMap(Map<Integer, Class<?>> outParamMap, int index, Object arg, ParameterMetaData meta)
-        throws SQLException {
+    @SuppressWarnings("unchecked")
+    private void setOutParamMap(Map<Integer, Class<? extends Serializable>> outParamMap, int index, Serializable arg,
+        ParameterMetaData meta) throws SQLException {
         if (arg == null) {
-            outParamMap.put(index, ClassUtils.forName(meta.getParameterClassName(index)));
+            outParamMap.put(index, (Class<Serializable>) ClassUtils.forName(meta.getParameterClassName(index)));
         } else {
             outParamMap.put(index, arg.getClass());
         }
@@ -2480,7 +2484,7 @@ public abstract class AbstractJdbc implements Jdbc {
     //     * @return the map
     //     */
     //    @SuppressWarnings("rawtypes")
-    //    protected Map<String, ProcedureOutParameter> setParams(CallableStatement call, Map<String, Object> args) {
+    //    protected Map<String, ProcedureOutParameter> setParams(CallableStatement call, Map<String, Serializable> args) {
     //        return JdbcUtils.setParameters(call, args, manager.isEnumWithOrdinal());
     //    }
 
@@ -2491,8 +2495,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param outParams the out params
      * @param args the args
      */
-    protected void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams, Object[] args) {
-        for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
+    protected void setOutParams(CallableStatement call, Map<Integer, Class<? extends Serializable>> outParams,
+        Serializable[] args) {
+        for (Entry<Integer, Class<? extends Serializable>> entry : outParams.entrySet()) {
             int index = entry.getKey();
             args[index - 1] = manager.getParam(call, index, entry.getValue());
         }
@@ -2506,7 +2511,7 @@ public abstract class AbstractJdbc implements Jdbc {
     //     * @param args      the args
     //     */
     //    protected void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams,
-    //            SequencedMap<String, Object> args) {
+    //            SequencedMap<String, Serializable> args) {
     //        String[] keys = Lang.toArray(args.keySet());
     //        for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
     //            int index = entry.getKey();
@@ -2522,9 +2527,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param outParams the out params
      * @param args the args
      */
-    protected <T extends MutableTuple> void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams,
-        T args) {
-        for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
+    protected <T extends MutableTuple> void setOutParams(CallableStatement call,
+        Map<Integer, Class<? extends Serializable>> outParams, T args) {
+        for (Entry<Integer, Class<? extends Serializable>> entry : outParams.entrySet()) {
             int index = entry.getKey();
             set(args, index, manager.getParam(call, index, entry.getValue()));
         }
@@ -2590,7 +2595,7 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
-    private JdbcExecution preHandle(String sql, Object... params) {
+    private JdbcExecution preHandle(String sql, Serializable... params) {
         JdbcExecution jdbcExecution = new JdbcExecution(this, sql, params);
         for (JdbcExecutionInterceptor interceptor : interceptors) {
             interceptor.preHandle(jdbcExecution);
@@ -2639,9 +2644,11 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T> RowMapper<T> getTypeMapper(Class<T> elementType) {
-        return Lang.ifTrue(elementType == Object.class || manager.getSqlType(elementType) != null,
-            () -> new SingleColumnRowMapper<>(elementType, manager),
-            () -> new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager));
+        if (elementType == Object.class || manager.getSqlType(elementType) != null) {
+            return new SingleColumnRowMapper<>(elementType, manager);
+        } else {
+            return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager);
+        }
     }
 
     /**

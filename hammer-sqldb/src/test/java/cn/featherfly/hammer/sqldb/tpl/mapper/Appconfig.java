@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
+import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
@@ -74,7 +76,8 @@ public class Appconfig extends JdbcTestBase {
 
         Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
 
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, new SqlTypeMappingManager(),
+            new IdGeneratorManager(), propertyAccessorFactory);
 
         Set<String> basePackages = new HashSet<>();
         basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");

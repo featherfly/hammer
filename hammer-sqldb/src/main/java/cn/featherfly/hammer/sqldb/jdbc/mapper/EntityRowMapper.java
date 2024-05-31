@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +44,7 @@ public class EntityRowMapper<T> implements RowMapper<T> {
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final List<Tuple2<BiConsumer<T, Object>, JdbcPropertyMapping>> fetchProperties = new ArrayList<>(0);
+    private final List<Tuple2<BiConsumer<T, Serializable>, JdbcPropertyMapping>> fetchProperties = new ArrayList<>(0);
 
     private final Instantiator<T> instantiator;
 
@@ -69,7 +70,7 @@ public class EntityRowMapper<T> implements RowMapper<T> {
                     (obj, value) -> propertyAccessor.setPropertyValue(obj, mapping.getPropertyIndexes(), value),
                     mapping));
             } else {
-                fetchProperties.add(Tuples.of((BiConsumer<T, Object>) mapping.getSetter(), mapping));
+                fetchProperties.add(Tuples.of((BiConsumer<T, Serializable>) mapping.getSetter(), mapping));
             }
         }
     }
@@ -83,7 +84,7 @@ public class EntityRowMapper<T> implements RowMapper<T> {
      * @param fetchPropertyMappings the fetch property mappings
      */
     public EntityRowMapper(Instantiator<T> instantiator, Dialect dialect, JdbcClassMapping<T> classMapping,
-        Tuple2<BiConsumer<T, Object>, JdbcPropertyMapping>[] fetchPropertyMappings) {
+        Tuple2<BiConsumer<T, Serializable>, JdbcPropertyMapping>[] fetchPropertyMappings) {
         super();
         this.instantiator = instantiator;
         this.classMapping = classMapping;
@@ -107,7 +108,7 @@ public class EntityRowMapper<T> implements RowMapper<T> {
         for (Tuple2<int[], JdbcPropertyMapping> tuple : fetchPropertyMappings) {
             if (tuple.get0().length == 1) {
                 @SuppressWarnings("unchecked")
-                BiConsumer<T, Object> setter = (BiConsumer<T, Object>) tuple.get1().getSetter();
+                BiConsumer<T, Serializable> setter = (BiConsumer<T, Serializable>) tuple.get1().getSetter();
                 fetchProperties.add(Tuples.of(setter, tuple.get1()));
             } else {
                 fetchProperties.add(Tuples
@@ -157,14 +158,14 @@ public class EntityRowMapper<T> implements RowMapper<T> {
         MappingDebugMessage mappingDebugMessage = logger.isDebugEnabled()
             ? mappingDebugMessage = new MappingDebugMessage(logger.isDebugEnabled())
             : null;
-        for (Tuple2<BiConsumer<T, Object>, JdbcPropertyMapping> tuple : fetchProperties) {
+        for (Tuple2<BiConsumer<T, Serializable>, JdbcPropertyMapping> tuple : fetchProperties) {
             if (logger.isDebugEnabled() && rowNumber == 0) {
                 mappingDebugMessage
                     .debug(m -> m.addMapping(tuple.get1().getRepositoryFieldName(), tuple.get1().getPropertyFullName(),
                         tuple.get1().getPropertyFullName(), tuple.get1().getPropertyType().getName()));
             }
             //
-            Object value = tuple.get1().getJavaTypeSqlTypeOperator().get(resultSet, columnIndex);
+            Serializable value = (Serializable) tuple.get1().getJavaTypeSqlTypeOperator().get(resultSet, columnIndex);
             tuple.get0().accept(mappedObject, value);
             columnIndex++;
         }

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -19,13 +20,13 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.repository.SimpleExecution;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupLogicExpression;
@@ -139,7 +140,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     @Override
     public long count() {
         entityRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
-        return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParams().toArray());
+        return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
     }
 
     /**
@@ -158,11 +159,11 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<E> pagination() {
-        Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Object>> tupleResult = getRoot().preparePagination(limit);
+        Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>> tupleResult = getRoot().preparePagination(limit);
         String sql = tupleResult.get0();
         String countSql = tupleResult.get1();
-        Object[] params = tupleResult.get2().toArray();
+        Serializable[] params = Lang.toArray(tupleResult.get2(), Serializable.class);
         Limit limit = tupleResult.get3().orElse(null);
         SimplePaginationResults<E> pagination = null;
 
@@ -170,8 +171,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
 
         if (limit != null) {
             pagination = new SimplePaginationResults<>(limit);
-            SqlPageQuery<
-                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
+                limit.getLimit(), params);
             List<E> list = entityRelation.getJdbc().queryList(pageQuery.getSql(), queryType, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = entityRelation.getJdbc().queryInt(countSql, params);
@@ -208,11 +209,11 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<V> valuePagination() {
-        Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Object>> tupleResult = getRoot().preparePagination(limit);
+        Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>> tupleResult = getRoot().preparePagination(limit);
         String sql = tupleResult.get0();
         String countSql = tupleResult.get1();
-        Object[] params = tupleResult.get2().toArray();
+        Serializable[] params = Lang.toArray(tupleResult.get2(), Serializable.class);
         Limit limit = tupleResult.get3().orElse(null);
         SimplePaginationResults<V> pagination = null;
 
@@ -220,8 +221,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
 
         if (limit != null) {
             pagination = new SimplePaginationResults<>(limit);
-            SqlPageQuery<
-                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
+                limit.getLimit(), params);
             List<V> list = entityRelation.getJdbc().queryList(pageQuery.getSql(), valueType, pageQuery.getParams());
             pagination.setPageResults(list);
             int total = entityRelation.getJdbc().queryInt(countSql, params);
@@ -261,7 +262,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     //        Execution execution = getExecution();
     //        return entityRelation.getJdbc().queryString(execution.getExecution(), execution.getParams());
     //        //        String sql = getRoot().expression();
-    //        //        Object[] params = getRoot().getParams().toArray();
+    //        //        Object[] params = getRoot().getParamsArray();
     //        //        if (limit != null) {
     //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
     //        //                    params);
@@ -379,7 +380,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     //        Execution execution = getExecution();
     //        return entityRelation.getJdbc().queryInt(execution.getExecution(), execution.getParams());
     //        //        String sql = getRoot().expression();
-    //        //        Object[] params = getRoot().getParams().toArray();
+    //        //        Object[] params = getRoot().getParamsArray();
     //        //        if (limit != null) {
     //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
     //        //                    params);
@@ -397,7 +398,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     //        Execution execution = getExecution();
     //        return entityRelation.getJdbc().queryLong(execution.getExecution(), execution.getParams());
     //        //        String sql = getRoot().expression();
-    //        //        Object[] params = getRoot().getParams().toArray();
+    //        //        Object[] params = getRoot().getParamsArray();
     //        //        if (limit != null) {
     //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
     //        //                    params);
@@ -417,7 +418,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     //    //        //        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
     //    //
     //    //        //        String sql = getRoot().expression();
-    //    //        //        Object[] params = getRoot().getParams().toArray();
+    //    //        //        Object[] params = getRoot().getParamsArray();
     //    //        //        if (limit != null) {
     //    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
     //    //        //                    params);
@@ -556,8 +557,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      *         <li>Function<Object, Object> getId value
      *         </ol>
      */
-    public abstract Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> prepareList(Limit limit);
+    public abstract Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> prepareList(Limit limit);
 
     /**
      * Prepare pagination.
@@ -574,8 +575,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      *         <li>Function<Object, Object> getId value
      *         </ol>
      */
-    public abstract Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> preparePagination(Limit limit);
+    public abstract Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> preparePagination(Limit limit);
 
     /**
      * Gets the root sort builder.
@@ -592,10 +593,10 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
 
     private Execution getExecution() {
         String sql = getRoot().expression();
-        Object[] params = getRoot().getParams().toArray();
+        Serializable[] params = getRoot().getParamsArray();
         if (limit != null) {
-            SqlPageQuery<
-                Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
+                limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }

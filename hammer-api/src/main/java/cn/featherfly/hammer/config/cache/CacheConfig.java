@@ -10,8 +10,6 @@ package cn.featherfly.hammer.config.cache;
 
 import javax.cache.Cache;
 
-import cn.featherfly.common.repository.QueryPageResult;
-
 /**
  * CacheConfig.
  *

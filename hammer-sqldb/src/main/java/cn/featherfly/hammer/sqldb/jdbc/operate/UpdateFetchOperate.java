@@ -179,7 +179,7 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     }
 
     private T executeResultSetUpdatable(boolean lock, UnaryOperator<T> updateOperator, Supplier<String> keySupplier,
-        Object... args) {
+        Serializable... args) {
         if (lock) {
             if (priorityUseDatabaseRowLock && databaseMetadata.getFeatures().supportsSelectForUpdate()) {
                 Tuple2<T, Integer> result = jdbc.querySingleUpdate(sql + jdbc.getDialect().getKeyword(" for update"),
@@ -202,7 +202,7 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
         }
     }
 
-    private Tuple2<T, Integer> executeResultSetUpdatable(UnaryOperator<T> updateOperator, Object... args) {
+    private Tuple2<T, Integer> executeResultSetUpdatable(UnaryOperator<T> updateOperator, Serializable... args) {
         return jdbc.querySingleUpdate(sql, getOperate::mapRow, (res, e) -> {
             return updateResultSet(res, updateOperator.apply(e), fullUpdate() ? e : getOperate.mapRow(res, 1));
         }, args);
@@ -240,6 +240,7 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     private int updateValue(ResultSet res, T mappedObject, T originalEntity, JdbcPropertyMapping propertyMapping,
         int index, UpdateDebugMessage updateDebugMessage) {
         Object value = BeanUtils.getProperty(mappedObject, propertyMapping.getPropertyFullName());
+        // ENHANCE 使用PropertyAccessor替换BeanUtils
         if (fullUpdate()) {
             updateDebugMessage.debug(m -> m.addPropertyUpdate(propertyMapping.getPropertyFullName(),
                 propertyMapping.getRepositoryFieldName(),

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.execute;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -39,7 +40,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @author zhongj
  */
 public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<RepositorySqlExecutableUpdate>
-        implements RepositorySqlUpdate, RepositoryExecutableUpdate {
+    implements RepositorySqlUpdate, RepositoryExecutableUpdate {
 
     /** The update relation. */
     protected RepositorySqlUpdateRelation updateRelation;
@@ -47,32 +48,32 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName        tableName
-     * @param jdbc             jdbc
-     * @param aliasManager     the alias manager
+     * @param tableName tableName
+     * @param jdbc jdbc
+     * @param aliasManager the alias manager
      * @param databaseMetadata the database metadata
-     * @param updateConfig     the update config
+     * @param updateConfig the update config
      */
     public RepositorySqlExecutableUpdate(String tableName, Jdbc jdbc, AliasManager aliasManager,
-            DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
+        DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
         this(tableName, null, jdbc, aliasManager, databaseMetadata, updateConfig);
     }
 
     /**
      * Instantiates a new sql executable update.
      *
-     * @param tableName        tableName
-     * @param tableAlias       the table alias
-     * @param jdbc             jdbc
-     * @param aliasManager     the alias manager
+     * @param tableName tableName
+     * @param tableAlias the table alias
+     * @param jdbc jdbc
+     * @param aliasManager the alias manager
      * @param databaseMetadata the database metadata
-     * @param updateConfig     the update config
+     * @param updateConfig the update config
      */
     public RepositorySqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
-            DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
+        DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
         super(tableName, tableAlias, jdbc, aliasManager, updateConfig);
         updateRelation = new RepositorySqlUpdateRelation(jdbc, aliasManager, databaseMetadata, updateConfig)
-                .addFilterable(tableName, tableAlias);
+            .addFilterable(tableName, tableAlias);
         // addFilterable 初始化builder
         builder = updateRelation.getBuilder();
     }
@@ -80,28 +81,28 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
     /**
      * Instantiates a new sql executable update.
      *
-     * @param repository       the repository
-     * @param jdbc             the jdbc
-     * @param aliasManager     the alias manager
+     * @param repository the repository
+     * @param jdbc the jdbc
+     * @param aliasManager the alias manager
      * @param databaseMetadata the database metadata
-     * @param updateConfig     the update config
+     * @param updateConfig the update config
      */
     public RepositorySqlExecutableUpdate(Repository repository, Jdbc jdbc, AliasManager aliasManager,
-            DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
+        DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
         this(repository.name(), jdbc, aliasManager, databaseMetadata, updateConfig);
     }
 
     /**
      * Instantiates a new sql executable update.
      *
-     * @param repository       the repository
-     * @param jdbc             the jdbc
-     * @param aliasManager     the alias manager
+     * @param repository the repository
+     * @param jdbc the jdbc
+     * @param aliasManager the alias manager
      * @param databaseMetadata the database metadata
-     * @param updateConfig     the update config
+     * @param updateConfig the update config
      */
     public RepositorySqlExecutableUpdate(AliasRepository repository, Jdbc jdbc, AliasManager aliasManager,
-            DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
+        DatabaseMetadata databaseMetadata, UpdateConfig updateConfig) {
         this(repository.name(), repository.alias(), jdbc, aliasManager, databaseMetadata, updateConfig);
     }
 
@@ -134,7 +135,7 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      */
     @Override
     public <T, R> RepositoryExecutableUpdate set(SerializableFunction<T, R> name, R value,
-            Predicate<R> ignoreStrategy) {
+        Predicate<R> ignoreStrategy) {
         return set0(getPropertyName(name), value, ignoreStrategy);
     }
 
@@ -176,7 +177,7 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      */
     @Override
     public <T, N extends Number> RepositoryExecutableUpdate increase(SerializableFunction<T, N> name, N value,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         return increase0(getPropertyName(name), value, ignoreStrategy);
     }
 
@@ -209,7 +210,7 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      */
     @Override
     public <N extends Number> RepositoryExecutableUpdate increase(SerializableSupplier<N> property,
-            Predicate<N> ignoreStrategy) {
+        Predicate<N> ignoreStrategy) {
         return increase0(getPropertyName(property), property.get(), ignoreStrategy);
     }
 
@@ -217,8 +218,9 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      * {@inheritDoc}
      */
     @Override
-    public UpdateValueExpression<Object, RepositoryExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>, RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> field(
-            String name) {
+    public UpdateValueExpression<Serializable, RepositoryExecutableUpdate,
+        RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> field(String name) {
         return new RepositoryUpdateValueImpl<>(name, this);
     }
 
@@ -226,8 +228,9 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      * {@inheritDoc}
      */
     @Override
-    public UpdateNumberValueExpression<Number, RepositoryExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>, RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> fieldAsNumber(
-            String name) {
+    public UpdateNumberValueExpression<Number, RepositoryExecutableUpdate,
+        RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> fieldAsNumber(String name) {
         return new RepositoryUpdateNumberValueImpl<>(name, this);
     }
 
@@ -236,8 +239,9 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      */
     @Override
     public <T,
-            R> UpdateValueExpression<R, RepositoryExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>, RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> field(
-                    SerializableFunction<T, R> name) {
+        R extends Serializable> UpdateValueExpression<R, RepositoryExecutableUpdate,
+            RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+            RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> field(SerializableFunction<T, R> name) {
         return new RepositoryUpdateValueImpl<>(LambdaUtils.getLambdaPropertyName(name), this);
     }
 
@@ -246,8 +250,10 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      */
     @Override
     public <T,
-            R extends Number> UpdateNumberValueExpression<R, RepositoryExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>, RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> fieldAsNumber(
-                    SerializableFunction<T, R> name) {
+        R extends Number> UpdateNumberValueExpression<R, RepositoryExecutableUpdate,
+            RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+            RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> fieldAsNumber(
+                SerializableFunction<T, R> name) {
         return new RepositoryUpdateNumberValueImpl<>(LambdaUtils.getLambdaPropertyName(name), this);
     }
 
@@ -264,12 +270,12 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      */
     @Override
     public RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig> where(
-            Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
+        Function<RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
         RepositorySqlUpdateConditions sqlUpdateExpression = new RepositorySqlUpdateConditions(updateRelation);
         if (filterable != null) {
             //filterable.apply(sqlUpdateExpression);
             sqlUpdateExpression
-                    .addCondition(filterable.apply(new RepositoryFieldOnlyExpressionImpl<>(0, updateRelation)));
+                .addCondition(filterable.apply(new RepositoryFieldOnlyExpressionImpl<>(0, updateRelation)));
         }
         return sqlUpdateExpression;
     }
@@ -286,8 +292,9 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      * {@inheritDoc}
      */
     @Override
-    public RepositoryUpdateExpression<RepositoryExecutableUpdate, RepositoryExecutableConditionsGroup<UpdateConditionConfig>, RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> configure(
-            Consumer<UpdateConfig> configure) {
+    public RepositoryUpdateExpression<RepositoryExecutableUpdate,
+        RepositoryExecutableConditionsGroup<UpdateConditionConfig>,
+        RepositoryExecutableConditionsGroupLogic<UpdateConditionConfig>> configure(Consumer<UpdateConfig> configure) {
         if (configure != null) {
             configure.accept(updateConfig);
         }
@@ -299,8 +306,8 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      */
     @Override
     public RepositoryOnExpression1<RepositoryUpdate2> join(Repository repository) {
-        return new RepositorySqlOn1<RepositoryUpdate2, UpdateConditionConfig, RepositorySqlUpdateRelation, SqlUpdateSetBasicBuilder>(
-                repository, new RepositorySqlExecutableUpdate2(this), updateRelation);
+        return new RepositorySqlOn1<RepositoryUpdate2, UpdateConditionConfig, RepositorySqlUpdateRelation,
+            SqlUpdateSetBasicBuilder>(repository, new RepositorySqlExecutableUpdate2(this), updateRelation);
     }
 
 }

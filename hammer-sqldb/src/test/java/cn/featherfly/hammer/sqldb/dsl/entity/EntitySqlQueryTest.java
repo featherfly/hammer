@@ -8,6 +8,7 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.speedment.common.tuple.mutable.MutableTuple1;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
@@ -614,7 +616,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertEquals(user.getId(), id);
 
         user = query.find(User.class).where().eq(User::getId, id).and()
-            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100)).single();
         assertNull(user);
 
         user = query.find(User.class).where().eq(User::getId, id).and().expression("{0}.age - ? >= 0", 100).single();
@@ -624,7 +626,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertNull(user);
 
         user = query.find(User.class).where().eq(User::getId, id).and()
-            .expr("{as0}.age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expr("{as0}.age - :age >= 0", Params.setParam("age", 100)).single();
         assertNull(user);
 
         user = query.find(User.class).where().eq(User::getId, id).and().expr("{as0}.age - ? >= 0", 100).single();

@@ -47,7 +47,7 @@ public abstract class AbstractMulitiEntitySqlExecutableConditionsGroup3<E1, E2, 
         if (parent != null) {
             return parent.execute();
         } else {
-            return entityRelation.getJdbc().update(expression(), getParams().toArray());
+            return entityRelation.getJdbc().update(expression(), getParamsArray());
         }
     }
 }

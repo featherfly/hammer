@@ -9,6 +9,8 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
+
 /**
  * transvert param value before use.
  *
@@ -20,8 +22,8 @@ public interface Transverter {
      * Transvert.
      *
      * @param operator the operator
-     * @param value    the value
+     * @param value the value
      * @return the object
      */
-    Object transvert(String operator, Object value);
+    Serializable transvert(String operator, Serializable value);
 }

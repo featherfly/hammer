@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.execute;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
@@ -14,7 +15,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlUpdateRelation;
  * sql entity update conditions group expression .
  *
  * @author zhongj
- * @param <E>  the update type
+ * @param <E> the update type
  * @param <J1> the join type 1
  */
 public class EntitySqlUpdateConditions2<E, J1> extends AbstractMulitiEntitySqlExecutableConditionsGroup2<E, J1,
@@ -22,7 +23,7 @@ public class EntitySqlUpdateConditions2<E, J1> extends AbstractMulitiEntitySqlEx
     /**
      * Instantiates a new sql entity update expression.
      *
-     * @param factory        the factory
+     * @param factory the factory
      * @param entityRelation the entity relation
      */
     public EntitySqlUpdateConditions2(JdbcMappingFactory factory, EntitySqlUpdateRelation entityRelation) {
@@ -32,8 +33,8 @@ public class EntitySqlUpdateConditions2<E, J1> extends AbstractMulitiEntitySqlEx
     /**
      * Instantiates a new sql entity update expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param entityRelation the entity relation
      */
     EntitySqlUpdateConditions2(EntityExecutableConditionGroupLogic2<E, J1, UpdateConditionConfig> parent,
@@ -53,7 +54,7 @@ public class EntitySqlUpdateConditions2<E, J1> extends AbstractMulitiEntitySqlEx
      * {@inheritDoc}
      */
     @Override
-    public List<Object> getParams() {
+    public List<Serializable> getParams() {
         return EntitySqlUpdateConditions.getParams(parent, entityRelation, super.getParams());
     }
 

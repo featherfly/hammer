@@ -10,9 +10,11 @@
  */
 package cn.featherfly.hammer.expression.condition;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.repository.Params;
 
 /**
  * StringConditionExpression.
@@ -22,7 +24,7 @@ import cn.featherfly.common.lang.ArrayUtils;
  * @param <L> the generic type
  */
 public interface NativeStringConditionExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
      * expression short alias.
@@ -31,17 +33,28 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default L expr(String expression) {
-        return expression(expression, ArrayUtils.EMPTY_OBJECT_ARRAY);
+        return expression(expression, ArrayUtils.EMPTY_SERIALIZABLE_ARRAY);
+    }
+
+    /**
+     * Expression.
+     *
+     * @param expression the expression
+     * @param params the params
+     * @return LogicExpression
+     */
+    default L expr(String expression, Params params) {
+        return expr(expression, (Map<String, Serializable>) params);
     }
 
     /**
      * expression short alias.
      *
      * @param expression the expression
-     * @param params     the params
+     * @param params the params
      * @return LogicExpression
      */
-    default L expr(String expression, Map<String, Object> params) {
+    default L expr(String expression, Map<String, Serializable> params) {
         return expression(expression, params);
     }
 
@@ -49,10 +62,10 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      * expression short alias.
      *
      * @param expression the expression
-     * @param params     the params
+     * @param params the params
      * @return LogicExpression
      */
-    default L expr(String expression, Object... params) {
+    default L expr(String expression, Serializable... params) {
         return expression(expression, params);
     }
 
@@ -63,24 +76,35 @@ public interface NativeStringConditionExpression<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default L expression(String expression) {
-        return expression(expression, ArrayUtils.EMPTY_OBJECT_ARRAY);
+        return expression(expression, ArrayUtils.EMPTY_SERIALIZABLE_ARRAY);
     }
 
     /**
      * Expression.
      *
      * @param expression the expression
-     * @param params     the params
+     * @param params the params
      * @return LogicExpression
      */
-    L expression(String expression, Map<String, Object> params);
+    default L expression(String expression, Params params) {
+        return expression(expression, (Map<String, Serializable>) params);
+    }
 
     /**
      * Expression.
      *
      * @param expression the expression
-     * @param params     the params
+     * @param params the params
      * @return LogicExpression
      */
-    L expression(String expression, Object... params);
+    L expression(String expression, Map<String, Serializable> params);
+
+    /**
+     * Expression.
+     *
+     * @param expression the expression
+     * @param params the params
+     * @return LogicExpression
+     */
+    L expression(String expression, Serializable... params);
 }

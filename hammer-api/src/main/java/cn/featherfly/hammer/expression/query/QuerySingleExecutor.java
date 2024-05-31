@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import cn.featherfly.common.repository.mapper.RowMapper;
@@ -17,14 +18,14 @@ public interface QuerySingleExecutor {
      *
      * @return map
      */
-    Map<String, Object> single();
+    Map<String, Serializable> single();
 
     /**
      * query for unique, throw exception when not found.
      *
      * @return map
      */
-    Map<String, Object> unique();
+    Map<String, Serializable> unique();
 
     /**
      * query for single, return null when not found.

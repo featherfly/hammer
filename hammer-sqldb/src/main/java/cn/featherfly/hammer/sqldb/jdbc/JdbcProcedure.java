@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -40,7 +41,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return LogicExpressionist
      */
-    int call(String name, Object... args);
+    int call(String name, Serializable... args);
 
     //    /**
     //     * call procedure .
@@ -79,7 +80,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return LogicExpressionist
      */
-    List<Map<String, Object>> callQuery(String name, Object... args);
+    List<Map<String, Serializable>> callQuery(String name, Serializable... args);
 
     /**
      * call procedure query.
@@ -90,7 +91,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T> List<T> callQuery(String name, Class<T> elementType, Object... args);
+    <T> List<T> callQuery(String name, Class<T> elementType, Serializable... args);
 
     /**
      * call procedure query.
@@ -101,7 +102,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return LogicExpressionist
      */
-    <E> List<E> callQuery(String name, RowMapper<E> mapper, Object... args);
+    <E> List<E> callQuery(String name, RowMapper<E> mapper, Serializable... args);
 
     /**
      * call procedure muliti-query. lazy load data at {@link MulitiQuery#next()}, so the caller
@@ -129,7 +130,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return muliti-query object
      */
-    MulitiQuery callMultiQuery(String name, Object... args);
+    MulitiQuery callMultiQuery(String name, Serializable... args);
 
     /**
      * call procedure muliti-query.
@@ -141,7 +142,7 @@ public interface JdbcProcedure {
      * @return muliti-query object
      */
     <T extends Tuple> T callMultiQuery(String name,
-        Function<MulitiQueryTupleMapperBuilder, MulitiQueryRowMapper<T>> mapperFunction, Object... args);
+        Function<MulitiQueryTupleMapperBuilder, MulitiQueryRowMapper<T>> mapperFunction, Serializable... args);
 
     //    /**
     //     * call procedure muliti-query.
@@ -152,7 +153,7 @@ public interface JdbcProcedure {
     //     * @param args the args
     //     * @return LogicExpressionist
     //     */
-    //    <E> List<E> callMultiQuery(String name, RowMapper<E> mapper, Object... args);
+    //    <E> List<E> callMultiQuery(String name, RowMapper<E> mapper, Serializable...args);
     //
     //    /**
     //     * call procedure muliti-query.
@@ -163,7 +164,7 @@ public interface JdbcProcedure {
     //     * @param args the args
     //     * @return LogicExpressionist
     //     */
-    //    <T> List<T> callMultiQuery(String name, Class<T> elementType, Object... args);
+    //    <T> List<T> callMultiQuery(String name, Class<T> elementType, Serializable...args);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -179,7 +180,7 @@ public interface JdbcProcedure {
      * @return LogicExpressionist
      */
     default <T1, T2> List<Tuple2<T1, T2>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Object... args) {
+        Serializable... args) {
         return callQuery(name, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
@@ -196,7 +197,7 @@ public interface JdbcProcedure {
      * @return LogicExpressionist
      */
     <T1, T2> List<Tuple2<T1, T2>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args);
+        Tuple2<String, String> prefixes, Serializable... args);
 
     /**
      * call procedure query.
@@ -212,7 +213,7 @@ public interface JdbcProcedure {
      * @return LogicExpressionist
      */
     default <T1, T2, T3> List<Tuple3<T1, T2, T3>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Object... args) {
+        Class<T3> elementType3, Serializable... args) {
         return callQuery(name, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
     }
 
@@ -231,7 +232,7 @@ public interface JdbcProcedure {
      * @return LogicExpressionist
      */
     <T1, T2, T3> List<Tuple3<T1, T2, T3>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args);
 
     /**
      * call procedure query.
@@ -249,7 +250,7 @@ public interface JdbcProcedure {
      * @return LogicExpressionist
      */
     default <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> callQuery(String name, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Object... args) {
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Serializable... args) {
         return callQuery(name, elementType1, elementType2, elementType3, elementType4,
             (Tuple4<String, String, String, String>) null, args);
     }
@@ -272,7 +273,7 @@ public interface JdbcProcedure {
      */
     <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
         Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
-        Object... args);
+        Serializable... args);
 
     /**
      * call procedure query.
@@ -293,7 +294,7 @@ public interface JdbcProcedure {
      */
     default <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> callQuery(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Object... args) {
+        Serializable... args) {
         return callQuery(name, elementType1, elementType2, elementType3, elementType4, elementType5,
             (Tuple5<String, String, String, String, String>) null, args);
     }
@@ -318,7 +319,7 @@ public interface JdbcProcedure {
      */
     <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> callQuery(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args);
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args);
 
     /**
      * call procedure query.
@@ -327,7 +328,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return LogicExpressionist
      */
-    Map<String, Object> callQuerySingle(String name, Object... args);
+    Map<String, Serializable> callQuerySingle(String name, Serializable... args);
 
     /**
      * call procedure query.
@@ -338,7 +339,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return LogicExpressionist
      */
-    <E> E callQuerySingle(String name, RowMapper<E> mapper, Object... args);
+    <E> E callQuerySingle(String name, RowMapper<E> mapper, Serializable... args);
 
     /**
      * call procedure query.
@@ -349,7 +350,7 @@ public interface JdbcProcedure {
      * @param args the args
      * @return the t
      */
-    <T> T callQuerySingle(String name, Class<T> elementType, Object... args);
+    <T> T callQuerySingle(String name, Class<T> elementType, Serializable... args);
 
     /**
      * call procedure query.
@@ -363,7 +364,7 @@ public interface JdbcProcedure {
      * @return the tuple 2
      */
     default <T1, T2> Tuple2<T1, T2> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Object... args) {
+        Serializable... args) {
         return callQuerySingle(name, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
@@ -380,7 +381,7 @@ public interface JdbcProcedure {
      * @return the tuple 2
      */
     <T1, T2> Tuple2<T1, T2> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Object... args);
+        Tuple2<String, String> prefixes, Serializable... args);
 
     /**
      * call procedure query.
@@ -396,7 +397,7 @@ public interface JdbcProcedure {
      * @return the tuple 3
      */
     default <T1, T2, T3> Tuple3<T1, T2, T3> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Object... args) {
+        Class<T3> elementType3, Serializable... args) {
         return callQuerySingle(name, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null,
             args);
     }
@@ -416,7 +417,7 @@ public interface JdbcProcedure {
      * @return the tuple 3
      */
     <T1, T2, T3> Tuple3<T1, T2, T3> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Object... args);
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args);
 
     /**
      * call procedure query.
@@ -434,7 +435,7 @@ public interface JdbcProcedure {
      * @return the tuple 4
      */
     default <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> callQuerySingle(String name, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Object... args) {
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Serializable... args) {
         return callQuerySingle(name, elementType1, elementType2, elementType3, elementType4,
             (Tuple4<String, String, String, String>) null, args);
     }
@@ -457,7 +458,7 @@ public interface JdbcProcedure {
      */
     <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
         Class<T3> elementType3, Class<T4> elementType4, Tuple4<String, String, String, String> prefixes,
-        Object... args);
+        Serializable... args);
 
     /**
      * call procedure query.
@@ -478,7 +479,7 @@ public interface JdbcProcedure {
      */
     default <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> callQuerySingle(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Object... args) {
+        Serializable... args) {
         return callQuerySingle(name, elementType1, elementType2, elementType3, elementType4, elementType5,
             (Tuple5<String, String, String, String, String>) null, args);
     }
@@ -503,6 +504,6 @@ public interface JdbcProcedure {
      */
     <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> callQuerySingle(String name, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... args);
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args);
 
 }

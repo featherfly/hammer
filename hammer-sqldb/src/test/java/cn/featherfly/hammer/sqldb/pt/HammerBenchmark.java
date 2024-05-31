@@ -28,6 +28,7 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
+import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
@@ -83,7 +84,7 @@ public class HammerBenchmark extends AbstractBenchmark {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager,
-            propertyAccessorFactory);
+            new IdGeneratorManager(), propertyAccessorFactory);
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl();
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)

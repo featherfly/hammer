@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 
 /**
@@ -10,7 +12,9 @@ import javax.persistence.Column;
  *
  * @author zhongj
  */
-public class DistrictDivision {
+public class DistrictDivision implements Serializable {
+
+    private static final long serialVersionUID = -7643332722392401960L;
 
     @Column
     private String city;

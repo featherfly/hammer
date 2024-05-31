@@ -2,9 +2,12 @@
 package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import cn.featherfly.common.repository.id.IdGeneratorManager;
 
 /**
  * The Class UserRole2.
@@ -16,11 +19,13 @@ public class UserRole2 {
 
     @Id
     @ManyToOne
+    @GeneratedValue(generator = IdGeneratorManager.ASSIGN)
     @Column(name = "user_id")
     private User user;
 
     @Id
     @ManyToOne
+    @GeneratedValue(generator = IdGeneratorManager.ASSIGN)
     @Column(name = "role_id")
     private Role role;
 

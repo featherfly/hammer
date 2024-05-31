@@ -8,6 +8,8 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
+
 import cn.featherfly.common.repository.ExecutionExecutor;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
 import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
@@ -28,16 +30,16 @@ public class ArrayParamTupleMapperBuilder<E1 extends ExecutionExecutor<E2>, E2> 
     protected final E2 execution;
 
     /** The params. */
-    protected final Object[] params;
+    protected final Serializable[] params;
 
     /**
      * Instantiates a new template tuple mapper builder.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
+     * @param params the params
      */
-    public ArrayParamTupleMapperBuilder(E1 executor, E2 execution, Object... params) {
+    public ArrayParamTupleMapperBuilder(E1 executor, E2 execution, Serializable... params) {
         super();
         this.executor = executor;
         this.execution = execution;

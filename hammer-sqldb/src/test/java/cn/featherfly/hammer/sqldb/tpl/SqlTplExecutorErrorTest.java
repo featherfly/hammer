@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
+import java.io.Serializable;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -45,22 +47,25 @@ public class SqlTplExecutorErrorTest extends JdbcTestBase {
 
     @Test(expectedExceptions = TplException.class)
     void testLogicDirectiveError() {
-        executor.list("logicError", User.class, new ChainMapImpl<String, Object>().putChain("username", "yufei"));
+        executor.list("logicError", User.class, new ChainMapImpl<String, Serializable>().putChain("username", "yufei"));
     }
 
     @Test(expectedExceptions = TplException.class)
     void testLogicDirectiveError2() {
-        executor.list("logicError2", User.class, new ChainMapImpl<String, Object>().putChain("username", "yufei"));
+        executor.list("logicError2", User.class,
+            new ChainMapImpl<String, Serializable>().putChain("username", "yufei"));
     }
 
     @Test(expectedExceptions = TplException.class)
     void testLogicDirectiveError3() {
-        executor.list("logicError3", User.class, new ChainMapImpl<String, Object>().putChain("username", "yufei"));
+        executor.list("logicError3", User.class,
+            new ChainMapImpl<String, Serializable>().putChain("username", "yufei"));
     }
 
     @Test(expectedExceptions = TplException.class)
     void testLogicDirectiveError4() {
-        executor.list("logicError4", User.class, new ChainMapImpl<String, Object>().putChain("username", "yufei"));
+        executor.list("logicError4", User.class,
+            new ChainMapImpl<String, Serializable>().putChain("username", "yufei"));
     }
 
     @Test(expectedExceptions = TplException.class)

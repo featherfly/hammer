@@ -7,7 +7,7 @@ import java.util.List;
 import com.speedment.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanDescriptor;
-import cn.featherfly.common.bean.BeanUtils;
+import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -49,7 +49,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getInsertBatchSqlAndMappings(entities.size(),
             classMapping, jdbc.getDialect());
         String sql = tuple.get0();
-        if (pks.size() == 1) {
+        if (pks.size() == 1 && pks.get(0).getPrimaryKey().isDatabaseGeneration()) {
             return jdbc.updateBatch(sql, entities.size(), createGeneratedKeysHolder(entities, pks),
                 getBatchParameters(entities, tuple.get1()));
         } else {
@@ -81,21 +81,18 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     public int execute(final T entity) {
         List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
-        if (pks.size() == 1) {
+        if (pks.size() == 1 && pks.get(0).getPrimaryKey().getIdGenerator().isDatabaseGeneration()) { // ENHANCE 后续优化为初始化就判定
             return jdbc.update(sql, new GeneratedKeyHolder<Serializable>() {
 
                 @Override
                 public void acceptKey(Serializable key) {
                     // YUFEI_TEST 需要更多测试各种情况是否正确
-                    if (BeanUtils.getProperty(entity, pks.get(0).getPropertyName()) == null) {
-                        BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
-                    }
+                    pks.get(0).getSetter().accept(entity, key);
                 }
 
                 @Override
                 public Type<Serializable> getType() {
-                    return BeanDescriptor.getBeanDescriptor(classMapping.getType())
-                        .getBeanProperty(pks.get(0).getPropertyName());
+                    return pks.get(0).getProperty();
                 }
             }, getParameters(entity));
         } else {
@@ -123,10 +120,10 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         //        }
 
         GeneratedKeysHolder<Serializable> keyHolder = null;
-        if (pks.size() == 1) {
-            createGeneratedKeysHolder(entities, pks);
+        if (pks.size() == 1 && pks.get(0).getPrimaryKey().isDatabaseGeneration()) {
+            keyHolder = createGeneratedKeysHolder(entities, pks);
         }
-        return jdbc.updateBatch(sql, keyHolder, () -> new Iterator<Object[]>() {
+        return jdbc.updateBatch(sql, keyHolder, () -> new Iterator<Serializable[]>() {
 
             private int index = 0;
 
@@ -136,7 +133,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             }
 
             @Override
-            public Object[] next() {
+            public Serializable[] next() {
                 return getParameters(entities.get(index++));
             }
         });
@@ -170,10 +167,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         List<JdbcPropertyMapping> pks) {
         return new GeneratedKeysHolder<Serializable>() {
             public void acceptKey(Serializable key, int row) {
-                // YUFEI_TEST 需要更多测试各种情况是否正确
-                if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
-                    BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
-                }
+                pks.get(0).getSetter().accept(entities.get(row), key);
             }
 
             @Override
@@ -214,4 +208,46 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     //        }
     //        return params;
     //    }
+
+    @Override
+    protected Serializable[] getParameters(T entity) {
+        return getParameters(entity, paramsPropertyAndMappings);
+    }
+
+    @Override
+    protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] mappings) {
+        Serializable[] operators = new Serializable[mappings.length];
+        int i = 0;
+        for (JdbcPropertyMapping propertyMapping : mappings) {
+            if (propertyMapping.getPrimaryKey() != null) {
+                operators[i] = FieldValueOperator.create(propertyMapping,
+                    propertyMapping.getPrimaryKey().getIdGenerator().generate(entity, propertyMapping));
+            } else {
+                operators[i] = FieldValueOperator.create(propertyMapping, propertyMapping.getGetter().apply(entity));
+            }
+            i++;
+        }
+        return operators;
+    }
+
+    @Override
+    protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
+        Serializable[] params = new Serializable[propertyPositions.length * entities.size()];
+        for (int i = 0; i < entities.size(); i++) {
+            T entity = entities.get(i);
+            int columnNum = 0;
+            for (JdbcPropertyMapping propertyMapping : propertyPositions) {
+                if (propertyMapping.getPrimaryKey() != null) {
+                    params[i * propertyPositions.length + columnNum] = FieldValueOperator.create(propertyMapping,
+                        propertyMapping.getPrimaryKey().getIdGenerator().generate(entity, propertyMapping));
+                } else {
+                    params[i * propertyPositions.length + columnNum] = FieldValueOperator.create(propertyMapping,
+                        propertyMapping.getGetter().apply(entity));
+                }
+
+                columnNum++;
+            }
+        }
+        return params;
+    }
 }

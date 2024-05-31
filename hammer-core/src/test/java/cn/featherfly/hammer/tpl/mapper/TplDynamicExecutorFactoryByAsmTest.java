@@ -392,13 +392,13 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public ParamedExecutionExecutorEx dml(String execution, Map<String, Object> params) {
+            public ParamedExecutionExecutorEx dml(String execution, Map<String, Serializable> params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutorEx dml(String execution, Object... params) {
+            public ParamedExecutionExecutorEx dml(String execution, Serializable... params) {
 
                 return null;
             }
@@ -410,39 +410,39 @@ public class TplDynamicExecutorFactoryByAsmTest {
             }
 
             @Override
-            public ParamedExecutionExecutorEx template(String templateContent, Map<String, Object> params) {
+            public ParamedExecutionExecutorEx template(String templateContent, Map<String, Serializable> params) {
 
                 return null;
             }
 
             @Override
             public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-                Map<String, Object> params) {
+                Map<String, Serializable> params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Object> params) {
+            public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutorEx template(String tplExecuteId, Object... params) {
+            public ParamedExecutionExecutorEx template(String tplExecuteId, Serializable... params) {
 
                 return null;
             }
 
             @Override
             public ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-                Object... params) {
+                Serializable... params) {
 
                 return null;
             }
 
             @Override
-            public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Object... params) {
+            public ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Serializable... params) {
 
                 return null;
             }

@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import cn.featherfly.common.db.Table;
@@ -22,24 +23,24 @@ public interface SqldbHammer extends Hammer {
     /**
      * create QueryEntity for table.
      *
-     * @param  table the table
-     * @return       the query entity
+     * @param table the table
+     * @return the query entity
      */
     RepositorySqlQueryFetch query(Table table);
 
     /**
      * create update for table.
      *
-     * @param  table the table
-     * @return       Update
+     * @param table the table
+     * @return Update
      */
     RepositoryUpdate update(Table table);
 
     /**
      * create delete for table.
      *
-     * @param  table the table
-     * @return       Delete
+     * @param table the table
+     * @return Delete
      */
     RepositoryDelete delete(Table table);
 
@@ -60,22 +61,22 @@ public interface SqldbHammer extends Hammer {
     /**
      * sql execution.
      *
-     * @param  sql    the sql
-     * @param  params the params
-     * @return        the paramed execution executor
+     * @param sql the sql
+     * @param params the params
+     * @return the paramed execution executor
      */
-    default ParamedExecutionExecutorEx sql(String sql, Map<String, Object> params) {
+    default ParamedExecutionExecutorEx sql(String sql, Map<String, Serializable> params) {
         return dml(sql, params);
     }
 
     /**
      * sql execution.
      *
-     * @param  sql    the sql
-     * @param  params the params
-     * @return        the paramed execution executor
+     * @param sql the sql
+     * @param params the params
+     * @return the paramed execution executor
      */
-    default ParamedExecutionExecutorEx sql(String sql, Object... params) {
+    default ParamedExecutionExecutorEx sql(String sql, Serializable... params) {
         return dml(sql, params);
     }
 }

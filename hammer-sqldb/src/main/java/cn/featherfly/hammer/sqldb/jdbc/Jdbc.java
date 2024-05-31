@@ -92,7 +92,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param args the args
      * @return the int
      */
-    default int insert(String tableName, String[] columnNames, Object... args) {
+    default int insert(String tableName, String[] columnNames, Serializable... args) {
         return insert(tableName, columnNames, null, args);
     }
 
@@ -107,7 +107,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @return the int
      */
     <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
-        Object... args);
+        Serializable... args);
 
     /**
      * Insert.
@@ -116,7 +116,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param columnParams the column params
      * @return the int
      */
-    default int insert(String tableName, Map<String, Object> columnParams) {
+    default int insert(String tableName, Map<String, Serializable> columnParams) {
         return insert(tableName, columnParams, null);
     }
 
@@ -129,12 +129,12 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param keyHolder the key holder
      * @return the int
      */
-    default <T extends Serializable> int insert(String tableName, Map<String, Object> columnParams,
+    default <T extends Serializable> int insert(String tableName, Map<String, Serializable> columnParams,
         GeneratedKeyHolder<T> keyHolder) {
         int i = 0;
         String[] columns = new String[columnParams.size()];
-        Object[] params = new Object[columnParams.size()];
-        for (Map.Entry<String, Object> entry : columnParams.entrySet()) {
+        Serializable[] params = new Serializable[columnParams.size()];
+        for (Map.Entry<String, Serializable> entry : columnParams.entrySet()) {
             columns[i] = entry.getKey();
             params[i] = entry.getValue();
             i++;
@@ -150,7 +150,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param args the args
      * @return the int
      */
-    default int insertBatch(String tableName, String[] columnNames, Object... args) {
+    default int insertBatch(String tableName, String[] columnNames, Serializable... args) {
         if (args.length % columnNames.length != 0) {
             throw new JdbcException("batch size is not explicit (args.length % columnNames.length != 0)");
         }
@@ -164,7 +164,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param columnParams the column params
      * @return the int
      */
-    default int insertBatch(String tableName, List<Map<String, Object>> columnParams) {
+    default int insertBatch(String tableName, List<Map<String, Serializable>> columnParams) {
         if (Lang.isEmpty(columnParams)) {
             return 0;
         }
@@ -172,15 +172,15 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
         int columnLen = columnParams.get(0).size();
         int paramLen = columnLen * columnParams.size();
         String[] columns = new String[columnLen];
-        Object[] params = new Object[paramLen];
+        Serializable[] params = new Serializable[paramLen];
 
         Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
             columns[index] = entry.getKey();
         });
 
         int i = 0;
-        for (Map<String, Object> cp : columnParams) {
-            for (Map.Entry<String, Object> entry : cp.entrySet()) {
+        for (Map<String, Serializable> cp : columnParams) {
+            for (Map.Entry<String, Serializable> entry : cp.entrySet()) {
                 params[i] = entry.getValue();
                 i++;
             }
@@ -198,7 +198,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param args the args
      * @return the int
      */
-    int insertBatch(String tableName, String[] columnNames, int batchSize, Object... args);
+    int insertBatch(String tableName, String[] columnNames, int batchSize, Serializable... args);
 
     /**
      * Upsert.
@@ -209,7 +209,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param args the args
      * @return the int
      */
-    default int upsert(String tableName, String[] columnNames, String uniqueColumn, Object... args) {
+    default int upsert(String tableName, String[] columnNames, String uniqueColumn, Serializable... args) {
         return upsert(tableName, columnNames, new String[] { uniqueColumn }, args);
     }
 
@@ -222,7 +222,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param args the args
      * @return the int
      */
-    int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Object... args);
+    int upsert(String tableName, String[] columnNames, String[] uniqueColumns, Serializable... args);
 
     /**
      * Upsert.
@@ -232,7 +232,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param params the params
      * @return the int
      */
-    default int upsert(String tableName, String uniqueColumn, Map<String, Object> params) {
+    default int upsert(String tableName, String uniqueColumn, Map<String, Serializable> params) {
         return upsert(tableName, new String[] { uniqueColumn }, params);
     }
 
@@ -244,11 +244,11 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param params the params
      * @return the int
      */
-    default int upsert(String tableName, String[] uniqueColumns, Map<String, Object> params) {
-        Object[] ps = new Object[params.size()];
+    default int upsert(String tableName, String[] uniqueColumns, Map<String, Serializable> params) {
+        Serializable[] ps = new Serializable[params.size()];
         String[] columnNames = new String[params.size()];
         int i = 0;
-        for (Entry<String, Object> e : params.entrySet()) {
+        for (Entry<String, Serializable> e : params.entrySet()) {
             columnNames[i] = e.getKey();
             ps[i] = e.getValue();
             i++;

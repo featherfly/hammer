@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.speedment.common.tuple.Tuple;
@@ -17,11 +18,11 @@ import cn.featherfly.common.repository.ExecutionExecutor;
 /**
  * The Class AbstractPrefixEntityMapper.
  *
- * @author      zhongj
- * @param  <E1> executor type
- * @param  <E2> execution type
- * @param  <E2> params type
- * @param  <T>  prefixes tuple type
+ * @author zhongj
+ * @param <E1> executor type
+ * @param <E2> execution type
+ * @param <E2> params type
+ * @param <T> prefixes tuple type
  */
 public abstract class AbstractPrefixEntityMapper<E1 extends ExecutionExecutor<E2>, E2, P, T extends Tuple> {
 
@@ -40,10 +41,10 @@ public abstract class AbstractPrefixEntityMapper<E1 extends ExecutionExecutor<E2
     /**
      * Instantiates a new abstract prefix entity mapper.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param prefixes  the prefixes
+     * @param params the params
+     * @param prefixes the prefixes
      */
     protected AbstractPrefixEntityMapper(E1 executor, E2 execution, P params, T prefixes) {
         super();
@@ -54,12 +55,12 @@ public abstract class AbstractPrefixEntityMapper<E1 extends ExecutionExecutor<E2
     }
 
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> getParamsMap() {
-        return (Map<String, Object>) params;
+    protected Map<String, Serializable> getParamsMap() {
+        return (Map<String, Serializable>) params;
     }
 
-    protected Object[] getParams() {
-        return (Object[]) params;
+    protected Serializable[] getParams() {
+        return (Serializable[]) params;
     }
 
 }

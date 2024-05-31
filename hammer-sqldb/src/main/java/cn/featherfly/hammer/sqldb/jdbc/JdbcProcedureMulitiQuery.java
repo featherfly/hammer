@@ -9,6 +9,7 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,7 +66,7 @@ public class JdbcProcedureMulitiQuery implements MulitiQuery, AutoCloseable {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> next() {
+    public List<Map<String, Serializable>> next() {
         return next(new MapRowMapper(manager));
     }
 

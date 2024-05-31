@@ -16,6 +16,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
@@ -530,7 +531,7 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutorEx dml(String dml, Map<String, Object> params);
+    ParamedExecutionExecutorEx dml(String dml, Map<String, Serializable> params);
 
     /**
      * Execution.
@@ -539,7 +540,7 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutorEx dml(String dml, Object... params);
+    ParamedExecutionExecutorEx dml(String dml, Serializable... params);
 
     /**
      * Template.
@@ -555,7 +556,9 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutorEx template(String tplExecuteId, Map<String, Object> params);
+    default ParamedExecutionExecutorEx template(String tplExecuteId, Params params) {
+        return template(tplExecuteId, (Map<String, Serializable>) params);
+    }
 
     /**
      * Template.
@@ -564,7 +567,28 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutorEx template(String tplExecuteId, Object... params);
+    ParamedExecutionExecutorEx template(String tplExecuteId, Map<String, Serializable> params);
+
+    /**
+     * Template.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params the params
+     * @return the paramed execution executor
+     */
+    ParamedExecutionExecutorEx template(String tplExecuteId, Serializable... params);
+
+    /**
+     * Template.
+     *
+     * @param tplExecuteIdBuilder the tpl execute id builder
+     * @param params the params
+     * @return the paramed execution executor
+     */
+    default ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
+        Params params) {
+        return template(tplExecuteIdBuilder, (Map<String, Serializable>) params);
+    }
 
     /**
      * Template.
@@ -574,7 +598,7 @@ public interface Hammer {
      * @return the paramed execution executor
      */
     ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-        Map<String, Object> params);
+        Map<String, Serializable> params);
 
     /**
      * Template.
@@ -584,7 +608,7 @@ public interface Hammer {
      * @return the paramed execution executor
      */
     ParamedExecutionExecutorEx template(Function<TplExecuteIdBuilder, TplExecuteId> tplExecuteIdBuilder,
-        Object... params);
+        Serializable... params);
 
     /**
      * Template.
@@ -593,7 +617,9 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Object> params);
+    default ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Params params) {
+        return template(tplExecuteId, (Map<String, Serializable>) params);
+    }
 
     /**
      * Template.
@@ -602,5 +628,14 @@ public interface Hammer {
      * @param params the params
      * @return the paramed execution executor
      */
-    ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Object... params);
+    ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Map<String, Serializable> params);
+
+    /**
+     * Template.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params the params
+     * @return the paramed execution executor
+     */
+    ParamedExecutionExecutorEx template(TplExecuteId tplExecuteId, Serializable... params);
 }

@@ -33,7 +33,7 @@ public interface JdbcUpdate {
      * @param args the args
      * @return the int
      */
-    default int update(String sql, Object... args) {
+    default int update(String sql, Serializable... args) {
         return update(sql, (GeneratedKeyHolder<Serializable>) null, args);
     }
 
@@ -44,7 +44,7 @@ public interface JdbcUpdate {
      * @param args the args
      * @return the int
      */
-    default int update(String sql, Map<String, Object> args) {
+    default int update(String sql, Map<String, Serializable> args) {
         return update(sql, null, args);
     }
 
@@ -55,7 +55,7 @@ public interface JdbcUpdate {
      * @param args the args
      * @return the int
      */
-    default int update(NamedParamSql sql, Map<String, Object> args) {
+    default int update(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return update(execution.getExecution(), execution.getParams());
     }
@@ -69,7 +69,7 @@ public interface JdbcUpdate {
      * @param args args
      * @return map list
      */
-    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Object... args);
+    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Serializable... args);
 
     /**
      * Update.
@@ -80,7 +80,8 @@ public interface JdbcUpdate {
      * @param args args
      * @return map list
      */
-    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder, Map<String, Object> args);
+    <T extends Serializable> int update(String sql, GeneratedKeyHolder<T> generatedKeyHolder,
+        Map<String, Serializable> args);
 
     /**
      * Update.
@@ -92,7 +93,7 @@ public interface JdbcUpdate {
      * @return map list
      */
     default <T extends Serializable> int update(NamedParamSql sql, GeneratedKeyHolder<T> generatedKeyHolder,
-        Map<String, Object> args) {
+        Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return update(execution.getExecution(), generatedKeyHolder, execution.getParams());
     }
@@ -104,7 +105,7 @@ public interface JdbcUpdate {
      * @param argsArray the batch args array
      * @return the int
      */
-    default int[] updateBatch(String sql, Object[]... argsArray) {
+    default int[] updateBatch(String sql, Serializable[]... argsArray) {
         return updateBatch(sql, (GeneratedKeysHolder<Serializable>) null, argsArray);
     }
 
@@ -115,7 +116,7 @@ public interface JdbcUpdate {
      * @param argsList the batch args list
      * @return the int
      */
-    default int[] updateBatch(String sql, List<Object[]> argsList) {
+    default int[] updateBatch(String sql, List<Serializable[]> argsList) {
         return updateBatch(sql, null, argsList);
     }
 
@@ -129,7 +130,7 @@ public interface JdbcUpdate {
      * @return the int
      */
     <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        Object[]... argsList);
+        Serializable[]... argsList);
 
     /**
      * batch update. use jdbc batch execute.
@@ -141,8 +142,8 @@ public interface JdbcUpdate {
      * @return the int
      */
     default <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        List<Object[]> argsList) {
-        return updateBatch(sql, generatedKeyHolder, argsList.toArray(new Object[argsList.size()][]));
+        List<Serializable[]> argsList) {
+        return updateBatch(sql, generatedKeyHolder, argsList.toArray(new Serializable[argsList.size()][]));
     }
 
     /**
@@ -152,7 +153,7 @@ public interface JdbcUpdate {
      * @param argsIter the args iter
      * @return the int
      */
-    default int[] updateBatch(String sql, Iterable<Object[]> argsIter) {
+    default int[] updateBatch(String sql, Iterable<Serializable[]> argsIter) {
         return updateBatch(sql, (GeneratedKeysHolder<Serializable>) null, argsIter);
     }
 
@@ -166,7 +167,7 @@ public interface JdbcUpdate {
      * @return the int
      */
     <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        Iterable<Object[]> argsIter);
+        Iterable<Serializable[]> argsIter);
 
     /**
      * batch update. use jdbc batch execute.
@@ -175,7 +176,7 @@ public interface JdbcUpdate {
      * @param setArgs the set args
      * @return the int
      */
-    default int[] updateBatch(String sql, BiConsumer<PreparedStatement, Consumer<Object[]>> setArgs) {
+    default int[] updateBatch(String sql, BiConsumer<PreparedStatement, Consumer<Serializable[]>> setArgs) {
         return updateBatch(sql, (GeneratedKeysHolder<Serializable>) null, setArgs);
     }
 
@@ -189,7 +190,7 @@ public interface JdbcUpdate {
      * @return the int
      */
     <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        BiConsumer<PreparedStatement, Consumer<Object[]>> setArgs);
+        BiConsumer<PreparedStatement, Consumer<Serializable[]>> setArgs);
 
     /**
      * batch update. use jdbc batch execute.
@@ -198,7 +199,7 @@ public interface JdbcUpdate {
      * @param batchArgs the batch args array
      * @return the int
      */
-    default int[] updateBatch(String sql, Map<String, Object>[] batchArgs) {
+    default int[] updateBatch(String sql, Map<String, Serializable>[] batchArgs) {
         return updateBatch(sql, null, batchArgs);
     }
 
@@ -212,7 +213,7 @@ public interface JdbcUpdate {
      * @return the int
      */
     <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
-        Map<String, Object>[] batchArgs);
+        Map<String, Serializable>[] batchArgs);
 
     /**
      * batch update.
@@ -222,7 +223,7 @@ public interface JdbcUpdate {
      * @param args args
      * @return map list
      */
-    default int updateBatch(String sql, int batchSize, Object... args) {
+    default int updateBatch(String sql, int batchSize, Serializable... args) {
         return updateBatch(sql, batchSize, (GeneratedKeysHolder<Serializable>) null, args);
     }
 
@@ -234,7 +235,7 @@ public interface JdbcUpdate {
      * @param args the args
      * @return the int
      */
-    default int updateBatch(String sql, int batchSize, Map<String, Object> args) {
+    default int updateBatch(String sql, int batchSize, Map<String, Serializable> args) {
         return updateBatch(sql, batchSize, null, args);
     }
 
@@ -249,7 +250,7 @@ public interface JdbcUpdate {
      * @return the int
      */
     <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> generatedKeyHolder,
-        Map<String, Object> args);
+        Map<String, Serializable> args);
 
     /**
      * Update.
@@ -262,5 +263,5 @@ public interface JdbcUpdate {
      * @return map list
      */
     <T extends Serializable> int updateBatch(String sql, int batchSize, GeneratedKeysHolder<T> generatedKeyHolder,
-        Object... args);
+        Serializable... args);
 }

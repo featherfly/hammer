@@ -74,7 +74,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
         Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(ids.size(),
             classMapping, jdbc.getDialect());
 
-        return new int[] { jdbc.update(tuple.get0(), ids.toArray()) };
+        return new int[] { jdbc.update(tuple.get0(), ids.toArray(new Serializable[ids.size()])) };
     }
 
     /**
@@ -99,8 +99,8 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
      * @return the batch parameters
      */
     @Override
-    protected Object[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
-        Object[] params = new Object[propertyPositions.length];
+    protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
+        Serializable[] params = new Serializable[propertyPositions.length];
         int pkNum = propertyPositions.length / entities.size();
         int i = 0;
         T entity = null;
@@ -144,7 +144,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
         //        for (T entity : entities) {
         //            argsList.add(getParameters(entity));
         //        }
-        Object[][] argsList = new Object[entities.size()][];
+        Serializable[][] argsList = new Serializable[entities.size()][];
         Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
         return jdbc.updateBatch(sql, argsList);
     }

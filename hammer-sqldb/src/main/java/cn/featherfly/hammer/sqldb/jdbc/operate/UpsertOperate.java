@@ -114,7 +114,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     protected int[] doJdbcExecuteBatch(List<T> entities) {
         List<JdbcPropertyMapping> pks = classMapping.getPrimaryKeyPropertyMappings();
-        Object[][] argsList = new Object[entities.size()][];
+        Serializable[][] argsList = new Serializable[entities.size()][];
         Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
 
         int[] results;

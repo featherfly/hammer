@@ -40,13 +40,13 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.repository.Params;
-import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.config.cache.CacheConfigImpl;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.sqldb.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;

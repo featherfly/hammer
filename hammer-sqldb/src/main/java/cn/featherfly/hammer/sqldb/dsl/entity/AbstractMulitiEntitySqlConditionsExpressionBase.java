@@ -206,7 +206,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableFunction<E1, R> name, R value) {
+    public <R extends Serializable> L eq(SerializableFunction<E1, R> name, R value) {
         return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
 
@@ -214,7 +214,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L eq(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
         return eq(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
@@ -618,7 +618,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableFunction<E1, R> name, R value) {
+    public <R extends Serializable> L ne(SerializableFunction<E1, R> name, R value) {
         return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
 
@@ -626,7 +626,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L ne(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
         return ne(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
@@ -2277,7 +2277,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
     }
 
     /**
@@ -2293,7 +2293,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N[] value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
     }
 
     /**
@@ -2569,7 +2569,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L in(SerializableFunction<E1, R> name, Collection<R> value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
     }
 
     /**
@@ -2799,7 +2799,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E1, R> name, R value) {
+    public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R value) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
     }
 
@@ -2807,7 +2807,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
     }
 
@@ -2815,7 +2815,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E1, R> name, R... value) {
+    public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R... value) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
     }
 
@@ -2823,7 +2823,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E1, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
+    public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
     }
 
@@ -2831,15 +2831,16 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E1, R> name, Collection<R> value) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+    public <R extends Serializable> L ni(SerializableFunction<E1, R> name, Collection<R> value) {
+        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableFunction<E1, R> name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {
+    public <R extends Serializable> L ni(SerializableFunction<E1, R> name, Collection<R> value,
+        Predicate<Collection<R>> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
     }
 
@@ -2847,7 +2848,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableSupplier<R> property) {
+    public <R extends Serializable> L ni(SerializableSupplier<R> property) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get(),
             tableAlias, getIgnoreStrategy());
@@ -2857,7 +2858,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+    public <R extends Serializable> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
         return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get(),
             tableAlias, ignoreStrategy);
@@ -4172,7 +4173,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L expression(String expression, final Map<String, Object> params) {
+    public L expression(String expression, final Map<String, Serializable> params) {
         final Execution execution = SqlUtils.convertNamedParamSql(expression, params);
         return expression(execution.getExecution(), execution.getParams());
     }
@@ -4181,7 +4182,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L expression(String expression, Object... params) {
+    public L expression(String expression, Serializable... params) {
         return (L) addCondition(new ParamedExpression() {
 
             @Override
@@ -4269,7 +4270,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param value the value
      * @return the field value operator
      */
-    protected <R> FieldValueOperator<R> getFieldValueOperator(JdbcPropertyMapping pm, R value) {
+    protected <R extends Serializable> FieldValueOperator<R> getFieldValueOperator(JdbcPropertyMapping pm, R value) {
         return value == null ? null : FieldValueOperator.create(pm, value);
     }
 
@@ -5823,10 +5824,10 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
-        BiPredicate<V, V> ignoreStrategy) {
+    protected <V extends Serializable> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
+        String queryAlias, BiPredicate<V, V> ignoreStrategy) {
         return ba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
-            p -> ignoreStrategy.test(min, max));
+            p -> ignoreStrategy.test(p[0], p[1]));
     }
 
     /**
@@ -5841,9 +5842,10 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias, ignoreStrategy);
+    protected <V extends Serializable> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
+        String queryAlias, Predicate<Object> ignoreStrategy) {
+        return ba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
+            p -> ignoreStrategy.test(p));
     }
 
     /**
@@ -5857,7 +5859,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L ba(JdbcPropertyMapping pm, V min, V max, String queryAlias, Predicate<?> ignoreStrategy) {
+    protected <V extends Serializable> L ba(JdbcPropertyMapping pm, V min, V max, String queryAlias,
+        Predicate<V[]> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
             new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) },
             ComparisonOperator.BA, queryAlias, ignoreStrategy));
@@ -5877,8 +5880,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
-        BiPredicate<V, V> ignoreStrategy) {
+    protected <V extends Serializable> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
+        String queryAlias, BiPredicate<V, V> ignoreStrategy) {
         return nba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
             p -> ignoreStrategy.test(min, max));
     }
@@ -5895,8 +5898,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max, String queryAlias,
-        Predicate<?> ignoreStrategy) {
+    protected <V extends Serializable> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
+        String queryAlias, Predicate<?> ignoreStrategy) {
         return nba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias, ignoreStrategy);
     }
 
@@ -5911,7 +5914,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L nba(JdbcPropertyMapping pm, V min, V max, String queryAlias, Predicate<?> ignoreStrategy) {
+    protected <V extends Serializable> L nba(JdbcPropertyMapping pm, V min, V max, String queryAlias,
+        Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
             new FieldValueOperator[] { getFieldValueOperator(pm, min), getFieldValueOperator(pm, max) },
             ComparisonOperator.NBA, queryAlias, ignoreStrategy));

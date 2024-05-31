@@ -18,11 +18,13 @@ import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
+import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.UriUtils;
+import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.entity.EntityPreparer;
@@ -120,7 +122,8 @@ public class DataSourceTestBase extends TestBase {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, new SqlTypeMappingManager(),
+            new IdGeneratorManager(), propertyAccessorFactory);
     }
 
     //    @BeforeSuite(groups = "postgresql", dependsOnMethods = "init")
@@ -146,7 +149,8 @@ public class DataSourceTestBase extends TestBase {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, new SqlTypeMappingManager(),
+            new IdGeneratorManager(), propertyAccessorFactory);
     }
 
     //    @BeforeSuite(groups = "sqlite", dependsOnMethods = "init")
@@ -174,7 +178,8 @@ public class DataSourceTestBase extends TestBase {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
 
-        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, propertyAccessorFactory);
+        mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, new SqlTypeMappingManager(),
+            new IdGeneratorManager(), propertyAccessorFactory);
     }
 
     Role role() {

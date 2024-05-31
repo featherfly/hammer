@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -147,8 +148,8 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
      * @param propertyPositions the property positions
      * @return the batch parameters
      */
-    protected Object[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
-        Object[] params = new Object[propertyPositions.length * entities.size()];
+    protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
+        Serializable[] params = new Serializable[propertyPositions.length * entities.size()];
         for (int i = 0; i < entities.size(); i++) {
             T entity = entities.get(i);
             int columnNum = 0;

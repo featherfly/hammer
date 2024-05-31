@@ -47,7 +47,7 @@ public abstract class AbstractMulitiRepositorySqlExecutableConditionsGroup<C ext
         if (parent != null) {
             return parent.execute();
         } else {
-            return repositoryRelation.getJdbc().update(expression(), getParams().toArray());
+            return repositoryRelation.getJdbc().update(expression(), getParamsArray());
         }
     }
 

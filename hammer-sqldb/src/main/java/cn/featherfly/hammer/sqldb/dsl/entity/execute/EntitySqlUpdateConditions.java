@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.execute;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class EntitySqlUpdateConditions<E> extends AbstractMulitiEntitySqlExecuta
     /**
      * Instantiates a new sql entity update expression.
      *
-     * @param factory        the factory
+     * @param factory the factory
      * @param entityRelation the entity relation
      */
     public EntitySqlUpdateConditions(JdbcMappingFactory factory, EntitySqlUpdateRelation entityRelation) {
@@ -38,8 +39,8 @@ public class EntitySqlUpdateConditions<E> extends AbstractMulitiEntitySqlExecuta
     /**
      * Instantiates a new sql entity update expression.
      *
-     * @param parent         the parent
-     * @param factory        the factory
+     * @param parent the parent
+     * @param factory the factory
      * @param entityRelation the entity relation
      */
     EntitySqlUpdateConditions(EntityExecutableConditionGroupLogic<E, UpdateConditionConfig> parent,
@@ -87,13 +88,13 @@ public class EntitySqlUpdateConditions<E> extends AbstractMulitiEntitySqlExecuta
      * {@inheritDoc}
      */
     @Override
-    public List<Object> getParams() {
+    public List<Serializable> getParams() {
         return getParams(parent, entityRelation, super.getParams());
     }
 
-    static List<Object> getParams(LogicExpression<?, ?> parent, EntitySqlUpdateRelation entityRelation,
-        List<Object> superParams) {
-        List<Object> params = new ArrayList<>();
+    static List<Serializable> getParams(LogicExpression<?, ?> parent, EntitySqlUpdateRelation entityRelation,
+        List<Serializable> superParams) {
+        List<Serializable> params = new ArrayList<>();
         if (parent == null) {
             params.addAll(entityRelation.getBuilder().getParams());
         }

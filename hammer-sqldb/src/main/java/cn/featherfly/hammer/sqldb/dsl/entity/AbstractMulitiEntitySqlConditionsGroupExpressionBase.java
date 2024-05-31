@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.function.Predicate;
 import com.speedment.common.tuple.Tuple2;
 import com.speedment.common.tuple.Tuples;
 
-import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ParamedColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -273,9 +273,10 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
         if (groupable) {
             condition = group();
         }
-        BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
+        //        BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
         for (PropertyMapping<?> pm : propertyMappings) {
-            Object ov = bd.getBeanProperty(pm.getPropertyName()).getValue(value);
+            Serializable ov = pm.getProperty().get(value);
+            //            Object ov = bd.getBeanProperty(pm.getPropertyName()).getValue(value);
             if (logic != null) {
                 // ENHANCE 后续配置，使用configure可以进行动态设置使用and还是or连接
                 condition = logic.and();
@@ -293,15 +294,16 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
         ParamedColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         JdbcClassMapping<?> joinClassMapping = factory.getClassMapping(joinFromPropertyMapping.getPropertyType());
-        Collection<JdbcPropertyMapping> propertyMappings = joinClassMapping.getPropertyMappings();
+        Collection<JdbcPropertyMapping> propertyMappings = joinClassMapping.getPropertyMappingLeafNodes();
         L logic = null;
         C condition = (C) this;
-        BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
-        List<Tuple2<PropertyMapping<?>, Object>> values = new ArrayList<>();
+        //        BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
+        List<Tuple2<PropertyMapping<?>, Serializable>> values = new ArrayList<>();
         boolean groupable = false;
         boolean fetch = false;
         for (PropertyMapping<?> pm : propertyMappings) {
-            Object ov = bd.getBeanProperty(pm.getPropertyName()).getValue(value);
+            Serializable ov = pm.getGetter().apply(value);
+            //Serializable ov = () bd.getBeanProperty(pm.getPropertyName()).getValue(value);
             if (Lang.isNotEmpty(ov)) {
                 values.add(Tuples.of(pm, ov));
                 if (!pm.isPrimaryKey() && !fetch) {
@@ -314,7 +316,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
         if (fetch) {
             groupable = fetch;
             condition = group();
-            for (Tuple2<PropertyMapping<?>, Object> tv : values) {
+            for (Tuple2<PropertyMapping<?>, Serializable> tv : values) {
                 if (logic != null) {
                     // ENHANCE 后续配置，使用configure可以进行动态设置使用and还是or连接
                     condition = logic.and();
@@ -328,7 +330,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
                 condition = group();
             }
             for (PropertyMapping<?> pm : joinFromPropertyMapping.getPropertyMappings()) {
-                Object ov = bd.getBeanProperty(pm.getPropertyName()).getValue(value);
+                Serializable ov = pm.getProperty().get(value);
+                //                Object ov = bd.getBeanProperty(pm.getPropertyName()).getValue(value);
                 if (logic != null) {
                     // ENHANCE 后续配置，使用configure可以进行动态设置使用and还是or连接
                     condition = logic.and();

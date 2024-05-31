@@ -12,6 +12,7 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +39,9 @@ public abstract class AbstractRepositorySqlQueryTest extends HammerJdbcTestBase 
 
     SqlQuery query;
 
-    List<Map<String, Object>> list = null;
+    List<Map<String, Serializable>> list = null;
 
-    Map<String, Object> map = null;
+    Map<String, Serializable> map = null;
 
     static final String ORDER_REPO = "order";
     static final Repository ORDER_REPO2 = new SimpleRepository(ORDER_REPO);
@@ -91,7 +92,7 @@ public abstract class AbstractRepositorySqlQueryTest extends HammerJdbcTestBase 
         }
     }
 
-    void assertFields(Map<String, Object> data, String[]... fields) {
+    void assertFields(Map<String, Serializable> data, String[]... fields) {
         for (String[] fs : fields) {
             for (String field : fs) {
                 assertTrue(data.containsKey(field));
@@ -99,10 +100,10 @@ public abstract class AbstractRepositorySqlQueryTest extends HammerJdbcTestBase 
         }
     }
 
-    void assertFields(List<Map<String, Object>> list, String[]... fields) {
+    void assertFields(List<Map<String, Serializable>> list, String[]... fields) {
         for (String[] fs : fields) {
             for (String field : fs) {
-                for (Map<String, Object> data : list) {
+                for (Map<String, Serializable> data : list) {
                     assertTrue(data.containsKey(field));
                     //                    if (field.contains(".")) {
                     //                        String[] tokens = field.split(".");

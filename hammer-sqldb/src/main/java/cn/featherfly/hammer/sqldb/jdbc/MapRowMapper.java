@@ -9,6 +9,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -18,8 +19,8 @@ import java.util.Map.Entry;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapper.SqlResultSet;
+import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.builder.AliasManager;
@@ -30,7 +31,11 @@ import cn.featherfly.common.repository.builder.AliasManager.AliasGeneretor;
  *
  * @author zhongj
  */
-public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowMapper<Map<String, Object>> {
+public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowMapper<Map<String, Serializable>> {
+
+    private final Map<String, Class<? extends Serializable>> mappingMap = new LinkedHashMap<>();
+
+    private static final AliasGeneretor ALIAS_GENERETOR = (name, no) -> name + "(" + no + ")";
 
     private SqlTypeMappingManager manager;
 
@@ -48,7 +53,7 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowM
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
+    public Map<String, Serializable> mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
         ResultSet rs = null;
         if (res instanceof SqlResultSet) {
             SqlResultSet sqlrs = (SqlResultSet) res;
@@ -65,14 +70,7 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowM
         }
     }
 
-    private final Map<String, Class<?>> mappingMap = new LinkedHashMap<>();
-
-    private static final AliasGeneretor ALIAS_GENERETOR = (name, no) -> name + "(" + no + ")";
-
-    /**
-     * {@inheritDoc}
-     */
-    public Map<String, Object> mapRow(ResultSet res, int rowNum) throws SQLException {
+    public Map<String, Serializable> mapRow(ResultSet res, int rowNum) throws SQLException {
         if (rowNum == 0) {
             AliasManager aliasManager = new AliasManager(ALIAS_GENERETOR);
             ResultSetMetaData metaData = res.getMetaData();
@@ -85,8 +83,8 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowM
             }
         }
         int columnIndex = 1;
-        Map<String, Object> resultMap = new LinkedHashMap<>();
-        for (Entry<String, Class<?>> entry : mappingMap.entrySet()) {
+        Map<String, Serializable> resultMap = new LinkedHashMap<>();
+        for (Entry<String, Class<? extends Serializable>> entry : mappingMap.entrySet()) {
             resultMap.put(entry.getKey(), manager.get(res, columnIndex, entry.getValue()));
             columnIndex++;
         }

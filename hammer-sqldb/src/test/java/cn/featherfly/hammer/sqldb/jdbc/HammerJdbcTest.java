@@ -26,6 +26,7 @@ import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
@@ -1177,7 +1178,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
     @Test
     public void testQuery() {
-        List<Map<String, Object>> list = hammer.query("user") //
+        List<Map<String, Serializable>> list = hammer.query("user") //
             .field(f -> {
                 f.name("username");
             })//
@@ -1189,7 +1190,7 @@ public class HammerJdbcTest extends JdbcTestBase {
             .sort().asc("age") //
             .list();
         int age = Integer.MIN_VALUE;
-        for (Map<String, Object> map : list) {
+        for (Map<String, Serializable> map : list) {
             Integer a = (Integer) map.get("age");
             System.err.println(age + "    " + a);
             assertTrue(age <= a);
@@ -1201,7 +1202,7 @@ public class HammerJdbcTest extends JdbcTestBase {
             .field((q, f) -> q.field(f.name("username")).field(f.name("password")).field(f.name("age"))) //
             .sort().asc("age") //
             .list();
-        for (Map<String, Object> map : list) {
+        for (Map<String, Serializable> map : list) {
             Integer a = (Integer) map.get("age");
             System.err.println(age + "    " + a);
             assertTrue(age <= a);
@@ -1312,7 +1313,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(user.getId(), id);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and()
-            .expression("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expression("age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100)).single();
         assertNull(user);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and().expression("age - ? >= 0", 100).single();
@@ -1322,7 +1323,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertNull(user);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and()
-            .expr("age - :age >= 0", new ChainMapImpl<String, Object>().putChain("age", 100)).single();
+            .expr("age - :age >= 0", Params.setParam("age", 100)).single();
         assertNull(user);
 
         user = hammer.query(User.class).where().eq(User::getId, id).and().expr("age - ? >= 0", 100).single();

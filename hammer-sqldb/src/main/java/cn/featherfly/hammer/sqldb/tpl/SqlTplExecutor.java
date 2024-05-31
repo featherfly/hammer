@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.tpl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,11 +29,11 @@ import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.tpl.TemplateConfig.CountSqlConverteStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -76,7 +77,7 @@ import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
  * select * from user u where u.name = ? and u.age = ? and u.state in (?,?,?) and u.gender = ?
  * 实现方式，把命名参数的顺序定义出来，就没问题了
  * String[] names = new String[] { "name", "pwd", "state", "age", "gender" };
- * Map<String, Object> params = new ChainMapImpl<String, Object>().putChain("name",
+ * Map<String, Serializable> params = new ChainMapImpl<String, Object>().putChain("name",
  * "yufei").putChain("pwd", "123")
  * .putChain("age", 18).putChain("state", new int[] { 1, 2 }).putChain("gender", "MALE");
  * Set<String> filterNames = Lang.set("age");
@@ -149,7 +150,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int execute(String tplExecuteId, Map<String, Object> params) {
+    public int execute(String tplExecuteId, Map<String, Serializable> params) {
         return execute(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -157,7 +158,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int execute(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public int execute(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> queryExecution = getQueryExecution(tplExecuteId, params, Integer.class);
         String sql = queryExecution.get0();
@@ -175,7 +176,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(String tplExecuteId, Map<String, Object> params) {
+    public Map<String, Serializable> single(String tplExecuteId, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -183,7 +184,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public Map<String, Serializable> single(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple3 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
         String sql = tuple3.get0();
@@ -200,7 +201,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E single(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> E single(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params);
     }
 
@@ -208,7 +209,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> E single(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType);
         String sql = tuple4.get0();
@@ -225,7 +226,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T single(TplExecuteId tplExecuteId, RowMapper<T> rowMapper, Map<String, Object> params) {
+    public <T> T single(TplExecuteId tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -235,7 +236,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, params);
     }
@@ -245,7 +246,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -268,7 +269,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, prefixes, params);
     }
@@ -278,7 +279,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> single(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -297,7 +298,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Map<String, Object> params) {
+        Class<R3> entityType3, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, params);
     }
@@ -307,7 +308,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -333,7 +334,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params) {
+        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, prefixes, params);
     }
@@ -344,7 +345,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -364,7 +365,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, params);
     }
@@ -374,7 +375,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -400,7 +401,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, prefixes, params);
     }
@@ -411,7 +412,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -432,7 +433,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params);
     }
@@ -443,7 +444,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -471,7 +472,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, prefixes, params);
     }
@@ -482,7 +483,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> single(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -504,7 +505,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Class<R6> entityType6, Map<String, Object> params) {
+        Class<R6> entityType6, Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, params);
     }
@@ -515,7 +516,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -544,7 +545,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
         Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return single(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params);
     }
@@ -556,7 +557,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> single(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -577,7 +578,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique(String tplExecuteId, Map<String, Object> params) {
+    public Map<String, Serializable> unique(String tplExecuteId, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -585,7 +586,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public Map<String, Serializable> unique(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
         String sql = tuple4.get0();
@@ -602,7 +603,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E unique(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> E unique(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params);
     }
 
@@ -610,7 +611,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T unique(TplExecuteId execution, RowMapper<T> rowMapper, Map<String, Object> params) {
+    public <T> T unique(TplExecuteId execution, RowMapper<T> rowMapper, Map<String, Serializable> params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -619,7 +620,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E unique(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> E unique(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType);
         String sql = tuple4.get0();
@@ -637,7 +638,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> unique(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, params);
     }
@@ -647,7 +648,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> unique(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -670,7 +671,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> unique(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, prefixes, params);
     }
@@ -680,7 +681,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> Tuple2<R1, R2> unique(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -699,7 +700,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> unique(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Map<String, Object> params) {
+        Class<R3> entityType3, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, params);
     }
@@ -709,7 +710,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> unique(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -735,7 +736,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> unique(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params) {
+        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, prefixes, params);
     }
@@ -746,7 +747,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> Tuple3<R1, R2, R3> unique(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -766,7 +767,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> unique(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, params);
     }
@@ -776,7 +777,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> unique(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -802,7 +803,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> unique(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, prefixes, params);
     }
@@ -813,7 +814,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> Tuple4<R1, R2, R3, R4> unique(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -834,7 +835,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> unique(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params);
     }
@@ -845,7 +846,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> unique(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -873,7 +874,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> unique(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, prefixes, params);
     }
@@ -884,7 +885,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> Tuple5<R1, R2, R3, R4, R5> unique(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -905,7 +906,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> unique(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Class<R6> entityType6, Map<String, Object> params) {
+        Class<R6> entityType6, Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, params);
     }
@@ -916,7 +917,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> unique(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -945,7 +946,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> unique(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
         Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return unique(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params);
     }
@@ -957,7 +958,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> Tuple6<R1, R2, R3, R4, R5, R6> unique(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -978,7 +979,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params) {
+    public List<Map<String, Serializable>> list(String tplExecuteId, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -986,7 +987,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public List<Map<String, Serializable>> list(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
         String sql = tuple4.get0();
@@ -1004,7 +1005,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params);
     }
 
@@ -1012,7 +1013,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Map<String, Object> params) {
+    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Map<String, Serializable> params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -1021,7 +1022,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType);
         String sql = tuple4.get0();
@@ -1039,7 +1040,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(String tplExecuteId, Map<String, Object> params, int offset, int limit) {
+    public List<Map<String, Serializable>> list(String tplExecuteId, Map<String, Serializable> params, int offset,
+        int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params, offset,
             limit);
     }
@@ -1048,8 +1050,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Map<String, Object> params, int offset,
-        int limit) {
+    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Map<String, Serializable> params,
+        int offset, int limit) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -1058,7 +1060,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Map<String, Object> params, int offset,
+    public List<Map<String, Serializable>> list(TplExecuteId tplExecuteId, Map<String, Serializable> params, int offset,
         int limit) {
         return findList(tplExecuteId, params, offset, limit).get0();
     }
@@ -1067,7 +1069,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
+    public <E> List<E> list(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params, int offset,
         int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params,
             offset, limit);
@@ -1077,8 +1079,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params, int offset,
-        int limit) {
+    public <E> List<E> list(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Serializable> params,
+        int offset, int limit) {
         return findList(tplExecuteId, entityType, params, offset, limit).get0();
     }
 
@@ -1087,7 +1089,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, params);
 
@@ -1098,7 +1100,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -1121,7 +1123,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, params, offset, limit);
     }
@@ -1131,7 +1133,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, null, params, offset, limit).get0();
     }
 
@@ -1140,7 +1142,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, prefixes, params);
     }
@@ -1150,7 +1152,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -1169,7 +1171,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, prefixes, params, offset, limit);
     }
@@ -1179,7 +1181,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> List<Tuple2<R1, R2>> list(TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit).get0();
     }
 
@@ -1188,7 +1190,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Map<String, Object> params) {
+        Class<R3> entityType3, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, params);
     }
@@ -1198,7 +1200,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -1221,7 +1223,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
+        Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, params, offset, limit);
     }
@@ -1231,7 +1233,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, null, params, offset, limit).get0();
     }
 
@@ -1240,7 +1242,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params) {
+        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, prefixes, params);
     }
@@ -1251,7 +1253,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -1271,7 +1273,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
-        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset,
+        Class<R3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> params, int offset,
         int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, prefixes, params, offset, limit);
@@ -1283,7 +1285,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> List<Tuple3<R1, R2, R3>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset, limit).get0();
     }
 
@@ -1292,7 +1294,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, params);
     }
@@ -1302,7 +1304,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -1327,8 +1329,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params, int offset,
-        int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params,
+        int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, params, offset, limit);
     }
@@ -1338,8 +1340,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Object> params, int offset,
-        int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params,
+        int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4, null, params, offset, limit)
             .get0();
     }
@@ -1350,7 +1352,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, prefixes, params);
     }
@@ -1361,7 +1363,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -1382,7 +1384,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, prefixes, params, offset, limit);
     }
@@ -1393,7 +1395,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> List<Tuple4<R1, R2, R3, R4>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params, offset,
             limit).get0();
     }
@@ -1404,7 +1406,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params);
     }
@@ -1415,7 +1417,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -1441,7 +1443,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params, offset, limit);
     }
@@ -1452,7 +1454,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, null, params,
             offset, limit).get0();
     }
@@ -1463,7 +1465,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params);
     }
@@ -1474,7 +1476,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -1495,7 +1497,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, prefixes, params, offset, limit);
     }
@@ -1506,7 +1509,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> List<Tuple5<R1, R2, R3, R4, R5>> list(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes, params,
             offset, limit).get0();
     }
@@ -1517,7 +1521,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, params);
     }
@@ -1528,7 +1532,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params, int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, params, offset, limit);
     }
@@ -1539,7 +1543,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -1566,7 +1570,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
             null, params, offset, limit).get0();
     }
@@ -1578,7 +1582,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params);
     }
@@ -1590,7 +1594,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return list(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params, offset, limit);
     }
@@ -1602,7 +1606,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -1624,7 +1628,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> List<Tuple6<R1, R2, R3, R4, R5, R6>> list(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
             prefixes, params, offset, limit).get0();
     }
@@ -1635,8 +1639,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(String tplExecuteId, Map<String, Object> params,
-        int offset, int limit) {
+    public PaginationResults<Map<String, Serializable>> pagination(String tplExecuteId,
+        Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params, offset,
             limit);
     }
@@ -1645,11 +1649,11 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Map<String, Object> params,
-        int offset, int limit) {
-        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(offset, limit);
-        Tuple5<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> listTuple = findList(tplExecuteId, params, offset, limit);
+    public PaginationResults<Map<String, Serializable>> pagination(TplExecuteId tplExecuteId,
+        Map<String, Serializable> params, int offset, int limit) {
+        SimplePaginationResults<Map<String, Serializable>> pagination = new SimplePaginationResults<>(offset, limit);
+        Tuple5<List<Map<String, Serializable>>, String, TplExecuteConfig, ConditionParamsManager,
+            Map<String, Serializable>> listTuple = findList(tplExecuteId, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
         pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
@@ -1659,8 +1663,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
-        int offset, int limit) {
+    public <E> PaginationResults<E> pagination(String tplExecuteId, Class<E> entityType,
+        Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType,
             params, offset, limit);
     }
@@ -1670,10 +1674,10 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <E> PaginationResults<E> pagination(TplExecuteId tplExecuteId, Class<E> entityType,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         SimplePaginationResults<E> pagination = new SimplePaginationResults<>(offset, limit);
 
-        Tuple6<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>,
+        Tuple6<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Serializable>,
             Optional<QueryPageResult>> listTuple = findList(tplExecuteId, entityType, params, offset, limit);
         // IMPLSOON 这里加入分页sql的优化处理
         // 方案一，在模板中加入特定标签
@@ -1691,7 +1695,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T> PaginationResults<T> pagination(TplExecuteId execution, RowMapper<T> rowMapper,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -1701,7 +1705,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, params, offset, limit);
     }
@@ -1711,7 +1715,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
         return pagination(tplExecuteId, entityType1, entityType2, (Tuple2<String, String>) null, params, offset, limit);
     }
 
@@ -1720,7 +1724,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, prefixes, params, offset, limit);
     }
@@ -1730,10 +1735,12 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> PaginationResults<Tuple2<R1, R2>> pagination(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
         SimplePaginationResults<Tuple2<R1, R2>> pagination = new SimplePaginationResults<>(offset, limit);
-        Tuple5<List<Tuple2<R1, R2>>, String, TplExecuteConfig, ConditionParamsManager, Map<String,
-            Object>> listTuple = findList(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit);
+        Tuple5<List<Tuple2<R1, R2>>, String, TplExecuteConfig, ConditionParamsManager,
+            Map<String, Serializable>> listTuple = findList(tplExecuteId, entityType1, entityType2, prefixes, params,
+                offset, limit);
         pagination.setPageResults(listTuple.get0());
         pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
@@ -1744,7 +1751,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, params, offset, limit);
     }
@@ -1754,8 +1761,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset,
-        int limit) {
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params,
+        int offset, int limit) {
         return pagination(tplExecuteId, entityType1, entityType2, entityType3, (Tuple3<String, String, String>) null,
             params, offset, limit);
     }
@@ -1766,7 +1773,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, prefixes, params, offset, limit);
     }
@@ -1777,59 +1784,10 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> PaginationResults<Tuple3<R1, R2, R3>> pagination(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         SimplePaginationResults<Tuple3<R1, R2, R3>> pagination = new SimplePaginationResults<>(offset, limit);
         Tuple5<List<Tuple3<R1, R2, R3>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3, prefixes,
-                params, offset, limit);
-        pagination.setPageResults(listTuple.get0());
-        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
-        return pagination;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Object> params, int offset, int limit) {
-        return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Object> params, int offset, int limit) {
-        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4,
-            (Tuple4<String, String, String, String>) null, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
-        return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, prefixes, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
-        SimplePaginationResults<Tuple4<R1, R2, R3, R4>> pagination = new SimplePaginationResults<>(offset, limit);
-        Tuple5<List<Tuple4<R1, R2, R3, R4>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4,
+            Map<String, Serializable>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3,
                 prefixes, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
         pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
@@ -1840,9 +1798,58 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
+    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Serializable> params, int offset, int limit) {
+        return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Serializable> params, int offset, int limit) {
+        return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4,
+            (Tuple4<String, String, String, String>) null, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
+        return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4> PaginationResults<Tuple4<R1, R2, R3, R4>> pagination(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
+        SimplePaginationResults<Tuple4<R1, R2, R3, R4>> pagination = new SimplePaginationResults<>(offset, limit);
+        Tuple5<List<Tuple4<R1, R2, R3, R4>>, String, TplExecuteConfig, ConditionParamsManager,
+            Map<String, Serializable>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3,
+                entityType4, prefixes, params, offset, limit);
+        pagination.setPageResults(listTuple.get0());
+        pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
+        return pagination;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params, offset, limit);
     }
@@ -1853,7 +1860,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
         return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5,
             (Tuple5<String, String, String, String, String>) null, params, offset, limit);
     }
@@ -1864,8 +1871,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
-        int offset, int limit) {
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, prefixes, params, offset, limit);
     }
@@ -1876,12 +1883,12 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> PaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
-        int offset, int limit) {
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
         SimplePaginationResults<Tuple5<R1, R2, R3, R4, R5>> pagination = new SimplePaginationResults<>(offset, limit);
         Tuple5<List<Tuple5<R1, R2, R3, R4, R5>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4,
-                entityType5, prefixes, params, offset, limit);
+            Map<String, Serializable>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3,
+                entityType4, entityType5, prefixes, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
         //        String countSql = null;
         //        ConditionParamsManager manager = null;
@@ -1905,7 +1912,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, params, offset, limit);
     }
@@ -1916,8 +1923,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
         TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
-        int limit) {
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params,
+        int offset, int limit) {
         return pagination(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
             (Tuple6<String, String, String, String, String, String>) null, params, offset, limit);
     }
@@ -1929,7 +1936,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return pagination(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params, offset, limit);
     }
@@ -1941,13 +1948,13 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> PaginationResults<Tuple6<R1, R2, R3, R4, R5, R6>> pagination(
         TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
         Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
-        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
         int limit) {
         SimplePaginationResults<
             Tuple6<R1, R2, R3, R4, R5, R6>> pagination = new SimplePaginationResults<>(offset, limit);
         Tuple5<List<Tuple6<R1, R2, R3, R4, R5, R6>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3, entityType4,
-                entityType5, entityType6, prefixes, params, offset, limit);
+            Map<String, Serializable>> listTuple = findList(tplExecuteId, entityType1, entityType2, entityType3,
+                entityType4, entityType5, entityType6, prefixes, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
         pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
@@ -1957,7 +1964,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+    public <E> E value(String tplExecuteId, Class<E> valueType, Map<String, Serializable> params) {
         return value(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), valueType, params);
     }
 
@@ -1965,7 +1972,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Object> params) {
+    public <E> E value(TplExecuteId tplExecuteId, Class<E> valueType, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, valueType);
         String sql = tuple4.get0();
@@ -1982,7 +1989,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public boolean bool(String tplExecuteId, Map<String, Object> params) {
+    public boolean bool(String tplExecuteId, Map<String, Serializable> params) {
         return bool(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -1990,7 +1997,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public boolean bool(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public boolean bool(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, int.class);
         String sql = tuple4.get0();
@@ -2002,7 +2009,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int intValue(String tplExecuteId, Map<String, Object> params) {
+    public int intValue(String tplExecuteId, Map<String, Serializable> params) {
         return intValue(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -2010,7 +2017,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int intValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public int intValue(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, int.class);
         String sql = tuple4.get0();
@@ -2023,7 +2030,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public long longValue(String tplExecuteId, Map<String, Object> params) {
+    public long longValue(String tplExecuteId, Map<String, Serializable> params) {
         return longValue(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -2031,7 +2038,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public long longValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public long longValue(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, long.class);
         String sql = tuple4.get0();
@@ -2044,7 +2051,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public double doubleValue(String tplExecuteId, Map<String, Object> params) {
+    public double doubleValue(String tplExecuteId, Map<String, Serializable> params) {
         return doubleValue(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -2052,7 +2059,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public double doubleValue(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public double doubleValue(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, double.class);
         String sql = tuple4.get0();
@@ -2064,7 +2071,7 @@ public class SqlTplExecutor implements TplExecutor {
     // ****************************************************************************************************************
 
     private Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> getQueryExecution(
-        TplExecuteId tplExecuteId, Object[] params, Class<?>... resultTypes) {
+        TplExecuteId tplExecuteId, Serializable[] params, Class<?>... resultTypes) {
         TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
         if (config.getParamsFormat() == ParamsFormat.NAME) {
             throw new TplException(
@@ -2073,7 +2080,7 @@ public class SqlTplExecutor implements TplExecutor {
 
         setCountTemplate(config);
 
-        Map<String, Object> paramMap = new HashMap<>();
+        Map<String, Serializable> paramMap = new HashMap<>();
         for (int i = 0; i < params.length; i++) {
             // process in params
             if (config.getInParamIndexs().contains(i)) {
@@ -2096,7 +2103,7 @@ public class SqlTplExecutor implements TplExecutor {
     // ----------------------------------------------------------------------------------------------------------------
 
     private Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> getQueryExecution(
-        TplExecuteId tplExecuteId, Map<String, Object> params, Class<?>... resultTypes) {
+        TplExecuteId tplExecuteId, Map<String, Serializable> params, Class<?>... resultTypes) {
         TplExecuteConfig config = configFactory.getConfig(tplExecuteId);
         if (config.getParamsFormat() == ParamsFormat.INDEX
             && (config.getParams() == null || config.getParamNames() == null)) {
@@ -2129,7 +2136,7 @@ public class SqlTplExecutor implements TplExecutor {
      * @param config the config
      * @return the count execution
      */
-    private Tuple2<String, ConditionParamsManager> getCountExecution(Map<String, Object> params,
+    private Tuple2<String, ConditionParamsManager> getCountExecution(Map<String, Serializable> params,
         TplExecuteConfig config) {
         String templateName = config.getExecuteId() + TplConfigFactory.COUNT_SUFFIX;
         Tuple3<String, ConditionParamsManager, PropertiesMappingManager> result = getExecution(templateName,
@@ -2149,13 +2156,13 @@ public class SqlTplExecutor implements TplExecutor {
      * @return the execution
      */
     private Tuple3<String, ConditionParamsManager, PropertiesMappingManager> getExecution(String templateName,
-        String sql, Map<String, Object> params, Class<?>... resultTypes) {
+        String sql, Map<String, Serializable> params, Class<?>... resultTypes) {
         logger.debug("execute template name : {}", templateName);
         ConditionParamsManager conditionParamsManager = new ConditionParamsManager(
             hammerConfig.getTemplateConfig().getParamIndexToName());
         PropertiesMappingManager propertiesMappingManager = new PropertiesMappingManager();
 
-        Map<String, Object> root = new HashMap<>();
+        Map<String, Serializable> root = new HashMap<>();
         root.putAll(params);
         SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> templateProcessEnv = createTemplateProcessEnv(
             conditionParamsManager, propertiesMappingManager, resultTypes);
@@ -2193,31 +2200,32 @@ public class SqlTplExecutor implements TplExecutor {
      * @param limit the limit
      * @return the tuple 5
      */
-    private Tuple5<List<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager,
-        Map<String, Object>> findList(TplExecuteId tplExecuteId, Map<String, Object> params, int offset, int limit) {
+    private Tuple5<List<Map<String, Serializable>>, String, TplExecuteConfig, ConditionParamsManager,
+        Map<String, Serializable>> findList(TplExecuteId tplExecuteId, Map<String, Serializable> params, int offset,
+            int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
-        List<Map<String, Object>> list = null;
+        List<Map<String, Serializable>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         TplExecuteConfig config = tuple4.get1();
 
         if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+            SqlPageQuery<Serializable[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamArray(params, manager, config));
             list = jdbc.queryList(sqlPageQuery.getSql(), sqlPageQuery.getParams());
             return Tuples.of(list, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
-            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
                 limit, getEffectiveParamMap(params, manager));
             list = jdbc.queryList(sqlPageQuery.getSql(), sqlPageQuery.getParams());
             return Tuples.of(list, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
         }
     }
 
-    private <E> Tuple6<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Object>,
-        Optional<QueryPageResult>> findList(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
-            int offset, int limit) {
+    private <E> Tuple6<List<E>, String, TplExecuteConfig, ConditionParamsManager, Map<String, Serializable>,
+        Optional<QueryPageResult>> findList(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Serializable> params, int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple3 = getQueryExecution(tplExecuteId, params, entityType);
         List<E> list = null;
@@ -2226,7 +2234,7 @@ public class SqlTplExecutor implements TplExecutor {
         TplExecuteConfig config = tuple3.get1();
         // after getQueryExecution
 
-        Map<String, Object> key = null;
+        Map<String, Serializable> key = null;
         QueryPageResult queryPageResult = null;
         Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
         if (hammerConfig.getTemplateConfig().getQueryConfig().isCachePageResults() && queryPageResultCache != null) {
@@ -2236,7 +2244,7 @@ public class SqlTplExecutor implements TplExecutor {
         }
 
         if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+            SqlPageQuery<Serializable[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamArray(params, manager, config));
             if (list == null) {
                 list = jdbc.queryList(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
@@ -2245,7 +2253,7 @@ public class SqlTplExecutor implements TplExecutor {
             return Tuples.of(list, sql, tuple3.get1(), manager, getEffectiveParamMap(params, manager),
                 Optional.ofNullable(queryPageResult));
         } else {
-            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
                 limit, getEffectiveParamMap(params, manager));
             if (list == null) {
                 list = jdbc.queryList(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
@@ -2287,15 +2295,15 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1,
         E2> Tuple5<List<Tuple2<E1, E2>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
-                Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+            Map<String, Serializable>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+                Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         List<Tuple2<E1, E2>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryList(sqlPageQuery.getSql(), entityType1, entityType2,
@@ -2310,16 +2318,16 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2,
         E3> Tuple5<List<Tuple3<E1, E2, E3>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
-                Class<E3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset,
-                int limit) {
+            Map<String, Serializable>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+                Class<E3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> params,
+                int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         List<Tuple3<E1, E2, E3>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryList(sqlPageQuery.getSql(), entityType1, entityType2, entityType3,
@@ -2336,16 +2344,16 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2, E3,
         E4> Tuple5<List<Tuple4<E1, E2, E3, E4>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+            Map<String, Serializable>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
                 Class<E3> entityType3, Class<E4> entityType4, Tuple4<String, String, String, String> prefixes,
-                Map<String, Object> params, int offset, int limit) {
+                Map<String, Serializable> params, int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         List<Tuple4<E1, E2, E3, E4>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryList(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4,
@@ -2362,17 +2370,17 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2, E3, E4,
         E5> Tuple5<List<Tuple5<E1, E2, E3, E4, E5>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+            Map<String, Serializable>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
                 Class<E3> entityType3, Class<E4> entityType4, Class<E5> entityType5,
-                Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+                Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
                 int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         List<Tuple5<E1, E2, E3, E4, E5>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryList(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4,
@@ -2391,17 +2399,17 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2, E3, E4, E5,
         E6> Tuple5<List<Tuple6<E1, E2, E3, E4, E5, E6>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+            Map<String, Serializable>> findList(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
                 Class<E3> entityType3, Class<E4> entityType4, Class<E5> entityType5, Class<E6> entityType6,
-                Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
-                int limit) {
+                Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params,
+                int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         List<Tuple6<E1, E2, E3, E4, E5, E6>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryList(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4,
@@ -2418,22 +2426,22 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
-    private Map<String, Object> getKey(String sql, Map<String, Object> params) {
-        Map<String, Object> key = new HashMap<>(params.size() + 1);
+    private Map<String, Serializable> getKey(String sql, Map<String, Serializable> params) {
+        Map<String, Serializable> key = new HashMap<>(params.size() + 1);
         key.put("$@#SQL#$@", sql);
         key.putAll(params);
         return key;
     }
 
-    private long count(String sql, Map<String, Object> effectiveParams, ConditionParamsManager conditionParamsManager,
-        TplExecuteConfig config) {
+    private long count(String sql, Map<String, Serializable> effectiveParams,
+        ConditionParamsManager conditionParamsManager, TplExecuteConfig config) {
         return count(sql, effectiveParams, conditionParamsManager, config, null);
     }
 
-    private long count(String sql, Map<String, Object> effectiveParams, ConditionParamsManager conditionParamsManager,
-        TplExecuteConfig config, QueryPageResult queryPageResult) {
+    private long count(String sql, Map<String, Serializable> effectiveParams,
+        ConditionParamsManager conditionParamsManager, TplExecuteConfig config, QueryPageResult queryPageResult) {
         Long total = null;
-        Map<String, Object> key = null;
+        Map<String, Serializable> key = null;
         Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
         if (hammerConfig.getTemplateConfig().getQueryConfig().isCachePageCount() && queryPageResultCache != null) {
             key = getKey(sql, effectiveParams);
@@ -2478,7 +2486,7 @@ public class SqlTplExecutor implements TplExecutor {
         return total;
     }
 
-    private Object[] getEffectiveParamArray(Object[] params, ConditionParamsManager manager) {
+    private Serializable[] getEffectiveParamArray(Serializable[] params, ConditionParamsManager manager) {
         List<Object> paramList = new ArrayList<>(params.length);
         for (int i = 0; i < params.length; i++) {
             if (manager.filterParamIndex(i)) {
@@ -2486,16 +2494,17 @@ public class SqlTplExecutor implements TplExecutor {
             }
             Lang.eachObj(params[i], o -> paramList.add(o));
         }
-        return paramList.toArray();
+        return paramList.toArray(new Serializable[paramList.size()]);
     }
 
-    private Object[] getEffectiveParamArray(final Map<String, Object> params, ConditionParamsManager manager,
-        TplExecuteConfig config) {
+    private Serializable[] getEffectiveParamArray(final Map<String, Serializable> params,
+        ConditionParamsManager manager, TplExecuteConfig config) {
         return Arrays.stream(config.getParams()).filter(p -> !manager.filterParamName(p.getName()))
-            .map(p -> transvert(p.getName(), params.get(p.getName()), manager)).toArray();
+            .map(p -> transvert(p.getName(), params.get(p.getName()), manager)).toArray(n -> new Serializable[n]);
     }
 
-    private Map<String, Object> getEffectiveParamMap(final Map<String, Object> params, ConditionParamsManager manager) {
+    private Map<String, Serializable> getEffectiveParamMap(final Map<String, Serializable> params,
+        ConditionParamsManager manager) {
         return params.entrySet().stream().filter(t -> {
             return !manager.filterParamName(t.getKey());
         }).collect(Collectors.toMap(e -> {
@@ -2505,7 +2514,7 @@ public class SqlTplExecutor implements TplExecutor {
         }));
     }
 
-    private Object transvert(Param param, Object value, ConditionParamsManager manager) {
+    private Serializable transvert(Param param, Serializable value, ConditionParamsManager manager) {
         if (param != null && Lang.isNotEmpty(param.getTransverter())) {
             Transverter transverter = transverterManager.getExist(param.getTransverter());
             return transverter.transvert(param.getTransverter(), value);
@@ -2517,7 +2526,7 @@ public class SqlTplExecutor implements TplExecutor {
     //        return transvert(manager.getParam(index), value, manager);
     //    }
 
-    private Object transvert(String name, Object value, ConditionParamsManager manager) {
+    private Serializable transvert(String name, Serializable value, ConditionParamsManager manager) {
         // YUFEI_TEST 调用前已经吧value == null的过滤了，不确定IgnorePolicy会否影响，后续测试
         //        if (value == null) {
         //            return value;
@@ -2542,7 +2551,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int execute(TplExecuteId tplExecuteId, Object... params) {
+    public int execute(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2551,7 +2560,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public boolean bool(TplExecuteId tplExecuteId, Object... params) {
+    public boolean bool(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2560,7 +2569,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public int intValue(TplExecuteId tplExecuteId, Object... params) {
+    public int intValue(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2569,7 +2578,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public long longValue(TplExecuteId tplExecuteId, Object... params) {
+    public long longValue(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2578,7 +2587,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public double doubleValue(TplExecuteId tplExecuteId, Object... params) {
+    public double doubleValue(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2587,7 +2596,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <V> V value(TplExecuteId tplExecuteId, Class<V> valueType, Object... params) {
+    public <V> V value(TplExecuteId tplExecuteId, Class<V> valueType, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2596,7 +2605,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single(TplExecuteId tplExecuteId, Object... params) {
+    public Map<String, Serializable> single(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2605,7 +2614,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T single(TplExecuteId tplExecuteId, Class<T> mapType, Object... params) {
+    public <T> T single(TplExecuteId tplExecuteId, Class<T> mapType, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2615,7 +2624,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2> Tuple2<T1, T2> single(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Tuple2<String, String> prefixes, Object... params) {
+        Tuple2<String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2625,7 +2634,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2, T3> Tuple3<T1, T2, T3> single(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object... params) {
+        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2636,7 +2645,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> single(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
-        Object... params) {
+        Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2647,7 +2656,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> single(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... params) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2658,7 +2667,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> single(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5, Class<T6> mapType6,
-        Tuple6<String, String, String, String, String, String> prefixes, Object... params) {
+        Tuple6<String, String, String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2667,7 +2676,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique(TplExecuteId tplExecuteId, Object... params) {
+    public Map<String, Serializable> unique(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2676,7 +2685,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T unique(TplExecuteId tplExecuteId, Class<T> mapType, Object... params) {
+    public <T> T unique(TplExecuteId tplExecuteId, Class<T> mapType, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2686,7 +2695,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2> Tuple2<T1, T2> unique(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Tuple2<String, String> prefixes, Object... params) {
+        Tuple2<String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2696,7 +2705,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2, T3> Tuple3<T1, T2, T3> unique(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object... params) {
+        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2707,7 +2716,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> unique(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
-        Object... params) {
+        Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2718,7 +2727,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> unique(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... params) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2729,7 +2738,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> unique(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5, Class<T6> mapType6,
-        Tuple6<String, String, String, String, String, String> prefixes, Object... params) {
+        Tuple6<String, String, String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2738,7 +2747,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Object... params) {
+    public List<Map<String, Serializable>> list(TplExecuteId tplExecuteId, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2747,7 +2756,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId tplExecuteId, Class<T> mapType, Object... params) {
+    public <T> List<T> list(TplExecuteId tplExecuteId, Class<T> mapType, Serializable... params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, mapType);
         String sql = tuple4.get0();
@@ -2759,7 +2768,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list(TplExecuteId tplExecuteId, Object[] params, int offset, int limit) {
+    public List<Map<String, Serializable>> list(TplExecuteId tplExecuteId, Serializable[] params, int offset,
+        int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2768,17 +2778,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId tplExecuteId, Class<T> mapType, Object[] params, int offset, int limit) {
-        // NOIMPL 模板执行未实现参数为数组的情况
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2> List<Tuple2<T1, T2>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Tuple2<String, String> prefixes, Object... params) {
+    public <T> List<T> list(TplExecuteId tplExecuteId, Class<T> mapType, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2788,7 +2788,17 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2> List<Tuple2<T1, T2>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Tuple2<String, String> prefixes, Object[] params, int offset, int limit) {
+        Tuple2<String, String> prefixes, Serializable... params) {
+        // NOIMPL 模板执行未实现参数为数组的情况
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> List<Tuple2<T1, T2>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
+        Tuple2<String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2798,7 +2808,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2, T3> List<Tuple3<T1, T2, T3>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object... params) {
+        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2808,7 +2818,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2, T3> List<Tuple3<T1, T2, T3>> list(TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2,
-        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object[] params, int offset, int limit) {
+        Class<T3> mapType3, Tuple3<String, String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2819,7 +2829,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
-        Object... params) {
+        Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2830,7 +2840,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Tuple4<String, String, String, String> prefixes,
-        Object[] params, int offset, int limit) {
+        Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2841,7 +2851,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-        Tuple5<String, String, String, String, String> prefixes, Object... params) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2852,7 +2862,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> list(TplExecuteId tplExecuteId, Class<T1> mapType1,
         Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-        Tuple5<String, String, String, String, String> prefixes, Object[] params, int offset, int limit) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2863,7 +2873,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> list(TplExecuteId tplExecuteId,
         Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-        Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes, Object... params) {
+        Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2874,7 +2884,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5, T6> List<Tuple6<T1, T2, T3, T4, T5, T6>> list(TplExecuteId tplExecuteId,
         Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-        Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes, Object[] params,
+        Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes, Serializable[] params,
         int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -2884,8 +2894,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination(TplExecuteId tplExecuteId, Object[] params, int offset,
-        int limit) {
+    public PaginationResults<Map<String, Serializable>> pagination(TplExecuteId tplExecuteId, Serializable[] params,
+        int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2894,8 +2904,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> PaginationResults<T> pagination(TplExecuteId tplExecuteId, Class<T> mapType, Object[] params, int offset,
-        int limit) {
+    public <T> PaginationResults<T> pagination(TplExecuteId tplExecuteId, Class<T> mapType, Serializable[] params,
+        int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2905,7 +2915,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2> PaginationResults<Tuple2<T1, T2>> pagination(TplExecuteId tplExecuteId, Class<T1> mapType1,
-        Class<T2> mapType2, Tuple2<String, String> prefixes, Object[] params, int offset, int limit) {
+        Class<T2> mapType2, Tuple2<String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2915,8 +2925,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2, T3> PaginationResults<Tuple3<T1, T2, T3>> pagination(TplExecuteId tplExecuteId, Class<T1> mapType1,
-        Class<T2> mapType2, Class<T3> mapType3, Tuple3<String, String, String> prefixes, Object[] params, int offset,
-        int limit) {
+        Class<T2> mapType2, Class<T3> mapType3, Tuple3<String, String, String> prefixes, Serializable[] params,
+        int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2927,7 +2937,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4> PaginationResults<Tuple4<T1, T2, T3, T4>> pagination(TplExecuteId tplExecuteId,
         Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4,
-        Tuple4<String, String, String, String> prefixes, Object[] params, int offset, int limit) {
+        Tuple4<String, String, String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2938,7 +2948,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5> PaginationResults<Tuple5<T1, T2, T3, T4, T5>> pagination(TplExecuteId tplExecuteId,
         Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4, Class<T5> mapType5,
-        Tuple5<String, String, String, String, String> prefixes, Object[] params, int offset, int limit) {
+        Tuple5<String, String, String, String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2950,7 +2960,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <T1, T2, T3, T4, T5, T6> PaginationResults<Tuple6<T1, T2, T3, T4, T5, T6>> pagination(
         TplExecuteId tplExecuteId, Class<T1> mapType1, Class<T2> mapType2, Class<T3> mapType3, Class<T4> mapType4,
         Class<T5> mapType5, Class<T6> mapType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Object[] params, int offset, int limit) {
+        Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -2959,7 +2969,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T single(TplExecuteId execution, RowMapper<T> rowMapper, Object... params) {
+    public <T> T single(TplExecuteId execution, RowMapper<T> rowMapper, Serializable... params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -2968,7 +2978,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> T unique(TplExecuteId execution, RowMapper<T> rowMapper, Object... params) {
+    public <T> T unique(TplExecuteId execution, RowMapper<T> rowMapper, Serializable... params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -2977,7 +2987,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Object... params) {
+    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Serializable... params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -2986,7 +2996,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Object[] params, int offset, int limit) {
+    public <T> List<T> list(TplExecuteId execution, RowMapper<T> rowMapper, Serializable[] params, int offset,
+        int limit) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -2995,7 +3006,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> PaginationResults<T> pagination(TplExecuteId execution, RowMapper<T> rowMapper, Object[] params,
+    public <T> PaginationResults<T> pagination(TplExecuteId execution, RowMapper<T> rowMapper, Serializable[] params,
         int offset, int limit) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
@@ -3003,7 +3014,8 @@ public class SqlTplExecutor implements TplExecutor {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    public AutoCloseableIterable<Map<String, Object>> each(String tplExecuteId, Map<String, Object> params) {
+    public AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId,
+        Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
     }
 
@@ -3011,7 +3023,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Object>> each(TplExecuteId tplExecuteId, Map<String, Object> params) {
+    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId tplExecuteId,
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
         String sql = tuple4.get0();
@@ -3025,7 +3038,8 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
-    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType, Map<String, Object> params) {
+    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType,
+        Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params);
     }
 
@@ -3034,7 +3048,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -3044,7 +3058,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <E> AutoCloseableIterable<E> each(TplExecuteId tplExecuteId, Class<E> entityType,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType);
         String sql = tuple4.get0();
@@ -3058,8 +3072,8 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
-    public AutoCloseableIterable<Map<String, Object>> each(String tplExecuteId, Map<String, Object> params, int offset,
-        int limit) {
+    public AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
+        int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params, offset,
             limit);
     }
@@ -3068,8 +3082,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper, Map<String, Object> params,
-        int offset, int limit) {
+    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper,
+        Map<String, Serializable> params, int offset, int limit) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -3078,12 +3092,12 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Object>> each(TplExecuteId tplExecuteId, Map<String, Object> params,
-        int offset, int limit) {
+    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId tplExecuteId,
+        Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, params, offset, limit).get0();
     }
 
-    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType, Map<String, Object> params,
+    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params,
         int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params,
             offset, limit);
@@ -3093,13 +3107,13 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <E> AutoCloseableIterable<E> each(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
-        int offset, int limit) {
+    public <E> AutoCloseableIterable<E> each(TplExecuteId tplExecuteId, Class<E> entityType,
+        Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType, params, offset, limit).get0();
     }
 
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Object> params) {
+        Class<R2> entityType2, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, params);
 
@@ -3110,7 +3124,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Object> params) {
+        Class<R2> entityType2, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -3129,7 +3143,7 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, params, offset, limit);
     }
@@ -3139,12 +3153,12 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, null, params, offset, limit).get0();
     }
 
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, prefixes, params);
     }
@@ -3154,7 +3168,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         String sql = tuple4.get0();
@@ -3169,7 +3183,8 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, prefixes, params, offset, limit);
     }
@@ -3179,12 +3194,13 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit).get0();
     }
 
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, params);
     }
@@ -3194,7 +3210,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -3213,7 +3229,7 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, params, offset, limit);
     }
@@ -3223,13 +3239,13 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Object> params, int offset, int limit) {
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, null, params, offset, limit).get0();
     }
 
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, prefixes, params);
     }
@@ -3240,7 +3256,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3);
         String sql = tuple4.get0();
@@ -3257,7 +3273,7 @@ public class SqlTplExecutor implements TplExecutor {
 
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, prefixes, params, offset, limit);
     }
@@ -3268,13 +3284,13 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset, limit).get0();
     }
 
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, params);
     }
@@ -3285,7 +3301,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -3307,7 +3323,7 @@ public class SqlTplExecutor implements TplExecutor {
 
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, params, offset, limit);
     }
@@ -3318,14 +3334,14 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, null, params, offset, limit)
             .get0();
     }
 
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, prefixes, params);
     }
@@ -3336,7 +3352,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
         String sql = tuple4.get0();
@@ -3353,7 +3369,7 @@ public class SqlTplExecutor implements TplExecutor {
 
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, prefixes, params, offset, limit);
     }
@@ -3364,14 +3380,14 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params, offset,
             limit).get0();
     }
 
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Object> params) {
+        Class<R5> entityType5, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params);
     }
@@ -3382,7 +3398,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Object> params) {
+        Class<R5> entityType5, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -3404,7 +3420,7 @@ public class SqlTplExecutor implements TplExecutor {
 
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params, offset, limit);
     }
@@ -3415,14 +3431,15 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, null, params,
             offset, limit).get0();
     }
 
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, params);
     }
@@ -3433,7 +3450,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
         String sql = tuple4.get0();
@@ -3450,8 +3468,8 @@ public class SqlTplExecutor implements TplExecutor {
 
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
-        int offset, int limit) {
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, prefixes, params, offset, limit);
     }
@@ -3462,22 +3480,22 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params,
-        int offset, int limit) {
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes, params,
             offset, limit).get0();
     }
 
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, params);
     }
 
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset, int limit) {
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, params, offset, limit);
     }
@@ -3488,7 +3506,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
         TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params) {
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -3515,8 +3533,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
         TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Object> params, int offset,
-        int limit) {
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params,
+        int offset, int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
             null, params, offset, limit).get0();
     }
@@ -3524,7 +3542,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params) {
+        Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params);
     }
@@ -3532,7 +3550,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Object> params, int offset, int limit) {
+        Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params, offset, limit);
     }
@@ -3544,7 +3562,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
         TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
         Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
-        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params) {
+        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
             tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
         String sql = tuple4.get0();
@@ -3566,7 +3584,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
         TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
         Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
-        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
         int limit) {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
             prefixes, params, offset, limit).get0();
@@ -3576,7 +3594,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Object>> each(TplExecuteId execution, Object... params) {
+    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId execution, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3585,7 +3603,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, Class<T> mappingType, Object... params) {
+    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, Class<T> mappingType, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3594,7 +3612,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper, Object... params) {
+    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper, Serializable... params) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
     }
@@ -3603,8 +3621,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Object>> each(TplExecuteId execution, Object[] params, int offset,
-        int limit) {
+    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId execution, Serializable[] params,
+        int offset, int limit) {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -3613,8 +3631,8 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, Class<T> mappingType, Object[] params, int offset,
-        int limit) {
+    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, Class<T> mappingType, Serializable[] params,
+        int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3623,7 +3641,7 @@ public class SqlTplExecutor implements TplExecutor {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper, Object[] params,
+    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper, Serializable[] params,
         int offset, int limit) {
         // NOIMPL 模板执行未实现映射参数为RowMapper的情况
         throw new NotImplementedException();
@@ -3634,7 +3652,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(TplExecuteId execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Tuple2<String, String> prefixes, Object... params) {
+        Class<T2> mappingType2, Tuple2<String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3644,7 +3662,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(TplExecuteId execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Tuple2<String, String> prefixes, Object[] params, int offset, int limit) {
+        Class<T2> mappingType2, Tuple2<String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3654,7 +3672,8 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(TplExecuteId execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes, Object... params) {
+        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes,
+        Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3664,7 +3683,7 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(TplExecuteId execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes, Object[] params,
+        Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes, Serializable[] params,
         int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
@@ -3676,7 +3695,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(TplExecuteId execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Tuple4<String, String, String, String> prefixes, Object... params) {
+        Tuple4<String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3687,7 +3706,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(TplExecuteId execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Tuple4<String, String, String, String> prefixes, Object[] params, int offset, int limit) {
+        Tuple4<String, String, String, String> prefixes, Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3698,7 +3717,7 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(TplExecuteId execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Object... params) {
+        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3709,8 +3728,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(TplExecuteId execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Object[] params, int offset,
-        int limit) {
+        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Serializable[] params,
+        int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3722,7 +3741,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(TplExecuteId execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Object... params) {
+        Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3734,7 +3753,7 @@ public class SqlTplExecutor implements TplExecutor {
     public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(TplExecuteId execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Object[] params, int offset, int limit) {
+        Serializable[] params, int offset, int limit) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3748,22 +3767,23 @@ public class SqlTplExecutor implements TplExecutor {
      * @param limit the limit
      * @return the tuple 5
      */
-    private Tuple5<AutoCloseableIterable<Map<String, Object>>, String, TplExecuteConfig, ConditionParamsManager,
-        Map<String, Object>> findEach(TplExecuteId tplExecuteId, Map<String, Object> params, int offset, int limit) {
+    private Tuple5<AutoCloseableIterable<Map<String, Serializable>>, String, TplExecuteConfig, ConditionParamsManager,
+        Map<String, Serializable>> findEach(TplExecuteId tplExecuteId, Map<String, Serializable> params, int offset,
+            int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
-        AutoCloseableIterable<Map<String, Object>> iterable = null;
+        AutoCloseableIterable<Map<String, Serializable>> iterable = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
         TplExecuteConfig config = tuple4.get1();
 
         if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+            SqlPageQuery<Serializable[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamArray(params, manager, config));
             iterable = jdbc.queryEach(sqlPageQuery.getSql(), sqlPageQuery.getParams());
             return Tuples.of(iterable, sql, tuple4.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
-            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
                 limit, getEffectiveParamMap(params, manager));
             iterable = jdbc.queryEach(sqlPageQuery.getSql(), sqlPageQuery.getParams());
             return Tuples.of(iterable, sql, tuple4.get1(), manager, sqlPageQuery.getParams());
@@ -3771,8 +3791,8 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     private <E> Tuple5<AutoCloseableIterable<E>, String, TplExecuteConfig, ConditionParamsManager,
-        Map<String, Object>> findEach(TplExecuteId tplExecuteId, Class<E> entityType, Map<String, Object> params,
-            int offset, int limit) {
+        Map<String, Serializable>> findEach(TplExecuteId tplExecuteId, Class<E> entityType,
+            Map<String, Serializable> params, int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple3 = getQueryExecution(tplExecuteId, params, entityType);
         AutoCloseableIterable<E> list = null;
@@ -3781,12 +3801,12 @@ public class SqlTplExecutor implements TplExecutor {
         TplExecuteConfig config = tuple3.get1();
         // after getQueryExecution
         if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            SqlPageQuery<Object[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
+            SqlPageQuery<Serializable[]> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
                 getEffectiveParamArray(params, manager, config));
             list = jdbc.queryEach(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
             return Tuples.of(list, sql, tuple3.get1(), manager, getEffectiveParamMap(params, manager));
         } else {
-            SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
                 limit, getEffectiveParamMap(params, manager));
             list = jdbc.queryEach(sqlPageQuery.getSql(), entityType, sqlPageQuery.getParams());
             return Tuples.of(list, sql, tuple3.get1(), manager, sqlPageQuery.getParams());
@@ -3795,15 +3815,15 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1,
         E2> Tuple5<AutoCloseableIterable<Tuple2<E1, E2>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
-                Tuple2<String, String> prefixes, Map<String, Object> params, int offset, int limit) {
+            Map<String, Serializable>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+                Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         AutoCloseableIterable<Tuple2<E1, E2>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryEach(sqlPageQuery.getSql(), entityType1, entityType2,
@@ -3818,16 +3838,16 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2,
         E3> Tuple5<AutoCloseableIterable<Tuple3<E1, E2, E3>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
-                Class<E3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Object> params, int offset,
-                int limit) {
+            Map<String, Serializable>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+                Class<E3> entityType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> params,
+                int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         AutoCloseableIterable<Tuple3<E1, E2, E3>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryEach(sqlPageQuery.getSql(), entityType1, entityType2, entityType3,
@@ -3844,16 +3864,16 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2, E3,
         E4> Tuple5<AutoCloseableIterable<Tuple4<E1, E2, E3, E4>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+            Map<String, Serializable>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
                 Class<E3> entityType3, Class<E4> entityType4, Tuple4<String, String, String, String> prefixes,
-                Map<String, Object> params, int offset, int limit) {
+                Map<String, Serializable> params, int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         AutoCloseableIterable<Tuple4<E1, E2, E3, E4>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryEach(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4,
@@ -3870,17 +3890,17 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2, E3, E4,
         E5> Tuple5<AutoCloseableIterable<Tuple5<E1, E2, E3, E4, E5>>, String, TplExecuteConfig, ConditionParamsManager,
-            Map<String, Object>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
+            Map<String, Serializable>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1, Class<E2> entityType2,
                 Class<E3> entityType3, Class<E4> entityType4, Class<E5> entityType5,
-                Tuple5<String, String, String, String, String> prefixes, Map<String, Object> params, int offset,
+                Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
                 int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         AutoCloseableIterable<Tuple5<E1, E2, E3, E4, E5>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryEach(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4,
@@ -3899,17 +3919,18 @@ public class SqlTplExecutor implements TplExecutor {
 
     private <E1, E2, E3, E4, E5,
         E6> Tuple5<AutoCloseableIterable<Tuple6<E1, E2, E3, E4, E5, E6>>, String, TplExecuteConfig,
-            ConditionParamsManager, Map<String, Object>> findEach(TplExecuteId tplExecuteId, Class<E1> entityType1,
-                Class<E2> entityType2, Class<E3> entityType3, Class<E4> entityType4, Class<E5> entityType5,
-                Class<E6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-                Map<String, Object> params, int offset, int limit) {
+            ConditionParamsManager, Map<String, Serializable>> findEach(TplExecuteId tplExecuteId,
+                Class<E1> entityType1, Class<E2> entityType2, Class<E3> entityType3, Class<E4> entityType4,
+                Class<E5> entityType5, Class<E6> entityType6,
+                Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params,
+                int offset, int limit) {
         Tuple4<String, TplExecuteConfig, ConditionParamsManager,
             PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
         AutoCloseableIterable<Tuple6<E1, E2, E3, E4, E5, E6>> list = null;
         String sql = tuple4.get0();
         ConditionParamsManager manager = tuple4.get2();
-        SqlPageQuery<Map<String, Object>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset, limit,
-            getEffectiveParamMap(params, manager));
+        SqlPageQuery<Map<String, Serializable>> sqlPageQuery = sqlPageFactory.toPage(jdbc.getDialect(), sql, offset,
+            limit, getEffectiveParamMap(params, manager));
         if (prefixes == null) {
             PropertiesMappingManager propManager = tuple4.get3();
             list = jdbc.queryEach(sqlPageQuery.getSql(), entityType1, entityType2, entityType3, entityType4,

@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -41,7 +42,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
     protected final E2 execution;
 
     /** The params. */
-    protected final Map<String, Object> params;
+    protected final Map<String, Serializable> params;
 
     /**
      * Instantiates a new template paramed execution executor.
@@ -50,7 +51,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * @param execution the execution
      * @param params the params
      */
-    public MapParamedExecutionExecutor(E1 executor, E2 execution, Map<String, Object> params) {
+    public MapParamedExecutionExecutor(E1 executor, E2 execution, Map<String, Serializable> params) {
         super();
         this.executor = executor;
         this.execution = execution;
@@ -170,7 +171,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single() {
+    public Map<String, Serializable> single() {
         return executor.single(execution, params);
     }
 
@@ -194,7 +195,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique() {
+    public Map<String, Serializable> unique() {
         return executor.unique(execution, params);
     }
 
@@ -218,7 +219,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list() {
+    public List<Map<String, Serializable>> list() {
         return executor.list(execution, params);
     }
 
@@ -242,7 +243,7 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Object>> each() {
+    public AutoCloseableIterable<Map<String, Serializable>> each() {
         return executor.each(execution, params);
     }
 

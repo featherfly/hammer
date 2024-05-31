@@ -7,6 +7,7 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.condition;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -157,8 +158,9 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      *
      * @return the params
      */
-    public List<Object> getParams() {
-        List<Object> params = new ArrayList<>();
+    @SuppressWarnings("unchecked")
+    public List<Serializable> getParams() {
+        List<Serializable> params = new ArrayList<>();
         for (Expression condition : conditions) {
             if (!(condition instanceof ParamedExpression)) {
                 continue;
@@ -167,19 +169,28 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
             Object param = ((ParamedExpression) condition).getParam();
             if (param == ParamType.NONE) { // ignore param
             } else if (param == null) {
-                params.add(param);
+                params.add(null);
             } else if (param instanceof Collection) {
-                params.addAll((Collection<?>) param);
+                params.addAll((Collection<Serializable>) param);
             } else if (param.getClass().isArray()) {
                 int length = Array.getLength(param);
                 for (int i = 0; i < length; i++) {
-                    params.add(Array.get(param, i));
+                    params.add((Serializable) Array.get(param, i));
                 }
             } else {
-                params.add(param);
+                params.add((Serializable) param);
             }
         }
         return params;
+    }
+
+    /**
+     * Gets the params array.
+     *
+     * @return the params array
+     */
+    public Serializable[] getParamsArray() {
+        return Lang.toArray(getParams(), Serializable.class);
     }
 
     /**
@@ -384,8 +395,9 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
      * @return the field value operator
      */
     protected Object getFieldValueOperator(Object paramsForField, Object value) {
-        return Lang.isEmpty(paramsForField) ? getFieldValueOperator(value)
-            : SqlUtils.flatParams(SqlUtils.flatParamToFieldValueOperator(paramsForField), getFieldValueOperator(value));
+        return Lang.isEmpty(paramsForField) ? getFieldValueOperator((Serializable) value)
+            : SqlUtils.flatParams(SqlUtils.flatParamToFieldValueOperator(paramsForField),
+                getFieldValueOperator((Serializable) value));
     }
 
     /**
@@ -410,7 +422,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
         if (value instanceof Field || value instanceof SqlElement || value instanceof Expression) {
             return value;
         } else {
-            return getFieldValueOperator(value);
+            return getFieldValueOperator((Serializable) value);
         }
     }
 

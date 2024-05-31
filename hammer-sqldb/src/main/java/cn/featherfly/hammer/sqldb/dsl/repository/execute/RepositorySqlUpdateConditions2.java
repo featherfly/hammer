@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.execute;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
@@ -27,7 +28,7 @@ public class RepositorySqlUpdateConditions2 extends AbstractMulitiRepositorySqlE
     }
 
     /**
-     * @param parent         the parent
+     * @param parent the parent
      * @param updateRelation the update relation
      */
     RepositorySqlUpdateConditions2(RepositoryExecutableConditionsGroupLogic2<UpdateConditionConfig> parent,
@@ -48,7 +49,7 @@ public class RepositorySqlUpdateConditions2 extends AbstractMulitiRepositorySqlE
      * {@inheritDoc}
      */
     @Override
-    public List<Object> getParams() {
+    public List<Serializable> getParams() {
         return RepositorySqlUpdateConditions.getParams(parent, repositoryRelation, super.getParams());
     }
 

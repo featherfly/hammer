@@ -254,3 +254,14 @@ INSERT INTO "order_info" ("id", "descp", "order_id", "create_user", "update_user
     VALUES (2, 'descp2', 2, 2, 2, 2, 2, 2, 2);
 INSERT INTO "order_info" ("id", "descp", "order_id", "create_user", "update_user","user1", "user2", "user3", "user_info") 
     VALUES (3, 'descp2', 3, 1, 2, 3, 4, 5, 6);
+
+-- ----------------------------
+-- Table structure for uuid_table
+-- ----------------------------
+
+DROP TABLE IF EXISTS "uuid_table";
+CREATE TABLE "uuid_table" (
+  "id" varchar(36) NOT NULL,
+  "descp" varchar(255) DEFAULT NULL,
+  CONSTRAINT "uuid_table_pkey" PRIMARY KEY ("id")
+);

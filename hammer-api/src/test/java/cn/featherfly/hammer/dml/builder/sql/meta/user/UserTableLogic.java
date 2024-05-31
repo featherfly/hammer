@@ -1,5 +1,6 @@
 package cn.featherfly.hammer.dml.builder.sql.meta.user;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -99,7 +100,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> list() {
+    public List<Map<String, Serializable>> list() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -126,7 +127,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> single() {
+    public Map<String, Serializable> single() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -135,7 +136,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> unique() {
+    public Map<String, Serializable> unique() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }
@@ -180,7 +181,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public PaginationResults<Map<String, Object>> pagination() {
+    public PaginationResults<Map<String, Serializable>> pagination() {
         // YUFEI_TODO Auto-generated method stub
         return null;
     }

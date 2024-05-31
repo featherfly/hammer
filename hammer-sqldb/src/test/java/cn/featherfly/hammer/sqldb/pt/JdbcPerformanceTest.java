@@ -9,6 +9,7 @@
  */
 package cn.featherfly.hammer.sqldb.pt;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -187,8 +188,8 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
         for (int i = 0; i < batchTimes; i++) {
             PreparedStatementWrapper prep = conn.prepareStatement(insertSql);
             for (int j = 0; j < batchSize; j++) {
-                Object[] params = new Object[] { null, 1, "yufei_" + index, "yufei_descp_" + index, "省_" + index,
-                    "市_" + index, "区_" + index };
+                Serializable[] params = new Serializable[] { null, 1, "yufei_" + index, "yufei_descp_" + index,
+                    "省_" + index, "市_" + index, "区_" + index };
                 JdbcUtils.setParameters(prep, params);
                 prep.addBatch();
                 index++;

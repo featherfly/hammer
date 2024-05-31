@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -41,7 +42,7 @@ public class JdbcTransactionTest extends JdbcTestBase {
         final String title = "title";
         final String content = "content";
         final String[] columnNames = new String[] { id, title, content };
-        final Object[] params = new Object[] { null, "title_01", "content_01" };
+        final Serializable[] params = new Serializable[] { null, "title_01", "content_01" };
 
         Connection conn = getConnection();
         Connection conn2 = getConnection();
@@ -90,7 +91,7 @@ public class JdbcTransactionTest extends JdbcTestBase {
         final String title = "title";
         final String content = "content";
         final String[] columnNames = new String[] { id, title, content };
-        final Object[] params = new Object[] { null, "title_01", "content_01" };
+        final Serializable[] params = new Serializable[] { null, "title_01", "content_01" };
 
         Connection conn = getConnection();
         Connection conn2 = getConnection();

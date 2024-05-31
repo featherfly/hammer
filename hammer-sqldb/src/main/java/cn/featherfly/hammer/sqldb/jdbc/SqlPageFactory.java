@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -32,7 +33,7 @@ public interface SqlPageFactory {
         /**
          * Instantiates a new sql page query.
          *
-         * @param sql    the sql
+         * @param sql the sql
          * @param params the params
          */
         public SqlPageQuery(String sql, E params) {
@@ -64,13 +65,13 @@ public interface SqlPageFactory {
      * To page.
      *
      * @param dialect the dialect
-     * @param sql     the sql
-     * @param page    the page
-     * @param params  the params
+     * @param sql the sql
+     * @param page the page
+     * @param params the params
      * @return the sql page query
      */
-    default SqlPageQuery<Object[]> toPage(@Nonnull Dialect dialect, @Nonnull String sql, @Nonnull Page page,
-            Object... params) {
+    default SqlPageQuery<Serializable[]> toPage(@Nonnull Dialect dialect, @Nonnull String sql, @Nonnull Page page,
+        Serializable... params) {
         Limit limit = new Limit(page);
         return toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
     }
@@ -79,26 +80,26 @@ public interface SqlPageFactory {
      * To page.
      *
      * @param dialect the dialect
-     * @param sql     the sql
-     * @param start   the start
-     * @param limit   the limit
-     * @param params  the params
+     * @param sql the sql
+     * @param start the start
+     * @param limit the limit
+     * @param params the params
      * @return the sql page query
      */
-    SqlPageQuery<Object[]> toPage(@Nonnull Dialect dialect, @Nonnull String sql, int start, int limit,
-            Object... params);
+    SqlPageQuery<Serializable[]> toPage(@Nonnull Dialect dialect, @Nonnull String sql, int start, int limit,
+        Serializable... params);
 
     /**
      * To page.
      *
      * @param dialect the dialect
-     * @param sql     the sql
-     * @param page    the page
-     * @param params  the params
+     * @param sql the sql
+     * @param page the page
+     * @param params the params
      * @return the sql page query
      */
-    default SqlPageQuery<Map<String, Object>> toPage(@Nonnull Dialect dialect, @Nonnull String sql, @Nonnull Page page,
-            Map<String, Object> params) {
+    default SqlPageQuery<Map<String, Serializable>> toPage(@Nonnull Dialect dialect, @Nonnull String sql,
+        @Nonnull Page page, Map<String, Serializable> params) {
         Limit limit = new Limit(page);
         return toPage(dialect, sql, limit.getOffset(), limit.getLimit(), params);
     }
@@ -107,12 +108,12 @@ public interface SqlPageFactory {
      * To page.
      *
      * @param dialect the dialect
-     * @param sql     the sql
-     * @param start   the start
-     * @param limit   the limit
-     * @param params  the params
+     * @param sql the sql
+     * @param start the start
+     * @param limit the limit
+     * @param params the params
      * @return the sql page query
      */
-    SqlPageQuery<Map<String, Object>> toPage(@Nonnull Dialect dialect, @Nonnull String sql, int start, int limit,
-            Map<String, Object> params);
+    SqlPageQuery<Map<String, Serializable>> toPage(@Nonnull Dialect dialect, @Nonnull String sql, int start, int limit,
+        Map<String, Serializable> params);
 }

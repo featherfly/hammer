@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.Map;
 import java.util.function.ToIntBiFunction;
@@ -31,24 +32,24 @@ public interface JdbcQueryProcessSingle {
     /**
      * Query single, then process.
      *
-     * @param sql              sql
+     * @param sql sql
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value map and effective row number
      */
-    Tuple2<Map<String, Object>, Integer> querySingleUpdate(String sql,
-            ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Map<String, Object> args);
+    Tuple2<Map<String, Serializable>, Integer> querySingleUpdate(String sql,
+        ToIntBiFunction<ResultSet, Map<String, Serializable>> setValueOperator, Map<String, Serializable> args);
 
     /**
      * Query single, then process.
      *
-     * @param sql              sql
+     * @param sql sql
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value map and effective row number
      */
-    default Tuple2<Map<String, Object>, Integer> querySingleUpdate(NamedParamSql sql,
-            ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Map<String, Object> args) {
+    default Tuple2<Map<String, Serializable>, Integer> querySingleUpdate(NamedParamSql sql,
+        ToIntBiFunction<ResultSet, Map<String, Serializable>> setValueOperator, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return querySingleUpdate(execution.getExecution(), setValueOperator, execution.getParams());
     }
@@ -56,52 +57,52 @@ public interface JdbcQueryProcessSingle {
     /**
      * Query single, then update.
      *
-     * @param sql              sql
+     * @param sql sql
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value map and effective row number
      */
-    Tuple2<Map<String, Object>, Integer> querySingleUpdate(String sql,
-            ToIntBiFunction<ResultSet, Map<String, Object>> setValueOperator, Object... args);
+    Tuple2<Map<String, Serializable>, Integer> querySingleUpdate(String sql,
+        ToIntBiFunction<ResultSet, Map<String, Serializable>> setValueOperator, Serializable... args);
 
     /**
      * Query single, then update.
      *
-     * @param <T>              generic type
-     * @param sql              sql
-     * @param rowMapper        rowMapper
+     * @param <T> generic type
+     * @param sql sql
+     * @param rowMapper rowMapper
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value object and effective row number
      */
     <T> Tuple2<T, Integer> querySingleUpdate(String sql, RowMapper<T> rowMapper,
-            ToIntBiFunction<ResultSet, T> setValueOperator, Object... args);
+        ToIntBiFunction<ResultSet, T> setValueOperator, Serializable... args);
 
     /**
      * Query single, then update.
      *
-     * @param <T>              generic type
-     * @param sql              sql
-     * @param rowMapper        rowMapper
+     * @param <T> generic type
+     * @param sql sql
+     * @param rowMapper rowMapper
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value object and effective row number
      */
     <T> Tuple2<T, Integer> querySingleUpdate(String sql, RowMapper<T> rowMapper,
-            ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args);
+        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Serializable> args);
 
     /**
      * Query single, then update.
      *
-     * @param <T>              generic type
-     * @param sql              sql
-     * @param rowMapper        rowMapper
+     * @param <T> generic type
+     * @param sql sql
+     * @param rowMapper rowMapper
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value object and effective row number
      */
     default <T> Tuple2<T, Integer> querySingleUpdate(NamedParamSql sql, RowMapper<T> rowMapper,
-            ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args) {
+        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return querySingleUpdate(execution.getExecution(), rowMapper, setValueOperator, execution.getParams());
     }
@@ -109,28 +110,28 @@ public interface JdbcQueryProcessSingle {
     /**
      * Query single, then update.
      *
-     * @param <T>              generic type
-     * @param sql              sql
-     * @param elementType      return object type
+     * @param <T> generic type
+     * @param sql sql
+     * @param elementType return object type
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value object and effective row number
      */
     <T> Tuple2<T, Integer> querySingleUpdate(String sql, Class<T> elementType,
-            ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args);
+        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Serializable> args);
 
     /**
      * Query single, then update.
      *
-     * @param <T>              generic type
-     * @param sql              sql
-     * @param elementType      return object type
+     * @param <T> generic type
+     * @param sql sql
+     * @param elementType return object type
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value object and effective row number
      */
     default <T> Tuple2<T, Integer> querySingleUpdate(NamedParamSql sql, Class<T> elementType,
-            ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Object> args) {
+        ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return querySingleUpdate(execution.getExecution(), elementType, setValueOperator, execution.getParams());
     }
@@ -138,13 +139,13 @@ public interface JdbcQueryProcessSingle {
     /**
      * Query single, then update.
      *
-     * @param <T>              generic type
-     * @param sql              sql
-     * @param elementType      return object type
+     * @param <T> generic type
+     * @param sql sql
+     * @param elementType return object type
      * @param setValueOperator the set value operator
-     * @param args             args
+     * @param args args
      * @return tuple2 of updated value object and effective row number
      */
     <T> Tuple2<T, Integer> querySingleUpdate(String sql, Class<T> elementType,
-            ToIntBiFunction<ResultSet, T> setValueOperator, Object... args);
+        ToIntBiFunction<ResultSet, T> setValueOperator, Serializable... args);
 }

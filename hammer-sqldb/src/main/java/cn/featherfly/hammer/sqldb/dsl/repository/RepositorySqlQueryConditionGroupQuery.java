@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.repository;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -19,6 +20,7 @@ import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuples;
 
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.SimpleExecution;
 import cn.featherfly.common.repository.mapper.RowMapper;
@@ -144,7 +146,8 @@ public class RepositorySqlQueryConditionGroupQuery {
      */
     public <E1, E2> List<Tuple2<E1, E2>> list(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
         Execution execution = getExecution();
-        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, prefixes, execution.getParams());
+        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, prefixes,
+            execution.getParams());
     }
 
     /**
@@ -254,7 +257,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      *
      * @return LogicExpressionist
      */
-    public List<Map<String, Object>> list() {
+    public List<Map<String, Serializable>> list() {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryList(execution.getExecution(), execution.getParams());
     }
@@ -264,20 +267,20 @@ public class RepositorySqlQueryConditionGroupQuery {
      *
      * @return the pagination results
      */
-    public PaginationResults<Map<String, Object>> pagination() {
+    public PaginationResults<Map<String, Serializable>> pagination() {
         Tuple2<String, String> sqlTuple = null;
         if (limit != null) {
             sqlTuple = expressionPage.get();
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
-        SimplePaginationResults<Map<String, Object>> pagination = new SimplePaginationResults<>(limit);
-        List<Map<String, Object>> list = null;
+        Serializable[] params = oraginalParams;
+        SimplePaginationResults<Map<String, Serializable>> pagination = new SimplePaginationResults<>(limit);
+        List<Map<String, Serializable>> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -309,13 +312,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
+        Serializable[] params = oraginalParams;
         SimplePaginationResults<T> pagination = new SimplePaginationResults<>(limit);
         List<T> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -351,13 +354,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
+        Serializable[] params = oraginalParams;
         SimplePaginationResults<Tuple2<E1, E2>> pagination = new SimplePaginationResults<>(limit);
         List<Tuple2<E1, E2>> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -395,13 +398,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
+        Serializable[] params = oraginalParams;
         SimplePaginationResults<Tuple3<E1, E2, E3>> pagination = new SimplePaginationResults<>(limit);
         List<Tuple3<E1, E2, E3>> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -442,13 +445,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
+        Serializable[] params = oraginalParams;
         SimplePaginationResults<Tuple4<E1, E2, E3, E4>> pagination = new SimplePaginationResults<>(limit);
         List<Tuple4<E1, E2, E3, E4>> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -491,13 +494,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
+        Serializable[] params = oraginalParams;
         SimplePaginationResults<Tuple5<E1, E2, E3, E4, E5>> pagination = new SimplePaginationResults<>(limit);
         List<Tuple5<E1, E2, E3, E4, E5>> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -542,13 +545,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
+        Serializable[] params = oraginalParams;
         SimplePaginationResults<Tuple6<E1, E2, E3, E4, E5, E6>> pagination = new SimplePaginationResults<>(limit);
         List<Tuple6<E1, E2, E3, E4, E5, E6>> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -580,13 +583,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         } else {
             sqlTuple = Tuples.of(exp.getRoot().expression(), null);
         }
-        Object[] oraginalParams = exp.getRoot().getParams().toArray();
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         String sql = sqlTuple.get0();
-        Object[] params = oraginalParams;
+        Serializable[] params = oraginalParams;
         SimplePaginationResults<T> pagination = new SimplePaginationResults<>(limit);
         List<T> list = null;
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
@@ -609,7 +612,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      *
      * @return the map
      */
-    public Map<String, Object> single() {
+    public Map<String, Serializable> single() {
         Execution execution = getExecution();
         return queryRelation.getJdbc().querySingle(execution.getExecution(), execution.getParams());
     }
@@ -749,7 +752,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      *
      * @return the map
      */
-    public Map<String, Object> unique() {
+    public Map<String, Serializable> unique() {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryUnique(execution.getExecution(), execution.getParams());
     }
@@ -886,9 +889,9 @@ public class RepositorySqlQueryConditionGroupQuery {
 
     private Execution getExecution() {
         String sql = exp.getRoot().expression();
-        Object[] params = exp.getRoot().getParams().toArray();
+        Serializable[] params = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
         if (limit != null) {
-            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
                 limit.getLimit(), params);
             sql = pageQuery.getSql();
             params = pageQuery.getParams();

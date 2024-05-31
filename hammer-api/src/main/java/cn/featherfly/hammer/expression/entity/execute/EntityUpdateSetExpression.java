@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.execute;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -32,155 +33,157 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * set value for property.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property the property
-     * @param value    property value
+     * @param value property value
      * @return Update
      */
-    <R> U set(SerializableFunction<E, R> property, R value);
+    <R extends Serializable> U set(SerializableFunction<E, R> property, R value);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param property       the property
-     * @param value          property value
+     * @param <R> the generic type
+     * @param property the property
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <R> U set(SerializableFunction<E, R> property, R value, Predicate<R> ignoreStrategy);
+    <R extends Serializable> U set(SerializableFunction<E, R> property, R value, Predicate<R> ignoreStrategy);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param property       the property
-     * @param value          property value
+     * @param <R> the generic type
+     * @param property the property
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    default <R> U set(SerializableFunction<E, R> property, R value, IgnoreStrategy ignoreStrategy) {
+    default <R extends Serializable> U set(SerializableFunction<E, R> property, R value,
+        IgnoreStrategy ignoreStrategy) {
         return set(property, value, ignoreStrategy::test);
     }
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param <O>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param <O> the generic type
+     * @param property the property
      * @param nestedProperty the nested property
-     * @param value          property value
+     * @param value property value
      * @return Update
      */
-    <R, O> U set(SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty, O value);
+    <R, O extends Serializable> U set(SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty,
+        O value);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param <O>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param <O> the generic type
+     * @param property the property
      * @param nestedProperty the nested property
-     * @param value          property value
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <R, O> U set(SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty, O value,
-        Predicate<O> ignoreStrategy);
+    <R, O extends Serializable> U set(SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty,
+        O value, Predicate<O> ignoreStrategy);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param <O>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param <O> the generic type
+     * @param property the property
      * @param nestedProperty the nested property
-     * @param value          property value
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    default <R, O> U set(SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty, O value,
-        IgnoreStrategy ignoreStrategy) {
+    default <R, O extends Serializable> U set(SerializableFunction<E, R> property,
+        SerializableFunction<R, O> nestedProperty, O value, IgnoreStrategy ignoreStrategy) {
         return set(property, nestedProperty, value, ignoreStrategy::test);
     }
 
     /**
      * set value for property.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property object property
      * @return Update
      */
-    <R> U set(SerializableSupplier<R> property);
+    <R extends Serializable> U set(SerializableSupplier<R> property);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */
-    <R> U set(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
+    <R extends Serializable> U set(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param property the property
      * @param ignoreStrategy the ignore strategy
      * @return the u
      */
-    default <R> U set(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
+    default <R extends Serializable> U set(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
         return set(property, ignoreStrategy::test);
     }
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param <O>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param <O> the generic type
+     * @param property object property
      * @param nestedProperty the nested property
      * @return Update
      */
-    <R, O> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty);
+    <R, O extends Serializable> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param <O>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param <O> the generic type
+     * @param property object property
      * @param nestedProperty the nested property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <R, O> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty,
+    <R, O extends Serializable> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty,
         Predicate<O> ignoreStrategy);
 
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param <O>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param <O> the generic type
+     * @param property object property
      * @param nestedProperty the nested property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    default <R, O> U set(SerializableSupplier<R> property, SerializableFunction<R, O> nestedProperty,
-        IgnoreStrategy ignoreStrategy) {
+    default <R, O extends Serializable> U set(SerializableSupplier<R> property,
+        SerializableFunction<R, O> nestedProperty, IgnoreStrategy ignoreStrategy) {
         return set(property, nestedProperty, ignoreStrategy::test);
     }
 
     /**
      * increase value for property.
      *
-     * @param <N>      the generic number type
+     * @param <N> the generic number type
      * @param property the property name
-     * @param value    property value
+     * @param value property value
      * @return Update
      */
     <N extends Number> U increase(SerializableFunction<E, N> property, N value);
@@ -188,9 +191,9 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <N>            the generic number type
-     * @param property       the property name
-     * @param value          property value
+     * @param <N> the generic number type
+     * @param property the property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -199,9 +202,9 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <N>            the generic number type
-     * @param property       the property name
-     * @param value          property value
+     * @param <N> the generic number type
+     * @param property the property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -212,11 +215,11 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <R>            the generic type
-     * @param <N>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param <N> the generic type
+     * @param property the property
      * @param nestedProperty the nested property
-     * @param value          property value
+     * @param value property value
      * @return Update
      */
     <R, N extends Number> U increase(SerializableFunction<E, R> property, SerializableFunction<R, N> nestedProperty,
@@ -225,11 +228,11 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <R>            the generic type
-     * @param <N>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param <N> the generic type
+     * @param property the property
      * @param nestedProperty the nested property
-     * @param value          property value
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -239,11 +242,11 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <R>            the generic type
-     * @param <N>            the generic type
-     * @param property       the property
+     * @param <R> the generic type
+     * @param <N> the generic type
+     * @param property the property
      * @param nestedProperty the nested property
-     * @param value          property value
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -255,7 +258,7 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <N>      number type
+     * @param <N> number type
      * @param property object property
      * @return Update
      */
@@ -264,8 +267,8 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param property       object property
+     * @param <N> number type
+     * @param property object property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -274,8 +277,8 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param property       object property
+     * @param <N> number type
+     * @param property object property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -286,9 +289,9 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <R>            the generic type
-     * @param <N>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param <N> the generic type
+     * @param property object property
      * @param nestedProperty the nested property
      * @return Update
      */
@@ -297,9 +300,9 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <R>            the generic type
-     * @param <N>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param <N> the generic type
+     * @param property object property
      * @param nestedProperty the nested property
      * @param ignoreStrategy the ignore strategy
      * @return Update
@@ -310,9 +313,9 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
     /**
      * increase value for property.
      *
-     * @param <R>            the generic type
-     * @param <N>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param <N> the generic type
+     * @param property object property
      * @param nestedProperty the nested property
      * @param ignoreStrategy the ignore strategy
      * @return Update

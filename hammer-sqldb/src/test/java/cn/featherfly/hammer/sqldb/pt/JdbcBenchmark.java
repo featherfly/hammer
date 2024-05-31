@@ -206,7 +206,7 @@ public class JdbcBenchmark extends AbstractBenchmark {
     @Override
     protected int[] doDeleteById(boolean batch, Serializable... ids) {
         if (batch) {
-            Execution exec = deleteSqlBatch.getExecution(new ChainMapImpl<String, Object>().putChain("ids", ids));
+            Execution exec = deleteSqlBatch.getExecution(new ChainMapImpl<String, Serializable>().putChain("ids", ids));
             try (PreparedStatement prep = conn.prepareStatement(exec.getExecution())) {
                 for (int i = 0; i < ids.length; i++) {
                     Serializable id = ids[i];

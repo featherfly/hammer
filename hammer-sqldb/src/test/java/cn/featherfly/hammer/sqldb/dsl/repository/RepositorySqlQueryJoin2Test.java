@@ -10,6 +10,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository;
 
 import static org.testng.Assert.assertEquals;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +128,7 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void joinCondition() {
-        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
             .join("user_info").on("user_id") //
             .join("order").on("user1") //
             .where() //
@@ -228,7 +229,7 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void joinCondition2() {
-        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
             .join("user_info").on("user_id") //
             .join("order").on("user1") //
             .where((r1, r2, r3) -> r2.field("name").eq("羽飞").and(r3.field("no").eq("no:1")))//
@@ -286,7 +287,7 @@ public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void joinCondition2_EqColumn() {
-        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
             .join("user_info").on("user_id") //
             .join("order").on("user3") //
             .where((r1, r2, r3) -> r1.field("username").eq(r2.field("name"))) //

@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void joinOnce() {
-        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where().eq2("name", name1) //
             .list();
@@ -67,7 +68,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void joinTwice() {
-        List<Map<String, Object>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where().eq2("name", name1) //
             .list();
@@ -114,7 +115,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void testJoin1() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .where() //
@@ -126,7 +127,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void testJoin2() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //
@@ -139,7 +140,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void testJoin3() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //
@@ -153,7 +154,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void testJoin4() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         order = query.find(ORDER_REPO) //
             .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
             .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //
@@ -168,7 +169,7 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void testJoin5() {
-        Map<String, Object> order = null;
+        Map<String, Serializable> order = null;
         //        order = query.find(ORDER_REPO) //
         //            .join(USER_REPO).on((r1, j) -> r1.field("create_user").eq(j.field("id"))) //
         //            .join(USER_REPO).on((r1, r2, j) -> r1.field("update_user").eq(j.field("id"))) //

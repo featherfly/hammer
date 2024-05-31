@@ -52,7 +52,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> implements QueryOpera
             return null;
         }
         if (pkProperties.size() == 1) {
-            return (Serializable) pkProperties.get(0).getGetter().apply(entity);
+            return pkProperties.get(0).getGetter().apply(entity);
         } else if (pkProperties.size() > 1) {
             throw new SqldbHammerException("multy id defined in entity [" + entity.getClass().getName()
                 + "], you can invoke getIds(entity) method instead");
@@ -73,7 +73,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> implements QueryOpera
             return Collections.emptyList();
         }
         return pkProperties.stream().map(property -> {
-            return (Serializable) property.getGetter().apply(entity);
+            return property.getGetter().apply(entity);
         }).collect(Collectors.toList());
     }
 
@@ -169,10 +169,10 @@ public class GetOperate<T> extends AbstractQueryOperate<T> implements QueryOpera
      * @param entity the entity
      * @return the object[]
      */
-    protected Object[] assertAndGetIds(T entity) {
+    protected Serializable[] assertAndGetIds(T entity) {
         assertEntity(entity);
         List<Serializable> ids = getIds(entity);
         assertId(ids);
-        return ids.toArray();
+        return ids.toArray(new Serializable[ids.size()]);
     }
 }

@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class PrefixedBeanMapper6Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
      * @param type5 the type 5
      * @param type6 the type 6
      */
-    public PrefixedBeanMapper6Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1,
+    public PrefixedBeanMapper6Impl(E1 executor, E2 execution, Map<String, Serializable> params, Class<T1> type1,
         Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5, Class<T6> type6) {
         this(executor, execution, params, type1, type2, type3, type4, type5, type6, null);
     }
@@ -72,7 +73,7 @@ public class PrefixedBeanMapper6Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
      * @param type6 the type 6
      * @param prefixes the prefixes
      */
-    public PrefixedBeanMapper6Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1,
+    public PrefixedBeanMapper6Impl(E1 executor, E2 execution, Map<String, Serializable> params, Class<T1> type1,
         Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5, Class<T6> type6,
         Tuple6<String, String, String, String, String, String> prefixes) {
         super(executor, execution, params, prefixes);

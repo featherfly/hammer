@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.entity.execute;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -21,8 +22,8 @@ import cn.featherfly.hammer.expression.execute.UpdateValueExpression;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class EntityUpdateNestedValueImpl<E, O, V, U, C extends ConditionExpression, L extends LogicExpression<C, L>>
-    implements UpdateValueExpression<V, U, C, L> {
+public class EntityUpdateNestedValueImpl<E, O, V extends Serializable, U, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> implements UpdateValueExpression<V, U, C, L> {
 
     private SerializableFunction<E, O> property;
 
@@ -33,9 +34,9 @@ public class EntityUpdateNestedValueImpl<E, O, V, U, C extends ConditionExpressi
     /**
      * Instantiates a new entity update value impl.
      *
-     * @param property       the property
+     * @param property the property
      * @param nestedProperty the nested property
-     * @param update         the update
+     * @param update the update
      */
     public EntityUpdateNestedValueImpl(SerializableFunction<E, O> property, SerializableFunction<O, V> nestedProperty,
         EntityUpdateSetExpression<E, U, C, L> update) {

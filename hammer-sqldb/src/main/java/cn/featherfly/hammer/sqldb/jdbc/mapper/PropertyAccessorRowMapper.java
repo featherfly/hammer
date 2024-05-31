@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -140,7 +141,7 @@ public class PropertyAccessorRowMapper<T> extends AbstractBeanRowMapper<T> {
         if (isEntity) {
             for (JdbcPropertyMapping propertyMapping : propertyMappings) {
                 propertyMapping.getSetter().accept(mappedObject,
-                    propertyMapping.getJavaTypeSqlTypeOperator().get(rs, rowNumber));
+                    (Serializable) propertyMapping.getJavaTypeSqlTypeOperator().get(rs, rowNumber));
                 // ENHANCE 这里包装异常
             }
         } else {

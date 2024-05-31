@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import cn.featherfly.common.repository.mapper.RowMapper;
@@ -18,7 +19,7 @@ public interface QueryPageExecutor {
      *
      * @return PaginationResults
      */
-    PaginationResults<Map<String, Object>> pagination();
+    PaginationResults<Map<String, Serializable>> pagination();
 
     /**
      * query for page.

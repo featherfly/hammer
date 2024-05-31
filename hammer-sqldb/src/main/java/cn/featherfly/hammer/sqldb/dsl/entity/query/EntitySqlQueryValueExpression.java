@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -9,9 +10,9 @@ import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.repository.QueryPageResult;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroupLogic;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
@@ -84,8 +85,8 @@ public class EntitySqlQueryValueExpression<E, V> extends
      * {@inheritDoc}
      */
     @Override
-    public Tuple7<String, String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> preparePagination(Limit limit) {
+    public Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> preparePagination(Limit limit) {
         return EntitySqlQueryExpression.preparePage(hammerConfig, this, super.expression(), parent, entityRelation,
             getRootSortBuilder(), dialect, limit);
     }
@@ -94,8 +95,8 @@ public class EntitySqlQueryValueExpression<E, V> extends
      * {@inheritDoc}
      */
     @Override
-    public Tuple6<String, List<Object>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Object>> prepareList(Limit limit) {
+    public Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>> prepareList(Limit limit) {
         return EntitySqlQueryExpression.prepareList(hammerConfig, this, super.expression(), parent, entityRelation,
             getRootSortBuilder(), dialect, limit);
     }

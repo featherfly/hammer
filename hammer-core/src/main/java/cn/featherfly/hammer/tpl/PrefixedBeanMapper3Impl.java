@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.tpl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public class PrefixedBeanMapper3Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
      * @param type2 the type 2
      * @param type3 the type 3
      */
-    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1,
+    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Serializable> params, Class<T1> type1,
         Class<T2> type2, Class<T3> type3) {
         this(executor, execution, params, type1, type2, type3, null);
     }
@@ -64,7 +65,7 @@ public class PrefixedBeanMapper3Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T
      * @param type3 the type 3
      * @param prefixes the prefixes
      */
-    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Object> params, Class<T1> type1,
+    public PrefixedBeanMapper3Impl(E1 executor, E2 execution, Map<String, Serializable> params, Class<T1> type1,
         Class<T2> type2, Class<T3> type3, Tuple3<String, String, String> prefixes) {
         super(executor, execution, params, prefixes);
         this.type1 = type1;

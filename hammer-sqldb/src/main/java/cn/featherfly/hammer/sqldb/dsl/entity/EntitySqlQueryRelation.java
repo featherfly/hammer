@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -396,7 +397,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @return the r
      */
     @SuppressWarnings("unchecked")
-    public <R> R single(String sql, Object[] params) {
+    public <R> R single(String sql, Serializable[] params) {
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (R) jdbc.querySingle(sql, entityQueryFetchMapping.get(0).getMapper(), params);
@@ -441,7 +442,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @return the r
      */
     @SuppressWarnings("unchecked")
-    public <R> R unique(String sql, Object[] params) {
+    public <R> R unique(String sql, Serializable[] params) {
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (R) jdbc.queryUnique(sql, entityQueryFetchMapping.get(0).getMapper(), params);
@@ -486,7 +487,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @return LogicExpressionist
      */
     @SuppressWarnings("unchecked")
-    public <R> List<R> list(String sql, Object[] params) {
+    public <R> List<R> list(String sql, Serializable[] params) {
         switch (entityQueryFetchMapping.size()) {
             case 1:
                 return (List<R>) jdbc.queryList(sql, entityQueryFetchMapping.get(0).getMapper(), params);

@@ -1,5 +1,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
         //        Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
         //        return jdbc.updateBatch(sql, argsList);
 
-        return jdbc.updateBatch(sql, () -> new Iterator<Object[]>() {
+        return jdbc.updateBatch(sql, () -> new Iterator<Serializable[]>() {
 
             private int index = 0;
 
@@ -87,7 +88,7 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
             }
 
             @Override
-            public Object[] next() {
+            public Serializable[] next() {
                 return getParameters(entities.get(index++));
             }
         });

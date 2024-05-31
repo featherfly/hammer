@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.tpl.mapper;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 
 import javax.annotation.Resource;
@@ -56,7 +57,7 @@ public class UserService {
         String sql = "INSERT INTO `user` (`id`,`password`,`username`,`mobile_no`,`age`) VALUES (?,?,?,?,?)";
         java.sql.Connection connection = DataSourceUtils.getConnection(dataSource);
         try (PreparedStatement prep = connection.prepareStatement(sql)) {
-            JdbcUtils.setParameters(prep, new Object[] { null, password, username, null, age });
+            JdbcUtils.setParameters(prep, new Serializable[] { null, password, username, null, age });
             prep.execute();
         } catch (Exception e) {
             throw new JdbcException(e);
