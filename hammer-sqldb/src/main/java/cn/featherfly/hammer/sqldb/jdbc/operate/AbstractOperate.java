@@ -64,7 +64,6 @@ public abstract class AbstractOperate<T> {
      * @param classMapping classMapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata databaseMetadata
-     * @param instantiator the instantiator
      */
     protected AbstractOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
         DatabaseMetadata databaseMetadata) {
@@ -168,7 +167,6 @@ public abstract class AbstractOperate<T> {
      * @param paramsPropertyAndMappings the params property and mappings
      * @param prep the prep
      * @param setArgs the set args
-     * @return the object[]
      */
     protected void setBatchParameters(List<T> entities,
         Tuple2<Function<T, Serializable>, JdbcPropertyMapping>[] paramsPropertyAndMappings, PreparedStatement prep,

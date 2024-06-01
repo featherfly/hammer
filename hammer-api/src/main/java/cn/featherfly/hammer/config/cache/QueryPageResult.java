@@ -109,7 +109,7 @@ public class QueryPageResult {
      *
      * @param <E> the element type
      * @param offset the offset
-     * @param pageList the page list
+     * @return the page list
      */
     @SuppressWarnings("unchecked")
     public <E> List<E> getPageList(int offset) {

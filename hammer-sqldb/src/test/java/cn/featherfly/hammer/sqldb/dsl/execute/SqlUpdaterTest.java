@@ -381,7 +381,8 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
     @Test
     public void testUpdateEntitySetNestedProperty() {
-        UserInfo ui = hammer.get(1, UserInfo.class);
+        final int id = 5;
+        UserInfo ui = hammer.get(id, UserInfo.class);
         assertNotNull(ui);
         assertNotNull(ui.getUser());
         assertNotNull(ui.getUser().getId());
@@ -469,7 +470,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
             .where().eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
 
-        load = hammer.get(1, UserInfo.class);
+        load = hammer.get(id, UserInfo.class);
         assertNotNull(load);
         assertNotNull(load.getUser());
         assertNull(load.getUser().getId());
@@ -483,7 +484,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, newUserId).where()
             .eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
-        load = hammer.get(1, UserInfo.class);
+        load = hammer.get(id, UserInfo.class);
         assertNotNull(load);
         assertNotNull(load.getUser());
         assertNotNull(load.getUser().getId());
@@ -492,7 +493,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         result = hammer.update(UserInfo.class).set(userInfo::getUser, User::getId).where()
             .eq(UserInfo::getId, ui.getId()).execute();
 
-        load = hammer.get(1, UserInfo.class);
+        load = hammer.get(id, UserInfo.class);
         assertNotNull(load);
         assertNotNull(load.getUser());
         assertNull(load.getUser().getId());
@@ -505,7 +506,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
             .set(UserInfo::getUser, User::getId, ui.getUser().getId()) //
             .where().eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
-        load = hammer.get(1, UserInfo.class);
+        load = hammer.get(id, UserInfo.class);
         assertNotNull(load);
         assertNotNull(load.getUser());
         assertNotNull(load.getUser().getId());
@@ -516,7 +517,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
             .where().eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
 
-        load = hammer.get(1, UserInfo.class);
+        load = hammer.get(id, UserInfo.class);
         assertNotNull(load);
         assertNotNull(load.getUser());
         assertNotNull(load.getUser().getId());

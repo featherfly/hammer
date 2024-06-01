@@ -32,6 +32,7 @@ public class EntitySqlQueryRelate4FRFP<E, R1, R2, R3, R4> extends AbstractEntity
     /**
      * Instantiates a new entity sql query relate 4 FRFP.
      *
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation

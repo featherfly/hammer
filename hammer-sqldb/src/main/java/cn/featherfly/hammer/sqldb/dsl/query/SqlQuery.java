@@ -65,7 +65,7 @@ public class SqlQuery implements Query {
      * @param jdbc jdbc
      * @param mappingFactory mappingFactory
      * @param sqlPageFactory the sql page factory
-     * @param queryConfig the query config
+     * @param hammerConfig the hammer config
      */
     public SqlQuery(Jdbc jdbc, JdbcMappingFactory mappingFactory, SqlPageFactory sqlPageFactory,
         HammerConfig hammerConfig) {

@@ -95,6 +95,9 @@ public class PropertyAccessorRowMapper<T> extends AbstractBeanRowMapper<T> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         T mappedObject = propertyAccessor.instantiate();
 

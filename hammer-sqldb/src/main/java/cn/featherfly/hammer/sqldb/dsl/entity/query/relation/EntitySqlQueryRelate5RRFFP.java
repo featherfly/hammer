@@ -38,6 +38,7 @@ public class EntitySqlQueryRelate5RRFFP<E, R1, R2, R3, R4, R5>
     /**
      * Instantiates a new entity sql query relate 5 RRFFP.
      *
+     * @param hammerConfig the hammer config
      * @param factory the factory
      * @param sqlPageFactory the sql page factory
      * @param entitySqlQueryRelation the entity sql query relation

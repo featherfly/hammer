@@ -170,11 +170,10 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public <R, O extends Serializable> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
         SerializableFunction<R, O> nestedProperty) {
-        return set0(property, nestedProperty, (Predicate<O>) updateConfig.getSetValueIgnoreStrategy());
+        return setSupplier(property, nestedProperty, updateConfig.getSetValueIgnoreStrategy()::test);
         //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         //        if (property.get() == null) {
         //            return set0(pm, property.get());
@@ -190,7 +189,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
     @Override
     public <R, O extends Serializable> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
         SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
-        return set0(property, nestedProperty, ignoreStrategy);
+        return setSupplier(property, nestedProperty, ignoreStrategy);
     }
 
     /**
@@ -349,8 +348,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    private <R extends Serializable> EntityExecutableUpdate<E> set0(Serializable name, R value,
-        Predicate<R> ignoreStrategy) {
+    private <R> EntityExecutableUpdate<E> set0(Serializable name, R value, Predicate<R> ignoreStrategy) {
         builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) {// ignore, 忽略
             return this;
@@ -359,7 +357,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         }
     }
 
-    private <R, O extends Serializable> EntityExecutableUpdate<E> set0(SerializableFunction<E, R> property,
+    private <R, O> EntityExecutableUpdate<E> set0(SerializableFunction<E, R> property,
         SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
         builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // ignore, 忽略
@@ -380,7 +378,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         //        }
     }
 
-    private <R, O> EntityExecutableUpdate<E> set0(SerializableSupplier<R> property,
+    private <R, O> EntityExecutableUpdate<E> setSupplier(SerializableSupplier<R> property,
         SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
         boolean enableNull = false;
         if (property.get() == null) {
@@ -410,7 +408,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         return set0(spm, FieldValueOperator.create(spm, value));
     }
 
-    private <R extends Serializable> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, R value) {
+    private <R> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, R value) {
         if (value == null) {
             return set0(pm.getRepositoryFieldName(), (FieldValueOperator<R>) null);
         }

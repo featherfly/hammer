@@ -350,12 +350,10 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
 
     @Test
     void testJoinMulity2() {
-        // 因为User类中没有UserRole类的关系，所以fetch时会找不到关系，不fetch只是使用条件查询问题不大
-        // userInfo.user.userRole 这里没有userRole
         List<Tuple2<UserInfo, UserRole2>> listTuple2 = null;
         listTuple2 = query.find(UserInfo.class) //
             .join(UserInfo::getUser).fetch() //
-            .join2(UserRole2::getUser).fetch() //   //TODO 应该是这里的问题
+            .join2(UserRole2::getUser).fetch() //
             .join3(UserRole2::getRole) //
             .list();
         listTuple2.forEach(t -> {

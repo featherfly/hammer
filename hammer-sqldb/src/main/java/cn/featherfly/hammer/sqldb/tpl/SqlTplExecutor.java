@@ -3623,8 +3623,8 @@ public class SqlTplExecutor implements TplExecutor {
     @Override
     public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId execution, Serializable[] params,
         int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
-        return null;
+        // NOIMPL 模板执行未实现参数为数组的情况
+        throw new NotImplementedException();
     }
 
     /**

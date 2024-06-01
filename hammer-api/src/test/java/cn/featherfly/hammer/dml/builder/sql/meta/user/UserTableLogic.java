@@ -92,7 +92,7 @@ public class UserTableLogic implements
      */
     @Override
     public UserTableLogic endGroup() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -101,7 +101,7 @@ public class UserTableLogic implements
      */
     @Override
     public List<Map<String, Serializable>> list() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -110,7 +110,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> List<E> list(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -119,7 +119,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> List<E> list(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -128,7 +128,7 @@ public class UserTableLogic implements
      */
     @Override
     public Map<String, Serializable> single() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -137,7 +137,7 @@ public class UserTableLogic implements
      */
     @Override
     public Map<String, Serializable> unique() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -146,7 +146,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E single(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -155,7 +155,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E unique(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -164,7 +164,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E single(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -173,7 +173,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> E unique(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -182,7 +182,7 @@ public class UserTableLogic implements
      */
     @Override
     public PaginationResults<Map<String, Serializable>> pagination() {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -191,7 +191,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> PaginationResults<E> pagination(Class<E> type) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -200,7 +200,7 @@ public class UserTableLogic implements
      */
     @Override
     public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -209,7 +209,7 @@ public class UserTableLogic implements
      */
     @Override
     public QueryLimitExecutor limit(int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -218,7 +218,7 @@ public class UserTableLogic implements
      */
     @Override
     public QueryLimitExecutor limit(int offset, int limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -227,7 +227,7 @@ public class UserTableLogic implements
      */
     @Override
     public QueryLimitExecutor limit(Page page) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -236,7 +236,7 @@ public class UserTableLogic implements
      */
     @Override
     public QueryLimitExecutor limit(Limit limit) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -245,7 +245,7 @@ public class UserTableLogic implements
      */
     @Override
     public UserTableLogic logic(LogicOperator operator, LogicExpression<?, ?> logicExpression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -254,7 +254,7 @@ public class UserTableLogic implements
      */
     @Override
     public UserTableLogic logic(LogicOperator operator, Function<UserTableFilterable, UserTableLogic> group) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -263,7 +263,7 @@ public class UserTableLogic implements
      */
     @Override
     public UserTableLogic and(LogicExpression<?, ?> logicExpression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -272,7 +272,7 @@ public class UserTableLogic implements
      */
     @Override
     public UserTableLogic or(LogicExpression<?, ?> logicExpression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -282,7 +282,7 @@ public class UserTableLogic implements
     @Override
     public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
         GL extends GroupEndExpression<GC, GL>> G and(G conditionExpression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -292,7 +292,7 @@ public class UserTableLogic implements
     @Override
     public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
         GL extends GroupEndExpression<GC, GL>> G or(G conditionExpression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 }

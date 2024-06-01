@@ -149,6 +149,7 @@ public class EntityRowMapper<T> implements RowMapper<T> {
      *
      * @param resultSet 结果集
      * @param rowNumber 行数
+     * @param columnStart the column start
      * @return 映射后的对象
      */
     public T mapRow(ResultSet resultSet, int rowNumber, final AtomicInteger columnStart) {

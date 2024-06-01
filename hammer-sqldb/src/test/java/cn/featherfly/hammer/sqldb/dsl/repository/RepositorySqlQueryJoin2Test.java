@@ -29,21 +29,24 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
  */
 public class RepositorySqlQueryJoin2Test extends AbstractRepositorySqlQueryTest {
 
+    String[] fields;
+
     @Test
     public void joinFetchFields() {
         final String table = "user";
         final Table tm = metadata.getTable(table);
 
+        fields = tm.getColumns().stream().map(c -> c.name()).toArray(n -> new String[n]);
         map = query.find(table)//
             .limit(1) //
             .single();
-        assertFields(map, tm.getColumns().stream().map(c -> c.name()).toArray(n -> new String[n]));
+        assertFields(map, fields);
 
         map = query.find(table)//
             .join("user_info").on("user_id") //
             .join("order").on("user1") //
             .limit(1).single();
-        assertFields(map, tm.getColumns().stream().map(c -> c.name()).toArray(n -> new String[n]));
+        assertFields(map, fields);
     }
 
     @Test

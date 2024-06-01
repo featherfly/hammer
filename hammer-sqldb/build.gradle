@@ -44,8 +44,8 @@ dependencies {
 
 test {
     useTestNG() {
-//        suites "src/test/resources/testng-test-mysql.xml"
-        suites "src/test/resources/testng-test2.xml"
+        suites "src/test/resources/testng-test-mysql.xml"
+//        suites "src/test/resources/testng-test2.xml"
     }
     //reports.html.enabled = true
     

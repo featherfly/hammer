@@ -48,7 +48,6 @@ public class UserQueryFetchImpl implements UserQueryFetch {
      */
     @Override
     public UserTableFilterable where() {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
@@ -66,7 +65,6 @@ public class UserQueryFetchImpl implements UserQueryFetch {
      */
     @Override
     public UserQueryFetch field(Field... fetchFields) {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 

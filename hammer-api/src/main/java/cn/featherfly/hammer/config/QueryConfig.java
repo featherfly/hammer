@@ -26,7 +26,7 @@ public interface QueryConfig {
     /**
      * Sets the cache page results.
      *
-     * @param cachePageCount the cache page count
+     * @param cachePageResults the cache page results
      * @return the query config
      */
     QueryConfig setCachePageResults(boolean cachePageResults);

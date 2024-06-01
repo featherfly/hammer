@@ -32,7 +32,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> implements QueryOpera
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
-     * @param instantiator the instantiator
+     * @param propertyAccessor the property accessor
      */
     public GetOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
         DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {

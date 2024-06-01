@@ -70,7 +70,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
         if (Lang.isEmpty(ids)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        // FIXME 后续优化，只需要动态确定where 后面的内容就行了
+        // ENHANCE 后续优化，只需要动态确定where 后面的内容就行了
         Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(ids.size(),
             classMapping, jdbc.getDialect());
 
@@ -129,7 +129,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
     @Override
     protected int doSqlExecuteBatch(List<T> entities) {
         int bs = entities.size();
-        // FIXME 后续优化，只需要动态确定where 后面的内容就行了
+        // ENHANCE 后续优化，只需要动态确定where 后面的内容就行了
         Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(bs, classMapping,
             jdbc.getDialect());
         return jdbc.updateBatch(tuple.get0(), bs, getBatchParameters(entities, tuple.get1()));

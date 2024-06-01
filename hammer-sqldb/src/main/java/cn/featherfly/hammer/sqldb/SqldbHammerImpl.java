@@ -290,41 +290,6 @@ public class SqldbHammerImpl implements SqldbHammer {
                 throw new SqldbHammerException("no pk mapping");
             }
         });
-
-        //        if (entity == null) {
-        //            return 0;
-        //        }
-        //        if (jdbc.getDialect().supportUpsert()) {
-        //            UpsertOperate<E> upsert = getUpsert(entity);
-        //            return upsert.execute(entity);
-        //        } else {
-        //            @SuppressWarnings("unchecked")
-        //            GetOperate<E> get = (GetOperate<E>) getOperate(entity.getClass());
-        //            List<Serializable> ids = get.getIds(entity);
-        //            if (ids.size() == 1) {
-        //                Serializable id = ids.get(0);
-        //                // FIXME 当前的逻辑在手动设置id值的时候会有问题
-        //                if (id == null) {
-        //                    return save(entity);
-        //                } else {
-        //                    return update(entity);
-        //                }
-        //            } else if (ids.size() > 1) {
-        //                boolean insertable = false;
-        //                for (Serializable id : ids) {
-        //                    if (id == null) { // 只要有一个id为空，则表示需要插入数据
-        //                        insertable = true;
-        //                    }
-        //                }
-        //                if (insertable) {
-        //                    return save(entity);
-        //                } else {
-        //                    return update(entity);
-        //                }
-        //            } else {
-        //                throw new SqldbHammerException("no pk mapping");
-        //            }
-        //        }
     }
 
     /**

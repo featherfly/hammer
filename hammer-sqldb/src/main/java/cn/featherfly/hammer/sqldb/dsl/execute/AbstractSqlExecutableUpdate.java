@@ -97,6 +97,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
+     * @param <V> the value type
      * @param name the name
      * @param value the value
      * @return the u

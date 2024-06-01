@@ -62,7 +62,7 @@ import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
+import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation.EntityRelation;
 import cn.featherfly.hammer.sqldb.dsl.entity.condition.propery.EntityPropertyOnlyExpressionImpl;
 
@@ -5022,8 +5022,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase5<E1, 
      * @return the l
      */
     @SuppressWarnings("unchecked")
-    public L property(FiveArgusFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
-        EntityPropertyOnlyExpression<E3>, EntityPropertyOnlyExpression<E4>, EntityPropertyOnlyExpression<E5>,
+    public L property(FiveArgusFunction<EntityPropertyExpression<E1, ?, ?>, EntityPropertyExpression<E2, ?, ?>,
+        EntityPropertyExpression<E3, ?, ?>, EntityPropertyExpression<E4, ?, ?>, EntityPropertyExpression<E5, ?, ?>,
         LogicExpression<?, ?>> entitiesPropertyFunction) {
         return (L) entitiesPropertyFunction.apply(
             new EntityPropertyOnlyExpressionImpl<>(0, this, factory, entityRelation),

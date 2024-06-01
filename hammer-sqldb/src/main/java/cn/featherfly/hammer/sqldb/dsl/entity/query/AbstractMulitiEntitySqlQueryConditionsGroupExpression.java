@@ -356,7 +356,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      *         <li>changed Limit if necessary
      *         <li>QueryPageResult may be null
      *         <li>orginal query sql
-     *         <li>Function<Object, Object> getId value
+     *         <li>Function&lt;Object, Object&gt; getId value
      *         </ol>
      */
     public abstract Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
@@ -374,7 +374,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      *         <li>changed Limit if necessary
      *         <li>QueryPageResult may be null
      *         <li>orginal query sql
-     *         <li>Function<Object, Object> getId value
+     *         <li>Function&lt;Object, Object&gt; getId value
      *         </ol>
      */
     public abstract Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,

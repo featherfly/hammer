@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import javax.annotation.Nonnull;
 
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 import cn.featherfly.common.db.JdbcException;
@@ -28,20 +27,7 @@ import cn.featherfly.common.repository.mapper.RowMapper;
  *
  * @author zhongj
  * @param <T> the result type
- * @see Jdbc#queryValue(String, java.util.Map)
- * @see Jdbc#queryValue(String, Object...)
- * @see Jdbc#queryValue(String, Class, java.util.Map)
- * @see Jdbc#queryValue(String, Class, Object...)
- * @see Jdbc#queryInt(String, java.util.Map)
- * @see Jdbc#queryInt(String, Object...)
- * @see Jdbc#queryLong(String, java.util.Map)
- * @see Jdbc#queryLong(String, Object...)
- * @see Jdbc#queryDouble(String, java.util.Map)
- * @see Jdbc#queryDouble(String, Object...)
- * @see Jdbc#queryBigDecimal(String, java.util.Map)
- * @see Jdbc#queryBigDecimal(String, Object...)
- * @see Jdbc#queryString(String, java.util.Map)
- * @see Jdbc#queryString(String, Object...)
+ * @see SqlTypeMappingManager#get(ResultSet, int, Class)
  * @since 0.5.7
  */
 public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository.mapper.RowMapper<T> {
@@ -58,7 +44,7 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
      * Create a new {@code SingleColumnRowMapper}.
      *
      * @param requiredType the type that each result object is expected to match
-     * @param manager      the manager
+     * @param manager the manager
      */
     public SingleColumnRowMapper(Class<T> requiredType, SqlTypeMappingManager manager) {
         this(requiredType, manager, null);
@@ -68,11 +54,11 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
      * Create a new {@code SingleColumnRowMapper}.
      *
      * @param requiredType the type that each result object is expected to match
-     * @param manager      the manager
-     * @param prefix       the prefix
+     * @param manager the manager
+     * @param prefix the prefix
      */
     public SingleColumnRowMapper(@Nonnull Class<T> requiredType, @Nonnull SqlTypeMappingManager manager,
-            String prefix) {
+        String prefix) {
         AssertIllegalArgument.isNotNull(requiredType, "requiredType");
         AssertIllegalArgument.isNotNull(manager, "sqlTypeMappingManager");
         setRequiredType(requiredType);
@@ -122,7 +108,7 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
             setType(rs);
         }
 
-        return (T) getColumnValue(rs, matchIndex, requiredType);
+        return (T) manager.get(rs, matchIndex, requiredType);
     }
 
     private void check(ResultSet rs) throws SQLException {
@@ -142,8 +128,8 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
                 if (fieldName.startsWith(prefix)) {
                     if (matchFiled != null) {
                         throw new JdbcException(
-                                Strings.format("there is more than one column name [{0},{1}] with prefix {2}",
-                                        matchFiled, fieldName, prefix));
+                            Strings.format("there is more than one column name [{0},{1}] with prefix {2}", matchFiled,
+                                fieldName, prefix));
                     }
                     matchFiled = fieldName;
                     matchIndex = index;
@@ -163,22 +149,5 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
                 requiredType = type;
             }
         }
-    }
-
-    /**
-     * Retrieve a JDBC object value for the specified column.
-     * <p>
-     * The default implementation calls
-     * {@link SqlTypeMappingManager#get(ResultSet, int, Class)}.
-     *
-     * @param rs           is the ResultSet holding the data
-     * @param index        is the column index
-     * @param requiredType the type that each result object is expected to match
-     *                     (or {@code null} if none specified)
-     * @return the Object value
-     */
-    @Nullable
-    protected Object getColumnValue(ResultSet rs, int index, @Nullable Class<?> requiredType) {
-        return manager.get(rs, index, requiredType);
     }
 }

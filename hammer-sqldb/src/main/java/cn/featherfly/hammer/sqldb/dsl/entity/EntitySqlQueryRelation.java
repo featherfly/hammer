@@ -248,7 +248,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * Fetch property.
      *
      * @param index the index
-     * @param distinct the distinct
+     * @param aggregateFunction the aggregate function
      * @param propertyName the property name
      * @return the entity sql query relation
      */
@@ -260,8 +260,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * Fetch property.
      *
      * @param index the index
-     * @param distinct the distinct
+     * @param aggregateFunction the aggregate function
      * @param propertyName the property name
+     * @param alias the alias
      * @return the entity sql query relation
      */
     public EntitySqlQueryRelation fetchProperty(int index, AggregateFunction aggregateFunction, String propertyName,
@@ -273,6 +274,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * Fetch property.
      *
      * @param index the index
+     * @param aggregateFunction the aggregate function
      * @param distinct the distinct
      * @param propertyName the property name
      * @return the entity sql query relation
@@ -286,8 +288,10 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * Fetch property.
      *
      * @param index the index
+     * @param aggregateFunction the aggregate function
      * @param distinct the distinct
      * @param propertyName the property name
+     * @param alias the alias
      * @return the entity sql query relation
      */
     public EntitySqlQueryRelation fetchProperty(int index, AggregateFunction aggregateFunction, boolean distinct,

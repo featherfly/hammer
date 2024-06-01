@@ -152,9 +152,10 @@ public class HammerConfigImpl implements HammerConfig {
     }
 
     /**
-     * set cacheConfig value
+     * set cacheConfig value.
      *
      * @param cacheConfig cacheConfig
+     * @return the hammer config impl
      */
     public HammerConfigImpl setCacheConfig(CacheConfig cacheConfig) {
         this.cacheConfig = cacheConfig;

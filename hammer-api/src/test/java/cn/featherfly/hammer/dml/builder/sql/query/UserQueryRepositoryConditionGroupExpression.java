@@ -4304,7 +4304,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public RepositoryLocalDateTimeFieldExpression<UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsLocalDateTime(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4314,7 +4314,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public RepositoryLocalTimeFieldExpression<UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsLocalTime(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4324,7 +4324,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public RepositoryLocalDateFieldExpression<UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsLocalDate(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4334,7 +4334,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public RepositorySerializableFieldExpression<UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> field(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4344,7 +4344,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public RepositoryStringFieldExpression<UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsString(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4354,7 +4354,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <N extends Number> RepositoryNumberFieldExpression<N, UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsNumber(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4364,7 +4364,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <R extends Enum<R>> RepositoryEnumFieldExpression<R, UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsEnum(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4374,7 +4374,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <D extends Date> RepositoryDateFieldExpression<D, UserQueryRepositoryConditionGroupExpression,
         UserQueryRepositoryConditionGroupExpression> fieldAsDate(String name) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4383,7 +4383,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression eq(String name, FieldExpression value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4392,7 +4392,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression eq(String name, Field value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4402,7 +4402,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
         GL extends GroupEndExpression<GC, GL>> G and(G conditionExpression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4412,7 +4412,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
         GL extends GroupEndExpression<GC, GL>> G or(G conditionExpression) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

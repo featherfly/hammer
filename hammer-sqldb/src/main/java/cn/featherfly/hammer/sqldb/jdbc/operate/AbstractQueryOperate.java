@@ -35,6 +35,7 @@ public abstract class AbstractQueryOperate<T> extends AbstractOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
      */
     protected AbstractQueryOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
         SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata,

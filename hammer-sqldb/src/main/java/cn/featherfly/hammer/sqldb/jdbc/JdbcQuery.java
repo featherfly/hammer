@@ -38,7 +38,7 @@ public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle
      * paramed query.
      *
      * @param sql sql
-     * @param args args
+     * @param params the params
      * @return ParamedQueryExecutor
      */
     default ParamedQueryExecutor query(String sql, Params params) {
@@ -58,7 +58,7 @@ public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle
      * paramed query.
      *
      * @param sql sql
-     * @param args args
+     * @param params the params
      * @return ParamedQueryExecutor
      */
     default ParamedQueryExecutor query(NamedParamSql sql, Params params) {

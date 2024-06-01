@@ -28,12 +28,12 @@ import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
 
 /**
- * EntityRowMapper.
+ * PropertySetRowMapper.
  *
  * @author zhongj
  * @param <T> the entity type
  */
-public class ProperotySetRowMapper<T> implements RowMapper<T> {
+public class PropertySetRowMapper<T> implements RowMapper<T> {
 
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -53,9 +53,9 @@ public class ProperotySetRowMapper<T> implements RowMapper<T> {
      * @param instantiator the instantiator
      * @param dialect the dialect
      * @param classMapping the class mapping
-     * @param fetchPropertyMappings the fetch property mappings
+     * @param fetchPropertys the fetch propertys
      */
-    public ProperotySetRowMapper(Instantiator<T> instantiator, Dialect dialect, JdbcClassMapping<T> classMapping,
+    public PropertySetRowMapper(Instantiator<T> instantiator, Dialect dialect, JdbcClassMapping<T> classMapping,
         Tuple2<BiConsumer<T, Object>, JavaTypeSqlTypeOperator<Object>>[] fetchPropertys) {
         super();
         this.instantiator = instantiator;

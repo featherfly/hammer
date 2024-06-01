@@ -138,7 +138,7 @@ public class DslStaticTypeTest {
 
             @Override
             public int getIndex() {
-                // YUFEI_TODO Auto-generated method stub
+
                 return 0;
             }
         });

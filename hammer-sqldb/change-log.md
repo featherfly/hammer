@@ -53,9 +53,54 @@ TODO dsl实体查询加入以下（EntityQuery）
    query.find(User.class).fetch(User::getAge).where().property(User::getAge).divide(5).eq(1).valueList();
    ```
 
-   
+6. 加入防止sql注入的模板标签（StringReplaceDirective）和模板方法（StringReplaceMethod）
 
+8. 存储过程支持支持多查询返回
+
+   ```java
+   // 延迟映射数据
+   Serializable[] params = new Serializable[] { uid };
+   try (MulitiQuery query = jdbc.callMultiQuery("procedurename", params)) {
+         while (query.hasNext()) {
+             Map<String,Object> map = query.next();
+             // or
+             User user =  query.next(User.class);
+             // or
+             RowMapper<User> userRowMapper = new ... // your custome RowMapper
+             User user =  query.next(userRowMapper);
+         }
+    } catch (Exception e) {
+          // Logic for handling exceptions
+    }
    
+   // 直接映射数据
+   Tuple6<List<User>, List<UserInfo2>, List<Order2>, List<Map<String, Serializable>>, List<UserRole>,
+               List<Map<String, Serializable>>> mulitiList = jdbc.callMultiQuery(name,
+                   b -> b.map(User.class).map(UserInfo2.class).map(Order2.class).map().map(UserRole.class).map(), params);
+   
+   
+   ```
+
+6. 模板执行器（TplExecutor）和SQL执行器（JdbcExecutor）支持each查询，即延迟映射（需要手动管理）
+
+6. 查询分页结果集(PagniationResults)时，支持缓存total参数，如果下次查询没有改变参数，如果查询参数未变化，只是页码变化（即翻页），则会直接使用缓存
+
+6. DSL实体查询(DSL entity query) 的pagination()方法支持分页sql自动优化（如果能够优化），优化标准必须id字段为有序，并且查询没有排序（目前只要有排序就不会优化，后续加入更多情况判断）
+
+6. DSL实体查询(DSL entity query) 和模板查询的pagination()和分页list()方法支持缓存list结果，如果查询参数未变化，只是页码变化（即翻页）,会从缓存中缓存对应页码的list结果。即访问 1 -> 2 -> 3 -> 2 -> 1 这样的翻页，后面两次的2,1就会从缓存获取数据
+
+13. 实体对象保存支持ID生成器（IdGenerator）
+
+15. 性能优化
+
+    1. 优化批处理逻辑，如果数据库驱动支持高性能批处理，则交由数据库驱动处理，如果数据库驱动没有高性能批处理能力，则使用框架自行封装的高性能批处理逻辑（如果有方案的话）
+    2. 使用PropertyAccessor（字节码）代替之前的BeanProperty（反射），包含对象的生成（new ）和属性的访问（get）和设置（set）
+    3. 模板预编译直接把命名参数的sql转换为jdbc支持的问号占位符sql，即 id = :id 转换为 id = ?（这样就只有加载时转换一次，不用每次执行的时候都转换）
+    4. 模板预编译支持直接静态include（即预编译阶段把include的内容直接解析进主题，需要配置TemplateConfig.isPrecompileNamedParamPlaceholder为 false），并且在静态include的情况下，还可以在加载时就把count sql生成（不用每次执行时再动态生成）
+    5. entity|repository dsl pagination count sql使用直接生成，而不是从select sql转换
+    6. 实体操作（InsertOperate,GetOperate）等，固化实体元数据，不会在调用时在获取元数据了
+
+    
 
 # 0.7.0 2024-05-05
 

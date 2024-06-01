@@ -2607,7 +2607,6 @@
 //     */
 //    @Override
 //    public double doubleValue() {
-//        // YUFEI_TODO Auto-generated method stub
 //        return 0;
 //    }
 //
