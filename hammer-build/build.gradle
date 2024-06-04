@@ -19,7 +19,7 @@ allprojects {
     }
     
     ext {
-        sv = "5.3.34"
+        sv = "5.3.36"
     }
 }
 
