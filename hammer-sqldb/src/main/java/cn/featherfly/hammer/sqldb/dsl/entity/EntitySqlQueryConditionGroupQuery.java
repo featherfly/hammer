@@ -11,6 +11,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -20,8 +21,8 @@ import javax.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
+import com.speedment.common.tuple.Tuple8;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.structure.page.Limit;
@@ -60,11 +61,11 @@ public class EntitySqlQueryConditionGroupQuery<R> {
 
     private SqlPageFactory sqlPageFactory;
 
-    private Function<Limit, Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>,
-        String, Function<Object, Serializable>>> preparePagination;
+    private Function<Limit, Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>,
+        String, Function<Object, Serializable>, Optional<Boolean>>> preparePagination;
 
-    private Function<Limit, Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>>> prepareList;
+    private Function<Limit, Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>>> prepareList;
 
     private final Cache<Object, QueryPageResult> queryPageResultCache;
 
@@ -158,8 +159,8 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      * @return LogicExpressionist
      */
     public List<R> list() {
-        Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>> tupleResult = prepareList.apply(limit);
+        Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>, Optional<Boolean>> tupleResult = prepareList.apply(limit);
         String sql = tupleResult.get0();
         Limit newLimit = tupleResult.get2().orElse(null);
         List<Serializable> paramList = tupleResult.get1();
@@ -179,7 +180,11 @@ public class EntitySqlQueryConditionGroupQuery<R> {
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        list = queryRelation.list(sql, params);
+        if (!tupleResult.get6().isPresent()) {
+            list = Collections.emptyList();
+        } else {
+            list = queryRelation.list(sql, params);
+        }
 
         setCacheList(list, queryPageResults, newLimit, tupleResult.get5());
         //        if (queryPageResultCache != null && newLimit != null) {
@@ -212,8 +217,8 @@ public class EntitySqlQueryConditionGroupQuery<R> {
      * @return the pagination results
      */
     public PaginationResults<R> pagination() {
-        Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>> tupleResult = preparePagination.apply(limit);
+        Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>, Optional<Boolean>> tupleResult = preparePagination.apply(limit);
         String sql = tupleResult.get0();
         Limit newLimit = tupleResult.get3().orElse(null);
         List<Serializable> paramList = tupleResult.get2();
@@ -231,11 +236,19 @@ public class EntitySqlQueryConditionGroupQuery<R> {
                     newLimit.getOffset(), newLimit.getLimit(), params);
                 sql = pageQuery.getSql();
                 params = pageQuery.getParams();
-                list = queryRelation.list(sql, params);
+                if (!tupleResult.get7().isPresent()) {
+                    list = Collections.emptyList();
+                } else {
+                    list = queryRelation.list(sql, params);
+                }
             }
             pagination.setPageResults(list);
         } else {
-            list = queryRelation.list(sql, params);
+            if (!tupleResult.get7().isPresent()) {
+                list = Collections.emptyList();
+            } else {
+                list = queryRelation.list(sql, params);
+            }
             pagination.setPageResults(list);
         }
 

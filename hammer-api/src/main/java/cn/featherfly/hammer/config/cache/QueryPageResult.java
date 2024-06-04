@@ -82,10 +82,11 @@ public class QueryPageResult {
      */
     public PageInfo getNearestQueryPageResult(Limit limit) {
         PageInfo nearest = null;
-        int value = Integer.MIN_VALUE;
+        int value = Integer.MAX_VALUE;
         for (PageInfo qpr : pageResults.values()) {
-            int diff = qpr.getOffset().intValue() - limit.getOffset();
-            if (value < diff) {
+            int diff = qpr.getOffset().intValue() > limit.getOffset() ? qpr.getOffset().intValue() - limit.getOffset()
+                : limit.getOffset() - qpr.getOffset().intValue();
+            if (value > diff) {
                 value = diff;
                 nearest = qpr;
             }

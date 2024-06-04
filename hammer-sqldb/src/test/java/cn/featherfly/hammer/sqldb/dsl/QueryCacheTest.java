@@ -326,6 +326,80 @@ public class QueryCacheTest extends JdbcTestBase {
 
     }
 
+    @Test
+    public void entityQueryPagination_CountCache_OptimizationPage_PageNumber_Gt_MaxPageNumber() {
+        SimplePage page = new SimplePage();
+        page.setSize(2);
+        page.setNumber(1);
+
+        PaginationResults<User2> results = null;
+
+        Limit limit = null;
+        Limit preLimit = null;
+        results = query.find(User2.class).configure(c -> c.setCachePageResults(false)).where().ge(User2::getAge, 0) //
+            .limit(page) //
+            .pagination();
+
+        limit = new Limit(page);
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertEquals(results.getPageResults().get(0).getId(), 1);
+        assertTrue(queryPageResultCache.getIndex() == 0);
+
+        page.setNumber(100);
+        preLimit = limit;
+        limit = new Limit(page);
+        results = query.find(User2.class).configure(c -> c.setCachePageResults(false)).where().ge(User2::getAge, 0)
+            .limit(page).pagination();
+        assertEquals(results.getPageResults().size(), 0);
+        assertTrue(queryPageResultCache.getIndex() == 1);
+
+        page.setNumber(2);
+        preLimit = limit;
+        limit = new Limit(page);
+        results = query.find(User2.class).configure(c -> c.setCachePageResults(false)).where().ge(User2::getAge, 0)
+            .limit(page).pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertEquals(results.getPageResults().get(0).getId(), 3);
+        assertTrue(queryPageResultCache.getIndex() == 2);
+        assertEquals(page.getSize(), queryPageResultCache.getLast().getLimit());
+        assertNull(queryPageResultCache.getLast().getPageList(limit.getOffset()));
+
+        page.setNumber(3);
+        preLimit = limit;
+        limit = new Limit(page);
+        results = query.find(User2.class).configure(c -> c.setCachePageResults(false)).where().ge(User2::getAge, 0)
+            .limit(page).pagination();
+        assertEquals(results.getPageResults().size(), page.getSize());
+        assertEquals(results.getPageResults().get(0).getId(), 5);
+        assertTrue(queryPageResultCache.getIndex() == 3);
+        assertEquals(page.getSize(), queryPageResultCache.getLast().getLimit());
+        assertEquals(preLimit.getOffset() + limit.getLimit(),
+            queryPageResultCache.getLast().getNearestQueryPageResult(new Limit(page)).getOffset());
+        assertNull(queryPageResultCache.getLast().getPageList(limit.getOffset()));
+    }
+
+    @Test
+    public void entityQueryPagination_CountCache_OptimizationPage_Find_Empty() {
+        // 测试缓存空指针问题，解决没有
+        SimplePage page = new SimplePage();
+        page.setSize(2);
+        page.setNumber(1);
+
+        PaginationResults<User2> results = null;
+
+        results = query.find(User2.class).configure(c -> c.setCachePageResults(false)).where()
+            .ge(User2::getAge, Integer.MAX_VALUE) //
+            .limit(page) //
+            .pagination();
+
+        assertEquals(results.getPageResults().size(), 0);
+        page.setNumber(2);
+        results = query.find(User2.class).configure(c -> c.setCachePageResults(false)).where()
+            .ge(User2::getAge, Integer.MAX_VALUE) //
+            .limit(page).pagination();
+        assertEquals(results.getPageResults().size(), 0);
+    }
+
     @Test(dependsOnMethods = "entityQueryPagination_CountCache_PageListCache")
     public void entityQueryPagination_CountCache_PageListCache_OptimizationPage() {
         SimplePage page = new SimplePage();

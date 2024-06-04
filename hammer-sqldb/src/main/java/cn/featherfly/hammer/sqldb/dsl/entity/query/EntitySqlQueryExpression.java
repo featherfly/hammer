@@ -11,9 +11,9 @@ import javax.cache.Cache;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple6;
+import com.speedment.common.tuple.Tuple3;
 import com.speedment.common.tuple.Tuple7;
+import com.speedment.common.tuple.Tuple8;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
@@ -101,8 +101,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * {@inheritDoc}
      */
     @Override
-    public Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> prepareList(Limit limit) {
+    public Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> prepareList(Limit limit) {
         return prepareList(hammerConfig, this, super.expression(), parent, entityRelation, getRootSortBuilder(),
             dialect, limit);
     }
@@ -111,8 +111,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * {@inheritDoc}
      */
     @Override
-    public Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> preparePagination(Limit limit) {
+    public Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> preparePagination(Limit limit) {
         return preparePage(hammerConfig, this, super.expression(), parent, entityRelation, getRootSortBuilder(),
             dialect, limit);
     }
@@ -155,8 +155,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param limit the limit
      * @return the tuple 6
      */
-    static Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> prepareList(HammerConfig hammerConfig,
+    static Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> prepareList(HammerConfig hammerConfig,
             AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
             LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder,
             Dialect dialect, Limit limit) {
@@ -183,14 +183,15 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
 
                 if (queryPageResult != null
                     && (queryPageResult.getLimit() == null || queryPageResult.getLimit() == limit.getLimit())) {
-                    Tuple2<String, Limit> conditionAndLimit = processLimit(queryRelation, condition, limit,
-                        queryPageResult, dialect);
+                    Tuple3<String, Limit, Optional<Boolean>> conditionAndLimit = processLimit(queryRelation, condition,
+                        limit, queryPageResult, dialect);
 
                     select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
                         + conditionAndLimit.get0() + Chars.SPACE + sort;
                     return Tuples.of(select, params, Optional.ofNullable(conditionAndLimit.get1()),
                         Optional.of(queryPageResult), selectSql, queryRelation.getEntityRelation(0).getClassMapping()
-                            .getPrimaryKeyPropertyMappings().get(0).getGetter());
+                            .getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                        conditionAndLimit.get2());
                 }
             }
 
@@ -206,8 +207,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
                     + condition + Chars.SPACE + sort;
             }
             return Tuples.of(select, params, Optional.ofNullable(limit), Optional.ofNullable(queryPageResult), select,
-                queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0)
-                    .getGetter());
+                queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                Optional.of(true));
         } else {
             // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
             throw new SqldbHammerException("not root expression, only root expression can invoke this method");
@@ -225,8 +226,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param limit the limit
      * @return the tuple 7
      */
-    static Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> preparePage(HammerConfig hammerConfig,
+    static Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> preparePage(HammerConfig hammerConfig,
             AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
             LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder,
             Dialect dialect, Limit limit) {
@@ -256,8 +257,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
                         // new QueryPageResult for Follow Up, then only need decide queryPageResult is null
                         queryPageResult = new QueryPageResult();
                     } else if (queryPageResult.getLimit() != null && queryPageResult.getLimit() == limit.getLimit()) {
-                        Tuple2<String, Limit> conditionAndLimit = processLimit(queryRelation, condition, limit,
-                            queryPageResult, dialect);
+                        Tuple3<String, Limit, Optional<Boolean>> conditionAndLimit = processLimit(queryRelation,
+                            condition, limit, queryPageResult, dialect);
 
                         select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where()
                             + Chars.SPACE + conditionAndLimit.get0() + Chars.SPACE + sort;
@@ -269,7 +270,8 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
                         }
                         return Tuples.of(select, selectCount, params, Optional.ofNullable(conditionAndLimit.get1()),
                             Optional.of(queryPageResult), selectSql, queryRelation.getEntityRelation(0)
-                                .getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter());
+                                .getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                            conditionAndLimit.get2());
                     }
                 }
             }
@@ -293,30 +295,45 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
                 }
             }
             return Tuples.of(select, selectCount, params, Optional.ofNullable(limit),
-                Optional.ofNullable(queryPageResult), select, queryRelation.getEntityRelation(0).getClassMapping()
-                    .getPrimaryKeyPropertyMappings().get(0).getGetter());
+                Optional.ofNullable(queryPageResult), select,
+                queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                Optional.of(true));
         } else {
             // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
             throw new SqldbHammerException("not root expression, only root expression can invoke this method");
         }
     }
 
-    private static Tuple2<String, Limit> processLimit(EntitySqlQueryRelation queryRelation, String condition,
-        Limit limit, QueryPageResult queryPageResult, Dialect dialect) {
+    private static Tuple3<String, Limit, Optional<Boolean>> processLimit(EntitySqlQueryRelation queryRelation,
+        String condition, Limit limit, QueryPageResult queryPageResult, Dialect dialect) {
         String pageCondition = null;
         EntityRelation<?> er = queryRelation.getEntityRelation(0);
         String idField = er.getClassMapping().getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName();
         PageInfo pageInfo = queryPageResult.getNearestQueryPageResult(limit);
+
+        if (queryPageResult.getTotal() != null && queryPageResult.getTotal()
+            / limit.getLimit() < (limit.getOffset() + limit.getLimit()) / limit.getLimit()) {
+            return Tuples.of(condition, limit, Optional.empty());
+            // ENHANCE 后续优化异常
+            //            throw new SqldbHammerException(
+            //                Strings.format("query results max page number {} < query limit page number {}",
+            //                    queryPageResult.getTotal() / limit.getLimit(),
+            //                    (limit.getOffset() + limit.getLimit()) / limit.getLimit()));
+        }
+        if (pageInfo.getFirstId() == null) { // 未查出数据
+            return Tuples.of(condition, limit, Optional.of(true));
+        }
         if (limit.getOffset() > pageInfo.getOffset().intValue()) {
             // 向前翻页 where id > result.getLastId()
             pageCondition = er.getTableAlias() + Chars.DOT + dialect.wrapName(idField) + " > "
                 + pageInfo.getLastId().longValue() + Chars.SPACE
                 + Lang.ifNotEmpty(condition, c -> Chars.SPACE + dialect.keywords().and() + Chars.SPACE + c);
             // 添加到参数可能遇到参数位置不对的情况，有可能在查询条件前就有?占位符了，所以这里先用sql拼接
-            // 而且id是框架内部从实体对象id拿到的，应该是不会有sql注入风险
+            // 而且id是框架内部从查询回来的实体对象id拿到的，应该是不会有sql注入风险
             // params.add(0, result.getLastId()); // 添加到第一个参数
             return Tuples.of(pageCondition,
-                new Limit(limit.getOffset() - pageInfo.getOffset() - pageInfo.getLimit(), limit.getLimit()));
+                new Limit(limit.getOffset() - pageInfo.getOffset() - pageInfo.getLimit(), limit.getLimit()),
+                Optional.of(true));
         } else if (limit.getOffset() < pageInfo.getOffset().intValue()) {
             // 往回翻页 where id < result.getFirstId()
             pageCondition = er.getTableAlias() + Chars.DOT
@@ -324,14 +341,15 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
                 + pageInfo.getFirstId().longValue() + Chars.SPACE
                 + Lang.ifNotEmpty(condition, c -> Chars.SPACE + dialect.keywords().and() + Chars.SPACE + c);
             return Tuples.of(pageCondition,
-                new Limit(pageInfo.getOffset() - limit.getOffset() - limit.getLimit(), limit.getLimit()));
+                new Limit(pageInfo.getOffset() - limit.getOffset() - limit.getLimit(), limit.getLimit()),
+                Optional.of(true));
         } else {
             // 当前页 where id >= result.getFirstId()
             pageCondition = er.getTableAlias() + Chars.DOT + dialect.wrapName(idField) + " >= "
                 + pageInfo.getFirstId().longValue()
                 + Lang.ifNotEmpty(condition, c -> Chars.SPACE + dialect.keywords().and() + Chars.SPACE + c);
             // 不需要更改limit
-            return Tuples.of(pageCondition, limit);
+            return Tuples.of(pageCondition, limit, Optional.of(true));
         }
     }
 }
