@@ -3,12 +3,13 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
+import com.speedment.common.tuple.Tuple8;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
@@ -159,26 +160,36 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<E> pagination() {
-        Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>> tupleResult = getRoot().preparePagination(limit);
+        Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>, Optional<Boolean>> tupleResult = getRoot().preparePagination(limit);
         String sql = tupleResult.get0();
         String countSql = tupleResult.get1();
         Serializable[] params = Lang.toArray(tupleResult.get2(), Serializable.class);
-        Limit limit = tupleResult.get3().orElse(null);
+        Limit newLimit = tupleResult.get3().orElse(null);
         SimplePaginationResults<E> pagination = null;
 
         // IMPLSOON 缓存列表没有处理
 
-        if (limit != null) {
-            pagination = new SimplePaginationResults<>(limit);
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
-                limit.getLimit(), params);
-            List<E> list = entityRelation.getJdbc().queryList(pageQuery.getSql(), queryType, pageQuery.getParams());
+        if (newLimit != null) {
+            pagination = new SimplePaginationResults<>(newLimit);
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, newLimit.getOffset(),
+                newLimit.getLimit(), params);
+            List<E> list = null;
+            if (!tupleResult.get7().isPresent()) {
+                list = Collections.emptyList();
+            } else {
+                list = entityRelation.getJdbc().queryList(pageQuery.getSql(), queryType, pageQuery.getParams());
+            }
             pagination.setPageResults(list);
             int total = entityRelation.getJdbc().queryInt(countSql, params);
             pagination.setTotal(total);
         } else {
-            List<E> list = entityRelation.getJdbc().queryList(sql, queryType, params);
+            List<E> list = null;
+            if (!tupleResult.get7().isPresent()) {
+                list = Collections.emptyList();
+            } else {
+                list = entityRelation.getJdbc().queryList(sql, queryType, params);
+            }
             pagination = new SimplePaginationResults<>(0, list.size());
             pagination.setPageResults(list);
             pagination.setTotal(list.size());
@@ -209,8 +220,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<V> valuePagination() {
-        Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>> tupleResult = getRoot().preparePagination(limit);
+        Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>, Optional<Boolean>> tupleResult = getRoot().preparePagination(limit);
         String sql = tupleResult.get0();
         String countSql = tupleResult.get1();
         Serializable[] params = Lang.toArray(tupleResult.get2(), Serializable.class);
@@ -555,10 +566,11 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      *         <li>QueryPageResult may be null
      *         <li>orginal query sql
      *         <li>Function&lt;Object, Object&gt; getId value
+     *         <li>Optional&lt;Boolean&gt; query page number gt max page number
      *         </ol>
      */
-    public abstract Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> prepareList(Limit limit);
+    public abstract Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> prepareList(Limit limit);
 
     /**
      * Prepare pagination.
@@ -573,10 +585,11 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      *         <li>QueryPageResult may be null
      *         <li>orginal query sql
      *         <li>Function&lt;Object, Object&gt; getId value
+     *         <li>Optional&lt;Boolean&gt; query page number gt max page number
      *         </ol>
      */
-    public abstract Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> preparePagination(Limit limit);
+    public abstract Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> preparePagination(Limit limit);
 
     /**
      * Gets the root sort builder.

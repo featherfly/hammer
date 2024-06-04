@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple6;
 import com.speedment.common.tuple.Tuple7;
+import com.speedment.common.tuple.Tuple8;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
@@ -411,10 +411,11 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression3<E1,
      *         <li>QueryPageResult may be null
      *         <li>orginal query sql
      *         <li>Function&lt;Object, Object&gt; getId value
+     *         <li>Optional&lt;Boolean&gt; query page number gt max page number
      *         </ol>
      */
-    public abstract Tuple6<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> prepareList(Limit limit);
+    public abstract Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> prepareList(Limit limit);
 
     /**
      * Prepare pagination.
@@ -429,10 +430,11 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression3<E1,
      *         <li>QueryPageResult may be null
      *         <li>orginal query sql
      *         <li>Function&lt;Object, Object&gt; getId value
+     *         <li>Optional&lt;Boolean&gt; query page number gt max page number
      *         </ol>
      */
-    public abstract Tuple7<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-        Function<Object, Serializable>> preparePagination(Limit limit);
+    public abstract Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+        Function<Object, Serializable>, Optional<Boolean>> preparePagination(Limit limit);
 
     // ****************************************************************************************************************
     //  protected method
