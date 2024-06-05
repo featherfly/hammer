@@ -32,12 +32,25 @@ dependencies {
 
 def publishAllModulesLocal = task("allModulesPublishLocal", group: 'publishing') {}
 getSubprojects().each { p ->
-    def publishTask = project(":"+ p.name).tasks.findByName("publishMavenJavaPublicationToMavenLocal")
+    def publishTask = project(":"+ p.name).tasks.findByName("publishReleasePublicationToMavenLocal")
     if (publishTask != null) publishAllModulesLocal.dependsOn(publishTask)
 }
 
 def publishAllModulesRepository = task("allModulesPublishRepository", group: 'publishing') {}
 getSubprojects().each { p ->
-    def publishTask = project(":"+ p.name).tasks.findByName("publishMavenJavaPublicationToMavenRepository")
+    def publishTask = project(":"+ p.name).tasks.findByName("publishReleasePublicationToMavenRepository")
     if (publishTask != null) publishAllModulesRepository.dependsOn(publishTask)
 }
+
+def publishAllModulesLocalSnapshot = task("allModulesPublishLocalSnapshot", group: 'publishing') {}
+getSubprojects().each { p ->
+    def publishTask = project(":"+ p.name).tasks.findByName("publishSnapshotPublicationToMavenLocal")
+    if (publishTask != null) publishAllModulesLocalSnapshot.dependsOn(publishTask)
+}
+
+def publishAllModulesRepositorySnapshot = task("allModulesPublishRepositorySnapshot", group: 'publishing') {}
+getSubprojects().each { p ->
+    def publishTask = project(":"+ p.name).tasks.findByName("publishSnapshotPublicationToMavenRepository")
+    if (publishTask != null) publishAllModulesRepositorySnapshot.dependsOn(publishTask)
+}
+
