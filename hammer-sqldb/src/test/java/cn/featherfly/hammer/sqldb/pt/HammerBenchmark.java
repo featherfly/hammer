@@ -90,7 +90,8 @@ public class HammerBenchmark extends AbstractBenchmark {
         hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
             .buildValidatorFactory().getValidator());
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
+        hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig)
+            .build();
     }
 
     /**

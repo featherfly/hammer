@@ -87,29 +87,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
         this.hammerConfig = hammerConfig;
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public String build() {
-    //        StringBuilder result = new StringBuilder(super.build());
-    //        if (parent == null) { // 表示是根条件组，即where()开始的部分
-    //            String sort = getRootSortBuilder().build();
-    //            if (result.length() > 0) {
-    //                if (Lang.isNotEmpty(sort)) {
-    //                    return dialect.getKeywords().where() + Chars.SPACE
-    //                            + result.append(Chars.SPACE).append(sort).toString();
-    //                } else {
-    //                    return result.toString();
-    //                }
-    //            } else {
-    //                return sort;
-    //            }
-    //        } else { // 表示是子条件组，即group()方法开启内的部分
-    //            return result.toString();
-    //        }
-    //    }
-
     /**
      * Limit.
      *
@@ -172,7 +149,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public EntityQuerySortExpression2<E1, E2, RS> sort() {
-
         return this;
     }
 
@@ -185,8 +161,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> asc(String... names) {
-        getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
-
+        getRootSortBuilder().asc(tableAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
 
@@ -197,7 +172,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> asc2(String... names) {
-        getRootSortBuilder().asc(queryAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+        getRootSortBuilder().asc(tableAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
 
         return this;
     }
@@ -209,8 +184,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> desc(String... names) {
-        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
-
+        getRootSortBuilder().desc(tableAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
         return this;
     }
 
@@ -221,7 +195,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> desc2(String... names) {
-        getRootSortBuilder().desc(queryAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+        getRootSortBuilder().desc(tableAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
 
         return this;
     }
@@ -274,7 +248,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
         BiConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>> sortEntityExpressions) {
         sortEntityExpressions.accept(
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias, SortOperator.ASC, classMapping),
-            new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), queryAlias2, SortOperator.ASC,
+            new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias2, SortOperator.ASC,
                 classMapping2));
 
         return this;
@@ -288,7 +262,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
         BiConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>> sortEntityExpressions) {
         sortEntityExpressions.accept(
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias, SortOperator.DESC, classMapping),
-            new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), queryAlias2, SortOperator.DESC,
+            new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias2, SortOperator.DESC,
                 classMapping2));
 
         return this;

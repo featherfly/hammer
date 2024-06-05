@@ -154,207 +154,6 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     }
 
     /**
-     * List.
-     *
-     * @return LogicExpressionist
-     */
-    public List<R> list() {
-        Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>, Optional<Boolean>> tupleResult = prepareList.apply(limit);
-        String sql = tupleResult.get0();
-        Limit newLimit = tupleResult.get2().orElse(null);
-        List<Serializable> paramList = tupleResult.get1();
-        Serializable[] params = paramList.toArray(new Serializable[paramList.size()]);
-        paramList.add(0, tupleResult.get4());
-        QueryPageResult queryPageResults = tupleResult.get3().orElse(null);
-
-        List<R> list = null;
-        if (newLimit != null) {
-            queryPageResults = queryPageResults(queryPageResults, paramList);
-            list = getCacheList(queryPageResults, newLimit);
-            if (list != null) {
-                return list;
-            }
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, newLimit.getOffset(),
-                newLimit.getLimit(), params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        if (!tupleResult.get6().isPresent()) {
-            list = Collections.emptyList();
-        } else {
-            list = queryRelation.list(sql, params);
-        }
-
-        setCacheList(list, queryPageResults, newLimit, tupleResult.get5());
-        //        if (queryPageResultCache != null && newLimit != null) {
-        //            if (queryRelation.getConfig().isPagingOptimization()) { // cache id
-        //                queryPageResults = Lang.ifNull(queryPageResults, new QueryPageResults());
-        //                if (list.isEmpty()) {
-        //                    queryPageResult = new QueryPageResult<>(limit);
-        //                } else {
-        //                    queryPageResult = new QueryPageResult<>(limit, (Number) tupleResult.get5().apply(list.get(0)),
-        //                        (Number) tupleResult.get5().apply(list.get(list.size() - 1)));
-        //                }
-        //            }
-        //            if (queryRelation.getConfig().isCachePageResults()) { // cache enable
-        //                queryPageResults = Lang.ifNull(queryPageResults, new QueryPageResults());
-        //                if (queryPageResult == null) {
-        //                    queryPageResult = new QueryPageResult<>(list);
-        //                } else {
-        //                    queryPageResult.setList(list);
-        //                }
-        //                queryPageResults.addQueryPageResult(queryPageResult);
-        //            }
-        //        }
-
-        return list;
-    }
-
-    /**
-     * Pagination.
-     *
-     * @return the pagination results
-     */
-    public PaginationResults<R> pagination() {
-        Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>, Optional<Boolean>> tupleResult = preparePagination.apply(limit);
-        String sql = tupleResult.get0();
-        Limit newLimit = tupleResult.get3().orElse(null);
-        List<Serializable> paramList = tupleResult.get2();
-        Serializable[] oraginalParams = paramList.toArray(new Serializable[paramList.size()]);
-        Serializable[] params = oraginalParams;
-        paramList.add(0, tupleResult.get5()); // cache key
-        QueryPageResult queryPageResult = tupleResult.get4().orElse(null);
-        SimplePaginationResults<R> pagination = new SimplePaginationResults<>(newLimit);
-        List<R> list = null;
-        if (newLimit != null) {
-            queryPageResult = queryPageResults(queryPageResult, paramList);
-            list = getCacheList(queryPageResult, limit);
-            if (list == null) {
-                SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql,
-                    newLimit.getOffset(), newLimit.getLimit(), params);
-                sql = pageQuery.getSql();
-                params = pageQuery.getParams();
-                if (!tupleResult.get7().isPresent()) {
-                    list = Collections.emptyList();
-                } else {
-                    list = queryRelation.list(sql, params);
-                }
-            }
-            pagination.setPageResults(list);
-        } else {
-            if (!tupleResult.get7().isPresent()) {
-                list = Collections.emptyList();
-            } else {
-                list = queryRelation.list(sql, params);
-            }
-            pagination.setPageResults(list);
-        }
-
-        queryPageResult = setCacheList(list, queryPageResult, limit, tupleResult.get6());
-        //        if (queryPageResultCache != null && newLimit != null) {
-        //            if (queryRelation.getConfig().isPagingOptimization()) { // cache id
-        //                queryPageResults = Lang.ifNull(queryPageResults, new QueryPageResults());
-        //                if (list.isEmpty()) {
-        //                    queryPageResult = new QueryPageResult<>(limit);
-        //                } else {
-        //                    queryPageResult = new QueryPageResult<>(limit, (Number) tupleResult.get6().apply(list.get(0)),
-        //                        (Number) tupleResult.get6().apply(list.get(list.size() - 1)));
-        //                }
-        //                queryPageResults.addQueryPageResult(queryPageResult);
-        //            }
-        //            if (queryRelation.getConfig().isCachePageResults()) { // cache enable
-        //                queryPageResults = Lang.ifNull(queryPageResults, new QueryPageResults());
-        //                if (queryPageResult == null) {
-        //                    queryPageResult = new QueryPageResult<>(list);
-        //                } else {
-        //                    queryPageResult.setList(list);
-        //                }
-        //                queryPageResults.addQueryPageResult(queryPageResult);
-        //            }
-        //        }
-
-        if (newLimit != null) {
-            Long total = getTotal(queryPageResult, paramList);
-            if (total == null) {
-                total = queryRelation.getJdbc().queryLong(tupleResult.get1(), oraginalParams);
-            } else {
-                LOGGER.debug("pagination count result [{}] found in cache", total);
-            }
-            pagination.setTotal(total);
-
-            setTotal(queryPageResult, paramList, pagination);
-        } else {
-            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
-            pagination.setTotal(list.size());
-        }
-        return pagination;
-    }
-
-    private List<R> getCacheList(QueryPageResult queryPageResult, Limit limit) {
-        if (queryRelation.getConfig().isCachePageResults() && queryPageResult != null) {
-            return queryPageResult.getPageList(limit.getOffset());
-            // 不用下面这样，在外面调用前就先尝试获取缓存了
-            //            if (queryPageResults == null && queryPageResultCache != null) {
-            //                queryPageResults = queryPageResultCache.get(paramList);
-            //            }
-        }
-        return null;
-    }
-
-    private QueryPageResult setCacheList(List<R> list, QueryPageResult queryPageResult, Limit limit,
-        Function<Object, Serializable> getId) {
-        if (queryPageResultCache != null && limit != null) {
-            if (queryRelation.getConfig().isPagingOptimization()) { // cache id
-                queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
-                PageInfo pageInfo = null;
-                if (list.isEmpty()) {
-                    pageInfo = new PageInfo(limit);
-                } else {
-                    pageInfo = new PageInfo(limit, (Number) getId.apply(list.get(0)),
-                        (Number) getId.apply(list.get(list.size() - 1)));
-                }
-                queryPageResult.addQueryPageResult(pageInfo);
-            }
-            if (queryRelation.getConfig().isCachePageResults()) { // cache enable
-                queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
-                queryPageResult.addPageList(limit.getOffset(), list);
-            }
-        }
-        return queryPageResult;
-    }
-
-    private Long getTotal(QueryPageResult queryPageResult, List<Serializable> sqlAndParamsList) {
-        if (queryRelation.getConfig().isCachePageCount()) {
-            queryPageResult = queryPageResults(queryPageResult, sqlAndParamsList);
-            if (queryPageResult != null) {
-                return queryPageResult.getTotal();
-            }
-        }
-        return null;
-    }
-
-    private void setTotal(QueryPageResult queryPageResult, List<Serializable> sqlAndParamsList,
-        SimplePaginationResults<R> pagination) {
-        if (queryRelation.getConfig().isCachePageCount() && queryPageResultCache != null) {
-            if (queryPageResult == null) {
-                queryPageResult = new QueryPageResult(pagination.getTotal());
-            } else {
-                queryPageResult.setTotal(pagination.getTotal());
-            }
-            queryPageResultCache.put(sqlAndParamsList, queryPageResult);
-        }
-    }
-
-    private QueryPageResult queryPageResults(QueryPageResult queryPageResults, List<Serializable> sqlAndParamsList) {
-        if (queryPageResults == null && queryPageResultCache != null) {
-            return queryPageResultCache.get(sqlAndParamsList);
-        }
-        return queryPageResults;
-    }
-
-    /**
      * Single.
      *
      * @return the r
@@ -387,4 +186,244 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         }
         return queryRelation.unique(sql, params);
     }
+
+    /**
+     * List.
+     *
+     * @return LogicExpressionist
+     */
+    public List<R> list() {
+        return list((Class<R>) null);
+    }
+
+    /**
+     * Pagination.
+     *
+     * @return the pagination results
+     */
+    public PaginationResults<R> pagination() {
+        return pagination0((Class<R>) null);
+    }
+
+    /**
+     * Value.
+     *
+     * @param <V> the value type
+     * @param type the type
+     * @return the v
+     */
+    public <V> V value(Class<V> type) {
+        String sql = exp.getRoot().expression();
+        Serializable[] params = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
+        if (limit != null) {
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+                limit.getLimit(), params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        return queryRelation.getJdbc().querySingle(sql, type, params);
+    }
+
+    /**
+     * List.
+     *
+     * @param <V> the value type
+     * @param type the type
+     * @return the list
+     */
+    public <V> List<V> list(Class<V> type) {
+        return list0(type);
+    }
+
+    /**
+     * Pagination.
+     *
+     * @param <V> the value type
+     * @param type the type
+     * @return the pagination results
+     */
+    public <V> PaginationResults<V> pagination(Class<V> type) {
+        return pagination0(type);
+    }
+
+    // ****************************************************************************************************************
+    //	private method
+    // ****************************************************************************************************************
+
+    private <E> List<E> list0(Class<E> type) {
+        Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>, Optional<Boolean>> tupleResult = prepareList.apply(limit);
+        String sql = tupleResult.get0();
+        Limit newLimit = tupleResult.get2().orElse(null);
+        List<Serializable> paramList = tupleResult.get1();
+        Serializable[] params = paramList.toArray(new Serializable[paramList.size()]);
+        paramList.add(0, tupleResult.get4());
+        QueryPageResult queryPageResults = tupleResult.get3().orElse(null);
+
+        List<E> list = null;
+        if (newLimit != null) {
+            queryPageResults = queryPageResults(queryPageResults, paramList);
+            list = getCacheList(queryPageResults, newLimit);
+            if (list != null) {
+                return list;
+            }
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, newLimit.getOffset(),
+                newLimit.getLimit(), params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        if (!tupleResult.get6().isPresent()) {
+            list = Collections.emptyList();
+        } else {
+            if (type == null) {
+                list = queryRelation.list(sql, params);
+            } else {
+                list = queryRelation.getJdbc().queryList(sql, type, params);
+            }
+        }
+        setCacheList(list, queryPageResults, newLimit, tupleResult.get5(), type == null);
+        return list;
+    }
+
+    private <E> SimplePaginationResults<E> pagination0(Class<E> type) {
+        Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>, Optional<Boolean>> tupleResult = preparePagination.apply(limit);
+        String sql = tupleResult.get0();
+        Limit newLimit = tupleResult.get3().orElse(null);
+        List<Serializable> paramList = tupleResult.get2();
+        Serializable[] oraginalParams = paramList.toArray(new Serializable[paramList.size()]);
+        Serializable[] params = oraginalParams;
+        paramList.add(0, tupleResult.get5()); // cache key
+        QueryPageResult queryPageResult = tupleResult.get4().orElse(null);
+        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(newLimit);
+        List<E> list = null;
+        if (newLimit != null) {
+            queryPageResult = queryPageResults(queryPageResult, paramList);
+            list = getCacheList(queryPageResult, limit);
+            if (list == null) {
+                SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql,
+                    newLimit.getOffset(), newLimit.getLimit(), params);
+                sql = pageQuery.getSql();
+                params = pageQuery.getParams();
+                if (!tupleResult.get7().isPresent()) {
+                    list = Collections.emptyList();
+                } else {
+                    if (type == null) {
+                        list = queryRelation.list(sql, params);
+                    } else {
+                        list = queryRelation.getJdbc().queryList(sql, type, params);
+                    }
+                }
+            }
+            pagination.setPageResults(list);
+        } else {
+            if (!tupleResult.get7().isPresent()) {
+                list = Collections.emptyList();
+            } else {
+                list = queryRelation.list(sql, params);
+            }
+            pagination.setPageResults(list);
+        }
+
+        queryPageResult = setCacheList(list, queryPageResult, limit, tupleResult.get6(), type == null);
+        //        if (queryPageResultCache != null && newLimit != null) {
+        //            if (queryRelation.getConfig().isPagingOptimization()) { // cache id
+        //                queryPageResults = Lang.ifNull(queryPageResults, new QueryPageResults());
+        //                if (list.isEmpty()) {
+        //                    queryPageResult = new QueryPageResult<>(limit);
+        //                } else {
+        //                    queryPageResult = new QueryPageResult<>(limit, (Number) tupleResult.get6().apply(list.get(0)),
+        //                        (Number) tupleResult.get6().apply(list.get(list.size() - 1)));
+        //                }
+        //                queryPageResults.addQueryPageResult(queryPageResult);
+        //            }
+        //            if (queryRelation.getConfig().isCachePageResults()) { // cache enable
+        //                queryPageResults = Lang.ifNull(queryPageResults, new QueryPageResults());
+        //                if (queryPageResult == null) {
+        //                    queryPageResult = new QueryPageResult<>(list);
+        //                } else {
+        //                    queryPageResult.setList(list);
+        //                }
+        //                queryPageResults.addQueryPageResult(queryPageResult);
+        //            }
+        //        }
+        if (newLimit != null) {
+            Long total = getTotal(queryPageResult, paramList);
+            if (total == null) {
+                total = queryRelation.getJdbc().queryLong(tupleResult.get1(), oraginalParams);
+            } else {
+                LOGGER.debug("pagination count result [{}] found in cache", total);
+            }
+            pagination.setTotal(total);
+
+            setTotal(queryPageResult, paramList, pagination);
+        } else {
+            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
+            pagination.setTotal(list.size());
+        }
+        return pagination;
+    }
+
+    private <E> List<E> getCacheList(QueryPageResult queryPageResult, Limit limit) {
+        if (queryRelation.getConfig().isCachePageResults() && queryPageResult != null) {
+            return queryPageResult.getPageList(limit.getOffset());
+            // 不用下面这样，在外面调用前就先尝试获取缓存了
+            //            if (queryPageResults == null && queryPageResultCache != null) {
+            //                queryPageResults = queryPageResultCache.get(paramList);
+            //            }
+        }
+        return null;
+    }
+
+    private <E> QueryPageResult setCacheList(List<E> list, QueryPageResult queryPageResult, Limit limit,
+        Function<Object, Serializable> getId, boolean entityList) {
+        if (queryPageResultCache != null && limit != null) {
+            if (queryRelation.getConfig().isPagingOptimization()) { // cache id
+                queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
+                PageInfo pageInfo = null;
+                if (list.isEmpty() || !entityList) {
+                    pageInfo = new PageInfo(limit);
+                } else {
+                    pageInfo = new PageInfo(limit, (Number) getId.apply(list.get(0)),
+                        (Number) getId.apply(list.get(list.size() - 1)));
+                }
+                queryPageResult.addQueryPageResult(pageInfo);
+            }
+            if (queryRelation.getConfig().isCachePageResults()) { // cache enable
+                queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
+                queryPageResult.addPageList(limit.getOffset(), list);
+            }
+        }
+        return queryPageResult;
+    }
+
+    private Long getTotal(QueryPageResult queryPageResult, List<Serializable> sqlAndParamsList) {
+        if (queryRelation.getConfig().isCachePageCount()) {
+            queryPageResult = queryPageResults(queryPageResult, sqlAndParamsList);
+            if (queryPageResult != null) {
+                return queryPageResult.getTotal();
+            }
+        }
+        return null;
+    }
+
+    private <E> void setTotal(QueryPageResult queryPageResult, List<Serializable> sqlAndParamsList,
+        SimplePaginationResults<E> pagination) {
+        if (queryRelation.getConfig().isCachePageCount() && queryPageResultCache != null) {
+            if (queryPageResult == null) {
+                queryPageResult = new QueryPageResult(pagination.getTotal());
+            } else {
+                queryPageResult.setTotal(pagination.getTotal());
+            }
+            queryPageResultCache.put(sqlAndParamsList, queryPageResult);
+        }
+    }
+
+    private QueryPageResult queryPageResults(QueryPageResult queryPageResults, List<Serializable> sqlAndParamsList) {
+        if (queryPageResults == null && queryPageResultCache != null) {
+            return queryPageResultCache.get(sqlAndParamsList);
+        }
+        return queryPageResults;
+    }
+
 }

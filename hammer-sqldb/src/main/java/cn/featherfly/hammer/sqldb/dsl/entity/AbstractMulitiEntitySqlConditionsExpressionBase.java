@@ -150,7 +150,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     , ConditionConfigureExpression<C, C2> {
 
     /** The factory. */
-    protected JdbcMappingFactory factory;
+    protected final JdbcMappingFactory factory;
 
     /** The alias manager. */
     protected AliasManager aliasManager;
@@ -162,7 +162,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     protected String tableAlias;
 
     /** The entity sql relation. */
-    protected ER entityRelation;
+    protected final ER entityRelation;
 
     /** The index. */
     protected int index;

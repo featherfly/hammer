@@ -27,6 +27,7 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePage;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
@@ -209,6 +210,38 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void fetchOneProperty_Retrun_Entity() {
+        String name = "yufei";
+        User user = query.find(User.class).fetch(User::getUsername).where().eq(User::getUsername, name).single();
+        assertEquals(user.getUsername(), name);
+
+        user = query.find(User.class).fetch(User::getUsername).where().eq(User::getUsername, name).unique();
+        assertEquals(user.getUsername(), name);
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        List<User> users = query.find(User.class).limit(2).list();
+        Integer[] ids = users.stream().map(User::getId).toArray(n -> new Integer[n]);
+        List<User> findUsers = query.find(User.class).fetch(User::getUsername).where().in(User::getId, ids).list();
+        Lang.each(findUsers, (e, i) -> {
+            assertEquals(e.getUsername(), users.get(i).getUsername());
+        });
+
+        findUsers = query.find(User.class).fetch(User::getUsername).where().in(User::getId, ids).limit(2).list();
+        assertEquals(findUsers.size(), 2);
+        Lang.each(findUsers, (e, i) -> {
+            assertEquals(e.getUsername(), users.get(i).getUsername());
+        });
+
+        PaginationResults<User> userPage = query.find(User.class).fetch(User::getUsername).where().in(User::getId, ids)
+            .limit(2).pagination();
+        assertEquals(userPage.getSize(), 2);
+        Lang.each(userPage.getPageResults(), (e, i) -> {
+            assertEquals(e.getUsername(), users.get(i).getUsername());
+        });
+    }
+
+    @Test
     void fetchOneProperty() {
         String name = "yufei";
         String username = query.find(User.class).fetch(User::getUsername).where().eq(User::getUsername, name).value();
@@ -221,6 +254,19 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         List<String> usernames = query.find(User.class).fetch(User::getUsername).where().in(User::getId, ids)
             .valueList();
         Lang.each(usernames, (e, i) -> {
+            assertEquals(e, users.get(i).getUsername());
+        });
+
+        usernames = query.find(User.class).fetch(User::getUsername).where().in(User::getId, ids).limit(2).valueList();
+        assertEquals(usernames.size(), 2);
+        Lang.each(usernames, (e, i) -> {
+            assertEquals(e, users.get(i).getUsername());
+        });
+
+        PaginationResults<String> userPage = query.find(User.class).fetch(User::getUsername).where()
+            .in(User::getId, ids).limit(2).valuePagination();
+        assertEquals(userPage.getSize(), 2);
+        Lang.each(userPage.getPageResults(), (e, i) -> {
             assertEquals(e, users.get(i).getUsername());
         });
     }

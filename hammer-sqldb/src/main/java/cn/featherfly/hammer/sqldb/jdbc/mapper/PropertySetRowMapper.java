@@ -91,13 +91,15 @@ public class PropertySetRowMapper<T> implements RowMapper<T> {
 
         int index = 1;
         MappingDebugMessage mappingDebugMessage = logger.isDebugEnabled()
-            ? mappingDebugMessage = new MappingDebugMessage(logger.isDebugEnabled())
+            ? new MappingDebugMessage(logger.isDebugEnabled())
             : null;
         for (Tuple2<BiConsumer<T, Object>, JavaTypeSqlTypeOperator<Object>> tuple : fetchProperties) {
             //            if (logger.isDebugEnabled() && rowNumber == 0) {
-            //                mappingDebugMessage.debug(m -> m.addMapping(tuple.getRepositoryFieldName(), tuple.getPropertyFullName(),
-            //                    tuple.getPropertyFullName(), tuple.getPropertyType().getName()));
+            //                mappingDebugMessage
+            //                    .debug(m -> m.addMapping(tuple.get1().getRepositoryFieldName(), tuple.get1().getPropertyFullName(),
+            //                        tuple.get1().getPropertyFullName(), tuple.get1().getPropertyType().getName()));
             //            }
+            //
             Object value = tuple.get1().get(resultSet, index);
             tuple.get0().accept(mappedObject, value);
             index++;

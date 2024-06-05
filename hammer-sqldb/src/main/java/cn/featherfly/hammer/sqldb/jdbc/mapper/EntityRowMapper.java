@@ -157,7 +157,7 @@ public class EntityRowMapper<T> implements RowMapper<T> {
 
         int columnIndex = columnStart.get();
         MappingDebugMessage mappingDebugMessage = logger.isDebugEnabled()
-            ? mappingDebugMessage = new MappingDebugMessage(logger.isDebugEnabled())
+            ? new MappingDebugMessage(logger.isDebugEnabled())
             : null;
         for (Tuple2<BiConsumer<T, Serializable>, JdbcPropertyMapping> tuple : fetchProperties) {
             if (logger.isDebugEnabled() && rowNumber == 0) {

@@ -84,8 +84,8 @@ public class Appconfig extends JdbcTestBase {
         TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
             .basePackages(basePackages).config(hammerConfig.getTemplateConfig()).build();
 
-        SqldbHammerImpl hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory,
-            hammerConfig);
+        SqldbHammerImpl hammer = SqldbHammerImpl
+            .builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
         return hammer;
     }
 

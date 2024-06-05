@@ -3,7 +3,6 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -25,7 +24,6 @@ import cn.featherfly.common.repository.SimpleExecution;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
@@ -35,6 +33,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryValueLimitExecuto
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.AbstractMulitiEntitySqlConditionsGroupExpressionBase;
+import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryConditionGroupQuery;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
@@ -73,6 +72,8 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     /** The hammer config. */
     protected final HammerConfig hammerConfig;
 
+    private final EntitySqlQueryConditionGroupQuery<E> entitySqlQueryConditionGroupQuery;
+
     /**
      * Instantiates a new abstract entity sql condition group expression.
      *
@@ -90,9 +91,11 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
         super(parent, factory, queryRelation);
         this.sqlPageFactory = sqlPageFactory;
         this.valueType = valueType;
-        queryType = (Class<E>) queryRelation.getEntityRelationTuple().get0().get().getClassMapping().getType();
+        queryType = (Class<E>) queryRelation.getEntityRelation(0).getClassMapping().getType();
         sortBuilder = new SqlSortBuilder(dialect, queryRelation.getEntityRelation(0).getTableAlias());
         this.hammerConfig = hammerConfig;
+        entitySqlQueryConditionGroupQuery = new EntitySqlQueryConditionGroupQuery<>(this, sqlPageFactory,
+            entityRelation, hammerConfig.getCacheConfig().getQueryPageResultCache());
     }
 
     /**
@@ -132,6 +135,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     @Override
     public EntityQueryValueLimitExecutor<E, V> limit(Limit limit) {
         this.limit = limit;
+        entitySqlQueryConditionGroupQuery.setLimit(limit);
         return this;
     }
 
@@ -149,10 +153,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public List<E> list() {
-        Execution execution = getExecution();
-        // IMPLSOON 缓存列表没有处理
-        // FIXME prepareList(limit)  process limit if (limit != null)
-        return entityRelation.getJdbc().queryList(execution.getExecution(), queryType, execution.getParams());
+        return entitySqlQueryConditionGroupQuery.list();
     }
 
     /**
@@ -160,41 +161,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public PaginationResults<E> pagination() {
-        Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>, Optional<Boolean>> tupleResult = getRoot().preparePagination(limit);
-        String sql = tupleResult.get0();
-        String countSql = tupleResult.get1();
-        Serializable[] params = Lang.toArray(tupleResult.get2(), Serializable.class);
-        Limit newLimit = tupleResult.get3().orElse(null);
-        SimplePaginationResults<E> pagination = null;
-
-        // IMPLSOON 缓存列表没有处理
-
-        if (newLimit != null) {
-            pagination = new SimplePaginationResults<>(newLimit);
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, newLimit.getOffset(),
-                newLimit.getLimit(), params);
-            List<E> list = null;
-            if (!tupleResult.get7().isPresent()) {
-                list = Collections.emptyList();
-            } else {
-                list = entityRelation.getJdbc().queryList(pageQuery.getSql(), queryType, pageQuery.getParams());
-            }
-            pagination.setPageResults(list);
-            int total = entityRelation.getJdbc().queryInt(countSql, params);
-            pagination.setTotal(total);
-        } else {
-            List<E> list = null;
-            if (!tupleResult.get7().isPresent()) {
-                list = Collections.emptyList();
-            } else {
-                list = entityRelation.getJdbc().queryList(sql, queryType, params);
-            }
-            pagination = new SimplePaginationResults<>(0, list.size());
-            pagination.setPageResults(list);
-            pagination.setTotal(list.size());
-        }
-        return pagination;
+        return entitySqlQueryConditionGroupQuery.pagination();
     }
 
     /**
@@ -202,8 +169,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public E single() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().querySingle(execution.getExecution(), queryType, execution.getParams());
+        return entitySqlQueryConditionGroupQuery.single();
     }
 
     /**
@@ -211,40 +177,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public E unique() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryUnique(execution.getExecution(), queryType, execution.getParams());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PaginationResults<V> valuePagination() {
-        Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
-            Function<Object, Serializable>, Optional<Boolean>> tupleResult = getRoot().preparePagination(limit);
-        String sql = tupleResult.get0();
-        String countSql = tupleResult.get1();
-        Serializable[] params = Lang.toArray(tupleResult.get2(), Serializable.class);
-        Limit limit = tupleResult.get3().orElse(null);
-        SimplePaginationResults<V> pagination = null;
-
-        // IMPLSOON 缓存列表没有处理
-
-        if (limit != null) {
-            pagination = new SimplePaginationResults<>(limit);
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
-                limit.getLimit(), params);
-            List<V> list = entityRelation.getJdbc().queryList(pageQuery.getSql(), valueType, pageQuery.getParams());
-            pagination.setPageResults(list);
-            int total = entityRelation.getJdbc().queryInt(countSql, params);
-            pagination.setTotal(total);
-        } else {
-            List<V> list = entityRelation.getJdbc().queryList(sql, valueType, params);
-            pagination = new SimplePaginationResults<>(0, list.size());
-            pagination.setPageResults(list);
-            pagination.setTotal(list.size());
-        }
-        return pagination;
+        return entitySqlQueryConditionGroupQuery.unique();
     }
 
     /**
@@ -252,8 +185,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public V value() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().querySingle(execution.getExecution(), valueType, execution.getParams());
+        return entitySqlQueryConditionGroupQuery.value(valueType);
     }
 
     /**
@@ -261,192 +193,16 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public List<V> valueList() {
-        Execution execution = getExecution();
-        return entityRelation.getJdbc().queryList(execution.getExecution(), valueType, execution.getParams());
+        return entitySqlQueryConditionGroupQuery.list(valueType);
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public String string() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryString(execution.getExecution(), execution.getParams());
-    //        //        String sql = getRoot().expression();
-    //        //        Object[] params = getRoot().getParamsArray();
-    //        //        if (limit != null) {
-    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //        //                    params);
-    //        //            sql = pageQuery.getSql();
-    //        //            params = pageQuery.getParams();
-    //        //        }
-    //        //        return entityRelation.getJdbc().queryString(sql, params);
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Date date() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Date.class, execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public LocalDate localDate() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDate.class, execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public LocalDateTime localDateTime() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalDateTime.class,
-    //                execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public LocalTime localTime() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), LocalTime.class, execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Timestamp timestamp() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Timestamp.class, execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public byte[] bytes() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryBytes(execution.getExecution(), execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Clob clob() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Clob.class, execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public Blob blob() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), Blob.class, execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public boolean bool() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryBool(execution.getExecution(), execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public byte byteValue() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryByte(execution.getExecution(), execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public short shortValue() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryShort(execution.getExecution(), execution.getParams());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public int intValue() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryInt(execution.getExecution(), execution.getParams());
-    //        //        String sql = getRoot().expression();
-    //        //        Object[] params = getRoot().getParamsArray();
-    //        //        if (limit != null) {
-    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //        //                    params);
-    //        //            sql = pageQuery.getSql();
-    //        //            params = pageQuery.getParams();
-    //        //        }
-    //        //        return entityRelation.getJdbc().queryInt(sql, params);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public long longValue() {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryLong(execution.getExecution(), execution.getParams());
-    //        //        String sql = getRoot().expression();
-    //        //        Object[] params = getRoot().getParamsArray();
-    //        //        if (limit != null) {
-    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //        //                    params);
-    //        //            sql = pageQuery.getSql();
-    //        //            params = pageQuery.getParams();
-    //        //        }
-    //        //        return entityRelation.getJdbc().queryLong(sql, params);
-    //    }
-    //
-    //    //    /**
-    //    //     * {@inheritDoc}
-    //    //     */
-    //    //    @Override
-    //    //    public <N extends Number> N number(Class<N> type) {
-    //    //        return value(type);
-    //    //        //        Execution execution = getExecution();
-    //    //        //        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
-    //    //
-    //    //        //        String sql = getRoot().expression();
-    //    //        //        Object[] params = getRoot().getParamsArray();
-    //    //        //        if (limit != null) {
-    //    //        //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //    //        //                    params);
-    //    //        //            sql = pageQuery.getSql();
-    //    //        //            params = pageQuery.getParams();
-    //    //        //        }
-    //    //        //        return entityRelation.getJdbc().queryValue(sql, type, params);
-    //    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> T value(Class<T> type) {
-    //        Execution execution = getExecution();
-    //        return entityRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
-    //    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PaginationResults<V> valuePagination() {
+        return entitySqlQueryConditionGroupQuery.pagination(valueType);
+    }
 
     // ****************************************************************************************************************
     // sort
