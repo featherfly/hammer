@@ -54,7 +54,8 @@ public class TimeReporter implements IReporter {
                 .valueOf(r1.getEndMillis() - r1.getStartMillis() - (r2.getEndMillis() - r2.getStartMillis()))
                 .intValue())
             .collect(Collectors.toList())) {
-            print.println(testType + ": " + result.getName() + " - Time taken: "
+
+            print.println(testType + ": " + result.getTestClass().getName() + "." + result.getName() + " - Time taken: "
                 + (result.getEndMillis() - result.getStartMillis()) + " ms");
         }
         if (!testResults.isEmpty()) {

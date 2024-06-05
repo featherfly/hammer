@@ -40,7 +40,7 @@ public class RoleMapperTest extends JdbcTestBase {
         configFactory = TplConfigFactoryImpl.builder() //
             .prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages).config(hammerConfig.getTemplateConfig())
             .build();
-        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
+        Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
         roleMapper = mapperFactory.newInstance(RoleMapper.class, hammer, hammerConfig);
     }
 

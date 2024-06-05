@@ -96,7 +96,8 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
         // regist(entityClass, Mapper) 的entity类型是用于分组的
         sqlTypeMappingManager.regist(new ObjectToJsonMapper<>(Content2.class));
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
+        hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig)
+            .build();
     }
 
     @Test

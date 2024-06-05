@@ -51,7 +51,8 @@ public class HammerJdbcMappingTypeTest2 extends JdbcTestBase {
         contentProperty = bd.getBeanProperty("content");
         sqlTypeMappingManager.regist(type, new ArrayToStringSqlTypeMapper());
 
-        hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig);
+        hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig)
+            .build();
     }
 
     @Test

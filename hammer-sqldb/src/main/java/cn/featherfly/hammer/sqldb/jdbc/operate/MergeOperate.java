@@ -18,7 +18,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @since 0.1.0
  */
 public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
-
+    // IMPLSOON 实现批量更新
     /**
      * 使用给定数据源以及给定对象生成更新操作.
      *

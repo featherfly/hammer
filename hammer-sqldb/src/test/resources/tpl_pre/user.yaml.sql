@@ -40,3 +40,5 @@ selectConditions2: |
     /*>where*/
 queryUser: >
     select /*<<prop*/* from /*<<wrap*/user where age > :age
+queryUserId: >
+    select /*<<wrap*/id from /*<<wrap*/user where age > :age

@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.query;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -12,12 +13,14 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -226,5 +229,18 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
     public List<V> valueList() {
         return new EntitySqlQueryValueExpression<E, V>(factory, hammerConfig, sqlPageFactory, queryRelation, valueType)
             .valueList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityQueryValueExpression<E, V, EntityQueryValueConditionGroup<E, V>,
+        EntityQueryValueConditionGroupLogic<E, V>, EntityQueryValueSortExpression<E, V>> configure(
+            Consumer<DslQueryConfig> configure) {
+        if (configure != null) {
+            configure.accept(queryRelation.getConfig());
+        }
+        return this;
     }
 }
