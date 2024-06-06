@@ -21,7 +21,7 @@ import com.speedment.common.tuple.Tuple6;
 import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.lang.AutoCloseableIterable;
-import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
@@ -32,7 +32,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
  *
  * @author zhongj
  */
-public class JdbcExecutor implements ExecutionExecutor<String> {
+public class JdbcExecutor implements ExecutionExecutorEx<String> {
 
     private final Jdbc jdbc;
 
@@ -101,6 +101,14 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
     @Override
     public double doubleValue(String execution, Map<String, Serializable> params) {
         return jdbc.queryDouble(execution, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V> V value(String execution, Map<String, Serializable> params) {
+        return jdbc.queryValue(execution, params);
     }
 
     /**
@@ -625,6 +633,14 @@ public class JdbcExecutor implements ExecutionExecutor<String> {
     @Override
     public double doubleValue(String execution, Serializable... params) {
         return jdbc.queryLong(execution, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V> V value(String execution, Serializable... params) {
+        return jdbc.queryValue(execution, params);
     }
 
     /**

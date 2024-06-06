@@ -13,8 +13,10 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
-import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.lang.AutoCloseableIterable;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.Params;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -24,7 +26,7 @@ import cn.featherfly.common.structure.page.PaginationResults;
  *
  * @author zhongj
  */
-public interface TplExecutor extends ExecutionExecutor<TplExecuteId> {
+public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
     /**
      * execute.
      *
@@ -80,6 +82,16 @@ public interface TplExecutor extends ExecutionExecutor<TplExecuteId> {
      * @return double
      */
     double doubleValue(String tplExecuteId, Map<String, Serializable> params);
+
+    /**
+     * query value, use query str in template find with executeId.
+     *
+     * @param <E> the element type
+     * @param tplExecuteId tpl execute id
+     * @param params params
+     * @return value
+     */
+    <E> E value(String tplExecuteId, Map<String, Serializable> params);
 
     /**
      * query value, use query str in template find with executeId.
@@ -1380,6 +1392,125 @@ public interface TplExecutor extends ExecutionExecutor<TplExecuteId> {
         Limit limit = new Limit(page);
         return list(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
             prefixes, params, limit.getOffset(), limit.getLimit());
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params the params
+     * @return map list
+     */
+    AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params);
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param <T> the element type
+     * @param tplExecuteId the tpl execute id
+     * @param mappingType mapping type
+     * @param params the params
+     * @return entity list
+     */
+    <T> AutoCloseableIterable<T> each(String tplExecuteId, Class<T> mappingType, Map<String, Serializable> params);
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param <T> the element type
+     * @param tplExecuteId the tpl execute id
+     * @param rowMapper the row mapper
+     * @param params the params
+     * @return entity list
+     */
+    <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params);
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return map list
+     */
+    AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
+        int offset, int limit);
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param <T> the element type
+     * @param tplExecuteId the tpl execute id
+     * @param mappingType mapping type
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return entity list
+     */
+    <T> AutoCloseableIterable<T> each(String tplExecuteId, Class<T> mappingType, Map<String, Serializable> params,
+        int offset, int limit);
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param <T> the element type
+     * @param tplExecuteId the tpl execute id
+     * @param rowMapper the row mapper
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return entity list
+     */
+    <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params,
+        int offset, int limit);
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param <T> the element type
+     * @param tplExecuteId the tpl execute id
+     * @param mappingType mapping type
+     * @param params the params
+     * @param page the page
+     * @return entity list
+     */
+    default <T> AutoCloseableIterable<T> each(String tplExecuteId, Class<T> mappingType,
+        Map<String, Serializable> params, Page page) {
+        Limit limit = new Limit(page);
+        return each(tplExecuteId, mappingType, params, limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param <T> the element type
+     * @param tplExecuteId the tpl execute id
+     * @param rowMapper the row mapper
+     * @param params the params
+     * @param page the page
+     * @return entity list
+     */
+    default <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper,
+        Map<String, Serializable> params, Page page) {
+        Limit limit = new Limit(page);
+        return each(tplExecuteId, rowMapper, params, limit.getOffset(), limit.getLimit());
+    }
+
+    /**
+     * query each, use query str in template find with executeId.
+     *
+     * @param tplExecuteId the tpl execute id
+     * @param params the params
+     * @param page the page
+     * @return map list
+     */
+    default AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
+        Page page) {
+        Limit limit = new Limit(page);
+        return each(tplExecuteId, params, limit.getOffset(), limit.getLimit());
     }
 
     // ----------------------------------------------------------------------------------------------------------------

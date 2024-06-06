@@ -686,6 +686,15 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
+    public void testValue() {
+        long i = executor.value("countUserInfo", new ChainMapImpl<>());
+        assertEquals(i, TestConstants.USER_INFO_INIT_ROWS);
+
+        i = executor.value(parser.parse("countUserInfo"), new ChainMapImpl<>());
+        assertEquals(i, TestConstants.USER_INFO_INIT_ROWS);
+    }
+
+    @Test
     public void testInParams() {
         int resultSize = 3;
 

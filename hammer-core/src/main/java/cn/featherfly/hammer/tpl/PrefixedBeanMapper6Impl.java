@@ -15,7 +15,7 @@ import java.util.Map;
 import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.lang.AutoCloseableIterable;
-import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper6;
 import cn.featherfly.common.structure.page.PaginationResults;
 
@@ -30,7 +30,7 @@ import cn.featherfly.common.structure.page.PaginationResults;
  * @param <T5> the generic type
  * @param <T6> the generic type
  */
-public class PrefixedBeanMapper6Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T2, T3, T4, T5, T6>
+public class PrefixedBeanMapper6Impl<E1 extends ExecutionExecutorEx<E2>, E2, T1, T2, T3, T4, T5, T6>
     extends AbstractPrefixEntityMapper<E1, E2, Object, Tuple6<String, String, String, String, String, String>>
     implements PrefixedBeanMapper6<T1, T2, T3, T4, T5, T6> {
 
