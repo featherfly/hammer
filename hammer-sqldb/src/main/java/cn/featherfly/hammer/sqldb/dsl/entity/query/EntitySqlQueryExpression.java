@@ -154,35 +154,65 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param dialect the dialect
      * @param limit the limit
      * @return the tuple 6
+     *         <ol>
+     *         <li>query sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function&lt;Object, Object&gt; getId value
+     *         <li>Optional&lt;Boolean&gt; query page number gt max page number
+     *         </ol>
      */
     static Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
         Function<Object, Serializable>, Optional<Boolean>> prepareList(HammerConfig hammerConfig,
             AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
             LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder,
             Dialect dialect, Limit limit) {
+        if (parent != null) {
+            // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
+            throw new SqldbHammerException("not root expression, only root expression can invoke this method");
+        }
 
-        if (parent == null) {
-            String select = null;
-            String selectSql = null;
+        String select = null;
 
-            String sort = sortBuilder.build();
+        String sort = sortBuilder.build();
+        List<Serializable> params = exp.getParams();
+        if (limit == null) {
+            select = selectSql(dialect, queryRelation, condition, sort);
+            return Tuples.of(select, params, Optional.ofNullable(limit), Optional.ofNullable(null), select,
+                queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                Optional.of(true));
+        }
 
-            Cache<Object,
-                QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
-            QueryPageResult queryPageResult = null;
-            List<Serializable> params = exp.getParams();
+        String selectSql = null;
+        QueryPageResult queryPageResult = null;
 
-            if (queryPageResultCache != null
-                && queryRelation.getEntityRelation(0).getClassMapping().isPrimaryKeyOrdered()
+        Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
+
+        if (queryPageResultCache != null) {
+            List<Serializable> key = new ArrayList<>(params);
+            // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
+            selectSql = expression(condition, parent, queryRelation, sortBuilder, dialect);
+            key.add(0, selectSql);
+            queryPageResult = queryPageResultCache.get(key);
+
+            if (queryPageResult != null && queryPageResult.getTotal() != null && queryPageResult.getTotal()
+                / limit.getLimit() < (limit.getOffset() + limit.getLimit()) / limit.getLimit()) {
+                // gt(>) max page number
+                return Tuples.of(selectSql, params, Optional.ofNullable(limit), Optional.of(queryPageResult), selectSql,
+                    queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0)
+                        .getGetter(),
+                    Optional.empty());
+            }
+
+            if (queryRelation.getEntityRelation(0).getClassMapping().isPrimaryKeyOrdered()
                 && StringUtils.isBlank(sort)) {
-                List<Serializable> key = new ArrayList<>(params);
-                // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
-                selectSql = expression(condition, parent, queryRelation, sortBuilder, dialect);
-                key.add(0, selectSql);
-                queryPageResult = queryPageResultCache.get(key);
 
-                if (queryPageResult != null
-                    && (queryPageResult.getLimit() == null || queryPageResult.getLimit() == limit.getLimit())) {
+                if (queryPageResult == null) { // query first time
+                    // new QueryPageResult for Follow Up, then only need decide queryPageResult is null
+                    queryPageResult = new QueryPageResult();
+                } else if (queryPageResult.getLimit() == null || queryPageResult.getLimit() == limit.getLimit()) {
                     Tuple3<String, Limit, Optional<Boolean>> conditionAndLimit = processLimit(queryRelation, condition,
                         limit, queryPageResult, dialect);
 
@@ -194,25 +224,12 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
                         conditionAndLimit.get2());
                 }
             }
-
-            if (selectSql == null) {
-                select = queryRelation.buildSelectSql();
-            } else {
-                select = selectSql;
-            }
-            if (Lang.isEmpty(condition)) {
-                select = queryRelation.buildSelectSql() + Chars.SPACE + sort;
-            } else {
-                select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
-                    + condition + Chars.SPACE + sort;
-            }
-            return Tuples.of(select, params, Optional.ofNullable(limit), Optional.ofNullable(queryPageResult), select,
-                queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
-                Optional.of(true));
-        } else {
-            // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
-            throw new SqldbHammerException("not root expression, only root expression can invoke this method");
         }
+
+        select = Lang.ifNull(selectSql, () -> selectSql(dialect, queryRelation, condition, sort));
+        return Tuples.of(select, params, Optional.ofNullable(limit), Optional.ofNullable(queryPageResult), select,
+            queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+            Optional.of(true));
     }
 
     /**
@@ -225,83 +242,88 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param dialect the dialect
      * @param limit the limit
      * @return the tuple 7
+     *         <ol>
+     *         <li>query sql
+     *         <li>count sql
+     *         <li>query params
+     *         <li>changed Limit if necessary
+     *         <li>QueryPageResult may be null
+     *         <li>orginal query sql
+     *         <li>Function&lt;Object, Object&gt; getId value
+     *         <li>Optional&lt;Boolean&gt; query page number gt max page number
+     *         </ol>
      */
     static Tuple8<String, String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
         Function<Object, Serializable>, Optional<Boolean>> preparePage(HammerConfig hammerConfig,
             AbstractMulitiEntitySqlConditionsGroupExpressionBase<?, ?, ?, ?, ?, ?> exp, String condition,
             LogicExpression<?, ?> parent, EntitySqlQueryRelation queryRelation, SortBuilder sortBuilder,
             Dialect dialect, Limit limit) {
-        if (parent == null) {
-            String select = null;
-            String selectCount = null;
-            String selectSql = null;
-            QueryPageResult queryPageResult = null;
-
-            String sort = sortBuilder.build();
-            List<Serializable> params = exp.getParams();
-
-            if (queryRelation.getConfig().isPagingOptimization() && limit != null) {
-                Cache<Object,
-                    QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
-
-                if (queryPageResultCache != null
-                    && queryRelation.getEntityRelation(0).getClassMapping().isPrimaryKeyOrdered()
-                    && StringUtils.isBlank(sort)) {
-                    List<Object> key = new ArrayList<>(params);
-                    // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
-                    selectSql = expression(condition, parent, queryRelation, sortBuilder, dialect);
-                    key.add(0, selectSql);
-                    queryPageResult = queryPageResultCache.get(key);
-
-                    if (queryPageResult == null) { // query first time
-                        // new QueryPageResult for Follow Up, then only need decide queryPageResult is null
-                        queryPageResult = new QueryPageResult();
-                    } else if (queryPageResult.getLimit() != null && queryPageResult.getLimit() == limit.getLimit()) {
-                        Tuple3<String, Limit, Optional<Boolean>> conditionAndLimit = processLimit(queryRelation,
-                            condition, limit, queryPageResult, dialect);
-
-                        select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where()
-                            + Chars.SPACE + conditionAndLimit.get0() + Chars.SPACE + sort;
-                        if (Lang.isEmpty(condition)) {
-                            selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE + sort;
-                        } else {
-                            selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE
-                                + dialect.getKeywords().where() + Chars.SPACE + condition + Chars.SPACE + sort;
-                        }
-                        return Tuples.of(select, selectCount, params, Optional.ofNullable(conditionAndLimit.get1()),
-                            Optional.of(queryPageResult), selectSql, queryRelation.getEntityRelation(0)
-                                .getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
-                            conditionAndLimit.get2());
-                    }
-                }
-            }
-
-            if (selectSql == null) {
-                if (Lang.isEmpty(condition)) {
-                    select = queryRelation.buildSelectSql() + Chars.SPACE + sort;
-                } else {
-                    select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
-                        + condition + Chars.SPACE + sort;
-                }
-            } else {
-                select = selectSql;
-            }
-            if (limit != null) {
-                if (Lang.isEmpty(condition)) {
-                    selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE + sort;
-                } else {
-                    selectCount = queryRelation.buildSelectCountSql() + Chars.SPACE + dialect.getKeywords().where()
-                        + Chars.SPACE + condition + Chars.SPACE + sort;
-                }
-            }
-            return Tuples.of(select, selectCount, params, Optional.ofNullable(limit),
-                Optional.ofNullable(queryPageResult), select,
-                queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
-                Optional.of(true));
-        } else {
+        if (parent != null) {
             // ENHANCE 后续来把逻辑改为外部调用的都自己找到parent去调用，而属性结果的调用放到内部方法进行
             throw new SqldbHammerException("not root expression, only root expression can invoke this method");
         }
+        String sort = sortBuilder.build();
+        List<Serializable> params = exp.getParams();
+        String select = null;
+
+        if (limit == null) {
+            select = selectSql(dialect, queryRelation, condition, sort);
+            return Tuples.of(select, countSql(dialect, queryRelation, condition, sort), params,
+                Optional.ofNullable(limit), Optional.ofNullable(null), select,
+                queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                Optional.of(true));
+        }
+
+        String selectCount = null;
+        String selectSql = null;
+        QueryPageResult queryPageResult = null;
+
+        Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
+        if (queryPageResultCache != null) {
+            List<Object> key = new ArrayList<>(params);
+            // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
+            selectSql = expression(condition, parent, queryRelation, sortBuilder, dialect);
+            key.add(0, selectSql);
+            queryPageResult = queryPageResultCache.get(key);
+
+            if (queryPageResult != null && queryPageResult.getTotal() != null && queryPageResult.getTotal()
+                / limit.getLimit() < (limit.getOffset() + limit.getLimit()) / limit.getLimit()) {
+                // gt(>) max page number
+                return Tuples.of(selectSql, countSql(dialect, queryRelation, condition, sort), params,
+                    Optional.ofNullable(limit), Optional.of(queryPageResult), selectSql, queryRelation
+                        .getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                    Optional.empty());
+            }
+
+            if (queryRelation.getEntityRelation(0).getClassMapping().isPrimaryKeyOrdered()
+                && StringUtils.isBlank(sort)) {
+
+                if (queryPageResult == null) { // query first time
+                    // new QueryPageResult for Follow Up, then only need decide queryPageResult is null
+                    queryPageResult = new QueryPageResult();
+                } else if (queryPageResult.getLimit() != null && queryPageResult.getLimit() == limit.getLimit()) {
+                    Tuple3<String, Limit, Optional<Boolean>> conditionAndLimit = processLimit(queryRelation, condition,
+                        limit, queryPageResult, dialect);
+
+                    select = queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
+                        + conditionAndLimit.get0() + Chars.SPACE + sort;
+                    selectCount = countSql(dialect, queryRelation, condition, sort);
+                    return Tuples
+                        .of(select, selectCount, params, Optional.ofNullable(conditionAndLimit.get1()),
+                            Optional.of(queryPageResult), selectSql, queryRelation.getEntityRelation(0)
+                                .getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+                            conditionAndLimit.get2());
+                }
+            }
+        }
+
+        select = Lang.ifNull(selectSql, () -> selectSql(dialect, queryRelation, condition, sort));
+        selectCount = countSql(dialect, queryRelation, condition, sort);
+        return Tuples.of(select, selectCount, params, Optional.ofNullable(limit), Optional.ofNullable(queryPageResult),
+            select,
+            queryRelation.getEntityRelation(0).getClassMapping().getPrimaryKeyPropertyMappings().get(0).getGetter(),
+            Optional.of(true));
+
     }
 
     private static Tuple3<String, Limit, Optional<Boolean>> processLimit(EntitySqlQueryRelation queryRelation,
@@ -311,15 +333,6 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
         String idField = er.getClassMapping().getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName();
         PageInfo pageInfo = queryPageResult.getNearestQueryPageResult(limit);
 
-        if (queryPageResult.getTotal() != null && queryPageResult.getTotal()
-            / limit.getLimit() < (limit.getOffset() + limit.getLimit()) / limit.getLimit()) {
-            return Tuples.of(condition, limit, Optional.empty());
-            // ENHANCE 后续优化异常
-            //            throw new SqldbHammerException(
-            //                Strings.format("query results max page number {} < query limit page number {}",
-            //                    queryPageResult.getTotal() / limit.getLimit(),
-            //                    (limit.getOffset() + limit.getLimit()) / limit.getLimit()));
-        }
         if (pageInfo.getFirstId() == null) { // 未查出数据
             return Tuples.of(condition, limit, Optional.of(true));
         }
@@ -350,6 +363,26 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
                 + Lang.ifNotEmpty(condition, c -> Chars.SPACE + dialect.keywords().and() + Chars.SPACE + c);
             // 不需要更改limit
             return Tuples.of(pageCondition, limit, Optional.of(true));
+        }
+    }
+
+    private static String countSql(Dialect dialect, EntitySqlQueryRelation queryRelation, String condition,
+        String sort) {
+        if (Lang.isEmpty(condition)) {
+            return queryRelation.buildSelectCountSql() + Chars.SPACE + sort;
+        } else {
+            return queryRelation.buildSelectCountSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
+                + condition + Chars.SPACE + sort;
+        }
+    }
+
+    private static String selectSql(Dialect dialect, EntitySqlQueryRelation queryRelation, String condition,
+        String sort) {
+        if (Lang.isEmpty(condition)) {
+            return queryRelation.buildSelectSql() + Chars.SPACE + sort;
+        } else {
+            return queryRelation.buildSelectSql() + Chars.SPACE + dialect.getKeywords().where() + Chars.SPACE
+                + condition + Chars.SPACE + sort;
         }
     }
 }

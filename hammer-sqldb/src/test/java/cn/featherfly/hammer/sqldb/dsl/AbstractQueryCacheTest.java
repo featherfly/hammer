@@ -135,11 +135,16 @@ public abstract class AbstractQueryCacheTest extends JdbcTestBase {
 
     public abstract void queryPagination();
 
-    public abstract void tplQueryPagination_CountCache_PageListCache();
+    public abstract void queryList_OptimizationPage();
 
-    public abstract void tplQueryPagination_CountCache();
+    public abstract void queryList_PageListCache();
 
-    public abstract void tplQueryPagination();
+    public abstract void queryList_PageListCache_OptimizationPage();
+
+    public abstract void queryList_OptimizationPage_PageNumber_Gt_MaxPageNumber();
+
+    public abstract void queryList_OptimizationPage_Find_Empty();
+
 }
 
 class CacheProxy<K, V> implements Cache<K, V> {

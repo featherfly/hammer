@@ -173,18 +173,19 @@ public class HammerConfigImpl implements HammerConfig {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("rawtypes")
     @Override
-    public QueryConfig getQueryConfig() {
+    public QueryConfig<?> getQueryConfig() {
         return new QueryConfig() {
             @Override
-            public QueryConfig setCachePageResults(boolean cachePageResults) {
+            public QueryConfig<?> setCachePageResults(boolean cachePageResults) {
                 getDslConfig().getQueryConfig().setCachePageResults(cachePageResults);
                 getTemplateConfig().getQueryConfig().setCachePageResults(cachePageResults);
                 return this;
             }
 
             @Override
-            public QueryConfig setCachePageCount(boolean cachePageCount) {
+            public QueryConfig<?> setCachePageCount(boolean cachePageCount) {
                 getDslConfig().getQueryConfig().setCachePageCount(cachePageCount);
                 getTemplateConfig().getQueryConfig().setCachePageCount(cachePageCount);
                 return this;

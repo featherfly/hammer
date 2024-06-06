@@ -16,7 +16,7 @@ import cn.featherfly.hammer.config.QueryConfig;
  * @author zhongj
  */
 public interface DslQueryConfig
-    extends DslConfigBase<DslQueryConfig, QueryConditionConfig>, QueryConditionConfig, QueryConfig {
+    extends DslConfigBase<DslQueryConfig, QueryConditionConfig>, QueryConditionConfig, QueryConfig<DslQueryConfig> {
 
     /**
      * Sets the paging optimization.

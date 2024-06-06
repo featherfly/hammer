@@ -13,7 +13,7 @@ package cn.featherfly.hammer.config;
  *
  * @author zhongj
  */
-public interface QueryConfig {
+public interface QueryConfig<Q extends QueryConfig<Q>> {
 
     /**
      * Sets the cache page count.
@@ -21,7 +21,7 @@ public interface QueryConfig {
      * @param cachePageCount the cache page count
      * @return the query config
      */
-    QueryConfig setCachePageCount(boolean cachePageCount);
+    Q setCachePageCount(boolean cachePageCount);
 
     /**
      * Sets the cache page results.
@@ -29,5 +29,5 @@ public interface QueryConfig {
      * @param cachePageResults the cache page results
      * @return the query config
      */
-    QueryConfig setCachePageResults(boolean cachePageResults);
+    Q setCachePageResults(boolean cachePageResults);
 }
