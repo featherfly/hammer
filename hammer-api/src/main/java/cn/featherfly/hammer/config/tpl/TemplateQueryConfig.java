@@ -15,7 +15,7 @@ import cn.featherfly.hammer.config.QueryConfig;
  *
  * @author zhongj
  */
-public interface TemplateQueryConfig extends QueryConfig {
+public interface TemplateQueryConfig extends QueryConfig<TemplateQueryConfig> {
 
     /**
      * get cachePageResults value

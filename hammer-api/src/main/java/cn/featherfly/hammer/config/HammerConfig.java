@@ -78,5 +78,5 @@ public interface HammerConfig {
      *
      * @return the query config
      */
-    QueryConfig getQueryConfig();
+    QueryConfig<?> getQueryConfig();
 }

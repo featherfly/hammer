@@ -8,8 +8,6 @@
  */
 package cn.featherfly.hammer.config.tpl;
 
-import cn.featherfly.hammer.config.QueryConfig;
-
 /**
  * TemplateQueryConfigImpl.
  *
@@ -25,7 +23,7 @@ public class TemplateQueryConfigImpl implements TemplateQueryConfig {
      * {@inheritDoc}
      */
     @Override
-    public QueryConfig setCachePageCount(boolean cachePageCount) {
+    public TemplateQueryConfig setCachePageCount(boolean cachePageCount) {
         this.cachePageCount = cachePageCount;
         return this;
     }
@@ -34,7 +32,7 @@ public class TemplateQueryConfigImpl implements TemplateQueryConfig {
      * {@inheritDoc}
      */
     @Override
-    public QueryConfig setCachePageResults(boolean cachePageResults) {
+    public TemplateQueryConfig setCachePageResults(boolean cachePageResults) {
         this.cachePageResults = cachePageResults;
         return this;
     }

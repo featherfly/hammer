@@ -13,7 +13,6 @@ import com.speedment.common.tuple.Tuple8;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
@@ -50,8 +49,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     implements EntityQueryConditionGroupExpression<E1, C, L, EntityQuerySortExpression<E1>>,
     EntityQueryConditionGroupLogicExpression<E1, C, L, EntityQuerySortExpression<E1>>, EntityQuerySortExpression<E1>,
     EntityQuerySortedExpression<E1> {
-
-    //    private Limit limit;
 
     private SqlSortBuilder sortBuilder;
 
@@ -115,7 +112,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
 
     @Override
     public EntityQueryLimitExecutor<E1> limit(Limit limit) {
-        //        this.limit = limit;
         entitySqlQueryConditionGroupQuery.setLimit(limit);
         return this;
     }
@@ -161,88 +157,6 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
         return entitySqlQueryConditionGroupQuery.unique();
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public List<E> list() {
-    //        String sql = getRoot().expression();
-    //        Object[] params = getRoot().getParamsArray();
-    //        if (limit != null) {
-    //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //                    params);
-    //            sql = pageQuery.getSql();
-    //            params = pageQuery.getParams();
-    //        }
-    //        return entityRelation.getJdbc().query(sql, classMapping.getType(), params);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public PaginationResults<E> pagination() {
-    //        String sql = getRoot().expression();
-    //        String countSql = SqlUtils.convertSelectToCount(sql);
-    //        Object[] params = getRoot().getParamsArray();
-    //        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
-    //        if (limit != null) {
-    //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //                    params);
-    //            List<E> list = entityRelation.getJdbc().query(pageQuery.getSql(), classMapping.getType(),
-    //                    pageQuery.getParams());
-    //            //            @SuppressWarnings("unchecked")
-    //            //            List<E> list = (List<E>) entitySqlRelation.getJdbc().query(dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit()),
-    //            //                    classMapping.getType(),
-    //            //                    dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit()));
-    //            pagination.setPageResults(list);
-    //            int total = entityRelation.getJdbc().queryInt(countSql, params);
-    //            pagination.setTotal(total);
-    //        } else {
-    //            @SuppressWarnings("unchecked")
-    //            List<E> list = (List<E>) entityRelation.getJdbc().query(sql, params, classMapping.getType());
-    //            pagination.setPageResults(list);
-    //            pagination.setTotal(list.size());
-    //        }
-    //        return pagination;
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public E single() {
-    //        String sql = getRoot().expression();
-    //        Object[] params = getRoot().getParamsArray();
-    //        if (limit != null) {
-    //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //                    params);
-    //            sql = pageQuery.getSql();
-    //            params = pageQuery.getParams();
-    //            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-    //            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
-    //        }
-    //        return entityRelation.getJdbc().querySingle(sql, classMapping.getType(), params);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public E unique() {
-    //        String sql = getRoot().expression();
-    //        Object[] params = getRoot().getParamsArray();
-    //        if (limit != null) {
-    //            SqlPageQuery<Object[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(), limit.getLimit(),
-    //                    params);
-    //            sql = pageQuery.getSql();
-    //            params = pageQuery.getParams();
-    //            //            sql = dialect.getPaginationSql(sql, limit.getOffset(), limit.getLimit());
-    //            //            params = dialect.getPaginationSqlParameter(params, limit.getOffset(), limit.getLimit());
-    //        }
-    //        return entityRelation.getJdbc().queryUnique(sql, classMapping.getType(), params);
-    //    }
-
     // ****************************************************************************************************************
     //	sort
     // ****************************************************************************************************************
@@ -258,10 +172,9 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      * @param names the names
      * @return the entity query sorted expression
      */
-    //        @Override
     public EntityQuerySortedExpression<E1> asc(String... names) {
-        // ENHANCE 后续来把ClassMappingUtils.getColumnName去掉，这里已经是确定的了
-        getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        //        getRootSortBuilder().asc(tableAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().asc(tableAlias, () -> names);
         return this;
     }
 
@@ -271,9 +184,8 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      * @param names the names
      * @return the entity query sorted expression
      */
-    //        @Override
     public EntityQuerySortedExpression<E1> asc(List<String> names) {
-        getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().asc(names);
         return this;
     }
 
@@ -290,38 +202,28 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     @Override
     public EntityQuerySortedExpression<E1> asc(@SuppressWarnings("unchecked") SerializableFunction<E1, ?>... names) {
-        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
-            .toArray(value -> new String[value]);
-        return asc(nameArray);
+        return asc(Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName).toArray(value -> new String[value]));
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
     /**
      * Desc.
      *
      * @param names the names
      * @return the entity query sorted expression
      */
-    //    @Override
     public EntityQuerySortedExpression<E1> desc(String... names) {
-        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().desc(names);
         return this;
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
     /**
      * Desc.
      *
      * @param names the names
      * @return the entity query sorted expression
      */
-    //    @Override
     public EntityQuerySortedExpression<E1> desc(List<String> names) {
-        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().desc(names);
         return this;
     }
 

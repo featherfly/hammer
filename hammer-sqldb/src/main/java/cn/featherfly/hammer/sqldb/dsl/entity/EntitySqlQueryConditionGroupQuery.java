@@ -258,12 +258,12 @@ public class EntitySqlQueryConditionGroupQuery<R> {
         List<Serializable> paramList = tupleResult.get1();
         Serializable[] params = paramList.toArray(new Serializable[paramList.size()]);
         paramList.add(0, tupleResult.get4());
-        QueryPageResult queryPageResults = tupleResult.get3().orElse(null);
+        QueryPageResult queryPageResult = tupleResult.get3().orElse(null);
 
         List<E> list = null;
         if (newLimit != null) {
-            queryPageResults = queryPageResults(queryPageResults, paramList);
-            list = getCacheList(queryPageResults, newLimit);
+            queryPageResult = queryPageResults(queryPageResult, paramList);
+            list = getCacheList(queryPageResult, limit);
             if (list != null) {
                 return list;
             }
@@ -281,7 +281,10 @@ public class EntitySqlQueryConditionGroupQuery<R> {
                 list = queryRelation.getJdbc().queryList(sql, type, params);
             }
         }
-        setCacheList(list, queryPageResults, newLimit, tupleResult.get5(), type == null);
+        if (queryPageResultCache != null && limit != null) {
+            queryPageResult = setCacheList(list, queryPageResult, limit, tupleResult.get5(), type == null);
+            queryPageResultCache.put(paramList, queryPageResult);
+        }
         return list;
     }
 
@@ -378,17 +381,13 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     private <E> QueryPageResult setCacheList(List<E> list, QueryPageResult queryPageResult, Limit limit,
         Function<Object, Serializable> getId, boolean entityList) {
         if (queryPageResultCache != null && limit != null) {
-            if (queryRelation.getConfig().isPagingOptimization()) { // cache id
-                queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
-                PageInfo pageInfo = null;
-                if (list.isEmpty() || !entityList) {
-                    pageInfo = new PageInfo(limit);
-                } else {
-                    pageInfo = new PageInfo(limit, (Number) getId.apply(list.get(0)),
-                        (Number) getId.apply(list.get(list.size() - 1)));
-                }
-                queryPageResult.addQueryPageResult(pageInfo);
+            queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
+            PageInfo pageInfo = new PageInfo(limit);
+            if (queryRelation.getConfig().isPagingOptimization() && !list.isEmpty() && entityList) { // cache id
+                pageInfo.setFirstId((Number) getId.apply(list.get(0)));
+                pageInfo.setLastId((Number) getId.apply(list.get(list.size() - 1)));
             }
+            queryPageResult.addQueryPageResult(pageInfo);
             if (queryRelation.getConfig().isCachePageResults()) { // cache enable
                 queryPageResult = Lang.ifNull(queryPageResult, new QueryPageResult());
                 queryPageResult.addPageList(limit.getOffset(), list);

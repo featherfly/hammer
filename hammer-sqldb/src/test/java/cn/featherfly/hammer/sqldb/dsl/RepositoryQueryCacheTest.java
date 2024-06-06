@@ -68,24 +68,52 @@ public class RepositoryQueryCacheTest extends AbstractQueryCacheTest {
         throw new NotImplementedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Test
-    public void tplQueryPagination_CountCache_PageListCache() {
-        // NOIMPL 后续来实现
-        throw new NotImplementedException();
-
-    }
-
-    @Override
-    @Test
-    public void tplQueryPagination_CountCache() {
+    public void queryList_OptimizationPage() {
         // NOIMPL 后续来实现
         throw new NotImplementedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Test
-    public void tplQueryPagination() { // without CountCache
+    public void queryList_PageListCache() {
+        // NOIMPL 后续来实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Test
+    public void queryList_PageListCache_OptimizationPage() {
+        // NOIMPL 后续来实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Test
+    public void queryList_OptimizationPage_PageNumber_Gt_MaxPageNumber() {
+        // NOIMPL 后续来实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Test
+    public void queryList_OptimizationPage_Find_Empty() {
         // NOIMPL 后续来实现
         throw new NotImplementedException();
     }

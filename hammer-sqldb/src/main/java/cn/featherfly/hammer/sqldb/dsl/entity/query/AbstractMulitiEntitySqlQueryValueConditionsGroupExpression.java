@@ -13,7 +13,6 @@ import com.speedment.common.tuple.Tuple8;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
@@ -218,7 +217,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     //        @Override
     public EntityQueryValueSortedExpression<E, V> asc(String... names) {
-        getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().asc(names);
 
         return this;
     }
@@ -231,7 +230,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     //        @Override
     public EntityQueryValueSortedExpression<E, V> asc(List<String> names) {
-        getRootSortBuilder().asc(ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().asc(names);
 
         return this;
     }
@@ -263,7 +262,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     //    @Override
     public EntityQueryValueSortedExpression<E, V> desc(String... names) {
-        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().desc(names);
 
         return this;
     }
@@ -276,7 +275,7 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     //    @Override
     public EntityQueryValueSortedExpression<E, V> desc(List<String> names) {
-        getRootSortBuilder().desc(ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().desc(names);
 
         return this;
     }

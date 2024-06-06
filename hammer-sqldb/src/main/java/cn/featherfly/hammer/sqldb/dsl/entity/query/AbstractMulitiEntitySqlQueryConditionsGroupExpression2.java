@@ -14,7 +14,6 @@ import com.speedment.common.tuple.Tuple8;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
@@ -161,7 +160,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> asc(String... names) {
-        getRootSortBuilder().asc(tableAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().asc(tableAlias, () -> names);
         return this;
     }
 
@@ -172,7 +171,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> asc2(String... names) {
-        getRootSortBuilder().asc(tableAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+        getRootSortBuilder().asc(tableAlias2, () -> names);
 
         return this;
     }
@@ -184,7 +183,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> desc(String... names) {
-        getRootSortBuilder().desc(tableAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().desc(tableAlias, () -> names);
         return this;
     }
 
@@ -195,7 +194,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the entity query sorted expression 2
      */
     public EntityQuerySortedExpression2<E1, E2, RS> desc2(String... names) {
-        getRootSortBuilder().desc(tableAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+        getRootSortBuilder().desc(tableAlias2, () -> names);
 
         return this;
     }

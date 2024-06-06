@@ -13,7 +13,6 @@ import com.speedment.common.tuple.Tuple8;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.FourArgusConsumer;
 import cn.featherfly.common.function.serializable.SerializableFunction;
@@ -169,7 +168,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc(String... names) {
-        getRootSortBuilder().asc(tableAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().asc(tableAlias, () -> names);
         return this;
     }
 
@@ -180,7 +179,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc2(String... names) {
-        getRootSortBuilder().asc(tableAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+        getRootSortBuilder().asc(tableAlias2, () -> names);
 
         return this;
     }
@@ -192,7 +191,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc3(String... names) {
-        getRootSortBuilder().asc(tableAlias3, () -> ClassMappingUtils.getColumnNames(classMapping3, names));
+        getRootSortBuilder().asc(tableAlias3, () -> names);
 
         return this;
     }
@@ -204,7 +203,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc4(String... names) {
-        getRootSortBuilder().asc(tableAlias4, () -> ClassMappingUtils.getColumnNames(classMapping4, names));
+        getRootSortBuilder().asc(tableAlias4, () -> names);
 
         return this;
     }
@@ -216,7 +215,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc(String... names) {
-        getRootSortBuilder().desc(tableAlias, () -> ClassMappingUtils.getColumnNames(classMapping, names));
+        getRootSortBuilder().desc(tableAlias, () -> names);
         return this;
     }
 
@@ -227,7 +226,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc2(String... names) {
-        getRootSortBuilder().desc(tableAlias2, () -> ClassMappingUtils.getColumnNames(classMapping2, names));
+        getRootSortBuilder().desc(tableAlias2, () -> names);
 
         return this;
     }
@@ -239,7 +238,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc3(String... names) {
-        getRootSortBuilder().desc(tableAlias3, () -> ClassMappingUtils.getColumnNames(classMapping3, names));
+        getRootSortBuilder().desc(tableAlias3, () -> names);
 
         return this;
     }
@@ -251,7 +250,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      * @return the entity query sorted expression 4
      */
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc4(String... names) {
-        getRootSortBuilder().desc(tableAlias4, () -> ClassMappingUtils.getColumnNames(classMapping4, names));
+        getRootSortBuilder().desc(tableAlias4, () -> names);
 
         return this;
     }
