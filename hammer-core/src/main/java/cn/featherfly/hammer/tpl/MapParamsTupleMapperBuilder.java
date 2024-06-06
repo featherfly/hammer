@@ -11,7 +11,7 @@ package cn.featherfly.hammer.tpl;
 import java.io.Serializable;
 import java.util.Map;
 
-import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
 import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
 
@@ -22,7 +22,7 @@ import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
  * @param <E1> executor type
  * @param <E2> execution type
  */
-public class MapParamsTupleMapperBuilder<E1 extends ExecutionExecutor<E2>, E2> implements TupleMapperBuilder {
+public class MapParamsTupleMapperBuilder<E1 extends ExecutionExecutorEx<E2>, E2> implements TupleMapperBuilder {
 
     /** The executor. */
     protected final E1 executor;

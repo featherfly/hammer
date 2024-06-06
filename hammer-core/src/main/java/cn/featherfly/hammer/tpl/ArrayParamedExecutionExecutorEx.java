@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -24,7 +24,7 @@ import cn.featherfly.common.structure.page.PaginationResults;
  * @param <E1> the generic type
  * @param <E2> the generic type
  */
-public class ArrayParamedExecutionExecutorEx<E1 extends ExecutionExecutor<E2>, E2>
+public class ArrayParamedExecutionExecutorEx<E1 extends ExecutionExecutorEx<E2>, E2>
     extends ArrayParamedExecutionExecutor<E1, E2> implements ParamedExecutionExecutorEx {
 
     /**

@@ -20,7 +20,7 @@ import com.speedment.common.tuple.Tuple5;
 import com.speedment.common.tuple.Tuple6;
 
 import cn.featherfly.common.lang.AutoCloseableIterable;
-import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.ParamedExecutionExecutor;
 import cn.featherfly.common.repository.ParamedMappedExecutor;
 import cn.featherfly.common.repository.mapper.RowMapper;
@@ -33,7 +33,7 @@ import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
  * @param <E1> the generic type
  * @param <E2> the generic type
  */
-public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> implements ParamedExecutionExecutor {
+public class MapParamedExecutionExecutor<E1 extends ExecutionExecutorEx<E2>, E2> implements ParamedExecutionExecutor {
 
     /** The executor. */
     protected final E1 executor;
@@ -157,6 +157,14 @@ public class MapParamedExecutionExecutor<E1 extends ExecutionExecutor<E2>, E2> i
     @Override
     public boolean bool() {
         return executor.bool(execution, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V> V value() {
+        return executor.value(execution, params);
     }
 
     /**

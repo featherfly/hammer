@@ -57,35 +57,6 @@ import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
  *
  * @author zhongj
  */
-/*
- * ENHANCE 模板预编译直接把命名参数sql（name = :name）改为jdbc原生sql（name = ?）
- * 1. 处理in的问题，把in参数占位符部分(?,? ... ,?)作为模板的一个参数 即 ids in :ids 改为 ids in ${_ids}
- * 2. TplConfig加入sql类型的配置(Boolean namedSql)，此类通过namedSql进行不同的方法调用，为空则表示需要程序读取sql内容进行判断
- * 3. MAPPER传入的参数需要加入数组索引(array inde）的映射信息，用于在执行此类更好的处理数组索引(array inde）的问题，
- * 因为MAPPER调用是固定的，版本发布就定好了，但是模板确可以是两种形式（name = :name 或者name = ?）所以需要知道映射信息
- * 映射信息可以自定义一个类，放在数组的第一个或者MAP的一个特性的key映射，此类按照规则拿出来，再判断一下类型是否匹配，就能处理了
- * name 0
- * pwd 1
- * age 3
- * state 2
- * gender 4
- * select * from user u where u.name = ? and u.pwd =? and state in ${_state} and u.gender =? and
- * u.age = ?
- * {name:"yufei", age:"18"}
- * select * from user u where u.name = ? and u.age = ?
- * {name:"yufei", age:"18", gender: "MALE", state:[1,2,3]}
- * select * from user u where u.name = ? and u.age = ? and u.state in (?,?,?) and u.gender = ?
- * 实现方式，把命名参数的顺序定义出来，就没问题了
- * String[] names = new String[] { "name", "pwd", "state", "age", "gender" };
- * Map<String, Serializable> params = new ChainMapImpl<String, Object>().putChain("name",
- * "yufei").putChain("pwd", "123")
- * .putChain("age", 18).putChain("state", new int[] { 1, 2 }).putChain("gender", "MALE");
- * Set<String> filterNames = Lang.set("age");
- * Object[] ps = Arrays.stream(names).filter(e -> !filterNames.contains(e)).map(name ->
- * params.get(name))
- * .toArray();
- * System.out.println(ArrayUtils.toString(ps));
- */
 public class SqlTplExecutor implements TplExecutor {
 
     /** The logger. */
@@ -1635,6 +1606,608 @@ public class SqlTplExecutor implements TplExecutor {
 
     // ----------------------------------------------------------------------------------------------------------------
 
+    @Override
+    public AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId,
+        Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId tplExecuteId,
+        Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        // after getQueryExecution
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, getEffectiveParamMap(params, manager));
+        }
+    }
+
+    @Override
+    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType,
+        Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> AutoCloseableIterable<E> each(TplExecuteId tplExecuteId, Class<E> entityType,
+        Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        // after getQueryExecution
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType, getEffectiveParamMap(params, manager));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper,
+        Map<String, Serializable> params) {
+        // NOIMPL 模板执行未实现映射参数为RowMapper的情况
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper,
+        Map<String, Serializable> params) {
+        // NOIMPL 模板执行未实现映射参数为RowMapper的情况
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper,
+        Map<String, Serializable> params, int offset, int limit) {
+        // NOIMPL 模板执行未实现映射参数为RowMapper的情况
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper,
+        Map<String, Serializable> params, int offset, int limit) {
+        // NOIMPL 模板执行未实现映射参数为RowMapper的情况
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
+        int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params, offset,
+            limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId tplExecuteId,
+        Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, params, offset, limit).get0();
+    }
+
+    @Override
+    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params,
+        int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params,
+            offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> AutoCloseableIterable<E> each(TplExecuteId tplExecuteId, Class<E> entityType,
+        Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType, params, offset, limit).get0();
+    }
+
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, params);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        PropertiesMappingManager propManager = tuple4.get3();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2,
+                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2,
+                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, null, params, offset, limit).get0();
+    }
+
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
+            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, prefixes,
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit).get0();
+    }
+
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        PropertiesMappingManager propManager = tuple4.get3();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3,
+                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + "."),
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3,
+                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + "."),
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, null, params, offset, limit).get0();
+    }
+
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, prefixes,
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, prefixes,
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
+        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset, limit).get0();
+    }
+
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        PropertiesMappingManager propManager = tuple4.get3();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(
+                sql, entityType1, entityType2, entityType3, entityType4, Tuples.of(propManager.getValue(0) + ".",
+                    propManager.getValue(1) + ".", propManager.getValue(2) + ".", propManager.getValue(3) + "."),
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(
+                sql, entityType1, entityType2, entityType3, entityType4, Tuples.of(propManager.getValue(0) + ".",
+                    propManager.getValue(1) + ".", propManager.getValue(2) + ".", propManager.getValue(3) + "."),
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, null, params, offset, limit)
+            .get0();
+    }
+
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, prefixes, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params, offset,
+            limit).get0();
+    }
+
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        PropertiesMappingManager propManager = tuple4.get3();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
+                    propManager.getValue(3) + ".", propManager.getValue(4) + "."),
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
+                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
+                    propManager.getValue(3) + ".", propManager.getValue(4) + "."),
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, null, params,
+            offset, limit).get0();
+    }
+
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes, params,
+            offset, limit).get0();
+    }
+
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, entityType6, params);
+    }
+
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, entityType6, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
+        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        PropertiesMappingManager propManager = tuple4.get3();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
+                    propManager.getValue(3) + ".", propManager.getValue(4) + ".", propManager.getValue(5) + "."),
+                getEffectiveParamArray(params, manager, config));
+
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
+                    propManager.getValue(3) + ".", propManager.getValue(4) + ".", propManager.getValue(5) + "."),
+                getEffectiveParamMap(params, manager));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
+        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params,
+        int offset, int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+            null, params, offset, limit).get0();
+    }
+
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Serializable> params) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params);
+    }
+
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
+        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
+        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
+        Map<String, Serializable> params, int offset, int limit) {
+        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
+            entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params, offset, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
+        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
+        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params) {
+        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
+            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
+        String sql = tuple4.get0();
+        ConditionParamsManager manager = tuple4.get2();
+        TplExecuteConfig config = tuple4.get1();
+        if (config.getParamsFormat() == ParamsFormat.INDEX) {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, getEffectiveParamArray(params, manager, config));
+        } else {
+            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+                prefixes, getEffectiveParamMap(params, manager));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
+        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
+        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
+        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
+        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
+            prefixes, params, offset, limit).get0();
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -1958,6 +2531,23 @@ public class SqlTplExecutor implements TplExecutor {
         pagination.setPageResults(listTuple.get0());
         pagination.setTotal(count(listTuple.get1(), listTuple.get4(), listTuple.get3(), listTuple.get2()));
         return pagination;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E value(String tplExecuteId, Map<String, Serializable> params) {
+        return value(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <E> E value(TplExecuteId tplExecuteId, Map<String, Serializable> params) {
+        return (E) value(tplExecuteId, Object.class, params);
     }
 
     /**
@@ -2480,7 +3070,7 @@ public class SqlTplExecutor implements TplExecutor {
                 queryPageResult = new QueryPageResult(total);
             }
         }
-        if (queryPageResult != null) {
+        if (queryPageResult != null && queryPageResultCache != null) {
             queryPageResultCache.put(key, queryPageResult);
         }
         return total;
@@ -2588,6 +3178,15 @@ public class SqlTplExecutor implements TplExecutor {
      */
     @Override
     public double doubleValue(TplExecuteId tplExecuteId, Serializable... params) {
+        // NOIMPL 模板执行未实现参数为数组的情况
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V> V value(TplExecuteId execution, Serializable... params) {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
@@ -3014,582 +3613,6 @@ public class SqlTplExecutor implements TplExecutor {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    public AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId,
-        Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId tplExecuteId,
-        Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
-            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, ArrayUtils.EMPTY_CLASS_ARRAY);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        TplExecuteConfig config = tuple4.get1();
-        // after getQueryExecution
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType,
-        Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper,
-        Map<String, Serializable> params) {
-        // NOIMPL 模板执行未实现映射参数为RowMapper的情况
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> AutoCloseableIterable<E> each(TplExecuteId tplExecuteId, Class<E> entityType,
-        Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
-            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        TplExecuteConfig config = tuple4.get1();
-        // after getQueryExecution
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType, getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType, getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
-        int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params, offset,
-            limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> AutoCloseableIterable<T> each(TplExecuteId execution, RowMapper<T> rowMapper,
-        Map<String, Serializable> params, int offset, int limit) {
-        // NOIMPL 模板执行未实现映射参数为RowMapper的情况
-        throw new NotImplementedException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutoCloseableIterable<Map<String, Serializable>> each(TplExecuteId tplExecuteId,
-        Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, params, offset, limit).get0();
-    }
-
-    public <E> AutoCloseableIterable<E> each(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params,
-        int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params,
-            offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> AutoCloseableIterable<E> each(TplExecuteId tplExecuteId, Class<E> entityType,
-        Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType, params, offset, limit).get0();
-    }
-
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, params);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
-            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        PropertiesMappingManager propManager = tuple4.get3();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2,
-                Tuples.of(propManager.getValue(0).getAlias() + ".", propManager.getValue(1).getAlias() + "."),
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, null, params, offset, limit).get0();
-    }
-
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, prefixes, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager,
-            PropertiesMappingManager> tuple4 = getQueryExecution(tplExecuteId, params, entityType1, entityType2);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, prefixes,
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, prefixes, getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
-        int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, prefixes, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2> AutoCloseableIterable<Tuple2<R1, R2>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
-        int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit).get0();
-    }
-
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        PropertiesMappingManager propManager = tuple4.get3();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + "."),
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + "."),
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, null, params, offset, limit).get0();
-    }
-
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, prefixes, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, prefixes,
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, prefixes,
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, prefixes, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3> AutoCloseableIterable<Tuple3<R1, R2, R3>> each(TplExecuteId tplExecuteId, Class<R1> entityType1,
-        Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
-        Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset, limit).get0();
-    }
-
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        PropertiesMappingManager propManager = tuple4.get3();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(
-                sql, entityType1, entityType2, entityType3, entityType4, Tuples.of(propManager.getValue(0) + ".",
-                    propManager.getValue(1) + ".", propManager.getValue(2) + ".", propManager.getValue(3) + "."),
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(
-                sql, entityType1, entityType2, entityType3, entityType4, Tuples.of(propManager.getValue(0) + ".",
-                    propManager.getValue(1) + ".", propManager.getValue(2) + ".", propManager.getValue(3) + "."),
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, null, params, offset, limit)
-            .get0();
-    }
-
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, prefixes, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, prefixes,
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, prefixes, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4> AutoCloseableIterable<Tuple4<R1, R2, R3, R4>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, prefixes, params, offset,
-            limit).get0();
-    }
-
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        PropertiesMappingManager propManager = tuple4.get3();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
-                    propManager.getValue(3) + ".", propManager.getValue(4) + "."),
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
-                    propManager.getValue(3) + ".", propManager.getValue(4) + "."),
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, null, params,
-            offset, limit).get0();
-    }
-
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
-        Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
-        Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
-                getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes,
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
-        Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, prefixes, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5> AutoCloseableIterable<Tuple5<R1, R2, R3, R4, R5>> each(TplExecuteId tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Tuple5<String, String, String, String, String> prefixes,
-        Map<String, Serializable> params, int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, prefixes, params,
-            offset, limit).get0();
-    }
-
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, entityType6, params);
-    }
-
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, entityType6, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
-        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        PropertiesMappingManager propManager = tuple4.get3();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
-                    propManager.getValue(3) + ".", propManager.getValue(4) + ".", propManager.getValue(5) + "."),
-                getEffectiveParamArray(params, manager, config));
-
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                Tuples.of(propManager.getValue(0) + ".", propManager.getValue(1) + ".", propManager.getValue(2) + ".",
-                    propManager.getValue(3) + ".", propManager.getValue(4) + ".", propManager.getValue(5) + "."),
-                getEffectiveParamMap(params, manager));
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
-        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params,
-        int offset, int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-            null, params, offset, limit).get0();
-    }
-
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Serializable> params) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params);
-    }
-
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
-        Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
-        Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Map<String, Serializable> params, int offset, int limit) {
-        return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
-            entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params, offset, limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
-        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
-        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params) {
-        Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> tuple4 = getQueryExecution(
-            tplExecuteId, params, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6);
-        String sql = tuple4.get0();
-        ConditionParamsManager manager = tuple4.get2();
-        TplExecuteConfig config = tuple4.get1();
-        if (config.getParamsFormat() == ParamsFormat.INDEX) {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                prefixes, getEffectiveParamArray(params, manager, config));
-        } else {
-            return jdbc.queryEach(sql, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-                prefixes, getEffectiveParamMap(params, manager));
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R1, R2, R3, R4, R5, R6> AutoCloseableIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(
-        TplExecuteId tplExecuteId, Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3,
-        Class<R4> entityType4, Class<R5> entityType5, Class<R6> entityType6,
-        Tuple6<String, String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
-        int limit) {
-        return findEach(tplExecuteId, entityType1, entityType2, entityType3, entityType4, entityType5, entityType6,
-            prefixes, params, offset, limit).get0();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -3757,6 +3780,10 @@ public class SqlTplExecutor implements TplExecutor {
         // NOIMPL 模板执行未实现参数为数组的情况
         throw new NotImplementedException();
     }
+
+    // ****************************************************************************************************************
+    //	private method
+    // ****************************************************************************************************************
 
     /**
      * Find list.

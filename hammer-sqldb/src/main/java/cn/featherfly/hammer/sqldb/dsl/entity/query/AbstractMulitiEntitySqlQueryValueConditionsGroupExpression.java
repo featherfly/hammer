@@ -19,8 +19,6 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
-import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.SimpleExecution;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -36,7 +34,6 @@ import cn.featherfly.hammer.sqldb.dsl.entity.AbstractMulitiEntitySqlConditionsGr
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryConditionGroupQuery;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
-import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 
 /**
  * sql condition group expression. 条件逻辑组构造器.
@@ -55,8 +52,6 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     implements EntityQueryValueConditionGroupExpression<E, V, C, L, EntityQueryValueSortExpression<E, V>>,
     EntityQueryValueConditionGroupLogicExpression<E, V, C, L, EntityQueryValueSortExpression<E, V>>,
     EntityQueryValueSortExpression<E, V>, EntityQueryValueSortedExpression<E, V> {
-
-    private Limit limit;
 
     private SqlSortBuilder sortBuilder;
 
@@ -134,7 +129,6 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
      */
     @Override
     public EntityQueryValueLimitExecutor<E, V> limit(Limit limit) {
-        this.limit = limit;
         entitySqlQueryConditionGroupQuery.setLimit(limit);
         return this;
     }
@@ -359,16 +353,4 @@ public abstract class AbstractMulitiEntitySqlQueryValueConditionsGroupExpression
     // ****************************************************************************************************************
     //  private method
     // ****************************************************************************************************************
-
-    private Execution getExecution() {
-        String sql = getRoot().expression();
-        Serializable[] params = getRoot().getParamsArray();
-        if (limit != null) {
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
-                limit.getLimit(), params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        return new SimpleExecution(sql, params);
-    }
 }

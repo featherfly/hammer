@@ -16,7 +16,7 @@ import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.Tuples;
 
 import cn.featherfly.common.lang.AutoCloseableIterable;
-import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper4;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper5;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -32,7 +32,7 @@ import cn.featherfly.common.structure.page.PaginationResults;
  * @param <T3> the generic type
  * @param <T4> the generic type
  */
-public class PrefixedBeanMapper4Impl<E1 extends ExecutionExecutor<E2>, E2, T1, T2, T3, T4>
+public class PrefixedBeanMapper4Impl<E1 extends ExecutionExecutorEx<E2>, E2, T1, T2, T3, T4>
     extends AbstractPrefixEntityMapper<E1, E2, Object, Tuple4<String, String, String, String>>
     implements PrefixedBeanMapper4<T1, T2, T3, T4> {
 
