@@ -16,6 +16,7 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup4;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic4;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableUpdate4;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate5;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
@@ -72,6 +73,18 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
             EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
                 SerializableFunction<E, R> property, SerializableFunction<R, O> nestedProperty) {
         return new EntityUpdateNestedValueImpl<>(property, nestedProperty, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R,
+        O extends Number> UpdateNumberValueExpression<O, EntityExecutableUpdate4<E, J1, J2, J3>,
+            EntityExecutableConditionGroup4<E, J1, J2, J3, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig>> property(
+                SerializableFunction<E, R> property, SerializableToNumberFunction<R, O> nestedProperty) {
+        return new EntityUpdateNestedNumberValueImpl<>(property, nestedProperty, this);
     }
 
     /**

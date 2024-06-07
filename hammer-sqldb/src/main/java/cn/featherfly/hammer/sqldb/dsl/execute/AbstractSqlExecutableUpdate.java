@@ -118,7 +118,7 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @return the u
      */
     @SuppressWarnings("unchecked")
-    protected <V> U set0(String name, FieldValueOperator<V> value, Predicate<V> setIgnoreStrategy) {
+    protected U set0(String name, FieldValueOperator<?> value, Predicate<? extends Object> setIgnoreStrategy) {
         builder.setValue(name, value, setIgnoreStrategy);
         return (U) this;
     }
@@ -174,12 +174,12 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
      * @param <N> the number type
      * @param name the name
      * @param value the value
-     * @param setIgnoreStrategy the set ignore strategy
+     * @param ignoreStrategy the ignore strategy
      * @return the u
      */
     @SuppressWarnings("unchecked")
-    protected <N extends Number> U increase0(String name, FieldValueOperator<N> value, Predicate<N> setIgnoreStrategy) {
-        builder.setValue(name, value, SetType.INCR, setIgnoreStrategy);
+    protected <N extends Number> U increase0(String name, FieldValueOperator<N> value, Predicate<?> ignoreStrategy) {
+        builder.setValue(name, value, SetType.INCR, ignoreStrategy);
         return (U) this;
     }
 

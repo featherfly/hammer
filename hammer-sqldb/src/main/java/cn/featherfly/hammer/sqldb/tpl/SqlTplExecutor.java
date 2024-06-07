@@ -107,16 +107,6 @@ public class SqlTplExecutor implements TplExecutor {
         this.transverterManager = transverterManager;
     }
 
-    private void setCountTemplate(TplExecuteConfig config) {
-        // convert select sql to count sql once
-        if (Lang.isEmpty(config.getCount())
-            && hammerConfig.getTemplateConfig().getCountSqlConverteStrategy() == CountSqlConverteStrategy.USE_EXCEPTION
-            && hammerConfig.getTemplateConfig().getCountSqlConvertor() != null) {
-            config.setCount(hammerConfig.getTemplateConfig().getCountSqlConvertor().apply(config.getContent()));
-            templateEngine.putTemplate(config.getCountExecuteId(), config.getCount());
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -2659,6 +2649,16 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     // ****************************************************************************************************************
+
+    private void setCountTemplate(TplExecuteConfig config) {
+        // convert select sql to count sql once
+        if (Lang.isEmpty(config.getCount())
+            && hammerConfig.getTemplateConfig().getCountSqlConverteStrategy() == CountSqlConverteStrategy.USE_EXCEPTION
+            && hammerConfig.getTemplateConfig().getCountSqlConvertor() != null) {
+            config.setCount(hammerConfig.getTemplateConfig().getCountSqlConvertor().apply(config.getContent()));
+            templateEngine.putTemplate(config.getCountExecuteId(), config.getCount());
+        }
+    }
 
     private Tuple4<String, TplExecuteConfig, ConditionParamsManager, PropertiesMappingManager> getQueryExecution(
         TplExecuteId tplExecuteId, Serializable[] params, Class<?>... resultTypes) {

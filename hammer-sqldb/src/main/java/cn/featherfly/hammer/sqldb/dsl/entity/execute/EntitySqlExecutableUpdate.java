@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -26,6 +25,7 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroup;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.execute.EntityExecutableUpdate;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate2;
+import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
@@ -124,20 +124,6 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
     public <R, O extends Serializable> EntityExecutableUpdate<E> set(SerializableFunction<E, R> property,
         SerializableFunction<R, O> nestedProperty, O value) {
         return set0(property, nestedProperty, value, updateConfig.getSetValueIgnoreStrategy()::test);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
-        //        if (value == null) {
-        //            return set0(pm, value);
-        //        }
-        //        String npn = getPropertyName(nestedProperty);
-        //        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        //        return set0(spm, FieldValueOperator.create(spm, value));
-
-        //        if (spm != null) {
-        //            return _set(spm, FieldValueOperator.craete(spm, value));
-        //        } else {
-        //            throw new SqldbHammerException(String.format("can not find mapping for property {0}.{1} for entity {2}",
-        //                    pm.getPropertyName(), npn, classMapping.getType().getName()));
-        //        }
     }
 
     /**
@@ -154,7 +140,6 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
      */
     @Override
     public <R extends Serializable> EntityExecutableUpdate<E> set(SerializableSupplier<R> property) {
-        //        return set0(classMapping.getPropertyMapping(getPropertyName(property)), property.get());
         return set0(property, property.get(), updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
@@ -174,13 +159,6 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
     public <R, O extends Serializable> EntityExecutableUpdate<E> set(SerializableSupplier<R> property,
         SerializableFunction<R, O> nestedProperty) {
         return setSupplier(property, nestedProperty, updateConfig.getSetValueIgnoreStrategy()::test);
-        //        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
-        //        if (property.get() == null) {
-        //            return set0(pm, property.get());
-        //        }
-        //        String npn = getPropertyName(nestedProperty);
-        //        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        //        return set0(spm, FieldValueOperator.create(spm, BeanUtils.getProperty(property.get(), npn)));
     }
 
     /**
@@ -288,6 +266,18 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
      * {@inheritDoc}
      */
     @Override
+    public <P,
+        V extends Number> UpdateNumberValueExpression<V, EntityExecutableUpdate<E>,
+            EntityExecutableConditionGroup<E, UpdateConditionConfig>,
+            EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(SerializableFunction<E, P> property,
+                SerializableToNumberFunction<P, V> nestedProperty) {
+        return new EntityUpdateNestedNumberValueImpl<>(property, nestedProperty, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <N extends Number> UpdateNumberValueExpression<N, EntityExecutableUpdate<E>,
         EntityExecutableConditionGroup<E, UpdateConditionConfig>,
         EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>> property(
@@ -353,7 +343,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         if (ignoreStrategy.test(value)) {// ignore, 忽略
             return this;
         } else {
-            return set0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+            return set0(classMapping.getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
         }
     }
 
@@ -364,18 +354,9 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
             return this;
         }
         JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
-        if (value == null) {
-            return set0(pm, value);
-        }
         String npn = getPropertyName(nestedProperty);
         JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
         return set0(spm, FieldValueOperator.create(spm, value));
-        //        if (spm != null) {
-        //            return _set(spm, FieldValueOperator.craete(spm, value));
-        //        } else {
-        //            throw new SqldbHammerException(String.format("can not find mapping for property {0}.{1} for entity {2}",
-        //                    pm.getPropertyName(), npn, classMapping.getType().getName()));
-        //        }
     }
 
     private <R, O> EntityExecutableUpdate<E> setSupplier(SerializableSupplier<R> property,
@@ -396,7 +377,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
 
         if (enableNull) {
             // set null value
-            return set0(spm, FieldValueOperator.create(spm, null));
+            return set0(spm, FieldValueOperator.create(spm, null), ignoreStrategy);
         }
 
         @SuppressWarnings("unchecked")
@@ -408,33 +389,35 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         return set0(spm, FieldValueOperator.create(spm, value));
     }
 
-    private <R> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, R value) {
+    @SuppressWarnings("unchecked")
+    private <R> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, R value, Predicate<?> ignoreStrategy) {
         if (value == null) {
-            return set0(pm.getRepositoryFieldName(), (FieldValueOperator<R>) null);
+            return set0(pm.getRepositoryFieldName(), (FieldValueOperator<R>) null, ignoreStrategy);
+        }
+        if (Lang.isEmpty(pm.getPropertyMappings())) {
+            return set0(pm.getRepositoryFieldName(), FieldValueOperator.create(pm, value), ignoreStrategy);
         }
 
-        //        if (pm.isEmbeddable()) {
-        if (Lang.isNotEmpty(pm.getPropertyMappings())) {
-            if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
-                BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
-                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                    Object ov = bd.getBeanProperty(spm.getPropertyName()).getValue(value);
+        if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
+            for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                Object ov = spm.getProperty().get(value);
+                if (!((Predicate<Object>) ignoreStrategy).test(ov)) {
                     set0(spm, FieldValueOperator.create(spm, ov));
                 }
-            } else {
-                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                    if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
+            }
+        } else {
+            for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
+                    if (!((Predicate<Object>) ignoreStrategy).test(value)) {
                         set0(spm, FieldValueOperator.create(spm, value));
                     }
                 }
             }
-            return this;
-        } else {
-            return set0(pm, FieldValueOperator.create(pm, value));
         }
+        return this;
     }
 
-    private EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, FieldValueOperator<?> value) {
+    private <V> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, FieldValueOperator<V> value) {
         return set0(pm.getRepositoryFieldName(), value);
     }
 
@@ -446,7 +429,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         if (ignoreStrategy.test(value)) {// ignore, 忽略
             return this;
         } else {
-            return increase0(classMapping.getPropertyMapping(getPropertyName(name)), value);
+            return increase0(classMapping.getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
         }
     }
 
@@ -458,7 +441,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         }
         JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         if (value == null) {
-            return increase0(pm, value);
+            return increase0(pm.getRepositoryFieldName(), (FieldValueOperator<N>) null, ignoreStrategy);
         }
         String npn = getPropertyName(nestedProperty);
         JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
@@ -495,30 +478,13 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         return increase0(spm, FieldValueOperator.create(spm, value));
     }
 
-    private <N extends Number> EntitySqlExecutableUpdate<E> increase0(JdbcPropertyMapping pm, N value) {
+    private <N extends Number> EntitySqlExecutableUpdate<E> increase0(JdbcPropertyMapping pm, N value,
+        Predicate<?> ignoreStrategy) {
         if (value == null) {
-            return increase0(pm.getRepositoryFieldName(), (FieldValueOperator<N>) null);
+            return increase0(pm.getRepositoryFieldName(), (FieldValueOperator<N>) null, ignoreStrategy);
         }
-
-        //        if (pm.isEmbeddable()) {
-        if (Lang.isNotEmpty(pm.getPropertyMappings())) {
-            if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
-                BeanDescriptor<?> bd = BeanDescriptor.getBeanDescriptor(value.getClass());
-                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                    Object ov = bd.getBeanProperty(spm.getPropertyName()).getValue(value);
-                    set0(spm, FieldValueOperator.create(spm, ov));
-                }
-            } else {
-                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                    if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
-                        set0(spm, FieldValueOperator.create(spm, value));
-                    }
-                }
-            }
-            return this;
-        } else {
-            return increase0(pm, FieldValueOperator.create(pm, value));
-        }
+        return increase0(pm.getRepositoryFieldName(), FieldValueOperator.create(pm, value), ignoreStrategy);
+        // 都是数字类型才能increase，所以不存在嵌套对象的情况
     }
 
     private <N extends Number> EntitySqlExecutableUpdate<E> increase0(JdbcPropertyMapping pm,
