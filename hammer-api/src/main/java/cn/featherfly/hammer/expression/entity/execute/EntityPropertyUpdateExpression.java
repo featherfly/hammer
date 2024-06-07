@@ -50,4 +50,16 @@ public interface EntityPropertyUpdateExpression<E, U, C extends ConditionExpress
      * @return the entity update number value expression
      */
     <R extends Number> UpdateNumberValueExpression<R, U, C, L> property(SerializableToNumberFunction<E, R> property);
+
+    /**
+     * Property.
+     *
+     * @param <R> the generic type
+     * @param <O> the generic type
+     * @param property the property
+     * @param nestedProperty the nested property
+     * @return the entity update value expression
+     */
+    <R, O extends Number> UpdateNumberValueExpression<O, U, C, L> property(SerializableFunction<E, R> property,
+        SerializableToNumberFunction<R, O> nestedProperty);
 }

@@ -1,7 +1,7 @@
 dependencies {
     api project(":hammer-api")
     
-    api group: 'cn.featherfly.common', name: 'common-spring', version: '0.3.0'
+    api group: 'cn.featherfly.common', name: 'common-spring', version: '0.4.2'
     api group: 'cn.featherfly.common', name: 'common-asm', version: '0.3.0'
     api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.9'
 	api group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'	

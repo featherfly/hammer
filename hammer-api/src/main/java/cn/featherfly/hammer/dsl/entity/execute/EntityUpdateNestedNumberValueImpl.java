@@ -11,19 +11,22 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateSetExpression;
 import cn.featherfly.hammer.expression.execute.UpdateNumberValueExpression;
 
 /**
- * EntityUpdateNumberValueImpl.
+ * EntityUpdateNestedValueImpl.
  *
  * @author zhongj
  * @param <E> the element type
- * @param <N> the number type
+ * @param <O> the element property type
+ * @param <V> the value type
  * @param <U> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class EntityUpdateNumberValueImpl<E, N extends Number, U, C extends ConditionExpression,
-    L extends LogicExpression<C, L>> implements UpdateNumberValueExpression<N, U, C, L> {
+public class EntityUpdateNestedNumberValueImpl<E, O, V extends Number, U, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> implements UpdateNumberValueExpression<V, U, C, L> {
 
-    private SerializableFunction<E, N> property;
+    private SerializableFunction<E, O> property;
+
+    private SerializableFunction<O, V> nestedProperty;
 
     private EntityUpdateSetExpression<E, U, C, L> update;
 
@@ -31,12 +34,14 @@ public class EntityUpdateNumberValueImpl<E, N extends Number, U, C extends Condi
      * Instantiates a new entity update value impl.
      *
      * @param property the property
+     * @param nestedProperty the nested property
      * @param update the update
      */
-    public EntityUpdateNumberValueImpl(SerializableFunction<E, N> property,
-        EntityUpdateSetExpression<E, U, C, L> update) {
+    public EntityUpdateNestedNumberValueImpl(SerializableFunction<E, O> property,
+        SerializableFunction<O, V> nestedProperty, EntityUpdateSetExpression<E, U, C, L> update) {
         super();
         this.property = property;
+        this.nestedProperty = nestedProperty;
         this.update = update;
     }
 
@@ -44,32 +49,40 @@ public class EntityUpdateNumberValueImpl<E, N extends Number, U, C extends Condi
      * {@inheritDoc}
      */
     @Override
-    public U set(N value) {
-        return update.set(property, value);
+    public U set(V value) {
+        return update.set(property, nestedProperty, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public U set(N value, Predicate<N> ignoreStrategy) {
-        return update.set(property, value, ignoreStrategy);
+    public U set(V value, Predicate<V> ignoreStrategy) {
+        return update.set(property, nestedProperty, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public U increase(N value) {
-        return update.increase(property, value);
+    public U increase(V value) {
+        return update.increase(property, nestedProperty, value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public U increase(N value, Predicate<N> ignoreStrategy) {
-        return update.increase(property, value, ignoreStrategy);
+    public U increase(V value, Predicate<V> ignoreStrategy) {
+        return update.increase(property, nestedProperty, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public U increase(Consumer<UpdateNumberValueExpression<V, U, C, L>> consumer) {
+        return set(consumer);
     }
 
     /**
@@ -77,17 +90,7 @@ public class EntityUpdateNumberValueImpl<E, N extends Number, U, C extends Condi
      */
     @SuppressWarnings("unchecked")
     @Override
-    public U increase(Consumer<UpdateNumberValueExpression<N, U, C, L>> consumer) {
-        consumer.accept(this);
-        return (U) update;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public U set(Consumer<UpdateNumberValueExpression<N, U, C, L>> consumer) {
+    public U set(Consumer<UpdateNumberValueExpression<V, U, C, L>> consumer) {
         consumer.accept(this);
         return (U) update;
     }

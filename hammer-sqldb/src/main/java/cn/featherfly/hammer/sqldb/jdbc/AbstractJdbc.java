@@ -319,7 +319,6 @@ public abstract class AbstractJdbc implements Jdbc {
         if (Lang.isEmpty(sql)) {
             return 0;
         }
-        logger.debug("sql -> {}, args -> {}", sql, args);
         return executeUpdate(prep -> setParams(prep, args), sql, generatedKeyHolder, args);
     }
 
@@ -328,7 +327,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug("execute sql -> {}\n args[{}] -> {}", sql, args.length, args);
         Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
             : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
