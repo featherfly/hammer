@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.condition.propery;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -167,6 +168,14 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<D> value, Predicate<Collection<D>> ignoreStrategy) {
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ni(D value) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
             expression.getIgnoreStrategy());
@@ -210,6 +219,14 @@ public class EntityDatePropertyExpressionImpl<E, D extends Date, C extends Condi
      */
     @Override
     public L ni(D[] value, Predicate<D[]> ignoreStrategy) {
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<D> value, Predicate<Collection<D>> ignoreStrategy) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 

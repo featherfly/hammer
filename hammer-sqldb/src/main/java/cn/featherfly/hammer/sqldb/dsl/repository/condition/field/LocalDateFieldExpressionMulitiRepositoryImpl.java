@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -123,7 +124,15 @@ public class LocalDateFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
      */
     @Override
     public L in(LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
-        return expression.ni(index, name, value, ignoreStrategy);
+        return expression.in(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Collection<LocalDate> value, Predicate<Collection<LocalDate>> ignoreStrategy) {
+        return expression.in(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -155,6 +164,14 @@ public class LocalDateFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
      */
     @Override
     public L ni(LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
+        return expression.ni(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<LocalDate> value, Predicate<Collection<LocalDate>> ignoreStrategy) {
         return expression.ni(index, name, value, ignoreStrategy);
     }
 

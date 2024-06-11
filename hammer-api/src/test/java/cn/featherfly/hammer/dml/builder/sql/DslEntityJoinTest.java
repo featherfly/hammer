@@ -55,6 +55,20 @@ public class DslEntityJoinTest {
     //        query.find("user").relate("user_info").on("user_id").where().eq("id", 1).intValue();
     //    }
 
+    public void testEntityQuery() {
+        UserInfo2 ui = null;
+        Tuple2<UserInfo2, User2> tupleUserInfoUser = null;
+        User2 user = null;
+        Tuple2<User2, UserInfo2> tupleUserUserInfo = null;
+        Tree2 tree = null;
+        Tuple2<Tree2, Tree2> tuple2Tree2 = null;
+        Tuple3<Tree2, Tree2, Tree2> tuple3Tree2 = null;
+        Tuple4<Tree2, Tree2, Tree2, Tree2> tuple4Tree2 = null;
+
+        // join on
+        user = query.find(User2.class).where().eq(user::getId, Integer.valueOf(1)).single();
+    }
+
     public void testEntityQueryJoinOrm() {
         //        query.find(User.class).with(User::getId).where().list();
         //        query.find(User.class).join(User::getId).where().eq(User::getId, 1).list();
@@ -212,29 +226,29 @@ public class DslEntityJoinTest {
 
         // with join的api定义规则
         /*
-         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
-         query.find(Tree.class).join(Tree::getParent).join(t -> t.get1() , Tree::getParent);
-         //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
-        //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
-        // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
-        // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
-
-        // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
-        /*
-         // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id = t3.parent_id
-         query.find(Tree.class).join(Tree::getParent).join(es -> {
-             //  t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
-             //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
-             es.get1().join(Tree::getParent);
-         });
-
-         // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
-         query.find(Tree.class).join(Tree::getParent, t -> {
-           //  这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
-           // 也就是t2有多个关联可以在这里进行全部操作
-           t.join(Tree::getParent)
-               .join(Tree::getParent);
-         });
+         * // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id =
+         * t3.parent_id
+         * query.find(Tree.class).join(Tree::getParent).join(t -> t.get1() , Tree::getParent);
+         * // t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
+         * // 这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
+         * // 这种实现可能会导致编译出错（例如自关联 Tree::getParent这种）
+         * // 所以就算实现了相应的方法，也要保留join join1 join2这种不会导致编译报错的方法实现
+         * // join的api定义规则，此方案应该是不能实现，因为传入参数无法区分，所以返回参数也无法确定
+         * /*
+         * // select * from tree t1 join tree t2 on t1.id = t2.parent_id join tree t3 on t2.id =
+         * t3.parent_id
+         * query.find(Tree.class).join(Tree::getParent).join(es -> {
+         * // t为Tuple类型，有几个可以join的对象就是有几个对象的tuple
+         * // 这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
+         * es.get1().join(Tree::getParent);
+         * });
+         * // 可以先实现下面这种方式，因为这种方式不需要多个返回结果类型，在现有结构上就能实现，废案
+         * query.find(Tree.class).join(Tree::getParent, t -> {
+         * // 这里表示和 tree t2 进行join，所以join tree t3 on t2.id = t3.parent_id
+         * // 也就是t2有多个关联可以在这里进行全部操作
+         * t.join(Tree::getParent)
+         * .join(Tree::getParent);
+         * });
          */
     }
 
@@ -766,18 +780,18 @@ public class DslEntityJoinTest {
     //    }
 
     /*
-    // 编译报错
-    void join(Function<
-            Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
-                    Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
-            QueryEntityRepository<User>> join) {
-
-    }
-    void join(Function<
-            Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
-                    Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
-            QueryEntityRepository<UserInfo>> join) {
-    }*/
+     * // 编译报错
+     * void join(Function<
+     * Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
+     * Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
+     * QueryEntityRepository<User>> join) {
+     * }
+     * void join(Function<
+     * Tuple2<Function<SerializableFunction<User, ?>, QueryEntityRepository<User>>,
+     * Function<SerializableFunction<UserInfo, ?>, QueryEntityRepository<UserInfo>>>,
+     * QueryEntityRepository<UserInfo>> join) {
+     * }
+     */
 
     //    <R> void join(Function<Tuple2<QueryEntityRepository<User>, QueryEntityRepository<UserInfo>>,
     //            QueryEntityRepository<User>> qs, SerializableFunction1<User, R> property) {

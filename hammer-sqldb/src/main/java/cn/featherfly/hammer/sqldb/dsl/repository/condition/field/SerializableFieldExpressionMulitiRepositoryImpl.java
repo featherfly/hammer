@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -108,6 +109,14 @@ public class SerializableFieldExpressionMulitiRepositoryImpl<C extends Condition
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<Serializable> value, Predicate<Collection<Serializable>> ignoreStrategy) {
+        return expression.in(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ne(Serializable value) {
         return expression.ne(index, name, value, expression.getIgnoreStrategy());
     }
@@ -157,6 +166,14 @@ public class SerializableFieldExpressionMulitiRepositoryImpl<C extends Condition
      */
     @Override
     public L ni(Serializable[] value, Predicate<Serializable[]> ignoreStrategy) {
+        return expression.ni(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<Serializable> value, Predicate<Collection<Serializable>> ignoreStrategy) {
         return expression.ni(index, name, value, ignoreStrategy);
     }
 

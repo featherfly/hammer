@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -124,7 +125,15 @@ public class LocalDateTimeFieldExpressionMulitiRepositoryImpl<C extends Conditio
      */
     @Override
     public L in(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
-        return expression.ni(index, name, value, ignoreStrategy);
+        return expression.in(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Collection<LocalDateTime> value, Predicate<Collection<LocalDateTime>> ignoreStrategy) {
+        return expression.in(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -156,6 +165,14 @@ public class LocalDateTimeFieldExpressionMulitiRepositoryImpl<C extends Conditio
      */
     @Override
     public L ni(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
+        return expression.ni(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<LocalDateTime> value, Predicate<Collection<LocalDateTime>> ignoreStrategy) {
         return expression.ni(index, name, value, ignoreStrategy);
     }
 

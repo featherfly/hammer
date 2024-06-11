@@ -2,9 +2,9 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 
-# 0.7.1 
+# 0.7.2
 
-1. 
+1.  Field[In|NotIn]Expression加入各种 [in|not] (Collection<V>...) 方法
 
 # 0.7.1 2024-06-02
 

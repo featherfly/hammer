@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.condition.propery;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
@@ -282,6 +283,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<String> value, Predicate<Collection<String>> ignoreStrategy) {
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L inn(Boolean value) {
         return expression.inn(index, getPropertyMapping(value), value);
     }
@@ -445,6 +454,14 @@ public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<String> value, Predicate<Collection<String>> ignoreStrategy) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 
