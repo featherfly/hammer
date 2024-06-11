@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
@@ -129,6 +130,14 @@ public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extend
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<E> value, Predicate<Collection<E>> ignoreStrategy) {
+        return expression.in(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ni(E value) {
         return expression.ni(index, name, value, expression.getIgnoreStrategy());
     }
@@ -154,6 +163,14 @@ public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extend
      */
     @Override
     public L ni(E[] value, Predicate<E[]> ignoreStrategy) {
+        return expression.ni(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<E> value, Predicate<Collection<E>> ignoreStrategy) {
         return expression.ni(index, name, value, ignoreStrategy);
     }
 

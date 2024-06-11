@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.condition.propery;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
@@ -134,6 +135,14 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<N> value, Predicate<Collection<N>> ignoreStrategy) {
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ni(N value) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
             expression.getIgnoreStrategy());
@@ -177,6 +186,14 @@ public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends C
      */
     @Override
     public L ni(N[] value, Predicate<N[]> ignoreStrategy) {
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<N> value, Predicate<Collection<N>> ignoreStrategy) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 

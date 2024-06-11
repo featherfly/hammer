@@ -8,6 +8,7 @@
  */
 package cn.featherfly.hammer.dml.builder.sql.meta;
 
+import java.util.Collection;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -629,6 +630,14 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
     @Override
     public L eq(FieldExpression expression) {
 
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Collection<String> value, Predicate<Collection<String>> ignoreStrategy) {
         return null;
     }
 }

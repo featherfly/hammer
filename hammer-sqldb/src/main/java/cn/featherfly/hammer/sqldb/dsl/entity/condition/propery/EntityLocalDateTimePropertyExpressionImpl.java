@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.condition.propery;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
@@ -181,6 +182,14 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<LocalDateTime> value, Predicate<Collection<LocalDateTime>> ignoreStrategy) {
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ni(LocalDateTime value) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
             expression.getIgnoreStrategy());
@@ -224,6 +233,14 @@ public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExp
      */
     @Override
     public L ni(LocalDateTime[] value, Predicate<LocalDateTime[]> ignoreStrategy) {
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<LocalDateTime> value, Predicate<Collection<LocalDateTime>> ignoreStrategy) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 

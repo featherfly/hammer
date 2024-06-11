@@ -408,7 +408,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .count();
         c1 = query.find("user") //
             .where() //
-            .field("id").in(null, IgnoreStrategy.NONE)// 不忽略空值
+            .field("id").in((Integer) null, IgnoreStrategy.NONE)// 不忽略空值
             .count();
         assertEquals(c1, 0);
     }

@@ -273,6 +273,14 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<P> value, Predicate<Collection<P>> ignoreStrategy) {
+        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ni(P value) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
             expression.getIgnoreStrategy());
@@ -316,6 +324,14 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      */
     @Override
     public L ni(P[] value, Predicate<P[]> ignoreStrategy) {
+        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<P> value, Predicate<Collection<P>> ignoreStrategy) {
         return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
     }
 

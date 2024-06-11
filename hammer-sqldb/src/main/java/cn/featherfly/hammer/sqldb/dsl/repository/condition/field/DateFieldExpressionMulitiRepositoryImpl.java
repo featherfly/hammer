@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
@@ -126,7 +127,15 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
      */
     @Override
     public L in(D[] value, Predicate<D[]> ignoreStrategy) {
-        return expression.ni(index, name, value, ignoreStrategy);
+        return expression.in(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(Collection<D> value, Predicate<Collection<D>> ignoreStrategy) {
+        return expression.in(index, name, value, ignoreStrategy);
     }
 
     /**
@@ -159,6 +168,14 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
      */
     @Override
     public L ni(D[] value, Predicate<D[]> ignoreStrategy) {
+        return expression.ni(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<D> value, Predicate<Collection<D>> ignoreStrategy) {
         return expression.ni(index, name, value, ignoreStrategy);
     }
 

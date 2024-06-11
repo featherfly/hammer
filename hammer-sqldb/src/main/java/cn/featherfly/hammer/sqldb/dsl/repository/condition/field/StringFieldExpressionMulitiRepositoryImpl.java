@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.condition.field;
 
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -161,6 +162,14 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
      * {@inheritDoc}
      */
     @Override
+    public L in(Collection<String> value, Predicate<Collection<String>> ignoreStrategy) {
+        return expression.in(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public L ni(String value) {
         return expression.ni(index, name, value, expression.getIgnoreStrategy());
     }
@@ -202,6 +211,14 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
      */
     @Override
     public L ni(String[] value, Predicate<String[]> ignoreStrategy) {
+        return expression.ni(index, name, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<String> value, Predicate<Collection<String>> ignoreStrategy) {
         return expression.ni(index, name, value, ignoreStrategy);
     }
 
