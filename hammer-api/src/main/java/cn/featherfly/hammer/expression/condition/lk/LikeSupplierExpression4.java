@@ -21,63 +21,142 @@ public interface LikeSupplierExpression4<C extends ConditionExpression, L extend
     /**
      * like value.
      *
-     * @param property bean property
+     * @param propertyValue the property value
      * @return LogicExpression
      */
-    default L lk4(SerializableStringSupplier property) {
-        return lk4(property, MatchStrategy.AUTO);
+    default L lk4(SerializableStringSupplier propertyValue) {
+        return lk4(propertyValue, propertyValue.get());
     }
 
     /**
      * like value.
      *
-     * @param property       bean property
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L lk4(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return lk4(property, MatchStrategy.AUTO, ignoreStrategy);
+    default L lk4(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
+        return lk4(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * like value.
      *
-     * @param property       bean property
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L lk4(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return lk4(property, MatchStrategy.AUTO, ignoreStrategy);
+    default L lk4(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
+        return lk4(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
-     * Lk.
+     * like value.
      *
-     * @param property      bean property
+     * @param propertyValue the property value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * Lk.
-     *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return lk4(property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    default L lk4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return lk4(propertyValue, propertyValue.get(), matchStrategy);
     }
 
     /**
-     * Lk.
+     * like value.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lk4(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L lk4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return lk4(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk4(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return lk4(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L lk4(SerializableStringSupplier property, String value) {
+        return lk4(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk4(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return lk4(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk4(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return lk4(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L lk4(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lk4(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return lk4(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lk4(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

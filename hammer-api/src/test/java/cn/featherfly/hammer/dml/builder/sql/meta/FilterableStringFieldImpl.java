@@ -611,10 +611,10 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
         return null;
     }
 
-    @Override
-    public FilterableStringAliasField<C, L> alias(String alias) {
-        return new FilterableStringFieldImpl<>(name(), alias, queryCondition);
-    }
+    //    @Override
+    //    public FilterableStringAliasField<C, L> alias(String alias) {
+    //        return new FilterableStringFieldImpl<>(name(), alias, queryCondition);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -638,6 +638,14 @@ public class FilterableStringFieldImpl<C extends ConditionExpression, L extends 
      */
     @Override
     public L in(Collection<String> value, Predicate<Collection<String>> ignoreStrategy) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(Collection<String> value, Predicate<Collection<String>> ignoreStrategy) {
         return null;
     }
 }

@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -262,7 +263,7 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
      * @param property object property
      * @return Update
      */
-    <N extends Number> U increase(SerializableSupplier<N> property);
+    <N extends Number> U increase(SerializableNumberSupplier<N> property);
 
     /**
      * increase value for property.
@@ -272,7 +273,7 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <N extends Number> U increase(SerializableSupplier<N> property, Predicate<N> ignoreStrategy);
+    <N extends Number> U increase(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
 
     /**
      * increase value for property.
@@ -282,7 +283,7 @@ public interface EntityUpdateSetExpression<E, U, C extends ConditionExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    default <N extends Number> U increase(SerializableSupplier<N> property, IgnoreStrategy ignoreStrategy) {
+    default <N extends Number> U increase(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
         return increase(property, ignoreStrategy::test);
     }
 

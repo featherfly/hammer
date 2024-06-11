@@ -27,8 +27,8 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
     /**
      * not contains value. 不包含value.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -39,9 +39,9 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
     /**
      * not contains value. 不包含value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -52,9 +52,9 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
     /**
      * not contains value. 不包含value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -65,9 +65,9 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
     /**
      * not contains value. 不包含value.
      *
-     * @param <T>           the generic type
-     * @param name          the name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -78,10 +78,10 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
     /**
      * not contains value. 不包含value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -93,10 +93,10 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
     /**
      * not contains value. 不包含value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -106,14 +106,13 @@ public interface RepositoryNotContainsExpressionBase3<C extends ConditionExpress
     }
 
     @Override
-    default L nco3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return nco3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L nco3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return nco3(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     @Override
-    default L nco3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    default L nco3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nco3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-            ignoreStrategy);
+        return nco3(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 }

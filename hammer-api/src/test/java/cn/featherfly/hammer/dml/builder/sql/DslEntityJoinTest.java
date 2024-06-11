@@ -434,7 +434,7 @@ public class DslEntityJoinTest {
 
         String username = query.find(User2.class).fetch(User2::getUsername).where().eq(User2::getId, 1).value();
 
-        // 多查询对象，使用property IMPLSOON 未实现
+        // 多查询对象，使用property
         ui = query.find(UserInfo2.class).join(User2.class).on(UserInfo2::getUserId, User2::getId).where()
             .eq((e1, e2) -> e1.property(UserInfo2::getName).value("name")).single();
 

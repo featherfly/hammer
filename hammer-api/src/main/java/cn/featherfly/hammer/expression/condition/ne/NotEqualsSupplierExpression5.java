@@ -42,376 +42,850 @@ public interface NotEqualsSupplierExpression5<C extends ConditionExpression, L e
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableBooleanSupplier propertyValue);
+    default L ne5(SerializableBooleanSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableCharSupplier propertyValue);
+    default L ne5(SerializableCharSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableCharSupplier propertyValue, CharPredicate ignoreStrategy);
+    default L ne5(SerializableCharSupplier propertyValue, CharPredicate ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableIntSupplier propertyValue);
+    default L ne5(SerializableIntSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableIntSupplier propertyValue, IntPredicate ignoreStrategy);
+    default L ne5(SerializableIntSupplier propertyValue, IntPredicate ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableLongSupplier propertyValue);
+    default L ne5(SerializableLongSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableLongSupplier propertyValue, LongPredicate ignoreStrategy);
+    default L ne5(SerializableLongSupplier propertyValue, LongPredicate ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableDoubleSupplier propertyValue);
+    default L ne5(SerializableDoubleSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableDoubleSupplier propertyValue, DoublePredicate ignoreStrategy);
+    default L ne5(SerializableDoubleSupplier propertyValue, DoublePredicate ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableBoolSupplier propertyValue);
+    default L ne5(SerializableBoolSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne5(SerializableBoolSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<Boolean>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy);
+    default L ne5(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <N>      the generic type
-     * @param property bean property
+     * @param <N> the generic type
+     * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <N extends Number> L ne5(SerializableNumberSupplier<N> property);
+    default <N extends Number> L ne5(SerializableNumberSupplier<N> propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <N>            the generic type
-     * @param propertyValue  the property value
+     * @param <N> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <N extends Number> L ne5(SerializableNumberSupplier<N> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<N>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <N>            the generic type
-     * @param propertyValue  the property value
+     * @param <N> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ne5(SerializableNumberSupplier<N> propertyValue, Predicate<N> ignoreStrategy);
+    default <N extends Number> L ne5(SerializableNumberSupplier<N> propertyValue, Predicate<N> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <D>      the generic type
-     * @param property bean property
+     * @param <D> the generic type
+     * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <D extends Date> L ne5(SerializableDateSupplier<D> property);
+    default <D extends Date> L ne5(SerializableDateSupplier<D> propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <D>            the generic type
-     * @param propertyValue  the property value
+     * @param <D> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <D extends Date> L ne5(SerializableDateSupplier<D> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<D>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param propertyValue  the property value
+     * @param <D> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L ne5(SerializableDateSupplier<R> propertyValue, Predicate<R> ignoreStrategy);
+    default <D extends Date> L ne5(SerializableDateSupplier<D> propertyValue, Predicate<D> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <E>      the element type
-     * @param property bean property
+     * @param <E> the element type
+     * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> property);
+    default <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param propertyValue  the property value
+     * @param <E> the element type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<E>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param propertyValue  the property value
+     * @param <E> the element type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> propertyValue, Predicate<E> ignoreStrategy);
+    default <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> propertyValue, Predicate<E> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableLocalDateSupplier propertyValue);
+    default L ne5(SerializableLocalDateSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne5(SerializableLocalDateSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<LocalDate>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableLocalDateSupplier propertyValue, Predicate<LocalDate> ignoreStrategy);
+    default L ne5(SerializableLocalDateSupplier propertyValue, Predicate<LocalDate> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableLocalTimeSupplier propertyValue);
+    default L ne5(SerializableLocalTimeSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne5(SerializableLocalTimeSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<LocalTime>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableLocalTimeSupplier propertyValue, Predicate<LocalTime> ignoreStrategy);
+    default L ne5(SerializableLocalTimeSupplier propertyValue, Predicate<LocalTime> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L ne5(SerializableLocalDateTimeSupplier propertyValue);
+    default L ne5(SerializableLocalDateTimeSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne5(SerializableLocalDateTimeSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<LocalDateTime>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param propertyValue the property value
-     * @return LogicExpression
-     */
-    default L ne5(SerializableStringSupplier propertyValue) {
-        return ne5(propertyValue, MatchStrategy.AUTO);
+    default L ne5(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
+     * @return LogicExpression
+     */
+    default L ne5(SerializableStringSupplier propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne5(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne5(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return ne5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue the property value
+     * @param propertyValue the propertyValue value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L ne5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
+    default L ne5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return ne5(propertyValue, propertyValue.get(), matchStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the propertyValue value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
         IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the propertyValue value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L ne5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>      the generic type
-     * @param property bean property
+     * @param <R> the generic type
+     * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <R extends Serializable> L ne5(SerializableSupplier<R> property);
+    default <R extends Serializable> L ne5(SerializableSupplier<R> propertyValue) {
+        return ne5(propertyValue, propertyValue.get());
+    }
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param propertyValue  the property value
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <R extends Serializable> L ne5(SerializableSupplier<R> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return ne5(propertyValue, (Predicate<R>) ignoreStrategy::test);
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param propertyValue  the property value
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Serializable> L ne5(SerializableSupplier<R> propertyValue, Predicate<R> ignoreStrategy);
+    default <R extends Serializable> L ne5(SerializableSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
+        return ne5(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableBooleanSupplier property, boolean value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableCharSupplier property, char value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableIntSupplier property, int value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableLongSupplier property, long value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableDoubleSupplier property, double value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableBoolSupplier property, Boolean value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableBoolSupplier property, Boolean value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, (Predicate<Boolean>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <N extends Number> L ne5(SerializableNumberSupplier<N> property, N value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L ne5(SerializableNumberSupplier<N> property, N value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, (Predicate<N>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L ne5(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <D extends Date> L ne5(SerializableDateSupplier<D> property, D value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L ne5(SerializableDateSupplier<D> property, D value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, (Predicate<D>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L ne5(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> property, E value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> property, E value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, (Predicate<E>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ne5(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableLocalDateSupplier property, LocalDate value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableLocalDateSupplier property, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableLocalTimeSupplier property, LocalTime value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableLocalTimeSupplier property, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne5(SerializableLocalDateTimeSupplier property, LocalDateTime value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableLocalDateTimeSupplier property, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableLocalDateTimeSupplier property, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ne5(SerializableStringSupplier property, String value) {
+        return ne5(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return ne5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return ne5(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ne5(SerializableSupplier<R> property, R value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R extends Serializable> L ne5(SerializableSupplier<R> propertyValue, R value,
+        IgnoreStrategy ignoreStrategy) {
+        return ne5(propertyValue, value, (Predicate<R>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ne5(SerializableSupplier<R> propertyValue, R value, Predicate<R> ignoreStrategy);
 }

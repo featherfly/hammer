@@ -26,8 +26,8 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
     /**
      * not like value.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -38,9 +38,9 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
     /**
      * not like value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,9 +51,9 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
     /**
      * not like value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -64,9 +64,9 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
     /**
      * Lk.
      *
-     * @param <T>           the generic type
-     * @param name          the name 参数名称
-     * @param value         the value
+     * @param <T> the generic type
+     * @param name the name 参数名称
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -77,10 +77,10 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
     /**
      * Lk.
      *
-     * @param <T>            the generic type
-     * @param name           the name 参数名称
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name 参数名称
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -92,10 +92,10 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
     /**
      * Lk.
      *
-     * @param <T>            the generic type
-     * @param name           the name 参数名称
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name 参数名称
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -105,13 +105,14 @@ public interface RepositoryNotLikeExpression<C extends ConditionExpression, L ex
     }
 
     @Override
-    default L nl(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nl(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy);
+    default L nl(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return nl(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     @Override
-    default L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return nl(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy, ignoreStrategy);
+    default L nl(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nl(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 
 }

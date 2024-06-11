@@ -39,16 +39,20 @@ public interface LessEqualsSupplierExpression5<C extends ConditionExpression, L 
      * @param property bean property
      * @return LogicExpression
      */
-    L le5(SerializableIntSupplier property);
+    default L le5(SerializableIntSupplier property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(SerializableIntSupplier property, IntPredicate ignoreStrategy);
+    default L le5(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
@@ -56,16 +60,20 @@ public interface LessEqualsSupplierExpression5<C extends ConditionExpression, L 
      * @param property bean property
      * @return LogicExpression
      */
-    L le5(SerializableLongSupplier property);
+    default L le5(SerializableLongSupplier property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(SerializableLongSupplier property, LongPredicate ignoreStrategy);
+    default L le5(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
@@ -73,97 +81,125 @@ public interface LessEqualsSupplierExpression5<C extends ConditionExpression, L 
      * @param property bean property
      * @return LogicExpression
      */
-    L le5(SerializableDoubleSupplier property);
+    default L le5(SerializableDoubleSupplier property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+    default L le5(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property bean property
      * @return LogicExpression
      */
-    <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property);
+    default <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <E>            the element type
-     * @param property       bean property
+     * @param <E> the element type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+    default <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property, IgnoreStrategy ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <N>      the number type
+     * @param <E> the element type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <N> the number type
      * @param property bean property
      * @return LogicExpression
      */
-    <N extends Number> L le5(SerializableNumberSupplier<N> property);
+    default <N extends Number> L le5(SerializableNumberSupplier<N> property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <N>            the number type
-     * @param property       bean property
+     * @param <N> the number type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <N extends Number> L le5(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
-        return le5(property, (Predicate<N>) ignoreStrategy::test);
+        return le5(property, property.get(), ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <N>            the number type
-     * @param property       bean property
+     * @param <N> the number type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L le5(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
+    default <N extends Number> L le5(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <D>      the generic type
+     * @param <D> the generic type
      * @param property bean property
      * @return LogicExpression
      */
-    <D extends Date> L le5(SerializableDateSupplier<D> property);
+    default <D extends Date> L le5(SerializableDateSupplier<D> property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <D>            the generic type
-     * @param property       bean property
+     * @param <D> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <D extends Date> L le5(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy) {
-        return le5(property, (Predicate<D>) ignoreStrategy::test);
+        return le5(property, property.get(), ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param <D>            the generic type
-     * @param property       bean property
+     * @param <D> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L le5(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy);
+    default <D extends Date> L le5(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
@@ -171,27 +207,31 @@ public interface LessEqualsSupplierExpression5<C extends ConditionExpression, L 
      * @param property bean property
      * @return LogicExpression
      */
-    L le5(SerializableLocalTimeSupplier property);
+    default L le5(SerializableLocalTimeSupplier property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L le5(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return le5(property, (Predicate<LocalTime>) ignoreStrategy::test);
+        return le5(property, property.get(), ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    default L le5(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
@@ -199,27 +239,31 @@ public interface LessEqualsSupplierExpression5<C extends ConditionExpression, L 
      * @param property bean property
      * @return LogicExpression
      */
-    L le5(SerializableLocalDateSupplier property);
+    default L le5(SerializableLocalDateSupplier property) {
+        return le5(property, property.get());
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L le5(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy) {
-        return le5(property, (Predicate<LocalDate>) ignoreStrategy::test);
+        return le5(property, property.get(), ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    default L le5(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
@@ -227,27 +271,31 @@ public interface LessEqualsSupplierExpression5<C extends ConditionExpression, L 
      * @param property bean property
      * @return LogicExpression
      */
-    L le5(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * less equals. 小于等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L le5(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return le5(property, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    default L le5(SerializableLocalDateTimeSupplier property) {
+        return le5(property, property.get());
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    default L le5(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le5(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return le5(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less equals. 小于等于.
@@ -256,59 +304,364 @@ public interface LessEqualsSupplierExpression5<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L le5(SerializableStringSupplier property) {
-        return le5(property, MatchStrategy.AUTO);
+        return le5(property, property.get());
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L le5(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return le5(property, MatchStrategy.AUTO, ignoreStrategy);
+        return le5(property, property.get(), ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L le5(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return le5(property, MatchStrategy.AUTO, ignoreStrategy);
+        return le5(property, property.get(), ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property      bean property
+     * @param property bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L le5(SerializableStringSupplier property, MatchStrategy matchStrategy);
+    default L le5(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return le5(property, property.get(), matchStrategy);
+    }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L le5(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return le5(property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+        return le5(property, property.get(), matchStrategy, ignoreStrategy);
     }
 
     /**
      * less equals. 小于等于.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le5(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L le5(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return le5(property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L le5(SerializableIntSupplier property, int value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L le5(SerializableLongSupplier property, long value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L le5(SerializableDoubleSupplier property, double value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property, E value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property, E value, IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, (Predicate<E>) ignoreStrategy::test);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L le5(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    <N extends Number> L le5(SerializableNumberSupplier<N> property, N value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L le5(SerializableNumberSupplier<N> property, N value, IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, (Predicate<N>) ignoreStrategy::test);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L le5(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    <D extends Date> L le5(SerializableDateSupplier<D> property, D value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L le5(SerializableDateSupplier<D> property, D value, IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, (Predicate<D>) ignoreStrategy::test);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L le5(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L le5(SerializableLocalTimeSupplier property, LocalTime value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le5(SerializableLocalTimeSupplier property, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L le5(SerializableLocalDateSupplier property, LocalDate value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le5(SerializableLocalDateSupplier property, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L le5(SerializableLocalDateTimeSupplier property, LocalDateTime value);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le5(SerializableLocalDateTimeSupplier property, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableLocalDateTimeSupplier property, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L le5(SerializableStringSupplier property, String value) {
+        return le5(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le5(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le5(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return le5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L le5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return le5(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * less equals. 小于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L le5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

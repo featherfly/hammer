@@ -19,29 +19,31 @@ import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.ba.BetweenSupplierExpression6;
 
 /**
  * The Interface EntityBetweenExpressionBase6.
  *
  * @author zhongj
- * @param <T>  the element type
+ * @param <T> the element type
  * @param <T2> the generic type
  * @param <T3> the generic type
  * @param <T4> the generic type
  * @param <T5> the generic type
  * @param <T6> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityBetweenExpressionBase5<T, T2, T3, T4, T5, C, L> {
+    L extends LogicExpression<C, L>>
+    extends EntityBetweenExpressionBase5<T, T2, T3, T4, T5, C, L>, BetweenSupplierExpression6<C, L> {
 
     /**
      * between and.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     L ba6(SerializableToIntFunction<T6> name, int min, int max);
@@ -49,9 +51,9 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -61,8 +63,8 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
      * between and.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     L ba6(SerializableToLongFunction<T6> name, long min, long max);
@@ -70,9 +72,9 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -82,8 +84,8 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
      * between and.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     L ba6(SerializableToDoubleFunction<T6> name, double min, double max);
@@ -91,9 +93,9 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -102,10 +104,10 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param <N>  number type
+     * @param <N> number type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     <N extends Number> L ba6(SerializableToNumberFunction<T6, N> name, N min, N max);
@@ -113,10 +115,10 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param <N>            number type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <N> number type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -125,10 +127,10 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param <D>  date type
+     * @param <D> date type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     <D extends Date> L ba6(SerializableToDateFunction<T6, D> name, D min, D max);
@@ -136,10 +138,10 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param <D>            date type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <D> date type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -148,10 +150,10 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param <E>  enum type
+     * @param <E> enum type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     <E extends Enum<E>> L ba6(SerializableToEnumFunction<T6, E> name, E min, E max);
@@ -159,10 +161,10 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param <E>            enum type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <E> enum type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -172,8 +174,8 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
      * between and.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     L ba6(SerializableToLocalTimeFunction<T6> name, LocalTime min, LocalTime max);
@@ -181,21 +183,21 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ba6(SerializableToLocalTimeFunction<T6> name, LocalTime min, LocalTime max,
-            BiPredicate<LocalTime, LocalTime> ignoreStrategy);
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy);
 
     /**
      * between and.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     L ba6(SerializableToLocalDateFunction<T6> name, LocalDate min, LocalDate max);
@@ -203,21 +205,21 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ba6(SerializableToLocalDateFunction<T6> name, LocalDate min, LocalDate max,
-            BiPredicate<LocalDate, LocalDate> ignoreStrategy);
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy);
 
     /**
      * between and.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     L ba6(SerializableToLocalDateTimeFunction<T6> name, LocalDateTime min, LocalDateTime max);
@@ -225,21 +227,21 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ba6(SerializableToLocalDateTimeFunction<T6> name, LocalDateTime min, LocalDateTime max,
-            BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy);
 
     /**
      * between and.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return LogicExpression
      */
     L ba6(SerializableToStringFunction<T6> name, String min, String max);
@@ -247,9 +249,9 @@ public interface EntityBetweenExpressionBase6<T, T2, T3, T4, T5, T6, C extends C
     /**
      * between and.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

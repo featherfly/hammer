@@ -25,29 +25,29 @@ public interface NotEndWithSupplierExpression5<C extends ConditionExpression, L 
      * @return LogicExpression
      */
     default L new5(SerializableStringSupplier propertyValue) {
-        return new5(propertyValue, MatchStrategy.AUTO);
+        return new5(propertyValue, propertyValue.get());
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L new5(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return new5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return new5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L new5(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return new5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return new5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
@@ -57,28 +57,106 @@ public interface NotEndWithSupplierExpression5<C extends ConditionExpression, L 
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L new5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * not end with value. 不以value结尾.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L new5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-        IgnoreStrategy ignoreStrategy) {
-        return new5(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    default L new5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return new5(propertyValue, propertyValue.get(), matchStrategy);
     }
 
     /**
      * not end with value. 不以value结尾.
      *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L new5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L new5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return new5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L new5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return new5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L new5(SerializableStringSupplier property, String value) {
+        return new5(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L new5(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return new5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L new5(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return new5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L new5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L new5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return new5(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not end with value. 不以value结尾.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L new5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
@@ -233,7 +234,7 @@ public class EntitySqlExecutableUpdate3<E, J1, J2>
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate3<E, J1, J2> increase(SerializableSupplier<N> property) {
+    public <N extends Number> EntityExecutableUpdate3<E, J1, J2> increase(SerializableNumberSupplier<N> property) {
         update.increase(property);
         return this;
     }
@@ -242,7 +243,7 @@ public class EntitySqlExecutableUpdate3<E, J1, J2>
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate3<E, J1, J2> increase(SerializableSupplier<N> property,
+    public <N extends Number> EntityExecutableUpdate3<E, J1, J2> increase(SerializableNumberSupplier<N> property,
         Predicate<N> ignoreStrategy) {
         update.increase(property, ignoreStrategy);
         return this;

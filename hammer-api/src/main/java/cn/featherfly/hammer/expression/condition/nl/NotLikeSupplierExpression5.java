@@ -21,63 +21,142 @@ public interface NotLikeSupplierExpression5<C extends ConditionExpression, L ext
     /**
      * not like value.
      *
-     * @param property bean property
+     * @param propertyValue the property value
      * @return LogicExpression
      */
-    default L nl5(SerializableStringSupplier property) {
-        return nl5(property, MatchStrategy.AUTO);
+    default L nl5(SerializableStringSupplier propertyValue) {
+        return nl5(propertyValue, propertyValue.get());
     }
 
     /**
      * not like value.
      *
-     * @param property       bean property
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nl5(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return nl5(property, MatchStrategy.AUTO, ignoreStrategy);
+    default L nl5(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
+        return nl5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not like value.
      *
-     * @param property       bean property
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    default L nl5(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return nl5(property, MatchStrategy.AUTO, ignoreStrategy);
+    default L nl5(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
+        return nl5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
-     * Lk.
+     * not like value.
      *
-     * @param property      bean property
+     * @param propertyValue the property value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L nl5(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * Lk.
-     *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nl5(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return nl5(property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    default L nl5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return nl5(propertyValue, propertyValue.get(), matchStrategy);
     }
 
     /**
-     * Lk.
+     * not like value.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nl5(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L nl5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return nl5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nl5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * not like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L nl5(SerializableStringSupplier property, String value) {
+        return nl5(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl5(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return nl5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl5(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return nl5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L nl5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * not like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nl5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return nl5(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not like value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L nl5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

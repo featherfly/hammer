@@ -68,8 +68,8 @@ public abstract class AbstractGreatEqualsRepositoryExpression<C extends Conditio
     /**
      * Instantiates a new abstract great equals repository expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractGreatEqualsRepositoryExpression(int index, MulitiGreatEqualsExpression<C, L> expression,
@@ -239,73 +239,75 @@ public abstract class AbstractGreatEqualsRepositoryExpression<C extends Conditio
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> void accept(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> void accept(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public <N extends Number> void accept(SerializableNumberSupplier<N> property, N value,
+        Predicate<N> ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        expression.ge(index, property, ignoreStrategy);
+    public void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        expression.ge(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
+    public void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        expression.ge(index, property, matchStrategy, ignoreStrategy);
+        expression.ge(index, property, value, matchStrategy, ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------

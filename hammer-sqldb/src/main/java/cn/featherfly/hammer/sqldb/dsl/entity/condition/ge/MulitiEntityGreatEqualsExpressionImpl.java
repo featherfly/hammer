@@ -14,7 +14,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <L> the generic type
  */
 public class MulitiEntityGreatEqualsExpressionImpl<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends AbstractMulitiGreatEqualsExpression<InternalMulitiEntityCondition<L>, C, L> {
+    extends AbstractMulitiGreatEqualsExpression<InternalMulitiEntityCondition<L>, C, L> {
 
     /**
      * Instantiates a new muliti entity equals expression impl.

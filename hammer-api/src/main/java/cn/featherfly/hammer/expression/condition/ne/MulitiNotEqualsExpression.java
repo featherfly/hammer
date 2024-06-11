@@ -47,14 +47,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface MulitiNotEqualsExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -65,10 +65,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>           the generic type
-     * @param index         the index
-     * @param name          the name
-     * @param value         the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -77,10 +77,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -91,10 +91,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -105,11 +105,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -120,11 +120,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -134,7 +134,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
      * not equals. 不等于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -143,9 +143,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -155,7 +155,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
      * not equals. 不等于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -164,9 +164,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -176,7 +176,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
      * not equals. 不等于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -185,9 +185,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -196,9 +196,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -207,10 +207,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -221,10 +221,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -233,9 +233,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -244,10 +244,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -258,10 +258,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -270,9 +270,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -281,10 +281,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -295,10 +295,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -308,7 +308,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
      * not equals. 不等于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -317,9 +317,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -330,9 +330,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -342,7 +342,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
      * not equals. 不等于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -351,9 +351,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -364,9 +364,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -376,7 +376,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
      * not equals. 不等于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -385,9 +385,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -398,9 +398,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -410,7 +410,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
      * not equals. 不等于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -419,9 +419,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -432,9 +432,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -445,9 +445,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index         the index
-     * @param name          the name
-     * @param value         the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -456,10 +456,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -470,10 +470,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -482,10 +482,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the element type
-     * @param <R>   the generic type
+     * @param <T> the element type
+     * @param <R> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -494,11 +494,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the element type
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the element type
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -509,11 +509,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the element type
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the element type
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -524,11 +524,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>           the element type
-     * @param <R>           the generic type
-     * @param index         the index
-     * @param name          the name
-     * @param value         the value
+     * @param <T> the element type
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -537,41 +537,41 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the element type
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the element type
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T, R> L ne(int index, SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, matchStrategy, (Predicate<R>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the element type
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the element type
+     * @param <R> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <T, R> L ne(int index, SerializableFunction<T, R> name, R value, MatchStrategy matchStrategy,
-            Predicate<R> ignoreStrategy);
+        Predicate<R> ignoreStrategy);
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
+     * @param <T> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -580,10 +580,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -592,9 +592,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
+     * @param <T> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -603,10 +603,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -615,9 +615,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
+     * @param <T> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -626,10 +626,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -638,10 +638,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
-     * @param <N>   number type
+     * @param <T> the generic type
+     * @param <N> number type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -650,40 +650,40 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param <N>            number type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <N> number type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T, N extends Number> L ne(int index, SerializableToNumberFunction<T, N> name, N value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, (Predicate<N>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param <N>            number type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <N> number type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <T, N extends Number> L ne(int index, SerializableToNumberFunction<T, N> name, N value,
-            Predicate<N> ignoreStrategy);
+        Predicate<N> ignoreStrategy);
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
-     * @param <E>   the element type
+     * @param <T> the generic type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -692,27 +692,27 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T, E extends Enum<E>> L ne(int index, SerializableToEnumFunction<T, E> name, E value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, (Predicate<E>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -721,10 +721,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
-     * @param <D>   date type
+     * @param <T> the generic type
+     * @param <D> date type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -733,27 +733,27 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param <D>            date type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <D> date type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T, D extends Date> L ne(int index, SerializableToDateFunction<T, D> name, D value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, (Predicate<D>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param <D>            date type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <D> date type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -762,9 +762,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
+     * @param <T> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -773,25 +773,25 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T> L ne(int index, SerializableToLocalTimeFunction<T> name, LocalTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, (Predicate<LocalTime>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -800,9 +800,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
+     * @param <T> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -811,25 +811,25 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T> L ne(int index, SerializableToLocalDateFunction<T> name, LocalDate value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, (Predicate<LocalDate>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -838,9 +838,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
+     * @param <T> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -849,37 +849,37 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T> L ne(int index, SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <T> L ne(int index, SerializableToLocalDateTimeFunction<T> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy);
+        Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
+     * @param <T> the generic type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -888,10 +888,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -902,10 +902,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -914,10 +914,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>           the generic type
-     * @param index         the index
-     * @param name          the name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -926,395 +926,837 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <T> L ne(int index, SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, name, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param index the index
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <T> L ne(int index, SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>      the generic type
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    <R> L ne(int index, SerializableSupplier<R> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <R> L ne(int index, SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, (Predicate<R>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L ne(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableIntSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLongSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableDoubleSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <D>      the generic type
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    <D extends Date> L ne(int index, SerializableDateSupplier<D> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <D>            the generic type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <D extends Date> L ne(int index, SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, (Predicate<D>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <D>            the generic type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <D extends Date> L ne(int index, SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <N>      the generic type
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    <N extends Number> L ne(int index, SerializableNumberSupplier<N> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <N>            the generic type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, (Predicate<N>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <N>            the generic type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <E>      the element type
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, (Predicate<E>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLocalDateSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ne(int index, SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, (Predicate<LocalDate>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLocalTimeSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ne(int index, SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, (Predicate<LocalTime>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLocalDateTimeSupplier property);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ne(int index, SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, (Predicate<LocalDateTime>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index    the index
-     * @param property bean property
-     * @return LogicExpression
-     */
-    default L ne(int index, SerializableStringSupplier property) {
-        return ne(index, property, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ne(int index, SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ne(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return ne(index, property, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index         the index
-     * @param property      bean property
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return ne(index, property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param index          the index
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
     /**
      * not equals. 不等于.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default <R> L ne(int index, SerializableSupplier<R> property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <R> L ne(int index, SerializableSupplier<R> property, R value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L ne(int index, SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L ne(int index, SerializableSupplier<R> property, R value, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, (Predicate<R>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R> L ne(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R> L ne(int index, SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableIntSupplier property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableIntSupplier property, int value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLongSupplier property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLongSupplier property, long value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableDoubleSupplier property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableDoubleSupplier property, double value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default <D extends Date> L ne(int index, SerializableDateSupplier<D> property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <D extends Date> L ne(int index, SerializableDateSupplier<D> property, D value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L ne(int index, SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L ne(int index, SerializableDateSupplier<D> property, D value,
+        IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, (Predicate<D>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L ne(int index, SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L ne(int index, SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default <N extends Number> L ne(int index, SerializableNumberSupplier<N> property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, N value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, N value,
+        IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, (Predicate<N>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, E value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, E value,
+        IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, (Predicate<E>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateSupplier property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLocalDateSupplier property, LocalDate value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateSupplier property, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalTimeSupplier property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLocalTimeSupplier property, LocalTime value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalTimeSupplier property, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateTimeSupplier property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property) {
+        return ne(index, property, property.get());
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, String value) {
+        return ne(index, property, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
+        return ne(index, property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return ne(index, property, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ne(index, property, property.get(), matchStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return ne(index, property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return ne(index, property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -1327,10 +1769,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>           the generic type
-     * @param index         the index
-     * @param field         the field
-     * @param value         the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -1341,10 +1783,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1355,10 +1797,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1369,11 +1811,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1384,11 +1826,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1411,9 +1853,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1436,9 +1878,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1461,9 +1903,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1474,7 +1916,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -1487,10 +1929,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1501,10 +1943,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1515,7 +1957,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -1528,10 +1970,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1542,10 +1984,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1556,7 +1998,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -1569,10 +2011,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1583,10 +2025,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1609,9 +2051,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1622,9 +2064,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1647,9 +2089,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1660,9 +2102,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1685,9 +2127,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1698,9 +2140,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1723,9 +2165,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1736,9 +2178,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1749,9 +2191,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index         the index
-     * @param field         the field
-     * @param value         the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -1762,10 +2204,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1776,10 +2218,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1792,7 +2234,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -1805,10 +2247,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>           the generic type
-     * @param index         the index
-     * @param field         the field
-     * @param value         the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -1819,10 +2261,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1833,10 +2275,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1847,11 +2289,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1862,11 +2304,11 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <R> the generic type
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1889,9 +2331,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1914,9 +2356,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1939,9 +2381,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1952,7 +2394,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -1965,10 +2407,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1979,10 +2421,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1993,7 +2435,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -2006,10 +2448,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2020,10 +2462,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2034,7 +2476,7 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -2047,10 +2489,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2061,10 +2503,10 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2087,9 +2529,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2100,9 +2542,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2125,9 +2567,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2138,9 +2580,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2163,9 +2605,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2176,9 +2618,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2201,9 +2643,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2214,9 +2656,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -2227,9 +2669,9 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index         the index
-     * @param field         the field
-     * @param value         the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -2240,30 +2682,30 @@ public interface MulitiNotEqualsExpression<C extends ConditionExpression, L exte
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne(int index, AliasField field, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
+        IgnoreStrategy ignoreStrategy) {
         return ne(index, field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * not equals. 不等于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param index the index
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ne(int index, AliasField field, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return ne(index, field.getAliasOrName(), value, matchStrategy, ignoreStrategy);
     }
 }

@@ -38,8 +38,8 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>    the generic type
-     * @param name   the name
+     * @param <T> the generic type
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -50,9 +50,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -63,9 +63,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param values         the values
+     * @param <T> the generic type
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -78,8 +78,8 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>    the generic type
-     * @param name   the name
+     * @param <T> the generic type
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -90,9 +90,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -103,9 +103,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param values         the values
+     * @param <T> the generic type
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -118,8 +118,8 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>    the generic type
-     * @param name   the name
+     * @param <T> the generic type
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -130,9 +130,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -143,9 +143,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param values         the values
+     * @param <T> the generic type
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -158,8 +158,8 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>    the generic type
-     * @param name   the name
+     * @param <T> the generic type
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -170,9 +170,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>           the generic type
-     * @param name          the name
-     * @param values        the values
+     * @param <T> the generic type
+     * @param name the name
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -183,9 +183,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -196,10 +196,10 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -211,9 +211,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param values         the values
+     * @param <T> the generic type
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -224,10 +224,10 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -241,9 +241,9 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>    the generic type
-     * @param <R>    the generic type
-     * @param name   the name
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -255,10 +255,10 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -270,10 +270,10 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param values         the values
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -282,84 +282,167 @@ public interface RepositoryInExpression<C extends ConditionExpression, L extends
         return in(LambdaUtils.getLambdaPropertyName(name), values, ignoreStrategy);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
     @Override
-    default <R extends Serializable> L in(SerializableSupplier<R> property) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default <R extends Serializable> L in(SerializableSupplier<R> property, R value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <R extends Serializable> L in(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default <R extends Serializable> L in(SerializableSupplier<R> property, @SuppressWarnings("unchecked") R... value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableIntSupplier property) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default <R extends Serializable> L in(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default <R extends Serializable> L in(SerializableSupplier<R> property, R[] value, Predicate<R[]> ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableLongSupplier property) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L in(SerializableIntSupplier property, int value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L in(SerializableIntSupplier property, int... value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableDoubleSupplier property) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L in(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L in(SerializableIntSupplier property, int[] value, Predicate<int[]> ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy);
+    default L in(SerializableLongSupplier property, long value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L in(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return in(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy, ignoreStrategy);
+    default L in(SerializableLongSupplier property, long... value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableLongSupplier property, long[] value, Predicate<long[]> ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableDoubleSupplier property, double value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableDoubleSupplier property, double... value) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableDoubleSupplier property, double[] value, Predicate<double[]> ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default L in(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
+        Predicate<String[]> ignoreStrategy) {
+        return in(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
+    }
 }

@@ -25,29 +25,29 @@ public interface NotContainsSupplierExpression5<C extends ConditionExpression, L
      * @return LogicExpression
      */
     default L nco5(SerializableStringSupplier propertyValue) {
-        return nco5(propertyValue, MatchStrategy.AUTO);
+        return nco5(propertyValue, propertyValue.get());
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L nco5(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return nco5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return nco5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L nco5(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return nco5(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return nco5(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
@@ -57,28 +57,106 @@ public interface NotContainsSupplierExpression5<C extends ConditionExpression, L
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * not contains value. 不包含value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-        IgnoreStrategy ignoreStrategy) {
-        return nco5(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    default L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return nco5(propertyValue, propertyValue.get(), matchStrategy);
     }
 
     /**
      * not contains value. 不包含value.
      *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return nco5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco5(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nco5(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L nco5(SerializableStringSupplier property, String value) {
+        return nco5(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco5(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return nco5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco5(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return nco5(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L nco5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nco5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return nco5(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not contains value. 不包含value.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L nco5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

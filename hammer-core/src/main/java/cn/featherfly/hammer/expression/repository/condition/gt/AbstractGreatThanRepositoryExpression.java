@@ -68,8 +68,8 @@ public abstract class AbstractGreatThanRepositoryExpression<C extends ConditionE
     /**
      * Instantiates a new abstract great than repository expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractGreatThanRepositoryExpression(int index, MulitiGreatThanExpression<C, L> expression,
@@ -239,73 +239,75 @@ public abstract class AbstractGreatThanRepositoryExpression<C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> void accept(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> void accept(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public <N extends Number> void accept(SerializableNumberSupplier<N> property, N value,
+        Predicate<N> ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        expression.gt(index, property, ignoreStrategy);
+    public void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        expression.gt(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
+    public void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        expression.gt(index, property, matchStrategy, ignoreStrategy);
+        expression.gt(index, property, value, matchStrategy, ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------

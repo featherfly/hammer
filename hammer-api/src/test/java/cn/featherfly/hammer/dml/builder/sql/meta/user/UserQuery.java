@@ -8,13 +8,13 @@
  */
 package cn.featherfly.hammer.dml.builder.sql.meta.user;
 
+import java.util.function.Function;
+
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.hammer.dml.builder.sql.meta.Query;
 import cn.featherfly.hammer.dml.builder.sql.meta.RepositoryQuery;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
-
-import java.util.function.Function;
 
 /**
  * Query.
@@ -55,21 +55,21 @@ public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableF
 
         query.find(userQuery) //
             .field(user -> user.name) // user0.name
-            .field(user -> user.password.alias("pwd") // user0.password as pwd
-            )// select end
+            .field(user -> user.password.as("pwd")) // user0.password as pwd
+            // select end
             .where();
 
         query.find(userQuery) //
             .fields(user -> new Field[] { //
                 user.name, // user0.name
-                user.password.alias("pwd") // user0.password as pwd
+                user.password.as("pwd") // user0.password as pwd
             })// select end
             .where();
 
         query.find(userQuery) //
             .field(// select
                 userQuery.queryable.name, // user0.name
-                userQuery.queryable.password // user0.password as pwd
+                userQuery.queryable.password.as("pwd") // user0.password as pwd
             ) // select end
             .where();
 
@@ -97,7 +97,7 @@ public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableF
 
         query.find(userQuery).where().name.eq("zj").and().password.eq("123").single();
         query.find(userQuery).where().name.eq("zj").and().password.eq("123").limit(1).single();
-        query.find(userQuery).where().name.eq("zj").and().password.alias("pwd").eq("123").limit(1).single();
+        //        query.find(userQuery).where().name.eq("zj").and().password.alias("pwd").eq("123").limit(1).single();
 
         query.find(userQuery).where().alias("");
 

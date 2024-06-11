@@ -25,29 +25,29 @@ public interface NotStartWithSupplierExpression2<C extends ConditionExpression, 
      * @return LogicExpression
      */
     default L nsw2(SerializableStringSupplier propertyValue) {
-        return nsw2(propertyValue, MatchStrategy.AUTO);
+        return nsw2(propertyValue, propertyValue.get());
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L nsw2(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return nsw2(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return nsw2(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param propertyValue  the property value
+     * @param propertyValue the property value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L nsw2(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return nsw2(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return nsw2(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
@@ -57,28 +57,106 @@ public interface NotStartWithSupplierExpression2<C extends ConditionExpression, 
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
-
-    /**
-     * not start with value. 不以value开始.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-        IgnoreStrategy ignoreStrategy) {
-        return nsw2(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    default L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return nsw2(propertyValue, propertyValue.get(), matchStrategy);
     }
 
     /**
      * not start with value. 不以value开始.
      *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return nsw2(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param propertyValue the property value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nsw2(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L nsw2(SerializableStringSupplier property, String value) {
+        return nsw2(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw2(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return nsw2(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw2(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return nsw2(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L nsw2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L nsw2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return nsw2(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * not start with value. 不以value开始.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L nsw2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

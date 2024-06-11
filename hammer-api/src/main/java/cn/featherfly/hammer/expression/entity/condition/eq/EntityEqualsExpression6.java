@@ -13,17 +13,35 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * The Interface EntityEqualsExpression2.
  *
  * @author zhongj
- * @param <E>  the element type
+ * @param <E> the element type
  * @param <E2> the generic type
  * @param <E3> the generic type
  * @param <E4> the generic type
  * @param <E5> the generic type
  * @param <E6> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityEqualsExpression6<E, E2, E3, E4, E5, E6, C extends ConditionExpression,
-        L extends LogicExpression<C, L>> extends EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C, L> {
+    L extends LogicExpression<C, L>> extends EntityEqualsExpressionBase6<E, E2, E3, E4, E5, E6, C, L> {
+
+    /**
+     * equals. 等于.
+     *
+     * @param equalsEntityExpressions the equals entity expressions
+     * @return the LogicExpression
+     */
+    L eq(Consumer<Tuple6<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
+        EqualsEntityExpression<E4>, EqualsEntityExpression<E5>, EqualsEntityExpression<E6>>> equalsEntityExpressions);
+
+    /**
+     * equals. 等于.
+     *
+     * @param equalsEntityExpressions the equals entity expressions
+     * @return LogicExpression
+     */
+    L eq(SixArgusConsumer<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
+        EqualsEntityExpression<E4>, EqualsEntityExpression<E5>, EqualsEntityExpression<E6>> equalsEntityExpressions);
 
     //    /**
     //     * equals. 等于.
@@ -1055,23 +1073,4 @@ public interface EntityEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Condit
     //     */
     //    L eq(Function<EntityEqualsExpression6<E, E2, E3, E4, E5, E6, C, L>, L> consumer);
 
-    /**
-     * equals. 等于.
-     *
-     * @param equalsEntityExpressions the equals entity expressions
-     * @return the LogicExpression
-     */
-    L eq(Consumer<Tuple6<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
-            EqualsEntityExpression<E4>, EqualsEntityExpression<E5>,
-            EqualsEntityExpression<E6>>> equalsEntityExpressions);
-
-    /**
-     * equals. 等于.
-     *
-     * @param equalsEntityExpressions the equals entity expressions
-     * @return LogicExpression
-     */
-    L eq(SixArgusConsumer<EqualsEntityExpression<E>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
-            EqualsEntityExpression<E4>, EqualsEntityExpression<E5>,
-            EqualsEntityExpression<E6>> equalsEntityExpressions);
 }

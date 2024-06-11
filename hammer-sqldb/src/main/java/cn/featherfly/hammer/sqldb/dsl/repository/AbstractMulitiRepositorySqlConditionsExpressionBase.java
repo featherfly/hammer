@@ -911,6 +911,14 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Serializable> L in(String name, R[] value, Predicate<R[]> ignoreStrategy) {
+        return in(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
      * In.
      *
      * @param <R> the generic type
@@ -1413,6 +1421,14 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public <R extends Serializable> L ni(String name, R value, Predicate<R> ignoreStrategy) {
+        return ni(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Serializable> L ni(String name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(name, value, ignoreStrategy, repositoryAlias);
     }
 

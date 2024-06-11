@@ -150,7 +150,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <N extends Number> UserUpdate increase(SerializableSupplier<N> property) {
+//    public <N extends Number> UserUpdate increase(SerializableNumberSupplier<N> property) {
 //
 //        return null;
 //    }
@@ -224,7 +224,7 @@
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    public <N extends Number> UserUpdate increase(BooleanSupplier whether, SerializableSupplier<N> property) {
+//    public <N extends Number> UserUpdate increase(BooleanSupplier whether, SerializableNumberSupplier<N> property) {
 //
 //        return null;
 //    }

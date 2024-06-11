@@ -371,7 +371,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
     @Test
     public void updateEntitySetNestedProperty() {
-        final int id = 5;
+        final int id = 6;
         UserInfo ui = hammer.get(id, UserInfo.class);
         assertNotNull(ui);
         assertNotNull(ui.getUser());
@@ -577,7 +577,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
     @Test
     public void updateEntityNestedPropertySet() {
-        final int id = 5;
+        final int id = 6;
         UserInfo ui = hammer.get(id, UserInfo.class);
         assertNotNull(ui);
         assertNotNull(ui.getUser());
@@ -629,11 +629,35 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         assertEquals(load.getDivision().getCity(), newDivision.getCity());
         assertEquals(load.getDivision().getDistrict(), newDivision.getDistrict());
         assertEquals(load.getDivision().getProvince(), null); // 新对象是空
+
+        // ----------------------------------------------------------------------------------------------------------------
+        // rollback changed value
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getDescp, ui.getDescp()) //
+            .set(UserInfo::getUser, User::getId, ui.getUser().getId()) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
+        assertEquals(load.getDescp(), ui.getDescp());
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, ui.getUser().getId(), v -> false)
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
     }
 
     @Test
     public void updateEntityNestedPropertySet2() {
-        final int id = 5;
+        final int id = 6;
         UserInfo ui = hammer.get(id, UserInfo.class);
         assertNotNull(ui);
         assertNotNull(ui.getUser());
@@ -690,6 +714,30 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         assertEquals(load.getDivision().getCity(), newDivision.getCity());
         assertEquals(load.getDivision().getDistrict(), newDivision.getDistrict());
         assertEquals(load.getDivision().getProvince(), null); // 新对象是空
+
+        // ----------------------------------------------------------------------------------------------------------------
+        // rollback changed value
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getDescp, ui.getDescp()) //
+            .set(UserInfo::getUser, User::getId, ui.getUser().getId()) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
+        assertEquals(load.getDescp(), ui.getDescp());
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, ui.getUser().getId(), v -> false)
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
     }
 
     @Test
@@ -724,6 +772,30 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         assertNotNull(load.getUser());
         assertNotNull(load.getUser().getId());
         assertEquals(load.getAddress().getStreetNo(), ui.getAddress().getStreetNo() + 1);
+
+        // ----------------------------------------------------------------------------------------------------------------
+        // rollback changed value
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getDescp, ui.getDescp()) //
+            .set(UserInfo::getUser, User::getId, ui.getUser().getId()) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
+        assertEquals(load.getDescp(), ui.getDescp());
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, ui.getUser().getId(), v -> false)
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
     }
 
     @Test

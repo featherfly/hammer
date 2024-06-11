@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.repository.AliasRepository;
@@ -201,7 +202,7 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositoryExecutableUpdate increase(SerializableSupplier<N> property) {
+    public <N extends Number> RepositoryExecutableUpdate increase(SerializableNumberSupplier<N> property) {
         return increase0(getPropertyName(property), property.get());
     }
 
@@ -209,7 +210,7 @@ public class RepositorySqlExecutableUpdate extends AbstractSqlExecutableUpdate<R
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositoryExecutableUpdate increase(SerializableSupplier<N> property,
+    public <N extends Number> RepositoryExecutableUpdate increase(SerializableNumberSupplier<N> property,
         Predicate<N> ignoreStrategy) {
         return increase0(getPropertyName(property), property.get(), ignoreStrategy);
     }

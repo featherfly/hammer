@@ -39,16 +39,20 @@ public interface GreatEqualsSupplierExpression2<C extends ConditionExpression, L
      * @param property bean property
      * @return LogicExpression
      */
-    L ge2(SerializableIntSupplier property);
+    default L ge2(SerializableIntSupplier property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(SerializableIntSupplier property, IntPredicate ignoreStrategy);
+    default L ge2(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great and equals. 大于等于.
@@ -56,16 +60,20 @@ public interface GreatEqualsSupplierExpression2<C extends ConditionExpression, L
      * @param property bean property
      * @return LogicExpression
      */
-    L ge2(SerializableLongSupplier property);
+    default L ge2(SerializableLongSupplier property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(SerializableLongSupplier property, LongPredicate ignoreStrategy);
+    default L ge2(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great and equals. 大于等于.
@@ -73,97 +81,125 @@ public interface GreatEqualsSupplierExpression2<C extends ConditionExpression, L
      * @param property bean property
      * @return LogicExpression
      */
-    L ge2(SerializableDoubleSupplier property);
+    default L ge2(SerializableDoubleSupplier property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+    default L ge2(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property bean property
      * @return LogicExpression
      */
-    <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property);
+    default <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param <E>            the element type
-     * @param property       bean property
+     * @param <E> the element type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+    default <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great equals. 大于等于.
      *
-     * @param <N>      the number type
+     * @param <N> the number type
      * @param property bean property
      * @return LogicExpression
      */
-    <N extends Number> L ge2(SerializableNumberSupplier<N> property);
+    default <N extends Number> L ge2(SerializableNumberSupplier<N> property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great equals. 大于等于.
      *
-     * @param <N>            the number type
-     * @param property       bean property
+     * @param <N> the number type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <N extends Number> L ge2(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
-        return ge2(property, (Predicate<N>) ignoreStrategy::test);
+        return ge2(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param <N>            the number type
-     * @param property       bean property
+     * @param <N> the number type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L ge2(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
+    default <N extends Number> L ge2(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great equals. 大于等于.
      *
-     * @param <D>      the generic type
+     * @param <D> the generic type
      * @param property bean property
      * @return LogicExpression
      */
-    <D extends Date> L ge2(SerializableDateSupplier<D> property);
+    default <D extends Date> L ge2(SerializableDateSupplier<D> property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great equals. 大于等于.
      *
-     * @param <D>            the generic type
-     * @param property       bean property
+     * @param <D> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <D extends Date> L ge2(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy) {
-        return ge2(property, (Predicate<D>) ignoreStrategy::test);
+        return ge2(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param <D>            the generic type
-     * @param property       bean property
+     * @param <D> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L ge2(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy);
+    default <D extends Date> L ge2(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great equals. 大于等于.
@@ -171,27 +207,31 @@ public interface GreatEqualsSupplierExpression2<C extends ConditionExpression, L
      * @param property bean property
      * @return LogicExpression
      */
-    L ge2(SerializableLocalTimeSupplier property);
+    default L ge2(SerializableLocalTimeSupplier property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ge2(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ge2(property, (Predicate<LocalTime>) ignoreStrategy::test);
+        return ge2(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    default L ge2(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great equals. 大于等于.
@@ -199,27 +239,31 @@ public interface GreatEqualsSupplierExpression2<C extends ConditionExpression, L
      * @param property bean property
      * @return LogicExpression
      */
-    L ge2(SerializableLocalDateSupplier property);
+    default L ge2(SerializableLocalDateSupplier property) {
+        return ge2(property, property.get());
+    }
 
     /**
      * great equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ge2(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ge2(property, (Predicate<LocalDate>) ignoreStrategy::test);
+        return ge2(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    default L ge2(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great equals. 大于等于.
@@ -227,27 +271,31 @@ public interface GreatEqualsSupplierExpression2<C extends ConditionExpression, L
      * @param property bean property
      * @return LogicExpression
      */
-    L ge2(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * great equals. 大于等于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L ge2(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ge2(property, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    default L ge2(SerializableLocalDateTimeSupplier property) {
+        return ge2(property, property.get());
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    default L ge2(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge2(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return ge2(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great equals. 大于等于.
@@ -256,59 +304,364 @@ public interface GreatEqualsSupplierExpression2<C extends ConditionExpression, L
      * @return LogicExpression
      */
     default L ge2(SerializableStringSupplier property) {
-        return ge2(property, MatchStrategy.AUTO);
+        return ge2(property, property.get());
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ge2(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ge2(property, MatchStrategy.AUTO, ignoreStrategy);
+        return ge2(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great equals. 大于等于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ge2(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return ge2(property, MatchStrategy.AUTO, ignoreStrategy);
+        return ge2(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param property      bean property
+     * @param property bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L ge2(SerializableStringSupplier property, MatchStrategy matchStrategy);
+    default L ge2(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ge2(property, property.get(), matchStrategy);
+    }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ge2(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return ge2(property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+        return ge2(property, property.get(), matchStrategy, ignoreStrategy);
     }
 
     /**
      * great and equals. 大于等于.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L ge2(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ge2(property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ge2(SerializableIntSupplier property, int value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ge2(SerializableLongSupplier property, long value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ge2(SerializableDoubleSupplier property, double value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property, E value);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property, E value, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, (Predicate<E>) ignoreStrategy::test);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ge2(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    <N extends Number> L ge2(SerializableNumberSupplier<N> property, N value);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L ge2(SerializableNumberSupplier<N> property, N value, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, (Predicate<N>) ignoreStrategy::test);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L ge2(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    <D extends Date> L ge2(SerializableDateSupplier<D> property, D value);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L ge2(SerializableDateSupplier<D> property, D value, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, (Predicate<D>) ignoreStrategy::test);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L ge2(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ge2(SerializableLocalTimeSupplier property, LocalTime value);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge2(SerializableLocalTimeSupplier property, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ge2(SerializableLocalDateSupplier property, LocalDate value);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge2(SerializableLocalDateSupplier property, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ge2(SerializableLocalDateTimeSupplier property, LocalDateTime value);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge2(SerializableLocalDateTimeSupplier property, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableLocalDateTimeSupplier property, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ge2(SerializableStringSupplier property, String value) {
+        return ge2(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge2(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great equals. 大于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge2(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return ge2(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ge2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return ge2(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * great and equals. 大于等于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ge2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

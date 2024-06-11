@@ -27,12 +27,12 @@ import cn.featherfly.hammer.sqldb.Constants;
  * abstract muliti repository sql conditions group expression base6.
  *
  * @author zhongj
- * @param <C>  condition expression
- * @param <L>  logic expression
- * @param <T>  filterable repository index tuple type
+ * @param <C> condition expression
+ * @param <L> logic expression
+ * @param <T> filterable repository index tuple type
  * @param <C2> condition config
- * @param <S>  repository sql relation
- * @param <B>  sql builder
+ * @param <S> repository sql relation
+ * @param <B> sql builder
  */
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<C extends GroupExpression<C, L>,
     L extends GroupEndExpression<C, L>, T extends Tuple, C2 extends ConditionConfig<C2>,
@@ -49,7 +49,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<
 //    , RepositoryStartWithExpressionBase6<C, L>, RepositoryNotStartWithExpressionBase6<C, L> //
 //    , RepositoryLikeExpressionBase6<C, L>, RepositoryNotLikeExpressionBase6<C, L> //
 // 这里注释掉是为了编译速度
-/*, RepositoryFieldExpression<C, L>*/ {
+/* , RepositoryFieldExpression<C, L> */ {
 
     /** The repository alias 6. */
     protected final String repositoryAlias6;
@@ -58,8 +58,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<
      * Instantiates a new abstract muliti repository sql conditions group
      * expression base 6.
      *
-     * @param parent             the parent
-     * @param index              the index
+     * @param parent the parent
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     protected AbstractMulitiRepositorySqlConditionsGroupExpressionBase6(L parent, int index, S repositoryRelation) {
@@ -520,6 +520,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<
         return in(name, value, ignoreStrategy, repositoryAlias6);
     }
 
+    public <R extends Serializable> L in6(String name, R[] value, Predicate<R[]> ignoreStrategy) {
+        return in(name, value, ignoreStrategy, repositoryAlias6);
+    }
+
     // ----------------------------------------------------------------------------------------------------------------
 
     public L ni6(String name, int... values) {
@@ -559,6 +563,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase6<
     }
 
     public <R extends Serializable> L ni6(String name, R value, Predicate<R> ignoreStrategy) {
+        return ni(name, value, ignoreStrategy, repositoryAlias6);
+    }
+
+    public <R extends Serializable> L ni6(String name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(name, value, ignoreStrategy, repositoryAlias6);
     }
 

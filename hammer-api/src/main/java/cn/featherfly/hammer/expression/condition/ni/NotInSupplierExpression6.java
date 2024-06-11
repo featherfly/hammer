@@ -29,55 +29,37 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property bean property
      * @return LogicExpression
      */
-    <R extends Serializable> L ni6(SerializableSupplier<R> property);
+    default <R extends Serializable> L ni6(SerializableSupplier<R> property) {
+        return ni6(property, property.get());
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Serializable> L ni6(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
+     * @param <R> the generic type
      * @param property bean property
-     * @return LogicExpression
-     */
-    L ni6(SerializableIntSupplier property);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni6(SerializableIntSupplier property, IntPredicate ignoreStrategy);
+    default <R extends Serializable> L ni6(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
+        return ni6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
+     * @param <R> the generic type
      * @param property bean property
-     * @return LogicExpression
-     */
-    L ni6(SerializableLongSupplier property);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property       bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni6(SerializableLongSupplier property, LongPredicate ignoreStrategy);
+    default <R extends Serializable> L ni6(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return ni6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -85,16 +67,62 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * @param property bean property
      * @return LogicExpression
      */
-    L ni6(SerializableDoubleSupplier property);
+    default L ni6(SerializableIntSupplier property) {
+        return ni6(property, property.get());
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+    default L ni6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return ni6(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ni6(SerializableLongSupplier property) {
+        return ni6(property, property.get());
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return ni6(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    default L ni6(SerializableDoubleSupplier property) {
+        return ni6(property, property.get());
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return ni6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -103,59 +131,365 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * @return LogicExpression
      */
     default L ni6(SerializableStringSupplier property) {
-        return ni6(property, MatchStrategy.AUTO);
+        return ni6(property, property.get());
     }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ni6(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return ni6(property, MatchStrategy.AUTO, ignoreStrategy);
+        return ni6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ni6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return ni6(property, MatchStrategy.AUTO, ignoreStrategy);
+        return ni6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property      bean property
+     * @param property bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L ni6(SerializableStringSupplier property, MatchStrategy matchStrategy);
+    default L ni6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return ni6(property, property.get(), matchStrategy);
+    }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L ni6(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return ni6(property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+        return ni6(property, property.get(), matchStrategy, ignoreStrategy);
     }
 
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L ni6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return ni6(property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param property bean property
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ni6(SerializableSupplier<R> property, R value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ni6(SerializableSupplier<R> property, @SuppressWarnings("unchecked") R... value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R extends Serializable> L ni6(SerializableSupplier<R> property, R value, IgnoreStrategy ignoreStrategy) {
+        return ni6(property, value, ignoreStrategy::test);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ni6(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ni6(SerializableSupplier<R> property, R[] value, Predicate<R[]> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ni6(SerializableIntSupplier property, int value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ni6(SerializableIntSupplier property, int... value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableIntSupplier property, int[] value, Predicate<int[]> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ni6(SerializableLongSupplier property, long value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @return LogicExpression
+     */
+    L ni6(SerializableLongSupplier property, long... value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableLongSupplier property, long[] value, Predicate<long[]> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ni6(SerializableDoubleSupplier property, double value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ni6(SerializableDoubleSupplier property, double... value);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableDoubleSupplier property, double[] value, Predicate<double[]> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String value) {
+        return ni6(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String... value) {
+        return ni6(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return ni6(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String[] value, IgnoreStrategy ignoreStrategy) {
+        return ni6(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return ni6(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String[] value, Predicate<String[]> ignoreStrategy) {
+        return ni6(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return ni6(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L ni6(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return ni6(property, value, matchStrategy, (Predicate<String[]>) ignoreStrategy::test);
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ni6(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
+        Predicate<String[]> ignoreStrategy);
 }

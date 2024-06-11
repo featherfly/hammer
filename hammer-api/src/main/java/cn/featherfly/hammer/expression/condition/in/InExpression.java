@@ -27,7 +27,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -36,8 +36,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -48,8 +48,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -60,7 +60,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -69,8 +69,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -81,8 +81,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -93,7 +93,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -102,8 +102,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -114,8 +114,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -126,7 +126,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -137,8 +137,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name          the name
-     * @param values        the values
+     * @param name the name
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -147,8 +147,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -159,9 +159,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -172,8 +172,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -184,9 +184,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param name           the name
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -197,7 +197,79 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <R extends Serializable> L in(String name, R value) {
+        return in(name, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param values the values
+     * @return LogicExpression
+     */
+    <R extends Serializable> L in(String name, @SuppressWarnings("unchecked") R... values);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R extends Serializable> L in(String name, R value, IgnoreStrategy ignoreStrategy) {
+        return in(name, value, ignoreStrategy::test);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R extends Serializable> L in(String name, R[] value, IgnoreStrategy ignoreStrategy) {
+        return in(name, value, ignoreStrategy::test);
+    }
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L in(String name, R value, Predicate<R> ignoreStrategy);
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L in(String name, R[] value, Predicate<R[]> ignoreStrategy);
+
+    // ******************************************************************************************************************************
+
+    /**
+     * values in. 包含指定，sql中的in.
+     *
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -209,8 +281,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>    the generic type
-     * @param field  the field
+     * @param <R> the generic type
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -221,9 +293,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -234,55 +306,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <R extends Serializable> L in(String name, R value) {
-        return in(name, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param <R>    the generic type
-     * @param name   the name
-     * @param values the values
-     * @return LogicExpression
-     */
-    <R extends Serializable> L in(String name, @SuppressWarnings("unchecked") R... values);
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <R extends Serializable> L in(String name, R value, IgnoreStrategy ignoreStrategy) {
-        return in(name, value, ignoreStrategy::test);
-    }
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Serializable> L in(String name, R value, Predicate<R> ignoreStrategy);
-
-    // ******************************************************************************************************************************
-
-    /**
-     * values in. 包含指定，sql中的in.
-     *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -293,8 +317,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -305,8 +329,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -317,7 +341,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -328,8 +352,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -340,8 +364,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -352,7 +376,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -363,8 +387,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -375,8 +399,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -387,7 +411,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -398,8 +422,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field         the field
-     * @param values        the values
+     * @param field the field
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -410,8 +434,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -422,9 +446,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -435,8 +459,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -447,9 +471,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -462,7 +486,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -473,8 +497,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -485,8 +509,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -497,7 +521,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -508,8 +532,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -520,8 +544,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -532,7 +556,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -543,8 +567,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -555,8 +579,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -567,7 +591,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -578,8 +602,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field         the field
-     * @param values        the values
+     * @param field the field
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -590,8 +614,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -602,9 +626,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -615,8 +639,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -627,9 +651,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param field          the field
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -640,7 +664,7 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -652,8 +676,8 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>    the generic type
-     * @param field  the field
+     * @param <R> the generic type
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -664,9 +688,9 @@ public interface InExpression<C extends ConditionExpression, L extends LogicExpr
     /**
      * values in. 包含指定，sql中的in.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

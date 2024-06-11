@@ -27,12 +27,12 @@ import cn.featherfly.hammer.sqldb.Constants;
  * abstract muliti repository sql conditions group expression base5.
  *
  * @author zhongj
- * @param <C>  condition expression
- * @param <L>  logic expression
- * @param <T>  filterable repository index tuple type
+ * @param <C> condition expression
+ * @param <L> logic expression
+ * @param <T> filterable repository index tuple type
  * @param <C2> condition config
- * @param <S>  repository sql relation
- * @param <B>  sql builder
+ * @param <S> repository sql relation
+ * @param <B> sql builder
  */
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<C extends GroupExpression<C, L>,
     L extends GroupEndExpression<C, L>, T extends Tuple, C2 extends ConditionConfig<C2>,
@@ -49,7 +49,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
 //    , RepositoryStartWithExpressionBase5<C, L>, RepositoryNotStartWithExpressionBase5<C, L> //
 //    , RepositoryLikeExpressionBase5<C, L>, RepositoryNotLikeExpressionBase5<C, L> //
 // 这里注释掉是为了编译速度
-/*, RepositoryFieldExpression<C, L>*/ {
+/* , RepositoryFieldExpression<C, L> */ {
 
     /** The repository alias 5. */
     protected final String repositoryAlias5;
@@ -58,8 +58,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Instantiates a new abstract muliti repository sql conditions group
      * expression base 5.
      *
-     * @param parent             the parent
-     * @param index              the index
+     * @param parent the parent
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     protected AbstractMulitiRepositorySqlConditionsGroupExpressionBase5(L parent, int index, S repositoryRelation) {
@@ -75,7 +75,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -86,7 +86,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -97,8 +97,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -109,7 +109,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -120,8 +120,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -132,7 +132,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -143,8 +143,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -155,7 +155,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -166,8 +166,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -178,8 +178,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -190,9 +190,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -203,8 +203,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -215,9 +215,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Eq 5.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -229,7 +229,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -240,7 +240,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -251,8 +251,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -263,7 +263,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -274,8 +274,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -286,7 +286,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -297,8 +297,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -309,7 +309,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -320,8 +320,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -332,8 +332,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -344,9 +344,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -357,8 +357,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -369,9 +369,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ne 5.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -384,10 +384,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param <N>  the number type
+     * @param <N> the number type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <N extends Number> L ba5(String name, N min, N max) {
@@ -397,10 +397,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <N> the number type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -411,10 +411,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param <D>  the generic type
+     * @param <D> the generic type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <D extends Date> L ba5(String name, D min, D max) {
@@ -424,10 +424,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <D> the generic type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -439,8 +439,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Ba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba5(String name, LocalTime min, LocalTime max) {
@@ -450,9 +450,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -464,8 +464,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Ba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba5(String name, LocalDate min, LocalDate max) {
@@ -475,9 +475,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -489,8 +489,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Ba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba5(String name, LocalDateTime min, LocalDateTime max) {
@@ -500,9 +500,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -515,8 +515,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Ba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L ba5(String name, String min, String max) {
@@ -526,9 +526,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -541,10 +541,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param <N>  the number type
+     * @param <N> the number type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <N extends Number> L nba5(String name, N min, N max) {
@@ -554,10 +554,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <N> the number type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -568,10 +568,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param <D>  the generic type
+     * @param <D> the generic type
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public <D extends Date> L nba5(String name, D min, D max) {
@@ -581,10 +581,10 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param <D> the generic type
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -596,8 +596,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Nba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba5(String name, LocalTime min, LocalTime max) {
@@ -607,9 +607,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -621,8 +621,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Nba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba5(String name, LocalDate min, LocalDate max) {
@@ -632,9 +632,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -646,8 +646,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Nba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba5(String name, LocalDateTime min, LocalDateTime max) {
@@ -657,9 +657,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -672,8 +672,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
      * Nba 5.
      *
      * @param name the name
-     * @param min  the min
-     * @param max  the max
+     * @param min the min
+     * @param max the max
      * @return the l
      */
     public L nba5(String name, String min, String max) {
@@ -683,9 +683,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nba 5.
      *
-     * @param name           the name
-     * @param min            the min
-     * @param max            the max
+     * @param name the name
+     * @param min the min
+     * @param max the max
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -698,8 +698,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Co 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -710,9 +710,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Co 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -723,8 +723,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nco 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -735,9 +735,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nco 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -748,8 +748,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ew 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -760,9 +760,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ew 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -773,8 +773,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * New 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -785,9 +785,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * New 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -800,7 +800,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -811,8 +811,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -823,7 +823,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -834,8 +834,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -846,7 +846,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -857,8 +857,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -869,8 +869,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -881,9 +881,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -894,8 +894,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -906,9 +906,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -919,8 +919,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -931,9 +931,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -944,7 +944,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -955,8 +955,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -967,7 +967,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -978,8 +978,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -990,7 +990,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1001,8 +1001,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1013,8 +1013,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1025,9 +1025,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ge 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1040,7 +1040,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1051,8 +1051,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1063,7 +1063,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1074,8 +1074,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1086,7 +1086,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1097,8 +1097,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1109,8 +1109,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1121,9 +1121,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1134,8 +1134,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1146,9 +1146,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1159,8 +1159,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1171,9 +1171,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1184,7 +1184,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1195,8 +1195,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1207,7 +1207,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1218,8 +1218,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1230,7 +1230,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1241,8 +1241,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1253,8 +1253,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1265,9 +1265,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Gt 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1280,7 +1280,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1291,8 +1291,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1303,7 +1303,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1314,8 +1314,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1326,7 +1326,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1337,8 +1337,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1349,8 +1349,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name          the name
-     * @param values        the values
+     * @param name the name
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1361,9 +1361,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param name           the name
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1374,8 +1374,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param <R>    the generic type
-     * @param name   the name
+     * @param <R> the generic type
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1386,13 +1386,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * In 5.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <R extends Serializable> L in5(String name, R value, Predicate<R> ignoreStrategy) {
+        return in(name, value, ignoreStrategy, repositoryAlias5);
+    }
+
+    public <R extends Serializable> L in5(String name, R[] value, Predicate<R[]> ignoreStrategy) {
         return in(name, value, ignoreStrategy, repositoryAlias5);
     }
 
@@ -1401,7 +1405,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1412,8 +1416,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1424,7 +1428,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1435,8 +1439,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1447,7 +1451,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1458,8 +1462,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1470,8 +1474,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name          the name
-     * @param values        the values
+     * @param name the name
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1482,9 +1486,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param name           the name
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1495,8 +1499,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param <R>    the generic type
-     * @param name   the name
+     * @param <R> the generic type
+     * @param name the name
      * @param values the values
      * @return the l
      */
@@ -1507,13 +1511,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Ni 5.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
     public <R extends Serializable> L ni5(String name, R value, Predicate<R> ignoreStrategy) {
+        return ni(name, value, ignoreStrategy, repositoryAlias5);
+    }
+
+    public <R extends Serializable> L ni5(String name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(name, value, ignoreStrategy, repositoryAlias5);
     }
 
@@ -1522,7 +1530,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Inn 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1533,7 +1541,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Isn 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1546,7 +1554,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1557,8 +1565,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1569,7 +1577,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1580,8 +1588,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1592,7 +1600,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1603,8 +1611,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1615,8 +1623,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1627,9 +1635,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1640,8 +1648,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1652,9 +1660,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1665,8 +1673,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1677,9 +1685,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1690,7 +1698,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1701,8 +1709,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1713,7 +1721,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1724,8 +1732,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1736,7 +1744,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1747,8 +1755,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1759,8 +1767,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -1771,9 +1779,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Le 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1786,7 +1794,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1797,8 +1805,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1809,7 +1817,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1820,8 +1828,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1832,7 +1840,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1843,8 +1851,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1855,8 +1863,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1867,9 +1875,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1880,8 +1888,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param <N>   the number type
-     * @param name  the name
+     * @param <N> the number type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1892,9 +1900,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param <N>            the number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> the number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1905,8 +1913,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param <D>   the generic type
-     * @param name  the name
+     * @param <D> the generic type
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1917,9 +1925,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param <D>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1930,7 +1938,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1941,8 +1949,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1953,7 +1961,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1964,8 +1972,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1976,7 +1984,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return the l
      */
@@ -1987,8 +1995,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -1999,8 +2007,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2011,9 +2019,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lt 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2026,8 +2034,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Sw 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2038,9 +2046,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Sw 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2051,8 +2059,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nsw 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2063,9 +2071,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nsw 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2076,8 +2084,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lk 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2088,9 +2096,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Lk 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -2101,8 +2109,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nl 5.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return the l
      */
@@ -2113,9 +2121,9 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase5<
     /**
      * Nl 5.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */

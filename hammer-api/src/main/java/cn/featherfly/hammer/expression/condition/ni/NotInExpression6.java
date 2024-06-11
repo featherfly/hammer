@@ -26,7 +26,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -35,8 +35,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -47,8 +47,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -59,7 +59,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -68,8 +68,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -80,8 +80,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -92,7 +92,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -101,8 +101,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -113,8 +113,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -125,7 +125,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name   the name
+     * @param name the name
      * @param values the values
      * @return LogicExpression
      */
@@ -136,8 +136,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name          the name
-     * @param values        the values
+     * @param name the name
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -146,8 +146,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -158,9 +158,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -171,8 +171,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param values         the values
+     * @param name the name
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -183,9 +183,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param name           the name
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -196,7 +196,53 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    default <R extends Serializable> L ni6(String name, R value) {
+        return ni6(name, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
+    }
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param values the values
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ni6(String name, @SuppressWarnings("unchecked") R... values);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ni6(String name, R value, Predicate<R> ignoreStrategy);
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L ni6(String name, R[] value, Predicate<R[]> ignoreStrategy);
+
+    // ******************************************************************************************************************************
+
+    /**
+     * values not in. 不包含指定，sql中的not in.
+     *
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -208,8 +254,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>    the generic type
-     * @param field  the field
+     * @param <R> the generic type
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -220,9 +266,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -233,42 +279,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <R extends Serializable> L ni6(String name, R value) {
-        return ni6(name, ArrayUtils.create(ClassUtils.getClass(value), 1, (index) -> value));
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param <R>    the generic type
-     * @param name   the name
-     * @param values the values
-     * @return LogicExpression
-     */
-    <R extends Serializable> L ni6(String name, @SuppressWarnings("unchecked") R... values);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Serializable> L ni6(String name, R value, Predicate<R> ignoreStrategy);
-
-    // ******************************************************************************************************************************
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -279,8 +290,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -291,8 +302,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -303,7 +314,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -314,8 +325,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -326,8 +337,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -338,7 +349,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -349,8 +360,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -361,8 +372,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -373,7 +384,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -384,8 +395,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field         the field
-     * @param values        the values
+     * @param field the field
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -396,8 +407,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -408,9 +419,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -421,8 +432,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -433,9 +444,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -448,7 +459,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -459,8 +470,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -471,8 +482,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -483,7 +494,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -494,8 +505,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -506,8 +517,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -518,7 +529,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -529,8 +540,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -541,8 +552,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -553,7 +564,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field  the field
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -564,8 +575,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field         the field
-     * @param values        the values
+     * @param field the field
+     * @param values the values
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -576,8 +587,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -588,9 +599,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -601,8 +612,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
+     * @param field the field
+     * @param values the values
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -613,9 +624,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param values         the values
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param values the values
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -626,7 +637,7 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -638,8 +649,8 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>    the generic type
-     * @param field  the field
+     * @param <R> the generic type
+     * @param field the field
      * @param values the values
      * @return LogicExpression
      */
@@ -650,9 +661,9 @@ public interface NotInExpression6<C extends ConditionExpression, L extends Logic
     /**
      * values not in. 不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
 import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.repository.Repository;
@@ -155,7 +156,7 @@ public class RepositorySqlExecutableUpdate4 implements RepositorySqlUpdate4, Rep
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositorySqlExecutableUpdate4 increase(SerializableSupplier<N> property) {
+    public <N extends Number> RepositorySqlExecutableUpdate4 increase(SerializableNumberSupplier<N> property) {
         update.increase(property);
         return this;
     }
@@ -164,7 +165,7 @@ public class RepositorySqlExecutableUpdate4 implements RepositorySqlUpdate4, Rep
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositorySqlExecutableUpdate4 increase(SerializableSupplier<N> property,
+    public <N extends Number> RepositorySqlExecutableUpdate4 increase(SerializableNumberSupplier<N> property,
         Predicate<N> ignoreStrategy) {
         update.increase(property, ignoreStrategy);
         return this;

@@ -45,7 +45,9 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableBooleanSupplier propertyValue);
+    default L eq(SerializableBooleanSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
@@ -53,16 +55,20 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableCharSupplier propertyValue);
+    default L eq(SerializableCharSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableCharSupplier propertyValue, CharPredicate ignoreStrategy);
+    default L eq(SerializableCharSupplier propertyValue, CharPredicate ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -70,16 +76,20 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableIntSupplier propertyValue);
+    default L eq(SerializableIntSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableIntSupplier propertyValue, IntPredicate ignoreStrategy);
+    default L eq(SerializableIntSupplier propertyValue, IntPredicate ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -87,16 +97,20 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableLongSupplier propertyValue);
+    default L eq(SerializableLongSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableLongSupplier propertyValue, LongPredicate ignoreStrategy);
+    default L eq(SerializableLongSupplier propertyValue, LongPredicate ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -104,16 +118,20 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableDoubleSupplier propertyValue);
+    default L eq(SerializableDoubleSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableDoubleSupplier propertyValue, DoublePredicate ignoreStrategy);
+    default L eq(SerializableDoubleSupplier propertyValue, DoublePredicate ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -121,120 +139,136 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableBoolSupplier propertyValue);
+    default L eq(SerializableBoolSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L eq(SerializableBoolSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<Boolean>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy);
+    default L eq(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <N>           the generic type
+     * @param <N> the generic type
      * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <N extends Number> L eq(SerializableNumberSupplier<N> propertyValue);
+    default <N extends Number> L eq(SerializableNumberSupplier<N> propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <N>            the generic type
-     * @param propertyValue  the propertyValue value
+     * @param <N> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <N extends Number> L eq(SerializableNumberSupplier<N> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<N>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param <N>            the generic type
-     * @param propertyValue  the propertyValue value
+     * @param <N> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L eq(SerializableNumberSupplier<N> propertyValue, Predicate<N> ignoreStrategy);
+    default <N extends Number> L eq(SerializableNumberSupplier<N> propertyValue, Predicate<N> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <D>           the generic type
+     * @param <D> the generic type
      * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <D extends Date> L eq(SerializableDateSupplier<D> propertyValue);
+    default <D extends Date> L eq(SerializableDateSupplier<D> propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <D>            the generic type
-     * @param propertyValue  the propertyValue value
+     * @param <D> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <D extends Date> L eq(SerializableDateSupplier<D> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<D>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param propertyValue  the propertyValue value
+     * @param <D> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L eq(SerializableDateSupplier<R> propertyValue, Predicate<R> ignoreStrategy);
+    default <D extends Date> L eq(SerializableDateSupplier<D> propertyValue, Predicate<D> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <E>           the element type
+     * @param <E> the element type
      * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <E extends Enum<E>> L eq(SerializableEnumSupplier<E> propertyValue);
+    default <E extends Enum<E>> L eq(SerializableEnumSupplier<E> propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <E>            the element type
-     * @param propertyValue  the propertyValue value
+     * @param <E> the element type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <E extends Enum<E>> L eq(SerializableEnumSupplier<E> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<E>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param <E>            the element type
-     * @param propertyValue  the propertyValue value
+     * @param <E> the element type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E extends Enum<E>> L eq(SerializableEnumSupplier<E> propertyValue, Predicate<E> ignoreStrategy);
+    default <E extends Enum<E>> L eq(SerializableEnumSupplier<E> propertyValue, Predicate<E> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -242,27 +276,31 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableLocalDateSupplier propertyValue);
+    default L eq(SerializableLocalDateSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L eq(SerializableLocalDateSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<LocalDate>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableLocalDateSupplier propertyValue, Predicate<LocalDate> ignoreStrategy);
+    default L eq(SerializableLocalDateSupplier propertyValue, Predicate<LocalDate> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -270,27 +308,31 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableLocalTimeSupplier propertyValue);
+    default L eq(SerializableLocalTimeSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L eq(SerializableLocalTimeSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<LocalTime>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableLocalTimeSupplier propertyValue, Predicate<LocalTime> ignoreStrategy);
+    default L eq(SerializableLocalTimeSupplier propertyValue, Predicate<LocalTime> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -298,27 +340,31 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param propertyValue the propertyValue value
      * @return LogicExpression
      */
-    L eq(SerializableLocalDateTimeSupplier propertyValue);
-
-    /**
-     * equals. 等于.
-     *
-     * @param propertyValue  the propertyValue value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L eq(SerializableLocalDateTimeSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    default L eq(SerializableLocalDateTimeSupplier propertyValue) {
+        return eq(propertyValue, propertyValue.get());
     }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy);
+    default L eq(SerializableLocalDateTimeSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param propertyValue the propertyValue value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
@@ -327,29 +373,29 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @return LogicExpression
      */
     default L eq(SerializableStringSupplier propertyValue) {
-        return eq(propertyValue, MatchStrategy.AUTO);
+        return eq(propertyValue, propertyValue.get());
     }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L eq(SerializableStringSupplier propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L eq(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        return eq(propertyValue, MatchStrategy.AUTO, ignoreStrategy);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
@@ -359,58 +405,486 @@ public interface EqualsSupplierExpression<C extends ConditionExpression, L exten
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L eq(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy);
+    default L eq(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+        return eq(propertyValue, propertyValue.get(), matchStrategy);
+    }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the propertyValue value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L eq(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param propertyValue  the propertyValue value
-     * @param matchStrategy  the match strategy
+     * @param propertyValue the propertyValue value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L eq(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), matchStrategy, ignoreStrategy);
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <R>           the generic type
+     * @param <R> the generic type
      * @param propertyValue bean propertyValue
      * @return LogicExpression
      */
-    <R extends Serializable> L eq(SerializableSupplier<R> propertyValue);
+    default <R extends Serializable> L eq(SerializableSupplier<R> propertyValue) {
+        return eq(propertyValue, propertyValue.get());
+    }
 
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param propertyValue  the propertyValue value
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <R extends Serializable> L eq(SerializableSupplier<R> propertyValue, IgnoreStrategy ignoreStrategy) {
-        return eq(propertyValue, (Predicate<R>) ignoreStrategy::test);
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
     }
 
     /**
      * equals. 等于.
      *
-     * @param <R>            the generic type
-     * @param propertyValue  the propertyValue value
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Serializable> L eq(SerializableSupplier<R> propertyValue, Predicate<R> ignoreStrategy);
+    default <R extends Serializable> L eq(SerializableSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
+        return eq(propertyValue, propertyValue.get(), ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableBooleanSupplier property, boolean value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableCharSupplier property, char value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableIntSupplier property, int value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableLongSupplier property, long value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableDoubleSupplier property, double value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableBoolSupplier property, Boolean value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableBoolSupplier property, Boolean value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, (Predicate<Boolean>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <N> the generic type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <N extends Number> L eq(SerializableNumberSupplier<N> property, N value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <N> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L eq(SerializableNumberSupplier<N> property, N value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, (Predicate<N>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <N> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L eq(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <D> the generic type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <D extends Date> L eq(SerializableDateSupplier<D> property, D value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <D> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L eq(SerializableDateSupplier<D> property, D value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, (Predicate<D>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <D> the generic type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L eq(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <E> the element type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, E value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <E> the element type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, E value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, (Predicate<E>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <E> the element type
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableLocalDateSupplier property, LocalDate value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableLocalDateSupplier property, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableLocalTimeSupplier property, LocalTime value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableLocalTimeSupplier property, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L eq(SerializableLocalDateTimeSupplier property, LocalDateTime value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableLocalDateTimeSupplier property, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableLocalDateTimeSupplier property, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L eq(SerializableStringSupplier property, String value) {
+        return eq(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return eq(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L eq(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return eq(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param property the property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L eq(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R> the generic type
+     * @param property the property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <R extends Serializable> L eq(SerializableSupplier<R> property, R value);
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <R extends Serializable> L eq(SerializableSupplier<R> propertyValue, R value,
+        IgnoreStrategy ignoreStrategy) {
+        return eq(propertyValue, value, (Predicate<R>) ignoreStrategy::test);
+    }
+
+    /**
+     * equals. 等于.
+     *
+     * @param <R> the generic type
+     * @param propertyValue the propertyValue value
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <R extends Serializable> L eq(SerializableSupplier<R> propertyValue, R value, Predicate<R> ignoreStrategy);
 }

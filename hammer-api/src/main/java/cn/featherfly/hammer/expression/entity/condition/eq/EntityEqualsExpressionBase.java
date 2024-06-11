@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.CharPredicate;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToCharFunction;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
@@ -50,16 +49,6 @@ public interface EntityEqualsExpressionBase<T, C extends ConditionExpression, L 
     //     * @return LogicExpression
     //     */
     //    L eq(Consumer<EntityEqualsExpression<E, C, L>> consumer);
-
-    /**
-     * equals. 等于.
-     *
-     * @param <R> the generic type
-     * @param name the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    <R extends Serializable> L eq(SerializableSupplier<R> name, R value);
 
     /**
      * equals. 等于.

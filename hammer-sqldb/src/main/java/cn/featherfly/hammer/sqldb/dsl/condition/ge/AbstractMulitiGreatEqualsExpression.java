@@ -205,145 +205,150 @@ public abstract class AbstractMulitiGreatEqualsExpression<I extends InternalMuli
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableIntSupplier property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L ge(int index, SerializableIntSupplier property, int value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public L ge(int index, SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLongSupplier property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L ge(int index, SerializableLongSupplier property, long value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public L ge(int index, SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableDoubleSupplier property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L ge(int index, SerializableDoubleSupplier property, double value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public L ge(int index, SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L ge(int index, SerializableDateSupplier<R> property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <D extends Date> L ge(int index, SerializableDateSupplier<D> property, D value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L ge(int index, SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public <D extends Date> L ge(int index, SerializableDateSupplier<D> property, D value,
+        Predicate<D> ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L ge(int index, SerializableNumberSupplier<R> property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <N extends Number> L ge(int index, SerializableNumberSupplier<N> property, N value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L ge(int index, SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public <N extends Number> L ge(int index, SerializableNumberSupplier<N> property, N value,
+        Predicate<N> ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLocalDateSupplier property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L ge(int index, SerializableLocalDateSupplier property, LocalDate value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public L ge(int index, SerializableLocalDateSupplier property, LocalDate value,
+        Predicate<LocalDate> ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), value, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLocalTimeSupplier property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L ge(int index, SerializableLocalTimeSupplier property, LocalTime value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public L ge(int index, SerializableLocalTimeSupplier property, LocalTime value,
+        Predicate<LocalTime> ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLocalDateTimeSupplier property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L ge(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public L ge(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return hold.ge(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
+    public L ge(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+    public L ge(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return hold.ge(new AtomicInteger(index), property, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -367,16 +372,17 @@ public abstract class AbstractMulitiGreatEqualsExpression<I extends InternalMuli
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L ge(int index, SerializableEnumSupplier<E> property) {
-        return hold.ge(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <E extends Enum<E>> L ge(int index, SerializableEnumSupplier<E> property, E value) {
+        return hold.ge(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L ge(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return hold.ge(new AtomicInteger(index), property, ignoreStrategy);
+    public <E extends Enum<E>> L ge(int index, SerializableEnumSupplier<E> property, E value,
+        Predicate<E> ignoreStrategy) {
+        return hold.ge(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**

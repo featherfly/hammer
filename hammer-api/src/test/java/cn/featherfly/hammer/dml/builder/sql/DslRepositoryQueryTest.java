@@ -58,7 +58,7 @@ public class DslRepositoryQueryTest {
         str = query.find(data).field("name").limit(1).value();
         query.find(data).field("name").limit(1).single(Integer.class);
         query.find(data).field("name").where().eq("id", 1).single(Integer.class);
-        query.find(data).field("name").where().eq("id", 1).number(Integer.class); // FIXME 这个应该报错
+        query.find(data).field("name").where().eq("id", 1).number(Integer.class);
         //        query.find(data).where().eq("id", 1).number(Integer.class);
 
         query.find(data).max("age").number(Integer.class);

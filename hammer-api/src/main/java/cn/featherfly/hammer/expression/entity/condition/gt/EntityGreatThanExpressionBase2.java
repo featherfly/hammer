@@ -11,9 +11,9 @@ import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableToDoubleFunction2;
-import cn.featherfly.common.function.serializable.SerializableToIntFunction2;
-import cn.featherfly.common.function.serializable.SerializableToLongFunction2;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -23,76 +23,76 @@ import cn.featherfly.hammer.expression.condition.gt.GreatThanSupplierExpression2
  * The Interface EntityGreatThanExpressionBase2.
  *
  * @author zhongj
- * @param <T>  the first comparable type
+ * @param <T> the first comparable type
  * @param <T2> the second comparable type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends EntityGreatThanExpression<T, C, L>, GreatThanSupplierExpression2<C, L> {
+    extends EntityGreatThanExpression<T, C, L>, GreatThanSupplierExpression2<C, L> {
 
     /**
      * great than. 大于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    L gt2(SerializableToIntFunction2<T2> name, int value);
+    L gt2(SerializableToIntFunction<T2> name, int value);
 
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToIntFunction2<T2> name, int value, IntPredicate ignoreStrategy);
+    L gt2(SerializableToIntFunction<T2> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    L gt2(SerializableToLongFunction2<T2> name, long value);
+    L gt2(SerializableToLongFunction<T2> name, long value);
 
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToLongFunction2<T2> name, long value, LongPredicate ignoreStrategy);
+    L gt2(SerializableToLongFunction<T2> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great than. 大于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    L gt2(SerializableToDoubleFunction2<T2> name, double value);
+    L gt2(SerializableToDoubleFunction<T2> name, double value);
 
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt2(SerializableToDoubleFunction2<T2> name, double value, DoublePredicate ignoreStrategy);
+    L gt2(SerializableToDoubleFunction<T2> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great than. 大于.
      *
-     * @param <N>   number type
-     * @param name  the name
+     * @param <N> number type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -101,9 +101,9 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -112,8 +112,8 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -122,9 +122,9 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -133,8 +133,8 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <D>   date type
-     * @param name  the name
+     * @param <D> date type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -143,9 +143,9 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -154,7 +154,7 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -163,8 +163,8 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -173,7 +173,7 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -182,8 +182,8 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -192,7 +192,7 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -201,8 +201,8 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -211,7 +211,7 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -222,8 +222,8 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -234,8 +234,8 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -244,12 +244,12 @@ public interface EntityGreatThanExpressionBase2<T, T2, C extends ConditionExpres
     /**
      * great than. 大于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L gt2(SerializableFunction<T2, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 }
