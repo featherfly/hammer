@@ -26,8 +26,8 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
     /**
      * end with value. 以value结尾.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -38,9 +38,9 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
     /**
      * end with value. 以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,9 +51,9 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
     /**
      * end with value. 以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -64,9 +64,9 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
     /**
      * end with value. 以value结尾.
      *
-     * @param <T>           the generic type
-     * @param name          the name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -77,10 +77,10 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
     /**
      * end with value. 以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -92,10 +92,10 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
     /**
      * end with value. 以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -105,13 +105,13 @@ public interface RepositoryEndWithExpression<C extends ConditionExpression, L ex
     }
 
     @Override
-    default L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return ew(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L ew(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return ew(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     @Override
-    default L ew(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    default L ew(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ew(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
+        return ew(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 }

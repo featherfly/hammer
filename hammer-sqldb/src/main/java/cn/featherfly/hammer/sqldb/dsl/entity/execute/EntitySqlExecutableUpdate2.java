@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
@@ -229,7 +230,7 @@ public class EntitySqlExecutableUpdate2<E, J1> implements EntitySqlUpdate2<E, J1
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate2<E, J1> increase(SerializableSupplier<N> property) {
+    public <N extends Number> EntityExecutableUpdate2<E, J1> increase(SerializableNumberSupplier<N> property) {
         update.increase(property);
         return this;
     }
@@ -238,7 +239,7 @@ public class EntitySqlExecutableUpdate2<E, J1> implements EntitySqlUpdate2<E, J1
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate2<E, J1> increase(SerializableSupplier<N> property,
+    public <N extends Number> EntityExecutableUpdate2<E, J1> increase(SerializableNumberSupplier<N> property,
         Predicate<N> ignoreStrategy) {
         update.increase(property, ignoreStrategy);
         return this;

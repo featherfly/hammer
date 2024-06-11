@@ -15,12 +15,20 @@ import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.CharPredicate;
+import cn.featherfly.common.function.serializable.SerializableBoolSupplier;
+import cn.featherfly.common.function.serializable.SerializableBooleanSupplier;
+import cn.featherfly.common.function.serializable.SerializableCharSupplier;
 import cn.featherfly.common.function.serializable.SerializableDateSupplier;
+import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
+import cn.featherfly.common.function.serializable.SerializableEnumSupplier;
+import cn.featherfly.common.function.serializable.SerializableIntSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
 import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
+import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
+import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToLocalDateTimeFunction;
@@ -4412,6 +4420,308 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
         GL extends GroupEndExpression<GC, GL>> G or(G conditionExpression) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableBooleanSupplier property, boolean value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableCharSupplier property, char value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableCharSupplier property, char value,
+        CharPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableIntSupplier property, int value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableIntSupplier property, int value,
+        IntPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLongSupplier property, long value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLongSupplier property, long value,
+        LongPredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableDoubleSupplier property, double value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableDoubleSupplier property, double value,
+        DoublePredicate ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableBoolSupplier property, Boolean value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableBoolSupplier property, Boolean value,
+        Predicate<Boolean> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression eq(SerializableNumberSupplier<N> property,
+        N value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> UserQueryRepositoryConditionGroupExpression eq(SerializableNumberSupplier<N> property,
+        N value, Predicate<N> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression eq(SerializableDateSupplier<D> property,
+        D value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> UserQueryRepositoryConditionGroupExpression eq(SerializableDateSupplier<D> property,
+        D value, Predicate<D> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression eq(SerializableEnumSupplier<E> property,
+        E value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression eq(SerializableEnumSupplier<E> property,
+        E value, Predicate<E> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLocalDateSupplier property, LocalDate value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLocalDateSupplier property, LocalDate value,
+        Predicate<LocalDate> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLocalTimeSupplier property, LocalTime value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLocalTimeSupplier property, LocalTime value,
+        Predicate<LocalTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLocalDateTimeSupplier property,
+        LocalDateTime value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableLocalDateTimeSupplier property,
+        LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableStringSupplier property, String value,
+        MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression eq(SerializableStringSupplier property, String value,
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Serializable> UserQueryRepositoryConditionGroupExpression eq(SerializableSupplier<R> property,
+        R value) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Serializable> UserQueryRepositoryConditionGroupExpression eq(
+        SerializableSupplier<R> propertyValue, R value, Predicate<R> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Serializable> UserQueryRepositoryConditionGroupExpression in(String name, R[] value,
+        Predicate<R[]> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R extends Serializable> UserQueryRepositoryConditionGroupExpression ni(String name, R[] value,
+        Predicate<R[]> ignoreStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property, String value,
+        MatchStrategy matchStrategy) {
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression nl(SerializableStringSupplier property, String value,
+        MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
 
         return null;
     }

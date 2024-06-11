@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.repository.condition;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -28,8 +28,8 @@ public interface MatchStringRepositoryExpression extends MatchStringExpression, 
     /**
      * match value. 匹配value.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value) {
@@ -39,9 +39,9 @@ public interface MatchStringRepositoryExpression extends MatchStringExpression, 
     /**
      * match value. 匹配value.
      *
-     * @param <T>           the generic type
-     * @param name          the name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
@@ -51,9 +51,9 @@ public interface MatchStringRepositoryExpression extends MatchStringExpression, 
     /**
      * match value. 匹配value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
@@ -63,27 +63,20 @@ public interface MatchStringRepositoryExpression extends MatchStringExpression, 
     /**
      * match value. 匹配value.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default <T> void accept(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         accept(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
-    /**
-     * match value. 匹配value.
-     *
-     * @param propertyValue  the property value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     */
     @Override
-    default void accept(SerializableSupplier<String> propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        accept(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
+    default void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        accept(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 }

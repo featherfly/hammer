@@ -39,16 +39,20 @@ public interface GreatThanSupplierExpression6<C extends ConditionExpression, L e
      * @param property bean property
      * @return LogicExpression
      */
-    L gt6(SerializableIntSupplier property);
+    default L gt6(SerializableIntSupplier property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt6(SerializableIntSupplier property, IntPredicate ignoreStrategy);
+    default L gt6(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
@@ -56,16 +60,20 @@ public interface GreatThanSupplierExpression6<C extends ConditionExpression, L e
      * @param property bean property
      * @return LogicExpression
      */
-    L gt6(SerializableLongSupplier property);
+    default L gt6(SerializableLongSupplier property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt6(SerializableLongSupplier property, LongPredicate ignoreStrategy);
+    default L gt6(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
@@ -73,97 +81,125 @@ public interface GreatThanSupplierExpression6<C extends ConditionExpression, L e
      * @param property bean property
      * @return LogicExpression
      */
-    L gt6(SerializableDoubleSupplier property);
+    default L gt6(SerializableDoubleSupplier property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+    default L gt6(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
      *
-     * @param <E>      the element type
+     * @param <E> the element type
      * @param property bean property
      * @return LogicExpression
      */
-    <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property);
+    default <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param <E>            the element type
-     * @param property       bean property
+     * @param <E> the element type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+    default <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
      *
-     * @param <N>      the number type
+     * @param <E> the element type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param <N> the number type
      * @param property bean property
      * @return LogicExpression
      */
-    <N extends Number> L gt6(SerializableNumberSupplier<N> property);
+    default <N extends Number> L gt6(SerializableNumberSupplier<N> property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param <N>            the number type
-     * @param property       bean property
+     * @param <N> the number type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <N extends Number> L gt6(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
-        return gt6(property, (Predicate<N>) ignoreStrategy::test);
+        return gt6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great than. 大于.
      *
-     * @param <N>            the number type
-     * @param property       bean property
+     * @param <N> the number type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <N extends Number> L gt6(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
+    default <N extends Number> L gt6(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
      *
-     * @param <D>      the generic type
+     * @param <D> the generic type
      * @param property bean property
      * @return LogicExpression
      */
-    <D extends Date> L gt6(SerializableDateSupplier<D> property);
+    default <D extends Date> L gt6(SerializableDateSupplier<D> property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param <D>            the generic type
-     * @param property       bean property
+     * @param <D> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default <D extends Date> L gt6(SerializableDateSupplier<D> property, IgnoreStrategy ignoreStrategy) {
-        return gt6(property, (Predicate<D>) ignoreStrategy::test);
+        return gt6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great than. 大于.
      *
-     * @param <D>            the generic type
-     * @param property       bean property
+     * @param <D> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <D extends Date> L gt6(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy);
+    default <D extends Date> L gt6(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
@@ -171,27 +207,31 @@ public interface GreatThanSupplierExpression6<C extends ConditionExpression, L e
      * @param property bean property
      * @return LogicExpression
      */
-    L gt6(SerializableLocalTimeSupplier property);
+    default L gt6(SerializableLocalTimeSupplier property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L gt6(SerializableLocalTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return gt6(property, (Predicate<LocalTime>) ignoreStrategy::test);
+        return gt6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt6(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    default L gt6(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
@@ -199,27 +239,31 @@ public interface GreatThanSupplierExpression6<C extends ConditionExpression, L e
      * @param property bean property
      * @return LogicExpression
      */
-    L gt6(SerializableLocalDateSupplier property);
+    default L gt6(SerializableLocalDateSupplier property) {
+        return gt6(property, property.get());
+    }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L gt6(SerializableLocalDateSupplier property, IgnoreStrategy ignoreStrategy) {
-        return gt6(property, (Predicate<LocalDate>) ignoreStrategy::test);
+        return gt6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt6(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    default L gt6(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
@@ -227,27 +271,31 @@ public interface GreatThanSupplierExpression6<C extends ConditionExpression, L e
      * @param property bean property
      * @return LogicExpression
      */
-    L gt6(SerializableLocalDateTimeSupplier property);
-
-    /**
-     * great than. 大于.
-     *
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default L gt6(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
-        return gt6(property, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    default L gt6(SerializableLocalDateTimeSupplier property) {
+        return gt6(property, property.get());
     }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt6(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    default L gt6(SerializableLocalDateTimeSupplier property, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L gt6(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return gt6(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * great than. 大于.
@@ -256,59 +304,388 @@ public interface GreatThanSupplierExpression6<C extends ConditionExpression, L e
      * @return LogicExpression
      */
     default L gt6(SerializableStringSupplier property) {
-        return gt6(property, MatchStrategy.AUTO);
+        return gt6(property, property.get());
     }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L gt6(SerializableStringSupplier property, IgnoreStrategy ignoreStrategy) {
-        return gt6(property, MatchStrategy.AUTO, ignoreStrategy);
+        return gt6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L gt6(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return gt6(property, MatchStrategy.AUTO, ignoreStrategy);
+        return gt6(property, property.get(), ignoreStrategy);
     }
 
     /**
      * great than. 大于.
      *
-     * @param property      bean property
+     * @param property bean property
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
-    L gt6(SerializableStringSupplier property, MatchStrategy matchStrategy);
+    default L gt6(SerializableStringSupplier property, MatchStrategy matchStrategy) {
+        return gt6(property, property.get(), matchStrategy);
+    }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L gt6(SerializableStringSupplier property, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
-        return gt6(property, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+        return gt6(property, property.get(), matchStrategy, ignoreStrategy);
     }
 
     /**
      * great than. 大于.
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default L gt6(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
+        return gt6(property, property.get(), matchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L gt6(SerializableIntSupplier property, int value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L gt6(SerializableLongSupplier property, long value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L gt6(SerializableDoubleSupplier property, double value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property, E value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property, E value, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, (Predicate<E>) ignoreStrategy::test);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param <E> the element type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L gt6(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <N extends Number> L gt6(SerializableNumberSupplier<N> property, N value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <N extends Number> L gt6(SerializableNumberSupplier<N> property, N value, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, (Predicate<N>) ignoreStrategy::test);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param <N> the number type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L gt6(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <D extends Date> L gt6(SerializableDateSupplier<D> property, D value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default <D extends Date> L gt6(SerializableDateSupplier<D> property, D value, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, (Predicate<D>) ignoreStrategy::test);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L gt6(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L gt6(SerializableLocalTimeSupplier property, LocalTime value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L gt6(SerializableLocalTimeSupplier property, LocalTime value, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, (Predicate<LocalTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L gt6(SerializableLocalDateSupplier property, LocalDate value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L gt6(SerializableLocalDateSupplier property, LocalDate value, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, (Predicate<LocalDate>) ignoreStrategy::test);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L gt6(SerializableLocalDateTimeSupplier property, LocalDateTime value);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L gt6(SerializableLocalDateTimeSupplier property, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, (Predicate<LocalDateTime>) ignoreStrategy::test);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableLocalDateTimeSupplier property, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L gt6(SerializableStringSupplier property, String value) {
+        return gt6(property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L gt6(SerializableStringSupplier property, String value, IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L gt6(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return gt6(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy);
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L gt6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        IgnoreStrategy ignoreStrategy) {
+        return gt6(property, value, matchStrategy, (Predicate<String>) ignoreStrategy::test);
+    }
+
+    /**
+     * great than. 大于.
+     *
+     * @param property bean property
+     * @param value the value
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L gt6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

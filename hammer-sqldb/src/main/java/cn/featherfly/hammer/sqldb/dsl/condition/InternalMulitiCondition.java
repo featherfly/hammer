@@ -304,30 +304,6 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     /**
      * equals.
      *
-     * @param <R> the generic type
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L eq(AtomicInteger index, SerializableSupplier<R> property, Predicate<?> ignoreStrategy);
-
-    /**
-     * equals.
-     *
-     * @param <R> the generic type
-     * @param index the index
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R> L eq(AtomicInteger index, SerializableSupplier<R> property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy);
-
-    /**
-     * equals.
-     *
      * @param index the index
      * @param property the property
      * @param value the value
@@ -1956,84 +1932,12 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * great equals.
      *
      * @param index the index
-     * @param property the property
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param <V> the value type
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <V> L ge(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy);
+    L ge(AtomicInteger index, Serializable field, int value, IntPredicate ignoreStrategy);
 
     /**
      * great equals.
@@ -2044,7 +1948,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy);
+    L ge(AtomicInteger index, Serializable field, long value, LongPredicate ignoreStrategy);
 
     /**
      * great equals.
@@ -2055,18 +1959,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy);
-
-    /**
-     * great equals.
-     *
-     * @param index the index
-     * @param field the field
-     * @param value the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ge(AtomicInteger index, SerializableToDoubleFunction<?> field, double value, DoublePredicate ignoreStrategy);
+    L ge(AtomicInteger index, Serializable field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great equals.
@@ -2259,84 +2152,12 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * great than.
      *
      * @param index the index
-     * @param property the property
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L gt(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L gt(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L gt(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L gt(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L gt(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param <V> the value type
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <V> L gt(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L gt(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy);
+    L gt(AtomicInteger index, Serializable field, int value, IntPredicate ignoreStrategy);
 
     /**
      * great than.
@@ -2347,7 +2168,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy);
+    L gt(AtomicInteger index, Serializable field, long value, LongPredicate ignoreStrategy);
 
     /**
      * great than.
@@ -2358,18 +2179,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy);
-
-    /**
-     * great than.
-     *
-     * @param index the index
-     * @param field the field
-     * @param value the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L gt(AtomicInteger index, SerializableToDoubleFunction<?> field, double value, DoublePredicate ignoreStrategy);
+    L gt(AtomicInteger index, Serializable field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great than.
@@ -2562,86 +2372,12 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * less equals.
      *
      * @param index the index
-     * @param property the property
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-
-    L le(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-
-    L le(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L le(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L le(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L le(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param <V> the value type
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <V> L le(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param index the index
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L le(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy);
+    L le(AtomicInteger index, Serializable field, int value, IntPredicate ignoreStrategy);
 
     /**
      * less equals.
@@ -2652,7 +2388,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy);
+    L le(AtomicInteger index, Serializable field, long value, LongPredicate ignoreStrategy);
 
     /**
      * less equals.
@@ -2663,18 +2399,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy);
-
-    /**
-     * less equals.
-     *
-     * @param index the index
-     * @param field the field
-     * @param value the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L le(AtomicInteger index, SerializableToDoubleFunction<?> field, double value, DoublePredicate ignoreStrategy);
+    L le(AtomicInteger index, Serializable field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * less equals.
@@ -2867,84 +2592,12 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * less than.
      *
      * @param index the index
-     * @param property the property
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param <V> the value type
-     * @param index the index
-     * @param property the property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <V> L lt(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param index the index
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy);
+    L lt(AtomicInteger index, Serializable field, int value, IntPredicate ignoreStrategy);
 
     /**
      * less than.
@@ -2955,7 +2608,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, SerializableToIntFunction<?> field, int value, IntPredicate ignoreStrategy);
+    L lt(AtomicInteger index, Serializable field, long value, LongPredicate ignoreStrategy);
 
     /**
      * less than.
@@ -2966,18 +2619,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, SerializableToLongFunction<?> field, long value, LongPredicate ignoreStrategy);
-
-    /**
-     * less than.
-     *
-     * @param index the index
-     * @param field the field
-     * @param value the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L lt(AtomicInteger index, SerializableToDoubleFunction<?> field, double value, DoublePredicate ignoreStrategy);
+    L lt(AtomicInteger index, Serializable field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * less than.

@@ -26,8 +26,8 @@ public interface RepositoryNotEndWithExpressionBase2<C extends ConditionExpressi
     /**
      * not end with value. 不以value结尾.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -38,9 +38,9 @@ public interface RepositoryNotEndWithExpressionBase2<C extends ConditionExpressi
     /**
      * not end with value. 不以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,9 +51,9 @@ public interface RepositoryNotEndWithExpressionBase2<C extends ConditionExpressi
     /**
      * not end with value. 不以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -64,9 +64,9 @@ public interface RepositoryNotEndWithExpressionBase2<C extends ConditionExpressi
     /**
      * not end with value. 不以value结尾.
      *
-     * @param <T>           the generic type
-     * @param name          the name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -77,10 +77,10 @@ public interface RepositoryNotEndWithExpressionBase2<C extends ConditionExpressi
     /**
      * not end with value. 不以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -92,10 +92,10 @@ public interface RepositoryNotEndWithExpressionBase2<C extends ConditionExpressi
     /**
      * not end with value. 不以value结尾.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -104,21 +104,14 @@ public interface RepositoryNotEndWithExpressionBase2<C extends ConditionExpressi
         return new2(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    default L new2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return new2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L new2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return new2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    default L new2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    default L new2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return new2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-            ignoreStrategy);
+        return new2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 }

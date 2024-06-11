@@ -47,9 +47,9 @@ public interface RepositoryEqualsExpressionBase3<C extends ConditionExpression, 
     /**
      * equals. 等于.
      *
-     * @param <T>   the generic type
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -60,10 +60,10 @@ public interface RepositoryEqualsExpressionBase3<C extends ConditionExpression, 
     /**
      * equals. 等于.
      *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -75,217 +75,218 @@ public interface RepositoryEqualsExpressionBase3<C extends ConditionExpression, 
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableBooleanSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsBoolean());
+    default L eq3(SerializableBooleanSupplier property, boolean value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableCharSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsChar());
+    default L eq3(SerializableCharSupplier property, char value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableCharSupplier propertyValue, CharPredicate ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsChar(), ignoreStrategy);
+    default L eq3(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableIntSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsInt());
+    default L eq3(SerializableIntSupplier property, int value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableIntSupplier propertyValue, IntPredicate ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsInt(), ignoreStrategy);
+    default L eq3(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLongSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsLong());
+    default L eq3(SerializableLongSupplier property, long value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLongSupplier propertyValue, LongPredicate ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsLong(), ignoreStrategy);
+    default L eq3(SerializableLongSupplier propertyValue, long value, LongPredicate ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableDoubleSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsDouble());
+    default L eq3(SerializableDoubleSupplier property, double value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableDoubleSupplier propertyValue, DoublePredicate ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsDouble(), ignoreStrategy);
+    default L eq3(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableBoolSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L eq3(SerializableBoolSupplier property, Boolean value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L eq3(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <N extends Number> L eq3(SerializableNumberSupplier<N> propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default <N extends Number> L eq3(SerializableNumberSupplier<N> property, N value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <N extends Number> L eq3(SerializableNumberSupplier<N> propertyValue, Predicate<N> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <N extends Number> L eq3(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <D extends Date> L eq3(SerializableDateSupplier<D> propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default <D extends Date> L eq3(SerializableDateSupplier<D> property, D value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <R extends Date> L eq3(SerializableDateSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <R extends Date> L eq3(SerializableDateSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <E extends Enum<E>> L eq3(SerializableEnumSupplier<E> propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default <E extends Enum<E>> L eq3(SerializableEnumSupplier<E> property, E value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <E extends Enum<E>> L eq3(SerializableEnumSupplier<E> propertyValue, Predicate<E> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <E extends Enum<E>> L eq3(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLocalDateSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L eq3(SerializableLocalDateSupplier property, LocalDate value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLocalDateSupplier propertyValue, Predicate<LocalDate> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L eq3(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLocalTimeSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L eq3(SerializableLocalTimeSupplier property, LocalTime value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLocalTimeSupplier propertyValue, Predicate<LocalTime> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L eq3(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLocalDateTimeSupplier propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L eq3(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L eq3(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L eq3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L eq3(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    default L eq3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-            ignoreStrategy);
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <R extends Serializable> L eq3(SerializableSupplier<R> propertyValue) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default <R extends Serializable> L eq3(SerializableSupplier<R> property, R value) {
+        return eq3(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <R extends Serializable> L eq3(SerializableSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
-        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <R extends Serializable> L eq3(SerializableSupplier<R> propertyValue, R value,
+        Predicate<R> ignoreStrategy) {
+        return eq3(LambdaUtils.getLambdaPropertyName(propertyValue), value, ignoreStrategy);
     }
 }

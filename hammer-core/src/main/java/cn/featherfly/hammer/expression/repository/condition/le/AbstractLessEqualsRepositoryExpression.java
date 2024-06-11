@@ -68,8 +68,8 @@ public abstract class AbstractLessEqualsRepositoryExpression<C extends Condition
     /**
      * Instantiates a new abstract less equals repository expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractLessEqualsRepositoryExpression(int index, MulitiLessEqualsExpression<C, L> expression,
@@ -239,73 +239,75 @@ public abstract class AbstractLessEqualsRepositoryExpression<C extends Condition
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> void accept(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> void accept(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public <N extends Number> void accept(SerializableNumberSupplier<N> property, N value,
+        Predicate<N> ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        expression.le(index, property, ignoreStrategy);
+    public void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        expression.le(index, property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
+    public void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        expression.le(index, property, matchStrategy, ignoreStrategy);
+        expression.le(index, property, value, matchStrategy, ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------

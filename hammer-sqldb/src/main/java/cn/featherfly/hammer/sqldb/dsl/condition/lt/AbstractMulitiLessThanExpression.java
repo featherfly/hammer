@@ -57,7 +57,7 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      */
     @Override
     public <E> L lt(int index, SerializableToIntFunction<E> name, int value) {
-        return hold.lt(new AtomicInteger(index), name, value, getIgnoreStrategy());
+        return hold.lt(new AtomicInteger(index), name, value, (IntPredicate) getIgnoreStrategy()::test);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      */
     @Override
     public <E> L lt(int index, SerializableToLongFunction<E> name, long value) {
-        return hold.lt(new AtomicInteger(index), name, value, getIgnoreStrategy());
+        return hold.lt(new AtomicInteger(index), name, value, (LongPredicate) getIgnoreStrategy()::test);
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      */
     @Override
     public <E> L lt(int index, SerializableToDoubleFunction<E> name, double value) {
-        return hold.lt(new AtomicInteger(index), name, value, getIgnoreStrategy());
+        return hold.lt(new AtomicInteger(index), name, value, (DoublePredicate) getIgnoreStrategy()::test);
     }
 
     /**
@@ -205,145 +205,150 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableIntSupplier property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L lt(int index, SerializableIntSupplier property, int value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public L lt(int index, SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLongSupplier property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L lt(int index, SerializableLongSupplier property, long value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public L lt(int index, SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableDoubleSupplier property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L lt(int index, SerializableDoubleSupplier property, double value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public L lt(int index, SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L lt(int index, SerializableDateSupplier<R> property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <D extends Date> L lt(int index, SerializableDateSupplier<D> property, D value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L lt(int index, SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public <D extends Date> L lt(int index, SerializableDateSupplier<D> property, D value,
+        Predicate<D> ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L lt(int index, SerializableNumberSupplier<R> property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <N extends Number> L lt(int index, SerializableNumberSupplier<N> property, N value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L lt(int index, SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public <N extends Number> L lt(int index, SerializableNumberSupplier<N> property, N value,
+        Predicate<N> ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLocalDateSupplier property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L lt(int index, SerializableLocalDateSupplier property, LocalDate value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public L lt(int index, SerializableLocalDateSupplier property, LocalDate value,
+        Predicate<LocalDate> ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), value, property, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLocalTimeSupplier property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L lt(int index, SerializableLocalTimeSupplier property, LocalTime value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public L lt(int index, SerializableLocalTimeSupplier property, LocalTime value,
+        Predicate<LocalTime> ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLocalDateTimeSupplier property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L lt(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public L lt(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return hold.lt(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
+    public L lt(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+    public L lt(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return hold.lt(new AtomicInteger(index), property, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -367,16 +372,17 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property) {
-        return hold.lt(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property, E value) {
+        return hold.lt(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return hold.lt(new AtomicInteger(index), property, ignoreStrategy);
+    public <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property, E value,
+        Predicate<E> ignoreStrategy) {
+        return hold.lt(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
@@ -384,7 +390,7 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      */
     @Override
     public L lt(int index, String name, int value) {
-        return lt(index, name, value, (IntPredicate) getIgnoreStrategy()::test);
+        return hold.lt(new AtomicInteger(index), name, value, (IntPredicate) getIgnoreStrategy()::test);
     }
 
     /**
@@ -400,7 +406,7 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      */
     @Override
     public L lt(int index, String name, long value) {
-        return lt(index, name, value, (LongPredicate) getIgnoreStrategy()::test);
+        return hold.lt(new AtomicInteger(index), name, value, (LongPredicate) getIgnoreStrategy()::test);
     }
 
     /**
@@ -416,7 +422,7 @@ public abstract class AbstractMulitiLessThanExpression<I extends InternalMulitiC
      */
     @Override
     public L lt(int index, String name, double value) {
-        return lt(index, name, value, (DoublePredicate) getIgnoreStrategy()::test);
+        return hold.lt(new AtomicInteger(index), name, value, (DoublePredicate) getIgnoreStrategy()::test);
     }
 
     /**

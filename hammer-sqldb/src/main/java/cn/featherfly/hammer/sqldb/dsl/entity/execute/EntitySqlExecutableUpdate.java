@@ -12,6 +12,7 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.lang.ClassUtils;
@@ -209,7 +210,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<N> property) {
+    public <N extends Number> EntityExecutableUpdate<E> increase(SerializableNumberSupplier<N> property) {
         return increase0(property, property.get(), updateConfig.getSetValueIgnoreStrategy()::test);
     }
 
@@ -217,7 +218,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> EntityExecutableUpdate<E> increase(SerializableSupplier<N> property,
+    public <N extends Number> EntityExecutableUpdate<E> increase(SerializableNumberSupplier<N> property,
         Predicate<N> ignoreStrategy) {
         return increase0(property, property.get(), ignoreStrategy);
     }

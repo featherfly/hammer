@@ -8,12 +8,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableIntSupplier;
-import cn.featherfly.common.function.serializable.SerializableLongSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
-import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
@@ -22,6 +17,7 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.ni.NotInSupplierExpression;
 
 /**
  * The Interface EntityNotInExpression.
@@ -32,7 +28,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface EntityNotInExpression<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends ConditionExpression {
+    extends ConditionExpression, NotInSupplierExpression<C, L> {
 
     /**
      * values not in. 不包含指定，sql中的not in.
@@ -269,104 +265,4 @@ public interface EntityNotInExpression<T, C extends ConditionExpression, L exten
     L ni(SerializableToStringFunction<T> name, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy);
 
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param <R> the generic type
-     * @param property bean property
-     * @return LogicExpression
-     */
-    <R extends Serializable> L ni(SerializableSupplier<R> property);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param <R> the generic type
-     * @param property bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <R extends Serializable> L ni(SerializableSupplier<R> property, IgnoreStrategy ignoreStrategy) {
-        return ni(property, ignoreStrategy::test);
-    }
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param <R> the generic type
-     * @param property bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    <R extends Serializable> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ni(SerializableIntSupplier property);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ni(SerializableIntSupplier property, IntPredicate ignoreStrategy);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ni(SerializableLongSupplier property);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ni(SerializableLongSupplier property, LongPredicate ignoreStrategy);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @return LogicExpression
-     */
-    L ni(SerializableDoubleSupplier property);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ni(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    L ni(SerializableStringSupplier property, MatchStrategy matchStrategy);
-
-    /**
-     * values not in. 不包含指定，sql中的not in.
-     *
-     * @param property bean property
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    L ni(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

@@ -223,19 +223,6 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     /** {@inheritDoc} */
     @Override
-    public <R> L eq(AtomicInteger index, SerializableSupplier<R> property, Predicate<?> ignoreStrategy) {
-        return eq(index, property, property.get(), MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <R> L eq(AtomicInteger index, SerializableSupplier<R> property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
-        return eq(index, property, property.get(), matchStrategy, ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public L eq(AtomicInteger index, Serializable property, int value, IntPredicate ignoreStrategy) {
         return eq(index, property, value, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
@@ -1514,69 +1501,19 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return ge(index, property, property.getAsInt(), v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L ge(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return ge(index, property, property.getAsLong(), v -> ignoreStrategy.test((Long) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L ge(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return ge(index, property, property.getAsDouble(), v -> ignoreStrategy.test((Double) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L ge(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy) {
-        return ge(index, property, property.getAsInt(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L ge(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy) {
-        return ge(index, property, property.getAsLong(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L ge(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy) {
-        return ge(index, property, property.getAsDouble(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <V> L ge(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy) {
-        return ge(index, property, property.get(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L ge(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
-        return ge(index, property, property.get(), matchStrategy, ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L ge(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
+    public L ge(AtomicInteger index, Serializable name, int value, IntPredicate ignoreStrategy) {
         return ge(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
+    public L ge(AtomicInteger index, Serializable name, long value, LongPredicate ignoreStrategy) {
         return ge(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L ge(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
-        DoublePredicate ignoreStrategy) {
+    public L ge(AtomicInteger index, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return ge(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
@@ -1736,69 +1673,19 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return gt(index, property, property.getAsInt(), v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L gt(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return gt(index, property, property.getAsLong(), v -> ignoreStrategy.test((Long) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L gt(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return gt(index, property, property.getAsDouble(), v -> ignoreStrategy.test((Double) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L gt(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy) {
-        return gt(index, property, property.getAsInt(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L gt(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy) {
-        return gt(index, property, property.getAsLong(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L gt(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy) {
-        return gt(index, property, property.getAsDouble(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <V> L gt(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy) {
-        return gt(index, property, property.get(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L gt(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
-        return gt(index, property, property.get(), matchStrategy, ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L gt(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
+    public L gt(AtomicInteger index, Serializable name, int value, IntPredicate ignoreStrategy) {
         return gt(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
+    public L gt(AtomicInteger index, Serializable name, long value, LongPredicate ignoreStrategy) {
         return gt(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L gt(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
-        DoublePredicate ignoreStrategy) {
+    public L gt(AtomicInteger index, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return gt(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
@@ -1958,69 +1845,19 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return le(index, property, property.getAsInt(), v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L le(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return le(index, property, property.getAsLong(), v -> ignoreStrategy.test((Long) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L le(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return le(index, property, property.getAsDouble(), v -> ignoreStrategy.test((Double) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L le(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy) {
-        return le(index, property, property.getAsInt(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L le(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy) {
-        return le(index, property, property.getAsLong(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L le(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy) {
-        return le(index, property, property.getAsDouble(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <V> L le(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy) {
-        return le(index, property, property.get(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L le(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
-        return le(index, property, property.get(), matchStrategy, ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L le(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
+    public L le(AtomicInteger index, Serializable name, int value, IntPredicate ignoreStrategy) {
         return le(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
+    public L le(AtomicInteger index, Serializable name, long value, LongPredicate ignoreStrategy) {
         return le(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L le(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
-        DoublePredicate ignoreStrategy) {
+    public L le(AtomicInteger index, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return le(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
@@ -2180,69 +2017,19 @@ public abstract class AbstractMulitiEntityConditionExpression<C extends Conditio
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return lt(index, property, property.getAsInt(), v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L lt(AtomicInteger index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return lt(index, property, property.getAsLong(), v -> ignoreStrategy.test((Long) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L lt(AtomicInteger index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return lt(index, property, property.getAsDouble(), v -> ignoreStrategy.test((Double) v));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L lt(AtomicInteger index, SerializableIntSupplier property, Predicate<?> ignoreStrategy) {
-        return lt(index, property, property.getAsInt(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L lt(AtomicInteger index, SerializableLongSupplier property, Predicate<?> ignoreStrategy) {
-        return lt(index, property, property.getAsLong(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L lt(AtomicInteger index, SerializableDoubleSupplier property, Predicate<?> ignoreStrategy) {
-        return lt(index, property, property.getAsDouble(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <V> L lt(AtomicInteger index, SerializableSupplier<V> property, Predicate<?> ignoreStrategy) {
-        return lt(index, property, property.get(), ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L lt(AtomicInteger index, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
-        return lt(index, property, property.get(), matchStrategy, ignoreStrategy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public L lt(AtomicInteger index, SerializableToIntFunction<?> name, int value, IntPredicate ignoreStrategy) {
+    public L lt(AtomicInteger index, Serializable name, int value, IntPredicate ignoreStrategy) {
         return lt(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, SerializableToLongFunction<?> name, long value, LongPredicate ignoreStrategy) {
+    public L lt(AtomicInteger index, Serializable name, long value, LongPredicate ignoreStrategy) {
         return lt(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public L lt(AtomicInteger index, SerializableToDoubleFunction<?> name, double value,
-        DoublePredicate ignoreStrategy) {
+    public L lt(AtomicInteger index, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return lt(index, getClassMapping(index).getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 

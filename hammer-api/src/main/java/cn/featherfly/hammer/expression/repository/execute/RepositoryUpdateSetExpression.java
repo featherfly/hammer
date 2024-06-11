@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -31,8 +32,8 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <V>   the value type
-     * @param name  property name
+     * @param <V> the value type
+     * @param name property name
      * @param value property value
      * @return Update
      */
@@ -41,9 +42,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <V>            the value type
-     * @param name           property name
-     * @param value          property value
+     * @param <V> the value type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -52,9 +53,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <V>            the value type
-     * @param name           property name
-     * @param value          property value
+     * @param <V> the value type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -65,8 +66,8 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <N>   number type
-     * @param name  property name
+     * @param <N> number type
+     * @param name property name
      * @param value property value
      * @return Update
      */
@@ -75,9 +76,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param name           property name
-     * @param value          property value
+     * @param <N> number type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -86,9 +87,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param name           property name
-     * @param value          property value
+     * @param <N> number type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -101,7 +102,7 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <V>   the value type
+     * @param <V> the value type
      * @param field property name
      * @param value property value
      * @return Update
@@ -113,9 +114,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <V>            the value type
-     * @param field          the field
-     * @param value          property value
+     * @param <V> the value type
+     * @param field the field
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -126,9 +127,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <V>            the value type
-     * @param field          the field
-     * @param value          property value
+     * @param <V> the value type
+     * @param field the field
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -139,7 +140,7 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param field the field
      * @param value property value
      * @return Update
@@ -151,9 +152,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param field          the field
-     * @param value          property value
+     * @param <N> number type
+     * @param field the field
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -164,9 +165,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param field          the field
-     * @param value          property value
+     * @param <N> number type
+     * @param field the field
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -179,9 +180,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <T>   the generic type
-     * @param <R>   the generic type
-     * @param name  property name
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name property name
      * @param value property value
      * @return Update
      */
@@ -190,10 +191,10 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           property name
-     * @param value          property value
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -202,10 +203,10 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           property name
-     * @param value          property value
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -216,7 +217,7 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property object property
      * @return Update
      */
@@ -225,8 +226,8 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param property object property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -235,8 +236,8 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * set value for property.
      *
-     * @param <R>            the generic type
-     * @param property       object property
+     * @param <R> the generic type
+     * @param property object property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -247,9 +248,9 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <T>   the generic type
-     * @param <R>   the generic number type
-     * @param name  property name
+     * @param <T> the generic type
+     * @param <R> the generic number type
+     * @param name property name
      * @param value property value
      * @return Update
      */
@@ -258,10 +259,10 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <T>            the generic type
-     * @param <N>            the generic number type
-     * @param name           property name
-     * @param value          property value
+     * @param <T> the generic type
+     * @param <N> the generic number type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -270,10 +271,10 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <T>            the generic type
-     * @param <N>            the generic number type
-     * @param name           property name
-     * @param value          property value
+     * @param <T> the generic type
+     * @param <N> the generic number type
+     * @param name property name
+     * @param value property value
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
@@ -284,31 +285,31 @@ public interface RepositoryUpdateSetExpression<U, C extends ConditionExpression,
     /**
      * increase value for property.
      *
-     * @param <N>      number type
+     * @param <N> number type
      * @param property object property
      * @return Update
      */
-    <N extends Number> U increase(SerializableSupplier<N> property);
+    <N extends Number> U increase(SerializableNumberSupplier<N> property);
 
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param property       object property
+     * @param <N> number type
+     * @param property object property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    <N extends Number> U increase(SerializableSupplier<N> property, Predicate<N> ignoreStrategy);
+    <N extends Number> U increase(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy);
 
     /**
      * increase value for property.
      *
-     * @param <N>            number type
-     * @param property       object property
+     * @param <N> number type
+     * @param property object property
      * @param ignoreStrategy the ignore strategy
      * @return Update
      */
-    default <N extends Number> U increase(SerializableSupplier<N> property, IgnoreStrategy ignoreStrategy) {
+    default <N extends Number> U increase(SerializableNumberSupplier<N> property, IgnoreStrategy ignoreStrategy) {
         return increase(property, ignoreStrategy::test);
     }
 }

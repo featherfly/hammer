@@ -11,9 +11,9 @@ import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableToDoubleFunction6;
-import cn.featherfly.common.function.serializable.SerializableToIntFunction6;
-import cn.featherfly.common.function.serializable.SerializableToLongFunction6;
+import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
+import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -23,81 +23,81 @@ import cn.featherfly.hammer.expression.condition.ge.GreatEqualsSupplierExpressio
  * The Interface EntityGreatEqualsExpressionBase6.
  *
  * @author zhongj
- * @param <T>  the first comparable type
+ * @param <T> the first comparable type
  * @param <T2> the second comparable type
  * @param <T3> the third comparable type
  * @param <T4> the fourth comparable type
  * @param <T5> the fifth comparable type
  * @param <T6> the sixth comparable type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C extends ConditionExpression,
-        L extends LogicExpression<C, L>>
-        extends EntityGreatEqualsExpressionBase5<T, T2, T3, T4, T5, C, L>, GreatEqualsSupplierExpression6<C, L> {
+    L extends LogicExpression<C, L>>
+    extends EntityGreatEqualsExpressionBase5<T, T2, T3, T4, T5, C, L>, GreatEqualsSupplierExpression6<C, L> {
 
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    L ge6(SerializableToIntFunction6<T6> name, int value);
+    L ge6(SerializableToIntFunction<T6> name, int value);
 
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge6(SerializableToIntFunction6<T6> name, int value, IntPredicate ignoreStrategy);
+    L ge6(SerializableToIntFunction<T6> name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    L ge6(SerializableToLongFunction6<T6> name, long value);
+    L ge6(SerializableToLongFunction<T6> name, long value);
 
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge6(SerializableToLongFunction6<T6> name, long value, LongPredicate ignoreStrategy);
+    L ge6(SerializableToLongFunction<T6> name, long value, LongPredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
-    L ge6(SerializableToDoubleFunction6<T6> name, double value);
+    L ge6(SerializableToDoubleFunction<T6> name, double value);
 
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge6(SerializableToDoubleFunction6<T6> name, double value, DoublePredicate ignoreStrategy);
+    L ge6(SerializableToDoubleFunction<T6> name, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>   number type
-     * @param name  the name
+     * @param <N> number type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -106,9 +106,9 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -117,8 +117,8 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -127,9 +127,9 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -138,8 +138,8 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param <D>   date type
-     * @param name  the name
+     * @param <D> date type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -148,9 +148,9 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -159,7 +159,7 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -168,8 +168,8 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -178,7 +178,7 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -187,8 +187,8 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -197,7 +197,7 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -206,8 +206,8 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -216,7 +216,7 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -227,8 +227,8 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -239,8 +239,8 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -249,12 +249,12 @@ public interface EntityGreatEqualsExpressionBase6<T, T2, T3, T4, T5, T6, C exten
     /**
      * great and equals. 大于等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L ge6(SerializableFunction<T6, String> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
 }

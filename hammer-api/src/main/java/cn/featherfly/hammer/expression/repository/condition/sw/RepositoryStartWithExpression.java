@@ -26,9 +26,9 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     /**
      * start with value. 以value开始.
      *
-     * @param <T>          the generic type
+     * @param <T> the generic type
      * @param propertyName the property name
-     * @param value        the value
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L sw(SerializableToStringFunction<T> propertyName, String value) {
@@ -38,9 +38,9 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,9 +51,9 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -64,9 +64,9 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     /**
      * start with value. 以value开始.
      *
-     * @param <T>           the generic type
-     * @param propertyName  the property name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -77,10 +77,10 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -92,10 +92,10 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -105,14 +105,14 @@ public interface RepositoryStartWithExpression<C extends ConditionExpression, L 
     }
 
     @Override
-    default L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return sw(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L sw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return sw(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     @Override
-    default L sw(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    default L sw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return sw(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy, ignoreStrategy);
+        return sw(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 
 }

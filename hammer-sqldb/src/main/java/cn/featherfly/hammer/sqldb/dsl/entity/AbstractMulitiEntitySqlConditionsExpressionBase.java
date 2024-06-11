@@ -400,216 +400,218 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R extends Serializable> L eq(SerializableSupplier<R> property) {
-        return eq(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <R extends Serializable> L eq(SerializableSupplier<R> property, R value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Serializable> L eq(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, ignoreStrategy);
+    public <R extends Serializable> L eq(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableBooleanSupplier propertyValue) {
-        return eq(classMapping, propertyValue, propertyValue.getAsBoolean(), tableAlias, getIgnoreStrategy());
+    public L eq(SerializableBooleanSupplier property, boolean value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableBoolSupplier propertyValue) {
-        return eq(classMapping, propertyValue, tableAlias, getIgnoreStrategy());
+    public L eq(SerializableBoolSupplier property, Boolean value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
-        return eq(classMapping, propertyValue, tableAlias, getIgnoreStrategy());
+    public L eq(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableCharSupplier property) {
-        return eq(classMapping, property, property.getAsChar(), tableAlias, getIgnoreStrategy());
+    public L eq(SerializableCharSupplier property, char value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableCharSupplier property, CharPredicate ignoreStrategy) {
-        return eq(classMapping, property, property.getAsChar(), tableAlias, ignoreStrategy);
+    public L eq(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableIntSupplier property) {
-        return eq(classMapping, property, property.getAsInt(), tableAlias, getIgnoreStrategy());
+    public L eq(SerializableIntSupplier property, int value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return eq(classMapping, property, property.getAsInt(), tableAlias, ignoreStrategy);
+    public L eq(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableDoubleSupplier property) {
-        return eq(classMapping, property, property.getAsDouble(), tableAlias, getIgnoreStrategy());
+    public L eq(SerializableDoubleSupplier property, double value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return eq(classMapping, property, property.getAsDouble(), tableAlias, ignoreStrategy);
+    public L eq(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLongSupplier property) {
-        return eq(classMapping, property, property.getAsLong(), tableAlias, getIgnoreStrategy());
+    public L eq(SerializableLongSupplier property, long value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return eq(classMapping, property, property.getAsLong(), tableAlias, ignoreStrategy);
+    public L eq(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L eq(SerializableNumberSupplier<R> property) {
-        return eq(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <N extends Number> L eq(SerializableNumberSupplier<N> property, N value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L eq(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, ignoreStrategy);
+    public <N extends Number> L eq(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L eq(SerializableDateSupplier<R> property) {
-        return eq(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <D extends Date> L eq(SerializableDateSupplier<D> property, D value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L eq(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, ignoreStrategy);
+    public <D extends Date> L eq(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property) {
-        return eq(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, E value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, ignoreStrategy);
+    public <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLocalDateSupplier property) {
-        return eq(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L eq(SerializableLocalDateSupplier property, LocalDate value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, ignoreStrategy);
+    public L eq(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLocalDateTimeSupplier property) {
-        return eq(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L eq(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, ignoreStrategy);
+    public L eq(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLocalTimeSupplier property) {
-        return eq(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L eq(SerializableLocalTimeSupplier property, LocalTime value) {
+        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, ignoreStrategy);
+    public L eq(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return eq(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L eq(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return eq(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return eq(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L eq(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return eq(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -628,30 +630,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L ne(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
         return ne(classMapping, name, value, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(SerializableBooleanSupplier propertyValue) {
-        return ne(classMapping, propertyValue, propertyValue.getAsBoolean(), tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(SerializableBoolSupplier propertyValue) {
-        return ne(classMapping, propertyValue, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
-        return ne(classMapping, propertyValue, tableAlias, getIgnoreStrategy());
     }
 
     /**
@@ -820,192 +798,218 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R extends Serializable> L ne(SerializableSupplier<R> property) {
-        return ne(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L ne(SerializableBooleanSupplier property, boolean value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Serializable> L ne(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, ignoreStrategy);
+    public L ne(SerializableBoolSupplier property, Boolean value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableCharSupplier property) {
-        return ne(classMapping, property, property.get(), tableAlias, getIgnoreStrategy());
+    public L ne(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableCharSupplier property, CharPredicate ignoreStrategy) {
-        return ne(classMapping, property, property.get(), tableAlias, ignoreStrategy);
+    public <R extends Serializable> L ne(SerializableSupplier<R> property, R value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableIntSupplier property) {
-        return ne(classMapping, property, property.getAsInt(), tableAlias, getIgnoreStrategy());
+    public <R extends Serializable> L ne(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return ne(classMapping, property, property.getAsInt(), tableAlias, ignoreStrategy);
+    public L ne(SerializableCharSupplier property, char value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLongSupplier property) {
-        return ne(classMapping, property, property.getAsLong(), tableAlias, getIgnoreStrategy());
+    public L ne(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return ne(classMapping, property, property.getAsLong(), tableAlias, ignoreStrategy);
+    public L ne(SerializableIntSupplier property, int value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableDoubleSupplier property) {
-        return ne(classMapping, property, property.getAsDouble(), tableAlias, getIgnoreStrategy());
+    public L ne(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return ne(classMapping, property, property.getAsDouble(), tableAlias, ignoreStrategy);
+    public L ne(SerializableLongSupplier property, long value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L ne(SerializableNumberSupplier<R> property) {
-        return ne(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L ne(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L ne(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, ignoreStrategy);
+    public L ne(SerializableDoubleSupplier property, double value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property) {
-        return ne(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L ne(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, ignoreStrategy);
+    public <N extends Number> L ne(SerializableNumberSupplier<N> property, N value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L ne(SerializableDateSupplier<R> property) {
-        return ne(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <N extends Number> L ne(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L ne(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, ignoreStrategy);
+    public <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property, E value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLocalDateSupplier property) {
-        return ne(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, ignoreStrategy);
+    public <D extends Date> L ne(SerializableDateSupplier<D> property, D value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLocalDateTimeSupplier property) {
-        return ne(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <D extends Date> L ne(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, ignoreStrategy);
+    public L ne(SerializableLocalDateSupplier property, LocalDate value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLocalTimeSupplier property) {
-        return ne(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L ne(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, ignoreStrategy);
+    public L ne(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ne(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L ne(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return ne(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L ne(SerializableLocalTimeSupplier property, LocalTime value) {
+        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return ne(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return ne(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1031,16 +1035,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return lk(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L lk(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return lk(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lk(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return lk(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L lk(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return lk(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1066,16 +1071,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L nl(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nl(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L nl(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return nl(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nl(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return nl(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L nl(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nl(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1101,16 +1107,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return sw(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L sw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return sw(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L sw(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return sw(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L sw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return sw(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1136,16 +1143,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nsw(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L nsw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return nsw(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nsw(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return nsw(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L nsw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nsw(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1171,16 +1179,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ew(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L ew(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return ew(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ew(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return ew(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L ew(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return ew(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1206,16 +1215,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L newv(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return newv(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L newv(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return newv(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L newv(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return newv(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L newv(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return newv(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1241,16 +1251,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return co(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L co(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return co(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L co(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return co(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L co(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return co(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1276,16 +1287,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L nco(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return nco(classMapping, property, tableAlias, matchStrategy, getIgnoreStrategy());
+    public L nco(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return nco(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L nco(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return nco(classMapping, property, tableAlias, matchStrategy, ignoreStrategy);
+    public L nco(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return nco(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1710,118 +1722,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L ge(SerializableDateSupplier<R> property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Date> L ge(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Number> L ge(SerializableNumberSupplier<R> property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Number> L ge(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableLocalDateSupplier property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableLocalTimeSupplier property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableLocalDateTimeSupplier property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ge(classMapping, property, matchStrategy, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ge(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return ge(classMapping, property, matchStrategy, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L ge(SerializableToIntFunction<E1> name, int value) {
         return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
@@ -1866,52 +1766,168 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return ge(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableIntSupplier property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <D extends Date> L ge(SerializableDateSupplier<D> property, D value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
+    public <D extends Date> L ge(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableLongSupplier property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <N extends Number> L ge(SerializableNumberSupplier<N> property, N value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
+    public <N extends Number> L ge(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableDoubleSupplier property) {
-        return ge(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L ge(SerializableLocalDateSupplier property, LocalDate value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ge(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return ge(classMapping, property, tableAlias, ignoreStrategy);
+    public L ge(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableLocalTimeSupplier property, LocalTime value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property, E value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return ge(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return ge(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableIntSupplier property, int value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableLongSupplier property, long value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableDoubleSupplier property, double value) {
+        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ge(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -2034,118 +2050,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L gt(SerializableNumberSupplier<R> property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Number> L gt(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Date> L gt(SerializableDateSupplier<R> property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Date> L gt(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableLocalDateSupplier property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableLocalTimeSupplier property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableLocalDateTimeSupplier property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return gt(classMapping, property, matchStrategy, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L gt(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return gt(classMapping, property, matchStrategy, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L gt(SerializableToIntFunction<E1> name, int value) {
         return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
@@ -2190,79 +2094,171 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return gt(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableIntSupplier property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <N extends Number> L gt(SerializableNumberSupplier<N> property, N value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
+    public <N extends Number> L gt(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableLongSupplier property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, E value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
+    public <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableDoubleSupplier property) {
-        return gt(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <D extends Date> L gt(SerializableDateSupplier<D> property, D value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L gt(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return gt(classMapping, property, tableAlias, ignoreStrategy);
+    public <D extends Date> L gt(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLocalDateSupplier property, LocalDate value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLocalTimeSupplier property, LocalTime value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return gt(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return gt(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableIntSupplier property, int value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLongSupplier property, long value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableDoubleSupplier property, double value) {
+        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L gt(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <R extends Serializable> L in(SerializableFunction<T, R> name, R value) {
-    //        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <R extends Serializable> L in(SerializableFunction<T, R> name, R value, Predicate<R> ignoreStrategy) {
-    //        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <R extends Serializable> L in(SerializableFunction<T, R> name, R... value) {
-    //        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
-    //    }
 
     /**
      * {@inheritDoc}
@@ -2585,26 +2581,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R extends Serializable> L in(SerializableSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get(),
-            tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Serializable> L in(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get(),
-            tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L in(SerializableToIntFunction<E1> name, int value) {
         return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
@@ -2697,100 +2673,164 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return in(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public L in(SerializableFunction<T, Integer> name, int... value) {
-    //        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public L in(SerializableFunction<T, Long> name, long... value) {
-    //        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public L in(SerializableFunction<T, Integer> name, int[] value, Predicate<int[]> ignoreStrategy) {
-    //        return in(classMapping, name, value, tableAlias, ignoreStrategy);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public L in(SerializableFunction<T, Long> name, long[] value, Predicate<long[]> ignoreStrategy) {
-    //        return in(classMapping, name, value, tableAlias, ignoreStrategy);
-    //    }
+    // ----------------------------------------------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableIntSupplier property) {
-        return in(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <R extends Serializable> L in(SerializableSupplier<R> property, R value) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return in(classMapping, property, tableAlias, ignoreStrategy);
+    public <R extends Serializable> L in(SerializableSupplier<R> property, R... value) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableLongSupplier property) {
-        return in(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <R extends Serializable> L in(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return in(classMapping, property, tableAlias, ignoreStrategy);
+    public <R extends Serializable> L in(SerializableSupplier<R> property, R[] value, Predicate<R[]> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableDoubleSupplier property) {
-        return in(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L in(SerializableIntSupplier property, int value) {
+        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    @Override
+    public L in(SerializableIntSupplier property, int... value) {
+        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return in(classMapping, property, tableAlias, ignoreStrategy);
+    public L in(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return in(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return in(classMapping, property, property.get(), matchStrategy, tableAlias, getIgnoreStrategy());
+    public L in(SerializableIntSupplier property, int[] value, Predicate<int[]> ignoreStrategy) {
+        return in(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L in(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return in(classMapping, property, property.get(), matchStrategy, tableAlias, ignoreStrategy);
+    public L in(SerializableLongSupplier property, long value) {
+        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    @Override
+    public L in(SerializableLongSupplier property, long... value) {
+        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableLongSupplier property, long[] value, Predicate<long[]> ignoreStrategy) {
+        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableDoubleSupplier property, double value) {
+        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    @Override
+    public L in(SerializableDoubleSupplier property, double... value) {
+        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    @Override
+    public L in(SerializableDoubleSupplier property, double[] value, Predicate<double[]> ignoreStrategy) {
+        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return in(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy) {
+        return in(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return in(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L in(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
+        Predicate<String[]> ignoreStrategy) {
+        return in(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -2842,26 +2882,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, Collection<R> value,
         Predicate<Collection<R>> ignoreStrategy) {
         return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Serializable> L ni(SerializableSupplier<R> property) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get(),
-            tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Serializable> L ni(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), property.get(),
-            tableAlias, ignoreStrategy);
     }
 
     /**
@@ -2960,52 +2980,124 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return ni(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableIntSupplier property) {
-        return ni(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <R extends Serializable> L ni(SerializableSupplier<R> property, R value) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return ni(classMapping, property, tableAlias, ignoreStrategy);
+    public <R extends Serializable> L ni(SerializableSupplier<R> property, R... value) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableLongSupplier property) {
-        return ni(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <R extends Serializable> L ni(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return ni(classMapping, property, tableAlias, ignoreStrategy);
+    public <R extends Serializable> L ni(SerializableSupplier<R> property, R[] value, Predicate<R[]> ignoreStrategy) {
+        SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+            ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableDoubleSupplier property) {
-        return ni(classMapping, property, tableAlias, getIgnoreStrategy());
+    public L ni(SerializableIntSupplier property, int value) {
+        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    @Override
+    public L ni(SerializableIntSupplier name, int... value) {
+        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return ni(classMapping, property, tableAlias, ignoreStrategy);
+    public L ni(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    @Override
+    public L ni(SerializableIntSupplier name, int[] value, Predicate<int[]> ignoreStrategy) {
+        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(SerializableLongSupplier property, long value) {
+        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    @Override
+    public L ni(SerializableLongSupplier property, long... value) {
+        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    @Override
+    public L ni(SerializableLongSupplier name, long[] value, Predicate<long[]> ignoreStrategy) {
+        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(SerializableDoubleSupplier property, double value) {
+        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    @Override
+    public L ni(SerializableDoubleSupplier name, double... value) {
+        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    @Override
+    public L ni(SerializableDoubleSupplier property, double[] value, Predicate<double[]> ignoreStrategy) {
+        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
@@ -3046,16 +3138,34 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return ni(classMapping, property, property.get(), matchStrategy, tableAlias, getIgnoreStrategy());
+    public L ni(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return ni(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ni(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return ni(classMapping, property, property.get(), matchStrategy, tableAlias, ignoreStrategy);
+    public L ni(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy) {
+        return ni(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return ni(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ni(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
+        Predicate<String[]> ignoreStrategy) {
+        return ni(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -3072,7 +3182,23 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
+    public <R> L inn(SerializableSupplier<R> name, Boolean value) {
+        return inn(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <R> L isn(SerializableFunction<E1, R> name, Boolean value) {
+        return isn(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L isn(SerializableSupplier<R> name, Boolean value) {
         return isn(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias);
     }
 
@@ -3196,118 +3322,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L le(SerializableDateSupplier<R> property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Date> L le(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Number> L le(SerializableNumberSupplier<R> property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Number> L le(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L le(SerializableEnumSupplier<E> property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L le(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableLocalDateSupplier property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableLocalTimeSupplier property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableLocalDateTimeSupplier property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return le(classMapping, property, matchStrategy, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L le(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return le(classMapping, property, matchStrategy, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L le(SerializableToIntFunction<E1> name, int value) {
         return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
@@ -3352,52 +3366,168 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return le(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableIntSupplier property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <D extends Date> L le(SerializableDateSupplier<D> property, D value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
+    public <R extends Date> L le(SerializableDateSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableLongSupplier property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <N extends Number> L le(SerializableNumberSupplier<N> property, N value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
+    public <N extends Number> L le(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableDoubleSupplier property) {
-        return le(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <E extends Enum<E>> L le(SerializableEnumSupplier<E> property, E value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L le(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return le(classMapping, property, tableAlias, ignoreStrategy);
+    public <E extends Enum<E>> L le(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLocalDateSupplier property, LocalDate value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLocalTimeSupplier property, LocalTime value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return le(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return le(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableIntSupplier property, int value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLongSupplier property, long value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableDoubleSupplier property, double value) {
+        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L le(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return le(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -3520,118 +3650,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L lt(SerializableNumberSupplier<R> property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Number> L lt(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L lt(SerializableEnumSupplier<E> property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L lt(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Date> L lt(SerializableDateSupplier<R> property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R extends Date> L lt(SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableLocalDateSupplier property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableLocalTimeSupplier property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableLocalDateTimeSupplier property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return lt(classMapping, property, matchStrategy, tableAlias, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L lt(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return lt(classMapping, property, matchStrategy, tableAlias, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public L lt(SerializableToIntFunction<E1> name, int value) {
         return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
     }
@@ -3676,52 +3694,168 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return lt(classMapping, name, value, tableAlias, ignoreStrategy);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableIntSupplier property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <N extends Number> L lt(SerializableNumberSupplier<N> property, N value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
+    public <N extends Number> L lt(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableLongSupplier property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <E extends Enum<E>> L lt(SerializableEnumSupplier<E> property, E value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
+    public <E extends Enum<E>> L lt(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableDoubleSupplier property) {
-        return lt(classMapping, property, tableAlias, getIgnoreStrategy());
+    public <D extends Date> L lt(SerializableDateSupplier<D> property, D value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L lt(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return lt(classMapping, property, tableAlias, ignoreStrategy);
+    public <D extends Date> L lt(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLocalDateSupplier property, LocalDate value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLocalTimeSupplier property, LocalTime value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return lt(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return lt(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableIntSupplier property, int value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLongSupplier property, long value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableDoubleSupplier property, double value) {
+        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L lt(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -3894,6 +4028,108 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
     }
 
+    // --------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ba(SerializableNumberSupplier<N> property, N min, N max) {
+        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ba(SerializableNumberSupplier<N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
+        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ba(SerializableDateSupplier<D> property, D min, D max) {
+        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ba(SerializableDateSupplier<D> property, D min, D max, BiPredicate<D, D> ignoreStrategy) {
+        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max) {
+        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max,
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max) {
+        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max,
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max) {
+        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max,
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableStringSupplier property, String min, String max) {
+        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ba(SerializableStringSupplier property, String min, String max,
+        BiPredicate<String, String> ignoreStrategy) {
+        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
     // ****************************************************************************************************************
 
     /**
@@ -4064,6 +4300,110 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
     }
 
+    // --------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L nba(SerializableNumberSupplier<N> property, N min, N max) {
+        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L nba(SerializableNumberSupplier<N> name, N min, N max,
+        BiPredicate<N, N> ignoreStrategy) {
+        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L nba(SerializableDateSupplier<D> property, D min, D max) {
+        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L nba(SerializableDateSupplier<D> property, D min, D max,
+        BiPredicate<D, D> ignoreStrategy) {
+        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max) {
+        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max,
+        BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
+        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max) {
+        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max,
+        BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
+        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max) {
+        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max,
+        BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
+        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableStringSupplier property, String min, String max) {
+        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L nba(SerializableStringSupplier property, String min, String max,
+        BiPredicate<String, String> ignoreStrategy) {
+        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+    }
+
     // ****************************************************************************************************************
     // property
     // ****************************************************************************************************************
@@ -4213,49 +4553,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return (C) this;
     }
 
-    //
-    //    public <R> ObjectExpression<C, L> property(SerializableFunction<T, R> name) {
-    //        return property(getPropertyName(name));
-    //    }
-
-    //    public ObjectExpression<C, L> property(String name) {
-    //        // IMPLSOON 这里后续来实现
-    //        return null;
-    //        //        return new SimpleObjectExpression<C, L>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //
-    //    public StringExpression<C, L> propertyString(String name) {
-    //        return new SimpleStringExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //
-    //    public NumberExpression<C, L> propertyNumber(String name) {
-    //        return new SimpleNumberExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //
-    //    public DateExpression<C, L> propertyDate(String name) {
-    //        return new SimpleDateExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //
-    //    public EnumExpression<C, L> propertyEnum(String name) {
-    //        return new SimpleEnumExpression<>(ClassMappingUtils.getColumnName(name, classMapping), this);
-    //    }
-
     // ********************************************************************
     // protected method
     // ********************************************************************
@@ -4329,37 +4626,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     }
 
     // ********************************************************************
-
-    /**
-     * Eq.
-     *
-     * @param <R> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <R> L eq(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return eq(classMapping, property, property.get(), queryAlias, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * Eq.
-     *
-     * @param <R> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <R> L eq(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eq(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
 
     /**
      * Eq.
@@ -4473,37 +4739,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
             queryAlias, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * Ne.
-     *
-     * @param <R> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <R> L ne(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ne(classMapping, property, property.get(), queryAlias, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * Ne.
-     *
-     * @param <R> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <R> L ne(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return ne(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -4650,21 +4885,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      *
      * @param classMapping the class mapping
      * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L sw(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return sw(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * Sw.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
      * @param value the value
      * @param queryAlias the query alias
      * @param matchStrategy the match strategy
@@ -4694,21 +4914,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     }
 
     // ****************************************************************************************************************
-
-    /**
-     * Nsw.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L nsw(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return nsw(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
 
     /**
      * Nsw.
@@ -4750,21 +4955,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      *
      * @param classMapping the class mapping
      * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L co(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return co(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * Co.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
      * @param value the value
      * @param queryAlias the query alias
      * @param matchStrategy the match strategy
@@ -4794,21 +4984,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     }
 
     // ****************************************************************************************************************
-
-    /**
-     * Nco.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L nco(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return nco(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
 
     /**
      * Nco.
@@ -4850,21 +5025,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      *
      * @param classMapping the class mapping
      * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ew(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return ew(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * Ew.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
      * @param value the value
      * @param queryAlias the query alias
      * @param matchStrategy the match strategy
@@ -4894,21 +5054,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     }
 
     // ****************************************************************************************************************
-
-    /**
-     * Newv.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L newv(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return newv(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
 
     /**
      * Newv.
@@ -4950,21 +5095,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      *
      * @param classMapping the class mapping
      * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lk(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return lk(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * Lk.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
      * @param value the value
      * @param queryAlias the query alias
      * @param matchStrategy the match strategy
@@ -4994,21 +5124,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     }
 
     // ****************************************************************************************************************
-
-    /**
-     * Nl.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L nl(JdbcClassMapping<?> classMapping, SerializableSupplier<String> property, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return nl(classMapping, property, property.get(), queryAlias, matchStrategy, ignoreStrategy);
-    }
 
     /**
      * Nl.
@@ -5045,179 +5160,30 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     // ****************************************************************************************************************
 
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return in(classMapping, property, property.getAsInt(), queryAlias, v -> ignoreStrategy.test((Integer) v));
+        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            v -> ignoreStrategy.test((Integer) v));
     }
 
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return in(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return in(classMapping, property, property.getAsLong(), queryAlias, v -> ignoreStrategy.test((Long) v));
+        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            v -> ignoreStrategy.test((Long) v));
     }
 
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return in(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return in(classMapping, property, property.getAsDouble(), queryAlias, v -> ignoreStrategy.test((Double) v));
+        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            v -> ignoreStrategy.test((Double) v));
     }
 
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return in(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * In.
-     *
-     * @param <R> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <R> L in(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return in(classMapping, property, property.get(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> property, int value,
-        String queryAlias, IntPredicate ignoreStrategy) {
-        return in(classMapping, (Serializable) property, value, queryAlias, v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> property, long value,
-        String queryAlias, LongPredicate ignoreStrategy) {
-        return in(classMapping, (Serializable) property, value, queryAlias, v -> ignoreStrategy.test((Long) v));
-    }
-
-    /**
-     * In.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L in(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> property, double value,
-        String queryAlias, DoublePredicate ignoreStrategy) {
-        return in(classMapping, (Serializable) property, value, queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * In.
-     *
-     * @param <S> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param matchStrategy the match strategy
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
     protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, S value, MatchStrategy matchStrategy,
         String queryAlias, Predicate<?> ignoreStrategy) {
         return in(classMapping.getPropertyMapping(getPropertyName(property)), value, matchStrategy, queryAlias,
             ignoreStrategy);
     }
 
-    /**
-     * In.
-     *
-     * @param <R> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
     protected <R> L in(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         Predicate<?> ignoreStrategy) {
         return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, ignoreStrategy);
@@ -5257,148 +5223,22 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     // ****************************************************************************************************************
 
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected <S> L ni(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return ni(classMapping, property, property.getAsInt(), queryAlias, v -> ignoreStrategy.test((Integer) v));
+        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            v -> ignoreStrategy.test((Integer) v));
     }
 
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ni(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected <S> L ni(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return ni(classMapping, property, property.getAsLong(), queryAlias, v -> ignoreStrategy.test((Long) v));
+        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            v -> ignoreStrategy.test((Long) v));
     }
 
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ni(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected <S> L ni(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return ni(classMapping, property, property.getAsDouble(), queryAlias, v -> ignoreStrategy.test((Long) v));
-    }
-
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ni(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ni.
-     *
-     * @param <R> the generic type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <R> L ni(JdbcClassMapping<?> classMapping, SerializableSupplier<R> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ni(classMapping, property, property.get(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> property, int value,
-        String queryAlias, IntPredicate ignoreStrategy) {
-        return ni(classMapping, (Serializable) property, value, queryAlias, v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> property, long value,
-        String queryAlias, LongPredicate ignoreStrategy) {
-        return ni(classMapping, (Serializable) property, value, queryAlias, v -> ignoreStrategy.test((Long) v));
-    }
-
-    /**
-     * Ni.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ni(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> property, double value,
-        String queryAlias, DoublePredicate ignoreStrategy) {
-        return ni(classMapping, (Serializable) property, value, queryAlias, v -> ignoreStrategy.test((Double) v));
+        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+            v -> ignoreStrategy.test((Double) v));
     }
 
     /**
@@ -5523,208 +5363,22 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     // ********************************************************************
 
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return ge(classMapping, property, property.getAsInt(), queryAlias, v -> ignoreStrategy.test((Integer) v));
+        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Integer) v));
     }
 
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ge(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return ge(classMapping, property, property.getAsLong(), queryAlias, v -> ignoreStrategy.test((Long) v));
+        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Long) v));
     }
 
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ge(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return ge(classMapping, property, property.getAsDouble(), queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ge(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ge.
-     *
-     * @param <V> the value type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <V> L ge(JdbcClassMapping<?> classMapping, SerializableSupplier<V> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ge(classMapping, property, property.get(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return ge(classMapping, property, property.get(), matchStrategy, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        IntPredicate ignoreStrategy) {
-        return ge(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ge(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        LongPredicate ignoreStrategy) {
-        return ge(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Long) v));
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return ge(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, DoublePredicate ignoreStrategy) {
-        return ge(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Ge.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L ge(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return ge(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
+        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Double) v));
     }
 
     /**
@@ -5923,208 +5577,22 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     // ********************************************************************
 
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return gt(classMapping, property, property.getAsInt(), queryAlias, v -> ignoreStrategy.test((Integer) v));
+        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Integer) v));
     }
 
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return gt(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return gt(classMapping, property, property.getAsLong(), queryAlias, v -> ignoreStrategy.test((Long) v));
+        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Long) v));
     }
 
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return gt(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return gt(classMapping, property, property.getAsDouble(), queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return gt(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Gt.
-     *
-     * @param <V> the value type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <V> L gt(JdbcClassMapping<?> classMapping, SerializableSupplier<V> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return gt(classMapping, property, property.get(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return gt(classMapping, property, property.get(), matchStrategy, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        IntPredicate ignoreStrategy) {
-        return gt(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return gt(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        LongPredicate ignoreStrategy) {
-        return gt(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Long) v));
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return gt(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, DoublePredicate ignoreStrategy) {
-        return gt(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Gt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L gt(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return gt(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
+        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Double) v));
     }
 
     /**
@@ -6193,118 +5661,22 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     // ********************************************************************
 
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return le(classMapping, property, property.getAsInt(), queryAlias, v -> ignoreStrategy.test((Integer) v));
+        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Integer) v));
     }
 
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return le(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return le(classMapping, property, property.getAsLong(), queryAlias, v -> ignoreStrategy.test((Long) v));
+        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Long) v));
     }
 
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return le(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return le(classMapping, property, property.getAsDouble(), queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return le(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Le.
-     *
-     * @param <V> the value type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <V> L le(JdbcClassMapping<?> classMapping, SerializableSupplier<V> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return le(classMapping, property, property.get(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return le(classMapping, property, property.get(), matchStrategy, queryAlias, ignoreStrategy);
+        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Double) v));
     }
 
     /**
@@ -6344,96 +5716,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     /**
      * Le.
      *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        IntPredicate ignoreStrategy) {
-        return le(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return le(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        LongPredicate ignoreStrategy) {
-        return le(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Long) v));
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return le(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, DoublePredicate ignoreStrategy) {
-        return le(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Le.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L le(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return le(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Le.
-     *
      * @param <V> the value type
      * @param pm the pm
      * @param value the value
@@ -6464,118 +5746,22 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     // ****************************************************************************************************************
 
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
+    protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return lt(classMapping, property, property.getAsInt(), queryAlias, v -> ignoreStrategy.test((Integer) v));
+        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Integer) v));
     }
 
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableIntSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return lt(classMapping, property, property.getAsInt(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
+    protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return lt(classMapping, property, property.getAsLong(), queryAlias, v -> ignoreStrategy.test((Long) v));
+        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Long) v));
     }
 
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableLongSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return lt(classMapping, property, property.getAsLong(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
+    protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return lt(classMapping, property, property.getAsDouble(), queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableDoubleSupplier property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return lt(classMapping, property, property.getAsDouble(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Lt.
-     *
-     * @param <V> the value type
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected <V> L lt(JdbcClassMapping<?> classMapping, SerializableSupplier<V> property, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return lt(classMapping, property, property.get(), queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param property the property
-     * @param matchStrategy the match strategy
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableStringSupplier property, MatchStrategy matchStrategy,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return lt(classMapping, property, property.get(), matchStrategy, queryAlias, ignoreStrategy);
+        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+            v -> ignoreStrategy.test((Double) v));
     }
 
     /**
@@ -6610,96 +5796,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         String queryAlias, Predicate<?> ignoreStrategy) {
         return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, matchStrategy, queryAlias,
             ignoreStrategy);
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        IntPredicate ignoreStrategy) {
-        return lt(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Integer) v));
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableToIntFunction<?> name, int value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return lt(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        LongPredicate ignoreStrategy) {
-        return lt(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Long) v));
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableToLongFunction<?> name, long value, String queryAlias,
-        Predicate<?> ignoreStrategy) {
-        return lt(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, DoublePredicate ignoreStrategy) {
-        return lt(classMapping, (Serializable) name, value, queryAlias, v -> ignoreStrategy.test((Double) v));
-    }
-
-    /**
-     * Lt.
-     *
-     * @param classMapping the class mapping
-     * @param name the name
-     * @param value the value
-     * @param queryAlias the query alias
-     * @param ignoreStrategy the ignore strategy
-     * @return the l
-     */
-    protected L lt(JdbcClassMapping<?> classMapping, SerializableToDoubleFunction<?> name, double value,
-        String queryAlias, Predicate<?> ignoreStrategy) {
-        return lt(classMapping, (Serializable) name, value, queryAlias, ignoreStrategy);
     }
 
     /**

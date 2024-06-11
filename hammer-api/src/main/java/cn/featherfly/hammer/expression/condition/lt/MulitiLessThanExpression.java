@@ -38,13 +38,13 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * @param <L> the generic type
  */
 public interface MulitiLessThanExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
      * less than. 小于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -53,9 +53,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -65,7 +65,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -74,9 +74,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -86,7 +86,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -95,9 +95,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -106,9 +106,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -117,10 +117,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -129,9 +129,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -140,10 +140,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -152,9 +152,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -163,10 +163,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -176,7 +176,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -185,9 +185,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -197,7 +197,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -206,9 +206,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -218,7 +218,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -227,9 +227,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -239,7 +239,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
      * less than. 小于.
      *
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -250,9 +250,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -263,9 +263,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param name              the name
-     * @param value             the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -274,11 +274,11 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param name              the name
-     * @param value             the value
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
-     * @param ignoreStrategy    the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     L lt(int index, String name, String value, MatchStrategy mathMatchStrategy, Predicate<String> ignoreStrategy);
@@ -300,9 +300,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -325,9 +325,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -350,9 +350,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -363,7 +363,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -376,10 +376,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -390,7 +390,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -403,10 +403,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -417,7 +417,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -430,10 +430,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -456,9 +456,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -481,9 +481,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -506,9 +506,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -531,9 +531,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -544,9 +544,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param field             the field
-     * @param value             the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -557,15 +557,15 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param field             the field
-     * @param value             the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
-     * @param ignoreStrategy    the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L lt(int index, Field field, String value, MatchStrategy mathMatchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lt(index, field.name(), value, ignoreStrategy);
     }
 
@@ -586,9 +586,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -611,9 +611,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -636,9 +636,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -649,7 +649,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -662,10 +662,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <N>            number type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -676,7 +676,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -689,10 +689,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -703,7 +703,7 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param index the index
      * @param field the field
      * @param value the value
@@ -716,10 +716,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <D>            date type
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -742,9 +742,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -767,9 +767,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -792,9 +792,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -817,9 +817,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param field          the field
-     * @param value          the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -830,9 +830,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param field             the field
-     * @param value             the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -843,15 +843,15 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param field             the field
-     * @param value             the value
+     * @param index the index
+     * @param field the field
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
-     * @param ignoreStrategy    the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L lt(int index, AliasField field, String value, MatchStrategy mathMatchStrategy,
-            Predicate<String> ignoreStrategy) {
+        Predicate<String> ignoreStrategy) {
         return lt(index, field.getAliasOrName(), value, ignoreStrategy);
     }
 
@@ -860,9 +860,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -871,10 +871,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -883,9 +883,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -894,10 +894,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -906,9 +906,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -917,10 +917,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -929,10 +929,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
-     * @param <N>   number type
+     * @param <E> the element type
+     * @param <N> number type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -941,11 +941,11 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param <N>            number type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param <N> number type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -954,10 +954,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <T>   the generic type
-     * @param <E>   the element type
+     * @param <T> the generic type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -966,11 +966,11 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <T>            the generic type
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -979,10 +979,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
-     * @param <D>   date type
+     * @param <E> the element type
+     * @param <D> date type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -991,11 +991,11 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param <D>            date type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param <D> date type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1004,9 +1004,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -1015,10 +1015,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1027,9 +1027,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -1038,10 +1038,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1050,9 +1050,9 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -1061,22 +1061,22 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L lt(int index, SerializableFunction<E, LocalDateTime> name, LocalDateTime value,
-            Predicate<LocalDateTime> ignoreStrategy);
+        Predicate<LocalDateTime> ignoreStrategy);
 
     /**
      * less than. 小于.
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param index the index
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -1087,10 +1087,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -1101,10 +1101,10 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>               the element type
-     * @param index             the index
-     * @param name              the name
-     * @param value             the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
@@ -1113,236 +1113,525 @@ public interface MulitiLessThanExpression<C extends ConditionExpression, L exten
     /**
      * less than. 小于.
      *
-     * @param <E>               the element type
-     * @param index             the index
-     * @param name              the name
-     * @param value             the value
+     * @param <E> the element type
+     * @param index the index
+     * @param name the name
+     * @param value the value
      * @param mathMatchStrategy the math match strategy
-     * @param ignoreStrategy    the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     <E> L lt(int index, SerializableFunction<E, String> name, String value, MatchStrategy mathMatchStrategy,
-            Predicate<String> ignoreStrategy);
+        Predicate<String> ignoreStrategy);
+
+    // ----------------------------------------------------------------------------------------------------------------
 
     /**
      * less than. 小于.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    L lt(int index, SerializableIntSupplier property);
+    default L lt(int index, SerializableIntSupplier property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy);
+    default L lt(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    L lt(int index, SerializableLongSupplier property);
+    default L lt(int index, SerializableLongSupplier property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy);
+    default L lt(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    L lt(int index, SerializableDoubleSupplier property);
+    default L lt(int index, SerializableDoubleSupplier property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+    default L lt(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param <R>      the generic type
-     * @param index    the index
+     * @param <R> the generic type
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    <R extends Date> L lt(int index, SerializableDateSupplier<R> property);
+    default <R extends Date> L lt(int index, SerializableDateSupplier<R> property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param property       bean property
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Date> L lt(int index, SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy);
+    default <R extends Date> L lt(int index, SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param <R>      the generic type
-     * @param index    the index
+     * @param <R> the generic type
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    <R extends Number> L lt(int index, SerializableNumberSupplier<R> property);
+    default <R extends Number> L lt(int index, SerializableNumberSupplier<R> property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param <R>            the generic type
-     * @param index          the index
-     * @param property       bean property
+     * @param <R> the generic type
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R extends Number> L lt(int index, SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    default <R extends Number> L lt(int index, SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param <E>      the element type
-     * @param index    the index
+     * @param <E> the element type
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property);
+    default <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param <E>            the element type
-     * @param index          the index
-     * @param property       bean property
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy);
+    default <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    L lt(int index, SerializableLocalDateSupplier property);
+    default L lt(int index, SerializableLocalDateSupplier property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    default L lt(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    L lt(int index, SerializableLocalTimeSupplier property);
+    default L lt(int index, SerializableLocalTimeSupplier property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    default L lt(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
-    L lt(int index, SerializableLocalDateTimeSupplier property);
+    default L lt(int index, SerializableLocalDateTimeSupplier property) {
+        return lt(index, property, property.get());
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
+    default L lt(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        return lt(index, property, property.get(), ignoreStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index    the index
+     * @param index the index
      * @param property bean property
      * @return LogicExpression
      */
     default L lt(int index, SerializableStringSupplier property) {
-        return lt(index, property, MatchStrategy.AUTO);
+        return lt(index, property, property.get());
     }
 
     /**
      * less than. 小于.
      *
-     * @param index          the index
-     * @param property       bean property
+     * @param index the index
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
     default L lt(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return lt(index, property, MatchStrategy.AUTO, ignoreStrategy);
+        return lt(index, property, property.get(), ignoreStrategy);
     }
 
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param property          bean property
+     * @param index the index
+     * @param property bean property
      * @param mathMatchStrategy the math match strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableStringSupplier property, MatchStrategy mathMatchStrategy);
+    default L lt(int index, SerializableStringSupplier property, MatchStrategy mathMatchStrategy) {
+        return lt(index, property, property.get(), mathMatchStrategy);
+    }
 
     /**
      * less than. 小于.
      *
-     * @param index             the index
-     * @param property          bean property
+     * @param index the index
+     * @param property bean property
      * @param mathMatchStrategy the math match strategy
-     * @param ignoreStrategy    the ignore strategy
+     * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(int index, SerializableStringSupplier property, MatchStrategy mathMatchStrategy,
-            Predicate<String> ignoreStrategy);
+    default L lt(int index, SerializableStringSupplier property, MatchStrategy mathMatchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return lt(index, property, property.get(), mathMatchStrategy, ignoreStrategy);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableIntSupplier property, int value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLongSupplier property, long value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableDoubleSupplier property, double value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <D extends Date> L lt(int index, SerializableDateSupplier<D> property, D value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <D> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L lt(int index, SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <N> the number type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <N extends Number> L lt(int index, SerializableNumberSupplier<N> property, N value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <N> the generic type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L lt(int index, SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property, E value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param <E> the element type
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L lt(int index, SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLocalDateSupplier property, LocalDate value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLocalTimeSupplier property, LocalTime value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @return LogicExpression
+     */
+    default L lt(int index, SerializableStringSupplier property, String value) {
+        return lt(index, property, value, MatchStrategy.AUTO);
+    }
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    default L lt(int index, SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return lt(index, property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param mathMatchStrategy the math match strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableStringSupplier property, String value, MatchStrategy mathMatchStrategy);
+
+    /**
+     * less than. 小于.
+     *
+     * @param index the index
+     * @param property bean property
+     * @param value the value
+     * @param mathMatchStrategy the math match strategy
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L lt(int index, SerializableStringSupplier property, String value, MatchStrategy mathMatchStrategy,
+        Predicate<String> ignoreStrategy);
 }

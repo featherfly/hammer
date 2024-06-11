@@ -29,7 +29,7 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
     /**
      * get set value match strategy expression with name.
      *
-     * @param <V>  the value type
+     * @param <V> the value type
      * @param name the name
      * @return set value match strategy expression.
      */
@@ -38,7 +38,7 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
     /**
      * get set value match strategy expression with name.
      *
-     * @param <V>   the value type
+     * @param <V> the value type
      * @param field the field
      * @return set value match strategy expression.
      */
@@ -49,7 +49,7 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
     /**
      * get set value match strategy expression with name.
      *
-     * @param <V>   the value type
+     * @param <V> the value type
      * @param field the field
      * @return set value match strategy expression.
      */
@@ -60,8 +60,8 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
     /**
      * get set value match strategy expression with name.
      *
-     * @param <T>  the generic type
-     * @param <V>  the generic type
+     * @param <T> the generic type
+     * @param <V> the generic type
      * @param name the name
      * @return set value match strategy expression.
      */
@@ -72,9 +72,9 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param <T>   the generic type
-     * @param <V>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param <V> the generic type
+     * @param name the name
      * @param value the value
      */
     default <T, V> void accept(SerializableFunction<T, V> name, V value) {
@@ -84,10 +84,10 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param <T>            the generic type
-     * @param <V>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <V> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <T, V> void accept(SerializableFunction<T, V> name, V value, Predicate<V> ignoreStrategy);
@@ -95,19 +95,42 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param <R>      the generic type
+     * @param <R> the generic type
      * @param property bean property
      */
     default <R> void accept(SerializableSupplier<R> property) {
-        accept(property, getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * equals or not equals. 等于或者不等于.
      *
-     * @param <R>            the generic type
-     * @param property       bean property
+     * @param <R> the generic type
+     * @param property bean property
+     * @param value the value
+     */
+    default <R> void accept(SerializableSupplier<R> property, R value) {
+        accept(property, value, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * equals or not equals. 等于或者不等于.
+     *
+     * @param <R> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy);
+    default <R> void accept(SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * equals or not equals. 等于或者不等于.
+     *
+     * @param <R> the generic type
+     * @param property bean property
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     */
+    <R> void accept(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy);
 }

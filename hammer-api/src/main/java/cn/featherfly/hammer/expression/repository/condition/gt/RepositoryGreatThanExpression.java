@@ -50,8 +50,8 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -62,9 +62,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -75,8 +75,8 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -87,9 +87,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -100,8 +100,8 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -112,9 +112,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -125,9 +125,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -138,10 +138,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -152,10 +152,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -166,9 +166,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param <N>   number type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param <N> number type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -179,10 +179,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -194,10 +194,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -210,9 +210,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param <D>   date type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param <D> date type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -223,10 +223,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -237,10 +237,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -253,8 +253,8 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -265,9 +265,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -278,9 +278,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -293,8 +293,8 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -305,9 +305,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -318,9 +318,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -333,8 +333,8 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -345,9 +345,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -358,9 +358,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -374,8 +374,8 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -386,9 +386,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>           the generic type
-     * @param name          the name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -399,9 +399,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -412,9 +412,9 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -425,10 +425,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -440,10 +440,10 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
     /**
      * great than. 大于.
      *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -452,163 +452,167 @@ public interface RepositoryGreatThanExpression<C extends ConditionExpression, L 
         return gt(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableIntSupplier property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L gt(SerializableIntSupplier property, int value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L gt(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLongSupplier property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L gt(SerializableLongSupplier property, long value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L gt(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableDoubleSupplier property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L gt(SerializableDoubleSupplier property, double value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L gt(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, E value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <N extends Number> L gt(SerializableNumberSupplier<N> property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default <N extends Number> L gt(SerializableNumberSupplier<N> property, N value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <N extends Number> L gt(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default <N extends Number> L gt(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <D extends Date> L gt(SerializableDateSupplier<D> property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default <D extends Date> L gt(SerializableDateSupplier<D> property, D value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <D extends Date> L gt(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default <D extends Date> L gt(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLocalTimeSupplier property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L gt(SerializableLocalTimeSupplier property, LocalTime value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L gt(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLocalDateSupplier property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L gt(SerializableLocalDateSupplier property, LocalDate value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L gt(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLocalDateTimeSupplier property) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get());
+    default L gt(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), ignoreStrategy);
+    default L gt(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy);
+    default L gt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L gt(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
-        return gt(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy, ignoreStrategy);
+    default L gt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return gt(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 }

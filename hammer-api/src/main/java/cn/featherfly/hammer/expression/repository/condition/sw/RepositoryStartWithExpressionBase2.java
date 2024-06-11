@@ -26,9 +26,9 @@ public interface RepositoryStartWithExpressionBase2<C extends ConditionExpressio
     /**
      * start with value. 以value开始.
      *
-     * @param <T>          the generic type
+     * @param <T> the generic type
      * @param propertyName the property name
-     * @param value        the value
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L sw2(SerializableToStringFunction<T> propertyName, String value) {
@@ -38,9 +38,9 @@ public interface RepositoryStartWithExpressionBase2<C extends ConditionExpressio
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -51,9 +51,9 @@ public interface RepositoryStartWithExpressionBase2<C extends ConditionExpressio
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -64,9 +64,9 @@ public interface RepositoryStartWithExpressionBase2<C extends ConditionExpressio
     /**
      * start with value. 以value开始.
      *
-     * @param <T>           the generic type
-     * @param propertyName  the property name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -77,10 +77,10 @@ public interface RepositoryStartWithExpressionBase2<C extends ConditionExpressio
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -92,10 +92,10 @@ public interface RepositoryStartWithExpressionBase2<C extends ConditionExpressio
     /**
      * start with value. 以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -105,15 +105,14 @@ public interface RepositoryStartWithExpressionBase2<C extends ConditionExpressio
     }
 
     @Override
-    default L sw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return sw2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L sw2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return sw2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     @Override
-    default L sw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    default L sw2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return sw2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-            ignoreStrategy);
+        return sw2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 
 }

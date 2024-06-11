@@ -80,9 +80,9 @@ public abstract class AbstractMulitiNotEqualsExpression<I extends InternalMuliti
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy,
+    public L ne(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, matchStrategy, ignoreStrategy);
+        return hold.ne(new AtomicInteger(index), property, value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -184,88 +184,182 @@ public abstract class AbstractMulitiNotEqualsExpression<I extends InternalMuliti
      * {@inheritDoc}
      */
     @Override
-    public <R> L ne(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public <R> L ne(int index, SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, property.getAsInt(), ignoreStrategy);
+    public L ne(int index, SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, property.getAsLong(), ignoreStrategy);
+    public L ne(int index, SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, property.getAsDouble(), ignoreStrategy);
+    public L ne(int index, SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L ne(int index, SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public <D extends Date> L ne(int index, SerializableDateSupplier<D> property, D value,
+        Predicate<D> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L ne(int index, SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, N value,
+        Predicate<N> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, E value,
+        Predicate<E> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public L ne(int index, SerializableLocalDateSupplier property, LocalDate value,
+        Predicate<LocalDate> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public L ne(int index, SerializableLocalTimeSupplier property, LocalTime value,
+        Predicate<LocalTime> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public L ne(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L ne(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return hold.ne(new AtomicInteger(index), property, ignoreStrategy);
+    public L ne(int index, SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int index, SerializableLocalTimeSupplier property, LocalTime value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return hold.ne(new AtomicInteger(index), property, value, matchStrategy, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R> L ne(int index, SerializableSupplier<R> property, R value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int index, SerializableIntSupplier property, int value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int index, SerializableLongSupplier property, long value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int index, SerializableDoubleSupplier property, double value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ne(int index, SerializableDateSupplier<D> property, D value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ne(int index, SerializableNumberSupplier<N> property, N value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property, E value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(int index, SerializableLocalDateSupplier property, LocalDate value) {
+        return hold.ne(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
@@ -362,30 +456,6 @@ public abstract class AbstractMulitiNotEqualsExpression<I extends InternalMuliti
     @Override
     public <R> L ne(int index, String name, R value, MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
         return hold.ne(new AtomicInteger(index), name, value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int index, SerializableLocalTimeSupplier property) {
-        return hold.ne(new AtomicInteger(index), property, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int index, SerializableLocalDateTimeSupplier property) {
-        return hold.ne(new AtomicInteger(index), property, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int index, SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        return hold.ne(new AtomicInteger(index), property, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -587,69 +657,4 @@ public abstract class AbstractMulitiNotEqualsExpression<I extends InternalMuliti
     public <T> L ne(int index, SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
         return hold.ne(new AtomicInteger(index), name, value, matchStrategy, getIgnoreStrategy());
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <R> L ne(int index, SerializableSupplier<R> property) {
-        return hold.ne(new AtomicInteger(index), property, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int index, SerializableIntSupplier property) {
-        return hold.ne(new AtomicInteger(index), property, property.getAsInt(), getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int index, SerializableLongSupplier property) {
-        return hold.ne(new AtomicInteger(index), property, property.getAsLong(), getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int index, SerializableDoubleSupplier property) {
-        return hold.ne(new AtomicInteger(index), property, property.getAsDouble(), getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <D extends Date> L ne(int index, SerializableDateSupplier<D> property) {
-        return hold.ne(new AtomicInteger(index), property, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <N extends Number> L ne(int index, SerializableNumberSupplier<N> property) {
-        return hold.ne(new AtomicInteger(index), property, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E extends Enum<E>> L ne(int index, SerializableEnumSupplier<E> property) {
-        return hold.ne(new AtomicInteger(index), property, getIgnoreStrategy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public L ne(int index, SerializableLocalDateSupplier property) {
-        return hold.ne(new AtomicInteger(index), property, getIgnoreStrategy());
-    }
-
 }

@@ -184,88 +184,94 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(int index, SerializableSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public <R> L eq(int index, SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableIntSupplier property, IntPredicate ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, property.getAsInt(), ignoreStrategy);
+    public L eq(int index, SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLongSupplier property, LongPredicate ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, property.getAsLong(), ignoreStrategy);
+    public L eq(int index, SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, property.getAsDouble(), ignoreStrategy);
+    public L eq(int index, SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Date> L eq(int index, SerializableDateSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public <R extends Date> L eq(int index, SerializableDateSupplier<R> property, R value,
+        Predicate<R> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <R extends Number> L eq(int index, SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public <R extends Number> L eq(int index, SerializableNumberSupplier<R> property, R value,
+        Predicate<R> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L eq(int index, SerializableEnumSupplier<E> property, Predicate<E> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public <E extends Enum<E>> L eq(int index, SerializableEnumSupplier<E> property, E value,
+        Predicate<E> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public L eq(int index, SerializableLocalDateSupplier property, LocalDate value,
+        Predicate<LocalDate> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public L eq(int index, SerializableLocalTimeSupplier property, LocalTime value,
+        Predicate<LocalTime> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public L eq(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        return hold.eq(new AtomicInteger(index), property, ignoreStrategy);
+    public L eq(int index, SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, ignoreStrategy);
     }
 
     /**
@@ -368,16 +374,16 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLocalTimeSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L eq(int index, SerializableLocalTimeSupplier property, LocalTime value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLocalDateTimeSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L eq(int index, SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
@@ -592,64 +598,80 @@ public abstract class AbstractMulitiEqualsExpression<I extends InternalMulitiCon
      * {@inheritDoc}
      */
     @Override
-    public <R> L eq(int index, SerializableSupplier<R> property) {
-        return hold.eq(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <R> L eq(int index, SerializableSupplier<R> property, R value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableIntSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, property.getAsInt(), getIgnoreStrategy());
+    public L eq(int index, SerializableIntSupplier property, int value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLongSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, property.getAsLong(), getIgnoreStrategy());
+    public L eq(int index, SerializableLongSupplier property, long value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableDoubleSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, property.getAsDouble(), getIgnoreStrategy());
+    public L eq(int index, SerializableDoubleSupplier property, double value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <D extends Date> L eq(int index, SerializableDateSupplier<D> property) {
-        return hold.eq(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <D extends Date> L eq(int index, SerializableDateSupplier<D> property, D value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> L eq(int index, SerializableNumberSupplier<N> property) {
-        return hold.eq(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <N extends Number> L eq(int index, SerializableNumberSupplier<N> property, N value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <E extends Enum<E>> L eq(int index, SerializableEnumSupplier<E> property) {
-        return hold.eq(new AtomicInteger(index), property, getIgnoreStrategy());
+    public <E extends Enum<E>> L eq(int index, SerializableEnumSupplier<E> property, E value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public L eq(int index, SerializableLocalDateSupplier property) {
-        return hold.eq(new AtomicInteger(index), property, getIgnoreStrategy());
+    public L eq(int index, SerializableLocalDateSupplier property, LocalDate value) {
+        return hold.eq(new AtomicInteger(index), property, value, getIgnoreStrategy());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, matchStrategy, getIgnoreStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L eq(int index, SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return hold.eq(new AtomicInteger(index), property, value, matchStrategy, ignoreStrategy);
+    }
 }

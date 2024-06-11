@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
@@ -149,7 +150,7 @@ public class RepositorySqlExecutableUpdate6 implements RepositorySqlUpdate6, Rep
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositorySqlExecutableUpdate6 increase(SerializableSupplier<N> property) {
+    public <N extends Number> RepositorySqlExecutableUpdate6 increase(SerializableNumberSupplier<N> property) {
         update.increase(property);
         return this;
     }
@@ -158,7 +159,7 @@ public class RepositorySqlExecutableUpdate6 implements RepositorySqlUpdate6, Rep
      * {@inheritDoc}
      */
     @Override
-    public <N extends Number> RepositorySqlExecutableUpdate6 increase(SerializableSupplier<N> property,
+    public <N extends Number> RepositorySqlExecutableUpdate6 increase(SerializableNumberSupplier<N> property,
         Predicate<N> ignoreStrategy) {
         update.increase(property, ignoreStrategy);
         return this;

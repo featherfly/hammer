@@ -27,9 +27,9 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
     /**
      * not start with value. 不以value开始.
      *
-     * @param <T>          the generic type
+     * @param <T> the generic type
      * @param propertyName the property name
-     * @param value        the value
+     * @param value the value
      * @return LogicExpression
      */
     default <T> L nsw2(SerializableToStringFunction<T> propertyName, String value) {
@@ -39,9 +39,9 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
     /**
      * not start with value. 不以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -52,9 +52,9 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
     /**
      * not start with value. 不以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -65,9 +65,9 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
     /**
      * not start with value. 不以value开始.
      *
-     * @param <T>           the generic type
-     * @param propertyName  the property name
-     * @param value         the value
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -78,10 +78,10 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
     /**
      * not start with value. 不以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -93,10 +93,10 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
     /**
      * not start with value. 不以value开始.
      *
-     * @param <T>            the generic type
-     * @param propertyName   the property name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param <T> the generic type
+     * @param propertyName the property name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -106,15 +106,14 @@ public interface RepositoryNotStartWithExpressionBase2<C extends ConditionExpres
     }
 
     @Override
-    default L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return nsw2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L nsw2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return nsw2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     @Override
-    default L nsw2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    default L nsw2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nsw2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-            ignoreStrategy);
+        return nsw2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 
 }

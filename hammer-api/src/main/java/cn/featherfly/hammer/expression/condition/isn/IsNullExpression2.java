@@ -27,9 +27,9 @@ public interface IsNullExpression2<C extends ConditionExpression, L extends Logi
     /**
      * is null.
      *
-     * @param name  the name
+     * @param name the name
      * @param value if true, is null; if false, is not null; if null, ignore
-     *              this operate
+     *        this operate
      * @return LogicExpression
      */
     L isn2(String name, Boolean value);
@@ -47,9 +47,9 @@ public interface IsNullExpression2<C extends ConditionExpression, L extends Logi
     /**
      * is null.
      *
-     * @param name  the name
+     * @param name the name
      * @param value if true, is null; if false, is not null; if null, ignore
-     *              this operate
+     *        this operate
      * @return LogicExpression
      */
     default L isn2(Field name, Boolean value) {

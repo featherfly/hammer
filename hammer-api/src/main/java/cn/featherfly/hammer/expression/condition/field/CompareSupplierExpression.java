@@ -39,179 +39,379 @@ public interface CompareSupplierExpression extends IgnorableExpression {
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     default void accept(SerializableIntSupplier property) {
-        accept(property, (IntPredicate) getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy);
+    default void accept(SerializableIntSupplier property, IntPredicate ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     default void accept(SerializableLongSupplier property) {
-        accept(property, (LongPredicate) getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy);
+    default void accept(SerializableLongSupplier property, LongPredicate ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     default void accept(SerializableDoubleSupplier property) {
-        accept(property, (DoublePredicate) getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy);
+    default void accept(SerializableDoubleSupplier property, DoublePredicate ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * compare. 比较
      *
-     * @param <D>      the generic type
-     * @param property  bean property
+     * @param <D> the generic type
+     * @param property bean property
      */
     default <D extends Date> void accept(SerializableDateSupplier<D> property) {
-        accept(property, getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * compare. 比较
      *
-     * @param <D>            the generic type
-     * @param property       bean property
+     * @param <D> the generic type
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    <D extends Date> void accept(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy);
-
-    /**
-     * compare. 比较
-     *
-     * @param <R>      the generic type
-     * @param property  bean property
-     */
-    default <R extends Number> void accept(SerializableNumberSupplier<R> property) {
-        accept(property, getIgnoreStrategy()::test);
+    default <D extends Date> void accept(SerializableDateSupplier<D> property, Predicate<D> ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
     }
 
     /**
      * compare. 比较
      *
-     * @param <R>            the generic type
-     * @param property       bean property
-     * @param ignoreStrategy the ignore strategy
+     * @param <N> the generic type
+     * @param property bean property
      */
-    <R extends Number> void accept(SerializableNumberSupplier<R> property, Predicate<R> ignoreStrategy);
+    default <N extends Number> void accept(SerializableNumberSupplier<N> property) {
+        accept(property, property.get());
+    }
 
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param <N> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    default <N extends Number> void accept(SerializableNumberSupplier<N> property, Predicate<N> ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
      */
     default void accept(SerializableLocalDateSupplier property) {
-        accept(property, getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy);
+    default void accept(SerializableLocalDateSupplier property, Predicate<LocalDate> ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     default void accept(SerializableLocalTimeSupplier property) {
-        accept(property, getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy);
+    default void accept(SerializableLocalTimeSupplier property, Predicate<LocalTime> ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
+    }
 
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      */
     default void accept(SerializableLocalDateTimeSupplier property) {
-        accept(property, getIgnoreStrategy()::test);
+        accept(property, property.get());
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy);
-
-    /**
-     * compare. 比较
-     *
-     * @param property  bean property
-     */
-    default void accept(SerializableStringSupplier property) {
-        accept(property, getIgnoreStrategy()::test);
+    default void accept(SerializableLocalDateTimeSupplier property, Predicate<LocalDateTime> ignoreStrategy) {
+        accept(property, property.get(), ignoreStrategy);
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
+     * @param property bean property
+     */
+    default void accept(SerializableStringSupplier property) {
+        accept(property, property.get());
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(SerializableStringSupplier property, Predicate<String> ignoreStrategy) {
-        accept(property, MatchStrategy.AUTO, ignoreStrategy);
+        accept(property, property.get(), ignoreStrategy);
     }
 
     /**
      * compare. 比较
      *
-     * @param property  bean property
+     * @param property bean property
      * @param matchStrategy the match strategy
      */
     default void accept(SerializableStringSupplier property, MatchStrategy matchStrategy) {
-        accept(property, matchStrategy, getIgnoreStrategy()::test);
+        accept(property, property.get(), matchStrategy);
     }
 
     /**
      * compare. 比较
      *
-     * @param property       bean property
-     * @param matchStrategy  the match strategy
+     * @param property bean property
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
-    void accept(SerializableStringSupplier property, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
+    default void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        accept(property, property.get(), matchStrategy, ignoreStrategy);
+    }
 
+    // ----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     */
+    default void accept(SerializableIntSupplier property, int value) {
+        accept(property, value, (IntPredicate) getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     */
+    default void accept(SerializableLongSupplier property, long value) {
+        accept(property, value, (LongPredicate) getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     */
+    default void accept(SerializableDoubleSupplier property, double value) {
+        accept(property, value, (DoublePredicate) getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     */
+    default <D extends Date> void accept(SerializableDateSupplier<D> property, D value) {
+        accept(property, value, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param <D> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param <N> the generic type
+     * @param property bean property
+     */
+    default <N extends Number> void accept(SerializableNumberSupplier<N> property, N value) {
+        accept(property, value, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param <N> the generic type
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    <N extends Number> void accept(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     */
+    default void accept(SerializableLocalDateSupplier property, LocalDate value) {
+        accept(property, value, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     */
+    default void accept(SerializableLocalTimeSupplier property, LocalTime value) {
+        accept(property, value, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     */
+    default void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        accept(property, value, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     */
+    default void accept(SerializableStringSupplier property, String value) {
+        accept(property, value, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param ignoreStrategy the ignore strategy
+     */
+    default void accept(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+        accept(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param matchStrategy the match strategy
+     */
+    default void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        accept(property, value, matchStrategy, getIgnoreStrategy()::test);
+    }
+
+    /**
+     * compare. 比较
+     *
+     * @param property bean property
+     * @param matchStrategy the match strategy
+     * @param ignoreStrategy the ignore strategy
+     */
+    void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy);
 }

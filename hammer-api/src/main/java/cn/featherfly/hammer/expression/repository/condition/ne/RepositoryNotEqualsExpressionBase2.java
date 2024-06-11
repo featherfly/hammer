@@ -27,12 +27,8 @@ import cn.featherfly.common.function.serializable.SerializableLongSupplier;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
-import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
-import cn.featherfly.common.function.serializable.SerializableToLongFunction;
-import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
-import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ne.NotEqualsExpression2;
@@ -46,126 +42,14 @@ import cn.featherfly.hammer.expression.condition.ne.NotEqualsSupplierExpression2
  * @param <L> the generic type
  */
 public interface RepositoryNotEqualsExpressionBase2<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends RepositoryNotEqualsExpression<C, L>, NotEqualsExpression2<C, L>, NotEqualsSupplierExpression2<C, L> {
+    extends RepositoryNotEqualsExpression<C, L>, NotEqualsExpression2<C, L>, NotEqualsSupplierExpression2<C, L> {
 
     /**
      * not equals. 不等于.
      *
-     * @param <T>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToLongFunction<T> name, boolean value) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToLongFunction<T> name, char value) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToLongFunction<T> name, char value, CharPredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToLongFunction<T> name, int value) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToLongFunction<T> name, int value, IntPredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToLongFunction<T> name, long value) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToLongFunction<T> name, long value, LongPredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToDoubleFunction<T> name, double value) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToDoubleFunction<T> name, double value, DoublePredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>   the generic type
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -176,24 +60,10 @@ public interface RepositoryNotEqualsExpressionBase2<C extends ConditionExpressio
     /**
      * not equals. 不等于.
      *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T, R extends Serializable> L ne2(SerializableFunction<T, R> name, R value, IgnoreStrategy ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -202,301 +72,221 @@ public interface RepositoryNotEqualsExpressionBase2<C extends ConditionExpressio
     }
 
     /**
-     * not equals. 不等于.
-     *
-     * @param <T>   the generic type
-     * @param name  the name
-     * @param value the value
-     * @return LogicExpression
+     * {@inheritDoc}
      */
-    default <T> L ne2(SerializableToStringFunction<T> name, String value) {
-        return ne2(name, value, MatchStrategy.AUTO);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToStringFunction<T> name, String value, IgnoreStrategy ignoreStrategy) {
-        return ne2(name, value, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToStringFunction<T> name, String value, Predicate<String> ignoreStrategy) {
-        return ne2(name, value, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>           the generic type
-     * @param name          the name
-     * @param value         the value
-     * @param matchStrategy the match strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            IgnoreStrategy ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
-    }
-
-    /**
-     * not equals. 不等于.
-     *
-     * @param <T>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     * @return LogicExpression
-     */
-    default <T> L ne2(SerializableToStringFunction<T> name, String value, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
+    @Override
+    default L ne2(SerializableBooleanSupplier property, boolean value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableBooleanSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.getAsBoolean());
+    default L ne2(SerializableCharSupplier property, char value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableCharSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableCharSupplier propertyValue, CharPredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableIntSupplier property, int value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableIntSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableIntSupplier propertyValue, IntPredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableLongSupplier property, long value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLongSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableLongSupplier propertyValue, long value, LongPredicate ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLongSupplier propertyValue, LongPredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableDoubleSupplier property, double value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableDoubleSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableDoubleSupplier propertyValue, DoublePredicate ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableBoolSupplier property, Boolean value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableBoolSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableBoolSupplier propertyValue, Predicate<Boolean> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <N extends Number> L ne2(SerializableNumberSupplier<N> property, N value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <N extends Number> L ne2(SerializableNumberSupplier<N> propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default <N extends Number> L ne2(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <N extends Number> L ne2(SerializableNumberSupplier<N> propertyValue, Predicate<N> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <D extends Date> L ne2(SerializableDateSupplier<D> property, D value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <D extends Date> L ne2(SerializableDateSupplier<D> propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default <R extends Date> L ne2(SerializableDateSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <R extends Date> L ne2(SerializableDateSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <E extends Enum<E>> L ne2(SerializableEnumSupplier<E> property, E value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <E extends Enum<E>> L ne2(SerializableEnumSupplier<E> propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default <E extends Enum<E>> L ne2(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <E extends Enum<E>> L ne2(SerializableEnumSupplier<E> propertyValue, Predicate<E> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableLocalDateSupplier property, LocalDate value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLocalDateSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLocalDateSupplier propertyValue, Predicate<LocalDate> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableLocalTimeSupplier property, LocalTime value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLocalTimeSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLocalTimeSupplier propertyValue, Predicate<LocalTime> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLocalDateTimeSupplier propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
+    default L ne2(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+        Predicate<LocalDateTime> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableLocalDateTimeSupplier propertyValue, Predicate<LocalDateTime> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default L ne2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy);
+    default L ne2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+        Predicate<String> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default L ne2(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-            Predicate<String> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), matchStrategy,
-                ignoreStrategy);
+    default <R extends Serializable> L ne2(SerializableSupplier<R> property, R value) {
+        return ne2(LambdaUtils.getLambdaPropertyName(property), value);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default <R extends Serializable> L ne2(SerializableSupplier<R> propertyValue) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    default <R extends Serializable> L ne2(SerializableSupplier<R> propertyValue, Predicate<R> ignoreStrategy) {
-        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), propertyValue.get(), ignoreStrategy);
+    default <R extends Serializable> L ne2(SerializableSupplier<R> propertyValue, R value,
+        Predicate<R> ignoreStrategy) {
+        return ne2(LambdaUtils.getLambdaPropertyName(propertyValue), value, ignoreStrategy);
     }
 }
