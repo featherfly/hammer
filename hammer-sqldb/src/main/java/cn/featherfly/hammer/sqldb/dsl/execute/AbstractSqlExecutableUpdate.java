@@ -111,7 +111,6 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     /**
      * Sets value.
      *
-     * @param <V> the generic type
      * @param name the name
      * @param value the value
      * @param setIgnoreStrategy the set ignore strategy
