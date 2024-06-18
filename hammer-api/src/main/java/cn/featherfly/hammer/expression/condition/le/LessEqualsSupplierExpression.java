@@ -370,6 +370,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L le(SerializableIntSupplier property, int value);
@@ -378,6 +379,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -387,6 +389,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L le(SerializableLongSupplier property, long value);
@@ -395,6 +398,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -404,6 +408,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L le(SerializableDoubleSupplier property, double value);
@@ -412,6 +417,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -422,6 +428,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <E> the element type
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     <E extends Enum<E>> L le(SerializableEnumSupplier<E> property, E value);
@@ -431,6 +438,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <E> the element type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -443,6 +451,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <E> the element type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -453,6 +462,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <N> the number type
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     <N extends Number> L le(SerializableNumberSupplier<N> property, N value);
@@ -462,6 +472,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <N> the number type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -474,6 +485,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <N> the number type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -484,6 +496,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <D> the generic type
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     <D extends Date> L le(SerializableDateSupplier<D> property, D value);
@@ -493,6 +506,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <D> the generic type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -505,6 +519,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      *
      * @param <D> the generic type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -514,6 +529,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L le(SerializableLocalTimeSupplier property, LocalTime value);
@@ -522,6 +538,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -533,6 +550,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -542,6 +560,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L le(SerializableLocalDateSupplier property, LocalDate value);
@@ -550,6 +569,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -561,6 +581,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -570,6 +591,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L le(SerializableLocalDateTimeSupplier property, LocalDateTime value);
@@ -578,6 +600,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -589,6 +612,7 @@ public interface LessEqualsSupplierExpression<C extends ConditionExpression, L e
      * less equals. 小于等于.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

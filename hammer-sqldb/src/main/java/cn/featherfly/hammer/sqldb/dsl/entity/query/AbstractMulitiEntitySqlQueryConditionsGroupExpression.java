@@ -202,7 +202,9 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     @Override
     public EntityQuerySortedExpression<E1> asc(@SuppressWarnings("unchecked") SerializableFunction<E1, ?>... names) {
-        return asc(Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName).toArray(value -> new String[value]));
+        String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
+            .toArray(value -> new String[value]);
+        return asc(nameArray);
     }
 
     /**

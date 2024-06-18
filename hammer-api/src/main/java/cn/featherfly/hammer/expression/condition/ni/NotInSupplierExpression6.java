@@ -198,6 +198,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      *
      * @param <R> the generic type
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     <R extends Serializable> L ni6(SerializableSupplier<R> property, R value);
@@ -230,6 +231,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      *
      * @param <R> the generic type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -240,6 +242,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      *
      * @param <R> the generic type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -249,6 +252,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableIntSupplier property, int value);
@@ -257,6 +261,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableIntSupplier property, int... value);
@@ -265,6 +270,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -274,6 +280,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -283,6 +290,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableLongSupplier property, long value);
@@ -291,6 +299,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @return LogicExpression
      */
     L ni6(SerializableLongSupplier property, long... value);
@@ -299,6 +308,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -308,6 +318,7 @@ public interface NotInSupplierExpression6<C extends ConditionExpression, L exten
      * values not in. 不包含指定，sql中的not in.
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

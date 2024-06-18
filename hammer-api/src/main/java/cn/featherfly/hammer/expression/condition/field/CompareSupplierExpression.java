@@ -239,6 +239,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      */
     default void accept(SerializableIntSupplier property, int value) {
         accept(property, value, (IntPredicate) getIgnoreStrategy()::test);
@@ -248,6 +249,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy);
@@ -256,6 +258,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      */
     default void accept(SerializableLongSupplier property, long value) {
         accept(property, value, (LongPredicate) getIgnoreStrategy()::test);
@@ -265,6 +268,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy);
@@ -273,6 +277,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      */
     default void accept(SerializableDoubleSupplier property, double value) {
         accept(property, value, (DoublePredicate) getIgnoreStrategy()::test);
@@ -282,6 +287,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy);
@@ -291,6 +297,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      *
      * @param <D> the generic type
      * @param property bean property
+     * @param value the value
      */
     default <D extends Date> void accept(SerializableDateSupplier<D> property, D value) {
         accept(property, value, getIgnoreStrategy()::test);
@@ -301,6 +308,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      *
      * @param <D> the generic type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy);
@@ -310,6 +318,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      *
      * @param <N> the generic type
      * @param property bean property
+     * @param value the value
      */
     default <N extends Number> void accept(SerializableNumberSupplier<N> property, N value) {
         accept(property, value, getIgnoreStrategy()::test);
@@ -320,6 +329,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      *
      * @param <N> the generic type
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <N extends Number> void accept(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy);
@@ -328,6 +338,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      */
     default void accept(SerializableLocalDateSupplier property, LocalDate value) {
         accept(property, value, getIgnoreStrategy()::test);
@@ -337,6 +348,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy);
@@ -345,6 +357,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      */
     default void accept(SerializableLocalTimeSupplier property, LocalTime value) {
         accept(property, value, getIgnoreStrategy()::test);
@@ -354,6 +367,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy);
@@ -362,6 +376,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      */
     default void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
         accept(property, value, getIgnoreStrategy()::test);
@@ -371,6 +386,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
@@ -380,6 +396,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      */
     default void accept(SerializableStringSupplier property, String value) {
         accept(property, value, getIgnoreStrategy()::test);
@@ -389,6 +406,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
@@ -399,6 +417,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     default void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
@@ -409,6 +428,7 @@ public interface CompareSupplierExpression extends IgnorableExpression {
      * compare. 比较
      *
      * @param property bean property
+     * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
