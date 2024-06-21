@@ -4,7 +4,12 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 # 0.7.2
 
-1.  Field[In|NotIn]Expression加入各种 [in|not] (Collection<V>...) 方法
+1.  在启用缓存时，优化分页逻辑，如果页码大于最大页码，则不执行sql,直接返回空列表
+2.  完成Entity query DSL查询一个属性时的分页优化功能
+3.  TplExecutor,JdbcExecutor添加 value(String, Map<String, Serializable>|Serializable...) 方法
+4.  Entity update DSL 添加 property(Entity::Nested, Nested::Number).increase(Number) 方法
+5.  Field[In|NotIn]Expression加入各种 [in|not] (Collection<V>...) 方法
+6.  所有 DSL 条件运算[eq|in...] 提供参数为Supplier,V的方法
 
 # 0.7.1 2024-06-02
 
