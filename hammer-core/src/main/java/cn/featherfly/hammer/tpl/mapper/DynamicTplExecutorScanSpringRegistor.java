@@ -40,6 +40,5 @@ public class DynamicTplExecutorScanSpringRegistor extends DynamicTplExecutorSpri
         Set<MetadataReader> metadataReaders = new ClassPathScanningProvider()
             .findMetadata(basePackages.toArray(new String[basePackages.size()]));
         CollectionUtils.addAll(getMetadataReaders(), metadataReaders);
-        setClassLoader(classLoader);
     }
 }

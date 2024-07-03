@@ -30,6 +30,7 @@ import cn.featherfly.hammer.sqldb.tpl.UserMapper;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
+import cn.featherfly.validation.JavaxValidator;
 
 /**
  * SqlTplExecutorTest.
@@ -60,8 +61,8 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         //        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, transverterManager);
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl(devMode);
-        hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-            .buildValidatorFactory().getValidator());
+        hammerConfig.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+            .failFast(false).buildValidatorFactory().getValidator()));
 
         Hammer hammer = SqldbHammerImpl
             .builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();

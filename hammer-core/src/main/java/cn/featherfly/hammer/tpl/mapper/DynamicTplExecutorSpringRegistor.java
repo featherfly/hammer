@@ -37,12 +37,12 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
 
     private final String hammerConfigReference;
 
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
     /**
      * Instantiates a new dynamic tpl executor spring registor.
      *
-     * @param hammerReference       hammerReference
+     * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
      */
     public DynamicTplExecutorSpringRegistor(String hammerReference, String hammerConfigReference) {
@@ -52,37 +52,37 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
     /**
      * Instantiates a new dynamic tpl executor spring registor.
      *
-     * @param hammerReference       hammerReference
+     * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
-     * @param classLoader           the class loader
+     * @param classLoader the class loader
      */
     public DynamicTplExecutorSpringRegistor(String hammerReference, String hammerConfigReference,
-            ClassLoader classLoader) {
+        ClassLoader classLoader) {
         this(null, hammerReference, hammerConfigReference, classLoader);
     }
 
     /**
      * Instantiates a new dynamic tpl executor spring registor.
      *
-     * @param metadataReaders       metadataReaders
-     * @param hammerReference       hammerReference
+     * @param metadataReaders metadataReaders
+     * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
      */
     public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference,
-            String hammerConfigReference) {
+        String hammerConfigReference) {
         this(metadataReaders, hammerReference, hammerConfigReference, null);
     }
 
     /**
      * Instantiates a new dynamic tpl executor spring registor.
      *
-     * @param metadataReaders       metadataReaders
-     * @param hammerReference       hammerReference
+     * @param metadataReaders metadataReaders
+     * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
-     * @param classLoader           the class loader
+     * @param classLoader the class loader
      */
     public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference,
-            String hammerConfigReference, ClassLoader classLoader) {
+        String hammerConfigReference, ClassLoader classLoader) {
         super();
         this.hammerReference = hammerReference;
         this.hammerConfigReference = hammerConfigReference;
@@ -114,7 +114,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
                     Class<?> type = ClassUtils.forName(metadataReader.getClassMetadata().getClassName());
                     String dynamicImplName = dynamicExecutorFactory.create(type, classLoader);
                     logger.debug("create class {} for {} with hammerReference {}, hammerConfigReference {}",
-                            dynamicImplName, type.getName(), hammerReference, hammerConfigReference);
+                        dynamicImplName, type.getName(), hammerReference, hammerConfigReference);
                     Class<?> newType = null;
                     if (classLoader == null) {
                         newType = ClassUtils.forName(dynamicImplName);
@@ -123,7 +123,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
                     }
                     BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(newType);
                     builder.addConstructorArgReference(hammerReference)
-                            .addConstructorArgReference(hammerConfigReference);
+                        .addConstructorArgReference(hammerConfigReference);
                     builder.setScope(BeanDefinition.SCOPE_SINGLETON);
                     registry.registerBeanDefinition(type.getName(), builder.getBeanDefinition());
                 } catch (Exception e) {
@@ -150,14 +150,5 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      */
     public ClassLoader getClassLoader() {
         return classLoader;
-    }
-
-    /**
-     * 设置classLoader.
-     *
-     * @param classLoader classLoader
-     */
-    public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
     }
 }

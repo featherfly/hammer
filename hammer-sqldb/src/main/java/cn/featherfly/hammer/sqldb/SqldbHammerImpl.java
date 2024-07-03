@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import javax.annotation.Nonnull;
-import javax.validation.ConstraintViolation;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
@@ -62,6 +61,7 @@ import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
+import cn.featherfly.validation.metadata.ConstraintViolation;
 
 /**
  * SqldbHammerImpl.

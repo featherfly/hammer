@@ -41,6 +41,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
+import cn.featherfly.validation.JavaxValidator;
 
 /**
  * HammerBenchmark.
@@ -87,8 +88,8 @@ public class HammerBenchmark extends AbstractBenchmark {
             new IdGeneratorManager(), propertyAccessorFactory);
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl();
-        hammerConfig.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-            .buildValidatorFactory().getValidator());
+        hammerConfig.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+            .failFast(false).buildValidatorFactory().getValidator()));
 
         hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig)
             .build();

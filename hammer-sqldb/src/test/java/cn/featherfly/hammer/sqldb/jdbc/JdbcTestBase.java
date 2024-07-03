@@ -47,6 +47,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
+import cn.featherfly.validation.JavaxValidator;
 
 /**
  * JdbcTestBase.
@@ -93,8 +94,8 @@ public class JdbcTestBase extends TestBase {
         DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", this.getClass()));
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
-        hammerConfigImpl.setValidator(Validation.byProvider(HibernateValidator.class).configure().failFast(false)
-            .buildValidatorFactory().getValidator());
+        hammerConfigImpl.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+            .failFast(false).buildValidatorFactory().getValidator()));
         hammerConfig = hammerConfigImpl;
 
         //        propertyAccessorFactory = new AsmPropertyAccessorFactory(Thread.currentThread().getContextClassLoader());
