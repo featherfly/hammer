@@ -32,7 +32,7 @@ public class UserInfoMapper2 {
 
     @Cacheable(key = "'userInfo:id:'+ #id", value = "userInfoCache")
     public UserInfo selectById(Integer id) {
-        return hammer.template().single("user_info@selectById", UserInfo.class,
+        return hammer.template().single("selectById@user_info", UserInfo.class,
             new ChainMapImpl<String, Serializable>().putChain("id", id));
     }
 }

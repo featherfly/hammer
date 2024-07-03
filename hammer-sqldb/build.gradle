@@ -29,6 +29,7 @@ dependencies {
 
     testImplementation group: 'cn.featherfly.common', name: 'common-db-mapping-model', version: '0.1.0'
     testImplementation group: 'cn.featherfly.common', name: 'common-model', version: '0.2.0'
+    testImplementation 'cn.featherfly.validation:javax.validation-api:0.1.0'
     testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'    
     //testImplementation 'mysql:mysql-connector-java:5.1.48'
     testImplementation "org.springframework:spring-test:${sv}"

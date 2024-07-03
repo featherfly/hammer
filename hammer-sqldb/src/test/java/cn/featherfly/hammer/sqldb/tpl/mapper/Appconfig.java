@@ -5,17 +5,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.sql.DataSource;
+import javax.validation.Validation;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.hibernate.validator.HibernateValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import cn.featherfly.common.db.dialect.Dialect;
+import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
+import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.hammer.config.HammerConfig;
@@ -28,6 +34,7 @@ import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorScanSpringRegistor;
 import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorSpringRegistor;
+import cn.featherfly.validation.JavaxValidator;
 
 /**
  * Appconfig.
@@ -71,8 +78,15 @@ public class Appconfig extends JdbcTestBase {
         //        ConstantConfigurator.config(JdbcTestBase.configFile);
         //        ConstantConfigurator.config();
 
-        //        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        //        Dialect dialect = Dialects.mysql();
+        propertyAccessorFactory = PROPERTY_ACCESSOR_FACTORY;
+
+        DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
+        Dialect dialect = Dialects.mysql();
+
+        HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
+        hammerConfigImpl.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+            .failFast(false).buildValidatorFactory().getValidator()));
+        hammerConfig = hammerConfigImpl;
 
         Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
 

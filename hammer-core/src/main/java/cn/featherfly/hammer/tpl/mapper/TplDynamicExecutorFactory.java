@@ -26,9 +26,9 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.ParameterNode;
-import org.objenesis.instantiator.util.DefineClassHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.core.ReflectUtils;
 
 import com.speedment.common.tuple.Tuple;
 import com.speedment.common.tuple.Tuple2;
@@ -657,8 +657,13 @@ public class TplDynamicExecutorFactory implements Opcodes {
             byte[] code = cw.toByteArray();
             // 定义类
             final ClassLoader cl = classLoader;
-            ClassLoaderUtils.defineClass(cl, implClassName, code, type.getProtectionDomain(), () -> DefineClassHelper
-                .defineClass(implClassName, code, 0, code.length, type, cl, type.getProtectionDomain()));
+            ClassLoaderUtils.defineClass(cl, implClassName, code, type.getProtectionDomain(), () -> {
+                try {
+                    return ReflectUtils.defineClass(implClassName, code, cl, type.getProtectionDomain(), type);
+                } catch (Exception e) {
+                    throw new HammerException(e);
+                }
+            });
             types.add(type);
         }
         return implClassName;
@@ -1366,4 +1371,14 @@ public class TplDynamicExecutorFactory implements Opcodes {
             return ParamType.COMMON;
         }
     }
+
+    /**
+     * Gets the class loader.
+     *
+     * @return the class loader
+     */
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
 }

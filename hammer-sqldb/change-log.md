@@ -10,6 +10,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 4.  Entity update DSL 添加 property(Entity::Nested, Nested::Number).increase(Number) 方法
 5.  Field[In|NotIn]Expression加入各种 [in|not] (Collection<V>...) 方法
 6.  所有 DSL 条件运算[eq|in...] 提供参数为Supplier,V的方法
+7.  使用validation-api facade，而不是直接使用validation-api来兼容javax和Jakarta包名
 
 # 0.7.1 2024-06-02
 

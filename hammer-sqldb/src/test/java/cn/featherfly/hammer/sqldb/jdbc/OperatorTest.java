@@ -14,7 +14,6 @@ import java.util.function.Function;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.bean.AsmPropertyAccessorFactory;
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
 import cn.featherfly.common.lang.Randoms;
@@ -89,9 +88,10 @@ public class OperatorTest extends JdbcTestBase {
 
         // 手动创建依赖
         propertyAccessorFactory.create(AppVersion.class);
-        propertyAccessorFactory.create(App.class);
-        // 创建完成后再来进行依赖管理，可以解决互相依赖的问题，就像上面这两个
-        ((AsmPropertyAccessorFactory) propertyAccessorFactory).createPropertyAccessorCascade();
+        // 新版本支持创建时自动级联创建
+        //        propertyAccessorFactory.create(App.class);
+        //        // 创建完成后再来进行依赖管理，可以解决互相依赖的问题，就像上面这两个
+        //        ((AsmPropertyAccessorFactory) propertyAccessorFactory).createPropertyAccessorCascade();
 
         appGet = new GetOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),

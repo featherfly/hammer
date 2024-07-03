@@ -10,12 +10,11 @@ package cn.featherfly.hammer.config;
 
 import java.util.function.Supplier;
 
-import javax.validation.Validator;
-
 import cn.featherfly.hammer.config.cache.CacheConfig;
 import cn.featherfly.hammer.config.dsl.DslConfig;
 import cn.featherfly.hammer.config.entity.EntityConfig;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
+import cn.featherfly.validation.Validator;
 
 /**
  * HammerConfig.
