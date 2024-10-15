@@ -22,7 +22,7 @@ import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-import com.speedment.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple;
 
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;

@@ -19,10 +19,10 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.speedment.common.tuple.MutableTuples;
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
-import com.speedment.common.tuple.mutable.MutableTuple9;
+import cn.featherfly.common.tuple.MutableTuples;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.common.tuple.mutable.MutableTuple9;
 
 import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.constant.Chars;

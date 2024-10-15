@@ -8,7 +8,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuple6;
 
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.lang.Timer;

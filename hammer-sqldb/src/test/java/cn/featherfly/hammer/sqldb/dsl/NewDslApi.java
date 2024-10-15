@@ -6,10 +6,10 @@ import java.util.function.Function;
 
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple;
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.function.serializable.SerializableFunction;

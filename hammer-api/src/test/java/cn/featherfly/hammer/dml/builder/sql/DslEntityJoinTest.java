@@ -4,9 +4,9 @@ package cn.featherfly.hammer.dml.builder.sql;
 import java.util.List;
 import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
 
 import cn.featherfly.common.function.serializable.SerializableFunction2;
 import cn.featherfly.common.repository.Repository;

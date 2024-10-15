@@ -14,8 +14,8 @@ import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.dialect.MySQLDialect;
 import cn.featherfly.common.lang.NumberUtils;

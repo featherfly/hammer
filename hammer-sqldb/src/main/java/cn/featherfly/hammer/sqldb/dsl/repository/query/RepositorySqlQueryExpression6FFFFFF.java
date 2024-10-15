@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import com.speedment.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuple6;
 
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.structure.page.PaginationResults;

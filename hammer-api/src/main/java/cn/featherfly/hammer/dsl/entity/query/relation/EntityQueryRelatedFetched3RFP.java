@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.dsl.entity.query.relation;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.hammer.dsl.entity.query.EntityQuery4;
 

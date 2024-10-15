@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.entity.condition.ne;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;

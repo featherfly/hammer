@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.tpl.mapper;
 
 import java.util.List;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;

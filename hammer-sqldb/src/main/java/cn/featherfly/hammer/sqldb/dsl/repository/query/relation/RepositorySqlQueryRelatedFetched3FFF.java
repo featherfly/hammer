@@ -10,7 +10,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
 import java.util.List;
 
-import com.speedment.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple4;
 
 import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.common.repository.Repository;

@@ -21,8 +21,8 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.TestInstance;
 
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.bean.AsmPropertyAccessorFactory;
 import cn.featherfly.common.bean.PropertyAccessorFactory;

@@ -36,15 +36,6 @@ import org.apache.commons.collections4.iterators.ArrayIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.speedment.common.tuple.MutableTuple;
-import com.speedment.common.tuple.Tuple;
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
-import com.speedment.common.tuple.Tuple6;
-import com.speedment.common.tuple.Tuples;
-
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanPropertyValue;
 import cn.featherfly.common.bean.Property;
@@ -72,6 +63,14 @@ import cn.featherfly.common.repository.ParamedQueryExecutor;
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper;
 import cn.featherfly.common.repository.mapper.MulitiQueryTupleMapperBuilder;
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.tuple.MutableTuple;
+import cn.featherfly.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.MulitiQueryTupleMapperBuilderImpl;
 import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutor;
 import cn.featherfly.hammer.tpl.MapParamedExecutionExecutor;
@@ -2529,33 +2528,12 @@ public abstract class AbstractJdbc implements Jdbc {
     protected <T extends MutableTuple> void setOutParams(CallableStatement call,
         Map<Integer, Class<? extends Serializable>> outParams, T args) {
         for (Entry<Integer, Class<? extends Serializable>> entry : outParams.entrySet()) {
+            // jdbc parameter index start with 1
             int index = entry.getKey();
-            set(args, index, manager.getParam(call, index, entry.getValue()));
+            // tuple index start with 0
+            args.set(index - 1, manager.getParam(call, index, entry.getValue()));
         }
     }
-
-    private <T extends MutableTuple> void set(T tuple, int index, Object value) {
-        ClassUtils.invokeMethod(tuple, "set" + (index - 1), value);
-        // ENHANCE 后续去掉这个反射调用
-        //        switch (index) {
-        //            case 0:
-        //                set0(tuple, value);
-        //                break;
-        //            case 1:
-        //                set1(tuple, value);
-        //                break;
-        //        }
-    }
-    //    @SuppressWarnings("unchecked")
-    //    private <T extends MutableTuple> void set0(T tuple, Object value) {
-    //        if (tuple instanceof MutableTuple1) {
-    //            ((MutableTuple1<Object>) tuple).set0(value);
-    //        } else if (tuple instanceof MutableTuple2) {
-    //            ((MutableTuple2<Object, Object>) tuple).set0(value);
-    //        } else if (tuple instanceof MutableTuple3) {
-    //            ((MutableTuple3<Object, Object, Object>) tuple).set0(value);
-    //        }
-    //    }
 
     /**
      * Adds the interceptor.

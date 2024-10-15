@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository.condition;
 
-import com.speedment.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuple6;
 
 import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;

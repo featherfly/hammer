@@ -12,14 +12,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.speedment.common.tuple.Tuple1;
-import com.speedment.common.tuple.Tuples;
-
 import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper2;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple1;
+import cn.featherfly.common.tuple.Tuples;
 
 /**
  * The Class PrefixedBeanMapper1Impl.

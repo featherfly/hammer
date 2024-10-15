@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.execute;
 
-import com.speedment.common.tuple.Tuple1;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple1;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.hammer.config.dsl.ExecutableConditionConfig;

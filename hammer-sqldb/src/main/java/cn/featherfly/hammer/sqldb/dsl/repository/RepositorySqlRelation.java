@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import com.speedment.common.tuple.MutableTuples;
-import com.speedment.common.tuple.mutable.MutableTuple9;
+import cn.featherfly.common.tuple.MutableTuples;
+import cn.featherfly.common.tuple.mutable.MutableTuple9;
 
 import cn.featherfly.common.db.Column;
 import cn.featherfly.common.db.builder.SqlBuilder;

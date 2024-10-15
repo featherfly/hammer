@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.query;
 
 import java.util.List;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 /**
  * query type list executor2.

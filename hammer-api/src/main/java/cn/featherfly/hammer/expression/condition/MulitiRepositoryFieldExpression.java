@@ -4,7 +4,7 @@ package cn.featherfly.hammer.expression.condition;
 import java.util.Date;
 import java.util.function.ToIntFunction;
 
-import com.speedment.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple;
 
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.field.DateFieldExpression;

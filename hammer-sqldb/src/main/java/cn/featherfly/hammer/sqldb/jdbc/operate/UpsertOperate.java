@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 import java.io.Serializable;
 import java.util.List;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;

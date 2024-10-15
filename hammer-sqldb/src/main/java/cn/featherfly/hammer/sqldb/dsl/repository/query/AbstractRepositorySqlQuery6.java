@@ -3,8 +3,8 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.function.Consumer;
 
-import com.speedment.common.tuple.Tuple6;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;

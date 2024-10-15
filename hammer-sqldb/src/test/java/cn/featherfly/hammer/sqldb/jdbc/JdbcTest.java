@@ -24,14 +24,14 @@ import java.util.function.BiConsumer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.MutableTuples;
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
-import com.speedment.common.tuple.Tuple6;
-import com.speedment.common.tuple.Tuples;
-import com.speedment.common.tuple.mutable.MutableTuple3;
+import cn.featherfly.common.tuple.MutableTuples;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.common.tuple.mutable.MutableTuple3;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.JdbcException;

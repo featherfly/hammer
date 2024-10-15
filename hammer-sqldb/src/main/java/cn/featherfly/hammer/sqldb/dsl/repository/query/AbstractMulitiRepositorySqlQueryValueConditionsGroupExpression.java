@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.speedment.common.tuple.Tuple1;
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple1;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;

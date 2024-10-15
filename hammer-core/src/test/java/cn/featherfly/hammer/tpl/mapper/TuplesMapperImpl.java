@@ -10,9 +10,8 @@
  */
 package cn.featherfly.hammer.tpl.mapper;
 
-import com.speedment.common.tuple.Tuple2;
-
 import cn.featherfly.common.repository.Params;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.tpl.TplExecuteIdEmailStyleParser;

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository.condition;
 
-import com.speedment.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple4;
 
 import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;

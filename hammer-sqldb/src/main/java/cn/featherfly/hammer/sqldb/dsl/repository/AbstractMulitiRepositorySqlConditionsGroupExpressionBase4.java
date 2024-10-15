@@ -12,7 +12,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import com.speedment.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.function.CharPredicate;

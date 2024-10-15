@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
-import com.speedment.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple4;
 
 import cn.featherfly.common.structure.page.PaginationResults;
 
