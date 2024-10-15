@@ -10,13 +10,13 @@ package cn.featherfly.hammer.tpl;
 
 import java.util.Map;
 
-import com.speedment.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple;
 
 /**
  * TplPrefixEntityMapper2.
  *
- * @author      zhongj
- * @param  <T1> prefixes type
+ * @author zhongj
+ * @param <T1> prefixes type
  */
 public abstract class AbstractTplPrefixEntityMapper<T1 extends Tuple>
     extends AbstractPrefixEntityMapper<TplExecutor, TplExecuteId, Map<String, Object>, T1> {
@@ -24,10 +24,10 @@ public abstract class AbstractTplPrefixEntityMapper<T1 extends Tuple>
     /**
      * Instantiates a new abstract tpl prefix entity mapper.
      *
-     * @param executor  the executor
+     * @param executor the executor
      * @param execution the execution
-     * @param params    the params
-     * @param prefixes  the prefixes
+     * @param params the params
+     * @param prefixes the prefixes
      */
     protected AbstractTplPrefixEntityMapper(TplExecutor executor, TplExecuteId execution, Map<String, Object> params,
         T1 prefixes) {

@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.sqldb.dsl.query.SqlQuery;

@@ -1,8 +1,7 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
-import com.speedment.common.tuple.Tuple2;
-
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.annotation.Mapper;
 import cn.featherfly.hammer.annotation.Param;
 

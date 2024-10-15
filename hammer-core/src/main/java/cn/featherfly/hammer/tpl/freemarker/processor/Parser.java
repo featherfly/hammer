@@ -14,12 +14,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
@@ -115,9 +114,9 @@ public class Parser {
      * Instantiates a new parser.
      *
      * @param directiveStart the directive start
-     * @param directiveEnd   the directive end
+     * @param directiveEnd the directive end
      * @param startDirecitve the start direcitve
-     * @param endDirecitve   the end direcitve
+     * @param endDirecitve the end direcitve
      */
     public Parser(char[] directiveStart, char[] directiveEnd, char startDirecitve, char endDirecitve) {
         super();
@@ -130,7 +129,7 @@ public class Parser {
     /**
      * Parses the.
      *
-     * @param source           the source
+     * @param source the source
      * @param tplExecuteConfig the consumer
      * @return the string
      */
@@ -152,7 +151,7 @@ public class Parser {
     }
 
     private void parse(String source, TplExecuteConfig tplExecuteConfig,
-            Tuple2<List<Param>, Set<TplExecuteId>> paramTuple, AbstractElement parentElement) {
+        Tuple2<List<Param>, Set<TplExecuteId>> paramTuple, AbstractElement parentElement) {
         char c = 0;
         char c2 = 0;
         //elements.clear();
@@ -255,7 +254,7 @@ public class Parser {
                                         }
 
                                         boolean endWith = paramContent
-                                                .charAt(namePart.getStart() - 2) == fuzzyQueryChar;
+                                            .charAt(namePart.getStart() - 2) == fuzzyQueryChar;
                                         boolean startWith = paramContent.charAt(namePart.getEnd()) == fuzzyQueryChar;
                                         append = appendTransverter(startWith, endWith, append);
 
@@ -290,10 +289,8 @@ public class Parser {
                                     // addElement(de, parentElement);
                                     parse(source.substring(subStart, wrapIndex), tplExecuteConfig, paramTuple, de);
                                 } else {
-                                    addElement(
-                                            new StringElement(source.substring(index, wrapIndex),
-                                                    templateConfig.isPrecompileNamedParamPlaceholder(), element, this),
-                                            de);
+                                    addElement(new StringElement(source.substring(index, wrapIndex),
+                                        templateConfig.isPrecompileNamedParamPlaceholder(), element, this), de);
                                     //                                    de.addChild(new StringElement(source.substring(index, wrapIndex),
                                     //                                            templateConfig.isPrecompileNamedParamPlaceholder(), element, this));
                                 }
@@ -510,7 +507,7 @@ public class Parser {
             if (includeDirectiveTagName.equals(directiveElement.getName())) {
                 Map<String, String> attrs = directiveElement.getAtrtributes();
                 includeIds.add(new TplExecuteIdFileImpl(attrs.get(IncludeDirective.NAME_PARAM),
-                        attrs.get(IncludeDirective.NAME_SPACE_PARAM), templateConfig.getTplExecuteIdParser()));
+                    attrs.get(IncludeDirective.NAME_SPACE_PARAM), templateConfig.getTplExecuteIdParser()));
             }
         }
     }
@@ -520,12 +517,12 @@ public class Parser {
         for (String includeDirectiveTagName : templateConfig.getIncludeDirectiveTagNames()) {
             if (includeDirectiveTagName.equals(directive.name)) {
                 return new IncludeDirectiveElement(directive.content,
-                        templateConfig.isPrecompileNamedParamPlaceholder(), previous, this);
+                    templateConfig.isPrecompileNamedParamPlaceholder(), previous, this);
             }
             // more special directives
         }
         return new DirectiveElement(directive.content, templateConfig.isPrecompileNamedParamPlaceholder(), previous,
-                this);
+            this);
     }
 
     private Directive parseDirective(CharSequence value, int start) {
@@ -604,7 +601,7 @@ public class Parser {
                     // start + 1 去掉<符号
                     directive.setSource(value.subSequence(directive.start, directive.end + 1), this);
                     if (directive.content.charAt(0) == endDirecitve
-                            && directive.name.equals(directiveElement.getName())) {
+                        && directive.name.equals(directiveElement.getName())) {
                         directive.end = index + directiveEnd.length - 1;
                         return directive;
                     }
@@ -636,7 +633,7 @@ public class Parser {
 
     private boolean isComment(char c3) {
         return COMMENT_SYMBOL_AFTER_DIRECTIVE_START[0] == c3 || COMMENT_SYMBOL_AFTER_DIRECTIVE_START[1] == c3
-                || COMMENT_SYMBOL_AFTER_DIRECTIVE_START[2] == c3;
+            || COMMENT_SYMBOL_AFTER_DIRECTIVE_START[2] == c3;
     }
 
     private boolean isDirectiveEnd(char c, char c2) {
@@ -659,7 +656,7 @@ public class Parser {
         }
         StringBuilder sb = new StringBuilder();
         StringTokenizer tokenizer = new StringTokenizer(content.toString(), SQL_DELIM,
-                !templateConfig.isPrecompileMinimize());
+            !templateConfig.isPrecompileMinimize());
         String preToken = null;
 
         while (tokenizer.hasMoreTokens()) {
@@ -673,7 +670,7 @@ public class Parser {
                 if (inParam || "in".equalsIgnoreCase(preToken)) {
                     // id in :ids -> id in ${_ids}
                     sb.append("${").append(templateConfig.getInParamPlaceholderName().apply(token.substring(1)))
-                            .append("}");
+                        .append("}");
                     params.add(new Param(token.substring(1), true));
                     continue;
                 }
@@ -806,7 +803,7 @@ public class Parser {
      */
     public boolean hasReplaceableTarget(CharSequence directiveContent) {
         return isReplaceable(directiveContent) && directiveContent.length() > 2
-                && hasReplaceableTargetPattern.matcher(directiveContent).matches();
+            && hasReplaceableTargetPattern.matcher(directiveContent).matches();
     }
 
     /**
@@ -827,7 +824,7 @@ public class Parser {
      */
     public CharSequence directiveNameFromSource(String directiveSouce) {
         return directiveName(
-                directiveSouce.substring(directiveStart.length, directiveSouce.length() - directiveEnd.length));
+            directiveSouce.substring(directiveStart.length, directiveSouce.length() - directiveEnd.length));
     }
 
     private static class Directive {

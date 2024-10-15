@@ -7,7 +7,7 @@ import static org.testng.Assert.assertNotNull;
 
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.hammer.sqldb.jdbc.vo.OrderMix;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;

@@ -20,8 +20,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.MutableTuples;
-import com.speedment.common.tuple.mutable.MutableTuple1;
+import cn.featherfly.common.tuple.MutableTuples;
+import cn.featherfly.common.tuple.mutable.MutableTuple1;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;

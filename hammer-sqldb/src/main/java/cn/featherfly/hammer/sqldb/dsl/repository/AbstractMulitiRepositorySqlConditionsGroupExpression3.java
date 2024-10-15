@@ -4,8 +4,8 @@ package cn.featherfly.hammer.sqldb.dsl.repository;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.function.ThreeArgusConsumer;

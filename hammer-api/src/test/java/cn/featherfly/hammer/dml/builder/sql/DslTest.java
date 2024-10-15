@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;

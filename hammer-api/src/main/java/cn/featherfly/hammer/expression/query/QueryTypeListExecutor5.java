@@ -9,7 +9,7 @@ package cn.featherfly.hammer.expression.query;
 
 import java.util.List;
 
-import com.speedment.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple5;
 
 /**
  * query type list executor5.

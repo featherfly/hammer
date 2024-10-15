@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.Lang;

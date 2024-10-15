@@ -17,10 +17,10 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.JdbcException;

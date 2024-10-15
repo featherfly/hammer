@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.speedment.common.tuple.MutableTuple;
-import com.speedment.common.tuple.Tuple;
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.MutableTuple;
+import cn.featherfly.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
 
 import cn.featherfly.common.repository.MulitiQuery;
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper;

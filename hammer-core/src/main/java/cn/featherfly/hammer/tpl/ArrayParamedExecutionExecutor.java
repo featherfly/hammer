@@ -13,18 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
-import com.speedment.common.tuple.Tuple6;
-
 import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.ParamedExecutionExecutor;
 import cn.featherfly.common.repository.ParamedMappedExecutor;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
 
 /**
  * TemplateParamedExecutionExecutor.

@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition;
 
 import java.util.function.BiFunction;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;

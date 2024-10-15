@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple7;
-import com.speedment.common.tuple.Tuple8;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.structure.page.Limit;

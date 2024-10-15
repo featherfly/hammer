@@ -9,7 +9,7 @@
 // */
 //package cn.featherfly.hammer.dsl.entity.query.relation;
 //
-//import com.speedment.common.tuple.Tuple3;
+//import cn.featherfly.common.tuple.Tuple3;
 //
 //import cn.featherfly.common.function.FourArgusFunction;
 //import cn.featherfly.hammer.expression.query.QueryRelateExpression;

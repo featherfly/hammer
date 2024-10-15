@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.speedment.common.tuple.Tuple;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.lang.CollectionUtils;

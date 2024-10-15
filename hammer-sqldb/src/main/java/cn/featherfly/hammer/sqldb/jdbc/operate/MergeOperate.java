@@ -1,6 +1,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import com.speedment.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple3;
 
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;

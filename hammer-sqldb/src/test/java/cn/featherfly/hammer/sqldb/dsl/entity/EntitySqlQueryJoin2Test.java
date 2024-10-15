@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;

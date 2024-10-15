@@ -11,15 +11,6 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
-import com.speedment.common.tuple.Tuple6;
-import com.speedment.common.tuple.Tuple7;
-import com.speedment.common.tuple.Tuple8;
-import com.speedment.common.tuple.Tuple9;
-
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.dialect.Join;
@@ -30,6 +21,14 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
+import cn.featherfly.common.tuple.Tuple9;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;

@@ -21,8 +21,8 @@ import javax.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.speedment.common.tuple.Tuple7;
-import com.speedment.common.tuple.Tuple8;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.structure.page.Limit;

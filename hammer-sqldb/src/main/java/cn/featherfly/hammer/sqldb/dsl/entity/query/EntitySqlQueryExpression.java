@@ -11,10 +11,10 @@ import javax.cache.Cache;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple7;
-import com.speedment.common.tuple.Tuple8;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.dialect.Dialect;

@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository;
 
 import java.util.function.Function;
 
-import com.speedment.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.lang.Console;

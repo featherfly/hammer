@@ -18,7 +18,7 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.lang.Lang;

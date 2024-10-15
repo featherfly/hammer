@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.entity.condition.nco;
 
 import java.util.function.Consumer;
 
-import com.speedment.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple5;
 
 import cn.featherfly.common.function.FiveArgusConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;

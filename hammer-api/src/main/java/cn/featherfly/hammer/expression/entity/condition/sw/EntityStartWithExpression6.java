@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.entity.condition.sw;
 
 import java.util.function.Consumer;
 
-import com.speedment.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuple6;
 
 import cn.featherfly.common.function.SixArgusConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;

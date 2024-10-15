@@ -19,8 +19,8 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.bean.Instantiator;
 import cn.featherfly.common.bean.PropertyAccessor;

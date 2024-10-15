@@ -11,9 +11,8 @@ package cn.featherfly.hammer.tpl;
 import java.io.Serializable;
 import java.util.Map;
 
-import com.speedment.common.tuple.Tuple;
-
 import cn.featherfly.common.repository.ExecutionExecutor;
+import cn.featherfly.common.tuple.Tuple;
 
 /**
  * The Class AbstractPrefixEntityMapper.

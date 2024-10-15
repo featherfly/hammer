@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;

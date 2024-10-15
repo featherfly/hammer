@@ -3,11 +3,11 @@ dependencies {
     
     api group: 'cn.featherfly.common', name: 'common-spring', version: '0.4.2'
     api group: 'cn.featherfly.common', name: 'common-asm', version: '0.3.1'
+    //api group: 'cn.featherfly.common', name: 'common-tuple', version: '1.0.0'
     api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.9'
 	api group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'	
 	api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.2'
     api group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.2'
-    api group: 'com.speedment.common', name: 'tuple', version: '3.2.10'
     api group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
     
     // 3.2 去掉了DefineClassHelper，未找到替代实现前暂不升级

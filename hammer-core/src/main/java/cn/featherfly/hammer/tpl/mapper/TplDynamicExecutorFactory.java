@@ -30,13 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cglib.core.ReflectUtils;
 
-import com.speedment.common.tuple.Tuple;
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
-import com.speedment.common.tuple.Tuple6;
-
 import cn.featherfly.common.asm.Asm;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.exception.ReflectException;
@@ -50,6 +43,12 @@ import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.GenericHammerSupport;
 import cn.featherfly.hammer.Hammer;

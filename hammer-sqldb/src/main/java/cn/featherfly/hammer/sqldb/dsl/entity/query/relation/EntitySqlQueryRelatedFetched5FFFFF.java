@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.entity.query.relation;
 
-import com.speedment.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuple6;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.hammer.config.HammerConfig;

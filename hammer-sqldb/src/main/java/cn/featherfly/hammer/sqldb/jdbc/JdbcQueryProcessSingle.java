@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.util.Map;
 import java.util.function.ToIntBiFunction;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.repository.Execution;

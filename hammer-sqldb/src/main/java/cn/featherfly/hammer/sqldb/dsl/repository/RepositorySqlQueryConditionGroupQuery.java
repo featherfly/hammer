@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.speedment.common.tuple.Tuple2;
-import com.speedment.common.tuple.Tuple3;
-import com.speedment.common.tuple.Tuple4;
-import com.speedment.common.tuple.Tuple5;
-import com.speedment.common.tuple.Tuple6;
-import com.speedment.common.tuple.Tuples;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.Execution;

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.query;
 
-import com.speedment.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple5;
 
 /**
  * dsl for query single executor5 .

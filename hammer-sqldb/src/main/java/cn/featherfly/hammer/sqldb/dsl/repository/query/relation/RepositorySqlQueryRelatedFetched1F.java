@@ -11,7 +11,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import com.speedment.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
