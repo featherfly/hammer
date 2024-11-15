@@ -15,13 +15,14 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.AndDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.OrDirectiveModel;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereDirectiveModel;
 import cn.featherfly.hammer.tpl.ExecutionType;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteConfigs;
-import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -35,6 +36,8 @@ import freemarker.template.TemplateExceptionHandler;
  * @author zhongj
  */
 public class TestTpl {
+
+    HammerConfig hammerConfig = new HammerConfigImpl(true);
 
     public static TplExecuteConfig createConfig(String table) {
         TplExecuteConfig config = new TplExecuteConfig();
@@ -58,7 +61,7 @@ public class TestTpl {
         //        System.out.println(yaml);
 
         configs = mapper.readerFor(TplExecuteConfigs.class)
-                .readValue(ClassLoaderUtils.getResourceAsStream("user.yaml", TplExecuteConfigs.class));
+            .readValue(ClassLoaderUtils.getResourceAsStream("user.yaml", TplExecuteConfigs.class));
 
         System.out.println(configs);
 
@@ -94,18 +97,18 @@ public class TestTpl {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
 
         cfg.setDirectoryForTemplateLoading(
-                new File(ClassLoaderUtils.getResource("templates", TestTpl.class).getFile()));
+            new File(ClassLoaderUtils.getResource("templates", TestTpl.class).getFile()));
 
         cfg.setDefaultEncoding("UTF-8");
 
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         /* Create a data-model */
-        ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
+        //        ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
         Map<String, Object> root = new HashMap<>();
-        root.put("where", new WhereDirectiveModel());
-        root.put("and", new AndDirectiveModel(manager));
-        root.put("or", new OrDirectiveModel(manager));
+        root.put("where", new WhereDirectiveModel(hammerConfig.getTemplateConfig()));
+        root.put("and", new AndDirectiveModel());
+        root.put("or", new OrDirectiveModel());
 
         root.put("name", "yufei");
         root.put("age", 18);
@@ -124,7 +127,7 @@ public class TestTpl {
         System.out.println(writer.toString());
         System.out.println(writer.toString().replaceAll("\\n", ""));
 
-        System.err.println(manager.getParamNames());
+        //        System.err.println(manager.getParamNames());
     }
 
     @Test
@@ -134,18 +137,18 @@ public class TestTpl {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
 
         cfg.setDirectoryForTemplateLoading(
-                new File(ClassLoaderUtils.getResource("templates", TestTpl.class).getFile()));
+            new File(ClassLoaderUtils.getResource("templates", TestTpl.class).getFile()));
 
         cfg.setDefaultEncoding("UTF-8");
 
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         /* Create a data-model */
-        ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
+        //        ConditionParamsManager manager = new ConditionParamsManager(i -> "argu" + i);
         Map<String, Object> root = new HashMap<>();
-        root.put("where", new WhereDirectiveModel());
-        root.put("and", new AndDirectiveModel(manager));
-        root.put("or", new OrDirectiveModel(manager));
+        root.put("where", new WhereDirectiveModel(hammerConfig.getTemplateConfig()));
+        root.put("and", new AndDirectiveModel());
+        root.put("or", new OrDirectiveModel());
 
         root.put("name", "yufei");
         root.put("age", 18);
@@ -164,7 +167,7 @@ public class TestTpl {
         System.out.println(writer.toString());
         System.out.println(writer.toString().replaceAll("\\n", ""));
 
-        System.err.println(manager.getParamNames());
+        //        System.err.println(manager.getParamNames());
     }
 
 }

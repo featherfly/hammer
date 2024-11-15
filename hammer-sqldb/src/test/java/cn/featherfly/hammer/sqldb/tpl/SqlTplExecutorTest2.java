@@ -11,6 +11,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TransverterManager;
+import freemarker.template.TemplateModelException;
 
 /**
  * <p>
@@ -28,11 +29,12 @@ public class SqlTplExecutorTest2 extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = HammerException.class)
-    void testInvalidateChar() {
+    void testInvalidateChar() throws TemplateModelException {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl2/").suffixes(".yaml.tpl")
             .config(hammerConfig.getTemplateConfig()).build();
         executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
-            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
-            new SimpleSqlPageFactory(), new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods()),
+            jdbc, mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
     }
 }

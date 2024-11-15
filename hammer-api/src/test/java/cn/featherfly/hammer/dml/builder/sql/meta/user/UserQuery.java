@@ -27,6 +27,7 @@ public class UserQuery implements RepositoryQuery<UserTableQueryable, UserTableF
     public static final UserQuery DEFAULT = new UserQuery();
 
     UserTableQueryable queryable;
+    //    UserTableQueryable retrievable;
 
     UserTableFilterable filterable;
 

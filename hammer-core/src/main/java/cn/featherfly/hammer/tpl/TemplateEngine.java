@@ -11,20 +11,25 @@ import cn.featherfly.hammer.tpl.method.TemplateMethod;
  * TemplateEngine.
  *
  * @author zhongj
+ * @param <T> the generic type
+ * @param <D> the generic type
+ * @param <M> the generic type
  */
 public interface TemplateEngine<T extends TemplateProcessEnv<D, M>, D extends TemplateDirective,
     M extends TemplateMethod> {
+
     /**
      * create template and process.
      *
      * @param templateName templateName
      * @param sourceCode sourceCode
      * @param params params
-     * @param templateEnv templateEnv
+     * @param templateDirectives the template directives
+     * @param templateMethods the template methods
      * @return template processed result
      */
     String process(String templateName, String sourceCode, Map<String, Serializable> params,
-        TemplateProcessEnv<D, M> templateEnv);
+        TemplateDirectives<D> templateDirectives, TemplateMethods<M> templateMethods);
 
     /**
      * Put template.
@@ -35,7 +40,7 @@ public interface TemplateEngine<T extends TemplateProcessEnv<D, M>, D extends Te
     void putTemplate(String templateName, String templateContent);
 
     /**
-     * create template env to process
+     * create template env to process.
      *
      * @return TemplateEnv
      */

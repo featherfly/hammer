@@ -43,11 +43,13 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.SimpleSqlPageFactory;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
+import freemarker.template.TemplateModelException;
 
 /**
  * AbstractQueryCacheTest.
@@ -71,7 +73,7 @@ public abstract class AbstractQueryCacheTest extends JdbcTestBase {
     int age1 = 1;
 
     @BeforeSuite
-    void setup() {
+    void setup() throws TemplateModelException {
         CachingProvider cachingProvider = Caching
             .getCachingProvider("com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider");
         cacheManager = cachingProvider.getCacheManager();
@@ -94,9 +96,16 @@ public abstract class AbstractQueryCacheTest extends JdbcTestBase {
             .config(hammerConfig.getTemplateConfig())
             .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
 
+        SqldbFreemarkerTemplateProcessEnv sharedTemplateProcessEnv2 = new SqldbFreemarkerTemplateProcessEnv(true);
+        //        sharedTemplateProcessEnv.setDialect(dialect);
+        sharedTemplateProcessEnv2.setMappingFactory(mappingFactory);
+        sharedTemplateProcessEnv2.setConfigFactory(configFactory);
+        sharedTemplateProcessEnv2.setTemplateConfig(hammerConfig.getTemplateConfig());
+
         executor = new SqlTplExecutor(hammerConfig, configFactory2,
-            new SqldbFreemarkerTemplateEngine(configFactory2, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
-            new SimpleSqlPageFactory(), new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory2, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv2.createDirectives(), sharedTemplateProcessEnv2.createMethods()),
+            jdbc, mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
 
         query = new SqlQuery(jdbc, mappingFactory, sqlPageFactory, hammerConfig);
     }

@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.config.HammerConfigImpl;
@@ -23,9 +24,11 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
+import freemarker.template.TemplateModelException;
 
 /**
  * SqlTplExecutorTest.
@@ -37,7 +40,7 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
     SqlTplExecutor executor;
 
     @org.testng.annotations.BeforeClass
-    void setup() {
+    void setup() throws TemplateModelException {
         Set<String> prefixes = new HashSet<>();
         prefixes.add("tpl_pre/");
         prefixes.add("tpl_pre2/");
@@ -51,9 +54,16 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
                 new TemplateConfigImpl().setPrecompileMinimize(false).setPrecompileNamedParamPlaceholder(false)))
             .build();
 
+        SqldbFreemarkerTemplateProcessEnv sharedTemplateProcessEnv = new SqldbFreemarkerTemplateProcessEnv(true);
+        //        sharedTemplateProcessEnv.setDialect(dialect);
+        sharedTemplateProcessEnv.setMappingFactory(mappingFactory);
+        sharedTemplateProcessEnv.setConfigFactory(configFactory);
+        sharedTemplateProcessEnv.setTemplateConfig(hammerConfig.getTemplateConfig());
+
         executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
-            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
-            new SimpleSqlPageFactory(), new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods()),
+            jdbc, mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
     }
 
     @Test
@@ -110,5 +120,18 @@ public class SqlTplExecutorTest3 extends DataSourceTestBase {
         //            <@or if=mobile??>mobile_no = :mobile</@or>
         //        )
         //        </@and>
+    }
+
+    @Test
+    public void testMulitiWhere() {
+        List<User> users = executor.list("mulitiWhere", User.class, Params.setParam("minAge", 0) //
+            .set("maxAge", 5) //
+            .set("minAge2", 5) //
+            .set("maxAge2", 20) //
+        );
+        for (User user : users) {
+            assertTrue(user.getAge().intValue() >= 0);
+            assertTrue(user.getAge().intValue() < 20);
+        }
     }
 }

@@ -50,6 +50,7 @@ import cn.featherfly.hammer.sqldb.jdbc.operate.UpsertOperate;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateProcessEnv;
 import cn.featherfly.hammer.sqldb.tpl.transverter.FuzzyQueryTransverter;
 import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutorEx;
 import cn.featherfly.hammer.tpl.MapParamedExecutionExecutorEx;
@@ -62,6 +63,7 @@ import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
 import cn.featherfly.validation.metadata.ConstraintViolation;
+import freemarker.template.TemplateModelException;
 
 /**
  * SqldbHammerImpl.
@@ -1011,10 +1013,18 @@ public class SqldbHammerImpl implements SqldbHammer {
          * Builds the.
          *
          * @return the sqldb hammer impl
+         * @throws TemplateModelException
          */
         public SqldbHammerImpl build() {
             if (templateEngine == null) {
-                templateEngine = new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig());
+                SqldbFreemarkerTemplateProcessEnv sharedTemplateProcessEnv = new SqldbFreemarkerTemplateProcessEnv(
+                    true);
+                sharedTemplateProcessEnv.setConfigFactory(configFactory);
+                sharedTemplateProcessEnv.setMappingFactory(mappingFactory);
+                sharedTemplateProcessEnv.setTemplateConfig(hammerConfig.getTemplateConfig());
+
+                templateEngine = new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig(),
+                    sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods());
             }
             if (sqlPageFacotry == null) {
                 sqlPageFacotry = new SimpleSqlPageFactory();

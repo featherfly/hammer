@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
+import cn.featherfly.hammer.tpl.supports.WhereConditionParams;
 
 /**
  * AndTemplateDirectiveModelTest.
@@ -38,22 +38,24 @@ public class LogicTemplateDirectiveModelTest {
 
     Method getParamName;
 
-    AndDirectiveModel templateDirectiveModel = new AndDirectiveModel(
-            new ConditionParamsManager(i -> "argu" + i));
+    WhereConditionParams conditionParamsManager = new WhereConditionParams(i -> "argu" + i);
+
+    AndDirectiveModel templateDirectiveModel = new AndDirectiveModel();
 
     public LogicTemplateDirectiveModelTest()
-            throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException {
+        throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException {
         Field field = ClassUtils.getField(LogicDirectiveModel.class, "CONDITION_PATTERN");
         field.setAccessible(true);
         conditionPattern = (Pattern) field.get(LogicDirectiveModel.class);
 
-        getParamName = LogicDirectiveModel.class.getDeclaredMethod("getParamName", String.class, String.class);
+        getParamName = LogicDirectiveModel.class.getDeclaredMethod("getParamName", String.class, String.class,
+            WhereConditionParams.class);
         getParamName.setAccessible(true);
     }
 
     private String getParamName(String name, String condition)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return (String) getParamName.invoke(templateDirectiveModel, name, condition);
+        throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        return (String) getParamName.invoke(templateDirectiveModel, name, condition, conditionParamsManager);
     }
 
     @Test

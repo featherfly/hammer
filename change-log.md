@@ -2,7 +2,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 
-# 0.7.2
+# 0.7.2 2024-11-15
 
 1.  在启用缓存时，优化分页逻辑，如果页码大于最大页码，则不执行sql,直接返回空列表
 2.  完成Entity query DSL查询一个属性时的分页优化功能
@@ -12,6 +12,8 @@ TODO dsl实体查询加入以下（EntityQuery）
 6.  所有 DSL 条件运算[eq|in...] 提供参数为Supplier,V的方法
 7.  使用validation-api facade，而不是直接使用validation-api来兼容javax和Jakarta包名
 8.  更换tuple包
+9.  修复sql模板使用多个where，第一个以后得每一个where后跟的第一个条件没有过滤掉and|or
+10.  修复repository|entity dsl query 条件查询 eq(FieldExpression) 无限递归导致的内存溢出问题
 
 # 0.7.1 2024-06-02
 

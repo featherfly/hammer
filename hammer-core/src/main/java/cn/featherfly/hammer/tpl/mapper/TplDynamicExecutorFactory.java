@@ -1016,7 +1016,7 @@ public class TplDynamicExecutorFactory implements Opcodes {
                         methodNode.visitMaxs(stackSize, localeSize);
                         methodNode.visitEnd();
                     } else {
-                        // TODO 使用exception code
+                        // ENHANCE 使用exception code
                         throw new HammerException("unsupport query return type with primitive type "
                             + method.getReturnType() + ", you can use wrapper type instead");
                     }

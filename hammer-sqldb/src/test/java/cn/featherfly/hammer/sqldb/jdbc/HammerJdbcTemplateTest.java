@@ -14,14 +14,13 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.dialect.MySQLDialect;
 import cn.featherfly.common.lang.NumberUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.SqldbHammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.TestConstants;
@@ -30,8 +29,10 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
+import freemarker.template.TemplateModelException;
 
 /**
  * HammerJdbcTest.
@@ -45,13 +46,21 @@ public class HammerJdbcTemplateTest extends SqlTplExecutorTest {
     TplExecuteIdParser parser;
 
     @BeforeClass
-    public void before() {
+    public void before() throws TemplateModelException {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
             .config(hammerConfig.getTemplateConfig()).build();
         parser = configFactory.getTemplateConfig().getTplExecuteIdParser();
+
+        SqldbFreemarkerTemplateProcessEnv sharedTemplateProcessEnv = new SqldbFreemarkerTemplateProcessEnv(true);
+        //        sharedTemplateProcessEnv.setDialect(dialect);
+        sharedTemplateProcessEnv.setMappingFactory(mappingFactory);
+        sharedTemplateProcessEnv.setConfigFactory(configFactory);
+        sharedTemplateProcessEnv.setTemplateConfig(hammerConfig.getTemplateConfig());
+
         hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig)
-            .setSqlPageFacotry(new SimpleSqlPageFactory()) //
-            .setTemplateEngine(new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig())) //
+            .setSqlPageFacotry(new SimpleSqlPageFactory()) // 
+            .setTemplateEngine(new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods())) //
             .build();
 
     }

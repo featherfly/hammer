@@ -80,6 +80,9 @@ public class JdbcTransactionTest extends JdbcTestBase {
         article = jdbc2.querySingle("select * from cms_article where id = ?", Article.class, l.longValue());
         assertEquals(article.getTitle(), "title_01");
         assertEquals(article.getContent(), "content_01");
+
+        jdbc.close();
+        jdbc2.close();
     }
 
     @Test
