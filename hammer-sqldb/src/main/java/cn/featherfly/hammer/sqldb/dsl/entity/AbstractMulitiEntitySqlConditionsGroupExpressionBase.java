@@ -9,9 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
-
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ParamedColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -25,6 +22,8 @@ import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
@@ -100,7 +99,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     @Override
     public L group(Function<C, L> group) {
         C g = group();
-        return ((GroupEndExpression<C, L>) group.apply(g)).endGroup();
+        return group.apply(g).endGroup();
     }
 
     /**

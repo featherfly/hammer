@@ -10,14 +10,14 @@ public final class ConditionParamsManagerHolder {
     private ConditionParamsManagerHolder() {
     }
 
-    private static final ThreadLocal<ConditionParamsManager> HOLDER = new ThreadLocal<>();
+    private static final ThreadLocal<WhereConditionParams> HOLDER = new ThreadLocal<>();
 
     /**
      * hold manager
      *
      * @param manager manager
      */
-    public static void hold(ConditionParamsManager manager) {
+    public static void hold(WhereConditionParams manager) {
         HOLDER.set(manager);
     }
 

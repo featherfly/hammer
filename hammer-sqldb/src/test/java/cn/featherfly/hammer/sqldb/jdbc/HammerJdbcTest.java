@@ -41,6 +41,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
+import freemarker.template.TemplateModelException;
 
 /**
  * HammerJdbcTest.
@@ -57,7 +58,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     Serializable[] emptyArray = new Serializable[0];
 
     @BeforeClass
-    void before() {
+    void before() throws TemplateModelException {
         hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig)
             .build();
     }

@@ -22,6 +22,7 @@ import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ListToStringSqlTypeMa
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Content;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Content2;
+import freemarker.template.TemplateModelException;
 
 /**
  * JdbcImplTest.
@@ -33,7 +34,7 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
     Hammer hammer;
 
     @BeforeClass
-    void be() {
+    void be() throws TemplateModelException {
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
         Class<Article2> type = Article2.class;

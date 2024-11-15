@@ -14,8 +14,8 @@ import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.LogicDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
-import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
-import cn.featherfly.hammer.tpl.supports.ConditionParamsManager.Param;
+import cn.featherfly.hammer.tpl.supports.WhereConditionParams;
+import cn.featherfly.hammer.tpl.supports.WhereConditionParams.Param;
 import freemarker.core.Environment;
 import freemarker.template.TemplateBooleanModel;
 import freemarker.template.TemplateDirectiveBody;
@@ -36,20 +36,12 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
         "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
         Pattern.CASE_INSENSITIVE);
 
-    private ConditionParamsManager conditionParamsManager;
-
     /**
      * Instantiates a new logic template directive model.
-     *
-     * @param conditionParamsManager conditionParamsManager
      */
-    protected LogicDirectiveModel(ConditionParamsManager conditionParamsManager) {
-        this.conditionParamsManager = conditionParamsManager;
+    protected LogicDirectiveModel() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     /**
      * {@inheritDoc}
      */
@@ -61,6 +53,13 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
         String nameParam = null;
         String transverterParam = null;
         boolean force = false;
+
+        WhereConditionParams conditionParamsManager = (WhereConditionParams) env
+            .getCustomAttribute(WhereDirectiveModel.CONDITION_PARAMS_MANAGER_KEY);
+
+        if (conditionParamsManager == null) {
+            throw new TplException(getLogicWorld() + " directive must be within the where directive");
+        }
 
         @SuppressWarnings("unchecked")
         Set<Map.Entry<String, Object>> entrySet = params.entrySet();
@@ -121,7 +120,7 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
                 if (ifParam.booleanValue()) { // 判断!ifParam，在conditionManager里加入filterNames
                     boolean needAppendLogicWorld = force || conditionParamsManager.isNeedAppendLogicWorld();
                     String condition = getContent(body);
-                    name = getParamName(name, condition);
+                    name = getParamName(name, condition, conditionParamsManager);
 
                     for (String n : getParamNames(name)) {
                         Param param = null;
@@ -138,7 +137,7 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
                     }
                     out.write(condition);
                 } else {
-                    conditionParamsManager.addFilterParamNames(getParamNames(name, body));
+                    conditionParamsManager.addFilterParamNames(getParamNames(name, conditionParamsManager, body));
                     out.write("");
                 }
             }
@@ -159,19 +158,21 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
         }
     }
 
-    private String[] getParamNames(String name, TemplateDirectiveBody body) throws TemplateException, IOException {
-        return getParamNames(getParamName(name, body));
+    private String[] getParamNames(String name, WhereConditionParams conditionParamsManager,
+        TemplateDirectiveBody body) throws TemplateException, IOException {
+        return getParamNames(getParamName(name, conditionParamsManager, body));
     }
 
-    private String getParamName(String name, TemplateDirectiveBody body) throws TemplateException, IOException {
+    private String getParamName(String name, WhereConditionParams conditionParamsManager, TemplateDirectiveBody body)
+        throws TemplateException, IOException {
         if (org.apache.commons.lang3.StringUtils.isBlank(name)) {
-            return getParamName(name, getContent(body));
+            return getParamName(name, getContent(body), conditionParamsManager);
         } else {
             return name;
         }
     }
 
-    private String getParamName(String name, String condition) {
+    private String getParamName(String name, String condition, WhereConditionParams conditionParamsManager) {
         if (org.apache.commons.lang3.StringUtils.isBlank(name) && condition.length() > 0) {
             Matcher m = null;
             m = CONDITION_PATTERN.matcher(condition);

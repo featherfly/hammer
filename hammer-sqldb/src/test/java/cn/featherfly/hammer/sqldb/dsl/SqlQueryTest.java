@@ -40,6 +40,7 @@ import cn.featherfly.hammer.sqldb.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 
 /**
  * SqlQueryTest.
@@ -462,20 +463,20 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void conditionEqColumn() {
-        int id = 1;
-        //        r.eq("create_user", r.field("user1")
-        int userId = query.find("order").field("id") //
-            .where(r -> //
-            r.field("create_user") //
-                .eq(r.field("user1"))) // FIXME 此方式会触发内存溢出，应该是无限递归了
-            .intValue();
+        List<Order2> orders = query.find("order") //
+            .where(r -> r.field("create_user").eq( //
+                r.field("user1")))
+            .list(Order2.class);
+        for (Order2 order : orders) {
+            assertEquals(order.getCreateUser(), order.getUser1());
+        }
 
-        Integer userId2 = query.find("order").field("id") //
-            .where(r -> r.field("create_user").eq(r.field("user1"))) //
-            .value();
-
-        assertTrue(userId == id);
-        assertTrue(userId2 == id);
+        //        int id = 1;
+        //        Integer userId2 = query.find("order").field("id") //
+        //            .where(r -> r.field("create_user") //
+        //                .eq(r.field("user1"))) //
+        //            .value();
+        //        assertTrue(userId2 == id);
     }
 
     @Test

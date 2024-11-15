@@ -25,7 +25,8 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
 
     /**
      */
-    public SqldbFreemarkerTemplateProcessEnv() {
+    public SqldbFreemarkerTemplateProcessEnv(boolean shared) {
+        super(shared);
     }
 
     /**
@@ -33,8 +34,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createWhereDirective() {
-        return new WhereDirectiveModel();
-
+        return new WhereDirectiveModel(templateConfig);
     }
 
     /**
@@ -42,7 +42,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createAndDirective() {
-        return new AndDirectiveModel(conditionParamsManager);
+        return new AndDirectiveModel();
     }
 
     /**
@@ -50,7 +50,7 @@ public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<F
      */
     @Override
     protected FreemarkerDirective createOrDirective() {
-        return new OrDirectiveModel(conditionParamsManager);
+        return new OrDirectiveModel();
     }
 
     /**

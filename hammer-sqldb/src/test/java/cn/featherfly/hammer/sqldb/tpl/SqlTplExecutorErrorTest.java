@@ -16,6 +16,7 @@ import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
+import freemarker.template.TemplateModelException;
 
 /**
  * SqlTplExecutorTest.
@@ -27,12 +28,13 @@ public class SqlTplExecutorErrorTest extends JdbcTestBase {
     protected TplExecutor executor;
 
     @BeforeMethod
-    void setup() {
+    void setup() throws TemplateModelException {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
             .config(hammerConfig.getTemplateConfig()).build();
         executor = new SqlTplExecutor(new HammerConfigImpl(devMode), configFactory,
-            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
-            new SimpleSqlPageFactory(), new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods()),
+            jdbc, mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
     }
 
     @Test(expectedExceptions = TplException.class)

@@ -14,15 +14,14 @@ import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
-
 import cn.featherfly.common.db.dialect.MySQLDialect;
 import cn.featherfly.common.lang.NumberUtils;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
@@ -39,6 +38,7 @@ import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
 import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
+import freemarker.template.TemplateModelException;
 
 /**
  * SqlTplExecutorTest.
@@ -58,14 +58,15 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     String password = "123";
 
     @BeforeMethod
-    public void setup() {
+    public void setup() throws TemplateModelException {
         TplConfigFactoryImpl configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
             .config(hammerConfig.getTemplateConfig()).build();
         HammerConfig config = new HammerConfigImpl(devMode);
         parser = config.getTemplateConfig().getTplExecuteIdParser();
         executor = new SqlTplExecutor(config, configFactory,
-            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
-            new SimpleSqlPageFactory(), new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods()),
+            jdbc, mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
     }
 
     @Test

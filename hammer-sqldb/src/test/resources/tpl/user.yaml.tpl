@@ -58,16 +58,19 @@ selectConditions2: >
     
 selectIn: >
     select <@columns table='user'/> from <@wrap value='user'/> 
-    where 
+    <@where> 
         <@and if=ids??> id in :ids </@and>
+    </@where>   
 selectInCount: >
     select count(*) from <@wrap value='user'/> 
-    where 
+    <@where> 
         <@and if=ids??> id in :ids </@and>
+    </@where> 
 selectInSingle: >
     select <@columns table='user'/> from <@wrap value='user'/> 
-    where 
+    <@where> 
         <@and if=ids??> id in :ids </@and>
+    </@where>
 selectIn2: >
     select <@columns table='user'/> from <@wrap value='user'/> 
     where 

@@ -37,10 +37,10 @@ public class DirectiveElement extends AbstractElement {
     /**
      * Instantiates a new directive element.
      *
-     * @param value                 the value
+     * @param value the value
      * @param namedParamPlaceholder the named param placeholder
-     * @param previous              the previous
-     * @param parser                the parser
+     * @param previous the previous
+     * @param parser the parser
      */
     public DirectiveElement(CharSequence value, boolean namedParamPlaceholder, Element previous, Parser parser) {
         super(value, namedParamPlaceholder, previous, parser);
@@ -87,7 +87,7 @@ public class DirectiveElement extends AbstractElement {
                 return result;
             } else {
                 throw new TplException(
-                        "replaceable warp directive has no replaceble target, you can give target after $=");
+                    "replaceable warp directive has no replaceble target, you can give target after $=");
             }
         } else {
             if (isEnclosed()) {
@@ -144,7 +144,8 @@ public class DirectiveElement extends AbstractElement {
 
     private String getString(boolean isEndDirective, boolean isEnclosed) {
         char sign = directive;
-        if (getName().equals("if")) {
+        String name = getName();
+        if ("if".equals(name) || "elseif ".equals(name) || "else".equals(name)) {
             sign = macro;
         }
         String directiveEnd = "";
@@ -162,7 +163,7 @@ public class DirectiveElement extends AbstractElement {
             content = getNameAndAttr();
         }
         return new StringBuilder().append("<").append(directiveEnd).append(sign).append(content).append(enclosed)
-                .append(">").toString();
+            .append(">").toString();
 
     }
 
@@ -204,7 +205,7 @@ public class DirectiveElement extends AbstractElement {
             return attrName;
         }
         throw new TplException(Strings.format("{} direcitve(tag) attribute names can only be alphabetic, error with {}",
-                getName(), attrName));
+            getName(), attrName));
     }
 
     protected String trimSymbol(String attrToken) {

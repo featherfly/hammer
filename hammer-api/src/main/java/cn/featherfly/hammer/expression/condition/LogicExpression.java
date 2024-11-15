@@ -36,7 +36,7 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
     /**
      * 根据传入参数进行逻辑运算.
      *
-     * @param operator        the operator
+     * @param operator the operator
      * @param logicExpression the logic expression
      * @return LogicExpression
      */
@@ -56,7 +56,7 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
      * 根据传入参数进行逻辑运算，后跟分组条件即需要把逻辑放在一个分组内的条件.
      *
      * @param operator the operator
-     * @param group    group
+     * @param group group
      * @return LogicExpression
      */
     default L logic(LogicOperator operator, Function<C, L> group) {
@@ -74,10 +74,10 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
     /**
      * 根据传入参数进行逻辑运算.
      *
-     * @param <G>                 the generic type
-     * @param <GC>                the generic type
-     * @param <GL>                the generic type
-     * @param operator            the operator
+     * @param <G> the generic type
+     * @param <GC> the generic type
+     * @param <GL> the generic type
+     * @param operator the operator
      * @param conditionExpression the condition expression
      * @return LogicExpression
      */
@@ -118,13 +118,14 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
      * @return LogicExpression
      */
     L and(Function<C, L> group);
+    // FIXME 考虑是否删除这个快捷方法(相当于 and().group(Function<C, L> group))，因为与and(G conditionExpression)冲突
 
     /**
      * logic and. 逻辑与.
      *
-     * @param <G>                 the GroupExpression type
-     * @param <GC>                the generic type
-     * @param <GL>                the generic type
+     * @param <G> the GroupExpression type
+     * @param <GC> the generic type
+     * @param <GL> the generic type
      * @param conditionExpression the condition expression
      * @return ConditionExpression
      */
@@ -160,9 +161,9 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
     /**
      * logic or. 逻辑或.
      *
-     * @param <G>                 the GroupExpression type
-     * @param <GC>                the generic type
-     * @param <GL>                the generic type
+     * @param <G> the GroupExpression type
+     * @param <GC> the generic type
+     * @param <GL> the generic type
      * @param conditionExpression the condition expression
      * @return ConditionExpression
      */

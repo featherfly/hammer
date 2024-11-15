@@ -44,6 +44,7 @@ import cn.featherfly.hammer.entity.EntityPreparer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
@@ -88,6 +89,9 @@ public class JdbcTestBase extends TestBase {
 
     protected static PropertyAccessorFactory propertyAccessorFactory;
 
+    protected static SqldbFreemarkerTemplateProcessEnv sharedTemplateProcessEnv = new SqldbFreemarkerTemplateProcessEnv(
+        true);
+
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
@@ -119,6 +123,9 @@ public class JdbcTestBase extends TestBase {
 
         jdbcFactory = new JdbcFactoryImpl(dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
+        sharedTemplateProcessEnv.setMappingFactory(mappingFactory);
+        sharedTemplateProcessEnv.setConfigFactory(configFactory);
+        sharedTemplateProcessEnv.setTemplateConfig(hammerConfig.getTemplateConfig());
     }
 
     public void initDataBase(String dataBase) throws IOException {

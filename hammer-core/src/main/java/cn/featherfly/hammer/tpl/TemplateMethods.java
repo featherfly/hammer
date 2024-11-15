@@ -23,7 +23,9 @@ public class TemplateMethods<M> {
 
     public static final String STRING_REPLACE_METHOD_KEY = "str";
 
-    private static final String[] REQUIRED_KEYS = { WRAP_METHOD_KEY, STRING_REPLACE_METHOD_KEY };
+    private static final String[] SHARED_REQUIRED_KEYS = { WRAP_METHOD_KEY, STRING_REPLACE_METHOD_KEY };
+
+    private static final String[] REQUIRED_KEYS = {};
 
     protected Map<String, M> methodMap = new HashMap<>();
 
@@ -58,8 +60,8 @@ public class TemplateMethods<M> {
         return methodMap;
     }
 
-    public Map<String, M> getMethodeMapAfterCheck() {
-        for (String key : REQUIRED_KEYS) {
+    public Map<String, M> getMethodeMapAfterCheck(boolean shared) {
+        for (String key : shared ? SHARED_REQUIRED_KEYS : REQUIRED_KEYS) {
             if (!methodMap.containsKey(getKey(key))) {
                 throw new HammerException("method with key " + key + " is null");
             }

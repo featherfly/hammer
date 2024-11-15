@@ -37,6 +37,8 @@ import cn.featherfly.hammer.config.tpl.TemplateConfig.CountSqlConverteStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
+import cn.featherfly.hammer.sqldb.tpl.freemarker.directive.WhereDirectiveModel;
+import cn.featherfly.hammer.tpl.TemplateDirectives;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
@@ -47,8 +49,8 @@ import cn.featherfly.hammer.tpl.Transverter;
 import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
+import cn.featherfly.hammer.tpl.supports.WhereConditionParams.Param;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
-import cn.featherfly.hammer.tpl.supports.ConditionParamsManager.Param;
 import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 
 /**
@@ -2453,7 +2455,7 @@ public class SqlTplExecutor implements TplExecutor {
                 entityType4, entityType5, prefixes, params, offset, limit);
         pagination.setPageResults(listTuple.get0());
         //        String countSql = null;
-        //        ConditionParamsManager manager = null;
+        //        ConditionParamsManagers manager = null;
         //        TplExecuteConfig config = listTuple.get2();
         //        if (Lang.isEmpty(config.getCount())) {
         //            countSql = SqlUtils.convertSelectToCount(listTuple.get1());
@@ -2747,17 +2749,23 @@ public class SqlTplExecutor implements TplExecutor {
     private Tuple3<String, ConditionParamsManager, PropertiesMappingManager> getExecution(String templateName,
         String sql, Map<String, Serializable> params, Class<?>... resultTypes) {
         logger.debug("execute template name : {}", templateName);
-        ConditionParamsManager conditionParamsManager = new ConditionParamsManager(
-            hammerConfig.getTemplateConfig().getParamIndexToName());
+        // FIXME 多个where 共享了一个 ConditionParamsManager
+        // 所以需要在where中创建，并且and or 标签必须在where 标签内使用
+        // ConditionParamsManager 应该在where 标签的execute方法中实例化，再共享给内部的and or 使用
+        // 这样where and or 标签就能全局初始化一次了
+
         PropertiesMappingManager propertiesMappingManager = new PropertiesMappingManager();
 
         Map<String, Serializable> root = new HashMap<>();
         root.putAll(params);
-        SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> templateProcessEnv = createTemplateProcessEnv(
-            conditionParamsManager, propertiesMappingManager, resultTypes);
+        SqlDbTemplateProcessEnv<TemplateDirective,
+            TemplateMethod> templateProcessEnv = createTemplateProcessEnv(propertiesMappingManager, resultTypes);
 
-        String result = templateEngine.process(templateName, sql, params, templateProcessEnv);
-        return Tuples.of(result, conditionParamsManager, propertiesMappingManager);
+        TemplateDirectives<TemplateDirective> directives = templateProcessEnv.createDirectives();
+        WhereDirectiveModel whereDirective = (WhereDirectiveModel) directives.getWhereDirective();
+        String result = templateEngine.process(templateName, sql, params, directives,
+            templateProcessEnv.createMethods());
+        return Tuples.of(result, whereDirective.getConditionParamsManagers(), propertiesMappingManager);
     }
 
     /**
@@ -2768,12 +2776,11 @@ public class SqlTplExecutor implements TplExecutor {
      * @return the sql db template process env
      */
     private SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> createTemplateProcessEnv(
-        ConditionParamsManager conditionParamsManager, PropertiesMappingManager propertiesMappingManager,
-        Class<?>... resultTypes) {
+        PropertiesMappingManager propertiesMappingManager, Class<?>... resultTypes) {
         SqlDbTemplateProcessEnv<TemplateDirective, TemplateMethod> env = templateEngine.createTemplateProcessEnv();
         env.setConfigFactory(configFactory);
         env.setDialect(jdbc.getDialect());
-        env.setConditionParamsManager(conditionParamsManager);
+        env.setTemplateConfig(hammerConfig.getTemplateConfig());
         env.setPropertiesMappingManager(propertiesMappingManager);
         env.setMappingFactory(mappingFactory);
         env.setResultTypes(resultTypes);
@@ -3023,8 +3030,8 @@ public class SqlTplExecutor implements TplExecutor {
     }
 
     private long count(String sql, Map<String, Serializable> effectiveParams,
-        ConditionParamsManager conditionParamsManager, TplExecuteConfig config) {
-        return count(sql, effectiveParams, conditionParamsManager, config, null);
+        ConditionParamsManager ConditionParamsManagers, TplExecuteConfig config) {
+        return count(sql, effectiveParams, ConditionParamsManagers, config, null);
     }
 
     private long count(String sql, Map<String, Serializable> effectiveParams,
@@ -3088,8 +3095,12 @@ public class SqlTplExecutor implements TplExecutor {
 
     private Serializable[] getEffectiveParamArray(final Map<String, Serializable> params,
         ConditionParamsManager manager, TplExecuteConfig config) {
-        return Arrays.stream(config.getParams()).filter(p -> !manager.filterParamName(p.getName()))
-            .map(p -> transvert(p.getName(), params.get(p.getName()), manager)).toArray(n -> new Serializable[n]);
+        return Arrays.stream(config.getParams()).filter( //
+            p -> !manager.filterParamName(p.getName())) //
+            .map( //
+                p -> transvert(p.getName(), params.get(p.getName()), manager)) //
+            .toArray( //
+                n -> new Serializable[n]);
     }
 
     private Map<String, Serializable> getEffectiveParamMap(final Map<String, Serializable> params,
@@ -3111,7 +3122,7 @@ public class SqlTplExecutor implements TplExecutor {
         return value;
     }
 
-    //    private Object transvert(int index, Object value, ConditionParamsManager manager) {
+    //    private Object transvert(int index, Object value, ConditionParamsManagers manager) {
     //        return transvert(manager.getParam(index), value, manager);
     //    }
 

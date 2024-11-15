@@ -23,8 +23,11 @@ public class TemplateDirectives<D> {
     public static final String WRAP_DIRECTIVE_KEY = "wrap";
     public static final String STRING_REPLACE_DIRECTIVE_KEY = "str";
 
+    private static final String[] SHARED_REQUIRED_KEYS = { TEMPLATE_INCLUDE_DIRECTIVE_KEY, WRAP_DIRECTIVE_KEY,
+        STRING_REPLACE_DIRECTIVE_KEY };
+
     private static final String[] REQUIRED_KEYS = { WHERE_DIRECTIVE_KEY, AND_DIRECTIVE_KEY, OR_DIRECTIVE_KEY,
-        PROPERTIES_DIRECTIVE_KEY, TEMPLATE_INCLUDE_DIRECTIVE_KEY, WRAP_DIRECTIVE_KEY };
+        PROPERTIES_DIRECTIVE_KEY };
 
     protected Map<String, D> directiveMap = new HashMap<>();
 
@@ -36,8 +39,8 @@ public class TemplateDirectives<D> {
         return directiveMap;
     }
 
-    public Map<String, D> getDirectiveMapAfterCheck() {
-        for (String key : REQUIRED_KEYS) {
+    public Map<String, D> getDirectiveMapAfterCheck(boolean shared) {
+        for (String key : shared ? SHARED_REQUIRED_KEYS : REQUIRED_KEYS) {
             if (!directiveMap.containsKey(key)) {
                 throw new HammerException("directive with key " + key + " is null");
             }
@@ -71,6 +74,10 @@ public class TemplateDirectives<D> {
 
     public void addStringReplaceDirective(D directive) {
         directiveMap.put(STRING_REPLACE_DIRECTIVE_KEY, directive);
+    }
+
+    public D getWhereDirective() {
+        return directiveMap.get(WHERE_DIRECTIVE_KEY);
     }
 
 }

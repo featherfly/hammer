@@ -28,6 +28,7 @@ import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutor;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.tpl.TplExecutor;
 import cn.featherfly.hammer.tpl.TransverterManager;
+import freemarker.template.TemplateModelException;
 
 /**
  * The Class TplQueryCacheTest.
@@ -39,6 +40,8 @@ public class TplQueryCacheTest extends AbstractQueryCacheTest {
 
     /**
      * {@inheritDoc}
+     *
+     * @throws TemplateModelException
      */
     @Override
     @Test
@@ -49,8 +52,9 @@ public class TplQueryCacheTest extends AbstractQueryCacheTest {
 
         // 使用局部变量，不能覆盖成员变量executor
         TplExecutor executor = new SqlTplExecutor(hammerConfig, configFactory2,
-            new SqldbFreemarkerTemplateEngine(configFactory2, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
-            new SimpleSqlPageFactory(), new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory2, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods()),
+            jdbc, mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
 
         SimplePage page = new SimplePage();
         page.setSize(2);
@@ -221,8 +225,9 @@ public class TplQueryCacheTest extends AbstractQueryCacheTest {
 
         // 使用局部变量，不能覆盖成员变量executor
         TplExecutor executor = new SqlTplExecutor(hammerConfig, configFactory2,
-            new SqldbFreemarkerTemplateEngine(configFactory2, hammerConfig.getTemplateConfig()), jdbc, mappingFactory,
-            new SimpleSqlPageFactory(), new TransverterManager());
+            new SqldbFreemarkerTemplateEngine(configFactory2, hammerConfig.getTemplateConfig(),
+                sharedTemplateProcessEnv.createDirectives(), sharedTemplateProcessEnv.createMethods()),
+            jdbc, mappingFactory, new SimpleSqlPageFactory(), new TransverterManager());
 
         SimplePage page = new SimplePage();
         page.setSize(2);

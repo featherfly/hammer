@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,9 @@ import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.debug.TplConfigDebugMessage;
+import cn.featherfly.hammer.tpl.TemplateDirectives;
 import cn.featherfly.hammer.tpl.TemplateEngine;
+import cn.featherfly.hammer.tpl.TemplateMethods;
 import cn.featherfly.hammer.tpl.TemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
@@ -46,11 +49,24 @@ public abstract class AbstractFreemarkerTemplateEngine<
      *
      * @param configFactory TplConfigFactory
      * @param templateConfig the template config
+     * @param sharedTemplateDirectives the shared template directives
+     * @param sharedTemplateMethods the shared template methods
      */
-    protected AbstractFreemarkerTemplateEngine(TplConfigFactory configFactory, TemplateConfig templateConfig) {
-        cfg = new Configuration(Configuration.VERSION_2_3_28);
+    protected AbstractFreemarkerTemplateEngine(TplConfigFactory configFactory, TemplateConfig templateConfig,
+        TemplateDirectives<FreemarkerDirective> sharedTemplateDirectives,
+        TemplateMethods<FreemarkerMethod> sharedTemplateMethods) {
+        cfg = new Configuration(Configuration.VERSION_2_3_31);
         cfg.setDefaultEncoding(templateConfig.getCharset().name());
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+
+        for (Entry<String, FreemarkerDirective> e : sharedTemplateDirectives.getDirectiveMapAfterCheck(true)
+            .entrySet()) {
+            cfg.setSharedVariable(e.getKey(), e.getValue());
+        }
+
+        for (Entry<String, FreemarkerMethod> e : sharedTemplateMethods.getMethodeMapAfterCheck(true).entrySet()) {
+            cfg.setSharedVariable(e.getKey(), e.getValue());
+        }
 
         templateLoader = new StringTemplateLoader();
         TplConfigDebugMessage configDebugMessage = new TplConfigDebugMessage(logger.isDebugEnabled());
@@ -94,14 +110,14 @@ public abstract class AbstractFreemarkerTemplateEngine<
      */
     @Override
     public String process(String templateName, String sourceCode, Map<String, Serializable> params,
-        TemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> templateProcessEnv) {
+        TemplateDirectives<FreemarkerDirective> templateDirectives, TemplateMethods<FreemarkerMethod> templateMethods) {
         logger.debug("execute template name : {}", templateName);
         Map<String, Object> root = new HashMap<>();
         root.putAll(params);
-        templateProcessEnv.createDirectives().getDirectiveMapAfterCheck().forEach((k, v) -> {
+        templateDirectives.getDirectiveMapAfterCheck(false).forEach((k, v) -> {
             root.put(k, v);
         });
-        templateProcessEnv.createMethods().getMethodeMapAfterCheck().forEach((k, v) -> {
+        templateMethods.getMethodeMapAfterCheck(false).forEach((k, v) -> {
             root.put(k, v);
         });
         try {

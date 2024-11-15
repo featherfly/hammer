@@ -19,8 +19,8 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.tpl.SqlDbTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerMethod;
-import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
+import freemarker.template.TemplateModelException;
 
 /**
  * T.
@@ -30,29 +30,31 @@ import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
 public class SqlDbTemplateProcessEnvTest extends JdbcTestBase {
 
     @Test
-    void test() {
+    void test() throws TemplateModelException {
         SqldbFreemarkerTemplateEngine templateEngine = new SqldbFreemarkerTemplateEngine(configFactory,
-            hammerConfig.getTemplateConfig());
+            hammerConfig.getTemplateConfig(), sharedTemplateProcessEnv.createDirectives(),
+            sharedTemplateProcessEnv.createMethods());
         SqlDbTemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> env = templateEngine.createTemplateProcessEnv();
 
         assertNull(env.getConfigFactory());
         assertNull(env.getDialect());
-        assertNull(env.getConditionParamsManager());
+        assertNull(env.getTemplateConfig());
         assertNull(env.getPropertiesMappingManager());
         assertNull(env.getMappingFactory());
         assertNull(env.getResultTypes());
 
         env.setConfigFactory(configFactory);
         env.setDialect(jdbc.getDialect());
-        env.setConditionParamsManager(
-            new ConditionParamsManager(hammerConfig.getTemplateConfig().getParamIndexToName()));
+        //        env.setConditionParamsManager(
+        //            new ConditionParamsManager(hammerConfig.getTemplateConfig().getParamIndexToName()));
+        env.setTemplateConfig(hammerConfig.getTemplateConfig());
         env.setPropertiesMappingManager(new PropertiesMappingManager());
         env.setMappingFactory(mappingFactory);
         env.setResultTypes(String.class);
 
         assertNotNull(env.getConfigFactory());
         assertNotNull(env.getDialect());
-        assertNotNull(env.getConditionParamsManager());
+        assertNotNull(env.getTemplateConfig());
         assertNotNull(env.getPropertiesMappingManager());
         assertNotNull(env.getMappingFactory());
         assertNotNull(env.getResultTypes());
