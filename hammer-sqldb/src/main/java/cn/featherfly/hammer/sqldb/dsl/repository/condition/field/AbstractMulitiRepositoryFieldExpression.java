@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.featherfly.common.db.builder.model.ArithmeticColumnElement;
 import cn.featherfly.common.db.builder.model.ColumnElement;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.Expression;
@@ -70,17 +69,23 @@ public abstract class AbstractMulitiRepositoryFieldExpression<C extends Conditio
         }
     }
 
+    public String name() {
+        return getField().toString();
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String expression() {
-        String expr = expression.expression();
-        if (Lang.isEmpty(expr) && name != null) {
-            return new ColumnElement(expression.getJdbc().getDialect(), name, expression.getAlias(index.intValue()))
-                .toSql();
-        }
-        return expr;
+        return new ColumnElement(expression.getJdbc().getDialect(), name, expression.getAlias(index.intValue()))
+            .toSql();
+        //        String expr = expression.expression();
+        //        if (Lang.isEmpty(expr) && name != null) {
+        //            return new ColumnElement(expression.getJdbc().getDialect(), name, expression.getAlias(index.intValue()))
+        //                .toSql();
+        //        }
+        //        return expr;
     }
 
     /**

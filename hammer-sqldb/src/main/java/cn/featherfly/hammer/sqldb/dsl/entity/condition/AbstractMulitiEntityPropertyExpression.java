@@ -113,12 +113,14 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      */
     @Override
     public String expression() {
-        String expr = expression.expression();
-        if (Lang.isEmpty(expr) && !propertyList.isEmpty()) {
-            return new ColumnElement(expression.getJdbc().getDialect(),
-                getPropertyMapping(this).getRepositoryFieldName(), expression.getAlias(index.intValue())).toSql();
-        }
-        return expr;
+        return new ColumnElement(expression.getJdbc().getDialect(), getPropertyMapping(this).getRepositoryFieldName(),
+            expression.getAlias(index.intValue())).toSql();
+        //        String expr = expression.expression();
+        //        if (Lang.isEmpty(expr) && !propertyList.isEmpty()) {
+        //            return new ColumnElement(expression.getJdbc().getDialect(),
+        //                getPropertyMapping(this).getRepositoryFieldName(), expression.getAlias(index.intValue())).toSql();
+        //        }
+        //        return expr;
     }
 
     /**
@@ -185,5 +187,10 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
             // 例如： order.getOwner().getUserInfo().getAddress().getNo()  -  order > user > user_info > address.no
             throw new NotImplementedException();
         }
+    }
+
+    public String name() {
+        // YUFEI_TEST 需要测试该方法
+        return getPropertyMapping(null).getRepositoryFieldName();
     }
 }

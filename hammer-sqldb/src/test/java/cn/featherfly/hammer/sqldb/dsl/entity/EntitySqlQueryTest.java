@@ -20,15 +20,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.tuple.MutableTuples;
-import cn.featherfly.common.tuple.mutable.MutableTuple1;
-
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePage;
+import cn.featherfly.common.tuple.MutableTuples;
+import cn.featherfly.common.tuple.mutable.MutableTuple1;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.dsl.entity.query.EntitySqlQueryExpression;
@@ -41,6 +40,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Tree2;
 
 /**
@@ -338,7 +338,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @SuppressWarnings("unchecked")
     @Test
-    void testMapping() {
+    void mapping() {
 
         query.find(User.class).where().eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group()
             .gt(User::getAge, 18).and().lt(User::getAge, 60).list();
@@ -364,7 +364,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testMapping2() {
+    void mapping2() {
 
         User user = new User();
         user.setUsername("yufei");
@@ -480,7 +480,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedMapping() {
+    void nestedMapping() {
         Integer userId = 1;
         //        UserInfo userInfo = query.find(UserInfo.class).where().eq("user.id", userId).single();
         UserInfo userInfo = query.find(UserInfo.class).where().eq(UserInfo::getUser, userId).single();
@@ -489,7 +489,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedMapping2() {
+    void nestedMapping2() {
         UserInfo userInfo = null;
         String province = "广东";
         //        userInfo = query.find(UserInfo.class).where().eq("division.province", province).single();
@@ -502,7 +502,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testManyToOne() {
+    void manyToOne() {
 
         int parent = 1;
         List<Tree> list = query.find(Tree.class).where().eq(Tree::getParent, parent).list();
@@ -513,7 +513,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testManyToOne2() {
+    void manyToOne2() {
 
         int parent = 1;
         Tree tree2 = new Tree();
@@ -526,7 +526,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_eq() {
+    void property_eq() {
         long c = query.find(User.class) //
             .where() //
             .property(User::getId).eq(null, v -> false) // 不忽略
@@ -547,7 +547,16 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_eq_embedded() {
+    void property_eq_property() {
+        List<Order2> orders = query.find(Order2.class) //
+            .where(r -> r.property(Order2::getCreateUser).eq(r.property(Order2::getUser1))).list();
+        for (Order2 order : orders) {
+            assertEquals(order.getCreateUser(), order.getUser1());
+        }
+    }
+
+    @Test
+    void property_eq_embedded() {
         List<UserInfo> userInfos = null;
 
         DistrictDivision division = new DistrictDivision();
@@ -562,7 +571,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_eq_manyToOne_pk() {
+    void property_eq_manyToOne_pk() {
         List<UserInfo> userInfos = null;
 
         User user = new User();
@@ -575,7 +584,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_eq_ManyToOne_autojoin() {
+    void property_eq_ManyToOne_autojoin() {
         List<UserInfo> userInfos = null;
 
         User user = new User();
@@ -591,7 +600,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_ne() {
+    void property_ne() {
         long c = query.find(User.class) //
             .where() //
             .property(User::getId).ne(null, v -> false) // 不忽略
@@ -612,7 +621,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_ne_manyToOne_pk() {
+    void property_ne_manyToOne_pk() {
         List<UserInfo> userInfos = null;
 
         User user = new User();
@@ -625,7 +634,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_ne_manyToOne_autojoin() {
+    void property_ne_manyToOne_autojoin() {
         List<UserInfo> userInfos = null;
 
         User user = new User();
@@ -641,7 +650,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_ne_embedded() {
+    void property_ne_embedded() {
         List<UserInfo> userInfos = null;
 
         DistrictDivision division = new DistrictDivision();
@@ -864,7 +873,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_ni() {
+    void property_ni() {
         Integer id = null;
         Integer[] ids = null;
         String username = null;
@@ -908,7 +917,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_ge() {
+    void property_ge() {
         int qa = 40;
         List<User> users = query.find(User.class) //
             .where() //
@@ -944,7 +953,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_gt() {
+    void property_gt() {
         int qa = 40;
         List<User> users = query.find(User.class) //
             .where() //
@@ -980,7 +989,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_le() {
+    void property_le() {
         int qa = 40;
         List<User> users = query.find(User.class) //
             .where() //
@@ -1016,7 +1025,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testProperty_lt() {
+    void property_lt() {
         int qa = 40;
         List<User> users = query.find(User.class) //
             .where() //
@@ -1052,7 +1061,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedProperty() {
+    void nestedProperty() {
 
         UserRole2 userRole2 = new UserRole2();
         userRole2.setRole(new Role(2));
@@ -1094,7 +1103,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedProperty2() {
+    void nestedProperty2() {
 
         UserRole2 userRole2 = new UserRole2();
         userRole2.setRole(new Role(2));
@@ -1129,7 +1138,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedProperty3() {
+    void nestedProperty3() {
         UserRole2 userRole2 = new UserRole2();
         userRole2.setRole(new Role(2));
         userRole2.setUser(new User(1));
@@ -1200,7 +1209,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_eq() {
+    void nestedPropertyAutoJoin_eq() {
         Integer rid = 2;
         Integer uid = 1;
 
@@ -1222,7 +1231,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_eq2() {
+    void nestedPropertyAutoJoin_eq2() {
         Integer rid = 2;
         Integer uid = 1;
 
@@ -1257,7 +1266,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_co() {
+    void nestedPropertyAutoJoin_co() {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
@@ -1269,7 +1278,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_nco() {
+    void nestedPropertyAutoJoin_nco() {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
@@ -1281,7 +1290,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_sw() {
+    void nestedPropertyAutoJoin_sw() {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
@@ -1293,7 +1302,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_nsw() {
+    void nestedPropertyAutoJoin_nsw() {
         String name = "yufei";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
@@ -1305,7 +1314,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_ew() {
+    void nestedPropertyAutoJoin_ew() {
         String name = "fly";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
@@ -1317,7 +1326,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_new() {
+    void nestedPropertyAutoJoin_new() {
         String name = "fly";
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser)
@@ -1329,7 +1338,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_ba() {
+    void nestedPropertyAutoJoin_ba() {
         int min = 10;
         int max = 20;
 
@@ -1342,7 +1351,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_nba() {
+    void nestedPropertyAutoJoin_nba() {
         int min = 10;
         int max = 20;
 
@@ -1355,7 +1364,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_ge() {
+    void nestedPropertyAutoJoin_ge() {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
@@ -1367,7 +1376,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_gt() {
+    void nestedPropertyAutoJoin_gt() {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
@@ -1379,7 +1388,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_le() {
+    void nestedPropertyAutoJoin_le() {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
@@ -1391,7 +1400,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void testNestedPropertyAutoJoin_lt() {
+    void nestedPropertyAutoJoin_lt() {
         int age = 15;
 
         List<UserInfo> userInfos = query.find(UserInfo.class).where().property(UserInfo::getUser).property(User::getAge)
@@ -1460,7 +1469,6 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
     @Test
     void complexQuery() {
-
         //        query.find(User.class).where().gt(User::getId, 1).and().group().group();
 
         //        query.find(User.class).where().gt(User::getId, 1).and(c -> {

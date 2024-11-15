@@ -10,4 +10,10 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
  */
 public interface FieldExpression extends ConditionExpression {
 
+    /**
+     * Name.
+     *
+     * @return the string
+     */
+    String name();
 }
