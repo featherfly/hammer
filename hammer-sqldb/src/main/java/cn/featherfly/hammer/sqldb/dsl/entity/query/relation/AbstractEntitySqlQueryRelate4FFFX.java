@@ -10,8 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.entity.query.relation;
 
-import cn.featherfly.common.tuple.Tuple4;
-
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
@@ -19,6 +18,7 @@ import cn.featherfly.common.function.serializable.SerializableUnaryOperator1;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
+import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.EntityOnExpression5;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate4FFFXBase;
@@ -72,7 +72,7 @@ public abstract class AbstractEntitySqlQueryRelate4FFFX<E, R1, R2, R3, R4>
     @Override
     public <R5> EntityQueryRelate5FFFRR<E, R1, R2, R3, R4, R5> join(SerializableFunction2<R5, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, queryRelation.getEntityRelation(0).getIdName(),
+        queryRelation.join(Join.LEFT_JOIN, 0, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate5FFFRR<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
@@ -83,7 +83,7 @@ public abstract class AbstractEntitySqlQueryRelate4FFFX<E, R1, R2, R3, R4>
     @Override
     public <R5> EntityQueryRelate5FFFRP<E, R1, R2, R3, R4, R5> join(SerializableFunction1<E, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        queryRelation.join(Join.LEFT_JOIN, 0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
         return new EntitySqlQueryRelate5FFFRP<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
@@ -93,7 +93,7 @@ public abstract class AbstractEntitySqlQueryRelate4FFFX<E, R1, R2, R3, R4>
     @Override
     public EntityQueryRelate5FFFRP<E, R1, R2, R3, R4, E> join(SerializableUnaryOperator1<E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        queryRelation.join(Join.LEFT_JOIN, 0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
         return new EntitySqlQueryRelate5FFFRP<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 

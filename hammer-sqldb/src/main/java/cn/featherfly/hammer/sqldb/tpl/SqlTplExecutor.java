@@ -49,9 +49,9 @@ import cn.featherfly.hammer.tpl.Transverter;
 import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
-import cn.featherfly.hammer.tpl.supports.WhereConditionParams.Param;
 import cn.featherfly.hammer.tpl.supports.ConditionParamsManager;
 import cn.featherfly.hammer.tpl.supports.PropertiesMappingManager;
+import cn.featherfly.hammer.tpl.supports.WhereConditionParams.Param;
 
 /**
  * sql template executor .
@@ -2749,11 +2749,6 @@ public class SqlTplExecutor implements TplExecutor {
     private Tuple3<String, ConditionParamsManager, PropertiesMappingManager> getExecution(String templateName,
         String sql, Map<String, Serializable> params, Class<?>... resultTypes) {
         logger.debug("execute template name : {}", templateName);
-        // FIXME 多个where 共享了一个 ConditionParamsManager
-        // 所以需要在where中创建，并且and or 标签必须在where 标签内使用
-        // ConditionParamsManager 应该在where 标签的execute方法中实例化，再共享给内部的and or 使用
-        // 这样where and or 标签就能全局初始化一次了
-
         PropertiesMappingManager propertiesMappingManager = new PropertiesMappingManager();
 
         Map<String, Serializable> root = new HashMap<>();

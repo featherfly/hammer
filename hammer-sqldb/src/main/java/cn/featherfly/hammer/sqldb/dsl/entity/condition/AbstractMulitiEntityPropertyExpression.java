@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import cn.featherfly.common.db.builder.model.ArithmeticColumnElement;
 import cn.featherfly.common.db.builder.model.ColumnElement;
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -152,7 +153,8 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
                         classMapping.getType().getSimpleName(), pm.getPropertyFullName(), pn));
                 }
                 return spm;
-            } else if (Mode.MANY_TO_ONE == pm.getMode() || Mode.MANY_TO_ONE == pm.getMode()) {
+            } else if (Mode.MANY_TO_ONE == pm.getMode()) {
+                // } else if (Mode.MANY_TO_ONE == pm.getMode() || Mode.ONE_TO_ONE == pm.getMode()) {
                 // YUFEI_TEST 需要测试ONE_TO_ONE
                 JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
                 if (spm != null) {
@@ -164,7 +166,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
                     // 所以需要在条件中记录已经join的对象关系来判断是否需要join
                     spm = cm.getPropertyMapping(pn);
                     if (spm != null) {
-                        queryRelation.join(index, pm.getPropertyName(), cm);
+                        queryRelation.join(Join.LEFT_JOIN, index, pm.getPropertyName(), cm, false);
                         this.index.incrementAndGet();
                         return spm;
                     } else {

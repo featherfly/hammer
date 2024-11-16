@@ -11,7 +11,7 @@ import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
 
 /**
- * SqlDbTemplateEnv .
+ * SqlDbTemplateProcessEnv .
  *
  * @author zhongj
  * @param <D> the generic type
@@ -26,10 +26,13 @@ public abstract class SqlDbTemplateProcessEnv<D extends TemplateDirective, M ext
     /** The dialect. */
     protected Dialect dialect;
 
+    /** The shared. */
     protected final boolean shared;
 
     /**
      * Instantiates a new sql db template process env.
+     *
+     * @param shared the shared
      */
     public SqlDbTemplateProcessEnv(boolean shared) {
         super();

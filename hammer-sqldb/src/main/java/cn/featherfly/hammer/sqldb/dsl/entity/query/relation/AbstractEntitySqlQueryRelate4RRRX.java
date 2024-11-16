@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.entity.query.relation;
 
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction1;
 import cn.featherfly.common.function.serializable.SerializableFunction2;
@@ -69,7 +70,7 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4> exten
     @Override
     public <R5> EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> join(SerializableFunction2<R5, E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, queryRelation.getEntityRelation(0).getIdName(),
+        queryRelation.join(Join.LEFT_JOIN, 0, queryRelation.getEntityRelation(0).getIdName(),
             factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())), info.getPropertyName());
         return new EntitySqlQueryRelate5RRRRR<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
@@ -80,7 +81,7 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4> exten
     @Override
     public <R5> EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, R5> join(SerializableFunction1<E, R5> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        queryRelation.join(Join.LEFT_JOIN, 0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
         return new EntitySqlQueryRelate5RRRRP<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 
@@ -90,7 +91,7 @@ public abstract class AbstractEntitySqlQueryRelate4RRRX<E, R1, R2, R3, R4> exten
     @Override
     public EntityQueryRelate5RRRRP<E, R1, R2, R3, R4, E> join(SerializableUnaryOperator1<E> propertyName) {
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(propertyName);
-        queryRelation.join(0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
+        queryRelation.join(Join.LEFT_JOIN, 0, info.getPropertyName(), factory.getClassMapping(info.getPropertyType()));
         return new EntitySqlQueryRelate5RRRRP<>(hammerConfig, factory, sqlPageFactory, queryRelation);
     }
 

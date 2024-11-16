@@ -2,6 +2,10 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 
+# 0.7.2 
+
+1. 修复DSL实体查询连接实体属性（多对一）生成的SQL从内连接（inner join）改变为到左连接（left join）
+
 # 0.7.2 2024-11-15
 
 1.  在启用缓存时，优化分页逻辑，如果页码大于最大页码，则不执行sql,直接返回空列表
