@@ -15,15 +15,16 @@ import cn.featherfly.hammer.tpl.freemarker.FreemarkerDirective;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerMethod;
 
 /**
- * <p>
- * JdbcFreemarkerTemplateEnv
- * </p>
+ * SqldbFreemarkerTemplateProcessEnv.
  *
  * @author zhongj
  */
 public class SqldbFreemarkerTemplateProcessEnv extends SqlDbTemplateProcessEnv<FreemarkerDirective, FreemarkerMethod> {
 
     /**
+     * Instantiates a new sqldb freemarker template process env.
+     *
+     * @param shared shared
      */
     public SqldbFreemarkerTemplateProcessEnv(boolean shared) {
         super(shared);

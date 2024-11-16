@@ -63,7 +63,6 @@ import cn.featherfly.hammer.tpl.TransverterManager;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
 import cn.featherfly.validation.metadata.ConstraintViolation;
-import freemarker.template.TemplateModelException;
 
 /**
  * SqldbHammerImpl.
@@ -1013,7 +1012,6 @@ public class SqldbHammerImpl implements SqldbHammer {
          * Builds the.
          *
          * @return the sqldb hammer impl
-         * @throws TemplateModelException
          */
         public SqldbHammerImpl build() {
             if (templateEngine == null) {
