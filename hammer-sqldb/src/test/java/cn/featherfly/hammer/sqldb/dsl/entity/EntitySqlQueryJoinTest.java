@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
-
 import cn.featherfly.hammer.sqldb.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
@@ -276,19 +275,31 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
         List<Tree> list1 = query.find(Tree.class).list();
         list1.forEach(v -> {
             System.err.println(v);
+            assertNotNull(v.getId());
         });
 
         List<Tree> list2 = query.find(Tree.class).join(Tree::getParent).list();
         list2.forEach(v -> {
-            assertNotNull(v.getParent().getId());
+            if (v.getId().intValue() == 1) {
+                assertNull(v.getParent().getId());
+            } else {
+                assertNotNull(v.getParent().getId());
+            }
         });
 
-        list2 = query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).list();
+        list2 = query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .join(Tree::getParent) // ENHANCE 这里自关联没有关联上，是否需要对已经映射的对象属性进行多次join再考虑
+            .list();
         list2.forEach(v -> {
-            assertNotNull(v.getParent().getId());
+            if (v.getId().intValue() == 1) {
+                assertNull(v.getParent().getId());
+            } else {
+                assertNotNull(v.getParent().getId());
+            }
         });
 
-        assertTrue(list1.size() > list2.size());
+        assertTrue(list1.size() == list2.size());
 
         List<Tuple2<Tree2, Tree2>> listTuple2 = query.find(Tree2.class) //
             .join(Tree2.class).on(Tree2::getParentId, Tree2::getId).fetch() //
@@ -301,8 +312,12 @@ public class EntitySqlQueryJoinTest extends JdbcTestBase {
             .fetch() //
             .list();
         list3.forEach(v -> {
-            assertNotNull(v.getParent().getId());
-            assertNotNull(v.getParent().getName());
+            if (v.getId().intValue() == 1) {
+                assertNull(v.getParent().getId());
+            } else {
+                assertNotNull(v.getParent().getId());
+                assertNotNull(v.getParent().getName());
+            }
         });
 
         List<Tree> list4 = query.find(Tree.class) //

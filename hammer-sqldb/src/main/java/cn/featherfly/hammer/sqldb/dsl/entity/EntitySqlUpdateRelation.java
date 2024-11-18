@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlJoinOnBasicBuilder2;
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -36,7 +37,7 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param jdbc         the jdbc
+     * @param jdbc the jdbc
      * @param aliasManager aliasManager
      * @param updateConfig the update config
      */
@@ -50,12 +51,13 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
      * {@inheritDoc}
      */
     @Override
-    public <T> EntitySqlUpdateRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
+    public <T> EntitySqlUpdateRelation join(Join join, JdbcClassMapping<T> joinClassMapping,
+        Supplier<Expression> onExpression) {
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         addFilterable(joinClassMapping);
         EntityRelation<?> jerm = getEntityRelation(index - 1);
-        updateBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), joinClassMapping.getRepositoryName(),
-                jerm.getTableAlias(), onExpression.get().expression()));
+        updateBuilder.join(new SqlJoinOnBasicBuilder2(jdbc.getDialect(), join, joinClassMapping.getRepositoryName(),
+            jerm.getTableAlias(), onExpression.get().expression()));
         return this;
     }
 
@@ -63,8 +65,8 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
      * {@inheritDoc}
      */
     @Override
-    public EntitySqlUpdateRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
-            String joinPropertyName, boolean returnType) {
+    public EntitySqlUpdateRelation join(Join join, int sourceIndex, String propertyName,
+        JdbcClassMapping<?> joinClassMapping, String joinPropertyName, boolean returnType) {
         // IMPLSOON update还未实现此join方法
         throw new NotImplementedException();
     }
@@ -79,7 +81,7 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     @Override
     protected void initBuilder(EntityRelation<?> erm) {
         updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-                erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
+            erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
     }
 
     /**

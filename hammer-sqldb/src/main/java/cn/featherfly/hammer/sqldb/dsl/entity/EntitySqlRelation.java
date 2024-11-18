@@ -19,21 +19,21 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import cn.featherfly.common.tuple.MutableTuples;
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
-import cn.featherfly.common.tuple.mutable.MutableTuple9;
-
 import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.common.tuple.MutableTuples;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.common.tuple.mutable.MutableTuple9;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.Expression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -183,7 +183,20 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping) {
-        return join(sourceIndex, propertyName, joinClassMapping, false);
+        return join(Join.INNER_JOIN, sourceIndex, propertyName, joinClassMapping);
+    }
+
+    /**
+     * Join.
+     *
+     * @param join the join
+     * @param sourceIndex the source index
+     * @param propertyName the property name
+     * @param joinClassMapping the join class mapping
+     * @return this type implements EntitySqlRelation
+     */
+    public R join(Join join, int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping) {
+        return join(join, sourceIndex, propertyName, joinClassMapping, false);
     }
 
     /**
@@ -196,8 +209,23 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, boolean returnType) {
+        return join(Join.INNER_JOIN, sourceIndex, propertyName, joinClassMapping, returnType);
+    }
+
+    /**
+     * Join.
+     *
+     * @param join the join
+     * @param sourceIndex the source index
+     * @param propertyName the property name
+     * @param joinClassMapping the join class mapping
+     * @param returnType the return type
+     * @return this type implements EntitySqlRelation
+     */
+    public R join(Join join, int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+        boolean returnType) {
         if (joinClassMapping.getPrimaryKeyPropertyMappings().size() == 1) {
-            return join(sourceIndex, propertyName, joinClassMapping,
+            return join(join, sourceIndex, propertyName, joinClassMapping,
                 joinClassMapping.getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName(), returnType);
         }
         throw new SqldbHammerException(
@@ -215,8 +243,23 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName, boolean returnType) {
+        return join(Join.INNER_JOIN, sourceIndex, joinClassMapping, joinPropertyName, returnType);
+    }
+
+    /**
+     * Join.
+     *
+     * @param join the join
+     * @param sourceIndex the source index
+     * @param joinClassMapping the join class mapping
+     * @param joinPropertyName the join property name
+     * @param returnType the return type
+     * @return this type implements EntitySqlRelation
+     */
+    public R join(Join join, int sourceIndex, JdbcClassMapping<?> joinClassMapping, String joinPropertyName,
+        boolean returnType) {
         EntityRelation<?> erm = getEntityRelation(sourceIndex);
-        return join(sourceIndex, erm.getIdName(), joinClassMapping, joinPropertyName, returnType);
+        return join(join, sourceIndex, erm.getIdName(), joinClassMapping, joinPropertyName, returnType);
     }
 
     /**
@@ -229,7 +272,22 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @return this type implements EntitySqlRelation
      */
     public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName) {
-        return join(sourceIndex, propertyName, joinClassMapping, joinPropertyName, true);
+        return join(Join.INNER_JOIN, sourceIndex, propertyName, joinClassMapping, joinPropertyName);
+    }
+
+    /**
+     * Join.
+     *
+     * @param join the join
+     * @param sourceIndex the source index
+     * @param propertyName the property name
+     * @param joinClassMapping the join class mapping
+     * @param joinPropertyName the join property name
+     * @return this type implements EntitySqlRelation
+     */
+    public R join(Join join, int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+        String joinPropertyName) {
+        return join(join, sourceIndex, propertyName, joinClassMapping, joinPropertyName, true);
     }
 
     /**
@@ -242,7 +300,23 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param returnType the return type
      * @return this type implements EntitySqlRelation
      */
-    public abstract R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
+    public R join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping, String joinPropertyName,
+        boolean returnType) {
+        return join(Join.INNER_JOIN, sourceIndex, propertyName, joinClassMapping, joinPropertyName, returnType);
+    }
+
+    /**
+     * Join.
+     *
+     * @param join the join
+     * @param sourceIndex the source index
+     * @param propertyName the property name
+     * @param joinClassMapping the join class mapping
+     * @param joinPropertyName the join property name
+     * @param returnType the return type
+     * @return this type implements EntitySqlRelation
+     */
+    public abstract R join(Join join, int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
         String joinPropertyName, boolean returnType);
 
     /**
@@ -253,7 +327,20 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
      * @param onExpression the on expression
      * @return this type implements EntitySqlRelation
      */
-    public abstract <T> EntitySqlRelation<?, ?> join(JdbcClassMapping<T> joinClassMapping,
+    public <T> EntitySqlRelation<?, ?> join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
+        return join(Join.INNER_JOIN, joinClassMapping, onExpression);
+    }
+
+    /**
+     * Join.
+     *
+     * @param <T> the generic type
+     * @param join the join
+     * @param joinClassMapping the join class mapping
+     * @param onExpression the on expression
+     * @return this type implements EntitySqlRelation
+     */
+    public abstract <T> EntitySqlRelation<?, ?> join(Join join, JdbcClassMapping<T> joinClassMapping,
         Supplier<Expression> onExpression);
 
     /**

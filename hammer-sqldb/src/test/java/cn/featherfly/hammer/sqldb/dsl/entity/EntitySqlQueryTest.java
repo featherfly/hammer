@@ -38,6 +38,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.User1;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
@@ -477,6 +478,17 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .and().eq(User::getUsername, user.getUsername()) //
             .list();
         assertUsers.accept(users);
+    }
+
+    @Test
+    void condition_property_join2() {
+        List<Order> orders = null;
+        final int id = 1;
+
+        orders = query.find(Order.class).where() //
+            .property(Order::getUser1).property(User1::getId).eq(id) //
+            .list();
+        assertEquals(orders.size(), 2);
     }
 
     @Test

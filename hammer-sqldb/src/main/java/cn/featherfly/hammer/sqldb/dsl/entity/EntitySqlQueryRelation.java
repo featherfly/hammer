@@ -74,11 +74,12 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * {@inheritDoc}
      */
     @Override
-    public <T> EntitySqlQueryRelation join(JdbcClassMapping<T> joinClassMapping, Supplier<Expression> onExpression) {
+    public <T> EntitySqlQueryRelation join(Join join, JdbcClassMapping<T> joinClassMapping,
+        Supplier<Expression> onExpression) {
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         addFilterable(joinClassMapping);
         EntityRelation<?> jerm = getEntityRelation(index - 1);
-        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = getBuilder().join2(joinClassMapping,
+        SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = getBuilder().join2(join, joinClassMapping,
             jerm.getTableAlias(), onExpression.get().expression());
         jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
         return this;
@@ -95,8 +96,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
      * @return the EntitySqlQueryRelation
      */
     @Override
-    public EntitySqlQueryRelation join(int sourceIndex, String propertyName, JdbcClassMapping<?> joinClassMapping,
-        String joinPropertyName, boolean returnType) {
+    public EntitySqlQueryRelation join(Join join, int sourceIndex, String propertyName,
+        JdbcClassMapping<?> joinClassMapping, String joinPropertyName, boolean returnType) {
+        AssertIllegalArgument.isNotNull(join, "join");
         AssertIllegalArgument.isNotNull(propertyName, "propertyName");
         AssertIllegalArgument.isNotNull(joinClassMapping, "joinClassMapping");
         AssertIllegalArgument.isNotNull(joinPropertyName, "joinPropertyName");
@@ -123,7 +125,7 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
 
         if (returnType || !joinedRelations.contains(joinRelation)) {
             joinedRelations.add(joinRelation);
-            SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(erm.getTableAlias(),
+            SqlSelectJoinOnBasicBuilder selectJoinOnBasicBuilder = join0(join, erm.getTableAlias(),
                 erm.getClassMapping().getPropertyMapping(propertyName).getRepositoryFieldName(), joinClassMapping,
                 jerm.getTableAlias(), joinClassMapping.getPropertyMapping(joinPropertyName).getRepositoryFieldName());
             jerm.selectJoinOnBasicBuilder = selectJoinOnBasicBuilder;
@@ -138,10 +140,9 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
         return this;
     }
 
-    private SqlSelectJoinOnBasicBuilder join0(String tableAlias, String columnName,
+    private SqlSelectJoinOnBasicBuilder join0(Join join, String tableAlias, String columnName,
         JdbcClassMapping<?> joinClassMapping, String joinTableAlias, String joinTableColumnName) {
-        return getBuilder().join(Join.INNER_JOIN, tableAlias, columnName, joinClassMapping, joinTableAlias,
-            joinTableColumnName);
+        return getBuilder().join(join, tableAlias, columnName, joinClassMapping, joinTableAlias, joinTableColumnName);
     }
 
     private void fetch(EntityRelation<?> erm) {
