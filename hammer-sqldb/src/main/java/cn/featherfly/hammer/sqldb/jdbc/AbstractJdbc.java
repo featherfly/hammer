@@ -82,6 +82,8 @@ import cn.featherfly.hammer.tpl.MapParamedExecutionExecutor;
  */
 public abstract class AbstractJdbc implements Jdbc {
 
+    protected static final String CALL = "call";
+
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -2342,13 +2344,17 @@ public abstract class AbstractJdbc implements Jdbc {
     // ****************************************************************************************************************
 
     private String getProcedure(String name, int argnum) {
+        AssertIllegalArgument.isNotBlank(name, "procedureName");
         name = name.trim();
-        AssertIllegalArgument.isNotEmpty(name, "procedureName");
         if (name.charAt(0) == '{') {
             return name;
         }
-        StringBuilder procedure = new StringBuilder("call ");
-        procedure.append(name).append("(");
+        if (name.length() > 5 && name.charAt(4) == ' ' && name.substring(0, 4).equalsIgnoreCase(CALL)) {
+            return name;
+        }
+
+        StringBuilder procedure = new StringBuilder();
+        procedure.append(CALL).append(" ").append(name).append("(");
         for (int i = 0; i < argnum; i++) {
             procedure.append("?,");
         }
