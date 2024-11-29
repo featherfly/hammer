@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration status="WARN" xmlns="http://logging.apache.org/log4j/2.0/config" >
+    
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{dd HH:mm:ss,SSS} %highlight{%-5p}] [%t] %highlight{%C.%M} Line:%L - %m%n" />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="cn.featherfly.hammer" level="trace" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+
+        <Root level="error">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+
+
+</Configuration>

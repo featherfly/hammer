@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.tpl.freemarker;
 
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,8 @@ public class FreemarkerTemplatePreProcessor implements TemplatePreprocessor {
 
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private static final Pattern PATTERN = Pattern.compile("\n");
 
     private TemplateConfig templateConfig;
 
@@ -42,8 +46,8 @@ public class FreemarkerTemplatePreProcessor implements TemplatePreprocessor {
             tplExecuteConfig.setParamsFormat(ParamsFormat.INDEX);
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("\nsource:\n{}\nresult:\n{}", String.format("    %s", value.replaceAll("\n", "\n        ")),
-                    String.format("    %s", s.replaceAll("\n", "\n      ")));
+            logger.debug("\nsource:\n    {}  \nresult:\n    {}", PATTERN.matcher(value).replaceAll("\n    ").trim(),
+                PATTERN.matcher(s).replaceAll("\n    ").trim());
         }
         return s;
     }

@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -14,6 +12,7 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.reflect.Type;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeysHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -249,5 +248,20 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             }
         }
         return params;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void validate(T entity) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getName() {
+        return "insert";
     }
 }

@@ -4,14 +4,13 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.exception.UnsupportedException;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -95,5 +94,13 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
 
         // YUFEI_TEST 性能没有明显变化，后续再测试
         // return jdbc.updateBatch(sql, (prep, setArgs) -> setBatchParameters(entities, paramsPropertyAndMappings, prep, setArgs));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getName() {
+        return "updateById";
     }
 }

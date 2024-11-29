@@ -2,8 +2,10 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -38,11 +40,22 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      */
     @Override
     public int execute(final T entity) {
+        validate(entity);
         return jdbc.update(sql, getParameters(entity));
     }
 
     // ********************************************************************
-    //	property
-    // ********************************************************************
 
+    /**
+     * Check.
+     *
+     * @param entity the entity
+     */
+    protected void validate(T entity) {
+        for (JdbcPropertyMapping pkp : pkProperties) {
+            if (Lang.isEmpty(pkp.getGetter().apply(entity))) {
+                throw idNullOrEmptyException(entity.getClass());
+            }
+        }
+    }
 }

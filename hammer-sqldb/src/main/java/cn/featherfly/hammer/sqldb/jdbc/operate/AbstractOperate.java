@@ -12,8 +12,6 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
@@ -21,6 +19,8 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -85,6 +85,25 @@ public abstract class AbstractOperate<T> {
      */
     public String getSql() {
         return sql;
+    }
+
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    protected abstract String getName();
+
+    /**
+     * Id null or empty exception.
+     *
+     * @param operate the operate
+     * @param entityType the entity type
+     * @return the sqldb hammer exception
+     */
+    protected SqldbHammerException idNullOrEmptyException(Class<?> entityType) {
+        return new SqldbHammerException(Strings.format("can not {} entity[{}], because id value is null or empty",
+            getName(), entityType.getSimpleName()));
     }
 
     //    /**

@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -62,7 +62,7 @@ public class DataSourceTestBase extends TestBase {
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", DataSourceTestBase.class));
+        Configurator.initialize("log4j2_dev", "log4j2_dev.xml");
 
         hammerConfig = new HammerConfigImpl(devMode);
 

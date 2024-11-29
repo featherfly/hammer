@@ -10,9 +10,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
@@ -66,7 +65,7 @@ public class EntitySqlQuerySmokeTest extends JdbcTestBase {
     void testEntityOrmSort() {
         List<User> users = query.find(User.class)//
             .join(UserInfo::getUser)//
-            .sort()//
+            .where((e1, e2) -> e2.property(UserInfo::getUser).property(User::getId).eq(e1.property(User::getId))).sort()//
             .asc2(UserInfo::getId)//
             .limit(2) //
             .list();

@@ -17,7 +17,6 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryOneFetchedProperty;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -109,8 +108,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryExpression<E, EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>,
-        EntityQuerySortExpression<E>> configure(Consumer<DslQueryConfig> configure) {
+    public EntityQueryFetch<E> configure(Consumer<DslQueryConfig> configure) {
         if (configure != null) {
             configure.accept(queryRelation.getConfig());
         }

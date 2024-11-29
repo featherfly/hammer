@@ -15,8 +15,8 @@ import cn.featherfly.hammer.expression.entity.EntityWhereExpression;
  * @param <L> the generic type
  */
 public interface EntityDeleteExpression<E,
-        C extends EntityExecutableConditionGroupExpression<E, C, L, DeleteConditionConfig>,
-        L extends EntityExecutableConditionGroupLogicExpression<E, C, L, DeleteConditionConfig>>
-        extends EntityWhereExpression<E, C, L>,
-        ConfigureExpression<EntityDeleteExpression<E, C, L>, DeleteConfig, DeleteConditionConfig> {
+    C extends EntityExecutableConditionGroupExpression<E, C, L, DeleteConditionConfig>,
+    L extends EntityExecutableConditionGroupLogicExpression<E, C, L, DeleteConditionConfig>>
+    extends EntityWhereExpression<E, C, L>,
+    ConfigureExpression<EntityDeleteExpression<E, C, L>, DeleteConfig, DeleteConditionConfig> {
 }

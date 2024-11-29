@@ -55,7 +55,6 @@ selectConditions2: >
     )
     </@and>
     </@where>
-    
 selectIn: >
     select <@columns table='user'/> from <@wrap value='user'/> 
     <@where> 

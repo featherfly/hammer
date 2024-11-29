@@ -43,6 +43,8 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
 /**
  * sql query type test.
@@ -101,6 +103,45 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         users = query.find(User.class).sort().desc(User::getId).limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
+    }
+
+    @Test
+    void queryConfig() {
+        MutableTuple1<Predicate<?>> ignoreStrategy = MutableTuples.create1();
+        query.find(User.class)
+            .configure(c -> ignoreStrategy.set0(c.setIgnoreStrategy(IgnoreStrategy.EMPTY).getIgnoreStrategy()));
+
+        assertEquals(ignoreStrategy.get0().get(), IgnoreStrategy.EMPTY);
+
+        query.find(User2.class) //
+            .property(User2::getId) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .property(User2::getUsername) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+            .where(); //
+        query.find(User2.class) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId);
+
+        List<User2> users = query.find(User2.class) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+            .where().eq(User2::getUsername, "").list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User2.class) //
+            .property(User2::getId) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .property(User2::getUsername) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+            .where().eq(User2::getUsername, "").list();
+        assertTrue(users.size() > 0);
+
+        // join 后无法调用configure方法了，不打算加入支持了，应该在.find(User2.class)后需要配置在第一个方法后配置
+        //        query.find(User2.class) //
+        //            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+        //            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+        //        ;
     }
 
     @Test

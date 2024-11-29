@@ -8,9 +8,11 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpressi
  * dsl for entity query value.
  *
  * @author zhongj
- * @param <E> the element type
- * @param <V> the value type
+ * @param <E> the query entity type
+ * @param <V> the fetch value type
+ * @param <T> this expression
  */
-public interface EntityQueryValue<E, V> extends EntityQueryValueExpression<E, V, EntityQueryValueConditionGroup<E, V>,
-        EntityQueryValueConditionGroupLogic<E, V>, EntityQueryValueSortExpression<E, V>> {
+public interface EntityQueryValue<E, V, T extends EntityQueryValue<E, V, T>>
+    extends EntityQueryValueExpression<E, V, EntityQueryValueConditionGroup<E, V>,
+        EntityQueryValueConditionGroupLogic<E, V>, EntityQueryValueSortExpression<E, V>, T> {
 }

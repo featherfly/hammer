@@ -703,7 +703,8 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> MergeOperate<E> mergeOperate(final Class<E> entityType) {
         return (MergeOperate<E>) mergeOperates.computeIfAbsent(entityType,
             type -> new MergeOperate<E>(jdbc, mappingFactory.getClassMapping(entityType),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata()));
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                propertyAccessorFactory.create(entityType)));
     }
 
     @SuppressWarnings("unchecked")

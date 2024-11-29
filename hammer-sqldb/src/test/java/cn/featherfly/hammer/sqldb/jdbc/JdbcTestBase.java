@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import javax.validation.Validation;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.hibernate.validator.HibernateValidator;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
@@ -95,7 +95,7 @@ public class JdbcTestBase extends TestBase {
     @BeforeSuite
     @Parameters({ "dataBase" })
     public void init(@Optional("mysql") String dataBase) throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", this.getClass()));
+        Configurator.initialize("log4j2_dev", "log4j2_dev.xml");
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
         hammerConfigImpl.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()

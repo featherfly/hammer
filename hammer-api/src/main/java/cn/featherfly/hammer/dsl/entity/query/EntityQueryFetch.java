@@ -13,7 +13,7 @@ import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQuery<E> {
+public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQuery<E, EntityQueryFetch<E>> {
 
     /**
      * 批量添加查询出来的属性.
@@ -22,12 +22,12 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @return QueryEntityPropertiesExpression
      */
     EntityQueryFetchedProperties<E> property(
-            @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames);
+        @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames);
 
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -38,8 +38,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>          the generic type
-     * @param distinct     the distinct
+     * @param <V> the generic type
+     * @param distinct the distinct
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -48,13 +48,13 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>          the value type
-     * @param function     the function
+     * @param <V> the value type
+     * @param function the function
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <V> EntityQueryOneFetchedProperty<E, V> property(Function function,
-            SerializableFunction<E, V> propertyName) {
+        SerializableFunction<E, V> propertyName) {
         //        if (function instanceof AggregateFunction) {
         //            return property((AggregateFunction) function, propertyName);
         //        } else {
@@ -68,32 +68,32 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>               the value type
+     * @param <V> the value type
      * @param aggregateFunction aggregateFunction
-     * @param propertyName      propertyName
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <V> EntityQueryOneFetchedProperty<E, V> property(AggregateFunction aggregateFunction,
-            SerializableFunction<E, V> propertyName) {
+        SerializableFunction<E, V> propertyName) {
         return property(aggregateFunction, false, propertyName);
     }
 
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>               the value type
+     * @param <V> the value type
      * @param aggregateFunction aggregateFunction
-     * @param distinct          the distinct
-     * @param propertyName      propertyName
+     * @param distinct the distinct
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     <V> EntityQueryOneFetchedProperty<E, V> property(AggregateFunction aggregateFunction, boolean distinct,
-            SerializableFunction<E, V> propertyName);
+        SerializableFunction<E, V> propertyName);
 
     /**
      * 设置返回的属性..
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -104,8 +104,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 设置返回的属性..
      *
-     * @param <V>          the value type
-     * @param distinct     the distinct
+     * @param <V> the value type
+     * @param distinct the distinct
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -120,15 +120,15 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @return QueryEntityPropertiesExpression
      */
     default EntityQueryFetchedProperties<E> fetch(
-            @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
+        @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
         return property(propertyNames);
     }
 
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>          the value type
-     * @param function     the function
+     * @param <V> the value type
+     * @param function the function
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -139,34 +139,34 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>               the value type
+     * @param <V> the value type
      * @param aggregateFunction aggregateFunction
-     * @param propertyName      propertyName
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <V> EntityQueryOneFetchedProperty<E, V> fetch(AggregateFunction aggregateFunction,
-            SerializableFunction<E, V> propertyName) {
+        SerializableFunction<E, V> propertyName) {
         return property(aggregateFunction, propertyName);
     }
 
     /**
      * 添加查询出来的属性.
      *
-     * @param <V>               the value type
+     * @param <V> the value type
      * @param aggregateFunction aggregateFunction
-     * @param distinct          the distinct
-     * @param propertyName      propertyName
+     * @param distinct the distinct
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <V> EntityQueryOneFetchedProperty<E, V> fetch(AggregateFunction aggregateFunction, boolean distinct,
-            SerializableFunction<E, V> propertyName) {
+        SerializableFunction<E, V> propertyName) {
         return property(aggregateFunction, distinct, propertyName);
     }
 
     /**
      * Distinct.
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -177,7 +177,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Count.
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -188,8 +188,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Count.
      *
-     * @param <V>          the value type
-     * @param distinct     the distinct
+     * @param <V> the value type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -200,7 +200,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Sum.
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -211,8 +211,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Sum.
      *
-     * @param <V>          the value type
-     * @param distinct     the distinct
+     * @param <V> the value type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -223,7 +223,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Max.
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -234,8 +234,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Max.
      *
-     * @param <V>          the value type
-     * @param distinct     the distinct
+     * @param <V> the value type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -246,7 +246,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Min.
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -257,8 +257,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Min.
      *
-     * @param <V>          the value type
-     * @param distinct     the distinct
+     * @param <V> the value type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -269,7 +269,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Avg.
      *
-     * @param <V>          the value type
+     * @param <V> the value type
      * @param propertyName the property name
      * @return the q
      */
@@ -280,8 +280,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     /**
      * Avg.
      *
-     * @param <V>          the value type
-     * @param distinct     the distinct
+     * @param <V> the value type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */

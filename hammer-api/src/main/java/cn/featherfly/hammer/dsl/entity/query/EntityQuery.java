@@ -9,6 +9,6 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
  *
  * @author zhongj
  */
-public interface EntityQuery<E> extends EntityQueryExpression<E, EntityQueryConditionGroup<E>,
-        EntityQueryConditionGroupLogic<E>, EntityQuerySortExpression<E>> {
+public interface EntityQuery<E, T extends EntityQuery<E, T>> extends EntityQueryExpression<E,
+    EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>, EntityQuerySortExpression<E>, T> {
 }

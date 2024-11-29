@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -25,7 +25,6 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
@@ -59,7 +58,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
     @BeforeSuite
     public void init() throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", this.getClass()));
+        Configurator.initialize("log4j2", "log4j2.xml");
 
         logger.debug("init");
     }
