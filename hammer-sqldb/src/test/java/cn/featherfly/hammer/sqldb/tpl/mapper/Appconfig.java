@@ -7,8 +7,7 @@ import java.util.Set;
 import javax.sql.DataSource;
 import javax.validation.Validation;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,6 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactoryImpl;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
-import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
@@ -63,17 +61,12 @@ public class Appconfig extends JdbcTestBase {
 
     @Bean
     public DataSource DataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl(MYSQL_URL);
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUsername(MYSQL_USER);
-        dataSource.setPassword(MYSQL_PWD);
-        return dataSource;
+        return initDataSource();
     }
 
     @Bean
     public SqldbHammerImpl hammer(DataSource dataSource) {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_dev.xml", JdbcTestBase.class));
+        Configurator.initialize("log4j2_dev", "log4j2_dev.xml");
 
         //        ConstantConfigurator.config(JdbcTestBase.configFile);
         //        ConstantConfigurator.config();

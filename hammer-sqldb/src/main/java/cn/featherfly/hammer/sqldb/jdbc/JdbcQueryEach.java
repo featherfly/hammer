@@ -13,16 +13,15 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.io.Serializable;
 import java.util.Map;
 
+import cn.featherfly.common.db.NamedParamSql;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.RowIterable;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
-
-import cn.featherfly.common.db.NamedParamSql;
-import cn.featherfly.common.lang.AutoCloseableIterable;
-import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
  * jdbc query each. <br>
@@ -43,7 +42,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return map list
      */
-    AutoCloseableIterable<Map<String, Serializable>> queryEach(String sql, Serializable... args);
+    JdbcRowIterable<Map<String, Serializable>> queryEach(String sql, Serializable... args);
 
     /**
      * query each.
@@ -52,7 +51,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return map list
      */
-    AutoCloseableIterable<Map<String, Serializable>> queryEach(String sql, Map<String, Serializable> args);
+    RowIterable<Map<String, Serializable>> queryEach(String sql, Map<String, Serializable> args);
 
     /**
      * query each.
@@ -61,8 +60,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return map list
      */
-    default AutoCloseableIterable<Map<String, Serializable>> queryEach(NamedParamSql sql,
-        Map<String, Serializable> args) {
+    default RowIterable<Map<String, Serializable>> queryEach(NamedParamSql sql, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), execution.getParams());
     }
@@ -76,7 +74,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return elementType object list
      */
-    <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Serializable... args);
+    <T> RowIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Serializable... args);
 
     //    /**
     //     * query each.
@@ -87,7 +85,7 @@ public interface JdbcQueryEach {
     //     * @param args      the args
     //     * @return LogicExpressionist
     //     */
-    //    <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
+    //    <T> RowIterable<T> queryEach(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args);
 
     /**
      * query each.
@@ -98,7 +96,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return elementType object list
      */
-    <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Serializable... args);
+    <T> RowIterable<T> queryEach(String sql, Class<T> elementType, Serializable... args);
 
     /**
      * query each.
@@ -111,8 +109,8 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Serializable... args) {
+    default <T1, T2> RowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+        Serializable... args) {
         return queryEach(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
@@ -128,7 +126,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    <T1, T2> RowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Tuple2<String, String> prefixes, Serializable... args);
 
     /**
@@ -144,7 +142,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
+    default <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Serializable... args) {
         return queryEach(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
     }
@@ -163,8 +161,8 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args);
+    <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args);
 
     /**
      * query each.
@@ -181,7 +179,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
+    default <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Serializable... args) {
         return queryEach(sql, elementType1, elementType2, elementType3, elementType4,
             (Tuple4<String, String, String, String>) null, args);
@@ -203,7 +201,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Serializable... args);
 
@@ -224,9 +222,9 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Serializable... args) {
+    default <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+        Serializable... args) {
         return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             (Tuple5<String, String, String, String, String>) null, args);
     }
@@ -249,7 +247,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
         Tuple5<String, String, String, String, String> prefixes, Serializable... args);
 
@@ -272,7 +270,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
+    default <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Serializable... args) {
         return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
@@ -299,10 +297,9 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
-        Serializable... args);
+    <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes, Serializable... args);
 
     //    /**
     //     * query each.
@@ -313,7 +310,7 @@ public interface JdbcQueryEach {
     //     * @param args        the args
     //     * @return LogicExpressionist
     //     */
-    //    <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
+    //    <T> RowIterable<T> queryEach(String sql, Class<T> elementType, BeanPropertyValue<?>... args);
 
     /**
      * query each.
@@ -324,7 +321,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return elementType object list
      */
-    <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args);
+    <T> RowIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args);
 
     /**
      * query each.
@@ -335,8 +332,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return elementType object list
      */
-    default <T> AutoCloseableIterable<T> queryEach(NamedParamSql sql, RowMapper<T> rowMapper,
-        Map<String, Serializable> args) {
+    default <T> RowIterable<T> queryEach(NamedParamSql sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), rowMapper, execution.getParams());
     }
@@ -350,7 +346,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return elementType object list
      */
-    <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Map<String, Serializable> args);
+    <T> RowIterable<T> queryEach(String sql, Class<T> elementType, Map<String, Serializable> args);
 
     /**
      * query each.
@@ -361,8 +357,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return elementType object list
      */
-    default <T> AutoCloseableIterable<T> queryEach(NamedParamSql sql, Class<T> elementType,
-        Map<String, Serializable> args) {
+    default <T> RowIterable<T> queryEach(NamedParamSql sql, Class<T> elementType, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), elementType, execution.getParams());
     }
@@ -378,8 +373,8 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Map<String, Serializable> args) {
+    default <T1, T2> RowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+        Map<String, Serializable> args) {
         return queryEach(sql, elementType1, elementType2, (Tuple2<String, String>) null, args);
     }
 
@@ -394,7 +389,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(NamedParamSql sql, Class<T1> elementType1,
+    default <T1, T2> RowIterable<Tuple2<T1, T2>> queryEach(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), elementType1, elementType2, execution.getParams());
@@ -412,7 +407,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+    <T1, T2> RowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Tuple2<String, String> prefixes, Map<String, Serializable> args);
 
     /**
@@ -427,7 +422,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(NamedParamSql sql, Class<T1> elementType1,
+    default <T1, T2> RowIterable<Tuple2<T1, T2>> queryEach(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), elementType1, elementType2, prefixes, execution.getParams());
@@ -446,7 +441,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
+    default <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Map<String, Serializable> args) {
         return queryEach(sql, elementType1, elementType2, elementType3, (Tuple3<String, String, String>) null, args);
     }
@@ -464,7 +459,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(NamedParamSql sql, Class<T1> elementType1,
+    default <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> queryEach(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), elementType1, elementType2, elementType3, execution.getParams());
@@ -484,9 +479,8 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
-        Map<String, Serializable> args);
+    <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Map<String, Serializable> args);
 
     /**
      * query each.
@@ -502,7 +496,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(NamedParamSql sql, Class<T1> elementType1,
+    default <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> queryEach(NamedParamSql sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
         Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
@@ -525,7 +519,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
+    default <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Serializable> args) {
         return queryEach(sql, elementType1, elementType2, elementType3, elementType4,
             (Tuple4<String, String, String, String>) null, args);
@@ -546,9 +540,8 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(NamedParamSql sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Map<String, Serializable> args) {
+    default <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> queryEach(NamedParamSql sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), elementType1, elementType2, elementType3, elementType4,
             execution.getParams());
@@ -570,7 +563,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args);
 
@@ -590,8 +583,8 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(NamedParamSql sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+    default <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> queryEach(NamedParamSql sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), elementType1, elementType2, elementType3, elementType4, prefixes,
@@ -615,9 +608,9 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Map<String, Serializable> args) {
+    default <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+        Map<String, Serializable> args) {
         return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5,
             (Tuple5<String, String, String, String, String>) null, args);
     }
@@ -639,7 +632,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(NamedParamSql sql,
+    default <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(NamedParamSql sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
@@ -665,7 +658,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
+    <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
         Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args);
 
@@ -687,7 +680,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(NamedParamSql sql,
+    default <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(NamedParamSql sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes,
         Map<String, Serializable> args) {
@@ -715,7 +708,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
+    default <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Map<String, Serializable> args) {
         return queryEach(sql, elementType1, elementType2, elementType3, elementType4, elementType5, elementType6,
@@ -741,7 +734,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(NamedParamSql sql,
+    default <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(NamedParamSql sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
@@ -769,9 +762,9 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
+    <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+        Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
         Map<String, Serializable> args);
 
     /**
@@ -794,7 +787,7 @@ public interface JdbcQueryEach {
      * @param args the args
      * @return LogicExpressionist
      */
-    default <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(NamedParamSql sql,
+    default <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(NamedParamSql sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
         Map<String, Serializable> args) {

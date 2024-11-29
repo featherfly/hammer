@@ -20,7 +20,6 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryValueConditionGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryValueExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -235,9 +234,7 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryValueExpression<E, V, EntityQueryValueConditionGroup<E, V>,
-        EntityQueryValueConditionGroupLogic<E, V>, EntityQueryValueSortExpression<E, V>> configure(
-            Consumer<DslQueryConfig> configure) {
+    public EntityQueryOneFetchedProperty<E, V> configure(Consumer<DslQueryConfig> configure) {
         if (configure != null) {
             configure.accept(queryRelation.getConfig());
         }

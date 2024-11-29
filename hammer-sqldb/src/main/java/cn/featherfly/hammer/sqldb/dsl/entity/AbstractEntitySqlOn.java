@@ -51,9 +51,9 @@ public class AbstractEntitySqlOn<E, J, Q, R extends EntitySqlRelation<R, B>, B e
     /**
      * Instantiates a new entity sql query related.
      *
-     * @param joinType    the join type
-     * @param onResult    the query relate
-     * @param factory     the factory
+     * @param joinType the join type
+     * @param onResult the query relate
+     * @param factory the factory
      * @param sqlRelation the query relation
      */
     public AbstractEntitySqlOn(Class<J> joinType, Q onResult, JdbcMappingFactory factory, R sqlRelation) {
@@ -75,6 +75,7 @@ public class AbstractEntitySqlOn<E, J, Q, R extends EntitySqlRelation<R, B>, B e
      */
     @Override
     public <P> Q on(SerializableFunction1<E, P> propertyName) {
+        // IMPLSOON 判断传入属性是否是主键，来确定链接方式
         sqlRelation.join(0, getPropertyName(propertyName), factory.getClassMapping(joinType), true);
         return onResult;
     }
@@ -84,6 +85,7 @@ public class AbstractEntitySqlOn<E, J, Q, R extends EntitySqlRelation<R, B>, B e
      */
     @Override
     public <P> Q on(SerializableFunction2<J, P> joinTypePropertyName) {
+        // IMPLSOON 判断传入属性是否是主键，来确定链接方式
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(joinTypePropertyName);
         sqlRelation.join(0, factory.getClassMapping(ClassUtils.forName(info.getMethodInstanceClassName())),
             info.getPropertyName(), true);

@@ -9,7 +9,7 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQuery;
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntitySqlQuery<E> extends EntityQuery<E> {
+public interface EntitySqlQuery<E> extends EntityQuery<E, EntitySqlQuery<E>> {
 
     //    /**
     //     * 添加select的列.

@@ -11,17 +11,16 @@ import javax.cache.Cache;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cn.featherfly.common.tuple.Tuple3;
-import cn.featherfly.common.tuple.Tuple7;
-import cn.featherfly.common.tuple.Tuple8;
-import cn.featherfly.common.tuple.Tuples;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.cache.QueryPageResult.PageInfo;
@@ -153,7 +152,7 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param sortBuilder the sort builder
      * @param dialect the dialect
      * @param limit the limit
-     * @return the tuple 6
+     * @return the tuple 7
      *         <ol>
      *         <li>query sql
      *         <li>query params
@@ -189,7 +188,7 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
         QueryPageResult queryPageResult = null;
 
         Cache<Object, QueryPageResult> queryPageResultCache = hammerConfig.getCacheConfig().getQueryPageResultCache();
-
+        // ENHANCE 考虑是否加入配置设置判断 hammerConfig.getDslConfig().getQueryConfig().isCachePageResults()
         if (queryPageResultCache != null) {
             List<Serializable> key = new ArrayList<>(params);
             // ENHANCE 这里生成sql，在没有命中缓存时就浪费了,所以需要一个更好的唯一标识来处理
@@ -241,7 +240,7 @@ public class EntitySqlQueryExpression<T> extends AbstractMulitiEntitySqlQueryCon
      * @param sortBuilder the sort builder
      * @param dialect the dialect
      * @param limit the limit
-     * @return the tuple 7
+     * @return the tuple 8
      *         <ol>
      *         <li>query sql
      *         <li>count sql

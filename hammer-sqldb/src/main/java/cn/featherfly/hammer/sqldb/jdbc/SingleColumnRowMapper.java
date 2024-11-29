@@ -6,13 +6,12 @@ import java.sql.SQLException;
 
 import javax.annotation.Nonnull;
 
-import org.springframework.util.ClassUtils;
-
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.mapper.RowMapper;
 
@@ -75,7 +74,7 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
      * @param requiredType the new required type
      */
     public void setRequiredType(Class<T> requiredType) {
-        this.requiredType = ClassUtils.resolvePrimitiveIfNecessary(requiredType);
+        this.requiredType = ClassUtils.getPrimitiveWrapped(requiredType);
     }
 
     /**

@@ -18,8 +18,6 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
@@ -67,6 +65,7 @@ import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;

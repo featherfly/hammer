@@ -3,8 +3,6 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 import java.io.Serializable;
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
@@ -14,6 +12,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.Type;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeysHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -169,6 +168,19 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                 }
             }
         };
+    }
+
+    @Override
+    protected void validate(T entity) {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getName() {
+        return "insertOrUpdateById";
     }
 
     //    /**

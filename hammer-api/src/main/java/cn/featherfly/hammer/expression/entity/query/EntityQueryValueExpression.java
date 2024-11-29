@@ -11,17 +11,18 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * entity query value expression.
  *
  * @author zhongj
- * @param <E> the query type
- * @param <V> the value type
- * @param <C> the generic type
- * @param <L> the generic type
- * @param <S> the generic type
+ * @param <E> the query entity type
+ * @param <V> the fetch value type
+ * @param <C> condition expression
+ * @param <L> logic expression
+ * @param <S> sort expression
+ * @param <T> this expression
  */
 public interface EntityQueryValueExpression<E, V, C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
     L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
-    S extends EntityQueryValueSortExpression<E, V>>
+    S extends EntityQueryValueSortExpression<E, V>, T extends EntityQueryValueExpression<E, V, C, L, S, T>>
     extends EntityQueryValueWhereExpression<E, V, C, L, S>, EntityQueryListExecutor<E>, EntityQueryValueExecutor<V>,
     QueryCountExecutor, EntityQueryConditionLimit<EntityQueryValueLimitExecutor<E, V>>, Queryable<S>,
-    ConfigureExpression<EntityQueryValueExpression<E, V, C, L, S>, DslQueryConfig, QueryConditionConfig> {
+    ConfigureExpression<T, DslQueryConfig, QueryConditionConfig> {
 
 }

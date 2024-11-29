@@ -72,7 +72,8 @@ public class OperatorTest extends JdbcTestBase {
         roleUpdate = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         roleMerge = new MergeOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+            propertyAccessorFactory.create(Role.class));
 
         userRoleGet = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
@@ -230,6 +231,14 @@ public class OperatorTest extends JdbcTestBase {
         assertEquals(role.getDescp(), r.getDescp());
     }
 
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testUpdateIdNull() {
+        Role r = new Role();
+        r.setName("name_update_" + Randoms.getInt(99));
+        r.setDescp("descp_update_" + Randoms.getInt(99));
+        roleUpdate.execute(r);
+    }
+
     @Test
     public void testMerge() {
         Integer id = 10;
@@ -246,6 +255,14 @@ public class OperatorTest extends JdbcTestBase {
         assertEquals(role.getId(), merged.getId());
         assertEquals(role.getName(), merged.getName());
         assertEquals(role.getDescp(), orginal.getDescp());
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testMergeIdNull() {
+        Role merged = new Role();
+        merged.setName("name_update_" + Randoms.getInt(99));
+        int result = roleMerge.execute(merged);
+        assertEquals(result, 1);
     }
 
     @Test
@@ -348,6 +365,12 @@ public class OperatorTest extends JdbcTestBase {
 
         Role role = roleGet.get(r);
         assertNull(role);
+    }
+
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void testDeleteIdNull() {
+        Role r = new Role();
+        roleDelete.execute(r);
     }
 
     @Test

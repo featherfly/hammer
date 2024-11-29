@@ -16,6 +16,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -43,6 +45,8 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Tree2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
 /**
  * sql query type test.
@@ -101,6 +105,45 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         users = query.find(User.class).sort().desc(User::getId).limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
+    }
+
+    @Test
+    void queryConfig() {
+        MutableTuple1<Predicate<?>> ignoreStrategy = MutableTuples.create1();
+        query.find(User.class)
+            .configure(c -> ignoreStrategy.set0(c.setIgnoreStrategy(IgnoreStrategy.EMPTY).getIgnoreStrategy()));
+
+        assertEquals(ignoreStrategy.get0().get(), IgnoreStrategy.EMPTY);
+
+        query.find(User2.class) //
+            .property(User2::getId) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .property(User2::getUsername) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+            .where(); //
+        query.find(User2.class) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId);
+
+        List<User2> users = query.find(User2.class) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+            .where().eq(User2::getUsername, "").list();
+        assertTrue(users.size() > 0);
+
+        users = query.find(User2.class) //
+            .property(User2::getId) //
+            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+            .property(User2::getUsername) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+            .where().eq(User2::getUsername, "").list();
+        assertTrue(users.size() > 0);
+
+        // join 后无法调用configure方法了，不打算加入支持了，应该在.find(User2.class)后需要配置在第一个方法后配置
+        //        query.find(User2.class) //
+        //            .join(UserInfo2.class).on(UserInfo2::getUserId) //
+        //            .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
+        //        ;
     }
 
     @Test
@@ -179,6 +222,38 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         // 使用下面这行代替
         users = query.find(User.class).where().eq(User::getUsername, name, (v) -> !name.equals(v)).list();
         assertTrue(users.size() == 0);
+    }
+
+    @Test
+    void ignoreStrategy2() {
+        Mutable<User> mut = new MutableObject<>();
+
+        long count = query.find(User.class).count();
+
+        List<User> users = null;
+
+        users = query.find(User.class).where() //
+            .ignore(mut.getValue() == null, exp -> exp.isn(User::getId)).list();
+        assertEquals(users.size(), count);
+
+        mut.setValue(query.find(User.class).where().eq(User::getId, 1).single());
+
+        users = query.find(User.class).where() //
+            .ignore(mut.getValue() == null, exp -> exp.inn(User::getId)).list();
+        assertEquals(users.size(), count);
+
+        users = query.find(User.class).where() //
+            .ignore(mut.getValue() == null, //
+                exp -> exp.inn(User::getId) //
+                    .and().eq(User::getId, mut.getValue().getId()) //
+                    .and().eq(User::getAge, mut.getValue().getAge()) //
+                    .and().eq(User::getPwd, mut.getValue().getPwd()) //
+            ) //
+            .list();
+
+        assertEquals(users.size(), 1);
+
+        assertEquals(users.get(0), mut.getValue());
     }
 
     @Test
@@ -581,6 +656,26 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             assertEquals(userInfo.getDivision().getCity(), division.getCity());
         }
     }
+
+    //    @Test TODO 后续实现了再写测试逻辑
+    //    void property_eq_embedded2() {
+    //        List<UserInfo> userInfos = null;
+    //
+    //        DistrictDivision division = new DistrictDivision();
+    //        division.setProvince("四川");
+    //        division.setCity("成都");
+    //
+    //        userInfos = query.find(UserInfo.class).where() //
+    //            .property(UserInfo::getDivision, //
+    //                exp -> exp.eq(DistrictDivision::getCity, division.getCity()) //
+    //                    .and().eq(DistrictDivision::getProvince, division.getProvince()) //
+    //            ) //
+    //            .list();
+    //        for (UserInfo userInfo : userInfos) {
+    //            assertEquals(userInfo.getDivision().getProvince(), division.getProvince());
+    //            assertEquals(userInfo.getDivision().getCity(), division.getCity());
+    //        }
+    //    }
 
     @Test
     void property_eq_manyToOne_pk() {

@@ -21,24 +21,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
 
+import org.springframework.jdbc.support.JdbcTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import cn.featherfly.common.tuple.MutableTuples;
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuple3;
-import cn.featherfly.common.tuple.Tuple4;
-import cn.featherfly.common.tuple.Tuple5;
-import cn.featherfly.common.tuple.Tuple6;
-import cn.featherfly.common.tuple.Tuples;
-import cn.featherfly.common.tuple.mutable.MutableTuple3;
 
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Randoms;
@@ -49,6 +42,14 @@ import cn.featherfly.common.model.app.Platforms;
 import cn.featherfly.common.repository.MulitiQuery;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.common.tuple.MutableTuples;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.common.tuple.mutable.MutableTuple3;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article;
@@ -169,31 +170,40 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void queryEach() throws Exception {
-        AutoCloseableIterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1);
-        Iterator<Map<String, Serializable>> iter = ids.iterator();
-        int size = 0;
-        while (iter.hasNext()) {
-            size++;
-            iter.next();
-        }
-        assertTrue(size == 1);
-        ids.close();
+    public void queryEach() {
+        JdbcTransactionManager tm = new JdbcTransactionManager(dataSource);
+        TransactionTemplate tt = new TransactionTemplate(tm);
+        tt.execute(status -> {
+            JdbcRowIterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1);
+            Iterator<Map<String, Serializable>> iter = ids.iterator();
+            int size = 0;
+            while (iter.hasNext()) {
+                size++;
+                iter.next();
+            }
+            assertTrue(size == 1);
+            ids.close();
+            return null;
+        });
     }
 
     @Test
     public void queryEach2() {
-        try (AutoCloseableIterable<
-            Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1)) {
-            int size = 0;
-            for (Map<String, Serializable> id : ids) {
-                System.out.println(id);
-                size++;
+        JdbcTransactionManager tm = new JdbcTransactionManager(dataSource);
+        TransactionTemplate tt = new TransactionTemplate(tm);
+        tt.execute(status -> {
+            try (JdbcRowIterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1)) {
+                int size = 0;
+                for (Map<String, Serializable> id : ids) {
+                    System.out.println(id);
+                    size++;
+                }
+                assertTrue(size == 1);
+            } catch (Exception e) {
+                throw new JdbcException(e);
             }
-            assertTrue(size == 1);
-        } catch (Exception e) {
-            throw new JdbcException(e);
-        }
+            return null;
+        });
     }
 
     @Test
@@ -1421,78 +1431,89 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void callMulitiQueryIter() {
         Integer uid = 1;
-        Serializable[] params = new Serializable[] { uid };
-        try (MulitiQuery query = jdbc.callMultiQuery("call_query_user_by_id2", params)) {
-            assertEquals(params[0], uid + 1);
-            int queryNum = 3;
-            int i = 0;
-            while (query.hasNext()) {
-                i++;
-                query.next();
+        JdbcTransactionManager tm = new JdbcTransactionManager(dataSource);
+        TransactionTemplate tt = new TransactionTemplate(tm);
+        tt.execute(status -> {
+            Serializable[] params = new Serializable[] { uid };
+            try (MulitiQuery query = jdbc.callMultiQuery("call_query_user_by_id2", params)) {
+                assertEquals(params[0], uid + 1);
+                int queryNum = 3;
+                int i = 0;
+                while (query.hasNext()) {
+                    i++;
+                    query.next();
+                }
+                assertEquals(i, queryNum); // 三个查询
+            } catch (Exception e) {
+                throw new JdbcException(e);
             }
-            assertEquals(i, queryNum); // 三个查询
-        } catch (Exception e) {
-            throw new JdbcException(e);
-        }
 
-        params = new Serializable[] { uid };
-        try (MulitiQuery query = jdbc.callMultiQuery("call_query_user_by_id2", params)) {
-            assertEquals(params[0], uid + 1);
-            for (User user : query.next(User.class)) {
-                assertEquals(user.getId(), uid);
+            params = new Serializable[] { uid };
+            try (MulitiQuery query = jdbc.callMultiQuery("call_query_user_by_id2", params)) {
+                assertEquals(params[0], uid + 1);
+                for (User user : query.next(User.class)) {
+                    assertEquals(user.getId(), uid);
+                }
+                for (UserInfo2 ui : query.next(UserInfo2.class)) {
+                    assertEquals(ui.getUserId(), uid);
+                }
+                for (Map<String, Serializable> order : query.next()) {
+                    assertEquals(order.get("create_user"), uid);
+                }
+            } catch (Exception e) {
+                throw new JdbcException(e);
             }
-            for (UserInfo2 ui : query.next(UserInfo2.class)) {
-                assertEquals(ui.getUserId(), uid);
-            }
-            for (Map<String, Serializable> order : query.next()) {
-                assertEquals(order.get("create_user"), uid);
-            }
-        } catch (Exception e) {
-            throw new JdbcException(e);
-        }
+            return null;
+        });
     }
 
     @Test
     public void callMulitiQueryIter6() {
-        final String name = "call_query_user_by_id6";
-        Integer uid = 1;
-        Serializable[] params = new Serializable[] { uid };
-        try (MulitiQuery query = jdbc.callMultiQuery(name, params)) {
-            assertEquals(params[0], uid + 1);
-            int i = 0;
-            while (query.hasNext()) {
-                i++;
-                query.next();
+        PlatformTransactionManager transactionManager = new JdbcTransactionManager(dataSource);
+        TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.execute(status -> {
+            final String name = "call_query_user_by_id6";
+            Integer uid = 1;
+            Serializable[] params = new Serializable[] { uid };
+            try (MulitiQuery query = jdbc.callMultiQuery(name, params)) {
+                assertEquals(params[0], uid + 1);
+                int i = 0;
+                while (query.hasNext()) {
+                    i++;
+                    query.next();
+                }
+                assertEquals(i, 6); // 六个查询
+            } catch (Exception e) {
+                throw new JdbcException(e);
             }
-            assertEquals(i, 6); // 六个查询
-        } catch (Exception e) {
-            throw new JdbcException(e);
-        }
 
-        params = new Serializable[] { uid };
-        try (MulitiQuery query = jdbc.callMultiQuery(name, params)) {
-            assertEquals(params[0], uid + 1);
-            for (User user : query.next(User.class)) {
-                assertEquals(user.getId(), uid);
+            params = new Serializable[] { uid };
+            try (MulitiQuery query = jdbc.callMultiQuery(name, params)) {
+                assertEquals(params[0], uid + 1);
+                for (User user : query.next(User.class)) {
+                    assertEquals(user.getId(), uid);
+                }
+                for (UserInfo2 ui : query.next(UserInfo2.class)) {
+                    assertEquals(ui.getUserId(), uid);
+                }
+                for (Order2 order : query.next(Order2.class)) {
+                    assertEquals(order.getCreateUser(), uid);
+                }
+                for (Map<String, Serializable> orderInfo : query.next()) {
+                    assertEquals(orderInfo.get("create_user"), uid);
+                }
+                for (UserRole userRole : query.next(UserRole.class)) {
+                    assertEquals(userRole.getUserId(), uid);
+                }
+                for (Map<String, Serializable> user : query.next()) {
+                    assertEquals(user.get("id"), uid);
+                }
+            } catch (Exception e) {
+                throw new JdbcException(e);
             }
-            for (UserInfo2 ui : query.next(UserInfo2.class)) {
-                assertEquals(ui.getUserId(), uid);
-            }
-            for (Order2 order : query.next(Order2.class)) {
-                assertEquals(order.getCreateUser(), uid);
-            }
-            for (Map<String, Serializable> orderInfo : query.next()) {
-                assertEquals(orderInfo.get("create_user"), uid);
-            }
-            for (UserRole userRole : query.next(UserRole.class)) {
-                assertEquals(userRole.getUserId(), uid);
-            }
-            for (Map<String, Serializable> user : query.next()) {
-                assertEquals(user.get("id"), uid);
-            }
-        } catch (Exception e) {
-            throw new JdbcException(e);
-        }
+
+            return null;
+        });
     }
 
     @Test

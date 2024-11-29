@@ -3,11 +3,10 @@ package cn.featherfly.hammer.sqldb.dsl.repository;
 
 import java.util.function.Function;
 
-import cn.featherfly.common.tuple.Tuple;
-
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.operator.LogicOperator;
+import cn.featherfly.common.tuple.Tuple;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
@@ -19,12 +18,12 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlLogicOperatorExpressionBuilder;
  * sql condition group builder sql条件逻辑组构造器 .
  *
  * @author zhongj
- * @param <C>  condition expression
- * @param <L>  logic expression
- * @param <T>  filterable repository index tuple type
+ * @param <C> condition expression
+ * @param <L> logic expression
+ * @param <T> filterable repository index tuple type
  * @param <C2> condition config
- * @param <S>  repository sql relation
- * @param <B>  sql builder
+ * @param <S> repository sql relation
+ * @param <B> sql builder
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C extends GroupExpression<C, L>,
@@ -36,8 +35,8 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C
     /**
      * Instantiates a new abstract sql condition group expression.
      *
-     * @param parent             parent group
-     * @param index              the index
+     * @param parent parent group
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     protected AbstractMulitiRepositorySqlConditionsGroupExpressionBase(L parent, int index, S repositoryRelation) {
@@ -84,7 +83,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C
     @Override
     public L group(Function<C, L> group) {
         C g = group();
-        return ((GroupEndExpression<C, L>) group.apply(g)).endGroup();
+        return group.apply(g).endGroup();
     }
 
     /**
@@ -97,6 +96,17 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase<C
         } else {
             return (L) this;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ignore(boolean ignorable, Function<C, L> conditionExpressions) {
+        if (!ignorable && conditionExpressions != null) {
+            return conditionExpressions.apply((C) this);
+        }
+        return (L) this;
     }
 
     //    /**

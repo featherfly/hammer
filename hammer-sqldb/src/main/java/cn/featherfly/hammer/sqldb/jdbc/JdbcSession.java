@@ -10,6 +10,7 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
 
@@ -18,11 +19,12 @@ import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
  *
  * @author zhongj
  */
-public interface JdbcSession extends Jdbc {
+public interface JdbcSession extends Jdbc, AutoCloseable {
 
     JdbcTransaction beginTransation();
 
     JdbcTransaction beginTransation(Isolation isolation);
 
-    void close();
+    @Override
+    void close() throws JdbcException;
 }

@@ -9,7 +9,7 @@ import java.util.function.Function;
  * @author zhongj
  */
 public interface GroupExpression<C extends ConditionExpression, L extends GroupEndExpression<C, L>>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
      * 在当前内部开启一个新的条件逻辑组,需要手动调用endGroup回到上一级表达式.
@@ -25,4 +25,13 @@ public interface GroupExpression<C extends ConditionExpression, L extends GroupE
      * @return 条件组结束后的逻辑表达式
      */
     L group(Function<C, L> group);
+
+    /**
+     * Whether to ignore subsequent expressions. 是否忽略后续的表达式.
+     *
+     * @param ignorable the ignorable
+     * @param conditionExpressions the condition expressions
+     * @return 条件组结束后的逻辑表达式
+     */
+    L ignore(boolean ignorable, Function<C, L> conditionExpressions);
 }

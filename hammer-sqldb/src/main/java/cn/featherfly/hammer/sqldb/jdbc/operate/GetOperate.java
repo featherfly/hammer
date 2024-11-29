@@ -175,4 +175,12 @@ public class GetOperate<T> extends AbstractQueryOperate<T> implements QueryOpera
         assertId(ids);
         return ids.toArray(new Serializable[ids.size()]);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getName() {
+        return "getById";
+    }
 }

@@ -1,12 +1,12 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
-import cn.featherfly.common.tuple.Tuple3;
-
+import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
@@ -19,6 +19,9 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  */
 public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
     // IMPLSOON 实现批量更新
+
+    private final PropertyAccessor<T> propertyAccessor;
+
     /**
      * 使用给定数据源以及给定对象生成更新操作.
      *
@@ -26,10 +29,12 @@ public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperat
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param propertyAccessor the property accessor
      */
     public MergeOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata) {
+        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        this.propertyAccessor = propertyAccessor;
     }
 
     /**
@@ -48,8 +53,11 @@ public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperat
      * @return 操作影响的数据行数
      */
     public int execute(final T entity, boolean onlyNull) {
-        Tuple3<String, JdbcPropertyMapping[], Integer> tuple = ClassMappingUtils.getMergeSqlAndMappings(entity,
-            classMapping, onlyNull, jdbc.getDialect());
+        Tuple4<String, JdbcPropertyMapping[], Integer, Boolean> tuple = ClassMappingUtils.getMergeSqlAndMappings(entity,
+            classMapping, onlyNull, jdbc.getDialect(), propertyAccessor);
+        if (tuple.get3().booleanValue()) {
+            throw idNullOrEmptyException(entity.getClass());
+        }
         // 如果需要更新的参数数量为0,表示不需要更新
         if (tuple.get2() == 0) {
             return 0;
@@ -77,5 +85,13 @@ public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperat
         //            paramsPropertyAndMappings[i] = Tuples.of(propertyAccessor.getProperty(mapping.getPropertyIndexes()), mapping);
         //            i++;
         //        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getName() {
+        return "mergeById";
     }
 }

@@ -8,8 +8,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -44,7 +44,7 @@ public abstract class BenchmarkTestBase {
     public void init(@Optional("mysql") String dataBase,
         @Optional("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true") String url)
         throws IOException {
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j_none.xml", this.getClass()));
+        Configurator.initialize("log4j2_none", "log4j2_none.xml");
 
         initDataBase(dataBase, url);
 

@@ -4726,4 +4726,15 @@ public class UserQueryRepositoryConditionGroupExpression implements
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserQueryRepositoryConditionGroupExpression ignore(boolean ignorable,
+        Function<UserQueryRepositoryConditionGroupExpression,
+            UserQueryRepositoryConditionGroupExpression> conditionExpressions) {
+        // YUFEI_TODO Auto-generated method stub
+        return null;
+    }
+
 }

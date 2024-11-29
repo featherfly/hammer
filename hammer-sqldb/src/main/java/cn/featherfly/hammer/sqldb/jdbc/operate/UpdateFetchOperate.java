@@ -9,8 +9,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.FieldValueOperator;
@@ -24,6 +22,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.ResultSetConcurrency;
 import cn.featherfly.common.db.metadata.ResultSetType;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.debug.UpdateDebugMessage;
 
@@ -285,5 +284,13 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
     private boolean fullUpdate() {
         // IMPLSOON 后续使用配置
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getName() {
+        return "updateFetch";
     }
 }

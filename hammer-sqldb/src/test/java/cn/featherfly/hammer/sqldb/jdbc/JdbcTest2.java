@@ -17,11 +17,6 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuple3;
-import cn.featherfly.common.tuple.Tuple4;
-import cn.featherfly.common.tuple.Tuple5;
-
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.NamedParamSql;
@@ -32,6 +27,10 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;

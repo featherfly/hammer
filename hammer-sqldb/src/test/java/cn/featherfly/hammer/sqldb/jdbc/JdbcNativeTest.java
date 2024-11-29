@@ -2,12 +2,14 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.JDBCType;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
@@ -18,8 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Randoms;
@@ -31,9 +35,25 @@ import cn.featherfly.common.lang.Randoms;
  */
 public class JdbcNativeTest extends JdbcTestBase {
 
+    DriverManager manager;
+
+    @BeforeClass
+    void beforeClass() throws ClassNotFoundException {
+        Class.forName(jdbcDriverName);
+    }
+
+    @Override
+    protected Connection getConnection() {
+        try {
+            return DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
+
     @Test
     void callQuery() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
         CallableStatement call = conn.prepareCall("call call_query_user(?)");
         call.setString(1, "yufei%");
         boolean b = call.execute();
@@ -46,7 +66,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void callQuery2() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
         CallableStatement call = conn.prepareCall("call call_query_user(?)");
         call.setString("arg_username", "yufei%");
         boolean b = call.execute();
@@ -59,7 +79,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void callMulityQuery() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
         CallableStatement call = conn.prepareCall("call call_query_user_by_id2(?)");
         call.setInt(1, 1);
         boolean b = call.execute();
@@ -82,8 +102,8 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void callMulityQuery2() throws SQLException {
-        Connection conn = dataSource.getConnection();
-        CallableStatement call = conn.prepareCall("call call_query_user_by_id3(?)");
+        Connection conn = getConnection();
+        CallableStatement call = conn.prepareCall("call call_query_user_by_id6(?)");
         call.setInt(1, 1);
         boolean b = call.execute();
         System.out.println("call.execute() = " + b);
@@ -100,12 +120,12 @@ public class JdbcNativeTest extends JdbcTestBase {
             }
         }
 
-        assertEquals(queryNum, 3);
+        assertEquals(queryNum, 6);
     }
 
     @Test
     void callOutArgu() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
 
         CallableStatement call = conn.prepareCall("call call_update_user_one(?,?,?)");
         call.setInt(1, 13);
@@ -143,7 +163,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void callOutArgu2() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
 
         CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
         call.setString(1, "name_init%");
@@ -158,7 +178,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void callOutArgu3() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
         CallableStatement call = conn.prepareCall("call call_update_role_more(?,?,?)");
         call.setString("q_name", "name_init%");
         call.setString("u_descp", "call_update_batch_" + Randoms.getInt(1000));
@@ -183,7 +203,7 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void callOutArgu4() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
 
         LinkedHashMap<String, Serializable> params = new LinkedHashMap<>();
         params.put("q_name", "name_init%");
@@ -224,12 +244,117 @@ public class JdbcNativeTest extends JdbcTestBase {
 
     @Test
     void testClose() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        Connection conn = getConnection();
         PreparedStatement prep = conn.prepareStatement("select * from user");
-        ResultSet set = prep.executeQuery();
-        set.close();
+        ResultSet res = prep.executeQuery();
+
+        assertFalse(conn.isClosed());
+        assertFalse(prep.isClosed());
+        assertFalse(res.isClosed());
+
+        res.close();
+        assertTrue(res.isClosed());
+        assertFalse(prep.isClosed());
+        assertFalse(conn.isClosed());
+
         prep.close();
+        assertTrue(prep.isClosed());
+        assertFalse(conn.isClosed());
+
         conn.close();
+        assertTrue(conn.isClosed());
         System.out.println("conn.close()");
+    }
+
+    @Test
+    void testClose2() throws SQLException {
+        Connection conn = getConnection();
+
+        PreparedStatement prep = conn.prepareStatement("select * from user");
+        ResultSet res = prep.executeQuery();
+        assertFalse(conn.isClosed());
+        assertFalse(prep.isClosed());
+        assertFalse(res.isClosed());
+
+        prep.close();
+        assertTrue(prep.isClosed());
+        assertTrue(res.isClosed());
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        prep = conn.prepareStatement("select * from user");
+        res = prep.executeQuery();
+        assertFalse(conn.isClosed());
+        assertFalse(prep.isClosed());
+        assertFalse(res.isClosed());
+
+        conn.close();
+        assertTrue(conn.isClosed());
+        // res is closed by cascadedby conn close
+        assertTrue(res.isClosed());
+        assertTrue(prep.isClosed());
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        conn = getConnection();
+        prep = conn.prepareStatement("select * from user");
+        res = prep.executeQuery();
+        PreparedStatement prep2 = conn.prepareStatement("select * from user");
+        ResultSet res2 = prep2.executeQuery();
+        assertFalse(conn.isClosed());
+        assertFalse(prep.isClosed());
+        assertFalse(prep2.isClosed());
+        assertFalse(res.isClosed());
+        assertFalse(res2.isClosed());
+
+        conn.close();
+        assertTrue(conn.isClosed());
+        // prep is closed by cascadedby conn close
+        assertTrue(prep.isClosed());
+        assertTrue(prep2.isClosed());
+        // res is closed by cascadedby conn close
+        assertTrue(res.isClosed());
+        assertTrue(res2.isClosed());
+
+    }
+
+    @Test
+    void testCloseWithDataSouce() throws SQLException {
+        Connection conn = super.getConnection();
+
+        PreparedStatement prep = conn.prepareStatement("select * from user");
+        ResultSet res = prep.executeQuery();
+        assertFalse(conn.isClosed());
+        assertFalse(prep.isClosed());
+        assertFalse(res.isClosed());
+
+        prep.close();
+        assertTrue(prep.isClosed());
+        assertTrue(res.isClosed());
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        conn = super.getConnection();
+        prep = conn.prepareStatement("select * from user");
+        res = prep.executeQuery();
+        PreparedStatement prep2 = conn.prepareStatement("select * from user");
+        ResultSet res2 = prep2.executeQuery();
+        assertFalse(conn.isClosed());
+        assertFalse(prep.isClosed());
+        assertFalse(prep2.isClosed());
+        assertFalse(res.isClosed());
+        assertFalse(res2.isClosed());
+
+        conn.close();
+        assertTrue(conn.isClosed());
+        // prep is closed by cascadedby conn close
+        assertTrue(prep.isClosed());
+        assertTrue(prep2.isClosed());
+        // res is closed by cascadedby conn close
+        assertTrue(res.isClosed());
+        assertTrue(res2.isClosed());
+
+        // dbcp 1.4 连接池这里的prep没有关闭，应该是bug,最新的dbcp2就没问题
+        // assertFalse(prep.isClosed());
     }
 }

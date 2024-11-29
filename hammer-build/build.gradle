@@ -1,16 +1,25 @@
 allprojects {
     apply from: rootDir.getAbsolutePath() +  '/java_base.gradle'   
-    apply from: rootDir.getAbsolutePath() +  '/maven_push.gradle'   
+    apply from: rootDir.getAbsolutePath() +  '/maven_push.gradle'
+    
+    ext {
+        lv = '2.24.2'
+        slf4jimpl = "org.apache.logging.log4j:log4j-slf4j-impl:${lv}"
+        //log4japi = "org.apache.logging.log4j:log4j-api:${lv}"
+        log4jcore = "org.apache.logging.log4j:log4j-core:${lv}"
+        
+        sv = "5.3.39"
+    }
 
     dependencies {
         api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
 //        api group: 'cn.featherfly.common', name: 'common-api', version: '0.5.0'
-        // api group: 'cn.featherfly.common', name: 'common-core', version: '1.12.0'
+        api group: 'cn.featherfly.common', name: 'common-core', version: '1.13.1-SNAPSHOT'
 
         testImplementation group: 'org.testng', name: 'testng', version: '7.5.1'
         testImplementation group: 'com.google.inject', name: 'guice', version: '4.2.3'
-        testImplementation 'org.slf4j:slf4j-log4j12:1.7.30'
-        testImplementation 'log4j:log4j:1.2.17'
+        testImplementation slf4jimpl
+        testImplementation log4jcore
     }
     
     test {
@@ -18,14 +27,24 @@ allprojects {
         //reports.html.enabled = false
     }
     
-    ext {
-        sv = "5.3.36"
+    configurations {
+        compile.transitive = true
+        all*.exclude module: 'log4j'
+        all*.exclude module: 'slf4j-log4j12'
     }
+    
+    configurations.all {
+        resolutionStrategy {
+            force slf4jimpl, log4jcore 
+            forcedModules = [slf4jimpl, log4jcore]
+        }
+    }
+  
 }
 
 dependencies {
-    implementation 'org.slf4j:slf4j-log4j12:1.7.30'
-    implementation 'log4j:log4j:1.2.17'
+    implementation slf4jimpl
+    implementation log4jcore
     //implementation group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
     //implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
 }

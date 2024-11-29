@@ -26,7 +26,7 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -37,8 +37,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -47,8 +47,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>          the generic type
-     * @param function     the function
+     * @param <R> the generic type
+     * @param function the function
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -64,9 +64,9 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>               the generic type
+     * @param <R> the generic type
      * @param aggregateFunction aggregateFunction
-     * @param propertyName      propertyName
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <R> Q property(AggregateFunction aggregateFunction, SerializableFunction<E, R> propertyName) {
@@ -76,10 +76,10 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>               the generic type
+     * @param <R> the generic type
      * @param aggregateFunction aggregateFunction
-     * @param distinct          the distinct
-     * @param propertyName      propertyName
+     * @param distinct the distinct
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     <R> Q property(AggregateFunction aggregateFunction, boolean distinct, SerializableFunction<E, R> propertyName);
@@ -87,7 +87,7 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 设置返回的属性..
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -98,8 +98,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 设置返回的属性..
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -120,8 +120,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>          the generic type
-     * @param function     the function
+     * @param <R> the generic type
+     * @param function the function
      * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
@@ -132,9 +132,9 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>               the generic type
+     * @param <R> the generic type
      * @param aggregateFunction aggregateFunction
-     * @param propertyName      propertyName
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <R> Q fetch(AggregateFunction aggregateFunction, SerializableFunction<E, R> propertyName) {
@@ -144,21 +144,21 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * 添加查询出来的属性.
      *
-     * @param <R>               the generic type
+     * @param <R> the generic type
      * @param aggregateFunction aggregateFunction
-     * @param distinct          the distinct
-     * @param propertyName      propertyName
+     * @param distinct the distinct
+     * @param propertyName propertyName
      * @return QueryEntityPropertiesExpression
      */
     default <R> Q fetch(AggregateFunction aggregateFunction, boolean distinct,
-            SerializableFunction<E, R> propertyName) {
+        SerializableFunction<E, R> propertyName) {
         return property(aggregateFunction, distinct, propertyName);
     }
 
     /**
      * Distinct.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -169,7 +169,7 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Count.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -180,8 +180,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Count.
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -192,7 +192,7 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Sum.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -203,8 +203,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Sum.
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -215,7 +215,7 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Max.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -226,8 +226,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Max.
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -238,7 +238,7 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Min.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -249,8 +249,8 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Min.
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -261,7 +261,7 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Avg.
      *
-     * @param <R>          the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -272,13 +272,12 @@ public interface EntityQueryFetchedPropertiesExpression<E, Q extends EntityQuery
     /**
      * Avg.
      *
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
     default <R> Q avg(boolean distinct, SerializableFunction<E, R> propertyName) {
         return property(AggregateFunction.AVG, distinct, propertyName);
     }
-
 }
