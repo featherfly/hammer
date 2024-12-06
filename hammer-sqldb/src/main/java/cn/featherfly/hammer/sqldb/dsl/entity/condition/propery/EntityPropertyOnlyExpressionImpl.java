@@ -25,22 +25,22 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <E> the element type
  */
 public class EntityPropertyOnlyExpressionImpl<E>
-        extends EntityPropertyExpressionImpl<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>
-        implements EntityPropertyOnlyExpression<E> {
+    extends EntityPropertyExpressionImpl<E, EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>>
+    implements EntityPropertyOnlyExpression<E> {
 
     /**
      * Instantiates a new entity property function impl.
      *
-     * @param index         the index
-     * @param expression    the expression
-     * @param factory       the factory
+     * @param index the index
+     * @param expression the expression
+     * @param factory the factory
      * @param queryRelation the query relation
      */
     @SuppressWarnings("unchecked")
     public EntityPropertyOnlyExpressionImpl(int index, InternalMulitiEntityCondition<?> expression,
-            JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(index, (InternalMulitiEntityCondition<EntityPropertyOnlyLogicExpression<E>>) expression, factory,
-                queryRelation);
+            queryRelation);
     }
 
     /**
@@ -57,8 +57,21 @@ public class EntityPropertyOnlyExpressionImpl<E>
      */
     @Override
     public EntityPropertyOnlyLogicExpression<E> group(
-            Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> group) {
+        Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> group) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public EntityPropertyOnlyLogicExpression<E> ignore(boolean ignorable,
+        Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> conditionExpressions) {
+        if (!ignorable && conditionExpressions != null) {
+            return conditionExpressions.apply(this);
+        }
+        return (EntityPropertyOnlyLogicExpression<E>) this;
     }
 }

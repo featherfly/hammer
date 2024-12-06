@@ -80,6 +80,7 @@ import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
  * @param <T> the result type
  * @since 0.1.0
  */
+// ENHANCE 后续去掉spring的相关逻辑，使用PropertyAccessorFactory对映射和属性访问进行重构
 public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repository.mapper.RowMapper<T> {
 
     /** Logger available to subclasses. */

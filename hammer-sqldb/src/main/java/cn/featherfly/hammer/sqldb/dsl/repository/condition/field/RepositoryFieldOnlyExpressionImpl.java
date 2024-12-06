@@ -22,18 +22,18 @@ import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlRelation;
  *
  * @author zhongj
  * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 public class RepositoryFieldOnlyExpressionImpl<C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>,
-        B extends SqlBuilder> extends
-        RepositoryFieldExpressionImpl<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression, C2, S, B>
-        implements RepositoryFieldOnlyExpression {
+    B extends SqlBuilder>
+    extends RepositoryFieldExpressionImpl<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression, C2, S, B>
+    implements RepositoryFieldOnlyExpression {
 
     /**
      * Instantiates a new repository field only expression impl.
      *
-     * @param index              the index
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     public RepositoryFieldOnlyExpressionImpl(int index, S repositoryRelation) {
@@ -53,7 +53,16 @@ public class RepositoryFieldOnlyExpressionImpl<C2 extends ConditionConfig<C2>, S
      */
     @Override
     public RepositoryFieldOnlyLogicExpression group(
-            Function<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression> group) {
+        Function<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression> group) {
         return expression.group(group);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryFieldOnlyLogicExpression ignore(boolean ignorable,
+        Function<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression> conditionExpressions) {
+        return expression.ignore(ignorable, conditionExpressions);
     }
 }

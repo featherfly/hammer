@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -21,15 +24,18 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.TestInstance;
 
-import cn.featherfly.common.tuple.Tuple3;
-import cn.featherfly.common.tuple.Tuples;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import cn.featherfly.common.bean.AsmPropertyAccessorFactory;
 import cn.featherfly.common.bean.PropertyAccessorFactory;
+import cn.featherfly.common.db.wrapper.CascadedCloseDataSource;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.common.lang.debug.TableMessage;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.ChainSetImpl;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuples;
 
 /**
  * TestBase.
@@ -52,6 +58,13 @@ public class TestBase {
     protected static final String MYSQL_URL = "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true ";
     protected static final String MYSQL_USER = "root";
     protected static final String MYSQL_PWD = "123456";
+
+    protected static String jdbcDriverName;
+    protected static String jdbcUrl;
+    protected static String jdbcUsername;
+    protected static String jdbcPassword;
+
+    private boolean cascadeWrpper = false;
 
     protected static final PropertyAccessorFactory PROPERTY_ACCESSOR_FACTORY = new AsmPropertyAccessorFactory(
         Thread.currentThread().getContextClassLoader());
@@ -115,5 +128,46 @@ public class TestBase {
                 System.err.println(entry.getValue());
             }
         }
+    }
+
+    protected DataSource initDataSource() {
+        return initDataSource("dbcp");
+    }
+
+    protected DataSource initDataSource(String pool) {
+        DataSource dataSource = null;
+        switch (pool) {
+            case "dbcp":
+                dataSource = initDbcp();
+                break;
+            case "hikari":
+                dataSource = initHikari();
+                break;
+            default:
+                dataSource = initDbcp();
+        }
+        if (cascadeWrpper) {
+            return new CascadedCloseDataSource(dataSource);
+        } else {
+            return dataSource;
+        }
+    }
+
+    private DataSource initDbcp() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setUrl(jdbcUrl);
+        ds.setDriverClassName(jdbcDriverName);
+        ds.setUsername(jdbcUsername);
+        ds.setPassword(jdbcPassword);
+        return ds;
+    }
+
+    private DataSource initHikari() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(jdbcUrl);
+        config.setDriverClassName(jdbcDriverName);
+        config.setUsername(jdbcUsername);
+        config.setPassword(jdbcPassword);
+        return new HikariDataSource(config);
     }
 }

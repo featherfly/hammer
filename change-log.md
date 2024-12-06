@@ -5,6 +5,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 # 0.7.3 
 
 1. 修复DSL实体查询连接实体属性（多对一）生成的SQL从内连接（inner join）改变为到左连接（left join）
+2. DSL where后的条件筛选加入ignore(boolean ignorable, Function<C, L> conditionExpressions) 用于判断条件参数获取还有先决判断条件的情况，例如 .eq("a", u.getA().and().eq("b", u.getB())，要先判断u不等于null或其他判断情况
 
 # 0.7.2 2024-11-15
 

@@ -114,6 +114,17 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ignore(boolean ignorable, Function<C, L> conditionExpressions) {
+        if (!ignorable && conditionExpressions != null) {
+            return conditionExpressions.apply((C) this);
+        }
+        return (L) this;
+    }
+
     //    @Override
     //    public C logic(LogicOperator operator) {
     //        AssertIllegalArgument.isNotNull(operator, "operator");

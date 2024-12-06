@@ -3,13 +3,14 @@ package cn.featherfly.hammer.dml.builder.sql;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
+import cn.featherfly.common.function.serializable.SerializableFunction2;
+import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
-
-import cn.featherfly.common.function.serializable.SerializableFunction2;
-import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dml.builder.sql.vo.Device;
 import cn.featherfly.hammer.dml.builder.sql.vo.Tree;
 import cn.featherfly.hammer.dml.builder.sql.vo.Tree2;
@@ -67,6 +68,27 @@ public class DslEntityJoinTest {
 
         // join on
         user = query.find(User2.class).where().eq(user::getId, Integer.valueOf(1)).single();
+
+        //        query.find(User2.class).where()
+        // TODO 需要选择性过滤的条件, 用于判断条件参数获取还有先决判断条件的情况，例如 .eq("a", u.getA().and().eq("b", u.getB())
+        //        .eq(user == null, e -> e.accept(User2::getId, user.getId())) //
+        //        .eq(user == null, e -> e.accept(User2::getId, user.getId(), IgnoreStrategy.EMPTY)) //
+        //        .eq(user == null, e -> e.accept(user.getId())) //
+        //        .eq(user == null, e -> e.accept(user.getId(), IgnoreStrategy.EMPTY)) //
+        // CompareEntityExpression，其他的参考多查询对象对应的实现
+
+        query.find(User2.class).where().ignore(user == null, //
+            e -> e.eq(User2::getId, user.getId()) //
+                .and() //
+                .eq(User2::getId, user.getId(), IgnoreStrategy.EMPTY) //
+                .and() //
+                .eq(user::getId) //
+                .and() //
+                .eq(user::getId, (Predicate<Integer>) v -> v == null) //
+        );
+
+        query.find(User2.class).where().eq(User2::getId, user.getId(), v -> v == null);
+
     }
 
     public void testEntityQueryJoinOrm() {

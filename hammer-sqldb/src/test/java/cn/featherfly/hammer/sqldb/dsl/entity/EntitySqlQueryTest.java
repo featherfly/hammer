@@ -16,6 +16,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -220,6 +222,38 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         // 使用下面这行代替
         users = query.find(User.class).where().eq(User::getUsername, name, (v) -> !name.equals(v)).list();
         assertTrue(users.size() == 0);
+    }
+
+    @Test
+    void ignoreStrategy2() {
+        Mutable<User> mut = new MutableObject<>();
+
+        long count = query.find(User.class).count();
+
+        List<User> users = null;
+
+        users = query.find(User.class).where() //
+            .ignore(mut.getValue() == null, exp -> exp.isn(User::getId)).list();
+        assertEquals(users.size(), count);
+
+        mut.setValue(query.find(User.class).where().eq(User::getId, 1).single());
+
+        users = query.find(User.class).where() //
+            .ignore(mut.getValue() == null, exp -> exp.inn(User::getId)).list();
+        assertEquals(users.size(), count);
+
+        users = query.find(User.class).where() //
+            .ignore(mut.getValue() == null, //
+                exp -> exp.inn(User::getId) //
+                    .and().eq(User::getId, mut.getValue().getId()) //
+                    .and().eq(User::getAge, mut.getValue().getAge()) //
+                    .and().eq(User::getPwd, mut.getValue().getPwd()) //
+            ) //
+            .list();
+
+        assertEquals(users.size(), 1);
+
+        assertEquals(users.get(0), mut.getValue());
     }
 
     @Test
@@ -622,6 +656,26 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             assertEquals(userInfo.getDivision().getCity(), division.getCity());
         }
     }
+
+    //    @Test TODO 后续实现了再写测试逻辑
+    //    void property_eq_embedded2() {
+    //        List<UserInfo> userInfos = null;
+    //
+    //        DistrictDivision division = new DistrictDivision();
+    //        division.setProvince("四川");
+    //        division.setCity("成都");
+    //
+    //        userInfos = query.find(UserInfo.class).where() //
+    //            .property(UserInfo::getDivision, //
+    //                exp -> exp.eq(DistrictDivision::getCity, division.getCity()) //
+    //                    .and().eq(DistrictDivision::getProvince, division.getProvince()) //
+    //            ) //
+    //            .list();
+    //        for (UserInfo userInfo : userInfos) {
+    //            assertEquals(userInfo.getDivision().getProvince(), division.getProvince());
+    //            assertEquals(userInfo.getDivision().getCity(), division.getCity());
+    //        }
+    //    }
 
     @Test
     void property_eq_manyToOne_pk() {

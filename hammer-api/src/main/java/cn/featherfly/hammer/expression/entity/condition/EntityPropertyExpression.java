@@ -41,6 +41,31 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePrope
 public interface EntityPropertyExpression<T, C extends ConditionExpression, L extends LogicExpression<C, L>>
     extends ConditionExpression {
 
+    //    /**
+    //     * Property.
+    //     *
+    //     * @param <R> the generic type
+    //     * @param name the name
+    //     * @param propertyExpressions the property expressions
+    //     * @return the logic expressoin
+    //     */
+    //    default <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+    //        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<T, R> name,
+    //            Consumer<C2> propertyExpressions) {
+    //        propertyExpressions.accept((C2) property(name));
+    //    }
+    //    /**
+    //     * Property.
+    //     *
+    //     * @param <R> the generic type
+    //     * @param name the name
+    //     * @param propertyExpressions the property expressions
+    //     * @return the logic expressoin
+    //     */
+    //    <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+    //        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<T, R> name,
+    //            Consumer<C2> propertyExpressions);
+
     /**
      * Property.
      *

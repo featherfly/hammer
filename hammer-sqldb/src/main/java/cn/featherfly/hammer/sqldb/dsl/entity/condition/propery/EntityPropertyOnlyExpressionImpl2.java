@@ -22,10 +22,10 @@ import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation;
  * entity property function only impl.
  *
  * @author zhongj
- * @param <E>  the element type
+ * @param <E> the element type
  * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 public class EntityPropertyOnlyExpressionImpl2<E, C2 extends ConditionConfig<C2>, S extends EntitySqlRelation<S, B>,
     B extends SqlBuilder> extends
@@ -35,8 +35,8 @@ public class EntityPropertyOnlyExpressionImpl2<E, C2 extends ConditionConfig<C2>
     /**
      * Instantiates a new entity property only expression impl 2.
      *
-     * @param index    the index
-     * @param factory  the factory
+     * @param index the index
+     * @param factory the factory
      * @param relation the relation
      */
     public EntityPropertyOnlyExpressionImpl2(int index, JdbcMappingFactory factory, S relation) {
@@ -58,5 +58,14 @@ public class EntityPropertyOnlyExpressionImpl2<E, C2 extends ConditionConfig<C2>
     public EntityPropertyOnlyLogicExpression<E> group(
         Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> group) {
         return expression.group(group);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityPropertyOnlyLogicExpression<E> ignore(boolean ignorable,
+        Function<EntityPropertyOnlyExpression<E>, EntityPropertyOnlyLogicExpression<E>> conditionExpressions) {
+        return expression.ignore(ignorable, conditionExpressions);
     }
 }

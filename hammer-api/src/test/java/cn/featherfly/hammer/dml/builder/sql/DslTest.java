@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -18,6 +16,7 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.dml.builder.sql.vo.Student2;
 import cn.featherfly.hammer.dml.builder.sql.vo.Tree;
 import cn.featherfly.hammer.dml.builder.sql.vo.User;
@@ -242,10 +241,10 @@ public class DslTest {
         // TODO 如果后续加入编译期增强，则在使用注解标注泛型方法（例如find）
         // 目的是使得各种判断和类型匹配在编译期就处理完成，而不是在运行期就在获取
         /*
-         1. co(User::getName, "")替换为co("name", "")，或者BeanPropertyValue）
-         2. co(User::getName, "")替换为co(BeanPropertyValue)
-         3. co(User::getName, "")替换为co(RepositoryFieldValue)
-            此参数需要在编译期就搞好所有中间过程，即在jdbc设置时，不去使用SqlTypeMappingManager进行类型判断
+         * 1. co(User::getName, "")替换为co("name", "")，或者BeanPropertyValue）
+         * 2. co(User::getName, "")替换为co(BeanPropertyValue)
+         * 3. co(User::getName, "")替换为co(RepositoryFieldValue)
+         * 此参数需要在编译期就搞好所有中间过程，即在jdbc设置时，不去使用SqlTypeMappingManager进行类型判断
          */
         user = query.<@Enhance User>find(User.class).where().co(User::getUsername, "").and()
             .configure(c -> c.setIgnoreStrategy(null)).co((SerializableStringSupplier) null).single();
@@ -320,6 +319,20 @@ public class DslTest {
             .asc((e0, e1) -> e0.property(Student2::getId).property(Student2::getName, Student2::getTeacherId))
             .desc((e0, e1) -> e0.property(Student2::getId).property(Student2::getName, Student2::getTeacherId))
             .asc2(User::getUsername);
+
+        // IMPLSOON 后续来加入join多次后的sort方法优化方案
+        // query.find(Student2.class).join(User.class).on(Student2::getUserId).sort((s, e0, e1) ->
+        //      s.asc(e0.property(Student2::getName, Student2::getTeacherId), e1.property(User::getUsername))
+        //      .desc(e1.property(User::getId))
+        //      .asc(e1.property(User::getUsername))
+        // ));
+        // TODO 如果查询对象没有重复的（例如：user join user_info join user, user重复，只指定类型不指定序号，会找不到是哪一个）
+        // 则下面方式能正确运行，否则抛出异常，失去了编译期的类型检查
+        // query.find(Student2.class).join(User.class).on(Student2::getUserId).sort((s, e0, e1) ->
+        //      s.asc(Student2::getName, Student2::getTeacherId, User::getUsername)
+        //      .desc(User::getId)
+        //      .asc(User::getUsername)
+        // ));
 
         query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
             .sort().asc((e0, e1, e2, e3, e4) -> e0.property(Tree::getId)).asc5(Tree::getName);
