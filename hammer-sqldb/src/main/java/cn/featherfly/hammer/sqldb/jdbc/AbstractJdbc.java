@@ -49,10 +49,8 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.ResultSetConcurrency;
 import cn.featherfly.common.db.metadata.ResultSetType;
-import cn.featherfly.common.db.wrapper.AutoCloseConnection;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
@@ -383,12 +381,10 @@ public abstract class AbstractJdbc implements Jdbc {
             }
             return result;
         } catch (SQLException e) {
-            //            releaseConnection(connection, ds);
             releaseConnection(connection);
             throw new JdbcException(Strings.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
                 e);
         } finally {
-            //            releaseConnection(connection, getDataSource());
             releaseConnection(connection);
         }
     }
@@ -814,7 +810,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Serializable>> queryEach(String sql, Map<String, Serializable> args) {
+    public JdbcRowIterable<Map<String, Serializable>> queryEach(String sql, Map<String, Serializable> args) {
         return queryEach(sql, new MapRowMapper(manager), args);
     }
 
@@ -822,7 +818,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Serializable>> queryEach(String sql, Serializable... args) {
+    public JdbcRowIterable<Map<String, Serializable>> queryEach(String sql, Serializable... args) {
         return queryEach(sql, new MapRowMapper(manager), args);
     }
 
@@ -830,10 +826,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
+    public <T> JdbcRowIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
-            return new RowIterable<>(null, rowMapper);
+            return new JdbcRowIterable<>(null, rowMapper);
         }
         logger.debug("sql -> {}, args -> {}", sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -844,33 +840,37 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Serializable... args) {
+    public <T> JdbcRowIterable<T> queryEach(String sql, RowMapper<T> rowMapper, Serializable... args) {
         sql = Lang.ifNotNull(sql, String::trim);
         if (Lang.isEmpty(sql)) {
-            return new RowIterable<>(null, rowMapper);
+            return new JdbcRowIterable<>(null, rowMapper);
         }
         return queryEach0(sql, rowMapper, args);
     }
 
-    private <T> AutoCloseableIterable<T> queryEach0(String sql, RowMapper<T> rowMapper, Serializable... args) {
+    private <T> JdbcRowIterable<T> queryEach0(String sql, RowMapper<T> rowMapper, Serializable... args) {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
         logger.debug("execute sql -> {}\n args -> {}", sql, args);
-        Connection con = new AutoCloseConnection(getConnection());
+        Connection con = getConnection();
         try {
             PreparedStatement prep = con.prepareStatement(sql);
             setParams(prep, args);
             ResultSet rs = prep.executeQuery();
             SqlResultSet sqlResultSet = new SqlResultSet(rs);
-            return new RowIterable<>(sqlResultSet, rowMapper);
+            return new JdbcRowIterable<>(sqlResultSet, rowMapper);
             //                return postHandle(execution.setOriginalResult(list), sql, args);
         } catch (SQLException e) {
             releaseConnection(con);
             throw new JdbcException(Strings.format("queryEach: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
         } finally {
-            // 延迟加载数据，需要调用者手动释放（MulitiQuery.close()）
-            //            releaseConnection(con);
+            // 不能关闭prep,因为会级联关闭ResultSet，不知道是api定义如此，还是连接池的特定实现
+            //            if (!(prep instanceof AbstractCascadedCloseStatement)) {
+            //                // 因为AbstractCascadedCloseStatement会级联关闭打开的ResultSet
+            //                JdbcUtils.close(prep);
+            //            }
+            releaseConnection(con);
         }
     }
 
@@ -878,7 +878,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Map<String, Serializable> args) {
+    public <T> JdbcRowIterable<T> queryEach(String sql, Class<T> elementType, Map<String, Serializable> args) {
         return queryEach(sql, getTypeMapper(elementType), args);
     }
 
@@ -886,7 +886,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, Serializable... args) {
+    public <T> JdbcRowIterable<T> queryEach(String sql, Class<T> elementType, Serializable... args) {
         return queryEach(sql, getTypeMapper(elementType), args);
     }
 
@@ -894,8 +894,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Tuple2<String, String> prefixes, Map<String, Serializable> args) {
+    public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+        Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
             elementType2);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -906,7 +906,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
+    public <T1, T2, T3> JdbcRowIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes,
         Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}", sql, args,
@@ -920,7 +920,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
+    public <T1, T2, T3, T4> JdbcRowIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Map<String, Serializable> args) {
         logger.debug(
@@ -935,10 +935,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes,
-        Map<String, Serializable> args) {
+    public <T1, T2, T3, T4, T5> JdbcRowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
@@ -951,7 +950,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
+    public <T1, T2, T3, T4, T5, T6> JdbcRowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
         Map<String, Serializable> args) {
@@ -967,8 +966,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Tuple2<String, String> prefixes, Serializable... args) {
+    public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
+        Tuple2<String, String> prefixes, Serializable... args) {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes, manager),
             args);
@@ -978,7 +977,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
+    public <T1, T2, T3> JdbcRowIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
             ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
@@ -988,7 +987,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
+    public <T1, T2, T3, T4> JdbcRowIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
@@ -999,9 +998,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
-        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
+    public <T1, T2, T3, T4, T5> JdbcRowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
+        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
@@ -1013,7 +1012,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
+    public <T1, T2, T3, T4, T5, T6> JdbcRowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> queryEach(String sql,
         Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Class<T5> elementType5, Class<T6> elementType6, Tuple6<String, String, String, String, String, String> prefixes,
         Serializable... args) {
@@ -1025,7 +1024,7 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     //    @Override
-    //    public <T> AutoCloseableIterable<T> queryEach(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
+    //    public <T> RowIterable<T> queryEach(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
     //        SQLType sqlType = manager.getSqlType(elementType);
     //        RowMapper<T> rowMapper = null;
     //        if (sqlType == null) {
@@ -1972,7 +1971,6 @@ public abstract class AbstractJdbc implements Jdbc {
             postHandle(execution);
             return call.getUpdateCount();
         } catch (SQLException e) {
-            //            releaseConnection(con, dataSource);
             releaseConnection(con);
             con = null;
             throw new JdbcException(
@@ -2027,7 +2025,6 @@ public abstract class AbstractJdbc implements Jdbc {
             postHandle(execution);
             return call.getUpdateCount();
         } catch (SQLException e) {
-            //            releaseConnection(con, dataSource);
             releaseConnection(con);
             con = null;
             throw new JdbcException(
@@ -2119,7 +2116,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(procedure, args);
         procedure = execution.getExecution();
         args = execution.getParams();
-        Connection con = new AutoCloseConnection(getConnection());
+        Connection con = getConnection();
         try {
             CallableStatement call = con.prepareCall(procedure);
             Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
@@ -2134,8 +2131,7 @@ public abstract class AbstractJdbc implements Jdbc {
                 Strings.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
                 e);
         } finally {
-            // 延迟加载数据，需要调用者手动释放（MulitiQuery.close()）
-            //            releaseConnection(con);
+            releaseConnection(con);
         }
     }
 
@@ -2631,6 +2627,20 @@ public abstract class AbstractJdbc implements Jdbc {
             return new SingleColumnRowMapper<>(elementType, manager);
         } else {
             return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager);
+        }
+    }
+
+    /**
+     * Release connection.
+     *
+     * @param res the res
+     * @throws SQLException the SQL exception
+     */
+    protected void releaseConnection(ResultSet res) {
+        try {
+            releaseConnection(res.getStatement().getConnection());
+        } catch (SQLException e) {
+            throw new JdbcException(e);
         }
     }
 

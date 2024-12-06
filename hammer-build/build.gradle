@@ -8,13 +8,13 @@ allprojects {
         //log4japi = "org.apache.logging.log4j:log4j-api:${lv}"
         log4jcore = "org.apache.logging.log4j:log4j-core:${lv}"
         
-        sv = "5.3.36"
+        sv = "5.3.39"
     }
 
     dependencies {
         api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
 //        api group: 'cn.featherfly.common', name: 'common-api', version: '0.5.0'
-        // api group: 'cn.featherfly.common', name: 'common-core', version: '1.12.0'
+        api group: 'cn.featherfly.common', name: 'common-core', version: '1.13.1-SNAPSHOT'
 
         testImplementation group: 'org.testng', name: 'testng', version: '7.5.1'
         testImplementation group: 'com.google.inject', name: 'guice', version: '4.2.3'

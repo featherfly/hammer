@@ -9,7 +9,9 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -17,16 +19,16 @@ import javax.annotation.Nonnull;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapper.SqlResultSet;
-import cn.featherfly.common.lang.AutoCloseableIterable;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
- * MapRowIterable.
+ * JdbcRowIterable.
  *
  * @author zhongj
  * @param <T> the generic type
  */
-public class RowIterable<T> implements AutoCloseableIterable<T> {
+public class JdbcRowIterable<T> implements RowIterable<T> {
 
     private @Nonnull SqlResultSet res;
 
@@ -38,7 +40,7 @@ public class RowIterable<T> implements AutoCloseableIterable<T> {
      * @param res the res
      * @param mapper the mapper
      */
-    public RowIterable(SqlResultSet res, RowMapper<T> mapper) {
+    public JdbcRowIterable(SqlResultSet res, RowMapper<T> mapper) {
         super();
         this.res = res;
         this.mapper = mapper;
@@ -105,7 +107,7 @@ public class RowIterable<T> implements AutoCloseableIterable<T> {
                 throw new NoSuchElementException();
             }
             if (!forward) { // 表示没有调用hasNext，即没有调用res.next()
-                hasNext(); // 手动调用，
+                hasNext(); // 手动调用
             }
 
             if (!hasNext) { // 表示没有数据了
@@ -121,11 +123,18 @@ public class RowIterable<T> implements AutoCloseableIterable<T> {
      * {@inheritDoc}
      */
     @Override
-    public void close() throws Exception {
-        if (!res.getResultSet().isClosed() && !res.getResultSet().getStatement().isClosed()
-            && !res.getResultSet().getStatement().getConnection().isClosed()) {
-            // AutoCloseConnection, auto close it create object
-            res.getResultSet().getStatement().getConnection().close();
+    public void close() throws JdbcException {
+        try {
+            ResultSet resultSet = res.getResultSet();
+            if (!resultSet.isClosed()) {
+                Statement stat = resultSet.getStatement();
+                resultSet.close();
+                if (stat != null && !stat.isClosed()) {
+                    stat.close();
+                }
+            }
+        } catch (SQLException e) {
+            throw new JdbcException(e);
         }
     }
 }
