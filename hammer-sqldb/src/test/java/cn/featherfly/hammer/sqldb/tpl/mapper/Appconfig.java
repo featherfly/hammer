@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.sql.DataSource;
 import javax.validation.Validation;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.context.annotation.Bean;
@@ -62,12 +61,7 @@ public class Appconfig extends JdbcTestBase {
 
     @Bean
     public DataSource DataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl(MYSQL_URL);
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUsername(MYSQL_USER);
-        dataSource.setPassword(MYSQL_PWD);
-        return dataSource;
+        return initDataSource();
     }
 
     @Bean

@@ -12,19 +12,18 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import cn.featherfly.common.bean.PropertyAccessorFactory;
+import cn.featherfly.common.db.SqlUtils;
+import cn.featherfly.common.repository.ExecutionExecutorEx;
+import cn.featherfly.common.repository.RowIterable;
+import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
-
-import cn.featherfly.common.bean.PropertyAccessorFactory;
-import cn.featherfly.common.db.SqlUtils;
-import cn.featherfly.common.lang.AutoCloseableIterable;
-import cn.featherfly.common.repository.ExecutionExecutorEx;
-import cn.featherfly.common.repository.mapper.RowMapper;
-import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.common.structure.page.SimplePaginationResults;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
 
 /**
@@ -959,7 +958,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Serializable>> each(String execution, Map<String, Serializable> params) {
+    public RowIterable<Map<String, Serializable>> each(String execution, Map<String, Serializable> params) {
         return jdbc.queryEach(execution, params);
     }
 
@@ -967,7 +966,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Map<String, Serializable> params) {
+    public <T> RowIterable<T> each(String execution, Class<T> mappingType, Map<String, Serializable> params) {
         return jdbc.queryEach(execution, mappingType, params);
     }
 
@@ -975,8 +974,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper,
-        Map<String, Serializable> params) {
+    public <T> RowIterable<T> each(String execution, RowMapper<T> rowMapper, Map<String, Serializable> params) {
         return jdbc.queryEach(execution, rowMapper, params);
     }
 
@@ -984,8 +982,8 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Serializable>> each(String execution, Map<String, Serializable> params,
-        int offset, int limit) {
+    public RowIterable<Map<String, Serializable>> each(String execution, Map<String, Serializable> params, int offset,
+        int limit) {
         SqlPageQuery<Map<String, Serializable>> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), pageQuery.getParams());
     }
@@ -994,8 +992,8 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Map<String, Serializable> params,
-        int offset, int limit) {
+    public <T> RowIterable<T> each(String execution, Class<T> mappingType, Map<String, Serializable> params, int offset,
+        int limit) {
         return each(execution, beanMapper(mappingType), params, offset, limit);
     }
 
@@ -1003,7 +1001,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper, Map<String, Serializable> params,
+    public <T> RowIterable<T> each(String execution, RowMapper<T> rowMapper, Map<String, Serializable> params,
         int offset, int limit) {
         SqlPageQuery<Map<String, Serializable>> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), rowMapper, pageQuery.getParams());
@@ -1013,8 +1011,8 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Tuple2<String, String> prefixes, Map<String, Serializable> params) {
+    public <T1, T2> RowIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1, Class<T2> mappingType2,
+        Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, params);
     }
 
@@ -1022,9 +1020,8 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset,
-        int limit) {
+    public <T1, T2> RowIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1, Class<T2> mappingType2,
+        Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         SqlPageQuery<Map<String, Serializable>> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, prefixes, pageQuery.getParams());
     }
@@ -1033,7 +1030,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes,
         Map<String, Serializable> params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, prefixes, params);
@@ -1043,7 +1040,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes,
         Map<String, Serializable> params, int offset, int limit) {
         SqlPageQuery<Map<String, Serializable>> pageQuery = sqlPageQuery(execution, params, offset, limit);
@@ -1055,7 +1052,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, prefixes, params);
@@ -1065,7 +1062,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         SqlPageQuery<Map<String, Serializable>> pageQuery = sqlPageQuery(execution, params, offset, limit);
@@ -1077,10 +1074,9 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
-        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes,
-        Map<String, Serializable> params) {
+    public <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4, Class<T5> mappingType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, mappingType5, prefixes,
             params);
     }
@@ -1089,10 +1085,10 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
-        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes,
-        Map<String, Serializable> params, int offset, int limit) {
+    public <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4, Class<T5> mappingType5,
+        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
+        int limit) {
         SqlPageQuery<Map<String, Serializable>> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
             prefixes, pageQuery.getParams());
@@ -1102,7 +1098,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+    public <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
         Map<String, Serializable> params) {
@@ -1114,7 +1110,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+    public <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
         Map<String, Serializable> params, int offset, int limit) {
@@ -1127,7 +1123,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Serializable>> each(String execution, Serializable... params) {
+    public RowIterable<Map<String, Serializable>> each(String execution, Serializable... params) {
         return jdbc.queryEach(execution, params);
     }
 
@@ -1135,7 +1131,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Serializable... params) {
+    public <T> RowIterable<T> each(String execution, Class<T> mappingType, Serializable... params) {
         return jdbc.queryEach(execution, mappingType, params);
     }
 
@@ -1143,7 +1139,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper, Serializable... params) {
+    public <T> RowIterable<T> each(String execution, RowMapper<T> rowMapper, Serializable... params) {
         return jdbc.queryEach(execution, rowMapper, params);
     }
 
@@ -1151,8 +1147,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Serializable>> each(String execution, Serializable[] params, int offset,
-        int limit) {
+    public RowIterable<Map<String, Serializable>> each(String execution, Serializable[] params, int offset, int limit) {
         SqlPageQuery<Serializable[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), pageQuery.getParams());
     }
@@ -1161,7 +1156,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, Class<T> mappingType, Serializable[] params, int offset,
+    public <T> RowIterable<T> each(String execution, Class<T> mappingType, Serializable[] params, int offset,
         int limit) {
         return each(execution, beanMapper(mappingType), params, offset, limit);
     }
@@ -1170,8 +1165,8 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(String execution, RowMapper<T> rowMapper, Serializable[] params,
-        int offset, int limit) {
+    public <T> RowIterable<T> each(String execution, RowMapper<T> rowMapper, Serializable[] params, int offset,
+        int limit) {
         SqlPageQuery<Serializable[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), rowMapper, pageQuery.getParams());
     }
@@ -1180,8 +1175,8 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Tuple2<String, String> prefixes, Serializable... params) {
+    public <T1, T2> RowIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1, Class<T2> mappingType2,
+        Tuple2<String, String> prefixes, Serializable... params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, prefixes, params);
     }
 
@@ -1189,8 +1184,8 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> AutoCloseableIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1,
-        Class<T2> mappingType2, Tuple2<String, String> prefixes, Serializable[] params, int offset, int limit) {
+    public <T1, T2> RowIterable<Tuple2<T1, T2>> each(String execution, Class<T1> mappingType1, Class<T2> mappingType2,
+        Tuple2<String, String> prefixes, Serializable[] params, int offset, int limit) {
         SqlPageQuery<Serializable[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, prefixes, pageQuery.getParams());
     }
@@ -1199,7 +1194,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes,
         Serializable... params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, prefixes, params);
@@ -1209,7 +1204,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3> AutoCloseableIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3> RowIterable<Tuple3<T1, T2, T3>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Tuple3<String, String, String> prefixes, Serializable[] params,
         int offset, int limit) {
         SqlPageQuery<Serializable[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
@@ -1221,7 +1216,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Tuple4<String, String, String, String> prefixes, Serializable... params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, prefixes, params);
@@ -1231,7 +1226,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4> AutoCloseableIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
+    public <T1, T2, T3, T4> RowIterable<Tuple4<T1, T2, T3, T4>> each(String execution, Class<T1> mappingType1,
         Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Tuple4<String, String, String, String> prefixes, Serializable[] params, int offset, int limit) {
         SqlPageQuery<Serializable[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
@@ -1243,9 +1238,9 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
-        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Serializable... params) {
+    public <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4, Class<T5> mappingType5,
+        Tuple5<String, String, String, String, String> prefixes, Serializable... params) {
         return jdbc.queryEach(execution, mappingType1, mappingType2, mappingType3, mappingType4, mappingType5, prefixes,
             params);
     }
@@ -1254,10 +1249,9 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> AutoCloseableIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution,
-        Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
-        Class<T5> mappingType5, Tuple5<String, String, String, String, String> prefixes, Serializable[] params,
-        int offset, int limit) {
+    public <T1, T2, T3, T4, T5> RowIterable<Tuple5<T1, T2, T3, T4, T5>> each(String execution, Class<T1> mappingType1,
+        Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4, Class<T5> mappingType5,
+        Tuple5<String, String, String, String, String> prefixes, Serializable[] params, int offset, int limit) {
         SqlPageQuery<Serializable[]> pageQuery = sqlPageQuery(execution, params, offset, limit);
         return jdbc.queryEach(pageQuery.getSql(), mappingType1, mappingType2, mappingType3, mappingType4, mappingType5,
             prefixes, pageQuery.getParams());
@@ -1267,7 +1261,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+    public <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
         Serializable... params) {
@@ -1279,7 +1273,7 @@ public class JdbcExecutor implements ExecutionExecutorEx<String> {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5, T6> AutoCloseableIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
+    public <T1, T2, T3, T4, T5, T6> RowIterable<Tuple6<T1, T2, T3, T4, T5, T6>> each(String execution,
         Class<T1> mappingType1, Class<T2> mappingType2, Class<T3> mappingType3, Class<T4> mappingType4,
         Class<T5> mappingType5, Class<T6> mappingType6, Tuple6<String, String, String, String, String, String> prefixes,
         Serializable[] params, int offset, int limit) {

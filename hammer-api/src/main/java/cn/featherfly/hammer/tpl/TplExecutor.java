@@ -7,9 +7,9 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
-import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.Params;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
@@ -1402,7 +1402,7 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param params the params
      * @return map list
      */
-    AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params);
+    RowIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params);
 
     /**
      * query each, use query str in template find with executeId.
@@ -1413,7 +1413,7 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param params the params
      * @return entity list
      */
-    <T> AutoCloseableIterable<T> each(String tplExecuteId, Class<T> mappingType, Map<String, Serializable> params);
+    <T> RowIterable<T> each(String tplExecuteId, Class<T> mappingType, Map<String, Serializable> params);
 
     /**
      * query each, use query str in template find with executeId.
@@ -1424,7 +1424,7 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param params the params
      * @return entity list
      */
-    <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params);
+    <T> RowIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params);
 
     /**
      * query each, use query str in template find with executeId.
@@ -1435,8 +1435,8 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param limit the limit
      * @return map list
      */
-    AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
-        int offset, int limit);
+    RowIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params, int offset,
+        int limit);
 
     /**
      * query each, use query str in template find with executeId.
@@ -1449,8 +1449,8 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param limit the limit
      * @return entity list
      */
-    <T> AutoCloseableIterable<T> each(String tplExecuteId, Class<T> mappingType, Map<String, Serializable> params,
-        int offset, int limit);
+    <T> RowIterable<T> each(String tplExecuteId, Class<T> mappingType, Map<String, Serializable> params, int offset,
+        int limit);
 
     /**
      * query each, use query str in template find with executeId.
@@ -1463,8 +1463,8 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param limit the limit
      * @return entity list
      */
-    <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params,
-        int offset, int limit);
+    <T> RowIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params, int offset,
+        int limit);
 
     /**
      * query each, use query str in template find with executeId.
@@ -1476,8 +1476,8 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param page the page
      * @return entity list
      */
-    default <T> AutoCloseableIterable<T> each(String tplExecuteId, Class<T> mappingType,
-        Map<String, Serializable> params, Page page) {
+    default <T> RowIterable<T> each(String tplExecuteId, Class<T> mappingType, Map<String, Serializable> params,
+        Page page) {
         Limit limit = new Limit(page);
         return each(tplExecuteId, mappingType, params, limit.getOffset(), limit.getLimit());
     }
@@ -1492,8 +1492,8 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param page the page
      * @return entity list
      */
-    default <T> AutoCloseableIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper,
-        Map<String, Serializable> params, Page page) {
+    default <T> RowIterable<T> each(String tplExecuteId, RowMapper<T> rowMapper, Map<String, Serializable> params,
+        Page page) {
         Limit limit = new Limit(page);
         return each(tplExecuteId, rowMapper, params, limit.getOffset(), limit.getLimit());
     }
@@ -1506,7 +1506,7 @@ public interface TplExecutor extends ExecutionExecutorEx<TplExecuteId> {
      * @param page the page
      * @return map list
      */
-    default AutoCloseableIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
+    default RowIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
         Page page) {
         Limit limit = new Limit(page);
         return each(tplExecuteId, params, limit.getOffset(), limit.getLimit());

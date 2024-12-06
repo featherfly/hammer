@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutorEx;
 import cn.featherfly.common.repository.ParamedExecutionExecutor;
 import cn.featherfly.common.repository.ParamedMappedExecutor;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.repository.mapper.TupleMapperBuilder;
 import cn.featherfly.common.tuple.Tuple2;
@@ -250,7 +250,7 @@ public class ArrayParamedExecutionExecutor<E1 extends ExecutionExecutorEx<E2>, E
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<Map<String, Serializable>> each() {
+    public RowIterable<Map<String, Serializable>> each() {
         return executor.each(execution, params);
     }
 
@@ -258,7 +258,7 @@ public class ArrayParamedExecutionExecutor<E1 extends ExecutionExecutorEx<E2>, E
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(Class<T> mappingType) {
+    public <T> RowIterable<T> each(Class<T> mappingType) {
         return executor.each(execution, mappingType, params);
     }
 
@@ -266,7 +266,7 @@ public class ArrayParamedExecutionExecutor<E1 extends ExecutionExecutorEx<E2>, E
      * {@inheritDoc}
      */
     @Override
-    public <T> AutoCloseableIterable<T> each(RowMapper<T> rowMapper) {
+    public <T> RowIterable<T> each(RowMapper<T> rowMapper) {
         return executor.each(execution, rowMapper, params);
     }
 }

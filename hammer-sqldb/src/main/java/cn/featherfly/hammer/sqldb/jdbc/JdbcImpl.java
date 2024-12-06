@@ -111,7 +111,7 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * {@inheritDoc}
      */
     @Override
-    public void close() {
+    public void close() throws JdbcException {
         JdbcUtils.close(connection);
     }
 }

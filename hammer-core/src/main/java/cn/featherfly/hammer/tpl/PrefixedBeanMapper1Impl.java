@@ -12,8 +12,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import cn.featherfly.common.lang.AutoCloseableIterable;
 import cn.featherfly.common.repository.ExecutionExecutorEx;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
 import cn.featherfly.common.repository.mapper.PrefixedBeanMapper2;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -138,7 +138,7 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutorEx<E2>, E2, T1>
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<T1> each() {
+    public RowIterable<T1> each() {
         if (params instanceof Map) {
             return executor.each(execution, type1, getParamsMap());
         } else {
@@ -150,7 +150,7 @@ public class PrefixedBeanMapper1Impl<E1 extends ExecutionExecutorEx<E2>, E2, T1>
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseableIterable<T1> each(int offset, int limit) {
+    public RowIterable<T1> each(int offset, int limit) {
         if (params instanceof Map) {
             return executor.each(execution, type1, getParamsMap(), offset, limit);
         } else {
