@@ -21,7 +21,7 @@ public interface Subtract<N extends Number, R> {
      * Subtract.
      *
      * @param value the value
-     * @return the r
+     * @return subtracted object
      */
     R subtract(N value);
 }

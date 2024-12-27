@@ -21,7 +21,7 @@ public interface Add<N extends Number, R> {
      * Adds the.
      *
      * @param value the value
-     * @return the r
+     * @return added object
      */
     R add(N value);
 }

@@ -21,7 +21,7 @@ public interface Multiply<N extends Number, R> {
      * Multiply.
      *
      * @param value the value
-     * @return the r
+     * @return multiplied object
      */
     R multiply(N value);
 }

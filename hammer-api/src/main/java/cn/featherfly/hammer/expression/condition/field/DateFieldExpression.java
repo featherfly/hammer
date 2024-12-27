@@ -5,6 +5,7 @@ import java.util.Date;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.function.date.DateTimeFunctions;
 
 /**
  * Date field expression.
@@ -19,6 +20,7 @@ public interface DateFieldExpression<D extends Date, C extends ConditionExpressi
     , FieldEqualsExpression<C, L, D>, FieldNotEqualsExpression<C, L, D>, FieldInExpression<C, L, D>,
     FieldNotInExpression<C, L, D>, FieldLessEqualsExpression<C, L, D>, FiledLessThanExpression<C, L, D>,
     FieldGreatEqualsExpression<C, L, D>, FieldGreatThanExpression<C, L, D>, FieldIsNullExpression<C, L>,
-    FieldIsNotNullExpression<C, L>, FieldExpression {
+    FieldIsNotNullExpression<C, L>, FieldExpression,
+    DateTimeFunctions<NumberFieldExpression<Integer, C, L>, StringFieldExpression<C, L>> {
 
 }

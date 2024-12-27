@@ -7,6 +7,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.operator.Function;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -33,6 +34,60 @@ public class StringFieldExpressionMulitiRepositoryImpl<C extends ConditionExpres
     public StringFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
         InternalMulitiCondition<L> expression) {
         super(index, name, expression);
+    }
+
+    /**
+     * Instantiates a new string field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param expression the expression
+     */
+    public StringFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name, Function function,
+        InternalMulitiCondition<L> expression) {
+        super(index, name, function, expression);
+    }
+
+    /**
+     * Instantiates a new string field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param argus the argus
+     * @param expression the expression
+     */
+    public StringFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name, Function function,
+        Object[] argus, InternalMulitiCondition<L> expression) {
+        super(index, name, function, argus, expression);
+    }
+
+    /**
+     * Instantiates a new string field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param expression the expression
+     */
+    public StringFieldExpressionMulitiRepositoryImpl(int index, String name, Function function,
+        InternalMulitiCondition<L> expression) {
+        super(index, name, function, expression);
+    }
+
+    /**
+     * Instantiates a new string field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param argus the argus
+     * @param expression the expression
+     */
+    public StringFieldExpressionMulitiRepositoryImpl(int index, String name, Function function, Object[] argus,
+        InternalMulitiCondition<L> expression) {
+        super(index, name, function, argus, expression);
     }
 
     /**

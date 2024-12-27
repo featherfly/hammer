@@ -7,7 +7,6 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.db.builder.model.CompositeConditionColumnElement;
 import cn.featherfly.common.db.builder.model.ConditionColumnElement;
-import cn.featherfly.common.db.builder.model.ParamedColumnElement;
 import cn.featherfly.common.db.builder.model.SqlElement;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.exception.UnsupportedException;
@@ -40,7 +39,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param queryAlias 查询别名
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlConditionExpressionBuilder(Dialect dialect, ParamedColumnElement name, Object value,
+    public SqlConditionExpressionBuilder(Dialect dialect, ColumnElement name, Object value,
         ComparisonOperator comparisonOperator, String queryAlias, Predicate<?> ignoreStrategy) {
         this(dialect, name, value, comparisonOperator, MatchStrategy.AUTO, queryAlias, ignoreStrategy);
     }
@@ -56,7 +55,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param queryAlias 查询别名
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlConditionExpressionBuilder(Dialect dialect, ParamedColumnElement name, Object value,
+    public SqlConditionExpressionBuilder(Dialect dialect, ColumnElement name, Object value,
         ComparisonOperator comparisonOperator, MatchStrategy matchStrategy, String queryAlias,
         Predicate<?> ignoreStrategy) {
         init(dialect, name, value, comparisonOperator, matchStrategy, queryAlias, ignoreStrategy);
@@ -71,7 +70,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param comparisonOperator 查询运算符（查询类型）
      * @param ignoreStrategy the ignore strategy
      */
-    public SqlConditionExpressionBuilder(Dialect dialect, ParamedColumnElement name, Object value,
+    public SqlConditionExpressionBuilder(Dialect dialect, ColumnElement name, Object value,
         ComparisonOperator comparisonOperator, Predicate<?> ignoreStrategy) {
         this(dialect, name, value, comparisonOperator, null, ignoreStrategy);
     }
@@ -131,29 +130,33 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
             @SuppressWarnings("unchecked")
             RepositoryAwareField<AliasRepository> f = (RepositoryAwareField<AliasRepository>) value;
             AliasRepository r = f.repository();
-            SqlElement se = new ColumnElement(dialect, f.name(), r.alias());
-            conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
-                queryAlias, ignoreStrategy);
+            SqlElement se = new ColumnElement(dialect, r.alias(), f.name());
+            conditionColumnElement =
+                new ConditionColumnElement(dialect, queryAlias, name, se, comparisonOperator, matchStrategy,
+                    ignoreStrategy);
         } else if (value instanceof Field) {
             Field f = (Field) value;
             SqlElement se = new ColumnElement(dialect, f.name());
-            conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
-                queryAlias, ignoreStrategy);
+            conditionColumnElement =
+                new ConditionColumnElement(dialect, queryAlias, name, se, comparisonOperator, matchStrategy,
+                    ignoreStrategy);
         } else if (value instanceof Expression) {
             SqlElement se = () -> ((Expression) value).expression();
             //            if (value instanceof ParamedExpression) {
             //                // YUFEI_TODO 还未实现带参数的情况
             //                Object param = ((ParamedExpression) value).getParam();
             //            }
-            conditionColumnElement = new ConditionColumnElement(dialect, name, se, comparisonOperator, matchStrategy,
-                queryAlias, ignoreStrategy);
+            conditionColumnElement =
+                new ConditionColumnElement(dialect, queryAlias, name, se, comparisonOperator, matchStrategy,
+                    ignoreStrategy);
         } else {
-            conditionColumnElement = new ConditionColumnElement(dialect, name, value, comparisonOperator, matchStrategy,
-                queryAlias, ignoreStrategy);
+            conditionColumnElement =
+                new ConditionColumnElement(dialect, queryAlias, name, value, comparisonOperator, matchStrategy,
+                    ignoreStrategy);
         }
     }
 
-    private void init(Dialect dialect, ParamedColumnElement name, Object value, ComparisonOperator comparisonOperator,
+    private void init(Dialect dialect, ColumnElement name, Object value, ComparisonOperator comparisonOperator,
         MatchStrategy matchStrategy, String queryAlias, Predicate<?> ignoreStrategy) {
         if (comparisonOperator == null) {
             throw new BuilderException(BuilderExceptionCode.createQueryOperatorNullCode());
@@ -162,25 +165,29 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
             @SuppressWarnings("unchecked")
             RepositoryAwareField<AliasRepository> f = (RepositoryAwareField<AliasRepository>) value;
             AliasRepository r = f.repository();
-            SqlElement se = new ColumnElement(dialect, f.name(), r.alias());
-            conditionColumnElement = new CompositeConditionColumnElement(dialect, name, se, comparisonOperator,
-                matchStrategy, queryAlias, ignoreStrategy);
+            SqlElement se = new ColumnElement(dialect, r.alias(), f.name());
+            conditionColumnElement =
+                new CompositeConditionColumnElement(dialect, queryAlias, name, se, comparisonOperator,
+                    matchStrategy, ignoreStrategy);
         } else if (value instanceof Field) {
             Field f = (Field) value;
             SqlElement se = new ColumnElement(dialect, f.name());
-            conditionColumnElement = new CompositeConditionColumnElement(dialect, name, se, comparisonOperator,
-                matchStrategy, queryAlias, ignoreStrategy);
+            conditionColumnElement =
+                new CompositeConditionColumnElement(dialect, queryAlias, name, se, comparisonOperator,
+                    matchStrategy, ignoreStrategy);
         } else if (value instanceof Expression) {
             SqlElement se = () -> ((Expression) value).expression();
             //            if (value instanceof ParamedExpression) {
             //                // YUFEI_TODO 还未实现带参数的情况
             //                Object param = ((ParamedExpression) value).getParam();
             //            }
-            conditionColumnElement = new CompositeConditionColumnElement(dialect, name, se, comparisonOperator,
-                matchStrategy, queryAlias, ignoreStrategy);
+            conditionColumnElement =
+                new CompositeConditionColumnElement(dialect, queryAlias, name, se, comparisonOperator,
+                    matchStrategy, ignoreStrategy);
         } else {
-            conditionColumnElement = new CompositeConditionColumnElement(dialect, name, value, comparisonOperator,
-                matchStrategy, queryAlias, ignoreStrategy);
+            conditionColumnElement =
+                new CompositeConditionColumnElement(dialect, queryAlias, name, value, comparisonOperator,
+                    matchStrategy, ignoreStrategy);
         }
     }
 
@@ -200,7 +207,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
      * @param field the field
      * @return the builder
      */
-    public static Builder field(ParamedColumnElement field) {
+    public static Builder field(ColumnElement field) {
         return new Builder(field);
     }
 
@@ -220,7 +227,7 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
             this.field = field;
         }
 
-        private Builder(ParamedColumnElement field) {
+        private Builder(ColumnElement field) {
             this.field = field;
         }
 
@@ -228,8 +235,8 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
             if (field instanceof String) {
                 return new SqlConditionExpressionBuilder(dialect, (String) field, value, comparisonOperator,
                     matchStrategy, tableAlias, ignoreStrategy);
-            } else if (field instanceof ParamedColumnElement) {
-                return new SqlConditionExpressionBuilder(dialect, (ParamedColumnElement) field, value,
+            } else if (field instanceof ColumnElement) {
+                return new SqlConditionExpressionBuilder(dialect, (ColumnElement) field, value,
                     comparisonOperator, matchStrategy, tableAlias, ignoreStrategy);
             } else {
                 throw new UnsupportedException("field type " + field.getClass().getName());

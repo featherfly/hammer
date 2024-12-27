@@ -15,7 +15,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.db.builder.model.ParamedColumnElement;
+import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
@@ -68,7 +68,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L ba(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V min, V max,
+    <V> L ba(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V min, V max,
         BiPredicate<V, V> ignoreStrategy);
 
     /**
@@ -83,7 +83,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy1Object paramsInName,
      * @return LogicExpression
      */
-    <V> L ba(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V min, V max,
+    <V> L ba(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V min, V max,
         Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L nba(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V min, V max,
+    <V> L nba(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V min, V max,
         BiPredicate<V, V> ignoreStrategy);
 
     /**
@@ -141,7 +141,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L nba(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V min, V max,
+    <V> L nba(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V min, V max,
         Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -215,7 +215,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L eq(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * equals.
@@ -227,7 +227,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L eq(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -240,7 +240,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L eq(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -254,7 +254,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L eq(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -269,7 +269,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L eq(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -343,7 +343,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L ne(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * not equals.
@@ -355,7 +355,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L ne(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -368,7 +368,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L ne(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -382,7 +382,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L ne(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -397,7 +397,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L ne(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -431,7 +431,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @return LogicExpression
      */
     <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
-        ParamedColumnElement name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
+        ColumnElement name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -459,7 +459,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L sw(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L sw(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     /**
@@ -486,7 +486,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nsw(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L nsw(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -515,7 +515,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L co(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     /**
@@ -542,7 +542,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nco(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L nco(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -571,7 +571,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L ew(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     /**
@@ -598,7 +598,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L newv(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L newv(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -627,7 +627,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lk(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L lk(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     /**
@@ -654,7 +654,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nl(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, String value,
+    L nl(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, String value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -728,7 +728,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L in(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * in.
@@ -740,7 +740,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L in(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -753,7 +753,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L in(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -767,7 +767,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L in(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L in(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -782,7 +782,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L in(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L in(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -856,7 +856,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L ni(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * not in.
@@ -868,7 +868,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L ni(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -881,7 +881,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L ni(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -895,7 +895,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L ni(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -910,7 +910,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, R value,
+    <R> L ni(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1006,7 +1006,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L ge(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great equals.
@@ -1018,7 +1018,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L ge(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -1031,7 +1031,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L ge(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -1045,7 +1045,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L ge(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L ge(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -1060,7 +1060,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L ge(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L ge(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1134,7 +1134,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L gt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * great than.
@@ -1146,7 +1146,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L gt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -1159,7 +1159,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L gt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -1173,7 +1173,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L gt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L gt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -1188,7 +1188,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L gt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L gt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1262,7 +1262,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L le(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * less equals.
@@ -1274,7 +1274,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L le(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -1287,7 +1287,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L le(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -1301,7 +1301,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L le(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L le(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -1316,7 +1316,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L le(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L le(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1390,7 +1390,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, int value, IntPredicate ignoreStrategy);
+    L lt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, int value, IntPredicate ignoreStrategy);
 
     /**
      * less than.
@@ -1402,7 +1402,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, long value,
+    L lt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, long value,
         LongPredicate ignoreStrategy);
 
     /**
@@ -1415,7 +1415,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, double value,
+    L lt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, double value,
         DoublePredicate ignoreStrategy);
 
     /**
@@ -1429,7 +1429,7 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L lt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L lt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -1444,6 +1444,6 @@ public interface InternalMulitiEntityCondition<L> extends InternalMulitiConditio
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L lt(AtomicInteger index, PropertyMapping<?> pm, ParamedColumnElement name, V value,
+    <V> L lt(AtomicInteger index, PropertyMapping<?> pm, ColumnElement name, V value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 }

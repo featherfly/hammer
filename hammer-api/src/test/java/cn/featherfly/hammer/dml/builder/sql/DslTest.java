@@ -112,6 +112,16 @@ public class DslTest {
         localTimeList = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).valueList();
         dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).valueList();
         //        dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).list();
+
+        // IMPLSOON 加入fetch映射
+        // int year = query.find(User.class).fetch(User::getLocalDateTime).getYear().where().eq(User::getId, 1).value();
+        // Tuple3<Integer, String, String> user = query.find(User.class)
+        //   .fetch(User::getId, User::getName).fetch(f -> f.property(User::getLocalDateTime).format("%Y-%M-%d"))
+        //   .where().eq(User::getId, 1).singleTuple();
+        // Tuple3<Integer, String, LocalDateTime> user = query.find(User.class).fetch(User::getId, User::getName, User::getLocalDateTime)
+        //   .where().eq(User::getId, 1).singleTuple();
+        // query.find("user").fetch("c1", "c2", "c3", "c4").limit(1)
+        //   .singleTuple(int.class, int.class, long.class, String.class);
     }
 
     public void entityQueryFetchMoreThanOne() {

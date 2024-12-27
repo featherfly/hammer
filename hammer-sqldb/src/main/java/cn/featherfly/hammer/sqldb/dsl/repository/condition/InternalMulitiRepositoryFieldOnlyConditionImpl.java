@@ -8,10 +8,9 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.repository.condition;
 
+import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.tuple.Tuple1;
 import cn.featherfly.common.tuple.Tuples;
-
-import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyLogicExpression;
@@ -23,18 +22,19 @@ import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlRelation;
  *
  * @author zhongj
  * @param <C2> the generic type
- * @param <S>  the generic type
- * @param <B>  the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 public class InternalMulitiRepositoryFieldOnlyConditionImpl<C2 extends ConditionConfig<C2>,
-        S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
-        AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression, Tuple1<Integer>, C2, S, B>
-        implements RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression {
+    S extends RepositorySqlRelation<S, B>, B extends SqlBuilder> extends
+    AbstractMulitiRepositorySqlConditionsGroupExpressionBase<RepositoryFieldOnlyExpression,
+        RepositoryFieldOnlyLogicExpression, Tuple1<Integer>, C2, S, B>
+    implements RepositoryFieldOnlyExpression, RepositoryFieldOnlyLogicExpression {
 
     /**
      * Instantiates a new internal muliti repository condition impl.
      *
-     * @param index              the index
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     public InternalMulitiRepositoryFieldOnlyConditionImpl(int index, S repositoryRelation) {
@@ -44,12 +44,12 @@ public class InternalMulitiRepositoryFieldOnlyConditionImpl<C2 extends Condition
     /**
      * Instantiates a new internal muliti repository condition impl.
      *
-     * @param parent             the parent
-     * @param index              the index
+     * @param parent the parent
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     InternalMulitiRepositoryFieldOnlyConditionImpl(RepositoryFieldOnlyLogicExpression parent, int index,
-            S repositoryRelation) {
+        S repositoryRelation) {
         super(parent, index, repositoryRelation);
     }
 

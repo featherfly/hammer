@@ -10,7 +10,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.db.builder.model.ParamedColumnElement;
+import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -230,7 +230,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
      */
     @Override
     public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
-        ParamedColumnElement name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        ColumnElement name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return eqOrNe(comparisonOperator, pm, name, value, getAlias(index), matchStrategy, ignoreStrategy);
     }
 
@@ -238,7 +238,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
      * {@inheritDoc}
      */
     @Override
-    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, ParamedColumnElement field, R value,
+    public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, ColumnElement field, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         // IMPLSOON 未实现
         throw new NotImplementedException();
@@ -274,7 +274,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     //    }
 
     private <V> L eqOrNeEmbedded(ComparisonOperator comparisonOperator, JdbcPropertyMapping propertyMapping,
-        ParamedColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
+        ColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         List<JdbcPropertyMapping> propertyMappings = propertyMapping.getPropertyMappings();
         L logic = null;
@@ -301,7 +301,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     }
 
     private <V> L eqOrNeToOne(ComparisonOperator comparisonOperator, PropertyMapping<?> joinFromPropertyMapping,
-        ParamedColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
+        ColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         JdbcClassMapping<?> joinClassMapping = factory.getClassMapping(joinFromPropertyMapping.getPropertyType());
         Collection<JdbcPropertyMapping> propertyMappings = joinClassMapping.getPropertyMappingLeafNodes();
@@ -360,7 +360,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
      * {@inheritDoc}
      */
     @Override
-    protected <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ParamedColumnElement field,
+    protected <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ColumnElement field,
         R value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         if (value == null) {
@@ -392,7 +392,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
         return eqOrNe0(comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
-    private <R> L eqOrNe0(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ParamedColumnElement field,
+    private <R> L eqOrNe0(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ColumnElement field,
         R value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         SqlConditionExpressionBuilder.Builder builder = null;
         if (field == null) {
