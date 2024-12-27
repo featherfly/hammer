@@ -115,14 +115,14 @@ List<Role> roles = hammer.query(Role.class)
     			.list()
 
 // 模板SQL查询数据
-String str = hammer.string("selectString", new HashMap<String, Object>());
-int avg = hammer.numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
-User u = hammer.single("selectByUsername@user", User.class,
-                new HashChainMap<String, Object>().putChain("username", username));
-List<User> users = hammer.list("selectConditions@user", User.class, new HashChainMap<String, Object>()
+String str = hammer.template().string("selectString", new HashMap<String, Object>());
+int avg = hammer.template().numberInt("selectAvg2", new ChainMapImpl<String, Serializable>().putChain("age", 40));
+User u = hammer.template().single("selectByUsername@user", User.class,
+                new ChainMapImpl<String, Serializable>().putChain("username", username));
+List<User> users = hammer.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>()
                 .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
-PaginationResults<User> userPaginationResults = executor.pagination("selectConditions@user", User.class,
-                new HashChainMap<String, Object>(), start, limit);
+PaginationResults<User> userPaginationResults = hammer.template().pagination("selectConditions@user", User.class,
+                new ChainMapImpl<String, Serializable>(), start, limit);
 ```
 
 通过使用 mapper 操作的代码概览（类似 mybatis 的 mapper）：
@@ -700,15 +700,15 @@ select2: "select id,user_id as `user.id`, name, descp
 ```
 
 API 调用传入的模板ID字符串格式为 name@namespace（邮件格式xx@yy）
-例：`hammer.template().single("selectByUsername@user", User.class, new HashChainMap<String, Object>().putChain("username", username))`  
+例：`hammer.template().single("selectByUsername@user", User.class, new ChainMapImpl<String, Serializable>().putChain("username", username))`  
 如果SQL模板名称为全局唯一，也可以直接使用 name  
-例：`hammer.template().numberInt("selectAvg", new HashChainMap<String, Object>())`
+例：`hammer.template().numberInt("selectAvg", new ChainMapImpl<String, Serializable>())`
 
 > 如果不同namespace的的模板拥有相同的名称（name），调用时只使用name就会抛出异常，因为程序不知道调用的是哪一个，所以最好是使用模板ID
 
 使用模板ID对象进行查找
 
-例：`hammer.template(b->b.name("selectByUsername").namespace("user"), new HashChainMap<String, Object>()).numberInt()`
+例：`hammer.template(b->b.name("selectByUsername").namespace("user"), new ChainMapImpl<String, Serializable>()).numberInt()`
 
 后续文档使用的 sql 模板定义
 
@@ -725,11 +725,11 @@ API 调用传入的模板ID字符串格式为 name@namespace（邮件格式xx@yy
 | `execute` | 执行数据操作（即执行 insert,update,delete 等操作） |
 
 ```java
-int i = executor.template().execute("insertRole", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
+int i = executor.template().execute("insertRole", new ChainMapImpl<String, Serializable>().putChain("name", name).putChain("descp", descp));
 
-int i = executor.template().execute("updateRoleByName", new HashChainMap<String, Object>().putChain("name", name).putChain("descp", descp));
+int i = executor.template().execute("updateRoleByName", new ChainMapImpl<String, Serializable>().putChain("name", name).putChain("descp", descp));
 
-int i = executor.template().execute("deleteRoleByName", new HashChainMap<String, Object>().putChain("name", name));
+int i = executor.template().execute("deleteRoleByName", new ChainMapImpl<String, Serializable>().putChain("name", name));
 ```
 
 ### 模板 SQL 唯一值查询
@@ -748,11 +748,11 @@ int i = executor.template().execute("deleteRoleByName", new HashChainMap<String,
 | `string`           | 查询返回 String      |
 
 ```java
-Integer avg = hammer.template().numberInt("selectAvg", new HashChainMap<String, Object>());
-Integer avg = hammer.template().numberInt("selectAvg2", new HashChainMap<String, Object>().putChain("age", 40));
+Integer avg = hammer.template().numberInt("selectAvg", new ChainMapImpl<String, Serializable>());
+Integer avg = hammer.template().numberInt("selectAvg2", new ChainMapImpl<String, Serializable>().putChain("age", 40));
 
-String str = hammer.template().string("selectString", new HashChainMap<String, Object>());
-String str = hammer.template().string("selectString2", new HashChainMap<String, Object>().putChain("id", 2));
+String str = hammer.template().string("selectString", new ChainMapImpl<String, Serializable>());
+String str = hammer.template().string("selectString2", new ChainMapImpl<String, Serializable>().putChain("id", 2));
 ```
 
 ### 模板 SQL 唯一记录查询
@@ -765,11 +765,11 @@ String str = hammer.template().string("selectString2", new HashChainMap<String, 
 
 
 ```java
-User u1 = hammer.template().single("selectByUsername@user", User.class, new HashChainMap<String, Object>().putChain("username", username));
-User u2 = hammer.template().single("selectByUsernameAndPassword@user", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+User u1 = hammer.template().single("selectByUsername@user", User.class, new ChainMapImpl<String, Serializable>().putChain("username", username));
+User u2 = hammer.template().single("selectByUsernameAndPassword@user", User.class, new ChainMapImpl<String, Serializable>().putChain("username", username).putChain("password", password));
 
-User u1 = hammer.template().unique("selectByUsername@user", User.class, new HashChainMap<String, Object>().putChain("username", username));
-User u2 = hammer.template().unique("selectByUsernameAndPassword@user", User.class, new HashChainMap<String, Object>().putChain("username", username).putChain("password", password));
+User u1 = hammer.template().unique("selectByUsername@user", User.class, new ChainMapImpl<String, Serializable>().putChain("username", username));
+User u2 = hammer.template().unique("selectByUsernameAndPassword@user", User.class, new ChainMapImpl<String, Serializable>().putChain("username", username).putChain("password", password));
 ```
 
 ### 模板 SQL 列表查询
@@ -779,11 +779,11 @@ User u2 = hammer.template().unique("selectByUsernameAndPassword@user", User.clas
 | `list` | 查询返回列表 |
 
 ```java
-List<User> users = executor.template().list("selectUser@user", User.class, new HashChainMap<String, Object>());
-List<User> users = executor.template().list("selectByAge@user", User.class, new HashChainMap<String, Object>().putChain("age", 5));
-List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>());
-List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
-List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
+List<User> users = executor.template().list("selectUser@user", User.class, new ChainMapImpl<String, Serializable>());
+List<User> users = executor.template().list("selectByAge@user", User.class, new ChainMapImpl<String, Serializable>().putChain("age", 5));
+List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>());
+List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
+List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
 ```
 
 ### 模板 SQL 分页查询
@@ -795,8 +795,8 @@ List<User> users = executor.template().list("selectConditions@user", User.class,
 | `list` | 查询返回分页列表 |
 
 ```java
-List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>(), start, limit);
-List<User> users = executor.template().list("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"),new SimplePagination(start, limit));
+List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>(), start, limit);
+List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"),new SimplePagination(start, limit));
 ```
 
 #### 包装分页
@@ -810,8 +810,8 @@ List<User> users = executor.template().list("selectConditions@user", User.class,
 基于查询 sql 自动转换统计 sql
 
 ```java
-PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new HashChainMap<String, Object>(), start, limit);
-PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new HashChainMap<String, Object>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
+PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>(), start, limit);
+PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
 ```
 
 > 注意：sql 转换功能做的测试不可能覆盖所有的复查查询，当你的查询足够复杂并且自动转换不能正常工作时，请使用手动声明统计 sql
@@ -831,9 +831,9 @@ sqlName:
 具体内容可以进入此章节[**`include支持`**](#include支持)
 
 ```java
-PaginationResults<Role> uis = executor.pagination("selectWithTemplate@role", Role.class, new HashChainMap<String, Object>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("selectWithTemplate2@role", Role.class, new HashChainMap<String, Object>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("selectWithTemplate3@role", Role.class, new HashChainMap<String, Object>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("selectWithTemplate@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("selectWithTemplate2@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
+PaginationResults<Role> uis = executor.pagination("selectWithTemplate3@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
 ```
 
 ## 模板动态 SQL

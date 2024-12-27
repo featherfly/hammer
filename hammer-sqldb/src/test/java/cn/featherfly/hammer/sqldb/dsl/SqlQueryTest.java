@@ -8,6 +8,10 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +20,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -23,6 +28,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
+import cn.featherfly.common.lang.Dates;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnoreStrategy;
@@ -51,9 +57,22 @@ public class SqlQueryTest extends JdbcTestBase {
 
     SqlQuery query;
 
-    List<Map<String, Serializable>> list = null;
+    List<Map<String, Serializable>> list =
+        null;
 
-    Map<String, Serializable> map = null;
+    Map<String, Serializable> map =
+        null;
+
+    final int year = 2011;
+    final int month = 1;
+    final int dayOfMonth = 1;
+    final int dayOfYear = 1;
+    final int dayOfWeek = 1;
+    final int hour = 1;
+    final int minute = 1;
+    final int second = 1;
+    final int quarter = 1;
+    String dateTime = "2011-01-01 01:01:01";
 
     @BeforeClass
     public void beforeClass() {
@@ -233,15 +252,16 @@ public class SqlQueryTest extends JdbcTestBase {
         }
     }
 
-    BiConsumer<List<Map<String, Serializable>>, String> compareAge = (list, name) -> {
-        int min = Integer.MIN_VALUE;
-        for (Map<String, Serializable> map : list) {
-            Integer a = (Integer) map.get(name);
-            //            System.err.println(min + "    " + a);
-            assertTrue(min <= a);
-            min = a;
-        }
-    };
+    BiConsumer<List<Map<String, Serializable>>, String> compareAge =
+        (list, name) -> {
+            int min = Integer.MIN_VALUE;
+            for (Map<String, Serializable> map : list) {
+                Integer a = (Integer) map.get(name);
+                //            System.err.println(min + "    " + a);
+                assertTrue(min <= a);
+                min = a;
+            }
+        };
 
     @Test
     void fetchField() {
@@ -861,7 +881,8 @@ public class SqlQueryTest extends JdbcTestBase {
         assertEquals(user.get("id"), id);
 
         user = query.find("user").where().eq(User::getId, id).and()
-            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100)).single();
+            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100))
+            .single();
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and().expression("{0}.age - ? >= 0", 100).single();
@@ -956,6 +977,8 @@ public class SqlQueryTest extends JdbcTestBase {
         // divide
         assertAge.accept(query.find("user").fetch("age").where().fieldAsNumber("age").divide(5).eq(1).list());
 
+        // ----------------------------------------------------------------------------------------------------------------
+
         // add
         assertAge.accept(
             query.find(User.class).fetch(User::getAge).where().property(User::getAge).add(5).eq(10).valueList());
@@ -971,6 +994,437 @@ public class SqlQueryTest extends JdbcTestBase {
         // divide
         assertAge.accept(
             query.find(User.class).fetch(User::getAge).where().property(User::getAge).divide(5).eq(1).valueList());
+    }
+
+    @Test
+    void conditionFunctionsDate() {
+        final Consumer<List<Date>> assertYear =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getYear(), year));
+
+        final Consumer<List<Date>> assertMonth =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getMonthValue(), month));
+
+        final Consumer<List<Date>> assertDayOfMonth =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getDayOfMonth(), dayOfMonth));
+
+        final Consumer<List<Date>> assertHour =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getHour(), hour));
+
+        final Consumer<List<Date>> assertMinute =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getMinute(), minute));
+
+        final Consumer<List<Date>> assertSecond =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getSecond(), minute));
+
+        final Consumer<List<Date>> assertDayOfYear =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getDayOfYear(), dayOfYear));
+
+        final Consumer<List<Date>> assertDayOfWeek =
+            (dates) -> dates
+                .forEach((d) -> assertEquals(Dates.toLocalDate(d).getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
+
+        final Consumer<List<Date>> assertQuarter =
+            (dates) -> dates.forEach((d) -> assertEquals((Dates.toLocalDate(d).getMonthValue() + 2) / 3, quarter)); // mysql 0-6
+
+        final Consumer<List<Date>> assertFormat =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.format(d, "yyyy-MM-dd HH:mm:ss"), dateTime)); // mysql 0-6
+
+        // getYear
+        //        assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
+        //            .list(Date.class));
+        //
+        //        // getMonth
+        //        assertMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMonth()
+        //            .eq(month).list(Date.class));
+        //
+        //        // getDayOfMonth
+        //        assertDayOfMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
+        //            .getDayOfMonth().eq(dayOfMonth).list(Date.class));
+        //
+        //        // getHour
+        //        assertHour.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getHour().eq(hour)
+        //            .list(Date.class));
+        //
+        //        // getMinute
+        //        assertMinute.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMinute()
+        //            .eq(minute).list(Date.class));
+        //
+        //        // getSecond
+        //        assertSecond.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getSecond()
+        //            .eq(second).list(Date.class));
+        //
+        //        // getWeekDay
+        //        assertDayOfWeek.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getWeekDay()
+        //            .eq(dayOfWeek).list(Date.class));
+        //
+        //        // getDayOfYear
+        //        assertDayOfYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getDayOfYear()
+        //            .eq(dayOfYear).list(Date.class));
+        //
+        //        // getQuarter
+        //        assertQuarter.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getQuarter()
+        //            .eq(quarter).list(Date.class));
+        //
+        //        // format date
+        //        assertFormat.accept(
+        //            query.find("role").fetch("create_time").where().fieldAsDate("create_time").format("%Y-%m-%d %H:%i:%s")
+        //                .eq(dateTime).list(Date.class));
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        //  query.find(Role.class) //
+        //   .fetch(Role::getCreateTime) //
+        //   .where() //
+        //   .property(Role::getCreateTime).getYear().eq(year) //
+        //   FIXME eq 其实使用的是property(Role::getCreateTime)的 propertyMapping, (LocalDateTime)
+        //   所以在设置year(int)时，会报类型错误, 传入Jdbc的对象是FiledOperator<LocalDateTime>
+        //   .valueList() //
+
+        // getYear
+        assertYear.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getYear().eq(year).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // getMonth
+        assertMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getMonth().eq(month).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // getDayOfMonth
+        assertDayOfMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getDayOfMonth().eq(dayOfMonth).valueList().stream().map(dt -> Dates.toDate(dt))
+            .collect(Collectors.toList()));
+
+        // getHour
+        assertHour.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getHour().eq(hour).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // getMinute
+        assertMinute.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getMinute().eq(minute).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // getSecond
+        assertSecond.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getSecond().eq(second).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // getWeekDay
+        assertDayOfWeek
+            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getWeekDay()
+                .eq(dayOfWeek).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // getDayOfYear
+        assertDayOfYear.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getDayOfYear()
+                .eq(dayOfYear).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // getQuarter
+        assertQuarter
+            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getQuarter()
+                .eq(quarter).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+
+        // format date
+        assertFormat.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+                .format("%Y-%m-%d %H:%i:%s")
+                .eq(dateTime).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+    }
+
+    @Test
+    void conditionFunctionsLocalDateTime() {
+        final int year = 2011;
+        final int month = 1;
+        final int dayOfMonth = 1;
+        final int dayOfYear = 1;
+        final int dayOfWeek = 1;
+        final int hour = 1;
+        final int minute = 1;
+        final int second = 1;
+        final int quarter = 1;
+        String dateTime = "2011-01-01 01:01:01";
+
+        final Consumer<List<LocalDateTime>> assertYear =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
+
+        final Consumer<List<LocalDateTime>> assertMonth =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getMonthValue(), month));
+
+        final Consumer<List<LocalDateTime>> assertDayOfMonth =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfMonth(), dayOfMonth));
+
+        final Consumer<List<LocalDateTime>> assertHour =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getHour(), hour));
+
+        final Consumer<List<LocalDateTime>> assertMinute =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getMinute(), minute));
+
+        final Consumer<List<LocalDateTime>> assertSecond =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getSecond(), minute));
+
+        final Consumer<List<LocalDateTime>> assertDayOfYear =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfYear(), dayOfYear));
+
+        final Consumer<List<LocalDateTime>> assertDayOfWeek =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
+
+        final Consumer<List<LocalDateTime>> assertQuarter =
+            (dates) -> dates.forEach((d) -> assertEquals((d.getMonthValue() + 2) / 3, quarter)); // mysql 0-6
+
+        final Consumer<List<LocalDateTime>> assertFormat =
+            (dates) -> dates.forEach((d) -> assertEquals(Dates.format(d, "yyyy-MM-dd HH:mm:ss"), dateTime)); // mysql 0-6
+
+        // getYear
+        assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
+            .list(LocalDateTime.class));
+
+        // getMonth
+        assertMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMonth()
+            .eq(month).list(LocalDateTime.class));
+
+        // getDayOfMonth
+        assertDayOfMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
+            .getDayOfMonth().eq(dayOfMonth).list(LocalDateTime.class));
+
+        // getHour
+        assertHour.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getHour().eq(hour)
+            .list(LocalDateTime.class));
+
+        // getMinute
+        assertMinute.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMinute()
+            .eq(minute).list(LocalDateTime.class));
+
+        // getSecond
+        assertSecond.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getSecond()
+            .eq(second).list(LocalDateTime.class));
+
+        // getWeekDay
+        assertDayOfWeek.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getWeekDay()
+            .eq(dayOfWeek).list(LocalDateTime.class));
+
+        // getDayOfYear
+        assertDayOfYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getDayOfYear()
+            .eq(dayOfYear).list(LocalDateTime.class));
+
+        // getQuarter
+        assertQuarter.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getQuarter()
+            .eq(quarter).list(LocalDateTime.class));
+
+        // format date
+        assertFormat.accept(
+            query.find("role").fetch("create_time").where().fieldAsDate("create_time").format("%Y-%m-%d %H:%i:%s")
+                .eq(dateTime).list(LocalDateTime.class));
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        // getYear
+        assertYear.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getYear().eq(year).valueList());
+
+        // getMonth
+        assertMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getMonth().eq(month).valueList());
+
+        // getDayOfMonth
+        assertDayOfMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getDayOfMonth().eq(dayOfMonth).valueList());
+
+        // getHour
+        assertHour.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getHour().eq(hour).valueList());
+
+        // getMinute
+        assertMinute.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getMinute().eq(minute).valueList());
+
+        // getSecond
+        assertSecond.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getSecond().eq(second).valueList());
+
+        // getWeekDay
+        assertDayOfWeek
+            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getWeekDay()
+                .eq(dayOfWeek).valueList());
+
+        // getDayOfYear
+        assertDayOfYear.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getDayOfYear()
+                .eq(dayOfYear).valueList());
+
+        // getQuarter
+        assertQuarter
+            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getQuarter()
+                .eq(quarter).valueList());
+
+        // format date
+        assertFormat.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+                .format("%Y-%m-%d %H:%i:%s")
+                .eq(dateTime).valueList());
+    }
+
+    @Test
+    void conditionFunctionsLocalDateTime2() {
+        final int year = 2011;
+
+        final Consumer<List<LocalDateTime>> assertYear =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
+
+        // getYear
+        assertYear.accept(query.find("role").fetch("create_time").where()
+            .fieldAsDate("create_time").getYear().add(1).eq(year) //
+            .list(LocalDateTime.class));
+
+    }
+
+    @Test
+    void conditionFunctionsLocalDate() {
+        final int year = 2011;
+        final int month = 1;
+        final int dayOfMonth = 1;
+        final int dayOfYear = 1;
+        final int dayOfWeek = 1;
+        final int quarter = 1;
+        String date = "2011-01-01";
+
+        final Consumer<List<LocalDate>> assertYear =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
+
+        final Consumer<List<LocalDate>> assertMonth =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getMonthValue(), month));
+
+        final Consumer<List<LocalDate>> assertDayOfMonth =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfMonth(), dayOfMonth));
+
+        final Consumer<List<LocalDate>> assertDayOfYear =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfYear(), dayOfYear));
+
+        final Consumer<List<LocalDate>> assertDayOfWeek =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
+
+        final Consumer<List<LocalDate>> assertQuarter =
+            (dates) -> dates.forEach((d) -> assertEquals((d.getMonthValue() + 2) / 3, quarter)); // mysql 0-6
+
+        final Consumer<List<LocalDate>> assertFormat =
+            (dates) -> dates.forEach((d) -> assertEquals(d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), date)); // mysql 0-6
+
+        // getYear
+        assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
+            .list(LocalDate.class));
+
+        // getMonth
+        assertMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMonth()
+            .eq(month).list(LocalDate.class));
+
+        // getDayOfMonth
+        assertDayOfMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
+            .getDayOfMonth().eq(dayOfMonth).list(LocalDate.class));
+
+        // getWeekDay
+        assertDayOfWeek.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getWeekDay()
+            .eq(dayOfWeek).list(LocalDate.class));
+
+        // getDayOfYear
+        assertDayOfYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getDayOfYear()
+            .eq(dayOfYear).list(LocalDate.class));
+
+        // getQuarter
+        assertQuarter.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getQuarter()
+            .eq(quarter).list(LocalDate.class));
+
+        // format date
+        assertFormat.accept(
+            query.find("role").fetch("create_time").where().fieldAsDate("create_time").format("%H:%i:%s")
+                .eq(date).list(LocalDate.class));
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        // getYear
+        assertYear.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getYear().eq(year).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+
+        // getMonth
+        assertMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getMonth().eq(month).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+
+        // getDayOfMonth
+        assertDayOfMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getDayOfMonth().eq(dayOfMonth).valueList().stream().map(dt -> dt.toLocalDate())
+            .collect(Collectors.toList()));
+
+        // getWeekDay
+        assertDayOfWeek
+            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getWeekDay()
+                .eq(dayOfWeek).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+
+        // getDayOfYear
+        assertDayOfYear.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getDayOfYear()
+                .eq(dayOfYear).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+
+        // getQuarter
+        assertQuarter
+            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getQuarter()
+                .eq(quarter).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+
+        // format date
+        assertFormat.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+                .format("%Y-%m-%d")
+                .eq(date).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+    }
+
+    @Test
+    void conditionFunctionsLocalTime() {
+        final int hour = 1;
+        final int minute = 1;
+        final int second = 1;
+        String time = "01:01:01";
+
+        final Consumer<List<LocalTime>> assertHour =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getHour(), hour));
+
+        final Consumer<List<LocalTime>> assertMinute =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getMinute(), minute));
+
+        final Consumer<List<LocalTime>> assertSecond =
+            (dates) -> dates.forEach((d) -> assertEquals(d.getSecond(), minute));
+
+        final Consumer<List<LocalTime>> assertFormat =
+            (dates) -> dates.forEach((d) -> assertEquals(d.format(DateTimeFormatter.ofPattern("HH:mm:ss")), time));
+
+        // getHour
+        assertHour.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getHour().eq(hour)
+            .list(LocalTime.class));
+
+        // getMinute
+        assertMinute.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMinute()
+            .eq(minute).list(LocalTime.class));
+
+        // getSecond
+        assertSecond.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getSecond()
+            .eq(second).list(LocalTime.class));
+
+        // format date
+        assertFormat.accept(
+            query.find("role").fetch("create_time").where().fieldAsDate("create_time").format("%H:%i:%s")
+                .eq(time).list(LocalTime.class));
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        // getHour
+        assertHour.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getHour().eq(hour).valueList().stream().map(dt -> dt.toLocalTime()).collect(Collectors.toList()));
+
+        // getMinute
+        assertMinute.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getMinute().eq(minute).valueList().stream().map(dt -> dt.toLocalTime()).collect(Collectors.toList()));
+
+        // getSecond
+        assertSecond.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getSecond().eq(second).valueList().stream().map(dt -> dt.toLocalTime()).collect(Collectors.toList()));
+
+        // format date
+        assertFormat.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+                .format("%Y-%m-%d %H:%i:%s")
+                .eq(time).valueList().stream().map(dt -> dt.toLocalTime()).collect(Collectors.toList()));
     }
 
     @Test(expectedExceptions = BuilderException.class)

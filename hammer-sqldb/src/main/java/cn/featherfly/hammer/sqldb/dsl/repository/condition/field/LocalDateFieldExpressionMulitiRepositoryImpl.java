@@ -7,9 +7,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.operator.DateFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryLocalDateFieldExpression;
 import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
 
@@ -351,4 +354,68 @@ public class LocalDateFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
         return expression.nba(index, name, min, max, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getYear() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_YEAR, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getMonth() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_MONTH, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getDayOfMonth() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_DAY_OF_MONTH, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringFieldExpression<C, L> format(String format) {
+        return new StringFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.DATE_FORMAT,
+            new Object[] { format }, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getWeekDay() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_WEEKDAY, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getWeekOfYear() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_WEEK_OF_YEAR, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getDayOfYear() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_DAY_OF_YEAR, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getQuarter() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_QUARTER, expression);
+    }
 }

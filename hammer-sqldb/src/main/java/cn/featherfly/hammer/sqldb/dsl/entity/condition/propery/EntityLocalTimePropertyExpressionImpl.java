@@ -10,11 +10,14 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityLocalTimePropertyExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation;
 import cn.featherfly.hammer.sqldb.dsl.entity.condition.AbstractMulitiEntityGenericPropertyExpression;
@@ -413,4 +416,39 @@ public class EntityLocalTimePropertyExpressionImpl<E, C extends ConditionExpress
             ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringFieldExpression<C, L> format(String format) {
+        // NOIMPL 还未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getHour() {
+        // NOIMPL 还未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getMinute() {
+        // NOIMPL 还未实现
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getSecond() {
+        // NOIMPL 还未实现
+        throw new NotImplementedException();
+    }
 }

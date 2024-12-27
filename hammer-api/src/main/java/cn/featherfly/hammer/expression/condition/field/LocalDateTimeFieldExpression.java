@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.function.date.DateTimeFunctions;
 
 /**
  * LocalDateTime field expression.
@@ -19,6 +20,7 @@ public interface LocalDateTimeFieldExpression<C extends ConditionExpression, L e
     FieldInExpression<C, L, LocalDateTime>, FieldNotInExpression<C, L, LocalDateTime>,
     FieldLessEqualsExpression<C, L, LocalDateTime>, FiledLessThanExpression<C, L, LocalDateTime>,
     FieldGreatEqualsExpression<C, L, LocalDateTime>, FieldGreatThanExpression<C, L, LocalDateTime>,
-    FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L>, FieldExpression {
+    FieldIsNullExpression<C, L>, FieldIsNotNullExpression<C, L>, FieldExpression,
+    DateTimeFunctions<NumberFieldExpression<Integer, C, L>, StringFieldExpression<C, L>> {
 
 }

@@ -21,7 +21,7 @@ public interface Divide<N extends Number, R> {
      * Divide.
      *
      * @param value the value
-     * @return the r
+     * @return divided object
      */
     R divide(N value);
 }

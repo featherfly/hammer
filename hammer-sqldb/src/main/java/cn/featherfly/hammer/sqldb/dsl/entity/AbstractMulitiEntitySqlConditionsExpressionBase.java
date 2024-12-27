@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.db.builder.model.ParamedColumnElement;
+import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -4868,7 +4868,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected abstract <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
-        ParamedColumnElement name, R value, String queryAlias, MatchStrategy matchStrategy,
+        ColumnElement name, R value, String queryAlias, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     //    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, JdbcPropertyMapping pm, R value, String queryAlias,

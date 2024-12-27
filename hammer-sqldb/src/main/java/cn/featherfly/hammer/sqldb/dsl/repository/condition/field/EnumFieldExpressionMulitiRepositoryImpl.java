@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.operator.Function;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -32,6 +33,60 @@ public class EnumFieldExpressionMulitiRepositoryImpl<E extends Enum<E>, C extend
      */
     public EnumFieldExpressionMulitiRepositoryImpl(int index, String name, InternalMulitiCondition<L> expression) {
         super(new AtomicInteger(index), name, expression);
+    }
+
+    /**
+     * Instantiates a new enum field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param expression the expression
+     */
+    public EnumFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name, Function function,
+        InternalMulitiCondition<L> expression) {
+        super(index, name, function, expression);
+    }
+
+    /**
+     * Instantiates a new enum field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param argus the argus
+     * @param expression the expression
+     */
+    public EnumFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name, Function function, Object[] argus,
+        InternalMulitiCondition<L> expression) {
+        super(index, name, function, argus, expression);
+    }
+
+    /**
+     * Instantiates a new enum field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param expression the expression
+     */
+    public EnumFieldExpressionMulitiRepositoryImpl(int index, String name, Function function,
+        InternalMulitiCondition<L> expression) {
+        super(index, name, function, expression);
+    }
+
+    /**
+     * Instantiates a new enum field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param argus the argus
+     * @param expression the expression
+     */
+    public EnumFieldExpressionMulitiRepositoryImpl(int index, String name, Function function, Object[] argus,
+        InternalMulitiCondition<L> expression) {
+        super(index, name, function, argus, expression);
     }
 
     /**

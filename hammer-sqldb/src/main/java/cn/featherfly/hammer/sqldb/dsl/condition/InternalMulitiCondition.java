@@ -16,7 +16,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.db.builder.model.ParamedColumnElement;
+import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.function.serializable.SerializableArraySupplier;
 import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
@@ -110,8 +110,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L ba(AtomicInteger index, Object field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
         if (field instanceof String) {
             return ba(index, (String) field, min, max, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ba(index, (ParamedColumnElement) field, min, max, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ba(index, (ColumnElement) field, min, max, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -144,8 +144,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L ba(AtomicInteger index, Object field, V min, V max, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return ba(index, (String) field, min, max, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ba(index, (ParamedColumnElement) field, min, max, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ba(index, (ColumnElement) field, min, max, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -162,7 +162,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    <V> L ba(AtomicInteger index, ParamedColumnElement field, V min, V max, BiPredicate<V, V> ignoreStrategy);
+    <V> L ba(AtomicInteger index, ColumnElement field, V min, V max, BiPredicate<V, V> ignoreStrategy);
 
     /**
      * between and.
@@ -175,7 +175,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L ba(AtomicInteger index, ParamedColumnElement field, V min, V max, Predicate<?> ignoreStrategy);
+    <V> L ba(AtomicInteger index, ColumnElement field, V min, V max, Predicate<?> ignoreStrategy);
 
     // ********************************************************************
 
@@ -232,8 +232,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L nba(AtomicInteger index, Object field, V min, V max, BiPredicate<V, V> ignoreStrategy) {
         if (field instanceof String) {
             return nba(index, (String) field, min, max, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return nba(index, (ParamedColumnElement) field, min, max, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return nba(index, (ColumnElement) field, min, max, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -266,8 +266,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L nba(AtomicInteger index, Object field, V min, V max, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return nba(index, (String) field, min, max, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return nba(index, (ParamedColumnElement) field, min, max, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return nba(index, (ColumnElement) field, min, max, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -284,7 +284,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L nba(AtomicInteger index, ParamedColumnElement field, V min, V max, BiPredicate<V, V> ignoreStrategy);
+    <V> L nba(AtomicInteger index, ColumnElement field, V min, V max, BiPredicate<V, V> ignoreStrategy);
 
     /**
      * not between and.
@@ -297,7 +297,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L nba(AtomicInteger index, ParamedColumnElement field, V min, V max, Predicate<?> ignoreStrategy);
+    <V> L nba(AtomicInteger index, ColumnElement field, V min, V max, Predicate<?> ignoreStrategy);
 
     // ********************************************************************
 
@@ -383,8 +383,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default L eq(AtomicInteger index, Object field, int value, IntPredicate ignoreStrategy) {
         if (field instanceof String) {
             return eq(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return eq(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return eq(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -413,8 +413,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default L eq(AtomicInteger index, Object field, long value, LongPredicate ignoreStrategy) {
         if (field instanceof String) {
             return eq(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return eq(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return eq(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -443,8 +443,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default L eq(AtomicInteger index, Object field, double value, DoublePredicate ignoreStrategy) {
         if (field instanceof String) {
             return eq(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return eq(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return eq(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -475,8 +475,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <R> L eq(AtomicInteger index, Object field, R value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return eq(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return eq(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return eq(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -510,8 +510,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return eq(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return eq(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return eq(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -526,7 +526,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L eq(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * equals.
@@ -537,7 +537,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L eq(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * equals.
@@ -548,7 +548,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L eq(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L eq(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * equals.
@@ -560,7 +560,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy);
+    <R> L eq(AtomicInteger index, ColumnElement field, R value, Predicate<?> ignoreStrategy);
 
     /**
      * equals.
@@ -573,7 +573,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eq(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+    <R> L eq(AtomicInteger index, ColumnElement field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -719,8 +719,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <R> L ne(AtomicInteger index, Object field, R value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return ne(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ne(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ne(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -754,8 +754,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return ne(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ne(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ne(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -770,7 +770,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L ne(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * not equals.
@@ -781,7 +781,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L ne(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * not equals.
@@ -792,7 +792,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ne(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L ne(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * not equals.
@@ -804,7 +804,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy);
+    <R> L ne(AtomicInteger index, ColumnElement field, R value, Predicate<?> ignoreStrategy);
 
     /**
      * not equals.
@@ -817,7 +817,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ne(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+    <R> L ne(AtomicInteger index, ColumnElement field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     /**
@@ -847,7 +847,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, ParamedColumnElement field, R value,
+    <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, ColumnElement field, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -899,7 +899,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L sw(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L sw(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -951,7 +951,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nsw(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L nsw(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1003,7 +1003,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L co(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L co(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1055,7 +1055,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nco(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L nco(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1107,7 +1107,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ew(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L ew(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1159,7 +1159,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L newv(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L newv(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1211,7 +1211,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lk(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L lk(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1263,7 +1263,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L nl(AtomicInteger index, ParamedColumnElement field, String value, MatchStrategy matchStrategy,
+    L nl(AtomicInteger index, ColumnElement field, String value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1484,8 +1484,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <R> L in(AtomicInteger index, Object field, R value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return in(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return in(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return in(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -1519,8 +1519,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return in(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return in(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return in(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -1535,7 +1535,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L in(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * in.
@@ -1546,7 +1546,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L in(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * in.
@@ -1557,7 +1557,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L in(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L in(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * in.
@@ -1569,7 +1569,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L in(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy);
+    <R> L in(AtomicInteger index, ColumnElement field, R value, Predicate<?> ignoreStrategy);
 
     /**
      * in.
@@ -1582,7 +1582,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L in(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+    <R> L in(AtomicInteger index, ColumnElement field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -1779,8 +1779,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <R> L ni(AtomicInteger index, Object field, R value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return ni(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ni(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ni(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -1814,8 +1814,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return ni(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ni(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ni(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -1830,7 +1830,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L ni(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * not in.
@@ -1841,7 +1841,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L ni(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * not in.
@@ -1852,7 +1852,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ni(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L ni(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * not in.
@@ -1864,7 +1864,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(AtomicInteger index, ParamedColumnElement field, R value, Predicate<?> ignoreStrategy);
+    <R> L ni(AtomicInteger index, ColumnElement field, R value, Predicate<?> ignoreStrategy);
 
     /**
      * not in.
@@ -1877,7 +1877,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <R> L ni(AtomicInteger index, ParamedColumnElement field, R value, MatchStrategy matchStrategy,
+    <R> L ni(AtomicInteger index, ColumnElement field, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -2045,8 +2045,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L ge(AtomicInteger index, Object field, V value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return ge(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ge(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ge(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2080,8 +2080,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return ge(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return ge(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return ge(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2096,7 +2096,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L ge(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * great equals.
@@ -2107,7 +2107,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L ge(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * great equals.
@@ -2118,7 +2118,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L ge(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L ge(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great equals.
@@ -2130,7 +2130,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L ge(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy);
+    <V> L ge(AtomicInteger index, ColumnElement field, V value, Predicate<?> ignoreStrategy);
 
     /**
      * great equals.
@@ -2143,7 +2143,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L ge(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
+    <V> L ge(AtomicInteger index, ColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ********************************************************************
@@ -2265,8 +2265,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L gt(AtomicInteger index, Object field, V value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return gt(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return gt(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return gt(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2300,8 +2300,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return gt(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return gt(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return gt(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2316,7 +2316,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L gt(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * great than.
@@ -2327,7 +2327,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L gt(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * great than.
@@ -2338,7 +2338,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L gt(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L gt(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * great than.
@@ -2350,7 +2350,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L gt(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy);
+    <V> L gt(AtomicInteger index, ColumnElement field, V value, Predicate<?> ignoreStrategy);
 
     /**
      * great than.
@@ -2363,7 +2363,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L gt(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
+    <V> L gt(AtomicInteger index, ColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ********************************************************************
@@ -2485,8 +2485,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L le(AtomicInteger index, Object field, V value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return le(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return le(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return le(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2520,8 +2520,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return le(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return le(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return le(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2536,7 +2536,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L le(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * less equals.
@@ -2547,7 +2547,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L le(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * less equals.
@@ -2558,7 +2558,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L le(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L le(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * less equals.
@@ -2570,7 +2570,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L le(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy);
+    <V> L le(AtomicInteger index, ColumnElement field, V value, Predicate<?> ignoreStrategy);
 
     /**
      * less equals.
@@ -2583,7 +2583,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L le(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
+    <V> L le(AtomicInteger index, ColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 
     // ****************************************************************************************************************
@@ -2705,8 +2705,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
     default <V> L lt(AtomicInteger index, Object field, V value, Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return lt(index, (String) field, value, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return lt(index, (ParamedColumnElement) field, value, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return lt(index, (ColumnElement) field, value, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2740,8 +2740,8 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
         Predicate<?> ignoreStrategy) {
         if (field instanceof String) {
             return lt(index, (String) field, value, matchStrategy, ignoreStrategy);
-        } else if (field instanceof ParamedColumnElement) {
-            return lt(index, (ParamedColumnElement) field, value, matchStrategy, ignoreStrategy);
+        } else if (field instanceof ColumnElement) {
+            return lt(index, (ColumnElement) field, value, matchStrategy, ignoreStrategy);
         } else {
             throw new UnsupportedException("unsupported type " + field.getClass().getName());
         }
@@ -2756,7 +2756,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, ParamedColumnElement field, int value, IntPredicate ignoreStrategy);
+    L lt(AtomicInteger index, ColumnElement field, int value, IntPredicate ignoreStrategy);
 
     /**
      * less than.
@@ -2767,7 +2767,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, ParamedColumnElement field, long value, LongPredicate ignoreStrategy);
+    L lt(AtomicInteger index, ColumnElement field, long value, LongPredicate ignoreStrategy);
 
     /**
      * less than.
@@ -2778,7 +2778,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    L lt(AtomicInteger index, ParamedColumnElement field, double value, DoublePredicate ignoreStrategy);
+    L lt(AtomicInteger index, ColumnElement field, double value, DoublePredicate ignoreStrategy);
 
     /**
      * less than.
@@ -2790,7 +2790,7 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L lt(AtomicInteger index, ParamedColumnElement field, V value, Predicate<?> ignoreStrategy);
+    <V> L lt(AtomicInteger index, ColumnElement field, V value, Predicate<?> ignoreStrategy);
 
     /**
      * less than.
@@ -2803,6 +2803,6 @@ public interface InternalMulitiCondition<L> extends MulitiRepositoryExpression, 
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
-    <V> L lt(AtomicInteger index, ParamedColumnElement field, V value, MatchStrategy matchStrategy,
+    <V> L lt(AtomicInteger index, ColumnElement field, V value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy);
 }

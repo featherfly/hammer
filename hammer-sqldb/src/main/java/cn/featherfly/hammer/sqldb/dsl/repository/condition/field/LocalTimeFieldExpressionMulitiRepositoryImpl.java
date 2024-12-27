@@ -7,9 +7,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import cn.featherfly.common.operator.DateFunction;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
+import cn.featherfly.hammer.expression.condition.field.StringFieldExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryLocalTimeFieldExpression;
 import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
 
@@ -351,4 +354,36 @@ public class LocalTimeFieldExpressionMulitiRepositoryImpl<C extends ConditionExp
         return expression.nba(index, name, min, max, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringFieldExpression<C, L> format(String format) {
+        return new StringFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.TIME_FORMAT,
+            new Object[] { format }, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getHour() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_HOUR, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getMinute() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_MINUTE, expression);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NumberFieldExpression<Integer, C, L> getSecond() {
+        return new NumberFieldExpressionMulitiRepositoryImpl<>(index, name, DateFunction.GET_SECOND, expression);
+    }
 }

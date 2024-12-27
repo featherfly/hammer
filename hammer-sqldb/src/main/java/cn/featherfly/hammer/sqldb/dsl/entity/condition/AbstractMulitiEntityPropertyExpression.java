@@ -59,6 +59,8 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     /** The params. */
     protected Supplier<ArithmeticColumnElement> arithmeticColumnElement = () -> null;
 
+    //    protected ColumnElement column;
+
     /**
      * Instantiates a new entity property type expression impl.
      *
@@ -114,8 +116,8 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      */
     @Override
     public String expression() {
-        return new ColumnElement(expression.getJdbc().getDialect(), getPropertyMapping(this).getRepositoryFieldName(),
-            expression.getAlias(index.intValue())).toSql();
+        return new ColumnElement(expression.getJdbc().getDialect(), expression.getAlias(index.intValue()),
+            getPropertyMapping(this).getRepositoryFieldName()).toSql();
         //        String expr = expression.expression();
         //        if (Lang.isEmpty(expr) && !propertyList.isEmpty()) {
         //            return new ColumnElement(expression.getJdbc().getDialect(),
@@ -190,6 +192,21 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
             throw new NotImplementedException();
         }
     }
+
+    //    protected ColumnElement getColumnElement(Object value) {
+    //        if (column != null && arithmeticColumnElement.get() != null) {
+    //            //            Dialect dialect, ColumnElement column, Object value,
+    //            //            ComparisonOperator comparisonOperator, String tableAlias, Predicate<?> ignoreStrategy
+    //            return new CompositeConditionColumnElement(expression.getJdbc().getDialect(), column, value,
+    //                arithmeticColumnElement.get(), expression.getAlias(index.get()), null);
+    //        } else if (column != null) {
+    //            return column;
+    //        } else if (arithmeticColumnElement.get() != null) {
+    //            return arithmeticColumnElement.get();
+    //        } else {
+    //            return null;
+    //        }
+    //    }
 
     public String name() {
         // YUFEI_TEST 需要测试该方法
