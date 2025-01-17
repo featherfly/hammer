@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
 import cn.featherfly.hammer.debug.TplConfigDebugMessage;
@@ -83,7 +83,7 @@ public abstract class AbstractFreemarkerTemplateEngine<
                 TplExecuteConfig tplConfig = templateMap.get(config.getExecuteId());
                 if (tplConfig != null) {
                     throw new HammerException(
-                        Strings.format("duplicate template name {0} with {1} , {1}", config.getExecuteId(),
+                        Str.format("duplicate template name {0} with {1} , {1}", config.getExecuteId(),
                             config.getFilePath(), tplConfig.getFileDirectory() + "/" + tplConfig.getFileName()));
                 }
                 templateLoader.putTemplate(config.getExecuteId(), config.getContent());

@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.hammer.HammerException;
 
 /**
@@ -70,7 +70,7 @@ public class TransverterManager {
     public TransverterManager register(String name, Transverter transverter) {
         Transverter t = transverterMap.get(name);
         if (t != null) {
-            throw new HammerException(Strings.format("error register {0} with {1}, {1} already register for {2}",
+            throw new HammerException(Str.format("error register {0} with {1}, {1} already register for {2}",
                     transverter.getClass().getName(), name, t.getClass().getName()));
         }
         transverterMap.put(name, transverter);

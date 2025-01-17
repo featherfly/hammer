@@ -7,9 +7,7 @@ import java.util.Map;
 import cn.featherfly.hammer.HammerException;
 
 /**
- * <p>
- * TemplateDirectives
- * </p>
+ * TemplateDirectives.
  *
  * @author zhongj
  */

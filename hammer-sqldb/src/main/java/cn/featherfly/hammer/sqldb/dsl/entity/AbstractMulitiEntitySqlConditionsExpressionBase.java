@@ -58,7 +58,7 @@ import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Execution;
@@ -4531,7 +4531,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
                     argus.put("" + index, m.getTableAlias());
                     argus.put("as" + index, m.getTableAlias());
                 });
-                return Strings.format(expression, argus);
+                return Str.format(expression, argus);
             }
 
             @Override

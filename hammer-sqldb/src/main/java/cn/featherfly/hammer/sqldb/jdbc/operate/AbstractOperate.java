@@ -19,7 +19,7 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -102,7 +102,7 @@ public abstract class AbstractOperate<T> {
      * @return the sqldb hammer exception
      */
     protected SqldbHammerException idNullOrEmptyException(Class<?> entityType) {
-        return new SqldbHammerException(Strings.format("can not {} entity[{}], because id value is null or empty",
+        return new SqldbHammerException(Str.format("can not {} entity[{}], because id value is null or empty",
             getName(), entityType.getSimpleName()));
     }
 

@@ -46,7 +46,7 @@ public class Subclass extends Superclass<User> {
         //            @Override
         //            public void visitSource(final String source, final String debug) {
         //                super.visitSource(source, debug);
-        //                System.out.println(Strings.format("source {0} debug {1}", source, debug));
+        //                System.out.println(Str.format("source {0} debug {1}", source, debug));
         //            }
         //        }, ClassReader.EXPAND_FRAMES);
 

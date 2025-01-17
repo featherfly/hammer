@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.Dates;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
@@ -393,7 +393,7 @@ public class SqlQueryTest extends JdbcTestBase {
         for (Map<String, Serializable> map : list) {
             String username = (String) map.get("username");
             System.err.println(username);
-            assertTrue(Strings.startsWith(username, "yufei"));
+            assertTrue(Str.startsWith(username, "yufei"));
         }
     }
 
@@ -537,7 +537,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .sw("username", sw) //
             .list(String.class);
         for (String username : usernames) {
-            assertTrue(Strings.startsWith(username, sw));
+            assertTrue(Str.startsWith(username, sw));
         }
 
         long c = query.find("user")//
@@ -574,7 +574,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .ew("username", ew) //
             .list(String.class);
         for (String username : usernames) {
-            assertTrue(Strings.endWith(username, ew));
+            assertTrue(Str.endWith(username, ew));
         }
 
         long c = query.find("user")//
@@ -611,7 +611,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .co("username", co) //
             .list(String.class);
         for (String username : usernames) {
-            assertTrue(Strings.contains(username, co));
+            assertTrue(Str.contains(username, co));
         }
 
         long c = query.find("user")//
@@ -655,7 +655,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .sw("username", sw + "%") //
             .list(String.class);
         for (String username : usernames) {
-            assertTrue(Strings.startsWith(username, sw));
+            assertTrue(Str.startsWith(username, sw));
         }
 
         String ew = "55";
@@ -664,7 +664,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .ew("username", "%" + ew) //
             .list(String.class);
         for (String username : usernames) {
-            assertTrue(Strings.endWith(username, ew));
+            assertTrue(Str.endWith(username, ew));
         }
 
         String co = "uf";
@@ -673,7 +673,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .co("username", "%" + co + "%") //
             .list(String.class);
         for (String username : usernames) {
-            assertTrue(Strings.contains(username, co));
+            assertTrue(Str.contains(username, co));
         }
 
         long c = query.find("user")//

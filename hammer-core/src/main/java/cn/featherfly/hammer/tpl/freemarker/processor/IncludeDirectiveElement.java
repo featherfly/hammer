@@ -30,11 +30,14 @@ public class IncludeDirectiveElement extends DirectiveElement {
      * @param parser the parser
      */
     public IncludeDirectiveElement(CharSequence value, boolean namedParamPlaceholder, Element previous, Parser parser) {
-        super(value, namedParamPlaceholder, previous, parser);
+        super(value, '@', true, true, namedParamPlaceholder, previous, parser);
     }
 
     private String tplExecuteId;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> getAtrtributes() {
         Map<String, String> attrs = super.getAtrtributes();

@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.tpl.mapper.freemarker;
+package cn.featherfly.hammer.tpl.freemarker;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -21,7 +21,6 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.config.TemplateConfigImpl;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
-import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 
 /**
  * FreemakerTemplatePreProcessorTest.
@@ -38,7 +37,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
     void bc() {
         TemplateConfigImpl templateConfig = new TemplateConfigImpl();
         templateConfig.setIncludeDirectiveTagNames(new String[] { "include", "tpl", "sql" })
-                .setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false);
+            .setPrecompileNamedParamPlaceholder(false).setPrecompileMinimize(false);
 
         processor = new FreemarkerTemplatePreProcessor(templateConfig);
     }
@@ -86,7 +85,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
     }
 
     @Test(expectedExceptions = TplException.class,
-            expectedExceptionsMessageRegExp = "replaceable warp directive has no replaceble target, you can give target after[\\W]+")
+        expectedExceptionsMessageRegExp = "replaceable warp directive has no replaceble target, you can give target after[\\W]+")
     void testError() throws IOException {
         String file = ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_error.sql";
         System.out.println(ClassLoaderUtils.getResource(file));
@@ -115,15 +114,14 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.err.println(processor.process(s, config));
         Console.error("paramNames({}): {}", config.getParamNames().length, ArrayUtils.toString(config.getParamNames()));
         Console.error("inParamNames({}): {}", config.getInParamNames().length,
-                ArrayUtils.toString(config.getInParamNames()));
+            ArrayUtils.toString(config.getInParamNames()));
         Console.error("pames({}): {}", config.getParams().length, ArrayUtils.toString(config.getParams()));
 
         Set<String> inPs = Lang.set("ids", "ids2", "ids3", "ids4");
 
         // assert params and paramNames
-        assertEquals(config.getParamNames(),
-                new String[] { "username", "password", "mobileNo", "mobileNo", "mobileNo", "ids", "minAge", "maxAge",
-                        "ids2", "birthday", "ids3", "gender", "birthday", "email", "mobile", "ids4" });
+        assertEquals(config.getParamNames(), new String[] { "username", "password", "mobileNo", "mobileNo", "mobileNo",
+            "ids", "minAge", "maxAge", "ids2", "birthday", "ids3", "gender", "birthday", "email", "mobile", "ids4" });
         System.out.println(config.getParams().length);
         assertEquals(config.getParams().length, config.getParamNames().length);
 
@@ -192,7 +190,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         //        assertEquals(config.getParams().length, config.getParamNames().length);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_include_result.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_include_result.sql");
         assertEquals(process, result);
 
     }
@@ -226,7 +224,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_sqlhints_result2.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_sqlhints_result2.sql");
         assertEquals(process, result);
     }
 
@@ -240,7 +238,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter_result2.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter_result2.sql");
         assertEquals(process, result);
     }
 
@@ -256,7 +254,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter2_result2.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter2_result2.sql");
 
         assertEquals(process, result);
     }
@@ -273,7 +271,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.err.println("paramNames: " + ArrayUtils.toString(config.getParamNames()));
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter3_result2.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter3_result2.sql");
         assertEquals(process.trim(), result.trim());
     }
 
@@ -287,7 +285,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter4_result2.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter4_result2.sql");
         assertEquals(process, result);
     }
 
@@ -301,7 +299,7 @@ public class FreemarkerTemplatePreProcessorTest2 {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter5_result2.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest2.class) + "/tpl_transverter5_result2.sql");
         assertEquals(process, result);
     }
 

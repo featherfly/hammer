@@ -18,7 +18,7 @@ import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
@@ -151,7 +151,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
             if (pm.getMode() == Mode.EMBEDDED) {
                 JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
                 if (spm == null) {
-                    throw new SqldbHammerException(Strings.format("no property mapping found for {0}.{1}.{2}",
+                    throw new SqldbHammerException(Str.format("no property mapping found for {0}.{1}.{2}",
                         classMapping.getType().getSimpleName(), pm.getPropertyFullName(), pn));
                 }
                 return spm;
@@ -173,7 +173,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
                         return spm;
                     } else {
                         throw new SqldbHammerException(
-                            Strings.format("no property mapping found for {0}.{1}", cm.getType().getSimpleName(), pn));
+                            Str.format("no property mapping found for {0}.{1}", cm.getType().getSimpleName(), pn));
                     }
                 }
             } else if (pm.getMode() == Mode.ONE_TO_MANY) {

@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import cn.featherfly.common.db.Column;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression;
@@ -122,7 +122,7 @@ public class AbstractRepositorySqlQueryOn<Q extends RepositoryQueryRelateExpress
                 return on(joinRepositoryField, pkList.get(0).getName());
             }
             throw new SqldbHammerException(
-                Strings.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
+                Str.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
         } else {
             queryRelation.join(0, sourceRepositoryField, joinRepository, joinRepositoryAlias, joinRepositoryField);
             onConsumer.accept(queryRelate);

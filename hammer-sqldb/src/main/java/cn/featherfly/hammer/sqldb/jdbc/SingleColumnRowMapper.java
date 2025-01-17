@@ -12,7 +12,7 @@ import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
@@ -127,7 +127,7 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
                 if (fieldName.startsWith(prefix)) {
                     if (matchFiled != null) {
                         throw new JdbcException(
-                            Strings.format("there is more than one column name [{0},{1}] with prefix {2}", matchFiled,
+                            Str.format("there is more than one column name [{0},{1}] with prefix {2}", matchFiled,
                                 fieldName, prefix));
                     }
                     matchFiled = fieldName;

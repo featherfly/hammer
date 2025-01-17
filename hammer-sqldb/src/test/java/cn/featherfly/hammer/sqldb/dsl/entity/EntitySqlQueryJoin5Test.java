@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
@@ -33,7 +33,7 @@ public class EntitySqlQueryJoin5Test extends AbstractEntitySqlQueryJoinTest {
     @AfterMethod
     void afterMethod() {
         long time = timer.stop();
-        System.out.println(Strings.format("use time {0}", time));
+        System.out.println(Str.format("use time {0}", time));
     }
 
     @Test

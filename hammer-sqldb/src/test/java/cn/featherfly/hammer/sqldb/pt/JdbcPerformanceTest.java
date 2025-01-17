@@ -22,7 +22,7 @@ import cn.featherfly.common.db.wrapper.ConnectionWrapper;
 import cn.featherfly.common.db.wrapper.PreparedStatementWrapper;
 import cn.featherfly.common.function.ThreeArgusConsumer;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.hammer.sqldb.jdbc.HammerJdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
@@ -63,7 +63,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
             prep.close();
         }
         conn.close();
-        System.out.println(Strings.format("testInsertBatch use {0} time with insertBatch[{1}] times {2}", timer.stop(),
+        System.out.println(Str.format("testInsertBatch use {0} time with insertBatch[{1}] times {2}", timer.stop(),
             batchSize, batchTimes));
     }
 
@@ -92,7 +92,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
             prep.close();
         }
         conn.close();
-        System.out.println(Strings.format("testInsertBatchSingleSql use {0} time with insertBatch[{1}] times {2}",
+        System.out.println(Str.format("testInsertBatchSingleSql use {0} time with insertBatch[{1}] times {2}",
             timer.stop(), batchSize, batchTimes));
     }
 
@@ -142,7 +142,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
             prep.close();
         }
         conn.close();
-        System.out.println(Strings.format("testInsertBatch2 use {0} time with insertBatch[{1}] times {2}", timer.stop(),
+        System.out.println(Str.format("testInsertBatch2 use {0} time with insertBatch[{1}] times {2}", timer.stop(),
             batchSize, batchTimes));
     }
 
@@ -171,7 +171,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
             prep.close();
         }
         conn.close();
-        System.out.println(Strings.format("testInsertBatchSingleSql2 use {0} time with insertBatch[{1}] times {2}",
+        System.out.println(Str.format("testInsertBatchSingleSql2 use {0} time with insertBatch[{1}] times {2}",
             timer.stop(), batchSize, batchTimes));
     }
 
@@ -200,7 +200,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
             prep.close();
         }
         conn.close();
-        System.out.println(Strings.format("testInsertBatch3 use {0} time with insertBatch[{1}] times {2}", timer.stop(),
+        System.out.println(Str.format("testInsertBatch3 use {0} time with insertBatch[{1}] times {2}", timer.stop(),
             batchSize, batchTimes));
     }
 
@@ -229,7 +229,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
 
         Timer timer = Timer.start();
         hammer.save(list);
-        System.out.println(Strings.format("testInsertBatchHammer use {0} time with insertBatch[{1}] times {2}",
+        System.out.println(Str.format("testInsertBatchHammer use {0} time with insertBatch[{1}] times {2}",
             timer.stop(), batchSize, batchTimes));
     }
 }

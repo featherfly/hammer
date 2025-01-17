@@ -29,7 +29,7 @@ import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
 import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.Params.ParamType;
 import cn.featherfly.common.repository.builder.BuilderException;
@@ -110,7 +110,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
         List<Expression> availableExpressions = new ArrayList<>();
         for (Expression expression : conditions) {
             String condition = expression.expression();
-            if (Strings.isNotBlank(condition)) {
+            if (Str.isNotBlank(condition)) {
                 availableConditions.add(condition);
                 availableExpressions.add(expression);
             } else {

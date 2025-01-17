@@ -13,7 +13,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Randoms;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
@@ -63,7 +63,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         Timer timer = start();
         doInsertOne(userInfo);
         long time = timer.stop();
-        System.out.println(Strings.format("{0} testInsertOne first use {1} {2}", getName(), time, unit));
+        System.out.println(Str.format("{0} testInsertOne first use {1} {2}", getName(), time, unit));
 
         userInfo = new UserInfo2();
         index = Randoms.getInt(10);
@@ -77,7 +77,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         timer = start();
         doInsertOne(userInfo);
         time = timer.stop();
-        System.out.println(Strings.format("{0} testInsertOne second use {1} {2}", getName(), time, unit));
+        System.out.println(Str.format("{0} testInsertOne second use {1} {2}", getName(), time, unit));
     }
 
     @Test(groups = { "prepare", "insert" }, dependsOnMethods = "insertOne")
@@ -101,7 +101,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
             doInsertOne(userInfo);
         }
         long time = timer.stop();
-        System.out.println(Strings.format("{0} testInsertOneMulitiTimes use {1} {2} with {3} loop times", getName(),
+        System.out.println(Str.format("{0} testInsertOneMulitiTimes use {1} {2} with {3} loop times", getName(),
             time, unit, total));
     }
 
@@ -133,7 +133,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
             doInsertBatch(userInfos);
         }
         long time = timer.stop();
-        System.out.println(Strings.format("{0} testInsertBatch({1}) use {2} {3} with batchSize[{4}] {5} loop times",
+        System.out.println(Str.format("{0} testInsertBatch({1}) use {2} {3} with batchSize[{4}] {5} loop times",
             getName(), total, time, unit, batchSize, batchTimes));
     }
 
@@ -143,12 +143,12 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         Timer timer = start();
         doSelectById(USER_INFO_ID);
         long time = timer.stop();
-        System.out.println(Strings.format("{0} testSelectById first use {1} {2}", getName(), time, unit));
+        System.out.println(Str.format("{0} testSelectById first use {1} {2}", getName(), time, unit));
 
         timer = start();
         doSelectById(USER_INFO_ID2);
         time = timer.stop();
-        System.out.println(Strings.format("{0} testSelectById second use {1} {2}", getName(), time, unit));
+        System.out.println(Str.format("{0} testSelectById second use {1} {2}", getName(), time, unit));
     }
 
     @Override
@@ -161,7 +161,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         }
         doSelectById(ids);
         long time = timer.stop();
-        System.out.println(Strings.format("{0} testSelectByIdMulitiTimes use {1} {2} with {3} loop times", getName(),
+        System.out.println(Str.format("{0} testSelectByIdMulitiTimes use {1} {2} with {3} loop times", getName(),
             time, unit, total));
     }
 
@@ -181,7 +181,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         //        System.out.println("updateOneMulitiTimes results: " + ArrayUtils.toString(doUpdateById(false, ids)));
         long time = timer.stop();
         System.out.println(
-            Strings.format("{0} updateOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
+            Str.format("{0} updateOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
     }
 
     /**
@@ -200,7 +200,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         //        System.out.println("updateBatch results: " + ArrayUtils.toString(doUpdateById(true, ids)));
         long time = timer.stop();
         System.out
-            .println(Strings.format("{0} updateBatch use {1} {2} with {3} loop times", getName(), time, unit, total));
+            .println(Str.format("{0} updateBatch use {1} {2} with {3} loop times", getName(), time, unit, total));
     }
 
     /**
@@ -219,7 +219,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         //        System.out.println("deleteOneMulitiTimes results: " + ArrayUtils.toString(doDeleteById(false, ids)));
         long time = timer.stop();
         System.out.println(
-            Strings.format("{0} deleteOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
+            Str.format("{0} deleteOneMulitiTimes use {1} {2} with {3} loop times", getName(), time, unit, total));
     }
 
     /**
@@ -237,7 +237,7 @@ public abstract class AbstractBenchmark extends BenchmarkTestBase implements Ben
         System.out.println("deleteBatch results.length: " + res.length);
         //        System.out.println("deleteBatch results: " + ArrayUtils.toString(doDeleteById(true, ids)));
         long time = timer.stop();
-        System.out.println(Strings.format("{0} testDeleteBatch({1}) use {2} {3} ", getName(), ids.length, time, unit));
+        System.out.println(Str.format("{0} testDeleteBatch({1}) use {2} {3} ", getName(), ids.length, time, unit));
     }
 
     // ****************************************************************************************************************

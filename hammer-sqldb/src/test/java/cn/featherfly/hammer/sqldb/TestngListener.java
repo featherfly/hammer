@@ -15,7 +15,7 @@ import java.util.List;
 import org.testng.IAlterSuiteListener;
 import org.testng.xml.XmlSuite;
 
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 
 /**
  * TestngListener.
@@ -37,7 +37,7 @@ public class TestngListener implements IAlterSuiteListener {
         dataBase = db == null ? dataBase : db;
         for (XmlSuite xmlSuite : suite.getChildSuites()) {
             if (db != null) {
-                xmlSuite.setName(Strings.format(xmlSuite.getName(), dataBase));
+                xmlSuite.setName(Str.format(xmlSuite.getName(), dataBase));
             }
             setDatabaseName(xmlSuite, dataBase);
         }
