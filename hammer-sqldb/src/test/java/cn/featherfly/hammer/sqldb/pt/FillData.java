@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.Timer;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
@@ -91,7 +91,7 @@ public class FillData extends BenchmarkTestBase {
             doInsertBatch(userInfos);
         }
         long time = timer.stop();
-        System.out.println(Strings.format("FillData({0}) use {1} {2} with batchSize[{3}] {4} loop times",
+        System.out.println(Str.format("FillData({0}) use {1} {2} with batchSize[{3}] {4} loop times",
                 times * batchSize, time, unit, batchSize, times));
     }
 

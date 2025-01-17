@@ -124,13 +124,13 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
      * logic and. 逻辑与.
      *
      * @param <G> the GroupExpression type
-     * @param <GC> the generic type
-     * @param <GL> the generic type
+     * @param <C0> the generic type
+     * @param <L0> the generic type
      * @param conditionExpression the condition expression
      * @return ConditionExpression
      */
-    default <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
-        GL extends GroupEndExpression<GC, GL>> G and(G conditionExpression) {
+    default <G extends GroupExpression<C0, L0>, C0 extends ConditionExpression,
+        L0 extends GroupEndExpression<C0, L0>> G and(G conditionExpression) {
         and();
         return conditionExpression;
     }
@@ -162,13 +162,13 @@ public interface LogicExpression<C extends ConditionExpression, L extends LogicE
      * logic or. 逻辑或.
      *
      * @param <G> the GroupExpression type
-     * @param <GC> the generic type
-     * @param <GL> the generic type
+     * @param <C0> the condition expression type
+     * @param <L0> the logic expression type
      * @param conditionExpression the condition expression
      * @return ConditionExpression
      */
-    default <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
-        GL extends GroupEndExpression<GC, GL>> G or(G conditionExpression) {
+    default <G extends GroupExpression<C0, L0>, C0 extends ConditionExpression,
+        L0 extends GroupEndExpression<C0, L0>> G or(G conditionExpression) {
         or();
         return conditionExpression;
     }

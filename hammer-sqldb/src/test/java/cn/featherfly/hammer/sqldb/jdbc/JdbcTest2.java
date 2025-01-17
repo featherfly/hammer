@@ -24,7 +24,7 @@ import cn.featherfly.common.db.mapping.mappers.PlatformJavaSqlTypeMapper;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.tuple.Tuple2;
@@ -78,9 +78,9 @@ public class JdbcTest2 extends JdbcTestBase {
         try {
             File file = null;
             if (path.endsWith("test/")) {
-                file = new File(path + Strings.format("../../../resources/test/sql/{0}.sql", fileName));
+                file = new File(path + Str.format("../../../resources/test/sql/{0}.sql", fileName));
             } else {
-                file = new File(path + Strings.format("../test/sql/{0}.sql", fileName));
+                file = new File(path + Str.format("../test/sql/{0}.sql", fileName));
             }
             return org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -90,11 +90,11 @@ public class JdbcTest2 extends JdbcTestBase {
 
     @BeforeClass
     void before() {
-        selectAvg = Strings.format("select avg(age) from {0}", jdbc.getDialect().wrapName("user"));
-        selectAvgNamedParam = Strings.format("select avg(age) from {0} where age > :age",
+        selectAvg = Str.format("select avg(age) from {0}", jdbc.getDialect().wrapName("user"));
+        selectAvgNamedParam = Str.format("select avg(age) from {0} where age > :age",
             jdbc.getDialect().wrapName("user"));
-        selectString = Strings.format("select username from {0} where id = 1", jdbc.getDialect().wrapName("user"));
-        selectStringNamedParam = Strings.format("select username from {0} where id = :id",
+        selectString = Str.format("select username from {0} where id = 1", jdbc.getDialect().wrapName("user"));
+        selectStringNamedParam = Str.format("select username from {0} where id = :id",
             jdbc.getDialect().wrapName("user"));
 
         PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();

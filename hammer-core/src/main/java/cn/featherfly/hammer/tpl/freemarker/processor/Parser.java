@@ -16,10 +16,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.structure.ChainMap;
+import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
+import cn.featherfly.hammer.tpl.TemplateEngineBuiltInDirective;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.TplExecuteConfig;
 import cn.featherfly.hammer.tpl.TplExecuteConfig.Param;
@@ -61,6 +64,8 @@ public class Parser {
     private Pattern hasReplaceableTargetPattern = Pattern.compile("\\$=%?" + namedParamStart + "\\w+%?");
 
     TemplateConfig templateConfig;
+
+    private final ChainMap<String, TemplateEngineBuiltInDirective> directives = new ChainMapImpl<>();
 
     /**
      * The Enum NullType.
@@ -105,9 +110,13 @@ public class Parser {
      * Instantiates a new parser.
      *
      * @param templateConfig the template config
+     * @param directives the directive names
      */
     public Parser(TemplateConfig templateConfig) {
         this.templateConfig = templateConfig;
+        directives.putChain("if", new TemplateEngineBuiltInDirective("if")) //
+            .putChain("else", new TemplateEngineBuiltInDirective("else", false)) //
+            .putChain("elseif", new TemplateEngineBuiltInDirective("elseif", false));
     }
 
     /**
@@ -166,7 +175,14 @@ public class Parser {
             // 直接找到group结束的索引
             if (element instanceof DirectiveElement && ((DirectiveElement) element).isGroupStart()) {
                 DirectiveElement de = (DirectiveElement) element;
-                if (!de.isEnclosed()) {
+                if (!de.isNeedEndPair()) {
+                    Directive directive = getNextDirective(source, (DirectiveElement) element);
+                    int substart = element.getEnd() + 1;
+                    String subSource = source.substring(substart, directive.start);
+                    parse(subSource, tplExecuteConfig, paramTuple, element);
+                    index = directive.end;
+                    element = null;
+                } else if (!de.isEnclosed()) {
                     Directive directive = getEndDirective(source, (DirectiveElement) element);
                     // 去掉directive开始标签和结束标签，因为element就已经代表了这个标签
 
@@ -202,6 +218,9 @@ public class Parser {
                     } else {
                         element = craeteDirective(directive, element);
                         processDirective((DirectiveElement) element, paramTuple.get1());
+                        if (!((DirectiveElement) element).isNeedEndPair()) {
+                            directive.selfClose = true;
+                        }
                     }
                     addElement(element, parentElement);
                     element.setEnd(directive.end);
@@ -521,8 +540,15 @@ public class Parser {
             }
             // more special directives
         }
-        return new DirectiveElement(directive.content, templateConfig.isPrecompileNamedParamPlaceholder(), previous,
-            this);
+        char symbol = '@';
+        boolean needEndPair = true;
+        TemplateEngineBuiltInDirective builtInDirective = directives.get(directive.name);
+        if (builtInDirective != null) {
+            symbol = '#';
+            needEndPair = builtInDirective.isNeedEndPair();
+        }
+        return new DirectiveElement(directive.content, symbol, isEnclosed(directive.content), needEndPair,
+            templateConfig.isPrecompileNamedParamPlaceholder(), previous, this);
     }
 
     private Directive parseDirective(CharSequence value, int start) {
@@ -570,10 +596,9 @@ public class Parser {
         }
     }
 
-    private Directive getEndDirective(CharSequence value, DirectiveElement directiveElement) {
+    private Directive getNextDirective(CharSequence value, DirectiveElement directiveElement, boolean endDirective) {
         char c = 0;
         char c2 = 0;
-        //        char c3 = 0;
         int index = directiveElement.getStart();
         Directive directive = new Directive();
         directive.start = directiveElement.getStart();
@@ -585,14 +610,6 @@ public class Parser {
                 c2 = 0;
             }
             if (isDirectiveStart(c, c2)) {
-                //                if (index + 2 < value.length()) {
-                //                    c3 = value.charAt(index + 2);
-                //                } else {
-                //                    c3 = 0;
-                //                }
-                //                if (isComment(c3)) {
-                //                    directive.comment = true;
-                //                }
                 directive.start = index;
             } else if (isDirectiveEnd(c, c2)) {
                 // 当前是结束符开始的第一个字符
@@ -600,8 +617,13 @@ public class Parser {
                 if (directive.start != -1 && directive.end != -1) {
                     // start + 1 去掉<符号
                     directive.setSource(value.subSequence(directive.start, directive.end + 1), this);
-                    if (directive.content.charAt(0) == endDirecitve
-                        && directive.name.equals(directiveElement.getName())) {
+                    if (endDirective) {
+                        if (directive.content.charAt(0) == endDirecitve
+                            && directive.name.equals(directiveElement.getName())) {
+                            directive.end = index + directiveEnd.length - 1;
+                            return directive;
+                        }
+                    } else {
                         directive.end = index + directiveEnd.length - 1;
                         return directive;
                     }
@@ -609,7 +631,23 @@ public class Parser {
             }
             index++;
         }
-        throw new TplException(Strings.format("没有找到标签[{0}]对应的结束标签", directiveElement.getSource()));
+        return null;
+    }
+
+    private Directive getNextDirective(CharSequence value, DirectiveElement directiveElement) {
+        Directive directive = getNextDirective(value, directiveElement, false);
+        if (directive == null) {
+            throw new TplException(Str.format("标签[{0}]是无结束标签对标签，没有找到其父标签的结束标签", directiveElement.getSource()));
+        }
+        return directive;
+    }
+
+    private Directive getEndDirective(CharSequence value, DirectiveElement directiveElement) {
+        Directive directive = getNextDirective(value, directiveElement, true);
+        if (directive == null) {
+            throw new TplException(Str.format("没有找到标签[{0}]对应的结束标签", directiveElement.getSource()));
+        }
+        return directive;
     }
 
     private void addElement(AbstractElement element, AbstractElement parentElement) {
@@ -683,7 +721,7 @@ public class Parser {
                 }
             }
             sb.append(token);
-            if (Strings.isNotBlank(token)) {
+            if (Str.isNotBlank(token)) {
                 preToken = token;
             }
         }
@@ -1040,5 +1078,9 @@ public class Parser {
             }
         }
         return false;
+    }
+
+    public boolean isDirective(CharSequence name) {
+        return directives.containsKey(name);
     }
 }

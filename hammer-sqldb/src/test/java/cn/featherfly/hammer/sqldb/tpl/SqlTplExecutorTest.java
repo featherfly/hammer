@@ -15,7 +15,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.dialect.MySQLDialect;
-import cn.featherfly.common.lang.NumberUtils;
+import cn.featherfly.common.lang.Num;
 import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
@@ -440,7 +440,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
                 new SimplePagination(start, limit));
         final int size2 = userList.size();
         userList.forEach(u -> {
-            int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
+            int age = Num.parse(u.get("age").toString(), Integer.class);
             assertTrue(age >= minAge);
             assertTrue(age <= maxAge);
             assertTrue(u.get("username").toString().startsWith(username1));
@@ -479,7 +479,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
                 new SimplePagination(start, limit));
         final int size2 = userPage.getResultSize();
         userPage.getPageResults().forEach(u -> {
-            int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
+            int age = Num.parse(u.get("age").toString(), Integer.class);
             assertTrue(age >= minAge);
             assertTrue(age <= maxAge);
             assertTrue(u.get("username").toString().startsWith(username1));
@@ -489,7 +489,7 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         userPage = executor.pagination("selectConditions@user", new ChainMapImpl<String, Serializable>()
             .putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), start, limit);
         userPage.getPageResults().forEach(u -> {
-            int age = NumberUtils.parse(u.get("age").toString(), Integer.class);
+            int age = Num.parse(u.get("age").toString(), Integer.class);
             assertTrue(age >= minAge);
             assertTrue(age <= maxAge);
             assertTrue(u.get("username").toString().startsWith(username1));

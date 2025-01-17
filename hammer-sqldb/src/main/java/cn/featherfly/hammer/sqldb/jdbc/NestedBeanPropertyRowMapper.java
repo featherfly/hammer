@@ -604,7 +604,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
         //         */
         //        @Override
         //        public String toString() {
-        //            String format = Strings.format("  Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
+        //            String format = Str.format("  Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
         //                    columnMaxLength, columnAsMaxLength, propertyMaxLength, propertyTypeName);
         //            return String.format(format, column, columnAs, property);
         //        }

@@ -15,7 +15,7 @@ TODO dsl实体查询加入以下（EntityQuery）
    where().property(Role::getCreateDate).getMonth().eq(1) //还未实现
    ```
 
-   
+4. 模板预编译加入freemarker elseif else标签支持
 
 # 0.7.2 2024-11-15
 

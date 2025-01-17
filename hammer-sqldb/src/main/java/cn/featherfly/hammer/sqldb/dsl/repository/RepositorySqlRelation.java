@@ -22,7 +22,7 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectJoinOnBasicBuilder;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.repository.builder.AliasManager;
@@ -211,7 +211,7 @@ public abstract class RepositorySqlRelation<R extends RepositorySqlRelation<R, B
             return join(sourceIndex, sourceField, joinRepository, pkList.get(0).getName());
         }
         throw new SqldbHammerException(
-                Strings.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
+                Str.format("only support one primary key, but more than one primary key found {0}", pkList.size()));
     }
 
     /**

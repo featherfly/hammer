@@ -52,7 +52,7 @@ import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.common.lang.matcher.MethodAnnotationMatcher;
 import cn.featherfly.hammer.annotation.Mapper;
@@ -249,7 +249,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         StringBuilder message = new StringBuilder("\n---------- template config start ----------\n");
         for (Entry<String, TplExecuteConfigs> entry : configsMap.entrySet()) {
             TplExecuteConfigs configs = entry.getValue();
-            message.append(Strings.format("  Config { key={0}  namespace={1}  filePath={2} types={3} }\n",
+            message.append(Str.format("  Config { key={0}  namespace={1}  filePath={2} types={3} }\n",
                 entry.getKey(), configs.getNamespace(), configs.getFilePath(),
                 configs.getTypes().stream().map((t) -> t.getName()).collect(Collectors.toList())));
             for (Entry<String, Object> e : configs.entrySet()) {
@@ -258,7 +258,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                     continue;
                 }
                 TplExecuteConfig config = (TplExecuteConfig) v;
-                message.append(Strings.format(
+                message.append(Str.format(
                     "    name={0}  namespace={1}  executeId={2} tplName={3}  filePath={4}   type={5}  precompile={6}\n",
                     config.getName(), config.getNamespace(), config.getExecuteId(), config.getTplName(),
                     config.getFilePath(), config.getType(), config.getPrecompile()));
@@ -417,7 +417,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         if (executeIdsMap.get(newConfig.getExecuteId()) != null) {
             // ENHANCE 使用exceptioncode
             TplExecuteConfig old = getConfig(newConfig.getExecuteId());
-            throw new TplException(Strings.format("duplicated template executeId[{}], may take a look at {} and {}",
+            throw new TplException(Str.format("duplicated template executeId[{}], may take a look at {} and {}",
                 newConfig.getExecuteId(), newConfig.getFilePath(), old.getFilePath()));
         }
         return newConfig;
@@ -475,7 +475,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             StringBuilder message = new StringBuilder("\n---------- template file config start ----------\n");
             for (Entry<String, FinalPath> entry : filePathMap.entrySet()) {
                 FinalPath finalPath = entry.getValue();
-                message.append(Strings.format("  namespace: {0} -> {1}\n", entry.getKey(), finalPath));
+                message.append(Str.format("  namespace: {0} -> {1}\n", entry.getKey(), finalPath));
             }
             message.append("---------- template file config end ----------");
             logger.debug(message.toString());
@@ -487,7 +487,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         if (!result.endsWith("/")) {
             return result + "/";
         } else {
-            result = Strings.trimEnd(result, "/");
+            result = Str.trimEnd(result, "/");
             return result + "/";
         }
     }
@@ -633,7 +633,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
             FinalPath fp = filePathMap.get(namespace);
             if (fp != null && !filePath.equals(fp.filePath)) {
                 // ENHANCE 使用exceptioncode
-                throw new TplException(Strings.format("duplicate regist namespace[{0}] filePath[{1} , {2}]", namespace,
+                throw new TplException(Str.format("duplicate regist namespace[{0}] filePath[{1} , {2}]", namespace,
                     fp.filePath, filePath));
             } else {
                 filePathMap.put(namespace, new FinalPath(filePath, prefix, suffix));
@@ -876,7 +876,7 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     @SuppressWarnings("unchecked")
-    private String[] getStrings(Map<String, Object> map, String key) {
+    private String[] getStr(Map<String, Object> map, String key) {
         Set<String> strs = new HashSet<>();
         Object namesObj = map.get(key);
         if (namesObj != null) {
@@ -898,11 +898,11 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
     }
 
     private String[] getParamNames(Map<String, Object> map) {
-        return getStrings(map, TplExecuteConfig.PARAM_NAMES);
+        return getStr(map, TplExecuteConfig.PARAM_NAMES);
     }
 
     private String[] getInParamNames(Map<String, Object> map) {
-        return getStrings(map, TplExecuteConfig.IN_PARAM_NAMES);
+        return getStr(map, TplExecuteConfig.IN_PARAM_NAMES);
     }
 
     @SuppressWarnings("unchecked")

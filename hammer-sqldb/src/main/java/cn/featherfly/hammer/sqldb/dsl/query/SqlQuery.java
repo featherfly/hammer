@@ -154,7 +154,7 @@ public class SqlQuery implements Query {
         }
         JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entity);
         //        if (mapping == null) { // 不存在的映射类型在mappingFactory就抛出异常了
-        //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
+        //            throw new SqldbHammerException(Str.format("type {0} is not a entity"));
         //        }
 
         EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
@@ -179,7 +179,7 @@ public class SqlQuery implements Query {
     //        }
     //        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
     //        //        if (mapping == null) { // 不存在的映射类型在mappingFactory就抛出异常了
-    //        //            throw new SqldbHammerException(Strings.format("type {0} is not a entity"));
+    //        //            throw new SqldbHammerException(Str.format("type {0} is not a entity"));
     //        //        }
     //
     //        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),

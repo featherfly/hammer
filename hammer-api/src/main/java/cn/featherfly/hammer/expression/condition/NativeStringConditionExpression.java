@@ -17,7 +17,8 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.repository.Params;
 
 /**
- * StringConditionExpression.
+ * native string condition expression.
+ * such as: SQL, JSON and so on
  *
  * @author zhongj
  * @param <C> the generic type

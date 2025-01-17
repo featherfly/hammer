@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.hammer.tpl.TplException;
 
 /**
@@ -21,29 +21,41 @@ public class DirectiveElement extends AbstractElement {
 
     private static final Pattern PATTERN = Pattern.compile("[a-zA-Z]+");
 
-    protected char directive = '@';
+    //    protected char directive = '@';
+    //
+    //    protected char macro = '#';
 
-    protected char macro = '#';
+    protected final char symbol;
 
-    //    /**
-    //     * Instantiates a new directive element.
-    //     *
-    //     * @param parser the parser
-    //     */
-    //    public DirectiveElement(Parser parser) {
-    //        this("", parser);
-    //    }
+    /**
+     * 是否需要对应的结束标签对.
+     * need end pair directive
+     */
+    protected final boolean needEndPair;
+
+    /**
+     * 是否是自关闭标签.
+     * enclosed directive.
+     */
+    protected final boolean enclosed;
 
     /**
      * Instantiates a new directive element.
      *
      * @param value the value
+     * @param symbol the symbol
+     * @param enclosed the enclosed
+     * @param needEndPair the need end pair
      * @param namedParamPlaceholder the named param placeholder
      * @param previous the previous
      * @param parser the parser
      */
-    public DirectiveElement(CharSequence value, boolean namedParamPlaceholder, Element previous, Parser parser) {
+    public DirectiveElement(CharSequence value, char symbol, boolean enclosed, boolean needEndPair,
+        boolean namedParamPlaceholder, Element previous, Parser parser) {
         super(value, namedParamPlaceholder, previous, parser);
+        this.symbol = symbol;
+        this.enclosed = enclosed;
+        this.needEndPair = needEndPair;
     }
 
     /**
@@ -143,11 +155,6 @@ public class DirectiveElement extends AbstractElement {
     }
 
     private String getString(boolean isEndDirective, boolean isEnclosed) {
-        char sign = directive;
-        String name = getName();
-        if ("if".equals(name) || "elseif ".equals(name) || "else".equals(name)) {
-            sign = macro;
-        }
         String directiveEnd = "";
         if (isEndDirective) {
             directiveEnd = "/";
@@ -162,7 +169,7 @@ public class DirectiveElement extends AbstractElement {
         } else {
             content = getNameAndAttr();
         }
-        return new StringBuilder().append("<").append(directiveEnd).append(sign).append(content).append(enclosed)
+        return new StringBuilder().append("<").append(directiveEnd).append(symbol).append(content).append(enclosed)
             .append(">").toString();
 
     }
@@ -204,12 +211,12 @@ public class DirectiveElement extends AbstractElement {
         if (PATTERN.matcher(attrName).matches()) {
             return attrName;
         }
-        throw new TplException(Strings.format("{} direcitve(tag) attribute names can only be alphabetic, error with {}",
-            getName(), attrName));
+        throw new TplException(
+            Str.format("{} direcitve(tag) attribute names can only be alphabetic, error with {}", getName(), attrName));
     }
 
     protected String trimSymbol(String attrToken) {
-        return Strings.trimBeginEnd(Strings.trimBeginEnd(attrToken, "\""), "\'");
+        return Str.trimStartEnd(Str.trimStartEnd(attrToken, "\""), "\'");
     }
 
     /**
@@ -255,7 +262,7 @@ public class DirectiveElement extends AbstractElement {
     //     * @return the insert index
     //     */
     //    public int getInsertIndex(String v) {
-    //        Strings.trimStart(v);
+    //        Str.trimStart(v);
     //        int newLineIndex = v.indexOf(Chars.NEW_LINEZ_CHAR);
     //        if (isCondition()) {
     //            if (newLineIndex == -1) {
@@ -369,12 +376,21 @@ public class DirectiveElement extends AbstractElement {
     }
 
     /**
-     * Checks if is enclose.
+     * Checks if is enclosed.
      *
-     * @return true, if is enclose
+     * @return true, if is enclosed
      */
     public boolean isEnclosed() {
-        return parser.isEnclosed(source);
+        return enclosed;
+    }
+
+    /**
+     * Checks if is need end pair.
+     *
+     * @return true, if is need end pair
+     */
+    public boolean isNeedEndPair() {
+        return needEndPair;
     }
 
 }

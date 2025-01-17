@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.LogicDirective;
@@ -124,7 +124,7 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
 
                     for (String n : getParamNames(name)) {
                         Param param = null;
-                        if (Strings.isNotBlank(transverterParam)) {
+                        if (Str.isNotBlank(transverterParam)) {
                             param = new Param(n.trim(), transverterParam.trim());
                         } else {
                             param = new Param(n.trim());

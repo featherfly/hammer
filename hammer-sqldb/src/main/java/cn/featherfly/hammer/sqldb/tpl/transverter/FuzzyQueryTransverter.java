@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cn.featherfly.common.lang.CollectionUtils;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.AutoRegistTransverter;
@@ -77,7 +77,7 @@ public class FuzzyQueryTransverter implements AutoRegistTransverter {
             return "%" + value;
         } else {
             throw new SqldbHammerException(
-                Strings.format("{0} can not transvert value with operator {1}", this.getClass().getName(), operator));
+                Str.format("{0} can not transvert value with operator {1}", this.getClass().getName(), operator));
         }
         //        }
         //        return value;

@@ -12,7 +12,7 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
@@ -109,7 +109,7 @@ public class GetOperate<T> extends AbstractQueryOperate<T> implements QueryOpera
                 return jdbc.querySingle(sql + " for update", this::mapRow, id);
             } else {
                 // TODO 后续加入行为可配置策略
-                throw new SqldbHammerException(Strings.format("unsupport [select...for update] with database {} - {}",
+                throw new SqldbHammerException(Str.format("unsupport [select...for update] with database {} - {}",
                     databaseMetadata.getProductName(), databaseMetadata.getProductVersion()));
             }
         } else {

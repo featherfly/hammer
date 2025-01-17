@@ -99,7 +99,7 @@ public class TestBase {
         long time = timer.stop();
         String type = this.getClass().getName();
         TEST_INFOS.get(type).add(Tuples.of(type, method.getName(), time));
-        //        System.err.println(Strings.format("use time {0}", time));
+        //        System.err.println(Str.format("use time {0}", time));
     }
 
     @BeforeClass

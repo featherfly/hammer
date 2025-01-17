@@ -28,7 +28,7 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.tuple.MutableTuples;
 import cn.featherfly.common.tuple.Tuple2;
@@ -229,7 +229,7 @@ public abstract class EntitySqlRelation<R extends EntitySqlRelation<R, B>, B ext
                 joinClassMapping.getPrimaryKeyPropertyMappings().get(0).getRepositoryFieldName(), returnType);
         }
         throw new SqldbHammerException(
-            Strings.format("only support one privary key, but more than one privary key found {0}",
+            Str.format("only support one privary key, but more than one privary key found {0}",
                 joinClassMapping.getPrimaryKeyPropertyMappings().size()));
     }
 

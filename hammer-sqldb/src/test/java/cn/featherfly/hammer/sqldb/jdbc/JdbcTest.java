@@ -35,7 +35,7 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Randoms;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.model.app.Platforms;
@@ -100,9 +100,9 @@ public class JdbcTest extends JdbcTestBase {
         try {
             File file = null;
             if (path.endsWith("test/")) {
-                file = new File(path + Strings.format("../../../resources/test/sql/{0}.sql", fileName));
+                file = new File(path + Str.format("../../../resources/test/sql/{0}.sql", fileName));
             } else {
-                file = new File(path + Strings.format("../test/sql/{0}.sql", fileName));
+                file = new File(path + Str.format("../test/sql/{0}.sql", fileName));
             }
             return org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -112,11 +112,11 @@ public class JdbcTest extends JdbcTestBase {
 
     @BeforeClass
     void before() {
-        selectAvg = Strings.format("select avg(age) from {0}", jdbc.getDialect().wrapName("user"));
-        selectAvgNamedParam = Strings.format("select avg(age) from {0} where age > :age",
+        selectAvg = Str.format("select avg(age) from {0}", jdbc.getDialect().wrapName("user"));
+        selectAvgNamedParam = Str.format("select avg(age) from {0} where age > :age",
             jdbc.getDialect().wrapName("user"));
-        selectString = Strings.format("select username from {0} where id = 1", jdbc.getDialect().wrapName("user"));
-        selectStringNamedParam = Strings.format("select username from {0} where id = :id",
+        selectString = Str.format("select username from {0} where id = 1", jdbc.getDialect().wrapName("user"));
+        selectStringNamedParam = Str.format("select username from {0} where id = :id",
             jdbc.getDialect().wrapName("user"));
 
         PlatformJavaSqlTypeMapper platformJavaSqlTypeMapper = new PlatformJavaSqlTypeMapper();
@@ -810,18 +810,18 @@ public class JdbcTest extends JdbcTestBase {
         }, new JdbcExecutionInterceptor() {
             @Override
             public void preHandle(JdbcExecution execution) throws JdbcException {
-                System.err.println(Strings.format("jdbc -> {0}\n", execution.getJdbc()));
-                System.err.println(Strings.format("original sql -> {0}\n", execution.getOriginalExecution()));
-                System.err.println(Strings.format("execute sql -> {0}\n", execution.getExecution()));
-                System.err.println(Strings.format("original params -> {0}\n", execution.getOriginalParams()));
+                System.err.println(Str.format("jdbc -> {0}\n", execution.getJdbc()));
+                System.err.println(Str.format("original sql -> {0}\n", execution.getOriginalExecution()));
+                System.err.println(Str.format("execute sql -> {0}\n", execution.getExecution()));
+                System.err.println(Str.format("original params -> {0}\n", execution.getOriginalParams()));
                 execution.setParams(execution.getOriginalParams());
-                System.err.println(Strings.format("execute params -> {0}\n", execution.getParams()));
+                System.err.println(Str.format("execute params -> {0}\n", execution.getParams()));
             }
 
             @Override
             public void postHandle(JdbcExecution execution) throws JdbcException {
-                System.err.println(Strings.format("original result -> {0}\n", execution.getOriginalResult()));
-                System.err.println(Strings.format("execute result -> {0}\n", execution.getResult()));
+                System.err.println(Str.format("original result -> {0}\n", execution.getOriginalResult()));
+                System.err.println(Str.format("execute result -> {0}\n", execution.getResult()));
             }
         });
 
@@ -853,18 +853,18 @@ public class JdbcTest extends JdbcTestBase {
         interceptors.add(new JdbcExecutionInterceptor() {
             @Override
             public void preHandle(JdbcExecution execution) throws JdbcException {
-                System.err.println(Strings.format("jdbc -> {0}\n", execution.getJdbc()));
-                System.err.println(Strings.format("original sql -> {0}\n", execution.getOriginalExecution()));
-                System.err.println(Strings.format("execute sql -> {0}\n", execution.getExecution()));
-                System.err.println(Strings.format("original params -> {0}\n", execution.getOriginalParams()));
+                System.err.println(Str.format("jdbc -> {0}\n", execution.getJdbc()));
+                System.err.println(Str.format("original sql -> {0}\n", execution.getOriginalExecution()));
+                System.err.println(Str.format("execute sql -> {0}\n", execution.getExecution()));
+                System.err.println(Str.format("original params -> {0}\n", execution.getOriginalParams()));
                 execution.setParams(execution.getOriginalParams());
-                System.err.println(Strings.format("execute params -> {0}\n", execution.getParams()));
+                System.err.println(Str.format("execute params -> {0}\n", execution.getParams()));
             }
 
             @Override
             public void postHandle(JdbcExecution execution) throws JdbcException {
-                System.err.println(Strings.format("original result -> {0}\n", execution.getOriginalResult()));
-                System.err.println(Strings.format("execute result -> {0}\n", execution.getResult()));
+                System.err.println(Str.format("original result -> {0}\n", execution.getOriginalResult()));
+                System.err.println(Str.format("execute result -> {0}\n", execution.getResult()));
             }
         });
 
@@ -1059,10 +1059,10 @@ public class JdbcTest extends JdbcTestBase {
         int batchSize = 2;
         //        String batchInsertSql = jdbc.getDialect().buildInsertBatchSql(tableName, columnNames, batchSize);
 
-        String batchInsertSql = Strings.format(
+        String batchInsertSql = Str.format(
             "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id1, :title1, :content1),(:id2, :title2, :content2)",
             jdbc.getDialect().getWrapSymbol());
-        String batchInsertSql2 = Strings.format(
+        String batchInsertSql2 = Str.format(
             "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id1, :title1, :content1),(:id2, :title2, :content2),(:id3, :title3, :content3)",
             jdbc.getDialect().getWrapSymbol());
 
@@ -1095,7 +1095,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testUpdateBatchMulitiSql() { // 一条sql影响一条数据，批量执行
-        String insertSql = Strings.format(
+        String insertSql = Str.format(
             "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (?, ?, ?)",
             jdbc.getDialect().getWrapSymbol());
         List<Serializable[]> argsList = new ArrayList<>();
@@ -1145,7 +1145,7 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testUpdateBatchMulitiSql2() { // 一条sql影响一条数据，批量执行
-        String insertSql = Strings.format(
+        String insertSql = Str.format(
             "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id, :title, :content)",
             jdbc.getDialect().getWrapSymbol());
         int batchSize = 5;

@@ -3,7 +3,7 @@ package cn.featherfly.hammer.tpl.freemarker;
 
 import java.util.Map;
 
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.hammer.tpl.TplException;
 import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import freemarker.template.TemplateDirectiveModel;
@@ -26,12 +26,12 @@ public interface FreemarkerDirective extends TemplateDirective, TemplateDirectiv
                 return null;
             } else {
                 throw new TplException(
-                        Strings.format("The \"{}\" parameter of directive \"{}\" can not be null.", tagName, name));
+                        Str.format("The \"{}\" parameter of directive \"{}\" can not be null.", tagName, name));
             }
         }
         if (!(paramValue instanceof TemplateScalarModel)) {
             throw new TplException(
-                    Strings.format("The \"{}\" parameter of directive \"{}\" must be a String.", tagName, name));
+                    Str.format("The \"{}\" parameter of directive \"{}\" must be a String.", tagName, name));
         }
         return ((TemplateScalarModel) paramValue).getAsString();
     }

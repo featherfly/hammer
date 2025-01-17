@@ -32,6 +32,11 @@ public class TemplateMethods<M> {
     private String prefix = DEFAULT_PREFIX;
 
     /**
+     */
+    public TemplateMethods() {
+    }
+
+    /**
      * get prefix
      *
      * @return prefix
@@ -63,7 +68,7 @@ public class TemplateMethods<M> {
     public Map<String, M> getMethodeMapAfterCheck(boolean shared) {
         for (String key : shared ? SHARED_REQUIRED_KEYS : REQUIRED_KEYS) {
             if (!methodMap.containsKey(getKey(key))) {
-                throw new HammerException("method with key " + key + " is null");
+                throw new HammerException("no method found with key " + key);
             }
         }
         return methodMap;

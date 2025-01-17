@@ -37,7 +37,7 @@ import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.reflect.GenericType;
 import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.common.structure.ChainMapImpl;
@@ -1084,7 +1084,7 @@ public class TplDynamicExecutorFactory implements Opcodes {
                 if (logger.isTraceEnabled()) {
                     StringBuilder javapString = new StringBuilder();
                     javapString.append(methodNode.access + " " + methodNode.name + methodNode.desc)
-                        .append(Chars.NEW_LINE).append(Strings.format("stack={0},locales={1}", stackSize, localeSize))
+                        .append(Chars.NEW_LINE).append(Str.format("stack={0},locales={1}", stackSize, localeSize))
                         .append(Chars.NEW_LINE);
                     if (methodNode.visibleAnnotations != null) {
                         for (AnnotationNode annotation : methodNode.visibleAnnotations) {
