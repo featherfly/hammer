@@ -874,7 +874,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      * @return the builder
      */
     public static Builder builder() {
-        return builder();
+        return new Builder();
     }
 
     /**
