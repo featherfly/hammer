@@ -8,11 +8,25 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 2. DSL where后的条件筛选加入ignore(boolean ignorable, Function<C, L> conditionExpressions) 用于判断条件参数获取还有先决判断条件的情况，例如 .eq("a", u.getA().and().eq("b", u.getB())，要先判断u不等于null或其他判断情况
 
+   ```java
+   query.find(User2.class).where().ignore(user == null, //
+       e -> e.eq(User2::getId, user.getId()) //
+   		.and() //
+           .eq(User2::getId, user.getId(), IgnoreStrategy.EMPTY) //
+   		.and() //
+           .eq(user::getId) //
+           .and() //
+           .eq(user::getId, (Predicate<Integer>) v -> v == null) //
+   );
+   ```
+
+   
+
 3. DSL 加入日期相关方法
 
    ```java
-   where().fieldAsDate().getMonth().eq(1) // 已经实现
-   where().property(Role::getCreateDate).getMonth().eq(1) //还未实现
+   where().fieldAsDate().getMonth().eq(1) // 已实现
+   where().property(Role::getCreateDate).getMonth().eq(1) //已实现
    ```
 
 4. 模板预编译加入freemarker elseif else标签支持

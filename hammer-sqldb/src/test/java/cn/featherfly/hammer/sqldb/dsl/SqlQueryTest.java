@@ -1267,9 +1267,13 @@ public class SqlQueryTest extends JdbcTestBase {
             (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
 
         // getYear
-        assertYear.accept(query.find("role").fetch("create_time").where()
-            .fieldAsDate("create_time").getYear().add(1).eq(year) //
-            .list(LocalDateTime.class));
+        //        assertYear.accept(query.find("role").fetch("create_time").where()
+        //            .fieldAsDate("create_time").getYear().add(1).eq(year) //
+        //            .list(LocalDateTime.class));
+
+        // getYear
+        assertYear.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getYear().eq(year).valueList());
 
     }
 

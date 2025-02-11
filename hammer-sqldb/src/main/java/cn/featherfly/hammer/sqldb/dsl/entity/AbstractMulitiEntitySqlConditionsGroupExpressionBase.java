@@ -400,20 +400,23 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
         } else {
             builder = SqlConditionExpressionBuilder.field(field);
         }
+        Object val = null;
+        if (value instanceof Expression) {
+            val = value;
+        } else {
+            if (field != null && field.getFunction() != null) {
+                val = getFieldValueOperator(value);
+            } else {
+                val = getFieldValueOperator(pm, value);
+            }
+        }
         return (L) addCondition(builder.dialect(getDialect()) //
             .comparisonOperator(comparisonOperator) //
-            .value(value instanceof Expression ? value : getFieldValueOperator(pm, value)) //
+            .value(val) //
             .tableAlias(queryAlias) //
             .matchStrategy(matchStrategy) //
             .ignoreStrategy(ignoreStrategy) //
             .build());
-        //        if (value instanceof Expression) {
-        //            return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(), value,
-        //                comparisonOperator, matchStrategy, queryAlias, ignoreStrategy));
-        //        } else {
-        //            return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
-        //                getFieldValueOperator(pm, value), comparisonOperator, matchStrategy, queryAlias, ignoreStrategy));
-        //        }
     }
 
     // ********************************************************************

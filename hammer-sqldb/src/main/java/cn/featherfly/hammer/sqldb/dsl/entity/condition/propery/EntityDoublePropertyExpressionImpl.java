@@ -14,6 +14,7 @@ import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.CalculationOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.field.NumberFieldExpression;
@@ -83,7 +84,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(Double value) {
-        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.in(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -92,7 +94,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.in(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -100,7 +103,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.in(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -108,7 +112,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(Double[] value) {
-        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.in(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -117,7 +122,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(Double[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.in(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -125,7 +131,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(Double[] value, Predicate<Double[]> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.in(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -133,7 +140,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L in(Collection<Double> value, Predicate<Collection<Double>> ignoreStrategy) {
-        return expression.in(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.in(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -141,7 +149,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(Double value) {
-        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ni(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -150,7 +159,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ni(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -158,7 +168,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ni(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -166,7 +177,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(Double[] value) {
-        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ni(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -175,7 +187,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(Double[] value, IgnoreStrategy ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ni(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -183,7 +196,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(Double[] value, Predicate<Double[]> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ni(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -191,7 +205,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ni(Collection<Double> value, Predicate<Collection<Double>> ignoreStrategy) {
-        return expression.ni(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ni(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -199,7 +214,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L le(Double value) {
-        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.le(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -208,7 +224,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L le(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.le(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -216,7 +233,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L le(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.le(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.le(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -224,7 +242,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lt(Double value) {
-        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.lt(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -233,7 +252,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lt(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.lt(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -241,7 +261,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L lt(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.lt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.lt(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -249,7 +270,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ge(Double value) {
-        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ge(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -258,7 +280,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ge(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ge(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -266,7 +289,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ge(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.ge(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ge(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -274,7 +298,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L gt(Double value) {
-        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.gt(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -283,7 +308,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L gt(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.gt(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -291,7 +317,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L gt(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.gt(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.gt(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -315,7 +342,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L eq(Double value) {
-        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.eq(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -324,7 +352,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L eq(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.eq(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -332,7 +361,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L eq(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.eq(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.eq(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -340,7 +370,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ne(Double value) {
-        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value,
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ne(index, pm, getColumnElement(pm), value,
             expression.getIgnoreStrategy());
     }
 
@@ -349,7 +380,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ne(Double value, IgnoreStrategy ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ne(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -357,7 +389,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ne(Double value, Predicate<Double> ignoreStrategy) {
-        return expression.ne(index, getPropertyMapping(value), arithmeticColumnElement.get(), value, ignoreStrategy);
+        PropertyMapping<?> pm = getPropertyMapping(value);
+        return expression.ne(index, pm, getColumnElement(pm), value, ignoreStrategy);
     }
 
     /**
@@ -365,7 +398,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(Double min, Double max) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+        PropertyMapping<?> pm = getPropertyMapping(Lang.ifNull(min, max));
+        return expression.ba(index, pm, getColumnElement(pm), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -374,7 +408,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(Double min, Double max, IgnoreStrategy ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+        PropertyMapping<?> pm = getPropertyMapping(Lang.ifNull(min, max));
+        return expression.ba(index, pm, getColumnElement(pm), min, max,
             ignoreStrategy);
     }
 
@@ -383,7 +418,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L ba(Double min, Double max, BiPredicate<Double, Double> ignoreStrategy) {
-        return expression.ba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+        PropertyMapping<?> pm = getPropertyMapping(Lang.ifNull(min, max));
+        return expression.ba(index, pm, getColumnElement(pm), min, max,
             ignoreStrategy);
     }
 
@@ -392,7 +428,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(Double min, Double max) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+        PropertyMapping<?> pm = getPropertyMapping(Lang.ifNull(min, max));
+        return expression.nba(index, pm, getColumnElement(pm), min, max,
             expression.getIgnoreStrategy());
     }
 
@@ -401,7 +438,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(Double min, Double max, IgnoreStrategy ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+        PropertyMapping<?> pm = getPropertyMapping(Lang.ifNull(min, max));
+        return expression.nba(index, pm, getColumnElement(pm), min, max,
             ignoreStrategy);
     }
 
@@ -410,7 +448,8 @@ public class EntityDoublePropertyExpressionImpl<E, C extends ConditionExpression
      */
     @Override
     public L nba(Double min, Double max, BiPredicate<Double, Double> ignoreStrategy) {
-        return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
+        PropertyMapping<?> pm = getPropertyMapping(Lang.ifNull(min, max));
+        return expression.nba(index, pm, getColumnElement(pm), min, max,
             ignoreStrategy);
     }
 
