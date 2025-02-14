@@ -97,7 +97,6 @@ public abstract class AbstractOperate<T> {
     /**
      * Id null or empty exception.
      *
-     * @param operate the operate
      * @param entityType the entity type
      * @return the sqldb hammer exception
      */

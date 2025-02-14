@@ -344,8 +344,7 @@ public abstract class AbstractJdbc implements Jdbc {
             return result;
         } catch (SQLException e) {
             releaseConnection(connection);
-            throw new JdbcException(Str.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
-                e);
+            throw new JdbcException(Str.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
         } finally {
             releaseConnection(connection);
         }
@@ -382,8 +381,7 @@ public abstract class AbstractJdbc implements Jdbc {
             return result;
         } catch (SQLException e) {
             releaseConnection(connection);
-            throw new JdbcException(Str.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
-                e);
+            throw new JdbcException(Str.format("executeUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
         } finally {
             releaseConnection(connection);
         }
@@ -894,8 +892,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Map<String, Serializable> args) {
+    public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         logger.debug("sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}", sql, args, elementType1,
             elementType2);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
@@ -935,9 +933,10 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> JdbcRowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> args) {
+    public <T1, T2, T3, T4, T5> JdbcRowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
+        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes,
+        Map<String, Serializable> args) {
         logger.debug(
             "sql -> {}, args -> {}, elementType1 -> {}, elementType2 -> {}, elementType3 -> {}, elementType4 -> {}, elementType5 -> {}",
             sql, args, elementType1, elementType2, elementType3, elementType4, elementType5);
@@ -966,8 +965,8 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Serializable... args) {
+    public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
+        Class<T2> elementType2, Tuple2<String, String> prefixes, Serializable... args) {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes, manager),
             args);
@@ -998,9 +997,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2, T3, T4, T5> JdbcRowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
+    public <T1, T2, T3, T4, T5> JdbcRowIterable<Tuple5<T1, T2, T3, T4, T5>> queryEach(String sql,
+        Class<T1> elementType1, Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
+        Class<T5> elementType5, Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
@@ -1091,8 +1090,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(conn);
             conn = null;
-            throw new JdbcException(Str.format("querySingle: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
-                e);
+            throw new JdbcException(Str.format("querySingle: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
         } finally {
             releaseConnection(conn);
         }
@@ -1270,8 +1268,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(conn);
             conn = null;
-            throw new JdbcException(Str.format("querySingle: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)),
-                e);
+            throw new JdbcException(Str.format("querySingle: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
         } finally {
             releaseConnection(conn);
         }
@@ -2092,8 +2089,7 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(con);
             con = null;
             throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
-                e);
+                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
         } finally {
             releaseConnection(con);
         }
@@ -2128,8 +2124,7 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(con);
             con = null;
             throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
-                e);
+                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
         } finally {
             releaseConnection(con);
         }
@@ -2178,8 +2173,7 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(con);
             con = null;
             throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
-                e);
+                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
         } finally {
             releaseConnection(con);
         }
@@ -2281,8 +2275,7 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(con);
             con = null;
             throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)),
-                e);
+                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
         } finally {
             releaseConnection(con);
         }
@@ -2634,7 +2627,6 @@ public abstract class AbstractJdbc implements Jdbc {
      * Release connection.
      *
      * @param res the res
-     * @throws SQLException the SQL exception
      */
     protected void releaseConnection(ResultSet res) {
         try {

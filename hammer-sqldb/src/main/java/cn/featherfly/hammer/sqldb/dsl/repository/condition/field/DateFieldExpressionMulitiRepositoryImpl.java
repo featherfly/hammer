@@ -43,10 +43,12 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     }
 
     /**
-     * @param index
-     * @param name
-     * @param function
-     * @param expression
+     * Instantiates a new date field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(int index, String name, Function function,
         InternalMulitiCondition<L> expression) {
@@ -54,11 +56,13 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     }
 
     /**
-     * @param index
-     * @param name
-     * @param function
-     * @param argus
-     * @param expression
+     * Instantiates a new date field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param argus the argus
+     * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(int index, String name, Function function, Object[] argus,
         InternalMulitiCondition<L> expression) {
@@ -66,10 +70,12 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     }
 
     /**
-     * @param index
-     * @param name
-     * @param function
-     * @param expression
+     * Instantiates a new date field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name, Function function,
         InternalMulitiCondition<L> expression) {
@@ -77,11 +83,13 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     }
 
     /**
-     * @param index
-     * @param name
-     * @param function
-     * @param argus
-     * @param expression
+     * Instantiates a new date field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param function the function
+     * @param argus the argus
+     * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name, Function function, Object[] argus,
         InternalMulitiCondition<L> expression) {
@@ -89,9 +97,11 @@ public class DateFieldExpressionMulitiRepositoryImpl<D extends Date, C extends C
     }
 
     /**
-     * @param index
-     * @param name
-     * @param expression
+     * Instantiates a new date field expression muliti repository impl.
+     *
+     * @param index the index
+     * @param name the name
+     * @param expression the expression
      */
     public DateFieldExpressionMulitiRepositoryImpl(AtomicInteger index, String name,
         InternalMulitiCondition<L> expression) {

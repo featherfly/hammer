@@ -110,7 +110,6 @@ public class Parser {
      * Instantiates a new parser.
      *
      * @param templateConfig the template config
-     * @param directives the directive names
      */
     public Parser(TemplateConfig templateConfig) {
         this.templateConfig = templateConfig;

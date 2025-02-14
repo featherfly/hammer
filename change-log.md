@@ -2,7 +2,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 
-# 0.7.3 
+# 0.7.3 2025-02-14
 
 1. 修复DSL实体查询连接实体属性（多对一）生成的SQL从内连接（inner join）改变为到左连接（left join）
 
@@ -19,8 +19,6 @@ TODO dsl实体查询加入以下（EntityQuery）
            .eq(user::getId, (Predicate<Integer>) v -> v == null) //
    );
    ```
-
-   
 
 3. DSL 加入日期相关方法
 

@@ -12,7 +12,6 @@ package cn.featherfly.hammer.expression.function.date;
  * DateTimeFunctions.
  *
  * @author zhongj
- * @param <D> the generic type
  * @param <R> the generic type
  * @param <S> the generic type
  */
