@@ -4,9 +4,10 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -156,7 +157,7 @@ public class OperatorTest extends JdbcTestBase {
     //    }
 
     @Test
-    public void testInsertBatch() {
+    public void testInsertBatch() throws SQLException {
         assertInsertBatch(roleInsert, roleDelete, roleGet, null);
         assertInsertBatch(roleInsert, roleDelete, roleGet, 3);
 
@@ -167,7 +168,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     private void assertInsertBatch(InsertOperate<Role> insert, DeleteOperate<Role> delete, GetOperate<Role> get,
-        Integer batchSize) {
+        Integer batchSize) throws SQLException {
         List<Role> roles = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             roles.add(role());
@@ -191,7 +192,18 @@ public class OperatorTest extends JdbcTestBase {
         for (int i : results) {
             size += i;
         }
-        assertTrue(size == roles.size());
+        assertEquals(results.length, roles.size());
+        Connection conn = dataSource.getConnection();
+        if (dialect.supportBatchUpdates(conn.getMetaData())) {
+            for (int r : results) {
+                assertEquals(r, -2); // rewrite sql as one sql
+            }
+        } else {
+            for (int r : results) {
+                assertEquals(r, 1);
+            }
+            assertEquals(size, roles.size());
+        }
 
     }
 
@@ -357,7 +369,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDelete() {
+    public void delete() {
         Role r = new Role();
         roleInsert.execute(r);
         assertNotNull(r.getId());
@@ -368,13 +380,13 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testDeleteIdNull() {
+    public void deleteIdNull() {
         Role r = new Role();
         roleDelete.execute(r);
     }
 
     @Test
-    public void testDeleteMulityPrimaryKey() {
+    public void deleteMulityPrimaryKey() {
         GetOperate<UserRole> get = userRoleGet;
         UserRole userRole = new UserRole();
         userRole.setRoleId(111);
@@ -391,7 +403,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleteBatch() {
+    public void deleteBatch() {
         GetOperate<Role> get = roleGet;
 
         Function<Integer, List<Role>> insertRoles = size -> {
@@ -421,7 +433,7 @@ public class OperatorTest extends JdbcTestBase {
         assertEquals(roles.size(), size);
         assertEquals(ids.size(), size);
         int results[] = roleDelete.deleteBatch(ids);
-        assertEquals(results[0], ids.size());
+        assertEquals(results.length, ids.size());
         roles.forEach(r -> {
             assertNull(get.get(r));
         });
@@ -443,7 +455,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleteBatchMulityPrimaryKey() {
+    public void deleteBatchMulityPrimaryKey() {
         GetOperate<UserRole> get = userRoleGet;
 
         List<UserRole> userRoles = new ArrayList<>();

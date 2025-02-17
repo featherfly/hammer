@@ -213,7 +213,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testSave() {
+    public void save() {
         assertTrue(hammer.save(nullObject) == 0);
 
         Role r = role();
@@ -241,7 +241,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testSaveUser() {
+    public void saveUser() {
         User user = new User();
         user.setAge(18);
         user.setUsername("username_" + Randoms.getString(5));
@@ -250,13 +250,13 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testSaveValidationException() {
+    public void saveValidationException() {
         User user = new User();
         hammer.save(user);
     }
 
     @Test
-    public void testSave2() {
+    public void save2() {
         Article a = new Article();
         a.setTitle("title_" + Randoms.getInt(100));
         a.setContent("content_" + Randoms.getInt(1000));
@@ -270,7 +270,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testSave3() {
+    public void save3() {
         UserInfo ui = new UserInfo();
         ui.setUser(new User(1));
         ui.setDescp("descp_" + Randoms.getInt(100));
@@ -297,7 +297,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testSaveBatch() {
+    public void saveBatch() {
         assertTrue(hammer.save(emptyList).length == 0);
         assertTrue(hammer.save(emptyArray).length == 0);
 
@@ -313,11 +313,19 @@ public class HammerJdbcTest extends JdbcTestBase {
             assertEquals(r.getName(), role.getName());
             hammer.delete(role);
         }
-        assertTrue(results[0] == roles.size());
+
+        if (results.length == 1) {
+            assertTrue(results[0] == roles.size());
+        } else {
+            assertTrue(results.length == roles.size());
+            for (int result : results) {
+                assertEquals(result, -2);
+            }
+        }
     }
 
     @Test
-    public void testSaveMultyKey() {
+    public void saveMultyKey() {
         UserRole ur = new UserRole();
         ur.setUserId(Randoms.getInt(1000));
         ur.setRoleId(Randoms.getInt(1000));
@@ -338,7 +346,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testSaveMultyKey2() {
+    public void saveMultyKey2() {
         UserRole2 ur = new UserRole2();
         ur.setUser(new User(Randoms.getInt(1000)));
         ur.setRole(new Role(Randoms.getInt(1000)));
@@ -359,7 +367,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testSaveOrUpdate() {
+    public void saveOrUpdate() {
         assertTrue(hammer.saveOrUpdate(nullObject) == 0);
 
         Role r = role();
@@ -380,6 +388,46 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertNotNull(role);
         assertEquals(role.getId(), r.getId());
         assertEquals(role.getName(), newName);
+    }
+
+    @Test
+    public void saveOrUpdateBatch() {
+        assertTrue(hammer.saveOrUpdate(emptyList).length == 0);
+        assertTrue(hammer.saveOrUpdate(emptyArray).length == 0);
+
+        List<Role> roles = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            roles.add(role());
+        }
+        int[] results = hammer.saveOrUpdate(roles);
+
+        if (results.length == 1) {
+            assertEquals(results[0], roles.size());
+        } else {
+            assertEquals(results.length, roles.size());
+            for (int result : results) {
+                assertEquals(result, -2);
+            }
+        }
+
+        results = hammer.saveOrUpdate(roles);
+
+        if (results.length == 1) {
+            assertEquals(results[0], roles.size());
+        } else {
+            assertEquals(results.length, roles.size());
+            for (int result : results) {
+                assertEquals(result, -2);
+            }
+        }
+
+        for (Role role : roles) {
+            Role r = hammer.get(role);
+            assertEquals(r.getId(), role.getId());
+            assertEquals(r.getName(), role.getName());
+            hammer.delete(role);
+        }
+
     }
 
     @Test
@@ -809,7 +857,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDelete() {
+    public void delete() {
         assertTrue(hammer.delete(nullObject) == 0);
         assertTrue(hammer.delete(emptyList).length == 0);
         assertTrue(hammer.delete(emptyArray).length == 0);
@@ -836,7 +884,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleteBatch() {
+    public void deleteBatch() {
         assertTrue(hammer.delete(emptyList).length == 0);
         assertTrue(hammer.delete(emptyArray).length == 0);
         assertTrue(hammer.delete(emptyList, Role.class).length == 0);
@@ -846,25 +894,27 @@ public class HammerJdbcTest extends JdbcTestBase {
         for (int i = 0; i < 100; i++) {
             roles.add(role());
         }
-        int results[] = hammer.save(roles);
-        assertEquals(hammer.delete(roles), results);
+        int[] results = hammer.save(roles);
+        int[] res = hammer.delete(roles);
+        assertEquals(res.length, results.length);
 
         results = hammer.save(roles);
-        assertEquals(hammer.delete(CollectionUtils.toArray(roles)), results);
+        res = hammer.delete(CollectionUtils.toArray(roles));
+        assertEquals(res.length, results.length);
 
         results = hammer.save(roles);
-        assertEquals(hammer.delete(roles.stream().map(r -> r.getId()).collect(Collectors.toList()), Role.class),
-            results);
+        res = hammer.delete(roles.stream().map(r -> r.getId()).collect(Collectors.toList()), Role.class);
+        assertEquals(res.length,
+            results.length);
 
         results = hammer.save(roles);
-        assertEquals(
-            hammer.delete(CollectionUtils.toArray(roles.stream().map(r -> r.getId()).collect(Collectors.toList())),
-                Role.class),
-            results);
+        res = hammer.delete(CollectionUtils.toArray(roles.stream().map(r -> r.getId()).collect(Collectors.toList())),
+            Role.class);
+        assertEquals(res.length, results.length);
     }
 
     @Test
-    public void testDeleteMulityPrimaryKey() {
+    public void deleteMulityPrimaryKey() {
 
         UserRole userRole = new UserRole();
         userRole.setRoleId(111);
@@ -880,7 +930,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleteMulityPrimaryKey2() {
+    public void deleteMulityPrimaryKey2() {
         UserRole2 userRole = new UserRole2();
         userRole.setRole(new Role(111));
         userRole.setUser(new User(111));
@@ -894,7 +944,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleter() {
+    public void deleter() {
         Role role = role();
 
         hammer.save(role);
@@ -912,7 +962,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleterEntity() {
+    public void deleterEntity() {
         Role r = role();
         Role r2 = role();
         Role r3 = role();
@@ -934,7 +984,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleterEntity1() {
+    public void deleterEntity1() {
         Role r = role();
         Role r2 = role();
         Role r3 = role();
@@ -966,7 +1016,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testDeleterEntity2() {
+    public void deleterEntity2() {
         Role r = role();
         Role r2 = role();
         Role r3 = role();

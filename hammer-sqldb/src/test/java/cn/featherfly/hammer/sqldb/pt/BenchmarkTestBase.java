@@ -42,7 +42,7 @@ public abstract class BenchmarkTestBase {
     @BeforeSuite
     @Parameters({ "dataBase", "url" })
     public void init(@Optional("mysql") String dataBase,
-        @Optional("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true") String url)
+        @Optional("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?rewriteBatchedStatements=true&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true") String url)
         throws IOException {
         Configurator.initialize("log4j2_none", "log4j2_none.xml");
 

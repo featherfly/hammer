@@ -38,7 +38,8 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 @Test
 public class FillData extends BenchmarkTestBase {
 
-    final String insertSql = "insert into `user_info2` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`) values(?,?,?,?,?,?,?)";
+    final String insertSql =
+        "insert into `user_info2` (`id`, `user_id`, `name`, `descp`, `province`, `city`, `district`) values(?,?,?,?,?,?,?)";
 
     Connection conn;
 
@@ -46,8 +47,8 @@ public class FillData extends BenchmarkTestBase {
     @Parameters({ "dataBase", "url" })
     @Override
     public void init(@Optional("mysql") String dataBase,
-            @Optional("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&amp") String url)
-            throws IOException {
+        @Optional("jdbc:mysql://127.0.0.1:3306/hammer_jdbc?rewriteBatchedStatements=true&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&amp") String url)
+        throws IOException {
         super.init(dataBase, url);
     }
 
@@ -92,7 +93,7 @@ public class FillData extends BenchmarkTestBase {
         }
         long time = timer.stop();
         System.out.println(Str.format("FillData({0}) use {1} {2} with batchSize[{3}] {4} loop times",
-                times * batchSize, time, unit, batchSize, times));
+            times * batchSize, time, unit, batchSize, times));
     }
 
     protected void doInsertBatch(List<UserInfo2> userInfos) {

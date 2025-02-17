@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -192,7 +193,8 @@ public class JdbcTest extends JdbcTestBase {
         JdbcTransactionManager tm = new JdbcTransactionManager(dataSource);
         TransactionTemplate tt = new TransactionTemplate(tm);
         tt.execute(status -> {
-            try (JdbcRowIterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1)) {
+            try (
+                JdbcRowIterable<Map<String, Serializable>> ids = jdbc.queryEach("select * from role where id = ?", 1)) {
                 int size = 0;
                 for (Map<String, Serializable> id : ids) {
                     System.out.println(id);
@@ -1094,7 +1096,7 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdateBatchMulitiSql() { // 一条sql影响一条数据，批量执行
+    public void testUpdateBatchMulitiSql() throws SQLException { // 一条sql影响一条数据，批量执行
         String insertSql = Str.format(
             "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (?, ?, ?)",
             jdbc.getDialect().getWrapSymbol());
@@ -1135,16 +1137,25 @@ public class JdbcTest extends JdbcTestBase {
             }
         }, argsList);
         assertEquals(results.length, batchSize);
-        for (int r : results) {
-            assertEquals(r, 1);
+
+        Connection conn = dataSource.getConnection();
+        if (dialect.supportBatchUpdates(conn.getMetaData())) {
+            for (int r : results) {
+                assertEquals(r, -2); // rewrite sql as one sql
+            }
+        } else {
+            for (int r : results) {
+                assertEquals(r, 1);
+            }
         }
         for (int i = 0; i < ids.size(); i++) {
             assertTrue(ids.get(i) == id.intValue() + i + 1);
         }
+        conn.close();
     }
 
     @Test
-    public void testUpdateBatchMulitiSql2() { // 一条sql影响一条数据，批量执行
+    public void testUpdateBatchMulitiSql2() throws SQLException { // 一条sql影响一条数据，批量执行
         String insertSql = Str.format(
             "INSERT INTO {0}cms_article{0} ({0}id{0}, {0}title{0}, {0}content{0}) VALUES (:id, :title, :content)",
             jdbc.getDialect().getWrapSymbol());
@@ -1190,8 +1201,15 @@ public class JdbcTest extends JdbcTestBase {
             }
         }, argsArray);
         assertEquals(results.length, batchSize);
-        for (int r : results) {
-            assertEquals(r, 1);
+        Connection conn = dataSource.getConnection();
+        if (dialect.supportBatchUpdates(conn.getMetaData())) {
+            for (int r : results) {
+                assertEquals(r, -2); // rewrite sql as one sql
+            }
+        } else {
+            for (int r : results) {
+                assertEquals(r, 1);
+            }
         }
         for (int i = 0; i < ids.size(); i++) {
             assertTrue(ids.get(i) == id.intValue() + i + 1);

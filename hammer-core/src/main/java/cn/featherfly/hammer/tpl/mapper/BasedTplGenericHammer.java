@@ -3,6 +3,7 @@ package cn.featherfly.hammer.tpl.mapper;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
@@ -21,11 +22,11 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
  * BasedTplGenericHammer.
  *
  * @author zhongj
- * @param <E>  the element type
+ * @param <E> the element type
  * @param <ID> the generic type
  */
 public class BasedTplGenericHammer<E, ID extends Serializable> extends AbstractBasedHammer
-        implements GenericHammer<E, ID> {
+    implements GenericHammer<E, ID> {
 
     /** The hammer. */
     protected final Hammer hammer;
@@ -35,8 +36,8 @@ public class BasedTplGenericHammer<E, ID extends Serializable> extends AbstractB
     /**
      * Instantiates a new based tpl generic hammer.
      *
-     * @param hammer       hammer
-     * @param type         type
+     * @param hammer hammer
+     * @param type type
      * @param hammerConfig the hammer config
      */
     public BasedTplGenericHammer(Hammer hammer, Class<E> type, HammerConfig hammerConfig) {
@@ -283,6 +284,42 @@ public class BasedTplGenericHammer<E, ID extends Serializable> extends AbstractB
     @Override
     public int[] update(List<E> entities, IgnoreStrategy ignoreStrategy) {
         return hammer.update(entities, ignoreStrategy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int saveOrUpdate(E entity) {
+        return hammer.saveOrUpdate(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int saveOrUpdate(E entity, Predicate<E> updatable) {
+        return hammer.saveOrUpdate(entity, updatable);
+    }
+
+    @Override
+    public int[] saveOrUpdate(List<E> entities) {
+        return hammer.saveOrUpdate(entities);
+    }
+
+    @Override
+    public int[] saveOrUpdate(List<E> entities, Predicate<E> updatable) {
+        return hammer.saveOrUpdate(entities, updatable);
+    }
+
+    @Override
+    public int[] saveOrUpdate(List<E> entities, int batchSize) {
+        return hammer.saveOrUpdate(entities, batchSize);
+    }
+
+    @Override
+    public int[] saveOrUpdate(List<E> entities, int batchSize, Predicate<E> updatable) {
+        return hammer.saveOrUpdate(entities, batchSize, updatable);
     }
 
     /**

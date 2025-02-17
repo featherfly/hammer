@@ -3,10 +3,13 @@ package cn.featherfly.hammer;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
+import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
@@ -17,7 +20,7 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
  * GenericHammer .
  *
  * @author zhongj
- * @param <E>  generic entity type
+ * @param <E> generic entity type
  * @param <ID> the generic type
  */
 public interface GenericHammer<E, ID extends Serializable> {
@@ -41,7 +44,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save entity array.
      *
-     * @param entities  entity array to save
+     * @param entities entity array to save
      * @param batchSize the batch size
      * @return effect data row num
      */
@@ -58,14 +61,15 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save entity list.
      *
-     * @param entities  entity list to save
+     * @param entities entity list to save
      * @param batchSize the batch size
      * @return effect data row num
      */
     int[] save(List<E> entities, int batchSize);
 
     /**
-     * update entity, update all values. equal invoke method {@link #update(Object, IgnoreStrategy)} with params
+     * update entity, update all values. equal invoke method {@link #update(Object, IgnoreStrategy)}
+     * with params
      * (entity, IgnoreStrategy.NONE)
      *
      * @param entity entity to update
@@ -76,7 +80,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * query entity type with id and lock, then update and fetch.
      *
-     * @param id             entity id
+     * @param id entity id
      * @param updateOperator the update operator
      * @return effect data row num
      */
@@ -85,14 +89,15 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * query entity type with id and lock, then update and fetch.
      *
-     * @param entity         the entity with id value
+     * @param entity the entity with id value
      * @param updateOperator the update operator
      * @return effect data row num
      */
     E updateFetch(E entity, UnaryOperator<E> updateOperator);
 
     /**
-     * update all values for each entity in entity array. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * update all values for each entity in entity array. equal invoke method
+     * {@link #update(List, IgnoreStrategy)} with
      * params (entity, IgnoreStrategy.NONE)
      *
      * @param entities entity array to update
@@ -101,7 +106,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] update(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * update all values for each entity in entity list. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List, IgnoreStrategy)} with
      * params (entity, IgnoreStrategy.NONE)
      *
      * @param entities entity list to update
@@ -110,20 +116,22 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] update(List<E> entities);
 
     /**
-     * update all values for each entity in entity list. equal invoke method {@link #update(List, IgnoreStrategy)} with
+     * update all values for each entity in entity list. equal invoke method
+     * {@link #update(List, IgnoreStrategy)} with
      * params (entity, IgnoreStrategy.NONE)
      *
-     * @param entities  entity list to update
+     * @param entities entity list to update
      * @param batchSize the batch size
      * @return effect data row num
      */
     int[] update(List<E> entities, int batchSize);
 
     /**
-     * /** merge entity, update values ignore null or empty(string, array, collectoin, map) value. equal invoke method
+     * /** merge entity, update values ignore null or empty(string, array, collectoin, map) value.
+     * equal invoke method
      * {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
      *
-     * @param entity         entity to update
+     * @param entity entity to update
      * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
@@ -132,11 +140,134 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * update values with ignoreStrategy for each entity in entity list.
      *
-     * @param entities       entity list to update
+     * @param entities entity list to update
      * @param ignoreStrategy ignore value to update strategy
      * @return effect data row num
      */
     int[] update(List<E> entities, IgnoreStrategy ignoreStrategy);
+
+    /**
+     * save or update entity.
+     *
+     * @param <E> the element type
+     * @param entity the entity
+     * @return effect data row num
+     */
+    int saveOrUpdate(E entity);
+
+    /**
+     * save or update entity.
+     *
+     * @param <E> the element type
+     * @param entity the entity
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    int saveOrUpdate(E entity, Predicate<E> updatable);
+
+    /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @return effect data row num
+     */
+    default int[] saveOrUpdate(@SuppressWarnings("unchecked") E... entities) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities));
+        }
+    }
+
+    /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    default int[] saveOrUpdate(E[] entities, Predicate<E> updatable) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities), updatable);
+        }
+    }
+
+    /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    default int[] saveOrUpdate(E[] entities, int batchSize) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities), batchSize);
+        }
+    }
+
+    /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    default int[] saveOrUpdate(E[] entities, int batchSize, Predicate<E> updatable) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities), batchSize, updatable);
+        }
+    }
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @return effect data row num
+     */
+    int[] saveOrUpdate(List<E> entities);
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    int[] saveOrUpdate(List<E> entities, Predicate<E> updatable);
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    int[] saveOrUpdate(List<E> entities, int batchSize);
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    int[] saveOrUpdate(List<E> entities, int batchSize, Predicate<E> updatable);
 
     /**
      * merge entity, update values ignore null or empty(string, list, map) value.
@@ -147,8 +278,10 @@ public interface GenericHammer<E, ID extends Serializable> {
     int merge(E entity);
 
     /**
-     * update values ignore null or empty(string, array, collectoin, map) value for each entity in entity array. equal
-     * invoke method {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
+     * update values ignore null or empty(string, array, collectoin, map) value for each entity in
+     * entity array. equal
+     * invoke method {@link #update(Object, IgnoreStrategy)} with params (entity,
+     * IgnoreStrategy.EMPTY)
      *
      * @param entities entity array to merge
      * @return effect data row num
@@ -156,8 +289,10 @@ public interface GenericHammer<E, ID extends Serializable> {
     int[] merge(@SuppressWarnings("unchecked") E... entities);
 
     /**
-     * update values ignore null or empty(string, array, collectoin, map) value for each entity in entity list. equal
-     * invoke method {@link #update(Object, IgnoreStrategy)} with params (entity, IgnoreStrategy.EMPTY)
+     * update values ignore null or empty(string, array, collectoin, map) value for each entity in
+     * entity list. equal
+     * invoke method {@link #update(Object, IgnoreStrategy)} with params (entity,
+     * IgnoreStrategy.EMPTY)
      *
      * @param entities entity list to merge
      * @return effect data row num
@@ -223,8 +358,8 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * get entity by id and fetch property entity.
      *
-     * @param <R>           the generic type
-     * @param id            entity id
+     * @param <R> the generic type
+     * @param id entity id
      * @param fetchProperty the fetch property
      * @return entity
      */
@@ -273,7 +408,7 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * Query list by propertyValues.
      *
-     * @param operator       the operator
+     * @param operator the operator
      * @param propertyValues the property values
      * @return LogicExpressionist
      */

@@ -198,34 +198,7 @@ public class SqldbHammerImpl implements SqldbHammer {
      */
     @Override
     public <E> int saveOrUpdate(E entity) {
-        return saveOrUpdate(entity, (e) -> {
-            @SuppressWarnings("unchecked")
-            GetOperate<E> get = (GetOperate<E>) getOperate(e.getClass());
-            List<Serializable> ids = get.getIds(e);
-            if (ids.size() == 1) {
-                Serializable id = ids.get(0);
-                // FIXME 当前的逻辑在手动设置id值的时候会有问题
-                if (id == null) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else if (ids.size() > 1) {
-                boolean insertable = false;
-                for (Serializable id : ids) {
-                    if (id == null) { // 只要有一个id为空，则表示需要插入数据
-                        insertable = true;
-                    }
-                }
-                if (insertable) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                throw new SqldbHammerException("no pk mapping");
-            }
-        });
+        return saveOrUpdate(entity, this::isUpdatable);
     }
 
     /**
@@ -245,6 +218,61 @@ public class SqldbHammerImpl implements SqldbHammer {
             } else {
                 return save(entity);
             }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities) {
+        return saveOrUpdate(entities, hammerConfig.getEntityConfig().getInsert().getBatchSize());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities, Predicate<E> updatable) {
+        return saveOrUpdate(entities, hammerConfig.getEntityConfig().getInsert().getBatchSize(), updatable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities, int batchSize) {
+        return saveOrUpdate(entities, batchSize, this::isUpdatable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities, int batchSize, Predicate<E> updatable) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        }
+        if (jdbc.getDialect().supportUpsertBatch()) {
+            UpsertOperate<E> upsert = upsertOperate(entities);
+            return upsert.executeBatch(entities);
+        } else {
+            final int[] results = new int[entities.size()];
+            if (jdbc.getDialect().supportUpsert()) {
+                Lang.each(entities, (e, i) -> {
+                    results[i] = saveOrUpdate(e);
+                });
+            } else {
+                Lang.each(entities, (e, i) -> {
+                    if (updatable.test(e)) {
+                        results[i] = update(e);
+                    } else {
+                        results[i] = save(e);
+                    }
+                    results[i] = save(e);
+                });
+            }
+            return results;
         }
     }
 
@@ -461,9 +489,6 @@ public class SqldbHammerImpl implements SqldbHammer {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
         DeleteOperate<E> delete = deleteOperate(entities);
-        if (delete == null) {
-            return ArrayUtils.EMPTY_INT_ARRAY;
-        }
         return delete.executeBatch(entities);
     }
 
@@ -754,6 +779,11 @@ public class SqldbHammerImpl implements SqldbHammer {
     }
 
     @SuppressWarnings("unchecked")
+    private <E> UpsertOperate<E> upsertOperate(List<E> entities) {
+        return upsertOperate((Class<E>) entities.get(0).getClass());
+    }
+
+    @SuppressWarnings("unchecked")
     private <E> UpsertOperate<E> upsertOperate(final Class<E> entityType) {
         return (UpsertOperate<E>) upsertOperates.computeIfAbsent(entityType,
             type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
@@ -762,9 +792,6 @@ public class SqldbHammerImpl implements SqldbHammer {
 
     private <E> DeleteOperate<E> deleteOperate(Collection<E> entities) {
         E e = Lang.ifNotNullFirst(entities);
-        if (e == null) {
-            return null;
-        }
         return deleteOperate(e);
     }
 
@@ -786,6 +813,35 @@ public class SqldbHammerImpl implements SqldbHammer {
             type -> new GetOperate<E>(jdbc, mappingFactory.getClassMapping(entityType),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
                 propertyAccessorFactory.create(entityType)));
+    }
+
+    private <E> boolean isUpdatable(E e) {
+        @SuppressWarnings("unchecked")
+        GetOperate<E> get = (GetOperate<E>) getOperate(e.getClass());
+        List<Serializable> ids = get.getIds(e);
+        if (ids.size() == 1) {
+            Serializable id = ids.get(0);
+            // FIXME 当前的逻辑在手动设置id值的时候会有问题
+            if (id == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } else if (ids.size() > 1) {
+            boolean insertable = false;
+            for (Serializable id : ids) {
+                if (id == null) { // 只要有一个id为空，则表示需要插入数据
+                    insertable = true;
+                }
+            }
+            if (insertable) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            throw new SqldbHammerException("no pk mapping");
+        }
     }
 
     /**

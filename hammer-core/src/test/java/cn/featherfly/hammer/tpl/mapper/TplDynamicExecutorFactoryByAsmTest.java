@@ -450,6 +450,30 @@ public class TplDynamicExecutorFactoryByAsmTest {
             public <E> int[] update(E[] entities, int batchSize) {
                 return null;
             }
+
+            @Override
+            public <E> int[] saveOrUpdate(List<E> entities) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] saveOrUpdate(List<E> entities, Predicate<E> updatable) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] saveOrUpdate(List<E> entities, int batchSize) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public <E> int[] saveOrUpdate(List<E> entities, int batchSize, Predicate<E> updatable) {
+                // YUFEI_TODO Auto-generated method stub
+                return null;
+            }
         };
     }
 

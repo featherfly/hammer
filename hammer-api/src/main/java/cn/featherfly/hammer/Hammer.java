@@ -254,6 +254,110 @@ public interface Hammer {
     <E> int saveOrUpdate(E entity, Predicate<E> updatable);
 
     /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @return effect data row num
+     */
+    default <E> int[] saveOrUpdate(@SuppressWarnings("unchecked") E... entities) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities));
+        }
+    }
+
+    /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    default <E> int[] saveOrUpdate(E[] entities, Predicate<E> updatable) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities), updatable);
+        }
+    }
+
+    /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    default <E> int[] saveOrUpdate(E[] entities, int batchSize) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities), batchSize);
+        }
+    }
+
+    /**
+     * batch save or update entity array.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    default <E> int[] saveOrUpdate(E[] entities, int batchSize, Predicate<E> updatable) {
+        if (Lang.isEmpty(entities)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        } else {
+            return saveOrUpdate(ArrayUtils.toList(entities), batchSize, updatable);
+        }
+    }
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @return effect data row num
+     */
+    <E> int[] saveOrUpdate(List<E> entities);
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    <E> int[] saveOrUpdate(List<E> entities, Predicate<E> updatable);
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @return effect data row num
+     */
+    <E> int[] saveOrUpdate(List<E> entities, int batchSize);
+
+    /**
+     * batch save or update entity list.
+     *
+     * @param <E> the element type
+     * @param entities the entities
+     * @param batchSize the batch size
+     * @param updatable the updatable
+     * @return effect data row num
+     */
+    <E> int[] saveOrUpdate(List<E> entities, int batchSize, Predicate<E> updatable);
+
+    /**
      * delete entity by id.
      *
      * @param <E> the element type

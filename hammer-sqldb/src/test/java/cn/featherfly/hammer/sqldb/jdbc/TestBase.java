@@ -55,7 +55,8 @@ public class TestBase {
 
     // 高版本mysql-connector已经不需要serverTimezone=CTT
     // "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false"
-    protected static final String MYSQL_URL = "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true ";
+    protected static final String MYSQL_URL =
+        "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?rewriteBatchedStatements=true&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true";
     protected static final String MYSQL_USER = "root";
     protected static final String MYSQL_PWD = "123456";
 

@@ -333,6 +333,26 @@ public class BasedTplHammer extends AbstractBasedHammer implements Hammer {
         return hammer.saveOrUpdate(entity, updatable);
     }
 
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities) {
+        return hammer.saveOrUpdate(entities);
+    }
+
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities, Predicate<E> updatable) {
+        return hammer.saveOrUpdate(entities, updatable);
+    }
+
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities, int batchSize) {
+        return hammer.saveOrUpdate(entities, batchSize);
+    }
+
+    @Override
+    public <E> int[] saveOrUpdate(List<E> entities, int batchSize, Predicate<E> updatable) {
+        return hammer.saveOrUpdate(entities, batchSize, updatable);
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -69,11 +69,27 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
         if (Lang.isEmpty(ids)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        // ENHANCE 后续优化，只需要动态确定where 后面的内容就行了
-        Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(ids.size(),
-            classMapping, jdbc.getDialect());
+        return deleteBatch(ids, ids.size());
+    }
 
-        return new int[] { jdbc.update(tuple.get0(), ids.toArray(new Serializable[ids.size()])) };
+    public <ID extends Serializable> int[] deleteBatch(final List<ID> ids, int batchSize) {
+        if (Lang.isEmpty(ids)) {
+            return ArrayUtils.EMPTY_INT_ARRAY;
+        }
+        if (databaseMetadata.getFeatures().supportsBatchUpdates()) {
+            return doJdbcExecuteBatchId(ids, batchSize);
+        } else if (supportBatch()) {
+            // ENHANCE 后续优化，只需要动态确定where 后面的内容就行了
+            Tuple2<String, JdbcPropertyMapping[]> tuple = ClassMappingUtils.getDeleteSqlAndMappings(ids.size(),
+                classMapping, jdbc.getDialect());
+            return new int[] { jdbc.update(tuple.get0(), ids.toArray(new Serializable[ids.size()])) };
+        } else {
+            int[] results = new int[ids.size()];
+            for (int i = 0; i < ids.size(); i++) {
+                results[i] = delete(ids.get(i));
+            }
+            return results;
+        }
     }
 
     /**
@@ -139,13 +155,36 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements 
      */
     @Override
     protected int[] doJdbcExecuteBatch(List<T> entities) {
-        //        List<Object[]> argsList = new ArrayList<>(entities.size());
-        //        for (T entity : entities) {
-        //            argsList.add(getParameters(entity));
-        //        }
         Serializable[][] argsList = new Serializable[entities.size()][];
         Lang.each(entities, (e, i) -> argsList[i] = getParameters(e));
         return jdbc.updateBatch(sql, argsList);
+    }
+
+    protected <ID extends Serializable> int[] doJdbcExecuteBatchId(List<ID> ids) {
+        Serializable[][] args = new Serializable[ids.size()][];
+        Lang.each(ids, (e, i) -> args[i] = new Serializable[] { e });
+        return jdbc.updateBatch(sql, args);
+    }
+
+    protected <ID extends Serializable> int[] doJdbcExecuteBatchId(List<ID> ids, int batchSize) {
+        if (ids.size() <= batchSize) {
+            return doJdbcExecuteBatchId(ids);
+        } else {
+            int times = ids.size() / batchSize;
+            if (ids.size() % batchSize != 0) {
+                times++;
+            }
+            int[] results = new int[ids.size()];
+            for (int i = 0; i < times; i++) {
+                int start = i * batchSize;
+                int end = start + batchSize;
+                int[] rs = doJdbcExecuteBatchId(ids.subList(start, end > ids.size() ? ids.size() : end));
+                for (int j = 0; j < rs.length; j++) {
+                    results[i * batchSize + j] = rs[j];
+                }
+            }
+            return results;
+        }
     }
 
     /**
