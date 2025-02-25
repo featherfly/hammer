@@ -14,14 +14,6 @@ tasks.withType(Javadoc) {
     options.locale = "en"
 }
 
-repositories {
-    mavenLocal()
-    maven {
-        url = "https://maven.aliyun.com/repository/public"
-    }
-    mavenCentral()
-}
-
 jar {
     manifest.attributes 'Build-Name': archivesBaseName
     manifest.attributes 'Build-By': "zhong ji"
