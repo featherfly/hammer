@@ -6,6 +6,19 @@ TODO dsl实体查询加入以下（EntityQuery）
 
 1. Hammer, GenericHammer加入saveOrUpdate的批量处理的重载方法
 
+2. Entity DSL 加入property(SerializableFunction name, Consumer entityTypePropertyExpressionConsumer) 方法
+
+   ```java
+   .property(UserInfo::getUser,
+   	userProp -> userProp.property(User::getUsername).eq(user.getUsername()) //
+             .and().eq(User::getPwd, user.getPwd()) //
+             .and().eq(user::getAge) //
+             .and().property(User::getId).eq(user.getId()) //
+   ).single();
+   ```
+
+   
+
 # 0.7.3 2025-02-14
 
 1. 修复DSL实体查询连接实体属性（多对一）生成的SQL从内连接（inner join）改变为到左连接（left join）

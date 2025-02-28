@@ -3,6 +3,7 @@ package cn.featherfly.hammer.expression.entity.condition;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.function.Consumer;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToCollectionFunction;
@@ -18,6 +19,8 @@ import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDoublePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityEnumPropertyExpression;
@@ -53,18 +56,33 @@ public interface EntityPropertyExpression<T, C extends ConditionExpression, L ex
     //        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<T, R> name,
     //            Consumer<C2> propertyExpressions) {
     //        propertyExpressions.accept((C2) property(name));
+    //        return (L) this;
     //    }
+    /**
+     * Property.
+     *
+     * @param <R> the generic type
+     * @param <C2> the generic type
+     * @param <L2> the generic type
+     * @param name the name
+     * @param entityTypePropertyExpressionConsumer the entity type property expression consumer
+     * @return the logic expressoin
+     */
+    <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<T, R> name,
+            Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer);
     //    /**
     //     * Property.
     //     *
     //     * @param <R> the generic type
     //     * @param name the name
-    //     * @param propertyExpressions the property expressions
+    //     * @param entityTypePropertyExpressionFunction the entity type property expression function
     //     * @return the logic expressoin
     //     */
-    //    <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
-    //        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<T, R> name,
-    //            Consumer<C2> propertyExpressions);
+    //    default <R> L property(SerializableFunction<T, R> name,
+    //        Function<EntityTypePropertyExpression<R, C, L>, L> entityTypePropertyExpressionFunction) {
+    //        return entityTypePropertyExpressionFunction.apply(property(name));
+    //    }
 
     /**
      * Property.

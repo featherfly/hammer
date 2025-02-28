@@ -190,7 +190,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param value the value
      * @return the property mapping
      */
-    protected PropertyMapping<?> getPropertyMapping(Object value) {
+    public PropertyMapping<?> getPropertyMapping(Object value) {
         int index = this.index.get();
         if (propertyList.size() == 1) {
             ClassMapping<?, JdbcPropertyMapping> classMapping = expression.getClassMapping(index);

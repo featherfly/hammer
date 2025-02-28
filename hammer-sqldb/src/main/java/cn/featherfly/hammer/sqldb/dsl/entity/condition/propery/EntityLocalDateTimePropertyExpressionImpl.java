@@ -35,7 +35,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  */
 public class EntityLocalDateTimePropertyExpressionImpl<E, C extends ConditionExpression,
     L extends LogicExpression<C, L>> extends
-    AbstractMulitiEntityGenericPropertyExpression<E, LocalDateTime, SerializableFunction<E, LocalDateTime>, C, L>
+    AbstractMulitiEntityGenericPropertyExpression<E, LocalDateTime, C, L>
     implements EntityLocalDateTimePropertyExpression<C, L> {
 
     /**

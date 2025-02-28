@@ -147,7 +147,7 @@ public class SqlDslExpressionTest extends JdbcTestBase {
     @Test
     public void testSqlTypeDelete2() {
         int size = 3;
-        int userId = 10;
+        int userId = 12;
         Integer uid = userId;
         User user = new User(userId);
         saveUserInfo(size, user);

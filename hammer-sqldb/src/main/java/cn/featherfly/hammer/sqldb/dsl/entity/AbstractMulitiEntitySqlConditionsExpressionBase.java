@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,10 +23,12 @@ import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ColumnElement;
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.exception.NotImplementedException;
+import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.function.CharPredicate;
 import cn.featherfly.common.function.serializable.SerializableBoolSupplier;
 import cn.featherfly.common.function.serializable.SerializableBooleanSupplier;
@@ -65,6 +68,7 @@ import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
@@ -72,6 +76,8 @@ import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.NativeStringConditionExpression;
 import cn.featherfly.hammer.expression.condition.ParamedExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.ba.EntityBetweenExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.EntityContainsExpression;
@@ -104,6 +110,7 @@ import cn.featherfly.hammer.expression.entity.condition.property.EntityNumberPro
 import cn.featherfly.hammer.expression.entity.condition.property.EntityStringPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.sw.EntityStartWithExpression;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation.EntityRelation;
 import cn.featherfly.hammer.sqldb.dsl.entity.condition.AbstractMulitiEntityConditionExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.condition.propery.EntityDatePropertyExpressionImpl;
@@ -127,14 +134,14 @@ import cn.featherfly.hammer.sqldb.sql.dml.SqlConditionExpressionBuilder;
  * @param <E1> filterable entity type 1
  * @param <C> condition expression
  * @param <L> logic expression
- * @param <C2> condition config
+ * @param <CC> condition config
  * @param <ER> entity sql relation
  * @param <B> sql builder
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C extends ConditionExpression,
-    L extends LogicExpression<C, L>, C2 extends ConditionConfig<C2>, ER extends EntitySqlRelation<ER, B>,
-    B extends SqlBuilder> extends AbstractMulitiEntityConditionExpression<C, L, C2>
+    L extends LogicExpression<C, L>, CC extends ConditionConfig<CC>, ER extends EntitySqlRelation<ER, B>,
+    B extends SqlBuilder> extends AbstractMulitiEntityConditionExpression<C, L, CC>
     implements EntityBetweenExpression<E1, C, L>, EntityNotBetweenExpression<E1, C, L> //
     , EntityContainsExpression<E1, C, L>, EntityNotContainsExpression<E1, C, L>//
     , EntityEndWithExpression<E1, C, L>, EntityNotEndWithExpression<E1, C, L> //
@@ -146,7 +153,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     , EntityStartWithExpression<E1, C, L>, EntityNotStartWithExpression<E1, C, L>//
     , EntityLikeExpression<E1, C, L>, EntityNotLikeExpression<E1, C, L>//
     , EntityPropertyExpression<E1, C, L>, NativeStringConditionExpression<C, L> //
-    , ConditionConfigureExpression<C, C2> {
+    , ConditionConfigureExpression<C, CC> {
 
     /** The factory. */
     protected final JdbcMappingFactory factory;
@@ -165,6 +172,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     /** The index. */
     protected int index;
+
+    protected List<Serializable> propertyList = new ArrayList<>();
 
     /**
      * Instantiates a new abstract sql condition group expression.
@@ -191,12 +200,20 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return entityRelation.getEntityRelation(index).getTableAlias();
     }
 
+    protected String getAlias() {
+        return getAlias(index);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public <M extends ClassMapping<E, P>, E, P extends PropertyMapping<P>> M getClassMapping(int index) {
         return (M) entityRelation.getEntityRelation(index).getClassMapping();
+    }
+
+    protected JdbcClassMapping<Object> getClassMapping() {
+        return getClassMapping(index);
     }
 
     // ****************************************************************************************************************
@@ -206,7 +223,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L eq(SerializableFunction<E1, R> name, R value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -214,7 +231,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L eq(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -222,7 +239,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToCharFunction<E1> name, char value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -230,7 +247,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToCharFunction<E1> name, char value, CharPredicate ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -238,7 +255,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToIntFunction<E1> name, int value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -246,7 +263,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -254,7 +271,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToLongFunction<E1> name, long value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -262,7 +279,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -270,7 +287,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToDoubleFunction<E1> name, double value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -278,7 +295,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -286,7 +303,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L eq(SerializableToNumberFunction<E1, N> name, N value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -294,7 +311,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L eq(SerializableToNumberFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -302,7 +319,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L eq(SerializableToDateFunction<E1, D> name, D value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -310,7 +327,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L eq(SerializableToDateFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -318,7 +335,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L eq(SerializableToEnumFunction<E1, E> name, E value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -326,7 +343,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L eq(SerializableToEnumFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -334,7 +351,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToLocalDateFunction<E1> name, LocalDate value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -342,7 +359,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToLocalDateFunction<E1> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -350,7 +367,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -359,7 +376,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L eq(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -367,7 +384,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToLocalTimeFunction<E1> name, LocalTime value) {
-        return eq(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -375,7 +392,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToLocalTimeFunction<E1> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -383,7 +400,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy) {
-        return eq(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return eq(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -392,7 +409,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L eq(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return eq(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return eq(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -400,7 +417,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L eq(SerializableSupplier<R> property, R value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -408,7 +425,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L eq(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -416,7 +433,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableBooleanSupplier property, boolean value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -424,7 +441,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableBoolSupplier property, Boolean value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -432,7 +449,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -440,7 +457,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableCharSupplier property, char value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -448,7 +465,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -456,7 +473,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableIntSupplier property, int value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -464,7 +481,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -472,7 +489,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableDoubleSupplier property, double value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -480,7 +497,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -488,7 +505,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableLongSupplier property, long value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -496,7 +513,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -504,7 +521,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L eq(SerializableNumberSupplier<N> property, N value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -512,7 +529,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L eq(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -520,7 +537,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L eq(SerializableDateSupplier<D> property, D value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -528,7 +545,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L eq(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -536,7 +553,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, E value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -544,7 +561,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L eq(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -552,7 +569,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableLocalDateSupplier property, LocalDate value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -560,7 +577,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -568,7 +585,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -577,7 +594,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L eq(SerializableLocalDateTimeSupplier property, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -585,7 +602,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableLocalTimeSupplier property, LocalTime value) {
-        return eq(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -593,7 +610,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -601,7 +618,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L eq(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return eq(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return eq(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -610,7 +627,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L eq(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return eq(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return eq(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -620,7 +637,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ne(SerializableFunction<E1, R> name, R value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -628,7 +645,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ne(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -636,7 +653,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToIntFunction<E1> name, int value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -644,7 +661,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -652,7 +669,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToDoubleFunction<E1> name, double value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -660,7 +677,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToLongFunction<E1> name, long value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -668,7 +685,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -676,7 +693,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ne(SerializableToNumberFunction<E1, N> name, N value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -684,7 +701,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ne(SerializableToNumberFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -692,7 +709,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ne(SerializableToEnumFunction<E1, E> name, E value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -700,7 +717,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ne(SerializableToEnumFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -708,7 +725,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ne(SerializableToDateFunction<E1, D> name, D value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -716,7 +733,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ne(SerializableToDateFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -724,7 +741,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -732,7 +749,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToLocalDateFunction<E1> name, LocalDate value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -740,7 +757,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToLocalDateFunction<E1> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -748,7 +765,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -757,7 +774,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ne(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -765,7 +782,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToLocalTimeFunction<E1> name, LocalTime value) {
-        return ne(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -773,7 +790,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToLocalTimeFunction<E1> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -781,7 +798,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy) {
-        return ne(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return ne(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -790,7 +807,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ne(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ne(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return ne(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -798,7 +815,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableBooleanSupplier property, boolean value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -806,7 +823,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableBoolSupplier property, Boolean value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -814,7 +831,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableBoolSupplier property, Boolean value, Predicate<Boolean> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -822,7 +839,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ne(SerializableSupplier<R> property, R value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -830,7 +847,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ne(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -838,7 +855,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableCharSupplier property, char value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -846,7 +863,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableCharSupplier property, char value, CharPredicate ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -854,7 +871,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableIntSupplier property, int value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -862,7 +879,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -870,7 +887,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableLongSupplier property, long value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -878,7 +895,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -886,7 +903,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableDoubleSupplier property, double value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -894,7 +911,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -902,7 +919,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ne(SerializableNumberSupplier<N> property, N value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -910,7 +927,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ne(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -918,7 +935,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property, E value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -926,7 +943,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ne(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -934,7 +951,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ne(SerializableDateSupplier<D> property, D value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -942,7 +959,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ne(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -950,7 +967,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableLocalDateSupplier property, LocalDate value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -958,7 +975,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -966,7 +983,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -975,7 +992,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ne(SerializableLocalDateTimeSupplier property, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -983,7 +1000,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableLocalTimeSupplier property, LocalTime value) {
-        return ne(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -991,7 +1008,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -999,7 +1016,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ne(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return ne(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return ne(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1008,7 +1025,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ne(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ne(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return ne(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1018,7 +1035,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lk(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return lk(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return lk(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1027,7 +1044,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L lk(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return lk(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return lk(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1035,7 +1052,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lk(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return lk(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return lk(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1044,7 +1061,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L lk(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return lk(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return lk(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1054,7 +1071,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nl(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return nl(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return nl(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1063,7 +1080,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nl(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nl(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return nl(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1071,7 +1088,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nl(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return nl(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return nl(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1080,7 +1097,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nl(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nl(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return nl(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1090,7 +1107,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L sw(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return sw(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return sw(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1099,7 +1116,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L sw(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return sw(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return sw(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1107,7 +1124,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L sw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return sw(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return sw(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1116,7 +1133,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L sw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return sw(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return sw(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1126,7 +1143,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nsw(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return nsw(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return nsw(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1135,7 +1152,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nsw(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nsw(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return nsw(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1143,7 +1160,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nsw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return nsw(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return nsw(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1152,7 +1169,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nsw(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nsw(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return nsw(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1162,7 +1179,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ew(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return ew(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return ew(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1171,7 +1188,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ew(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ew(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return ew(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1179,7 +1196,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ew(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return ew(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return ew(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1188,7 +1205,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ew(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ew(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return ew(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1198,7 +1215,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L newv(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return newv(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return newv(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1207,7 +1224,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L newv(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return newv(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return newv(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1215,7 +1232,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L newv(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return newv(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return newv(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1224,7 +1241,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L newv(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return newv(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return newv(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1234,7 +1251,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L co(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return co(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return co(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1243,7 +1260,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L co(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return co(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return co(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1251,7 +1268,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L co(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return co(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return co(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1260,7 +1277,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L co(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return co(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return co(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1270,7 +1287,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nco(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return nco(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return nco(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1279,7 +1296,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nco(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nco(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return nco(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1287,7 +1304,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nco(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return nco(classMapping, property, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return nco(getClassMapping(), property, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1296,7 +1313,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nco(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return nco(classMapping, property, value, tableAlias, matchStrategy, ignoreStrategy);
+        return nco(getClassMapping(), property, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1608,7 +1625,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ge(SerializableFunction<E1, N> name, N value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1616,7 +1633,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ge(SerializableFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1624,7 +1641,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ge(SerializableFunction<E1, D> name, D value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1632,7 +1649,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ge(SerializableFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1640,7 +1657,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableFunction<E1, LocalTime> name, LocalTime value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1648,7 +1665,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableFunction<E1, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1656,7 +1673,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableFunction<E1, LocalDate> name, LocalDate value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1664,7 +1681,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableFunction<E1, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1672,7 +1689,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1681,7 +1698,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ge(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1689,7 +1706,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ge(SerializableFunction<E1, E> name, E value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1697,7 +1714,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ge(SerializableFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1705,7 +1722,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return ge(classMapping, name, value, tableAlias, matchStrategy, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -1714,7 +1731,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ge(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, matchStrategy, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -1722,7 +1739,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableToIntFunction<E1> name, int value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1730,7 +1747,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1738,7 +1755,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableToLongFunction<E1> name, long value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1746,7 +1763,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1754,7 +1771,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableToDoubleFunction<E1> name, double value) {
-        return ge(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1762,7 +1779,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return ge(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -1772,7 +1789,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ge(SerializableDateSupplier<D> property, D value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1780,7 +1797,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ge(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1788,7 +1805,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ge(SerializableNumberSupplier<N> property, N value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1796,7 +1813,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ge(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1804,7 +1821,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableLocalDateSupplier property, LocalDate value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1812,7 +1829,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1820,7 +1837,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableLocalTimeSupplier property, LocalTime value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1828,7 +1845,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1836,7 +1853,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1845,7 +1862,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ge(SerializableLocalDateTimeSupplier property, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1853,7 +1870,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property, E value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1861,7 +1878,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ge(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1869,7 +1886,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return ge(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1878,7 +1895,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ge(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ge(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1886,7 +1903,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableIntSupplier property, int value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1894,7 +1911,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1902,7 +1919,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableLongSupplier property, long value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1910,7 +1927,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1918,7 +1935,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableDoubleSupplier property, double value) {
-        return ge(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ge(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1926,7 +1943,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ge(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return ge(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ge(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -1936,7 +1953,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L gt(SerializableFunction<E1, N> name, N value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1944,7 +1961,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L gt(SerializableFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1952,7 +1969,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L gt(SerializableFunction<E1, E> name, E value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1960,7 +1977,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L gt(SerializableFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1968,7 +1985,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L gt(SerializableFunction<E1, D> name, D value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1976,7 +1993,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L gt(SerializableFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -1984,7 +2001,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableFunction<E1, LocalTime> name, LocalTime value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -1992,7 +2009,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableFunction<E1, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2000,7 +2017,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableFunction<E1, LocalDate> name, LocalDate value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2008,7 +2025,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableFunction<E1, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2016,7 +2033,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2025,7 +2042,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L gt(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2033,7 +2050,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return gt(classMapping, name, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2042,7 +2059,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L gt(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return gt(classMapping, name, value, matchStrategy, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2050,7 +2067,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableToIntFunction<E1> name, int value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2058,7 +2075,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2066,7 +2083,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableToLongFunction<E1> name, long value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2074,7 +2091,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2082,7 +2099,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableToDoubleFunction<E1> name, double value) {
-        return gt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2090,7 +2107,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return gt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -2100,7 +2117,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L gt(SerializableNumberSupplier<N> property, N value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2108,7 +2125,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L gt(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2116,7 +2133,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, E value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2124,7 +2141,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L gt(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2132,7 +2149,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L gt(SerializableDateSupplier<D> property, D value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2140,7 +2157,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L gt(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2148,7 +2165,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableLocalDateSupplier property, LocalDate value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2156,7 +2173,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2164,7 +2181,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableLocalTimeSupplier property, LocalTime value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2172,7 +2189,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2180,7 +2197,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2189,7 +2206,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L gt(SerializableLocalDateTimeSupplier property, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2197,7 +2214,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return gt(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2206,7 +2223,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L gt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return gt(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2214,7 +2231,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableIntSupplier property, int value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2222,7 +2239,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2230,7 +2247,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableLongSupplier property, long value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2238,7 +2255,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2246,7 +2263,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableDoubleSupplier property, double value) {
-        return gt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return gt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2254,7 +2271,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L gt(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return gt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return gt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -2264,7 +2281,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L in(SerializableFunction<E1, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2272,7 +2289,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2280,7 +2297,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2288,7 +2305,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N[] value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2296,7 +2313,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N[] value, Predicate<N[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2304,7 +2321,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Integer> name, int... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2312,7 +2329,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Integer> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2320,7 +2337,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Long> name, long... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2328,7 +2345,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Long> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2336,7 +2353,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2344,7 +2361,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2352,7 +2369,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2360,7 +2377,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D[] value, Predicate<D[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2368,7 +2385,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2376,7 +2393,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2384,7 +2401,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2392,7 +2409,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E[] value, Predicate<E[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2400,7 +2417,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2409,7 +2426,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2417,7 +2434,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2426,7 +2443,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime[] value,
         Predicate<LocalDateTime[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2434,7 +2451,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2442,7 +2459,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2450,7 +2467,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2458,7 +2475,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2466,7 +2483,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2474,7 +2491,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2482,7 +2499,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2490,7 +2507,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime[] value, Predicate<LocalTime[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2498,7 +2515,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2506,7 +2523,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String value, Predicate<String> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2514,7 +2531,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2522,7 +2539,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String[] value, Predicate<String[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2530,7 +2547,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy) {
-        return in(classMapping, name, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2539,7 +2556,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return in(classMapping, name, value, matchStrategy, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2547,7 +2564,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String[] value, MatchStrategy matchStrategy) {
-        return in(classMapping, name, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2556,7 +2573,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableToStringFunction<E1> name, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return in(classMapping, name, value, matchStrategy, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2564,7 +2581,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L in(SerializableFunction<E1, R> name, Collection<R> value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2573,7 +2590,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L in(SerializableFunction<E1, R> name, Collection<R> value,
         Predicate<Collection<R>> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2581,7 +2598,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToIntFunction<E1> name, int value) {
-        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2589,7 +2606,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return in(classMapping, name, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2597,7 +2614,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToIntFunction<E1> name, int... value) {
-        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2605,7 +2622,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToIntFunction<E1> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return in(classMapping, name, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2613,7 +2630,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLongFunction<E1> name, long value) {
-        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2621,7 +2638,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return in(classMapping, name, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2629,7 +2646,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLongFunction<E1> name, long... value) {
-        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2637,7 +2654,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLongFunction<E1> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return in(classMapping, name, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2645,7 +2662,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToDoubleFunction<E1> name, double value) {
-        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2653,7 +2670,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return in(classMapping, name, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2661,7 +2678,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToDoubleFunction<E1> name, double... value) {
-        return in(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2669,7 +2686,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToDoubleFunction<E1> name, double[] value, Predicate<double[]> ignoreStrategy) {
-        return in(classMapping, name, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -2680,7 +2697,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L in(SerializableSupplier<R> property, R value) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             getIgnoreStrategy());
     }
 
@@ -2690,7 +2707,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L in(SerializableSupplier<R> property, R... value) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             getIgnoreStrategy());
     }
 
@@ -2700,7 +2717,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L in(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             ignoreStrategy);
     }
 
@@ -2710,7 +2727,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L in(SerializableSupplier<R> property, R[] value, Predicate<R[]> ignoreStrategy) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return in(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             ignoreStrategy);
     }
 
@@ -2719,12 +2736,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableIntSupplier property, int value) {
-        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     @Override
     public L in(SerializableIntSupplier property, int... value) {
-        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2732,7 +2749,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2740,7 +2757,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableIntSupplier property, int[] value, Predicate<int[]> ignoreStrategy) {
-        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2748,12 +2765,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableLongSupplier property, long value) {
-        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     @Override
     public L in(SerializableLongSupplier property, long... value) {
-        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2761,7 +2778,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2769,7 +2786,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableLongSupplier property, long[] value, Predicate<long[]> ignoreStrategy) {
-        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2777,12 +2794,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableDoubleSupplier property, double value) {
-        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     @Override
     public L in(SerializableDoubleSupplier property, double... value) {
-        return in(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2790,12 +2807,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     @Override
     public L in(SerializableDoubleSupplier property, double[] value, Predicate<double[]> ignoreStrategy) {
-        return in(classMapping, property, value, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2803,7 +2820,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return in(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2811,7 +2828,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy) {
-        return in(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return in(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2820,7 +2837,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return in(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2829,7 +2846,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return in(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return in(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -2839,7 +2856,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R value) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2847,7 +2864,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2855,7 +2872,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R... value) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy());
+        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2863,7 +2880,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2871,7 +2888,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, Collection<R> value) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, getIgnoreStrategy()::test);
+        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2880,7 +2897,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, Collection<R> value,
         Predicate<Collection<R>> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias, ignoreStrategy);
+        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2888,7 +2905,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToIntFunction<E1> name, int value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2896,7 +2913,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2904,7 +2921,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToLongFunction<E1> name, long value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2912,7 +2929,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2920,7 +2937,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToDoubleFunction<E1> name, double value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2928,7 +2945,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2936,7 +2953,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToIntFunction<E1> name, int... value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2944,7 +2961,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToLongFunction<E1> name, long... value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2952,7 +2969,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToDoubleFunction<E1> name, double... value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2960,7 +2977,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToIntFunction<E1> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2968,7 +2985,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToLongFunction<E1> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2976,7 +2993,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToDoubleFunction<E1> name, double[] value, Predicate<double[]> ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -2987,7 +3004,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L ni(SerializableSupplier<R> property, R value) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             getIgnoreStrategy());
     }
 
@@ -2997,7 +3014,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L ni(SerializableSupplier<R> property, R... value) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             getIgnoreStrategy());
     }
 
@@ -3007,7 +3024,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L ni(SerializableSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             ignoreStrategy);
     }
 
@@ -3017,7 +3034,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L ni(SerializableSupplier<R> property, R[] value, Predicate<R[]> ignoreStrategy) {
         SerializableSupplierLambdaInfo<R> info = LambdaUtils.getSerializableSupplierLambdaInfo(property);
-        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, tableAlias,
+        return ni(classMapping.getPropertyMapping(info.getSerializedLambdaInfo().getPropertyName()), value, getAlias(),
             ignoreStrategy);
     }
 
@@ -3026,12 +3043,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableIntSupplier property, int value) {
-        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     @Override
     public L ni(SerializableIntSupplier name, int... value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3039,12 +3056,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     @Override
     public L ni(SerializableIntSupplier name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3052,12 +3069,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableLongSupplier property, long value) {
-        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     @Override
     public L ni(SerializableLongSupplier property, long... value) {
-        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3065,12 +3082,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     @Override
     public L ni(SerializableLongSupplier name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return ni(classMapping, name, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3078,12 +3095,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableDoubleSupplier property, double value) {
-        return ni(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     @Override
     public L ni(SerializableDoubleSupplier name, double... value) {
-        return ni(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3091,12 +3108,12 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     @Override
     public L ni(SerializableDoubleSupplier property, double[] value, Predicate<double[]> ignoreStrategy) {
-        return ni(classMapping, property, value, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3104,7 +3121,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy) {
-        return ni(classMapping, name, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3113,7 +3130,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ni(SerializableToStringFunction<E1> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ni(classMapping, name, value, matchStrategy, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3121,7 +3138,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableToStringFunction<E1> name, String[] value, MatchStrategy matchStrategy) {
-        return ni(classMapping, name, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), name, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3130,7 +3147,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ni(SerializableToStringFunction<E1> name, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return ni(classMapping, name, value, matchStrategy, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), name, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3138,7 +3155,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return ni(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3146,7 +3163,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ni(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy) {
-        return ni(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return ni(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3155,7 +3172,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ni(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ni(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3164,7 +3181,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ni(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return ni(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return ni(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -3174,7 +3191,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R> L inn(SerializableFunction<E1, R> name, Boolean value) {
-        return inn(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias);
+        return inn(getClassMapping().getPropertyMapping(getPropertyName(name)), value, getAlias());
     }
 
     /**
@@ -3182,7 +3199,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R> L inn(SerializableSupplier<R> name, Boolean value) {
-        return inn(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias);
+        return inn(getClassMapping().getPropertyMapping(getPropertyName(name)), value, getAlias());
     }
 
     /**
@@ -3190,7 +3207,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R> L isn(SerializableFunction<E1, R> name, Boolean value) {
-        return isn(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias);
+        return isn(getClassMapping().getPropertyMapping(getPropertyName(name)), value, getAlias());
     }
 
     /**
@@ -3198,7 +3215,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R> L isn(SerializableSupplier<R> name, Boolean value) {
-        return isn(classMapping.getPropertyMapping(getPropertyName(name)), value, tableAlias);
+        return isn(getClassMapping().getPropertyMapping(getPropertyName(name)), value, getAlias());
     }
 
     // ****************************************************************************************************************
@@ -3208,7 +3225,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L le(SerializableFunction<E1, N> name, N value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3216,7 +3233,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L le(SerializableFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3224,7 +3241,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L le(SerializableFunction<E1, E> name, E value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3232,7 +3249,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L le(SerializableFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3240,7 +3257,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L le(SerializableFunction<E1, D> name, D value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3248,7 +3265,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L le(SerializableFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3256,7 +3273,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableFunction<E1, LocalTime> name, LocalTime value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3264,7 +3281,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableFunction<E1, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3272,7 +3289,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableFunction<E1, LocalDate> name, LocalDate value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3280,7 +3297,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableFunction<E1, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3288,7 +3305,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3297,7 +3314,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L le(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3305,7 +3322,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return le(classMapping, name, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3314,7 +3331,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L le(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return le(classMapping, name, value, matchStrategy, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3322,7 +3339,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableToIntFunction<E1> name, int value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3330,7 +3347,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3338,7 +3355,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableToLongFunction<E1> name, long value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3346,7 +3363,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3354,7 +3371,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableToDoubleFunction<E1> name, double value) {
-        return le(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3362,7 +3379,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return le(classMapping, name, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -3372,7 +3389,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L le(SerializableDateSupplier<D> property, D value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3380,7 +3397,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Date> L le(SerializableDateSupplier<R> property, R value, Predicate<R> ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3388,7 +3405,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L le(SerializableNumberSupplier<N> property, N value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3396,7 +3413,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L le(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3404,7 +3421,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L le(SerializableEnumSupplier<E> property, E value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3412,7 +3429,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L le(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3420,7 +3437,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableLocalDateSupplier property, LocalDate value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3428,7 +3445,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3436,7 +3453,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableLocalTimeSupplier property, LocalTime value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3444,7 +3461,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3452,7 +3469,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3461,7 +3478,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L le(SerializableLocalDateTimeSupplier property, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3469,7 +3486,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return le(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3478,7 +3495,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L le(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return le(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3486,7 +3503,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableIntSupplier property, int value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3494,7 +3511,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3502,7 +3519,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableLongSupplier property, long value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3510,7 +3527,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3518,7 +3535,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableDoubleSupplier property, double value) {
-        return le(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return le(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3526,7 +3543,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L le(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return le(classMapping, property, value, tableAlias, ignoreStrategy);
+        return le(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -3536,7 +3553,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L lt(SerializableFunction<E1, N> name, N value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3544,7 +3561,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L lt(SerializableFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3552,7 +3569,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L lt(SerializableFunction<E1, E> name, E value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3560,7 +3577,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L lt(SerializableFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3568,7 +3585,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L lt(SerializableFunction<E1, D> name, D value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3576,7 +3593,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L lt(SerializableFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3584,7 +3601,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableFunction<E1, LocalTime> name, LocalTime value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3592,7 +3609,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableFunction<E1, LocalTime> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3600,7 +3617,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableFunction<E1, LocalDate> name, LocalDate value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3608,7 +3625,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableFunction<E1, LocalDate> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3616,7 +3633,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3625,7 +3642,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L lt(SerializableFunction<E1, LocalDateTime> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3633,7 +3650,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy) {
-        return lt(classMapping, name, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3642,7 +3659,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L lt(SerializableFunction<E1, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return lt(classMapping, name, value, matchStrategy, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3650,7 +3667,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableToIntFunction<E1> name, int value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3658,7 +3675,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableToIntFunction<E1> name, int value, IntPredicate ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3666,7 +3683,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableToLongFunction<E1> name, long value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3674,7 +3691,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableToLongFunction<E1> name, long value, LongPredicate ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3682,7 +3699,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableToDoubleFunction<E1> name, double value) {
-        return lt(classMapping, name, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), name, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3690,7 +3707,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableToDoubleFunction<E1> name, double value, DoublePredicate ignoreStrategy) {
-        return lt(classMapping, name, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), name, value, getAlias(), ignoreStrategy);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -3700,7 +3717,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L lt(SerializableNumberSupplier<N> property, N value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3708,7 +3725,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L lt(SerializableNumberSupplier<N> property, N value, Predicate<N> ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3716,7 +3733,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L lt(SerializableEnumSupplier<E> property, E value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3724,7 +3741,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L lt(SerializableEnumSupplier<E> property, E value, Predicate<E> ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3732,7 +3749,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L lt(SerializableDateSupplier<D> property, D value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3740,7 +3757,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L lt(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3748,7 +3765,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableLocalDateSupplier property, LocalDate value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3756,7 +3773,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3764,7 +3781,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableLocalTimeSupplier property, LocalTime value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3772,7 +3789,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3780,7 +3797,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableLocalDateTimeSupplier property, LocalDateTime value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3789,7 +3806,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L lt(SerializableLocalDateTimeSupplier property, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3797,7 +3814,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return lt(classMapping, property, value, matchStrategy, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, matchStrategy, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3806,7 +3823,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L lt(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return lt(classMapping, property, value, matchStrategy, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, matchStrategy, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3814,7 +3831,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableIntSupplier property, int value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3822,7 +3839,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3830,7 +3847,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableLongSupplier property, long value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3838,7 +3855,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3846,7 +3863,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableDoubleSupplier property, double value) {
-        return lt(classMapping, property, value, tableAlias, getIgnoreStrategy());
+        return lt(getClassMapping(), property, value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3854,7 +3871,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L lt(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        return lt(classMapping, property, value, tableAlias, ignoreStrategy);
+        return lt(getClassMapping(), property, value, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -3864,7 +3881,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToIntFunction<E1> name, int min, int max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3872,7 +3889,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToIntFunction<E1> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3880,7 +3897,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToLongFunction<E1> name, long min, long max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3888,7 +3905,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToLongFunction<E1> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3896,7 +3913,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToDoubleFunction<E1> name, double min, double max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3905,7 +3922,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableToDoubleFunction<E1> name, double min, double max,
         BiPredicate<Double, Double> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3913,7 +3930,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ba(SerializableToNumberFunction<E1, N> name, N min, N max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3922,7 +3939,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <N extends Number> L ba(SerializableToNumberFunction<E1, N> name, N min, N max,
         BiPredicate<N, N> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3930,7 +3947,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ba(SerializableToDateFunction<E1, D> name, D min, D max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3939,7 +3956,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <D extends Date> L ba(SerializableToDateFunction<E1, D> name, D min, D max,
         BiPredicate<D, D> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3947,7 +3964,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L ba(SerializableToEnumFunction<E1, E> name, E min, E max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3956,7 +3973,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <E extends Enum<E>> L ba(SerializableToEnumFunction<E1, E> name, E min, E max,
         BiPredicate<E, E> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3964,7 +3981,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToLocalTimeFunction<E1> name, LocalTime min, LocalTime max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3973,7 +3990,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableToLocalTimeFunction<E1> name, LocalTime min, LocalTime max,
         BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3981,7 +3998,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToLocalDateFunction<E1> name, LocalDate min, LocalDate max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -3990,7 +4007,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableToLocalDateFunction<E1> name, LocalDate min, LocalDate max,
         BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -3998,7 +4015,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime min, LocalDateTime max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4007,7 +4024,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime min, LocalDateTime max,
         BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4015,7 +4032,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableToStringFunction<E1> name, String min, String max) {
-        return ba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4024,7 +4041,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableToStringFunction<E1> name, String min, String max,
         BiPredicate<String, String> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     // --------------------
@@ -4034,7 +4051,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ba(SerializableNumberSupplier<N> property, N min, N max) {
-        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4042,7 +4059,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L ba(SerializableNumberSupplier<N> name, N min, N max, BiPredicate<N, N> ignoreStrategy) {
-        return ba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4050,7 +4067,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ba(SerializableDateSupplier<D> property, D min, D max) {
-        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4058,7 +4075,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L ba(SerializableDateSupplier<D> property, D min, D max, BiPredicate<D, D> ignoreStrategy) {
-        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4066,7 +4083,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max) {
-        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4075,7 +4092,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max,
         BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
-        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4083,7 +4100,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max) {
-        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4092,7 +4109,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max,
         BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4100,7 +4117,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max) {
-        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4109,7 +4126,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max,
         BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4117,7 +4134,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L ba(SerializableStringSupplier property, String min, String max) {
-        return ba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return ba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4126,7 +4143,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L ba(SerializableStringSupplier property, String min, String max,
         BiPredicate<String, String> ignoreStrategy) {
-        return ba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return ba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -4136,7 +4153,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToIntFunction<E1> name, int min, int max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4144,7 +4161,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToIntFunction<E1> name, int min, int max, BiPredicate<Integer, Integer> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4152,7 +4169,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToLongFunction<E1> name, long min, long max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4160,7 +4177,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToLongFunction<E1> name, long min, long max, BiPredicate<Long, Long> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4168,7 +4185,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToDoubleFunction<E1> name, double min, double max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4177,7 +4194,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableToDoubleFunction<E1> name, double min, double max,
         BiPredicate<Double, Double> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4185,7 +4202,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L nba(SerializableToNumberFunction<E1, N> name, N min, N max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4194,7 +4211,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <N extends Number> L nba(SerializableToNumberFunction<E1, N> name, N min, N max,
         BiPredicate<N, N> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4202,7 +4219,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L nba(SerializableToDateFunction<E1, D> name, D min, D max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4211,7 +4228,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <D extends Date> L nba(SerializableToDateFunction<E1, D> name, D min, D max,
         BiPredicate<D, D> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4219,7 +4236,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L nba(SerializableToEnumFunction<E1, E> name, E min, E max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4228,7 +4245,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <E extends Enum<E>> L nba(SerializableToEnumFunction<E1, E> name, E min, E max,
         BiPredicate<E, E> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4236,7 +4253,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToLocalTimeFunction<E1> name, LocalTime min, LocalTime max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4245,7 +4262,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableToLocalTimeFunction<E1> name, LocalTime min, LocalTime max,
         BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4253,7 +4270,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToLocalDateFunction<E1> name, LocalDate min, LocalDate max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4262,7 +4279,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableToLocalDateFunction<E1> name, LocalDate min, LocalDate max,
         BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4270,7 +4287,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime min, LocalDateTime max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4279,7 +4296,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime min, LocalDateTime max,
         BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4287,7 +4304,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableToStringFunction<E1> name, String min, String max) {
-        return nba(classMapping, name, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), name, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4296,7 +4313,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableToStringFunction<E1> name, String min, String max,
         BiPredicate<String, String> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     // --------------------
@@ -4306,7 +4323,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L nba(SerializableNumberSupplier<N> property, N min, N max) {
-        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4315,7 +4332,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <N extends Number> L nba(SerializableNumberSupplier<N> name, N min, N max,
         BiPredicate<N, N> ignoreStrategy) {
-        return nba(classMapping, name, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), name, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4323,7 +4340,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L nba(SerializableDateSupplier<D> property, D min, D max) {
-        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4332,7 +4349,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <D extends Date> L nba(SerializableDateSupplier<D> property, D min, D max,
         BiPredicate<D, D> ignoreStrategy) {
-        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4340,7 +4357,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max) {
-        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4349,7 +4366,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max,
         BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
-        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4357,7 +4374,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max) {
-        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4366,7 +4383,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableLocalDateSupplier property, LocalDate min, LocalDate max,
         BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
-        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4374,7 +4391,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max) {
-        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4383,7 +4400,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max,
         BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
-        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4391,7 +4408,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L nba(SerializableStringSupplier property, String min, String max) {
-        return nba(classMapping, property, min, max, tableAlias, getIgnoreStrategy());
+        return nba(getClassMapping(), property, min, max, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -4400,7 +4417,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L nba(SerializableStringSupplier property, String min, String max,
         BiPredicate<String, String> ignoreStrategy) {
-        return nba(classMapping, property, min, max, tableAlias, ignoreStrategy);
+        return nba(getClassMapping(), property, min, max, getAlias(), ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -4413,6 +4430,32 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<E1, R> name) {
         return new EntityTypePropertyExpressionImpl<>(index, name, this, factory, entityRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<E1, R> name,
+            Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
+        //        // IMPLSOON 后续来实现内嵌类型property
+        //        throw new NotImplementedException();
+
+        final int i = index;
+        index++;
+        entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
+            L2>) new EntityTypePropertyExpressionImpl<>(i, name, this,
+                factory, entityRelation));
+        index--;
+
+        //        property(name);
+        //        index++;
+        //        entityTypePropertyExpressionConsumer.accept((EntityConditionsGroupExpression<R, C2,
+        //            L2>) this);
+        //        index--;
+
+        return (L) this;
     }
 
     /**
@@ -4545,7 +4588,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * {@inheritDoc}
      */
     @Override
-    public C configure(Consumer<C2> configure) {
+    public C configure(Consumer<CC> configure) {
         if (configure != null) {
             configure.accept(conditionConfig);
         }
@@ -4833,7 +4876,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L ne(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         Predicate<?> ignoreStrategy) {
-        return ne(classMapping, property, value, queryAlias, MatchStrategy.AUTO, ignoreStrategy);
+        return ne(getClassMapping(), property, value, queryAlias, MatchStrategy.AUTO, ignoreStrategy);
     }
 
     /**
@@ -5851,6 +5894,64 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
         return supplier(info, classMapping);
+    }
+
+    protected PropertyMapping<?> getPropertyMapping(int index, Object value) {
+        if (propertyList.size() == 1) {
+            ClassMapping<?, JdbcPropertyMapping> classMapping = getClassMapping(index);
+            return classMapping.getPropertyMapping(LambdaUtils.getLambdaPropertyName(propertyList.get(0)));
+        } else if (propertyList.size() == 2) {
+            ClassMapping<?, JdbcPropertyMapping> classMapping = getClassMapping(index);
+            JdbcPropertyMapping pm = classMapping
+                .getPropertyMapping(LambdaUtils.getLambdaPropertyName(propertyList.get(0)));
+            if (value == null) {
+                // ENHANCE 这个查询值为null则直接返回对象映射的逻辑后续考虑是否合理
+                return pm;
+            }
+
+            SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(propertyList.get(1));
+            String pn = propertyInfo.getPropertyName();
+            if (pm.getMode() == Mode.EMBEDDED) {
+                JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
+                if (spm == null) {
+                    throw new SqldbHammerException(Str.format("no property mapping found for {0}.{1}.{2}",
+                        classMapping.getType().getSimpleName(), pm.getPropertyFullName(), pn));
+                }
+                return spm;
+            } else if (Mode.MANY_TO_ONE == pm.getMode()) {
+                // } else if (Mode.MANY_TO_ONE == pm.getMode() || Mode.ONE_TO_ONE == pm.getMode()) {
+                // YUFEI_TEST 需要测试ONE_TO_ONE
+                JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
+                if (spm != null) {
+                    return spm;
+                } else {
+                    JdbcClassMapping<?> cm = factory.getClassMapping(pm.getPropertyType());
+                    // 这里需要join，在条件设置中需要判断对象是否已经join，如果没有join，则需要在设置查询参数时，先join
+                    // 所以需要在条件中记录已经join的对象关系来判断是否需要join
+                    spm = cm.getPropertyMapping(pn);
+                    if (spm != null) {
+                        entityRelation.join(Join.LEFT_JOIN, index, pm.getPropertyName(), cm, false);
+                        return spm;
+                    } else {
+                        throw new SqldbHammerException(
+                            Str.format("no property mapping found for {0}.{1}", cm.getType().getSimpleName(), pn));
+                    }
+                }
+            } else if (pm.getMode() == Mode.ONE_TO_MANY) {
+                // IMPLSOON 未实现一对多
+                // 在条件设置中需要判断对象是否已经join，如果没有join，则需要在设置查询参数时，先join
+                // 所以需要在条件中记录已经join的对象关系来判断是否需要join
+                throw new NotImplementedException();
+            } else if (pm.getMode() == Mode.SINGLE) {
+                // YUFEI_TEST 待测试，propertyList.size() > 1 时 propertyList.get(0)就不应该是Mode.SINGLE，所以应该永远进不了这个逻辑
+                throw new NotImplementedException();
+            }
+            throw new UnsupportedException();
+        } else {
+            // IMPLSOON 未实现，出现多次对象嵌套，只可能出现在关联对象的情况即，即多次获取ManyToOne(OneToOne)的属性
+            // 例如： order.getOwner().getUserInfo().getAddress().getNo()  -  order > user > user_info > address.no
+            throw new NotImplementedException();
+        }
     }
 
     // ********************************************************************

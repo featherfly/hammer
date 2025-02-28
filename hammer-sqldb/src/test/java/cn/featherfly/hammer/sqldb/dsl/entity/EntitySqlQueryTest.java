@@ -1316,6 +1316,38 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void nestedPropertyAutoJoin_nested_lambda() {
+        String name = "yufei";
+
+        final User user = query.find(User.class)//
+            .where() //
+            .co(User::getUsername, name) //
+            .limit(1) //
+            .unique();
+
+        UserInfo userInfo = query.find(UserInfo.class).where() //
+            .property(UserInfo::getUser,
+                userProp -> userProp.property(User::getUsername).eq(user.getUsername()) //
+                    .and().eq(User::getPwd, user.getPwd()) //
+                    .and().eq(user::getAge) //
+                    .and().property(User::getId).eq(user.getId()) //
+            ).single();
+
+        assertEquals(user.getId(), userInfo.getUser().getId());
+        assertTrue(user.getUsername().contains(name));
+
+        //        userInfo = query.find(UserInfo.class).where() //
+        //            .property(UserInfo::getUser,
+        //                userProp -> userProp.eq(User::getUsername, user.getUsername()) //
+        //                    .and().eq(user::getAge) //
+        //                    .and().eq(user::getId) //
+        //                    .and().eq(User::getPwd, user.getPwd()) //
+        //            )
+        //            .single();
+
+    }
+
+    @Test
     void nestedPropertyAutoJoin_eq() {
         Integer rid = 2;
         Integer uid = 1;

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -28,6 +29,8 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDoublePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityEnumPropertyExpression;
@@ -53,8 +56,8 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFunction<T, P>, C extends ConditionExpression,
-    L extends LogicExpression<C, L>> extends AbstractMulitiEntityGenericPropertyExpression<T, P, F, C, L>
+public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> extends AbstractMulitiEntityGenericPropertyExpression<T, P, C, L>
     implements EntityTypePropertyExpression<P, C, L> {
 
     /**
@@ -66,7 +69,8 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
      * @param factory the factory
      * @param queryRelation the query relation
      */
-    public EntityTypePropertyExpressionImpl(int index, F name, InternalMulitiEntityCondition<L> expression,
+    public EntityTypePropertyExpressionImpl(int index, SerializableFunction<T, P> name,
+        InternalMulitiEntityCondition<L> expression,
         JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
     }
@@ -203,6 +207,18 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
     public <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<P, R> name) {
         propertyList.add(name);
         return new EntityTypePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<P, R> name,
+            Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
+        // IMPLSOON 后续来实现内嵌类型property
+        throw new NotImplementedException();
+        //        return entityTypePropertyExpressionConsumer.apply((C2) property(name));
     }
 
     /**
@@ -666,5 +682,4 @@ public class EntityTypePropertyExpressionImpl<T, P, F extends SerializableFuncti
         return expression.nba(index, getPropertyMapping(Lang.ifNull(min, max)), arithmeticColumnElement.get(), min, max,
             ignoreStrategy);
     }
-
 }

@@ -11,6 +11,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.condition.propery;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.function.Consumer;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -30,6 +31,8 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDoublePropertyExpression;
@@ -53,17 +56,17 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityPrope
  * @param <E> the element type
  * @param <C> the generic type
  * @param <L> the generic type
- * @param <C2> the generic type
+ * @param <CC> the generic type
  * @param <S> the generic type
  * @param <B> the generic type
  */
 @SuppressWarnings("unchecked")
 public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L extends LogicExpression<C, L>,
-    C2 extends ConditionConfig<C2>, S extends EntitySqlRelation<S, B>, B extends SqlBuilder>
+    CC extends ConditionConfig<CC>, S extends EntitySqlRelation<S, B>, B extends SqlBuilder>
     implements EntityPropertyExpression<E, C, L> {
 
     /** The expression. */
-    protected final InternalMulitiEntityPropertyOnlyConditionImpl<E, C2, S, B> expression;
+    protected final InternalMulitiEntityPropertyOnlyConditionImpl<E, CC, S, B> expression;
 
     private int index;
 
@@ -181,6 +184,18 @@ public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L e
     public <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<E, R> name) {
         return new EntityTypePropertyExpressionImpl<>(index, name, (InternalMulitiEntityCondition<L>) expression,
             factory, expression.getEntityRelation());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<E, R> name,
+            Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
+        // IMPLSOON 后续来实现内嵌类型property
+        throw new NotImplementedException();
+        //        return entityTypePropertyExpressionConsumer.apply((C2) property(name));
     }
 
     /**

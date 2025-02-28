@@ -11,6 +11,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.condition.propery;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.function.Consumer;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.exception.NotImplementedException;
@@ -28,6 +29,8 @@ import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityPropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDatePropertyExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityDoublePropertyExpression;
@@ -168,6 +171,18 @@ public class EntityPropertyExpressionImpl<E, C extends ConditionExpression, L ex
     @Override
     public <R> EntityTypePropertyExpression<R, C, L> property(SerializableFunction<E, R> name) {
         return new EntityTypePropertyExpressionImpl<>(index, name, expression, factory, queryRelation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<E, R> name,
+            Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
+        // IMPLSOON 后续来实现内嵌类型property
+        throw new NotImplementedException();
+        //        return entityTypePropertyExpressionConsumer.apply((C2) property(name));
     }
 
     /**

@@ -29,7 +29,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  */
 public class EntityEnumPropertyExpressionImpl<E, T extends Enum<T>, C extends ConditionExpression,
     L extends LogicExpression<C, L>>
-    extends AbstractMulitiEntityGenericPropertyExpression<E, T, SerializableFunction<E, T>, C, L>
+    extends AbstractMulitiEntityGenericPropertyExpression<E, T, C, L>
     implements EntityEnumPropertyExpression<T, C, L> {
 
     /**

@@ -22,7 +22,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation;
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F extends SerializableFunction<E, P>,
+public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P,
     C extends ConditionExpression, L extends LogicExpression<C, L>>
     extends AbstractMulitiEntityPropertyExpression<E, C, L> {
 
@@ -35,7 +35,7 @@ public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, F exte
      * @param factory the factory
      * @param queryRelation the query relation
      */
-    protected AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, F name,
+    protected AbstractMulitiEntityGenericPropertyExpression(AtomicInteger index, SerializableFunction<E, P> name,
         InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
         EntitySqlRelation<?, ?> queryRelation) {
         super(index, name, expression, factory, queryRelation);

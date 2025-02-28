@@ -224,8 +224,15 @@ public class DslEntityConditionCompareTest {
 
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).ge(1).list();
 
-        query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getUser).property(User::getId)
-            .ge(1).list();
+        query.find(UserInfo.class).join(User::getUserInfo).where() //
+            .property(UserInfo::getUser).property(User::getId).ge(1) //
+            .list();
+
+        query.find(UserInfo.class).join(User::getUserInfo).where() //
+            .property(UserInfo::getUser, propUser -> {
+                propUser.property(User::getId).eq(1).and().ge(User::getAge, 1);
+            }) //
+            .list();
 
         query.find(UserInfo.class).join(User::getUserInfo).where()
             .ge((SerializableToIntFunction<UserInfo>) UserInfo::getId, 1, value -> ignore).list();

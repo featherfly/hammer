@@ -33,7 +33,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  */
 public class EntityNumberPropertyExpressionImpl<E, N extends Number, C extends ConditionExpression,
     L extends LogicExpression<C, L>>
-    extends AbstractMulitiEntityGenericPropertyExpression<E, N, SerializableFunction<E, N>, C, L>
+    extends AbstractMulitiEntityGenericPropertyExpression<E, N, C, L>
     implements EntityNumberPropertyExpression<N, C, L> {
 
     /**

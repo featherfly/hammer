@@ -9,7 +9,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
@@ -32,7 +31,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @param <L> the generic type
  */
 public class EntityStringPropertyExpressionImpl<E, C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends AbstractMulitiEntityGenericPropertyExpression<E, String, SerializableFunction<E, String>, C, L>
+    extends AbstractMulitiEntityGenericPropertyExpression<E, String, C, L>
     implements EntityStringPropertyExpression<C, L> {
 
     /**
