@@ -23,7 +23,6 @@ import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ColumnElement;
-import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -173,7 +172,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     /** The index. */
     protected int index;
 
-    protected List<Serializable> propertyList = new ArrayList<>();
+    protected final List<Serializable> properties = new ArrayList<>();
 
     /**
      * Instantiates a new abstract sql condition group expression.
@@ -214,6 +213,31 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     protected JdbcClassMapping<Object> getClassMapping() {
         return getClassMapping(index);
+    }
+
+    protected JdbcPropertyMapping getPropertyMapping(JdbcClassMapping<?> classMapping, Serializable name,
+        Object value) {
+        if (properties.isEmpty()) {
+            return classMapping.getPropertyMapping(getPropertyName(name));
+        }
+
+        // 进入此逻辑时，应该只对应Mode.EMBEDDED
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(properties.get(0)));
+        if (value == null) {
+            // ENHANCE 这个查询值为null则直接返回对象映射的逻辑后续考虑是否合理
+            return pm;
+        }
+        if (pm.getMode() == Mode.EMBEDDED) {
+            // EMBEDDED 目前只支持两层映射
+            String pn = getPropertyName(name);
+            JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
+            if (spm == null) {
+                throw new SqldbHammerException(Str.format("no property mapping found for {0}.{1}.{2}",
+                    classMapping.getType().getSimpleName(), pm.getPropertyFullName(), pn));
+            }
+            return spm;
+        }
+        throw new UnsupportedException();
     }
 
     // ****************************************************************************************************************
@@ -2281,7 +2305,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L in(SerializableFunction<E1, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2289,7 +2313,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2297,7 +2321,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N value, Predicate<N> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2305,7 +2329,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N[] value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2313,7 +2337,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <N extends Number> L in(SerializableFunction<E1, N> name, N[] value, Predicate<N[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2321,7 +2345,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Integer> name, int... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2329,7 +2353,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Integer> name, int[] value, Predicate<int[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2337,7 +2361,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Long> name, long... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2345,7 +2369,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableFunction<E1, Long> name, long[] value, Predicate<long[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2353,7 +2377,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2361,7 +2385,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D value, Predicate<D> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2369,7 +2393,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2377,7 +2401,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <D extends Date> L in(SerializableFunction<E1, D> name, D[] value, Predicate<D[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2385,7 +2409,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2393,7 +2417,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E value, Predicate<E> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2401,7 +2425,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2409,7 +2433,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <E extends Enum<E>> L in(SerializableFunction<E1, E> name, E[] value, Predicate<E[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2417,7 +2441,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2426,7 +2450,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2434,7 +2458,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2443,7 +2467,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public L in(SerializableToLocalDateTimeFunction<E1> name, LocalDateTime[] value,
         Predicate<LocalDateTime[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2451,7 +2475,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2459,7 +2483,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2467,7 +2491,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2475,7 +2499,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalDateFunction<E1> name, LocalDate[] value, Predicate<LocalDate[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2483,7 +2507,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2491,7 +2515,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2499,7 +2523,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2507,7 +2531,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToLocalTimeFunction<E1> name, LocalTime[] value, Predicate<LocalTime[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2515,7 +2539,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2523,7 +2547,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String value, Predicate<String> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2531,7 +2555,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String... value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2539,7 +2563,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public L in(SerializableToStringFunction<E1> name, String[] value, Predicate<String[]> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2581,7 +2605,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L in(SerializableFunction<E1, R> name, Collection<R> value) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2590,7 +2614,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L in(SerializableFunction<E1, R> name, Collection<R> value,
         Predicate<Collection<R>> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return in(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2856,7 +2880,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R value) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return ni(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2864,7 +2888,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R value, Predicate<R> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return ni(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2872,7 +2896,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R... value) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy());
+        return ni(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy());
     }
 
     /**
@@ -2880,7 +2904,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, R[] value, Predicate<R[]> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return ni(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -2888,7 +2912,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, Collection<R> value) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), getIgnoreStrategy()::test);
+        return ni(getPropertyMapping(classMapping, name, value), value, getAlias(), getIgnoreStrategy()::test);
     }
 
     /**
@@ -2897,7 +2921,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Serializable> L ni(SerializableFunction<E1, R> name, Collection<R> value,
         Predicate<Collection<R>> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(name)), value, getAlias(), ignoreStrategy);
+        return ni(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
     /**
@@ -4439,22 +4463,19 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
         L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<E1, R> name,
             Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
-        //        // IMPLSOON 后续来实现内嵌类型property
-        //        throw new NotImplementedException();
-
-        final int i = index;
-        index++;
-        entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
-            L2>) new EntityTypePropertyExpressionImpl<>(i, name, this,
-                factory, entityRelation));
-        index--;
-
-        //        property(name);
-        //        index++;
-        //        entityTypePropertyExpressionConsumer.accept((EntityConditionsGroupExpression<R, C2,
-        //            L2>) this);
-        //        index--;
-
+        if (getClassMapping().getPropertyMapping(getPropertyName(name)).getMode() == Mode.EMBEDDED) {
+            final int i = properties.size();
+            properties.add(name);
+            entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
+                L2>) new EntityTypePropertyExpressionImpl<>(index, name, this, factory, entityRelation));
+            properties.remove(i);
+        } else {
+            final int i = index;
+            index++;
+            entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
+                L2>) new EntityTypePropertyExpressionImpl<>(i, name, this, factory, entityRelation));
+            index--;
+        }
         return (L) this;
     }
 
@@ -4681,8 +4702,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
+        return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
     /**
@@ -4697,8 +4718,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
+        return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
     /**
@@ -4713,8 +4734,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
+        return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
     /**
@@ -4729,8 +4750,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
+        return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
     /**
@@ -4745,8 +4766,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L eq(JdbcClassMapping<?> classMapping, Serializable property, char value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
+        return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
     /**
@@ -4779,8 +4800,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L eq(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, matchStrategy, ignoreStrategy);
+        return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -4795,8 +4816,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, char value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
+        return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
     /**
@@ -4811,8 +4832,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
+        return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
 
     /**
@@ -4827,8 +4848,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         CharPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
+        return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
 
     /**
@@ -4843,8 +4864,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
+        return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
 
     /**
@@ -4859,8 +4880,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ne(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
+        return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            MatchStrategy.AUTO, v -> ignoreStrategy.test((Double) v));
     }
 
     /**
@@ -4893,8 +4914,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L ne(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, classMapping.getPropertyMapping(getPropertyName(property)), null, value,
-            queryAlias, matchStrategy, ignoreStrategy);
+        return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, queryAlias,
+            matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -4910,9 +4931,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected abstract <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
-        ColumnElement name, R value, String queryAlias, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy);
+    protected abstract <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ColumnElement name,
+        R value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy);
 
     //    protected <T, R> L eq_ne(ComparisonOperator comparisonOperator, JdbcPropertyMapping pm, R value, String queryAlias,
     //            MatchStrategy matchStrategy, Predicate<R> ignoreStrategy) {
@@ -4935,8 +4955,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L sw(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return sw(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
-            ignoreStrategy);
+        return sw(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -4970,8 +4989,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L nsw(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return nsw(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
-            ignoreStrategy);
+        return nsw(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5005,8 +5023,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L co(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return co(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
-            ignoreStrategy);
+        return co(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5040,8 +5057,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L nco(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return nco(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
-            ignoreStrategy);
+        return nco(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5075,8 +5091,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L ew(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return ew(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
-            ignoreStrategy);
+        return ew(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5110,7 +5125,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L newv(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return newv(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
+        return newv(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy,
             ignoreStrategy);
     }
 
@@ -5145,8 +5160,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L lk(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return lk(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
-            ignoreStrategy);
+        return lk(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5180,8 +5194,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L nl(JdbcClassMapping<?> classMapping, Serializable property, String value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return nl(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, matchStrategy,
-            ignoreStrategy);
+        return nl(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5204,31 +5217,30 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+        return in(getPropertyMapping(classMapping, property, value), value, queryAlias,
             v -> ignoreStrategy.test((Integer) v));
     }
 
     protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+        return in(getPropertyMapping(classMapping, property, value), value, queryAlias,
             v -> ignoreStrategy.test((Long) v));
     }
 
     protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+        return in(getPropertyMapping(classMapping, property, value), value, queryAlias,
             v -> ignoreStrategy.test((Double) v));
     }
 
     protected <S> L in(JdbcClassMapping<?> classMapping, Serializable property, S value, MatchStrategy matchStrategy,
         String queryAlias, Predicate<?> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, matchStrategy, queryAlias,
-            ignoreStrategy);
+        return in(getPropertyMapping(classMapping, property, value), value, matchStrategy, queryAlias, ignoreStrategy);
     }
 
     protected <R> L in(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         Predicate<?> ignoreStrategy) {
-        return in(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, ignoreStrategy);
+        return in(getPropertyMapping(classMapping, property, value), value, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5267,19 +5279,19 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     protected <S> L ni(JdbcClassMapping<?> classMapping, Serializable property, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+        return ni(getPropertyMapping(classMapping, property, value), value, queryAlias,
             v -> ignoreStrategy.test((Integer) v));
     }
 
     protected <S> L ni(JdbcClassMapping<?> classMapping, Serializable property, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+        return ni(getPropertyMapping(classMapping, property, value), value, queryAlias,
             v -> ignoreStrategy.test((Long) v));
     }
 
     protected <S> L ni(JdbcClassMapping<?> classMapping, Serializable property, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias,
+        return ni(getPropertyMapping(classMapping, property, value), value, queryAlias,
             v -> ignoreStrategy.test((Double) v));
     }
 
@@ -5296,7 +5308,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L ni(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         Predicate<?> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias, ignoreStrategy);
+        return ni(getPropertyMapping(classMapping, property, value), value, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5313,8 +5325,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L ni(JdbcClassMapping<?> classMapping, Serializable property, R value, MatchStrategy matchStrategy,
         String queryAlias, Predicate<?> ignoreStrategy) {
-        return ni(classMapping.getPropertyMapping(getPropertyName(property)), value, matchStrategy, queryAlias,
-            ignoreStrategy);
+        return ni(getPropertyMapping(classMapping, property, value), value, matchStrategy, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5361,7 +5372,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected L isn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
-        return isn(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias);
+        return isn(getPropertyMapping(classMapping, property, value), value, queryAlias);
     }
 
     /**
@@ -5387,7 +5398,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected L inn(JdbcClassMapping<?> classMapping, Serializable property, Boolean value, String queryAlias) {
-        return inn(classMapping.getPropertyMapping(getPropertyName(property)), value, queryAlias);
+        return inn(getPropertyMapping(classMapping, property, value), value, queryAlias);
     }
 
     /**
@@ -5407,19 +5418,18 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return ge(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Integer) v));
     }
 
     protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
-            v -> ignoreStrategy.test((Long) v));
+        return ge(getPropertyMapping(classMapping, name, value), value, queryAlias, v -> ignoreStrategy.test((Long) v));
     }
 
     protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return ge(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Double) v));
     }
 
@@ -5436,7 +5446,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
         Predicate<?> ignoreStrategy) {
-        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
+        return ge(getPropertyMapping(classMapping, name, value), value, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5453,8 +5463,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, matchStrategy, queryAlias,
-            ignoreStrategy);
+        return ge(getPropertyMapping(classMapping, name, value), value, matchStrategy, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5471,8 +5480,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value, MatchStrategy matchStrategy,
         String queryAlias, Predicate<?> ignoreStrategy) {
-        return ge(classMapping.getPropertyMapping(getPropertyName(name)), value, matchStrategy, queryAlias,
-            ignoreStrategy);
+        return ge(getPropertyMapping(classMapping, name, value), value, matchStrategy, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5522,8 +5530,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V extends Serializable> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
         String queryAlias, BiPredicate<V, V> ignoreStrategy) {
-        return ba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
-            p -> ignoreStrategy.test(p[0], p[1]));
+        return ba(getPropertyMapping(classMapping, name, min == null && max == null ? null : Optional.empty()), min,
+            max, queryAlias, p -> ignoreStrategy.test(p[0], p[1]));
     }
 
     /**
@@ -5540,8 +5548,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V extends Serializable> L ba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
         String queryAlias, Predicate<Object> ignoreStrategy) {
-        return ba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
-            p -> ignoreStrategy.test(p));
+        return ba(getPropertyMapping(classMapping, name, min == null && max == null ? null : Optional.empty()), min,
+            max, queryAlias, p -> ignoreStrategy.test(p));
     }
 
     /**
@@ -5578,8 +5586,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V extends Serializable> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
         String queryAlias, BiPredicate<V, V> ignoreStrategy) {
-        return nba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias,
-            p -> ignoreStrategy.test(min, max));
+        return nba(getPropertyMapping(classMapping, name, min == null && max == null ? null : Optional.empty()), min,
+            max, queryAlias, p -> ignoreStrategy.test(min, max));
     }
 
     /**
@@ -5596,7 +5604,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V extends Serializable> L nba(JdbcClassMapping<?> classMapping, Serializable name, V min, V max,
         String queryAlias, Predicate<?> ignoreStrategy) {
-        return nba(classMapping.getPropertyMapping(getPropertyName(name)), min, max, queryAlias, ignoreStrategy);
+        return nba(getPropertyMapping(classMapping, name, min == null && max == null ? null : Optional.empty()), min,
+            max, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5621,19 +5630,18 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return gt(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Integer) v));
     }
 
     protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
-            v -> ignoreStrategy.test((Long) v));
+        return gt(getPropertyMapping(classMapping, name, value), value, queryAlias, v -> ignoreStrategy.test((Long) v));
     }
 
     protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return gt(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Double) v));
     }
 
@@ -5650,7 +5658,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
         Predicate<?> ignoreStrategy) {
-        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
+        return gt(getPropertyMapping(classMapping, name, value), value, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5666,8 +5674,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected L gt(JdbcClassMapping<?> classMapping, Serializable name, String value, MatchStrategy matchStrategy,
         String queryAlias, Predicate<?> ignoreStrategy) {
-        return gt(classMapping.getPropertyMapping(getPropertyName(name)), value, matchStrategy, queryAlias,
-            ignoreStrategy);
+        return gt(getPropertyMapping(classMapping, name, value), value, matchStrategy, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5705,19 +5712,18 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return le(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Integer) v));
     }
 
     protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
-            v -> ignoreStrategy.test((Long) v));
+        return le(getPropertyMapping(classMapping, name, value), value, queryAlias, v -> ignoreStrategy.test((Long) v));
     }
 
     protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return le(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Double) v));
     }
 
@@ -5734,7 +5740,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
         Predicate<?> ignoreStrategy) {
-        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
+        return le(getPropertyMapping(classMapping, name, value), value, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5751,8 +5757,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, V value, MatchStrategy matchStrategy,
         String queryAlias, Predicate<?> ignoreStrategy) {
-        return le(classMapping.getPropertyMapping(getPropertyName(name)), value, matchStrategy, queryAlias,
-            ignoreStrategy);
+        return le(getPropertyMapping(classMapping, name, value), value, matchStrategy, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5790,19 +5795,18 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, int value, String queryAlias,
         IntPredicate ignoreStrategy) {
-        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return lt(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Integer) v));
     }
 
     protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, long value, String queryAlias,
         LongPredicate ignoreStrategy) {
-        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
-            v -> ignoreStrategy.test((Long) v));
+        return lt(getPropertyMapping(classMapping, name, value), value, queryAlias, v -> ignoreStrategy.test((Long) v));
     }
 
     protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, double value, String queryAlias,
         DoublePredicate ignoreStrategy) {
-        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias,
+        return lt(getPropertyMapping(classMapping, name, value), value, queryAlias,
             v -> ignoreStrategy.test((Double) v));
     }
 
@@ -5819,7 +5823,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
         Predicate<?> ignoreStrategy) {
-        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, queryAlias, ignoreStrategy);
+        return lt(getPropertyMapping(classMapping, name, value), value, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5836,8 +5840,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, V value, MatchStrategy matchStrategy,
         String queryAlias, Predicate<?> ignoreStrategy) {
-        return lt(classMapping.getPropertyMapping(getPropertyName(name)), value, matchStrategy, queryAlias,
-            ignoreStrategy);
+        return lt(getPropertyMapping(classMapping, name, value), value, matchStrategy, queryAlias, ignoreStrategy);
     }
 
     /**
@@ -5894,64 +5897,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
         return supplier(info, classMapping);
-    }
-
-    protected PropertyMapping<?> getPropertyMapping(int index, Object value) {
-        if (propertyList.size() == 1) {
-            ClassMapping<?, JdbcPropertyMapping> classMapping = getClassMapping(index);
-            return classMapping.getPropertyMapping(LambdaUtils.getLambdaPropertyName(propertyList.get(0)));
-        } else if (propertyList.size() == 2) {
-            ClassMapping<?, JdbcPropertyMapping> classMapping = getClassMapping(index);
-            JdbcPropertyMapping pm = classMapping
-                .getPropertyMapping(LambdaUtils.getLambdaPropertyName(propertyList.get(0)));
-            if (value == null) {
-                // ENHANCE 这个查询值为null则直接返回对象映射的逻辑后续考虑是否合理
-                return pm;
-            }
-
-            SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(propertyList.get(1));
-            String pn = propertyInfo.getPropertyName();
-            if (pm.getMode() == Mode.EMBEDDED) {
-                JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
-                if (spm == null) {
-                    throw new SqldbHammerException(Str.format("no property mapping found for {0}.{1}.{2}",
-                        classMapping.getType().getSimpleName(), pm.getPropertyFullName(), pn));
-                }
-                return spm;
-            } else if (Mode.MANY_TO_ONE == pm.getMode()) {
-                // } else if (Mode.MANY_TO_ONE == pm.getMode() || Mode.ONE_TO_ONE == pm.getMode()) {
-                // YUFEI_TEST 需要测试ONE_TO_ONE
-                JdbcPropertyMapping spm = pm.getPropertyMapping(pn);
-                if (spm != null) {
-                    return spm;
-                } else {
-                    JdbcClassMapping<?> cm = factory.getClassMapping(pm.getPropertyType());
-                    // 这里需要join，在条件设置中需要判断对象是否已经join，如果没有join，则需要在设置查询参数时，先join
-                    // 所以需要在条件中记录已经join的对象关系来判断是否需要join
-                    spm = cm.getPropertyMapping(pn);
-                    if (spm != null) {
-                        entityRelation.join(Join.LEFT_JOIN, index, pm.getPropertyName(), cm, false);
-                        return spm;
-                    } else {
-                        throw new SqldbHammerException(
-                            Str.format("no property mapping found for {0}.{1}", cm.getType().getSimpleName(), pn));
-                    }
-                }
-            } else if (pm.getMode() == Mode.ONE_TO_MANY) {
-                // IMPLSOON 未实现一对多
-                // 在条件设置中需要判断对象是否已经join，如果没有join，则需要在设置查询参数时，先join
-                // 所以需要在条件中记录已经join的对象关系来判断是否需要join
-                throw new NotImplementedException();
-            } else if (pm.getMode() == Mode.SINGLE) {
-                // YUFEI_TEST 待测试，propertyList.size() > 1 时 propertyList.get(0)就不应该是Mode.SINGLE，所以应该永远进不了这个逻辑
-                throw new NotImplementedException();
-            }
-            throw new UnsupportedException();
-        } else {
-            // IMPLSOON 未实现，出现多次对象嵌套，只可能出现在关联对象的情况即，即多次获取ManyToOne(OneToOne)的属性
-            // 例如： order.getOwner().getUserInfo().getAddress().getNo()  -  order > user > user_info > address.no
-            throw new NotImplementedException();
-        }
     }
 
     // ********************************************************************

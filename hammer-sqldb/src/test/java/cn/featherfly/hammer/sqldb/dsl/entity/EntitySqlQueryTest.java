@@ -657,6 +657,28 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         }
     }
 
+    @Test
+    void property_eq_embedded_nested_lambda() {
+        List<UserInfo> userInfos = null;
+
+        DistrictDivision division = new DistrictDivision();
+        division.setProvince("四川");
+        division.setCity("成都");
+        division.setDistrict("金牛");
+
+        userInfos = query.find(UserInfo.class).where() //
+            .property(UserInfo::getDivision,
+                divisionProp -> divisionProp.property(DistrictDivision::getProvince).eq(division.getProvince()) //
+                    .and().eq(DistrictDivision::getCity, division.getCity()) //
+                    .and().eq(division::getDistrict) //
+            ).list();
+
+        for (UserInfo userInfo : userInfos) {
+            assertEquals(userInfo.getDivision().getProvince(), division.getProvince());
+            assertEquals(userInfo.getDivision().getCity(), division.getCity());
+        }
+    }
+
     //    @Test TODO 后续实现了再写测试逻辑
     //    void property_eq_embedded2() {
     //        List<UserInfo> userInfos = null;
@@ -1326,11 +1348,10 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .unique();
 
         UserInfo userInfo = query.find(UserInfo.class).where() //
-            .property(UserInfo::getUser,
-                userProp -> userProp.property(User::getUsername).eq(user.getUsername()) //
-                    .and().eq(User::getPwd, user.getPwd()) //
-                    .and().eq(user::getAge) //
-                    .and().property(User::getId).eq(user.getId()) //
+            .property(UserInfo::getUser, userProp -> userProp.property(User::getUsername).eq(user.getUsername()) //
+                .and().eq(User::getPwd, user.getPwd()) //
+                .and().eq(user::getAge) //
+                .and().property(User::getId).eq(user.getId()) //
             ).single();
 
         assertEquals(user.getId(), userInfo.getUser().getId());
