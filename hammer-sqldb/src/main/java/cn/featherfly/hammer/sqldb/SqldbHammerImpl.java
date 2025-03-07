@@ -269,7 +269,6 @@ public class SqldbHammerImpl implements SqldbHammer {
                     } else {
                         results[i] = save(e);
                     }
-                    results[i] = save(e);
                 });
             }
             return results;
@@ -819,29 +818,16 @@ public class SqldbHammerImpl implements SqldbHammer {
         @SuppressWarnings("unchecked")
         GetOperate<E> get = (GetOperate<E>) getOperate(e.getClass());
         List<Serializable> ids = get.getIds(e);
-        if (ids.size() == 1) {
-            Serializable id = ids.get(0);
-            // FIXME 当前的逻辑在手动设置id值的时候会有问题
-            if (id == null) {
-                return false;
-            } else {
-                return true;
-            }
-        } else if (ids.size() > 1) {
-            boolean insertable = false;
-            for (Serializable id : ids) {
-                if (id == null) { // 只要有一个id为空，则表示需要插入数据
-                    insertable = true;
-                }
-            }
-            if (insertable) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
+        if (Lang.isEmpty(ids)) {
             throw new SqldbHammerException("no pk mapping");
         }
+        // FIXME 当前的逻辑在手动设置id值的时候会有问题
+        for (Serializable id : ids) {
+            if (id == null) { // 只要有一个id为空，则表示需要插入数据
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

@@ -119,7 +119,6 @@ public class UserTableFilterable
     @Override
     public UserTableLogic ignore(boolean ignorable,
         Function<UserTableFilterable, UserTableLogic> conditionExpressions) {
-        // YUFEI_TODO Auto-generated method stub
         return null;
     }
 
