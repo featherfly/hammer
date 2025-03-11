@@ -8,6 +8,8 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.entity.condition;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.DoublePredicate;
@@ -29,6 +31,21 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * @param <L> the generic type
  */
 public interface InternalMulitiEntityCondition<L> extends InternalMulitiCondition<L>, MulitiEntityConditionExpression {
+
+    /**
+     * Gets the property list.
+     *
+     * @return the property list
+     */
+    List<Serializable> getPropertyList();
+
+    /**
+     * Adds the property.
+     *
+     * @param property the property
+     * @return the list
+     */
+    List<Serializable> addProperty(Serializable property);
 
     /**
      * between and.

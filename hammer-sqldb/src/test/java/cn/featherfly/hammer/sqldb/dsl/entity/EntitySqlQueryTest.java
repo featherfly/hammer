@@ -729,6 +729,59 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
+    void property_eq_ManyToOne_autojoin_2times() {
+        List<Order> orderList = null;
+        User user = new User();
+        user.setUsername("yufei");
+        user.setMobileNo("12345678901");
+
+        final Consumer<List<Order>> assertOrder = orders -> {
+            for (Order order : orders) {
+                UserInfo userInfo =
+                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
+
+                assertEquals(u.getUsername(), user.getUsername());
+                assertEquals(u.getMobileNo(), user.getMobileNo());
+            }
+        };
+
+        orderList = query.find(Order.class).where() //
+            .property(Order::getUserInfo).property(UserInfo::getUser).property(User::getUsername).eq(user.getUsername()) //
+            .list();
+
+        assertOrder.accept(orderList);
+
+    }
+
+    @Test
+    void property_eq_ManyToOne_autojoin_2times2() {
+        List<Order> orderList = null;
+        User user = new User();
+        user.setUsername("yufei");
+        user.setMobileNo("12345678901");
+
+        final Consumer<List<Order>> assertOrder = orders -> {
+            for (Order order : orders) {
+                UserInfo userInfo =
+                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
+
+                assertEquals(u.getUsername(), user.getUsername());
+                assertEquals(u.getMobileNo(), user.getMobileNo());
+            }
+        };
+
+        orderList = query.find(Order.class).where() //
+            // FIXME 这里eq出错，因为没有join User
+            .property(Order::getUserInfo).property(UserInfo::getUser) //
+            .eq(user) //
+            .list();
+
+        assertOrder.accept(orderList);
+    }
+
+    @Test
     void property_ne() {
         long c = query.find(User.class) //
             .where() //
@@ -1365,6 +1418,42 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         //                    .and().eq(User::getPwd, user.getPwd()) //
         //            )
         //            .single();
+
+    }
+
+    @Test
+    void nestedPropertyAutoJoin_2times_nested_lambda() {
+        List<Order> orderList = null;
+        User user = new User();
+        user.setUsername("yufei");
+        user.setMobileNo("12345678901");
+
+        final Consumer<List<Order>> assertOrder = orders -> {
+            for (Order order : orders) {
+                UserInfo userInfo =
+                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
+
+                assertEquals(u.getUsername(), user.getUsername());
+                assertEquals(u.getMobileNo(), user.getMobileNo());
+            }
+        };
+
+        // FIXME 还未实现
+        orderList = query.find(Order.class).where() //
+            .property(Order::getUserInfo).property(UserInfo::getUser, // 
+                propUser -> propUser.property(User::getUsername).eq(user.getUsername()) //
+                    .and().eq(user::getMobileNo) //
+            ) //
+            .list();
+
+        assertOrder.accept(orderList);
+
+        //        orderList = query.find(Order.class).where() //
+        //            .property(Order::getUserInfo, propUserInfo -> propUserInfo.property(UserInfo::getUser)) //
+        //            .list();
+        //
+        //        assertOrder.accept(orderList);
 
     }
 

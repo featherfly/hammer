@@ -17,7 +17,15 @@ TODO dsl实体查询加入以下（EntityQuery）
    ).single();
    ```
 
-   
+
+3. Entity DSL property(SerializableFunction name) 加入多级ManyToOne自动join
+
+    ```java
+    hammer.query(Order.class).where() //
+    .property(Order::getUserInfo).property(UserInfo::getUser).property(User::getUsername).eq(user.getUsername()) //
+    // auto add join user_info on order,  auto add join user on user_info
+    .list();
+    ```
 
 # 0.7.3 2025-02-14
 

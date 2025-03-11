@@ -212,13 +212,17 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
         L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<P, R> name,
             Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
-        // IMPLSOON 后续来实现内嵌类型property
-        throw new NotImplementedException();
-        //        return entityTypePropertyExpressionConsumer.apply((C2) property(name));
+        propertyList.add(name);
+        expression.addProperty(name);
+        entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
+            L2>) new EntityTypePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation));
+        expression.getPropertyList().remove(expression.getPropertyList().size() - 1);
+        return (L) expression;
     }
 
     /**

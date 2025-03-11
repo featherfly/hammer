@@ -4570,6 +4570,17 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         return new EntityEnumPropertyExpressionImpl<>(index, name, this, factory, entityRelation);
     }
 
+    @Override
+    public List<Serializable> getPropertyList() {
+        return properties;
+    }
+
+    @Override
+    public List<Serializable> addProperty(Serializable property) {
+        properties.add(property);
+        return properties;
+    }
+
     // ****************************************************************************************************************
 
     /**

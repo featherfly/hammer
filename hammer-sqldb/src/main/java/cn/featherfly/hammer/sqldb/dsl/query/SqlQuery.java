@@ -162,31 +162,6 @@ public class SqlQuery implements Query {
         return new EntitySqlQueryFetch<>(hammerConfig, mappingFactory, sqlPageFactory, queryRelation, mapping);
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @SuppressWarnings("unchecked")
-    //    @Override
-    //    public <EQF extends EntityQueryFetchExpression<E, EQC, EQL, EQFP, EQVC, EQVL, RS>, E,
-    //            EQC extends EntityQueryConditionGroupExpression<E, EQC, EQL, RS>,
-    //            EQL extends EntityQueryConditionGroupLogicExpression<E, EQC, EQL, RS>,
-    //            EQFP extends EntityQueryFetchedPropertyExpression<E, EQVC, EQVL, EQFP, RS>,
-    //            EQVC extends EntityQueryValueConditionGroupExpression<E, EQVC, EQVL, RS>,
-    //            EQVL extends EntityQueryValueConditionGroupLogicExpression<E, EQVC, EQVL, RS>,
-    //            RS extends EntityQuerySortExpression<E>> EQF find(Class<E> entityType) {
-    //        if (mappingFactory == null) {
-    //            throw new SqldbHammerException("mappingFactory is null");
-    //        }
-    //        JdbcClassMapping<E> mapping = mappingFactory.getClassMapping(entityType);
-    //        //        if (mapping == null) { // 不存在的映射类型在mappingFactory就抛出异常了
-    //        //            throw new SqldbHammerException(Str.format("type {0} is not a entity"));
-    //        //        }
-    //
-    //        EntitySqlQueryRelation queryRelation = new EntitySqlQueryRelation(jdbc, new AliasManager(),
-    //                IgnoreStrategy.EMPTY);
-    //        return (EQF) new EntitySqlQueryFetch<>(mappingFactory, sqlPageFactory, queryRelation, mapping);
-    //    }
-
     // IMPLSOON 后续来实现select xxx from yy 模式的方法链
     //    public SqlSelectQuery select() {
     //    }
