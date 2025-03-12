@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.builder.model.ColumnElement;
+import cn.featherfly.common.db.dialect.Join;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -222,7 +223,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     @Override
     public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm, R value,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(comparisonOperator, pm, null, value, getAlias(index), matchStrategy, ignoreStrategy);
+        return eqOrNe(index.get(), comparisonOperator, pm, null, value, getAlias(index), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -231,7 +232,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     @Override
     public <R> L eqOrNe(AtomicInteger index, ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
         ColumnElement name, R value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(comparisonOperator, pm, name, value, getAlias(index), matchStrategy, ignoreStrategy);
+        return eqOrNe(index.get(), comparisonOperator, pm, name, value, getAlias(index), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -300,7 +301,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
         return logic;
     }
 
-    private <V> L eqOrNeToOne(ComparisonOperator comparisonOperator, PropertyMapping<?> joinFromPropertyMapping,
+    private <V> L eqOrNeToOne(int currentIndex, ComparisonOperator comparisonOperator,
+        PropertyMapping<?> joinFromPropertyMapping,
         ColumnElement name, V value, String queryAlias, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
         JdbcClassMapping<?> joinClassMapping = factory.getClassMapping(joinFromPropertyMapping.getPropertyType());
@@ -318,8 +320,9 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
                 values.add(Tuples.of(pm, ov));
                 if (!pm.isPrimaryKey() && !fetch) {
                     fetch = true;
-                    entityRelation.join(getIndex(), joinFromPropertyMapping.getPropertyName(), joinClassMapping);
-                    queryAlias = getAlias(getIndex() + 1);
+                    entityRelation.join(Join.LEFT_JOIN, currentIndex, joinFromPropertyMapping.getPropertyName(),
+                        joinClassMapping);
+                    queryAlias = getAlias(currentIndex + 1);
                 }
             }
         }
@@ -362,6 +365,12 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
     @Override
     protected <R> L eqOrNe(ComparisonOperator comparisonOperator, PropertyMapping<?> pm, ColumnElement field,
         R value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+        return eqOrNe(index, comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
+    }
+
+    private <R> L eqOrNe(int currentIndex, ComparisonOperator comparisonOperator, PropertyMapping<?> pm,
+        ColumnElement field,
+        R value, String queryAlias, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         AssertIllegalArgument.isNotNull(ignoreStrategy, "ignoreStrategy");
         if (value == null) {
             return eqOrNe0(comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
@@ -370,7 +379,8 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase<E1, C
             switch (pm.getMode()) {
                 //                case ONE_TO_ONE: TODO ONE_TO_ONE 支持
                 case MANY_TO_ONE:
-                    return eqOrNeToOne(comparisonOperator, pm, field, value, queryAlias, matchStrategy, ignoreStrategy);
+                    return eqOrNeToOne(currentIndex, comparisonOperator, pm, field, value, queryAlias, matchStrategy,
+                        ignoreStrategy);
                 case EMBEDDED:
                     return eqOrNeEmbedded(comparisonOperator, (JdbcPropertyMapping) pm, field, value, queryAlias,
                         matchStrategy, ignoreStrategy);

@@ -60,6 +60,8 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
     L extends LogicExpression<C, L>> extends AbstractMulitiEntityGenericPropertyExpression<T, P, C, L>
     implements EntityTypePropertyExpression<P, C, L> {
 
+    // TODO 多级join在这里把关系确定，确定property对应的entity的index,
+
     /**
      * Instantiates a new entity property type expression impl.
      *
@@ -73,6 +75,7 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
         InternalMulitiEntityCondition<L> expression,
         JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
+        init();
     }
 
     /**
@@ -88,6 +91,7 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
         InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
         EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), propertyList, expression, factory, queryRelation);
+        init();
     }
 
     /**
@@ -103,6 +107,13 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
         InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
         EntitySqlRelation<?, ?> queryRelation) {
         super(index, propertyList, expression, factory, queryRelation);
+        init();
+    }
+
+    private void init() {
+        if (propertyList.size() > 1) {
+
+        }
     }
 
     // ****************************************************************************************************************
@@ -212,17 +223,13 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
         L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<P, R> name,
             Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
         propertyList.add(name);
-        expression.addProperty(name);
-        entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
-            L2>) new EntityTypePropertyExpressionImpl<>(index, propertyList, expression, factory, queryRelation));
-        expression.getPropertyList().remove(expression.getPropertyList().size() - 1);
-        return (L) expression;
+        return expression.property(index.incrementAndGet(), propertyList,
+            entityTypePropertyExpressionConsumer);
     }
 
     /**

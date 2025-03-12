@@ -755,7 +755,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     }
 
     @Test
-    void property_eq_ManyToOne_autojoin_2times2() {
+    void property_eq_ManyToOne_autojoin_2times_eq_entity() {
         List<Order> orderList = null;
         User user = new User();
         user.setUsername("yufei");
@@ -773,7 +773,6 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         };
 
         orderList = query.find(Order.class).where() //
-            // FIXME 这里eq出错，因为没有join User
             .property(Order::getUserInfo).property(UserInfo::getUser) //
             .eq(user) //
             .list();
@@ -1439,10 +1438,11 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             }
         };
 
-        // FIXME 还未实现
         orderList = query.find(Order.class).where() //
-            .property(Order::getUserInfo).property(UserInfo::getUser, // 
-                propUser -> propUser.property(User::getUsername).eq(user.getUsername()) //
+            .property(Order::getUserInfo) //
+            .property(UserInfo::getUser, // 
+                propUser -> propUser.property(User::getUsername) //
+                    .eq(user.getUsername()) //
                     .and().eq(user::getMobileNo) //
             ) //
             .list();
@@ -1454,7 +1454,78 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         //            .list();
         //
         //        assertOrder.accept(orderList);
+    }
 
+    @Test
+    void nestedPropertyAutoJoin_2times_embedded_lambda() {
+        List<Order> orderList = null;
+        User user = query.find(User.class).where().eq(User::getId, 1).single();
+        UserInfo userInfo = query.find(UserInfo.class).where().eq(UserInfo::getId, 1).single();
+
+        final Consumer<List<Order>> assertOrder = orders -> {
+            assertEquals(orders.size(), 1);
+            for (Order order : orders) {
+                UserInfo ui =
+                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
+
+                assertEquals(ui.getDivision().getProvince(), userInfo.getDivision().getProvince());
+                assertEquals(ui.getDivision().getCity(), userInfo.getDivision().getCity());
+                assertEquals(ui.getDivision().getDistrict(), userInfo.getDivision().getDistrict());
+                assertEquals(u.getUsername(), user.getUsername());
+                assertEquals(u.getMobileNo(), user.getMobileNo());
+            }
+        };
+
+        orderList = query.find(Order.class).where() //
+            .property(Order::getUserInfo, //
+                propUserInfo -> // 
+                // FIXME 这里报错，问题出错，获取UserInfo Mapping时，其还没有被创建
+                propUserInfo.property(UserInfo::getDivision, // 
+                    propDivision -> propDivision.property(DistrictDivision::getProvince) //
+                        .eq(userInfo.getDivision().getProvince()) //
+                        .and().eq(DistrictDivision::getCity, userInfo.getDivision().getCity()) //
+                        .and().eq(DistrictDivision::getDistrict, userInfo.getDivision().getDistrict()) //
+                ).and()
+                    .property(UserInfo::getUser, // 
+                        propUser -> propUser.property(User::getUsername) //
+                            .eq(user.getUsername()) //
+                            .and().eq(user::getMobileNo) //
+                    ) //
+            )  //
+            .list();
+
+        assertOrder.accept(orderList);
+
+    }
+
+    @Test
+    void nestedPropertyAutoJoin_embedded_lambda() {
+        List<Order> orderList = null;
+
+        UserInfo userInfo = query.find(UserInfo.class).where().eq(UserInfo::getId, 1).single();
+
+        final Consumer<List<Order>> assertOrder = orders -> {
+            for (Order order : orders) {
+                UserInfo ui =
+                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                assertEquals(ui.getDivision().getProvince(), userInfo.getDivision().getProvince());
+                assertEquals(ui.getDivision().getCity(), userInfo.getDivision().getCity());
+                assertEquals(ui.getDivision().getDistrict(), userInfo.getDivision().getDistrict());
+            }
+        };
+
+        orderList = query.find(Order.class).where() //
+            .property(Order::getUserInfo) //
+            .property(UserInfo::getDivision, // 
+                propDivision -> propDivision.property(DistrictDivision::getProvince) //
+                    .eq(userInfo.getDivision().getProvince()) //
+                    .and().eq(DistrictDivision::getCity, userInfo.getDivision().getCity()) //
+                    .and().eq(DistrictDivision::getDistrict, userInfo.getDivision().getDistrict()) //
+            ) //
+            .list();
+
+        assertOrder.accept(orderList);
     }
 
     @Test

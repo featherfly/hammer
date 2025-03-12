@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
@@ -21,7 +22,10 @@ import cn.featherfly.common.db.builder.model.ColumnElement;
 import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupExpression;
+import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.MulitiEntityConditionExpression;
+import cn.featherfly.hammer.expression.entity.condition.property.EntityTypePropertyExpression;
 import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
 
 /**
@@ -32,20 +36,10 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  */
 public interface InternalMulitiEntityCondition<L> extends InternalMulitiCondition<L>, MulitiEntityConditionExpression {
 
-    /**
-     * Gets the property list.
-     *
-     * @return the property list
-     */
-    List<Serializable> getPropertyList();
-
-    /**
-     * Adds the property.
-     *
-     * @param property the property
-     * @return the list
-     */
-    List<Serializable> addProperty(Serializable property);
+    <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
+        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(
+            final int currentIndex, List<Serializable> properties,
+            Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer);
 
     /**
      * between and.

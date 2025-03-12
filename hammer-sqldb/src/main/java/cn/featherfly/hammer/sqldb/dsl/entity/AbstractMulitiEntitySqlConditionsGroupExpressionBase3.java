@@ -881,13 +881,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L ge3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return ge(classMapping3, property, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return ge(classMapping3, property, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L ge3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ge(classMapping3, property, matchStrategy, tableAlias3, ignoreStrategy);
+        return ge(classMapping3, property, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1088,13 +1088,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L gt3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy) {
-        return gt(classMapping3, name, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return gt(classMapping3, name, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L gt3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return gt(classMapping3, name, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return gt(classMapping3, name, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1192,13 +1192,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L gt3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return gt(classMapping3, property, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return gt(classMapping3, property, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L gt3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return gt(classMapping3, property, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return gt(classMapping3, property, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1367,13 +1367,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L le3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy) {
-        return le(classMapping3, name, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return le(classMapping3, name, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L le3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return le(classMapping3, name, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return le(classMapping3, name, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1420,13 +1420,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L le3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return le(classMapping3, property, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return le(classMapping3, property, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L le3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return le(classMapping3, property, matchStrategy, tableAlias3, ignoreStrategy);
+        return le(classMapping3, property, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1595,13 +1595,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L lt3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy) {
-        return lt(classMapping3, name, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return lt(classMapping3, name, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L lt3(SerializableFunction<E3, String> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return lt(classMapping3, name, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return lt(classMapping3, name, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1648,13 +1648,13 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L lt3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return lt(classMapping3, property, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return lt(classMapping3, property, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L lt3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return lt(classMapping3, property, matchStrategy, tableAlias3, ignoreStrategy);
+        return lt(classMapping3, property, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1783,24 +1783,24 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     public L in3(SerializableToStringFunction<E3> name, String value, MatchStrategy matchStrategy) {
-        return in(classMapping3, name, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return in(classMapping3, name, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L in3(SerializableToStringFunction<E3> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return in(classMapping3, name, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return in(classMapping3, name, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
     public L in3(SerializableToStringFunction<E3> name, String[] value, MatchStrategy matchStrategy) {
-        return in(classMapping3, name, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return in(classMapping3, name, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     @Override
     public L in3(SerializableToStringFunction<E3> name, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return in(classMapping3, name, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return in(classMapping3, name, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     @Override
@@ -1994,7 +1994,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
      */
     @Override
     public L in3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return in(classMapping3, property, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return in(classMapping3, property, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -2002,7 +2002,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
      */
     @Override
     public L in3(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy) {
-        return in(classMapping3, property, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return in(classMapping3, property, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -2011,7 +2011,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     @Override
     public L in3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return in(classMapping3, property, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return in(classMapping3, property, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -2020,7 +2020,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     @Override
     public L in3(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return in(classMapping3, property, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return in(classMapping3, property, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
@@ -2063,7 +2063,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     @Override
     public <R extends Serializable> L ni3(SerializableFunction<E3, R> name, Collection<R> value) {
         return ni(classMapping3.getPropertyMapping(getPropertyName(name)), value, tableAlias3,
-            getIgnoreStrategy()::test);
+            getIgnoreStrategy());
     }
 
     /**
@@ -2296,7 +2296,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
      */
     @Override
     public L ni3(SerializableToStringFunction<E3> name, String value, MatchStrategy matchStrategy) {
-        return ni(classMapping3, name, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return ni(classMapping3, name, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -2305,7 +2305,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     @Override
     public L ni3(SerializableToStringFunction<E3> name, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ni(classMapping3, name, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return ni(classMapping3, name, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -2313,7 +2313,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
      */
     @Override
     public L ni3(SerializableToStringFunction<E3> name, String[] value, MatchStrategy matchStrategy) {
-        return ni(classMapping3, name, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return ni(classMapping3, name, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -2322,7 +2322,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     @Override
     public L ni3(SerializableToStringFunction<E3> name, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return ni(classMapping3, name, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return ni(classMapping3, name, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -2330,7 +2330,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
      */
     @Override
     public L ni3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        return ni(classMapping3, property, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return ni(classMapping3, property, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -2338,7 +2338,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
      */
     @Override
     public L ni3(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy) {
-        return ni(classMapping3, property, value, matchStrategy, tableAlias3, getIgnoreStrategy());
+        return ni(classMapping3, property, value, tableAlias3, matchStrategy, getIgnoreStrategy());
     }
 
     /**
@@ -2347,7 +2347,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     @Override
     public L ni3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        return ni(classMapping3, property, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return ni(classMapping3, property, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -2356,7 +2356,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
     @Override
     public L ni3(SerializableStringSupplier property, String[] value, MatchStrategy matchStrategy,
         Predicate<String[]> ignoreStrategy) {
-        return ni(classMapping3, property, value, matchStrategy, tableAlias3, ignoreStrategy);
+        return ni(classMapping3, property, value, tableAlias3, matchStrategy, ignoreStrategy);
     }
 
     // ****************************************************************************************************************
