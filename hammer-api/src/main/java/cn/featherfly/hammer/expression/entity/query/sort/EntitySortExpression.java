@@ -1,6 +1,7 @@
 package cn.featherfly.hammer.expression.entity.query.sort;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.hammer.expression.condition.Expression;
 
 /**
@@ -11,6 +12,39 @@ import cn.featherfly.hammer.expression.condition.Expression;
  * @param <S> the EntitySortedExpression type
  */
 public interface EntitySortExpression<E, S extends EntitySortedExpression<E, S>> extends Expression {
+
+    /**
+     * add assign order value. 添加指定排序条件.
+     *
+     * @param <R> the generic type
+     * @param order the order
+     * @param names the names
+     * @return the s
+     */
+    default <R> S order(SortOperator order, SerializableFunction<E, R> names) {
+        switch (order) {
+            case DESC:
+                return desc(names);
+            default:
+                return asc(names);
+        }
+    }
+
+    /**
+     * add assign order value. 添加指定排序条件.
+     *
+     * @param order the order
+     * @param names the names
+     * @return the s
+     */
+    default S order(SortOperator order, @SuppressWarnings("unchecked") SerializableFunction<E, ?>... names) {
+        switch (order) {
+            case DESC:
+                return desc(names);
+            default:
+                return asc(names);
+        }
+    }
 
     /**
      * add ascending order value. 添加升序条件.

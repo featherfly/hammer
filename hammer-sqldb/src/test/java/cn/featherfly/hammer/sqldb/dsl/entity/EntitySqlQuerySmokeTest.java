@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.dsl.query.SqlQuery;
@@ -72,7 +73,21 @@ public class EntitySqlQuerySmokeTest extends JdbcTestBase {
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() < users.get(1).getId());
 
+        query.find(User.class)//
+            .join(UserInfo::getUser)//
+            .where((e1, e2) -> e2.property(UserInfo::getUser).property(User::getId).eq(e1.property(User::getId))).sort()//
+            .order2(SortOperator.ASC, UserInfo::getId)//
+            .limit(2) //
+            .list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
         users = query.find(User.class).join(UserInfo::getUser).sort().desc2(UserInfo::getId).limit(2).list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        users = query.find(User.class).join(UserInfo::getUser).sort().order2(SortOperator.DESC, UserInfo::getId)
+            .limit(2).list();
         assertTrue(users.size() == 2);
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }

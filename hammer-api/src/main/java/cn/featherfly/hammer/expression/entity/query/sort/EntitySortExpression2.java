@@ -2,16 +2,35 @@ package cn.featherfly.hammer.expression.entity.query.sort;
 
 import java.util.function.BiConsumer;
 
+import cn.featherfly.common.operator.SortOperator;
+
 /**
  * 排序构建接口.
  *
  * @author zhongj
- * @param <E>  the entity type
+ * @param <E> the entity type
  * @param <E2> the generic type
- * @param <S>  the EntitySortExpression type
+ * @param <S> the EntitySortExpression type
  */
 public interface EntitySortExpression2<E, E2, S extends EntitySortedExpression2<E, E2, S>>
-        extends EntitySortExpressionBase2<E, E2, S> {
+    extends EntitySortExpressionBase2<E, E2, S> {
+
+    /**
+     * order.
+     *
+     * @param order the order
+     * @param sortEntityExpressions the sort entity expressions
+     * @return the LogicExpression
+     */
+    default S order(SortOperator order,
+        BiConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>> sortEntityExpressions) {
+        switch (order) {
+            case DESC:
+                return desc(sortEntityExpressions);
+            default:
+                return asc(sortEntityExpressions);
+        }
+    }
 
     /**
      * asc.

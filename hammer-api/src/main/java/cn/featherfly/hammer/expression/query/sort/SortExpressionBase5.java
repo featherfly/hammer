@@ -6,6 +6,7 @@ import java.util.List;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 
@@ -16,6 +17,54 @@ import cn.featherfly.common.repository.Field;
  * @param <S> the generic type
  */
 public interface SortExpressionBase5<S extends SortedExpression<S>> extends SortExpressionBase4<S> {
+
+    /**
+     * Order.
+     *
+     * @param order the order
+     * @param names the names
+     * @return the s
+     */
+    default S order5(SortOperator order, String... names) {
+        switch (order) {
+            case DESC:
+                return desc5(names);
+            default:
+                return asc5(names);
+        }
+    }
+
+    /**
+     * Order.
+     *
+     * @param order the order
+     * @param names the names
+     * @return the s
+     */
+    default S order5(SortOperator order, Field... names) {
+        switch (order) {
+            case DESC:
+                return desc5(names);
+            default:
+                return asc5(names);
+        }
+    }
+
+    /**
+     * Order.
+     *
+     * @param order the order
+     * @param names the names
+     * @return the s
+     */
+    default S order5(SortOperator order, AliasField names) {
+        switch (order) {
+            case DESC:
+                return desc5(names);
+            default:
+                return asc5(names);
+        }
+    }
 
     /**
      * add asc field.

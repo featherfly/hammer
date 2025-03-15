@@ -1,20 +1,40 @@
 package cn.featherfly.hammer.expression.entity.query.sort;
 
 import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.operator.SortOperator;
 
 /**
  * 排序构建接口.
  *
  * @author zhongj
- * @param <E>  the entity type
+ * @param <E> the entity type
  * @param <E2> the generic type
  * @param <E3> the generic type
  * @param <E4> the generic type
  * @param <E5> the generic type
- * @param <S>  the EntitySortExpression type
+ * @param <S> the EntitySortExpression type
  */
 public interface EntitySortExpression5<E, E2, E3, E4, E5, S extends EntitySortedExpression5<E, E2, E3, E4, E5, S>>
-        extends EntitySortExpressionBase5<E, E2, E3, E4, E5, S> {
+    extends EntitySortExpressionBase5<E, E2, E3, E4, E5, S> {
+
+    /**
+     * order.
+     *
+     * @param order the order
+     * @param sortEntityExpressions the sort entity expressions
+     * @return the LogicExpression
+     */
+    default S order(SortOperator order,
+        FiveArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+            EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
+            EntitySetSortPropertyExpression<E5>> sortEntityExpressions) {
+        switch (order) {
+            case DESC:
+                return desc(sortEntityExpressions);
+            default:
+                return asc(sortEntityExpressions);
+        }
+    }
 
     /**
      * asc.
@@ -22,8 +42,9 @@ public interface EntitySortExpression5<E, E2, E3, E4, E5, S extends EntitySorted
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(FiveArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
-            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions);
+    S asc(FiveArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+        EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
+        EntitySetSortPropertyExpression<E5>> sortEntityExpressions);
 
     /**
      * desc.
@@ -31,8 +52,9 @@ public interface EntitySortExpression5<E, E2, E3, E4, E5, S extends EntitySorted
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(FiveArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
-            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions);
+    S desc(FiveArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+        EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
+        EntitySetSortPropertyExpression<E5>> sortEntityExpressions);
 
     //    /**
     //     * add ascending order value. 添加升序条件.

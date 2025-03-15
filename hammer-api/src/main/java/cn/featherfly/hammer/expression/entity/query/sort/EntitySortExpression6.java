@@ -1,22 +1,42 @@
 package cn.featherfly.hammer.expression.entity.query.sort;
 
 import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.operator.SortOperator;
 
 /**
  * 排序构建接口.
  *
  * @author zhongj
- * @param <E>  the entity type
+ * @param <E> the entity type
  * @param <E2> the generic type
  * @param <E3> the generic type
  * @param <E4> the generic type
  * @param <E5> the generic type
  * @param <E6> the generic type
- * @param <S>  the EntitySortExpression type
+ * @param <S> the EntitySortExpression type
  */
 public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
-        S extends EntitySortedExpression6<E, E2, E3, E4, E5, E6, S>>
-        extends EntitySortExpressionBase6<E, E2, E3, E4, E5, E6, S> {
+    S extends EntitySortedExpression6<E, E2, E3, E4, E5, E6, S>>
+    extends EntitySortExpressionBase6<E, E2, E3, E4, E5, E6, S> {
+
+    /**
+     * order.
+     *
+     * @param order the order
+     * @param sortEntityExpressions the sort entity expressions
+     * @return the LogicExpression
+     */
+    default S order(SortOperator order,
+        SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+            EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
+            EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions) {
+        switch (order) {
+            case DESC:
+                return desc(sortEntityExpressions);
+            default:
+                return asc(sortEntityExpressions);
+        }
+    }
 
     /**
      * asc.
@@ -24,8 +44,9 @@ public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
-            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
+    S asc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+        EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>,
+        EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
 
     /**
      * desc.
@@ -33,8 +54,9 @@ public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
-            EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
+    S desc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+        EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>,
+        EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
 
     //    /**
     //     * add ascending order value. 添加升序条件.

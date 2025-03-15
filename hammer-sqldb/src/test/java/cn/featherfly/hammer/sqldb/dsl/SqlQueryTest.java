@@ -30,6 +30,7 @@ import cn.featherfly.common.db.Table;
 import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.lang.Dates;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.AliasRepository;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Repository;
@@ -57,11 +58,9 @@ public class SqlQueryTest extends JdbcTestBase {
 
     SqlQuery query;
 
-    List<Map<String, Serializable>> list =
-        null;
+    List<Map<String, Serializable>> list = null;
 
-    Map<String, Serializable> map =
-        null;
+    Map<String, Serializable> map = null;
 
     final int year = 2011;
     final int month = 1;
@@ -252,16 +251,15 @@ public class SqlQueryTest extends JdbcTestBase {
         }
     }
 
-    BiConsumer<List<Map<String, Serializable>>, String> compareAge =
-        (list, name) -> {
-            int min = Integer.MIN_VALUE;
-            for (Map<String, Serializable> map : list) {
-                Integer a = (Integer) map.get(name);
-                //            System.err.println(min + "    " + a);
-                assertTrue(min <= a);
-                min = a;
-            }
-        };
+    BiConsumer<List<Map<String, Serializable>>, String> compareAge = (list, name) -> {
+        int min = Integer.MIN_VALUE;
+        for (Map<String, Serializable> map : list) {
+            Integer a = (Integer) map.get(name);
+            //            System.err.println(min + "    " + a);
+            assertTrue(min <= a);
+            min = a;
+        }
+    };
 
     @Test
     void fetchField() {
@@ -272,12 +270,28 @@ public class SqlQueryTest extends JdbcTestBase {
         compareAge.accept(list, "age");
 
         list = query.find("user") //
+            .fields("username", "password", "age") //
+            .sort().order(SortOperator.ASC, "age") //
+            .list();
+        compareAge.accept(list, "age");
+
+        list = query.find("user") //
             .fields("username", "password", "AGE") //
             .sort().asc("AGE") //
             .list();
         compareAge.accept(list, "AGE");
 
+        list = query.find("user") //
+            .fields("username", "password", "AGE") //
+            .sort().order(SortOperator.ASC, "AGE") //
+            .list();
+        compareAge.accept(list, "AGE");
+
         list = query.find("user").fields("username", "password").field("AGE", "age").sort().asc("age").list();
+        compareAge.accept(list, "age");
+
+        list = query.find("user").fields("username", "password").field("AGE", "age").sort()
+            .order(SortOperator.ASC, "age").list();
         compareAge.accept(list, "age");
     }
 
@@ -881,8 +895,7 @@ public class SqlQueryTest extends JdbcTestBase {
         assertEquals(user.get("id"), id);
 
         user = query.find("user").where().eq(User::getId, id).and()
-            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100))
-            .single();
+            .expression("{0}.age - :age >= 0", new ChainMapImpl<String, Serializable>().putChain("age", 100)).single();
         assertNull(user);
 
         user = query.find("user").where().eq(User::getId, id).and().expression("{0}.age - ? >= 0", 100).single();
@@ -998,36 +1011,35 @@ public class SqlQueryTest extends JdbcTestBase {
 
     @Test
     void conditionFunctionsDate() {
-        final Consumer<List<Date>> assertYear =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getYear(), year));
+        final Consumer<List<
+            Date>> assertYear = (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getYear(), year));
 
-        final Consumer<List<Date>> assertMonth =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getMonthValue(), month));
+        final Consumer<List<Date>> assertMonth = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getMonthValue(), month));
 
-        final Consumer<List<Date>> assertDayOfMonth =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getDayOfMonth(), dayOfMonth));
+        final Consumer<List<Date>> assertDayOfMonth = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getDayOfMonth(), dayOfMonth));
 
-        final Consumer<List<Date>> assertHour =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getHour(), hour));
+        final Consumer<List<
+            Date>> assertHour = (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getHour(), hour));
 
-        final Consumer<List<Date>> assertMinute =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getMinute(), minute));
+        final Consumer<List<Date>> assertMinute = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getMinute(), minute));
 
-        final Consumer<List<Date>> assertSecond =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getSecond(), minute));
+        final Consumer<List<Date>> assertSecond = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getSecond(), minute));
 
-        final Consumer<List<Date>> assertDayOfYear =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getDayOfYear(), dayOfYear));
+        final Consumer<List<Date>> assertDayOfYear = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.toLocalDateTime(d).getDayOfYear(), dayOfYear));
 
-        final Consumer<List<Date>> assertDayOfWeek =
-            (dates) -> dates
-                .forEach((d) -> assertEquals(Dates.toLocalDate(d).getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
+        final Consumer<List<Date>> assertDayOfWeek = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.toLocalDate(d).getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
 
-        final Consumer<List<Date>> assertQuarter =
-            (dates) -> dates.forEach((d) -> assertEquals((Dates.toLocalDate(d).getMonthValue() + 2) / 3, quarter)); // mysql 0-6
+        final Consumer<List<Date>> assertQuarter = (dates) -> dates
+            .forEach((d) -> assertEquals((Dates.toLocalDate(d).getMonthValue() + 2) / 3, quarter)); // mysql 0-6
 
-        final Consumer<List<Date>> assertFormat =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.format(d, "yyyy-MM-dd HH:mm:ss"), dateTime)); // mysql 0-6
+        final Consumer<List<Date>> assertFormat = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.format(d, "yyyy-MM-dd HH:mm:ss"), dateTime)); // mysql 0-6
 
         // getYear
         //        assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
@@ -1089,9 +1101,9 @@ public class SqlQueryTest extends JdbcTestBase {
             .getMonth().eq(month).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
 
         // getDayOfMonth
-        assertDayOfMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
-            .getDayOfMonth().eq(dayOfMonth).valueList().stream().map(dt -> Dates.toDate(dt))
-            .collect(Collectors.toList()));
+        assertDayOfMonth.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getDayOfMonth()
+                .eq(dayOfMonth).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
 
         // getHour
         assertHour.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
@@ -1106,9 +1118,8 @@ public class SqlQueryTest extends JdbcTestBase {
             .getSecond().eq(second).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
 
         // getWeekDay
-        assertDayOfWeek
-            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getWeekDay()
-                .eq(dayOfWeek).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+        assertDayOfWeek.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getWeekDay().eq(dayOfWeek).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
 
         // getDayOfYear
         assertDayOfYear.accept(
@@ -1116,15 +1127,13 @@ public class SqlQueryTest extends JdbcTestBase {
                 .eq(dayOfYear).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
 
         // getQuarter
-        assertQuarter
-            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getQuarter()
-                .eq(quarter).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+        assertQuarter.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getQuarter().eq(quarter).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
 
         // format date
-        assertFormat.accept(
-            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
-                .format("%Y-%m-%d %H:%i:%s")
-                .eq(dateTime).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));
+        assertFormat.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .format("%Y-%m-%d %H:%i:%s").eq(dateTime).valueList().stream().map(dt -> Dates.toDate(dt))
+            .collect(Collectors.toList()));
     }
 
     @Test
@@ -1140,35 +1149,35 @@ public class SqlQueryTest extends JdbcTestBase {
         final int quarter = 1;
         String dateTime = "2011-01-01 01:01:01";
 
-        final Consumer<List<LocalDateTime>> assertYear =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
+        final Consumer<
+            List<LocalDateTime>> assertYear = (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
 
-        final Consumer<List<LocalDateTime>> assertMonth =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getMonthValue(), month));
+        final Consumer<
+            List<LocalDateTime>> assertMonth = (dates) -> dates.forEach((d) -> assertEquals(d.getMonthValue(), month));
 
-        final Consumer<List<LocalDateTime>> assertDayOfMonth =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfMonth(), dayOfMonth));
+        final Consumer<List<LocalDateTime>> assertDayOfMonth = (dates) -> dates
+            .forEach((d) -> assertEquals(d.getDayOfMonth(), dayOfMonth));
 
-        final Consumer<List<LocalDateTime>> assertHour =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getHour(), hour));
+        final Consumer<
+            List<LocalDateTime>> assertHour = (dates) -> dates.forEach((d) -> assertEquals(d.getHour(), hour));
 
-        final Consumer<List<LocalDateTime>> assertMinute =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getMinute(), minute));
+        final Consumer<
+            List<LocalDateTime>> assertMinute = (dates) -> dates.forEach((d) -> assertEquals(d.getMinute(), minute));
 
-        final Consumer<List<LocalDateTime>> assertSecond =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getSecond(), minute));
+        final Consumer<
+            List<LocalDateTime>> assertSecond = (dates) -> dates.forEach((d) -> assertEquals(d.getSecond(), minute));
 
-        final Consumer<List<LocalDateTime>> assertDayOfYear =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfYear(), dayOfYear));
+        final Consumer<List<LocalDateTime>> assertDayOfYear = (dates) -> dates
+            .forEach((d) -> assertEquals(d.getDayOfYear(), dayOfYear));
 
-        final Consumer<List<LocalDateTime>> assertDayOfWeek =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
+        final Consumer<List<LocalDateTime>> assertDayOfWeek = (dates) -> dates
+            .forEach((d) -> assertEquals(d.getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
 
-        final Consumer<List<LocalDateTime>> assertQuarter =
-            (dates) -> dates.forEach((d) -> assertEquals((d.getMonthValue() + 2) / 3, quarter)); // mysql 0-6
+        final Consumer<List<LocalDateTime>> assertQuarter = (dates) -> dates
+            .forEach((d) -> assertEquals((d.getMonthValue() + 2) / 3, quarter)); // mysql 0-6
 
-        final Consumer<List<LocalDateTime>> assertFormat =
-            (dates) -> dates.forEach((d) -> assertEquals(Dates.format(d, "yyyy-MM-dd HH:mm:ss"), dateTime)); // mysql 0-6
+        final Consumer<List<LocalDateTime>> assertFormat = (dates) -> dates
+            .forEach((d) -> assertEquals(Dates.format(d, "yyyy-MM-dd HH:mm:ss"), dateTime)); // mysql 0-6
 
         // getYear
         assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
@@ -1207,9 +1216,8 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq(quarter).list(LocalDateTime.class));
 
         // format date
-        assertFormat.accept(
-            query.find("role").fetch("create_time").where().fieldAsDate("create_time").format("%Y-%m-%d %H:%i:%s")
-                .eq(dateTime).list(LocalDateTime.class));
+        assertFormat.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
+            .format("%Y-%m-%d %H:%i:%s").eq(dateTime).list(LocalDateTime.class));
 
         // ----------------------------------------------------------------------------------------------------------------
 
@@ -1238,33 +1246,28 @@ public class SqlQueryTest extends JdbcTestBase {
             .getSecond().eq(second).valueList());
 
         // getWeekDay
-        assertDayOfWeek
-            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getWeekDay()
-                .eq(dayOfWeek).valueList());
+        assertDayOfWeek.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getWeekDay().eq(dayOfWeek).valueList());
 
         // getDayOfYear
-        assertDayOfYear.accept(
-            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getDayOfYear()
-                .eq(dayOfYear).valueList());
+        assertDayOfYear.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getDayOfYear().eq(dayOfYear).valueList());
 
         // getQuarter
-        assertQuarter
-            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getQuarter()
-                .eq(quarter).valueList());
+        assertQuarter.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getQuarter().eq(quarter).valueList());
 
         // format date
-        assertFormat.accept(
-            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
-                .format("%Y-%m-%d %H:%i:%s")
-                .eq(dateTime).valueList());
+        assertFormat.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .format("%Y-%m-%d %H:%i:%s").eq(dateTime).valueList());
     }
 
     @Test
     void conditionFunctionsLocalDateTime2() {
         final int year = 2011;
 
-        final Consumer<List<LocalDateTime>> assertYear =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
+        final Consumer<
+            List<LocalDateTime>> assertYear = (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
 
         // getYear
         //        assertYear.accept(query.find("role").fetch("create_time").where()
@@ -1287,26 +1290,25 @@ public class SqlQueryTest extends JdbcTestBase {
         final int quarter = 1;
         String date = "2011-01-01";
 
-        final Consumer<List<LocalDate>> assertYear =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
+        final Consumer<List<LocalDate>> assertYear = (dates) -> dates.forEach((d) -> assertEquals(d.getYear(), year));
 
-        final Consumer<List<LocalDate>> assertMonth =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getMonthValue(), month));
+        final Consumer<
+            List<LocalDate>> assertMonth = (dates) -> dates.forEach((d) -> assertEquals(d.getMonthValue(), month));
 
-        final Consumer<List<LocalDate>> assertDayOfMonth =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfMonth(), dayOfMonth));
+        final Consumer<List<
+            LocalDate>> assertDayOfMonth = (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfMonth(), dayOfMonth));
 
-        final Consumer<List<LocalDate>> assertDayOfYear =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfYear(), dayOfYear));
+        final Consumer<List<
+            LocalDate>> assertDayOfYear = (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfYear(), dayOfYear));
 
-        final Consumer<List<LocalDate>> assertDayOfWeek =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
+        final Consumer<List<LocalDate>> assertDayOfWeek = (dates) -> dates
+            .forEach((d) -> assertEquals(d.getDayOfWeek().getValue(), dayOfWeek + 1)); // mysql 0-6
 
-        final Consumer<List<LocalDate>> assertQuarter =
-            (dates) -> dates.forEach((d) -> assertEquals((d.getMonthValue() + 2) / 3, quarter)); // mysql 0-6
+        final Consumer<List<LocalDate>> assertQuarter = (dates) -> dates
+            .forEach((d) -> assertEquals((d.getMonthValue() + 2) / 3, quarter)); // mysql 0-6
 
-        final Consumer<List<LocalDate>> assertFormat =
-            (dates) -> dates.forEach((d) -> assertEquals(d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), date)); // mysql 0-6
+        final Consumer<List<LocalDate>> assertFormat = (dates) -> dates
+            .forEach((d) -> assertEquals(d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), date)); // mysql 0-6
 
         // getYear
         assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
@@ -1333,9 +1335,8 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq(quarter).list(LocalDate.class));
 
         // format date
-        assertFormat.accept(
-            query.find("role").fetch("create_time").where().fieldAsDate("create_time").format("%H:%i:%s")
-                .eq(date).list(LocalDate.class));
+        assertFormat.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
+            .format("%H:%i:%s").eq(date).list(LocalDate.class));
 
         // ----------------------------------------------------------------------------------------------------------------
 
@@ -1348,14 +1349,13 @@ public class SqlQueryTest extends JdbcTestBase {
             .getMonth().eq(month).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
 
         // getDayOfMonth
-        assertDayOfMonth.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
-            .getDayOfMonth().eq(dayOfMonth).valueList().stream().map(dt -> dt.toLocalDate())
-            .collect(Collectors.toList()));
+        assertDayOfMonth.accept(
+            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getDayOfMonth()
+                .eq(dayOfMonth).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
 
         // getWeekDay
-        assertDayOfWeek
-            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getWeekDay()
-                .eq(dayOfWeek).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+        assertDayOfWeek.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getWeekDay().eq(dayOfWeek).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
 
         // getDayOfYear
         assertDayOfYear.accept(
@@ -1363,15 +1363,12 @@ public class SqlQueryTest extends JdbcTestBase {
                 .eq(dayOfYear).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
 
         // getQuarter
-        assertQuarter
-            .accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime).getQuarter()
-                .eq(quarter).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+        assertQuarter.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .getQuarter().eq(quarter).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
 
         // format date
-        assertFormat.accept(
-            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
-                .format("%Y-%m-%d")
-                .eq(date).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
+        assertFormat.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .format("%Y-%m-%d").eq(date).valueList().stream().map(dt -> dt.toLocalDate()).collect(Collectors.toList()));
     }
 
     @Test
@@ -1381,17 +1378,16 @@ public class SqlQueryTest extends JdbcTestBase {
         final int second = 1;
         String time = "01:01:01";
 
-        final Consumer<List<LocalTime>> assertHour =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getHour(), hour));
+        final Consumer<List<LocalTime>> assertHour = (dates) -> dates.forEach((d) -> assertEquals(d.getHour(), hour));
 
-        final Consumer<List<LocalTime>> assertMinute =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getMinute(), minute));
+        final Consumer<
+            List<LocalTime>> assertMinute = (dates) -> dates.forEach((d) -> assertEquals(d.getMinute(), minute));
 
-        final Consumer<List<LocalTime>> assertSecond =
-            (dates) -> dates.forEach((d) -> assertEquals(d.getSecond(), minute));
+        final Consumer<
+            List<LocalTime>> assertSecond = (dates) -> dates.forEach((d) -> assertEquals(d.getSecond(), minute));
 
-        final Consumer<List<LocalTime>> assertFormat =
-            (dates) -> dates.forEach((d) -> assertEquals(d.format(DateTimeFormatter.ofPattern("HH:mm:ss")), time));
+        final Consumer<List<LocalTime>> assertFormat = (dates) -> dates
+            .forEach((d) -> assertEquals(d.format(DateTimeFormatter.ofPattern("HH:mm:ss")), time));
 
         // getHour
         assertHour.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getHour().eq(hour)
@@ -1406,9 +1402,8 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq(second).list(LocalTime.class));
 
         // format date
-        assertFormat.accept(
-            query.find("role").fetch("create_time").where().fieldAsDate("create_time").format("%H:%i:%s")
-                .eq(time).list(LocalTime.class));
+        assertFormat.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
+            .format("%H:%i:%s").eq(time).list(LocalTime.class));
 
         // ----------------------------------------------------------------------------------------------------------------
 
@@ -1425,10 +1420,9 @@ public class SqlQueryTest extends JdbcTestBase {
             .getSecond().eq(second).valueList().stream().map(dt -> dt.toLocalTime()).collect(Collectors.toList()));
 
         // format date
-        assertFormat.accept(
-            query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
-                .format("%Y-%m-%d %H:%i:%s")
-                .eq(time).valueList().stream().map(dt -> dt.toLocalTime()).collect(Collectors.toList()));
+        assertFormat.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
+            .format("%Y-%m-%d %H:%i:%s").eq(time).valueList().stream().map(dt -> dt.toLocalTime())
+            .collect(Collectors.toList()));
     }
 
     @Test(expectedExceptions = BuilderException.class)

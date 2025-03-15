@@ -26,6 +26,7 @@ TODO dsl实体查询加入以下（EntityQuery）
     // auto add join user_info on order,  auto add join user on user_info
     .list();
     ```
+4. [Entity|Repository] DSL sort expression加入order(SortOperator, ...)用于通过参数确定排序方式
 
 # 0.7.3 2025-02-14
 

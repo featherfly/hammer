@@ -1,18 +1,36 @@
 package cn.featherfly.hammer.expression.entity.query.sort;
 
 import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.operator.SortOperator;
 
 /**
  * 排序构建接口.
  *
  * @author zhongj
- * @param <E>  the entity type
+ * @param <E> the entity type
  * @param <E2> the generic type
  * @param <E3> the generic type
- * @param <S>  the EntitySortExpression type
+ * @param <S> the EntitySortExpression type
  */
 public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpression3<E, E2, E3, S>>
-        extends EntitySortExpressionBase3<E, E2, E3, S> {
+    extends EntitySortExpressionBase3<E, E2, E3, S> {
+
+    /**
+     * order.
+     *
+     * @param order the order
+     * @param sortEntityExpressions the sort entity expressions
+     * @return the LogicExpression
+     */
+    default S order(SortOperator order, ThreeArgusConsumer<EntitySetSortPropertyExpression<E>,
+        EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>> sortEntityExpressions) {
+        switch (order) {
+            case DESC:
+                return desc(sortEntityExpressions);
+            default:
+                return asc(sortEntityExpressions);
+        }
+    }
 
     /**
      * asc.
@@ -21,7 +39,7 @@ public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpressi
      * @return the LogicExpression
      */
     S asc(ThreeArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
-            EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
+        EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
 
     /**
      * desc.
@@ -30,7 +48,7 @@ public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpressi
      * @return the LogicExpression
      */
     S desc(ThreeArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
-            EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
+        EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
 
     //    /**
     //     * add ascending order value. 添加升序条件.
