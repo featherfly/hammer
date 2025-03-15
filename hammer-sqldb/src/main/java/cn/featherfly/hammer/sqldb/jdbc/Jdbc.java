@@ -85,12 +85,21 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
     //    }
 
     /**
+     * Execute.
+     *
+     * @param <T> the generic type
+     * @param callback the callback
+     * @return the int
+     */
+    <T> T execute(ConnectionCallback<T> callback);
+
+    /**
      * Insert.
      *
      * @param tableName the table name
      * @param columnNames the column names
      * @param args the args
-     * @return the int
+     * @return insert row count
      */
     default int insert(String tableName, String[] columnNames, Serializable... args) {
         return insert(tableName, columnNames, null, args);
@@ -104,7 +113,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param columnNames the column names
      * @param keyHolder the key holder
      * @param args the args
-     * @return the int
+     * @return insert row count
      */
     <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
         Serializable... args);
@@ -114,7 +123,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      *
      * @param tableName the table name
      * @param columnParams the column params
-     * @return the int
+     * @return insert row count
      */
     default int insert(String tableName, Map<String, Serializable> columnParams) {
         return insert(tableName, columnParams, null);
@@ -127,7 +136,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param tableName the table name
      * @param columnParams the column params
      * @param keyHolder the key holder
-     * @return the int
+     * @return insert row count
      */
     default <T extends Serializable> int insert(String tableName, Map<String, Serializable> columnParams,
         GeneratedKeyHolder<T> keyHolder) {
@@ -148,7 +157,29 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param tableName the table name
      * @param columnNames the column names
      * @param args the args
-     * @return the int
+     * @return insert row count
+     */
+    default int insertBatch(String tableName, String[] columnNames, Serializable[]... args) {
+        return insertBatch(tableName, columnNames, args.length, args);
+    }
+
+    /**
+     * Insert batch.
+     *
+     * @param tableName the table name
+     * @param columnNames the column names
+     * @param args the args
+     * @return insert row count
+     */
+    int insertBatch(String tableName, String[] columnNames, int batchSize, Serializable[]... args);
+
+    /**
+     * Insert batch.
+     *
+     * @param tableName the table name
+     * @param columnNames the column names
+     * @param args the args
+     * @return insert row count
      */
     default int insertBatch(String tableName, String[] columnNames, Serializable... args) {
         if (args.length % columnNames.length != 0) {
@@ -162,32 +193,49 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      *
      * @param tableName the table name
      * @param columnParams the column params
-     * @return the int
+     * @return insert row count
      */
     default int insertBatch(String tableName, List<Map<String, Serializable>> columnParams) {
         if (Lang.isEmpty(columnParams)) {
             return 0;
         }
-
-        int columnLen = columnParams.get(0).size();
-        int paramLen = columnLen * columnParams.size();
-        String[] columns = new String[columnLen];
-        Serializable[] params = new Serializable[paramLen];
-
-        Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
-            columns[index] = entry.getKey();
-        });
-
-        int i = 0;
-        for (Map<String, Serializable> cp : columnParams) {
-            for (Map.Entry<String, Serializable> entry : cp.entrySet()) {
-                params[i] = entry.getValue();
-                i++;
-            }
-        }
-
-        return insertBatch(tableName, columns, columnParams.size(), params);
+        return insertBatch(tableName, columnParams, columnParams.size());
     }
+
+    /**
+     * Insert batch.
+     *
+     * @param tableName the table name
+     * @param columnParams the column params
+     * @param batchSize the batch size
+     * @return insert row count
+     */
+    int insertBatch(String tableName, List<Map<String, Serializable>> columnParams, int batchSize);
+
+    //    default int insertBatch(String tableName, List<Map<String, Serializable>> columnParams, int batchSize) {
+    //        if (Lang.isEmpty(columnParams)) {
+    //            return 0;
+    //        }
+    //
+    //        int columnLen = columnParams.get(0).size();
+    //        int paramLen = columnLen * columnParams.size();
+    //        String[] columns = new String[columnLen];
+    //        Serializable[] params = new Serializable[paramLen];
+    //
+    //        Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
+    //            columns[index] = entry.getKey();
+    //        });
+    //
+    //        int i = 0;
+    //        for (Map<String, Serializable> cp : columnParams) {
+    //            for (Map.Entry<String, Serializable> entry : cp.entrySet()) {
+    //                params[i] = entry.getValue();
+    //                i++;
+    //            }
+    //        }
+    //
+    //        return insertBatch(tableName, columns, columnParams.size(), params);
+    //    }
 
     /**
      * Insert batch.
@@ -196,7 +244,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      * @param columnNames the column names
      * @param batchSize the batch size
      * @param args the args
-     * @return the int
+     * @return insert row count
      */
     int insertBatch(String tableName, String[] columnNames, int batchSize, Serializable... args);
 

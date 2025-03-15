@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -967,7 +968,13 @@ public class JdbcTest extends JdbcTestBase {
             .putChain(content, "content_batch_04"));
         params.add(new ChainMapImpl<String, Serializable>().putChain(id, null).putChain(title, "title_batch_05")
             .putChain(content, "content_batch_05"));
+
         result = jdbc.insertBatch(tableName, params);
+        assertEquals(result, params.size());
+
+        result = jdbc.update("delete from cms_article");
+
+        result = jdbc.insertBatch(tableName, params, 2);
         assertEquals(result, params.size());
 
         result = jdbc.insertBatch(tableName, new ArrayList<>());
@@ -994,6 +1001,36 @@ public class JdbcTest extends JdbcTestBase {
         f.accept(params, ++size);
 
         result = jdbc.insertBatch(tableName, columnNames, 2, params.toArray(new Serializable[params.size()]));
+        assertEquals(result, size);
+    }
+
+    @Test
+    public void testInsertBatch3() {
+        int result = 0;
+
+        result = jdbc.update("delete from cms_article");
+
+        final Serializable[][] args = new Serializable[3][3];
+        Consumer<Integer> f = (index) -> {
+            Serializable[] article = new Serializable[3];
+            article[0] = null;
+            article[1] = "title_batch_" + index;
+            article[2] = "content_batch_" + index;
+
+            args[index] = article;
+        };
+        int size = 0;
+        f.accept(size++);
+        f.accept(size++);
+        f.accept(size++);
+
+        result = jdbc.insertBatch(tableName, columnNames, args);
+        assertEquals(result, size);
+
+        result = jdbc.update("delete from cms_article");
+        assertEquals(result, size);
+
+        result = jdbc.insertBatch(tableName, columnNames, 2, args);
         assertEquals(result, size);
     }
 

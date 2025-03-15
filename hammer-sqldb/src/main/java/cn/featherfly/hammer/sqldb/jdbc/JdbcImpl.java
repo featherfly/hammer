@@ -67,6 +67,15 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
         }
     }
 
+    @Override
+    public <T> T execute(ConnectionCallback<T> callback) {
+        try {
+            return callback.doInConnection(getConnection(), manager);
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */

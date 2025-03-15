@@ -31,6 +31,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.ToIntBiFunction;
+import java.util.function.ToIntFunction;
 
 import org.apache.commons.collections4.iterators.ArrayIterator;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ import cn.featherfly.common.db.metadata.ResultSetType;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.reflect.Type;
@@ -137,6 +139,28 @@ public abstract class AbstractJdbc implements Jdbc {
         return dialect;
     }
 
+    @Override
+    public <T> T execute(ConnectionCallback<T> callback) {
+        Connection conn = null;
+        try {
+            conn = new ConnectionProxy(getConnection()) {
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void close() throws SQLException {
+                    // 防止外部回调手动调用connection.close()
+                    releaseConnection(proxy);
+                }
+            };
+            return callback.doInConnection(conn, manager);
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        } finally {
+            releaseConnection(conn);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -153,6 +177,59 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    @Override
+    public int insertBatch(String tableName, List<Map<String, Serializable>> columnParams, int batchSize) {
+        if (Lang.isEmpty(columnParams)) {
+            return 0;
+        }
+
+        int columnLen = columnParams.get(0).size();
+        final String[] columnNames = new String[columnLen];
+        Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
+            columnNames[index] = entry.getKey();
+        });
+
+        if (metadata.getFeatures().supportsBatchUpdates()) {
+            //  use driver
+            Serializable[][] params = new Serializable[columnParams.size()][columnLen];
+            Lang.each(columnParams, (cp, i) -> {
+                Lang.each(columnNames, (name, j) -> {
+                    params[i][j] = cp.get(name);
+                });
+            });
+            return insertBatchWithDriver(tableName, columnNames, batchSize, params);
+        } else {
+            int paramLen = columnLen * columnParams.size();
+            Serializable[] params = new Serializable[paramLen];
+
+            int i = 0;
+            for (Map<String, Serializable> cp : columnParams) {
+                for (Map.Entry<String, Serializable> entry : cp.entrySet()) {
+                    params[i] = entry.getValue();
+                    i++;
+                }
+            }
+            return insertBatch(tableName, columnNames, columnParams.size(), params);
+        }
+    }
+
+    @Override
+    public int insertBatch(String tableName, String[] columnNames, int batchSize, Serializable[]... args) {
+        if (Lang.isEmpty(args)) {
+            return 0;
+        }
+        if (metadata.getFeatures().supportsBatchUpdates()) {
+            // use driver
+            return insertBatchWithDriver(tableName, columnNames, batchSize, args);
+        }
+
+        List<Serializable> argList = new ArrayList<>();
+        for (Serializable[] arr : args) {
+            CollectionUtils.addAll(argList, arr);
+        }
+        return insertBatch(tableName, columnNames, batchSize, CollectionUtils.toArray(argList, Serializable.class));
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -161,6 +238,56 @@ public abstract class AbstractJdbc implements Jdbc {
         if (args.length % columnNames.length != 0) {
             throw new JdbcException("batch size is not explicit (args.length % columnNames.length != 0)");
         }
+        if (metadata.getFeatures().supportsBatchUpdates()) {
+            // use deriver
+            int actualBatchSize = args.length / columnNames.length;
+            final Serializable[][] newArgs = new Serializable[actualBatchSize][columnNames.length];
+            Lang.each(args, (arg, i) -> {
+                newArgs[(i + columnNames.length) / columnNames.length - 1][i % columnNames.length] = i;
+            });
+            return insertBatchWithDriver(tableName, columnNames, batchSize, newArgs);
+        } else if (getDialect().supportInsertBatch()) {
+            // build sql
+            return insertBatchWithSqlBuild(tableName, columnNames, batchSize, args);
+        } else {
+            throw new JdbcException("can not insert batch with current database");
+        }
+    }
+
+    private int insertBatchWithDriver(String tableName, String[] columnNames, int batchSize, Serializable[][] args) {
+        String pkColumn = null;
+        boolean autoincrement = false;
+        if (metadata.getTable(tableName).getPrimaryColumns().size() == 1) {
+            pkColumn = metadata.getTable(tableName).getPrimaryColumns().get(0).getName();
+            autoincrement = metadata.getTable(tableName).getPrimaryColumns().get(0).isAutoincrement();
+        }
+
+        ToIntFunction<int[]> getResult = results -> {
+            int result = 0;
+            for (int res : results) {
+                if (res > 0) {
+                    result += res;
+                } else if (res == -2) {
+                    result++;
+                }
+            }
+            return result;
+        };
+
+        if (batchSize >= args.length) { // 表示批量执行数的最大限制小于等于参数计算出的实际需要的批量执行数
+            int[] results = updateBatch(getDialect().dml().insert(tableName, pkColumn, columnNames, autoincrement),
+                null, args);
+            return getResult.applyAsInt(results);
+        } else {
+            return getResult
+                .applyAsInt(updateBatch(getDialect().dml().insert(tableName, pkColumn, columnNames, autoincrement),
+                    null, Arrays.copyOfRange(args, 0, batchSize)))
+                + insertBatch(tableName, columnNames, args.length - batchSize,
+                    Arrays.copyOfRange(args, batchSize, args.length));
+        }
+    }
+
+    private int insertBatchWithSqlBuild(String tableName, String[] columnNames, int batchSize, Serializable... args) {
         int actualBatchSize = args.length / columnNames.length;
         String pkColumn = null;
         boolean autoincrement = false;
@@ -454,8 +581,10 @@ public abstract class AbstractJdbc implements Jdbc {
             }
         }
         Connection connection = getConnection();
-        try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
-            : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement prep = generatedKeysHolder == null
+            ? connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+            : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS, ResultSet.TYPE_FORWARD_ONLY,
+                ResultSet.CONCUR_READ_ONLY)) {
             List<JdbcExecution> jdbcExecutions = new ArrayList<>();
             for (Serializable[] args : argsIter) {
                 JdbcExecution execution = preHandle(sql, args);

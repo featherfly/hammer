@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
+import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Randoms;
 
@@ -48,6 +49,43 @@ public class JdbcNativeTest extends JdbcTestBase {
             return DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
         } catch (SQLException e) {
             throw new JdbcException(e);
+        }
+    }
+
+    @Test
+    void multipleSql() throws SQLException {
+        String sql = "set @userName = convert(? USING utf8); " + "select * from user where username = @userName;"
+            + "set @userName = convert(? USING utf8);" + "select * from user where username = @userName;";
+        Connection conn = getConnection();
+        PreparedStatement stat = conn.prepareStatement(sql);
+        stat.setString(1, "yufei");
+        stat.setString(2, "featherfly");
+
+        boolean isQuery = stat.execute();
+        Console.log("stat.execute(sql) = {}", isQuery);
+        if (isQuery) {
+            try (ResultSet resultSet = stat.getResultSet()) {
+                System.out.println(JdbcUtils.getResultSetMaps(resultSet));
+            }
+        } else {
+            Console.log("updateCount: {}", stat.getUpdateCount());
+        }
+        int num = 1;
+        Console.log("sql num: {}", num);
+
+        while (stat.getMoreResults() || stat.getUpdateCount() != -1) {
+            num++;
+            Console.log("sql num: {}", num);
+
+            try (ResultSet resultSet = stat.getResultSet()) {
+                if (resultSet != null) {
+                    System.out.println("isQuery");
+                    System.out.println(JdbcUtils.getResultSetMaps(resultSet));
+                } else {
+                    int updateCount = stat.getUpdateCount();
+                    Console.log("updateCount: {}", updateCount);
+                }
+            }
         }
     }
 
