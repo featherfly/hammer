@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuples;
-
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery2;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -17,6 +16,7 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQueryCondition
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression2;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression2;
 import cn.featherfly.hammer.sqldb.dsl.condition.AbstractSqlConditionExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
@@ -30,14 +30,17 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <C> the generic type
  * @param <L> the generic type
  * @param <S> the generic type
+ * @param <S2> the generic type
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQuery2<R extends RepositoryQueryRelateExpression<R>,
-    C extends RepositoryQueryConditionsGroupExpression2<C, L, S, Q>,
-    L extends RepositoryQueryConditionsGroupLogicExpression2<C, L, S, Q>, S extends RepositoryQuerySortExpression2<Q>,
+    C extends RepositoryQueryConditionsGroupExpression2<C, L, S, S2, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression2<C, L, S, S2, Q>,
+    S extends RepositoryQuerySortExpression2<S2, Q>, S2 extends RepositoryQuerySortedExpression2<S2, Q>,
     Q extends QueryLimitExecutor> extends AbstractRepositorySqlQueryJoin<R, C, Q>
-    implements RepositoryQuery2<C, L, S, Q> {
+    implements RepositoryQuery2<C, L, S, S2, Q> {
 
+    /** The Constant RELATIONS_TUPLE. */
     protected static final Tuple2<Integer, Integer> RELATIONS_TUPLE = Tuples.of(0, 1);
 
     /**
@@ -45,20 +48,28 @@ public abstract class AbstractRepositorySqlQuery2<R extends RepositoryQueryRelat
      *
      * @param abstractRepositorySqlQuery the abstract repository sql query
      */
-    protected AbstractRepositorySqlQuery2(AbstractRepositorySqlQuery2<?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
+    protected AbstractRepositorySqlQuery2(AbstractRepositorySqlQuery2<?, ?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
         super(abstractRepositorySqlQuery);
     }
 
     /**
      * Instantiates a new abstract repository sql query 2.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQuery2(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(1, queryRelation, sqlPageFactory);
     }
 
+    /**
+     * Where.
+     *
+     * @param <E> the element type
+     * @param conditions the conditions
+     * @param repositoriesCondtionFuntion the repositories condtion funtion
+     * @return the e
+     */
     protected <E extends AbstractSqlConditionExpression<?, ?, ?>> E where(E conditions,
         BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> repositoriesCondtionFuntion) {
@@ -74,7 +85,7 @@ public abstract class AbstractRepositorySqlQuery2<R extends RepositoryQueryRelat
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryExpression2<C, L, S, Q> configure(Consumer<DslQueryConfig> configure) {
+    public RepositoryQueryExpression2<C, L, S, S2, Q> configure(Consumer<DslQueryConfig> configure) {
         configure.accept(queryRelation.getConfig());
         return this;
     }

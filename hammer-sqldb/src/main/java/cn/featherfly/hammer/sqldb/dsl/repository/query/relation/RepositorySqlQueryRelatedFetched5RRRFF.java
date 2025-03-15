@@ -25,7 +25,8 @@ public class RepositorySqlQueryRelatedFetched5RRRFF extends
      *
      * @param repositorySqlQueryFetch the repository sql query fetch
      */
-    public RepositorySqlQueryRelatedFetched5RRRFF(AbstractRepositorySqlQuery6<?, ?, ?, ?, ?> repositorySqlQueryFetch) {
+    public RepositorySqlQueryRelatedFetched5RRRFF(
+        AbstractRepositorySqlQuery6<?, ?, ?, ?, ?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
     }
 

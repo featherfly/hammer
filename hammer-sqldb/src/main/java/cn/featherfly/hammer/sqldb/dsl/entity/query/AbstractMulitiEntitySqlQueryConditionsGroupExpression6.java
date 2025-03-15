@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import cn.featherfly.common.tuple.Tuple7;
-import cn.featherfly.common.tuple.Tuple8;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
@@ -22,6 +19,8 @@ import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
@@ -31,6 +30,8 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression6;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression6;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySetSortPropertyExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.AbstractMulitiEntitySqlConditionsGroupExpression6;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryConditionGroupQuery;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -53,17 +54,21 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1, E2, E3, E4, E5, E6, RS,
     C extends EntityQueryConditionGroupExpression6<E1, E2, E3, E4, E5, E6, C, L,
-        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>,
+        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>,
+        EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>,
     L extends EntityQueryConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L,
-        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>>
+        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>,
+        EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>>
     extends
     AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, E3, E4, E5, E6, C, L, QueryConditionConfig,
         EntitySqlQueryRelation, SqlSelectBasicBuilder>
     implements
     EntityQueryConditionGroupExpression6<E1, E2, E3, E4, E5, E6, C, L,
-        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>,
+        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>,
+        EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>,
     EntityQueryConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L,
-        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>,
+        EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>,
+        EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS>, RS>,
     EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS>, EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> {
 
     private SqlSortBuilder sortBuilder;
@@ -159,7 +164,25 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     @Override
     public EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, RS> sort() {
+        return this;
+    }
 
+    @Override
+    public <S1 extends EntitySortedExpression<E1, S1>, S2 extends EntitySortedExpression<E2, S2>,
+        S3 extends EntitySortedExpression<E3, S3>, S4 extends EntitySortedExpression<E4, S4>,
+        S5 extends EntitySortedExpression<E5, S5>,
+        S6 extends EntitySortedExpression<E6, S6>> EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> sort(
+            SixArgusConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+                EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>,
+                EntitySortExpression<E6, S6>> entitySortExpresions) {
+        if (entitySortExpresions != null) {
+            entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias2, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias3, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias4, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias5, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias6, getRootSortBuilder()));
+        }
         return this;
     }
 

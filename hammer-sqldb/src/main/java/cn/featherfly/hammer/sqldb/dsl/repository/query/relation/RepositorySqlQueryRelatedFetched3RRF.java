@@ -28,7 +28,7 @@ public class RepositorySqlQueryRelatedFetched3RRF extends
      *
      * @param repositorySqlQueryFetch the repository sql query fetch
      */
-    public RepositorySqlQueryRelatedFetched3RRF(AbstractRepositorySqlQuery4<?, ?, ?, ?, ?> repositorySqlQueryFetch) {
+    public RepositorySqlQueryRelatedFetched3RRF(AbstractRepositorySqlQuery4<?, ?, ?, ?, ?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
     }
 

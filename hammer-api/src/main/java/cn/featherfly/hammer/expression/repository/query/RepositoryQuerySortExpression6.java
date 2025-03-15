@@ -14,9 +14,10 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpre
  * repository query sort expression6.
  *
  * @author zhongj
+ * @param <S> the generic type
  * @param <Q> the generic type
  */
-public interface RepositoryQuerySortExpression6<Q extends QueryLimitExecutor>
-        extends RepositorySortExpression6<RepositoryQuerySortedExpression6<Q>> {
+public interface RepositoryQuerySortExpression6<S extends RepositoryQuerySortedExpression6<S, Q>,
+    Q extends QueryLimitExecutor> extends RepositorySortExpression6<S> {
 
 }

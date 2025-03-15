@@ -3,18 +3,21 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple5;
-
+import cn.featherfly.common.function.FiveArgusConsumer;
 import cn.featherfly.common.function.FiveArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery5;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup5FFFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic5FFFFF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression5FFFFF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor5;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression5;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -26,9 +29,12 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractRepositorySqlQuery5FFFFF<R extends RepositoryQueryRelateExpression<R>> extends
     AbstractRepositorySqlQuery5<R, RepositoryQueryConditionsGroup5FFFFF, RepositoryQueryConditionsGroupLogic5FFFFF,
-        RepositoryQuerySortExpression5<QueryLimitExecutor5>, QueryLimitExecutor5>
-    implements RepositoryQuery5<RepositoryQueryConditionsGroup5FFFFF, RepositoryQueryConditionsGroupLogic5FFFFF,
-        RepositoryQuerySortExpression5<QueryLimitExecutor5>, QueryLimitExecutor5>,
+        RepositoryQuerySortExpression5<RepositoryQuerySortedExpression5FFFFF, QueryLimitExecutor5>,
+        RepositoryQuerySortedExpression5FFFFF, QueryLimitExecutor5>
+    implements
+    RepositoryQuery5<RepositoryQueryConditionsGroup5FFFFF, RepositoryQueryConditionsGroupLogic5FFFFF,
+        RepositoryQuerySortExpression5<RepositoryQuerySortedExpression5FFFFF, QueryLimitExecutor5>,
+        RepositoryQuerySortedExpression5FFFFF, QueryLimitExecutor5>,
     QueryLimitExecutor5 {
 
     /**
@@ -36,14 +42,14 @@ public abstract class AbstractRepositorySqlQuery5FFFFF<R extends RepositoryQuery
      *
      * @param abstractRepositorySqlQuery the abstract repository sql query
      */
-    public AbstractRepositorySqlQuery5FFFFF(AbstractRepositorySqlQuery5<?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
+    public AbstractRepositorySqlQuery5FFFFF(AbstractRepositorySqlQuery5<?, ?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
         super(abstractRepositorySqlQuery);
     }
 
     /**
      * Instantiates a new abstract repository sql query 5 FFFFF.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQuery5FFFFF(RepositorySqlQueryRelation queryRelation,
@@ -74,8 +80,20 @@ public abstract class AbstractRepositorySqlQuery5FFFFF<R extends RepositoryQuery
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression5<QueryLimitExecutor5> sort() {
+    public RepositoryQuerySortExpression5<RepositoryQuerySortedExpression5FFFFF, QueryLimitExecutor5> sort() {
         return new RepositorySqlQueryExpression5FFFFF(queryRelation, sqlPageFactory).sort();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
+        S3 extends RepositorySortedExpression<S3>, S4 extends RepositorySortedExpression<S4>,
+        S5 extends RepositorySortedExpression<S5>> RepositoryQuerySortedExpression5FFFFF sort(
+            FiveArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
+                RepositorySortExpression<S4>, RepositorySortExpression<S5>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression5FFFFF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }
 
     /**

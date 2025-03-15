@@ -44,7 +44,7 @@ public class RepositorySqlQueryRelate4FFFR extends AbstractRepositorySqlQuery5FF
      *
      * @param abstractRepositorySqlQuery the abstract repository sql query
      */
-    protected RepositorySqlQueryRelate4FFFR(AbstractRepositorySqlQuery5<?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
+    protected RepositorySqlQueryRelate4FFFR(AbstractRepositorySqlQuery5<?, ?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
         super(abstractRepositorySqlQuery);
     }
 

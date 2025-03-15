@@ -3,18 +3,21 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple2;
-
+import cn.featherfly.common.function.FourArgusConsumer;
 import cn.featherfly.common.function.FourArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery4;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup4FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic4FF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression4FF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression4;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -26,9 +29,12 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractRepositorySqlQuery4FF<R extends RepositoryQueryRelateExpression<R>> extends
     AbstractRepositorySqlQuery4<R, RepositoryQueryConditionsGroup4FF, RepositoryQueryConditionsGroupLogic4FF,
-        RepositoryQuerySortExpression4<QueryLimitExecutor2>, QueryLimitExecutor2>
-    implements RepositoryQuery4<RepositoryQueryConditionsGroup4FF, RepositoryQueryConditionsGroupLogic4FF,
-        RepositoryQuerySortExpression4<QueryLimitExecutor2>, QueryLimitExecutor2>,
+        RepositoryQuerySortExpression4<RepositoryQuerySortedExpression4FF, QueryLimitExecutor2>,
+        RepositoryQuerySortedExpression4FF, QueryLimitExecutor2>
+    implements
+    RepositoryQuery4<RepositoryQueryConditionsGroup4FF, RepositoryQueryConditionsGroupLogic4FF,
+        RepositoryQuerySortExpression4<RepositoryQuerySortedExpression4FF, QueryLimitExecutor2>,
+        RepositoryQuerySortedExpression4FF, QueryLimitExecutor2>,
     QueryLimitExecutor2 {
 
     /**
@@ -36,14 +42,14 @@ public abstract class AbstractRepositorySqlQuery4FF<R extends RepositoryQueryRel
      *
      * @param abstractRepositorySqlQuery the abstract repository sql query
      */
-    public AbstractRepositorySqlQuery4FF(AbstractRepositorySqlQuery4<?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
+    public AbstractRepositorySqlQuery4FF(AbstractRepositorySqlQuery4<?, ?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
         super(abstractRepositorySqlQuery);
     }
 
     /**
      * Instantiates a new abstract repository sql query 4 FF.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQuery4FF(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -72,8 +78,20 @@ public abstract class AbstractRepositorySqlQuery4FF<R extends RepositoryQueryRel
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression4<QueryLimitExecutor2> sort() {
+    public RepositoryQuerySortExpression4<RepositoryQuerySortedExpression4FF, QueryLimitExecutor2> sort() {
         return new RepositorySqlQueryExpression4FF(queryRelation, sqlPageFactory).sort();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
+        S3 extends RepositorySortedExpression<S3>,
+        S4 extends RepositorySortedExpression<S4>> RepositoryQuerySortedExpression4FF sort(
+            FourArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
+                RepositorySortExpression<S4>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression4FF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }
 
     /**

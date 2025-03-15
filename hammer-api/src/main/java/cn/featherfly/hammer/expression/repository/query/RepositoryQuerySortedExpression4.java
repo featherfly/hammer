@@ -9,9 +9,10 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExp
  * repository query sorted expression4.
  *
  * @author zhongj
+ * @param <S> the generic type
  * @param <Q> the generic type
  */
-public interface RepositoryQuerySortedExpression4<Q extends QueryLimitExecutor> extends
-        RepositorySortedExpression4<RepositoryQuerySortedExpression4<Q>>, QueryConditionLimit<Q>, QueryLimitExecutor {
+public interface RepositoryQuerySortedExpression4<S extends RepositoryQuerySortedExpression4<S, Q>,
+    Q extends QueryLimitExecutor> extends RepositorySortedExpression4<S>, QueryConditionLimit<Q>, QueryLimitExecutor {
 
 }

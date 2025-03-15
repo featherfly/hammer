@@ -325,6 +325,131 @@ public class EntitySqlQuerySortTest2 extends JdbcTestBase {
     }
 
     @Test
+    void testSort5_3() {
+        List<User2> users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5) -> e5.asc(UserInfo2::getId))//
+            .limit(2) //
+            .list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5) -> e5.order(SortOperator.ASC, UserInfo2::getId))//
+            .limit(2) //
+            .list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5) -> e5.desc(UserInfo2::getId))//
+            .limit(2).list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5) -> e5.order(SortOperator.DESC, UserInfo2::getId))//
+            .limit(2).list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        users = query.find(User2.class) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20) //
+            .and() //
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5) -> e5.asc(UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20) //
+            .and() //
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5) -> e5.order(SortOperator.ASC, UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20)//
+            .and()//
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5) -> e5.desc(UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20)//
+            .and()//
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5) -> e5.order(SortOperator.DESC, UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+    }
+
+    @Test
     void testSort6() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
@@ -614,6 +739,147 @@ public class EntitySqlQuerySortTest2 extends JdbcTestBase {
             .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
             .sort() //
             .order(SortOperator.DESC, (e1, e2, e3, e4, e5, e6) -> e6.property(UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+    }
+
+    @Test
+    void testSort6_3() {
+        List<User2> users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.asc(UserInfo2::getId))//
+            .limit(2) //
+            .list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.order(SortOperator.ASC, UserInfo2::getId))//
+            .limit(2) //
+            .list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.desc(UserInfo2::getId))//
+            .limit(2).list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.order(SortOperator.DESC, UserInfo2::getId))//
+            .limit(2).list();
+        assertTrue(users.size() == 2);
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        users = query.find(User2.class) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20) //
+            .and() //
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt6(UserInfo2::getId, 0).or().lt6(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.asc(UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class) //
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20) //
+            .and() //
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and() //
+            .group().gt6(UserInfo2::getId, 0).or().lt6(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.order(SortOperator.ASC, UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() < users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20)//
+            .and()//
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt6(UserInfo2::getId, 0).or().lt6(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.desc(UserInfo2::getId))//
+            .list();
+        assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        users = query.find(User2.class)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .join(UserInfo2.class).on(UserInfo2::getUserId)//
+            .where()//
+            .gt(User2::getId, 0).and().lt(User2::getId, 20)//
+            .and()//
+            .group().gt2(UserInfo2::getId, 0).or().lt2(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt3(UserInfo2::getId, 0).or().lt3(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt4(UserInfo2::getId, 0).or().lt4(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt5(UserInfo2::getId, 0).or().lt5(UserInfo2::getId, 20).endGroup()//
+            .and()//
+            .group().gt6(UserInfo2::getId, 0).or().lt6(UserInfo2::getId, 20).endGroup()//
+            .and().ge(User2::getAge, 0).and().le(User2::getAge, 50)//
+            .sort((e1, e2, e3, e4, e5, e6) -> e6.order(SortOperator.DESC, UserInfo2::getId))//
             .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
     }

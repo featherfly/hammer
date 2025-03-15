@@ -9,21 +9,24 @@
 package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-
-import cn.featherfly.common.tuple.Tuple2;
 
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2FF;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2FR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression2FF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractRepositorySqlQuery2;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpression2FF;
 
@@ -34,8 +37,9 @@ import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpress
  */
 public class RepositorySqlQueryRelatedFetched1F extends
     AbstractRepositorySqlQuery2<RepositoryQueryRelatedFetched1F, RepositoryQueryConditionsGroup2FF,
-        RepositoryQueryConditionsGroupLogic2FF, RepositoryQuerySortExpression2<QueryLimitExecutor2>,
-        QueryLimitExecutor2>
+        RepositoryQueryConditionsGroupLogic2FF,
+        RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2FF, QueryLimitExecutor2>,
+        RepositoryQuerySortedExpression2FF, QueryLimitExecutor2>
     implements RepositoryQueryRelatedFetched1F {
 
     /**
@@ -43,7 +47,7 @@ public class RepositorySqlQueryRelatedFetched1F extends
      *
      * @param repositorySqlQueryFetch the repository sql query fetch
      */
-    public RepositorySqlQueryRelatedFetched1F(AbstractRepositorySqlQuery2<?, ?, ?, ?, ?> repositorySqlQueryFetch) {
+    public RepositorySqlQueryRelatedFetched1F(AbstractRepositorySqlQuery2<?, ?, ?, ?, ?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
     }
 
@@ -59,8 +63,7 @@ public class RepositorySqlQueryRelatedFetched1F extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryOnExpression2<RepositoryQueryRelate2FR> join(
-        Repository repository) {
+    public RepositoryOnExpression2<RepositoryQueryRelate2FR> join(Repository repository) {
         return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2FR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate2FR) relate).setIdName());
     }
@@ -86,8 +89,18 @@ public class RepositorySqlQueryRelatedFetched1F extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression2<QueryLimitExecutor2> sort() {
-        return new RepositorySqlQueryExpression2FF(queryRelation, sqlPageFactory).sort();
+    public RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2FF, QueryLimitExecutor2> sort() {
+        return new RepositorySqlQueryExpression2FF(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <S1 extends RepositorySortedExpression<S1>,
+        S2 extends RepositorySortedExpression<S2>> RepositoryQuerySortedExpression2FF sort(
+            BiConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression2FF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }
 
     /**

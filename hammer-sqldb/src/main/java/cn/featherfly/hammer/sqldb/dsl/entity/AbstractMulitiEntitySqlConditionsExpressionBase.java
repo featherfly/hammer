@@ -4519,11 +4519,10 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     // property
     // ****************************************************************************************************************
 
-    private PropertyMapping<?> getSubPropertyMapping(final int currentIndex,
-        Serializable property, Serializable subProperty) {
+    private PropertyMapping<?> getSubPropertyMapping(final int currentIndex, Serializable property,
+        Serializable subProperty) {
         ClassMapping<?, JdbcPropertyMapping> classMapping = getClassMapping(currentIndex);
-        JdbcPropertyMapping pm = classMapping
-            .getPropertyMapping(LambdaUtils.getLambdaPropertyName(property));
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(LambdaUtils.getLambdaPropertyName(property));
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(subProperty);
         String pn = propertyInfo.getPropertyName();
 
@@ -4569,8 +4568,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     @Override
     public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
-        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(
-            final int currentIndex, List<Serializable> properties,
+        L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(final int currentIndex,
+            List<Serializable> properties,
             Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
         PropertyMapping<?> pm = null;
         for (int i = 0; i < currentIndex; i++) {
@@ -4586,8 +4585,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
             }
             throw new HammerException("properties is not found {}", Lang.array(names.toString()));
         }
-        final int i = properties.size() - 1;
-        final Serializable name = properties.get(i);
+        //        final int i = properties.size() - 1;
+        //        final Serializable name = properties.get(i);
         //        if (pm.getMode() == Mode.EMBEDDED) {
         //            this.properties.add(name);
         //            entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
@@ -4607,8 +4606,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         index = currentIndex;
         this.properties.addAll(properties);
         entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2,
-            L2>) new EntityTypePropertyExpressionImpl<>(originalIndex, properties, this, factory,
-                entityRelation));
+            L2>) new EntityTypePropertyExpressionImpl<>(originalIndex, properties, this, factory, entityRelation));
         this.properties.clear();
         index = originalIndex;
 
@@ -4867,8 +4865,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L eq(JdbcClassMapping<?> classMapping, Serializable property, int value,
-        IntPredicate ignoreStrategy) {
+    protected L eq(JdbcClassMapping<?> classMapping, Serializable property, int value, IntPredicate ignoreStrategy) {
         return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, getAlias(),
             MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
@@ -4899,8 +4896,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L eq(JdbcClassMapping<?> classMapping, Serializable property, long value,
-        LongPredicate ignoreStrategy) {
+    protected L eq(JdbcClassMapping<?> classMapping, Serializable property, long value, LongPredicate ignoreStrategy) {
         return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, getAlias(),
             MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
@@ -4962,8 +4958,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L eq(JdbcClassMapping<?> classMapping, Serializable property, char value,
-        CharPredicate ignoreStrategy) {
+    protected L eq(JdbcClassMapping<?> classMapping, Serializable property, char value, CharPredicate ignoreStrategy) {
         return eqOrNe(ComparisonOperator.EQ, getPropertyMapping(classMapping, property, value), null, value, getAlias(),
             MatchStrategy.AUTO, v -> ignoreStrategy.test((Character) v));
     }
@@ -4994,8 +4989,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <R> L eq(JdbcClassMapping<?> classMapping, Serializable property, R value,
-        Predicate<?> ignoreStrategy) {
+    protected <R> L eq(JdbcClassMapping<?> classMapping, Serializable property, R value, Predicate<?> ignoreStrategy) {
         return eq(getPropertyMapping(classMapping, property, value), value, getAlias(), MatchStrategy.AUTO,
             ignoreStrategy);
     }
@@ -5046,8 +5040,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L eq(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
         MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eq(getPropertyMapping(classMapping, property, value), value, queryAlias,
-            matchStrategy, ignoreStrategy);
+        return eq(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5061,10 +5054,9 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <R> L eq(JdbcPropertyMapping propertyMapping, R value, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.EQ, propertyMapping, null, value, queryAlias,
-            matchStrategy, ignoreStrategy);
+    protected <R> L eq(JdbcPropertyMapping propertyMapping, R value, String queryAlias, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return eqOrNe(ComparisonOperator.EQ, propertyMapping, null, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5106,8 +5098,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ne(JdbcClassMapping<?> classMapping, Serializable property, int value,
-        IntPredicate ignoreStrategy) {
+    protected L ne(JdbcClassMapping<?> classMapping, Serializable property, int value, IntPredicate ignoreStrategy) {
         return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, getAlias(),
             MatchStrategy.AUTO, v -> ignoreStrategy.test((Integer) v));
     }
@@ -5137,8 +5128,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ne(JdbcClassMapping<?> classMapping, Serializable property, long value,
-        LongPredicate ignoreStrategy) {
+    protected L ne(JdbcClassMapping<?> classMapping, Serializable property, long value, LongPredicate ignoreStrategy) {
         return eqOrNe(ComparisonOperator.NE, getPropertyMapping(classMapping, property, value), null, value, getAlias(),
             MatchStrategy.AUTO, v -> ignoreStrategy.test((Long) v));
     }
@@ -5235,8 +5225,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      */
     protected <R> L ne(JdbcClassMapping<?> classMapping, Serializable property, R value, MatchStrategy matchStrategy,
         Predicate<?> ignoreStrategy) {
-        return ne(getPropertyMapping(classMapping, property, value), value, getAlias(), matchStrategy,
-            ignoreStrategy);
+        return ne(getPropertyMapping(classMapping, property, value), value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5267,10 +5256,9 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <R> L ne(JdbcPropertyMapping propertyMapping, R value, String queryAlias,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return eqOrNe(ComparisonOperator.NE, propertyMapping, null, value, queryAlias,
-            matchStrategy, ignoreStrategy);
+    protected <R> L ne(JdbcPropertyMapping propertyMapping, R value, String queryAlias, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return eqOrNe(ComparisonOperator.NE, propertyMapping, null, value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5307,8 +5295,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L sw(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected L sw(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         return sw(getPropertyMapping(classMapping, property, value), value, matchStrategy, ignoreStrategy);
     }
 
@@ -5337,8 +5325,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L sw(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L sw(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return sw(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5370,8 +5357,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L nsw(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected L nsw(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         return nsw(getPropertyMapping(classMapping, property, value), value, matchStrategy, ignoreStrategy);
     }
 
@@ -5400,8 +5387,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L nsw(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L nsw(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return nsw(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5433,8 +5419,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L co(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected L co(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         return co(getPropertyMapping(classMapping, property, value), value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5463,8 +5449,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L co(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L co(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return co(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5496,8 +5481,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L nco(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected L nco(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         return nco(getPropertyMapping(classMapping, property, value), value, matchStrategy, ignoreStrategy);
     }
 
@@ -5526,8 +5511,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L nco(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L nco(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return nco(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5559,8 +5543,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ew(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected L ew(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         return ew(getPropertyMapping(classMapping, property, value), value, matchStrategy, ignoreStrategy);
     }
 
@@ -5589,8 +5573,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ew(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L ew(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return ew(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5622,10 +5605,9 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L newv(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
-        return newv(getPropertyMapping(classMapping, property, value), value, matchStrategy,
-            ignoreStrategy);
+    protected L newv(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
+        return newv(getPropertyMapping(classMapping, property, value), value, matchStrategy, ignoreStrategy);
     }
 
     /**
@@ -5654,8 +5636,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L newv(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L newv(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return newv(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5687,8 +5668,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L lk(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected L lk(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         return lk(getPropertyMapping(classMapping, property, value), value, matchStrategy, ignoreStrategy);
     }
 
@@ -5717,8 +5698,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L lk(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L lk(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return lk(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5750,8 +5730,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L nl(JdbcClassMapping<?> classMapping, Serializable property, String value,
-        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
+    protected L nl(JdbcClassMapping<?> classMapping, Serializable property, String value, MatchStrategy matchStrategy,
+        Predicate<?> ignoreStrategy) {
         return nl(getPropertyMapping(classMapping, property, value), value, matchStrategy, ignoreStrategy);
     }
 
@@ -5780,8 +5760,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L nl(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected L nl(JdbcPropertyMapping pm, String value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return nl(pm, value, getAlias(), matchStrategy, ignoreStrategy);
     }
 
@@ -5812,8 +5791,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L in(JdbcClassMapping<?> classMapping, Serializable property, int value,
-        IntPredicate ignoreStrategy) {
+    protected L in(JdbcClassMapping<?> classMapping, Serializable property, int value, IntPredicate ignoreStrategy) {
         return in(getPropertyMapping(classMapping, property, value), value, getAlias(),
             v -> ignoreStrategy.test((Integer) v));
     }
@@ -5843,8 +5821,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L in(JdbcClassMapping<?> classMapping, Serializable property, long value,
-        LongPredicate ignoreStrategy) {
+    protected L in(JdbcClassMapping<?> classMapping, Serializable property, long value, LongPredicate ignoreStrategy) {
         return in(getPropertyMapping(classMapping, property, value), value, getAlias(),
             v -> ignoreStrategy.test((Long) v));
     }
@@ -5925,8 +5902,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected <R> L in(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
-        MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return in(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -6016,8 +5992,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ni(JdbcClassMapping<?> classMapping, Serializable property, int value,
-        IntPredicate ignoreStrategy) {
+    protected L ni(JdbcClassMapping<?> classMapping, Serializable property, int value, IntPredicate ignoreStrategy) {
         return ni(getPropertyMapping(classMapping, property, value), value, getAlias(),
             v -> ignoreStrategy.test((Integer) v));
     }
@@ -6047,8 +6022,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ni(JdbcClassMapping<?> classMapping, Serializable property, long value,
-        LongPredicate ignoreStrategy) {
+    protected L ni(JdbcClassMapping<?> classMapping, Serializable property, long value, LongPredicate ignoreStrategy) {
         return ni(getPropertyMapping(classMapping, property, value), value, getAlias(),
             v -> ignoreStrategy.test((Long) v));
     }
@@ -6110,8 +6084,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <R> L ni(JdbcClassMapping<?> classMapping, Serializable property, R value,
-        Predicate<?> ignoreStrategy) {
+    protected <R> L ni(JdbcClassMapping<?> classMapping, Serializable property, R value, Predicate<?> ignoreStrategy) {
         return ni(getPropertyMapping(classMapping, property, value), value, getAlias(), ignoreStrategy);
     }
 
@@ -6160,8 +6133,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected <R> L ni(JdbcClassMapping<?> classMapping, Serializable property, R value, String queryAlias,
-        MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return ni(getPropertyMapping(classMapping, property, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -6299,8 +6271,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ge(JdbcClassMapping<?> classMapping, Serializable name, int value,
-        IntPredicate ignoreStrategy) {
+    protected L ge(JdbcClassMapping<?> classMapping, Serializable name, int value, IntPredicate ignoreStrategy) {
         return ge(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Integer) v));
     }
@@ -6330,8 +6301,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ge(JdbcClassMapping<?> classMapping, Serializable name, long value,
-        LongPredicate ignoreStrategy) {
+    protected L ge(JdbcClassMapping<?> classMapping, Serializable name, long value, LongPredicate ignoreStrategy) {
         return ge(getPropertyMapping(classMapping, name, value), value, getAlias(), v -> ignoreStrategy.test((Long) v));
     }
 
@@ -6359,8 +6329,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L ge(JdbcClassMapping<?> classMapping, Serializable name, double value,
-        DoublePredicate ignoreStrategy) {
+    protected L ge(JdbcClassMapping<?> classMapping, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return ge(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Double) v));
     }
@@ -6391,8 +6360,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value,
-        Predicate<?> ignoreStrategy) {
+    protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value, Predicate<?> ignoreStrategy) {
         return ge(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
@@ -6441,8 +6409,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected <V> L ge(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
-        MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return ge(getPropertyMapping(classMapping, name, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -6668,8 +6635,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L gt(JdbcClassMapping<?> classMapping, Serializable name, int value,
-        IntPredicate ignoreStrategy) {
+    protected L gt(JdbcClassMapping<?> classMapping, Serializable name, int value, IntPredicate ignoreStrategy) {
         return gt(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Integer) v));
     }
@@ -6699,8 +6665,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L gt(JdbcClassMapping<?> classMapping, Serializable name, long value,
-        LongPredicate ignoreStrategy) {
+    protected L gt(JdbcClassMapping<?> classMapping, Serializable name, long value, LongPredicate ignoreStrategy) {
         return gt(getPropertyMapping(classMapping, name, value), value, getAlias(), v -> ignoreStrategy.test((Long) v));
     }
 
@@ -6728,8 +6693,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L gt(JdbcClassMapping<?> classMapping, Serializable name, double value,
-        DoublePredicate ignoreStrategy) {
+    protected L gt(JdbcClassMapping<?> classMapping, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return gt(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Double) v));
     }
@@ -6760,8 +6724,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, V value,
-        Predicate<?> ignoreStrategy) {
+    protected <V> L gt(JdbcClassMapping<?> classMapping, Serializable name, V value, Predicate<?> ignoreStrategy) {
         return gt(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
@@ -6854,8 +6817,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L le(JdbcClassMapping<?> classMapping, Serializable name, int value,
-        IntPredicate ignoreStrategy) {
+    protected L le(JdbcClassMapping<?> classMapping, Serializable name, int value, IntPredicate ignoreStrategy) {
         return le(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Integer) v));
     }
@@ -6885,8 +6847,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L le(JdbcClassMapping<?> classMapping, Serializable name, long value,
-        LongPredicate ignoreStrategy) {
+    protected L le(JdbcClassMapping<?> classMapping, Serializable name, long value, LongPredicate ignoreStrategy) {
         return le(getPropertyMapping(classMapping, name, value), value, getAlias(), v -> ignoreStrategy.test((Long) v));
     }
 
@@ -6914,8 +6875,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L le(JdbcClassMapping<?> classMapping, Serializable name, double value,
-        DoublePredicate ignoreStrategy) {
+    protected L le(JdbcClassMapping<?> classMapping, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return le(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Double) v));
     }
@@ -6946,8 +6906,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, V value,
-        Predicate<?> ignoreStrategy) {
+    protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, V value, Predicate<?> ignoreStrategy) {
         return le(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
@@ -6996,8 +6955,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected <V> L le(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
-        MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return le(getPropertyMapping(classMapping, name, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -7038,8 +6996,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L le(JdbcPropertyMapping pm, V value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected <V> L le(JdbcPropertyMapping pm, V value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
             getFieldValueOperator(pm, value), ComparisonOperator.LE, matchStrategy, getAlias(), ignoreStrategy));
     }
@@ -7072,8 +7029,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L lt(JdbcClassMapping<?> classMapping, Serializable name, int value,
-        IntPredicate ignoreStrategy) {
+    protected L lt(JdbcClassMapping<?> classMapping, Serializable name, int value, IntPredicate ignoreStrategy) {
         return lt(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Integer) v));
     }
@@ -7103,8 +7059,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L lt(JdbcClassMapping<?> classMapping, Serializable name, long value,
-        LongPredicate ignoreStrategy) {
+    protected L lt(JdbcClassMapping<?> classMapping, Serializable name, long value, LongPredicate ignoreStrategy) {
         return lt(getPropertyMapping(classMapping, name, value), value, getAlias(), v -> ignoreStrategy.test((Long) v));
     }
 
@@ -7132,8 +7087,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected L lt(JdbcClassMapping<?> classMapping, Serializable name, double value,
-        DoublePredicate ignoreStrategy) {
+    protected L lt(JdbcClassMapping<?> classMapping, Serializable name, double value, DoublePredicate ignoreStrategy) {
         return lt(getPropertyMapping(classMapping, name, value), value, getAlias(),
             v -> ignoreStrategy.test((Double) v));
     }
@@ -7164,8 +7118,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, V value,
-        Predicate<?> ignoreStrategy) {
+    protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, V value, Predicate<?> ignoreStrategy) {
         return lt(getPropertyMapping(classMapping, name, value), value, getAlias(), ignoreStrategy);
     }
 
@@ -7214,8 +7167,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @return the l
      */
     protected <V> L lt(JdbcClassMapping<?> classMapping, Serializable name, V value, String queryAlias,
-        MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+        MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return lt(getPropertyMapping(classMapping, name, value), value, queryAlias, matchStrategy, ignoreStrategy);
     }
 
@@ -7256,8 +7208,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
-    protected <V> L lt(JdbcPropertyMapping pm, V value, MatchStrategy matchStrategy,
-        Predicate<?> ignoreStrategy) {
+    protected <V> L lt(JdbcPropertyMapping pm, V value, MatchStrategy matchStrategy, Predicate<?> ignoreStrategy) {
         return (L) addCondition(new SqlConditionExpressionBuilder(dialect, pm.getRepositoryFieldName(),
             getFieldValueOperator(pm, value), ComparisonOperator.LT, matchStrategy, getAlias(), ignoreStrategy));
     }

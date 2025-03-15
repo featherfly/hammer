@@ -3,10 +3,9 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.function.Consumer;
 
+import cn.featherfly.common.function.FiveArgusFunction;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuples;
-
-import cn.featherfly.common.function.FiveArgusFunction;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery5;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -17,6 +16,7 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQueryCondition
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression5;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression5;
 import cn.featherfly.hammer.sqldb.dsl.condition.AbstractSqlConditionExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
@@ -30,14 +30,17 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <C> the generic type
  * @param <L> the generic type
  * @param <S> the generic type
+ * @param <S2> the generic type
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQuery5<R extends RepositoryQueryRelateExpression<R>,
-    C extends RepositoryQueryConditionsGroupExpression5<C, L, S, Q>,
-    L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, Q>, S extends RepositoryQuerySortExpression5<Q>,
+    C extends RepositoryQueryConditionsGroupExpression5<C, L, S, S2, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, S2, Q>,
+    S extends RepositoryQuerySortExpression5<S2, Q>, S2 extends RepositoryQuerySortedExpression5<S2, Q>,
     Q extends QueryLimitExecutor> extends AbstractRepositorySqlQueryJoin<R, C, Q>
-    implements RepositoryQuery5<C, L, S, Q> {
+    implements RepositoryQuery5<C, L, S, S2, Q> {
 
+    /** The Constant RELATIONS_TUPLE. */
     protected static final Tuple5<Integer, Integer, Integer, Integer,
         Integer> RELATIONS_TUPLE = Tuples.of(0, 1, 2, 3, 4);
 
@@ -46,20 +49,28 @@ public abstract class AbstractRepositorySqlQuery5<R extends RepositoryQueryRelat
      *
      * @param abstractRepositorySqlQuery the abstract repository sql query
      */
-    protected AbstractRepositorySqlQuery5(AbstractRepositorySqlQuery5<?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
+    protected AbstractRepositorySqlQuery5(AbstractRepositorySqlQuery5<?, ?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
         super(abstractRepositorySqlQuery);
     }
 
     /**
      * Instantiates a new abstract repository sql query 5.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQuery5(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(4, queryRelation, sqlPageFactory);
     }
 
+    /**
+     * Where.
+     *
+     * @param <E> the element type
+     * @param conditions the conditions
+     * @param repositoriesCondtionFuntion the repositories condtion funtion
+     * @return the e
+     */
     protected <E extends AbstractSqlConditionExpression<?, ?, ?>> E where(E conditions,
         FiveArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
@@ -79,7 +90,7 @@ public abstract class AbstractRepositorySqlQuery5<R extends RepositoryQueryRelat
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryExpression5<C, L, S, Q> configure(Consumer<DslQueryConfig> configure) {
+    public RepositoryQueryExpression5<C, L, S, S2, Q> configure(Consumer<DslQueryConfig> configure) {
         configure.accept(queryRelation.getConfig());
         return this;
     }

@@ -11,6 +11,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
+import cn.featherfly.common.function.ThreeArgusConsumer;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression3;
@@ -19,10 +20,13 @@ import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupL
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2RR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate3RRR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2RF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression3F;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression3;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractRepositorySqlQuery3;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpression3F;
@@ -35,13 +39,15 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public class RepositorySqlQueryRelate2RR extends
     AbstractRepositorySqlQuery3<RepositoryQueryRelatedFetched2RF, RepositoryQueryConditionsGroup3F,
-        RepositoryQueryConditionsGroupLogic3F, RepositoryQuerySortExpression3<QueryLimitExecutor>, QueryLimitExecutor>
+        RepositoryQueryConditionsGroupLogic3F,
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3F, QueryLimitExecutor>,
+        RepositoryQuerySortedExpression3F, QueryLimitExecutor>
     implements RepositoryQueryRelate2RR {
 
     /**
      * Instantiates a new repository sql query relate 2 RR.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryRelate2RR(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -53,7 +59,7 @@ public class RepositorySqlQueryRelate2RR extends
      *
      * @param abstractRepositorySqlQuery the abstract repository sql query
      */
-    protected RepositorySqlQueryRelate2RR(AbstractRepositorySqlQuery3<?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
+    protected RepositorySqlQueryRelate2RR(AbstractRepositorySqlQuery3<?, ?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
         super(abstractRepositorySqlQuery);
     }
 
@@ -87,7 +93,7 @@ public class RepositorySqlQueryRelate2RR extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression3<QueryLimitExecutor> sort() {
+    public RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3F, QueryLimitExecutor> sort() {
         return new RepositorySqlQueryExpression3F(queryRelation, sqlPageFactory).sort();
     }
 
@@ -95,9 +101,20 @@ public class RepositorySqlQueryRelate2RR extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryOnExpression3<RepositoryQueryRelate3RRR> join(
-        Repository repository) {
+    public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
+        S3 extends RepositorySortedExpression<S3>> RepositoryQuerySortedExpression3F sort(
+            ThreeArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>,
+                RepositorySortExpression<S3>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression3F(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryOnExpression3<RepositoryQueryRelate3RRR> join(Repository repository) {
         return new RepositorySqlQueryOn3<>(new RepositorySqlQueryRelate3RRR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate3RRR) relate).setIdName());
     }
+
 }

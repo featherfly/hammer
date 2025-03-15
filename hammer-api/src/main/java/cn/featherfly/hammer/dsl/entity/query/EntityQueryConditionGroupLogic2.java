@@ -3,6 +3,7 @@ package cn.featherfly.hammer.dsl.entity.query;
 
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression2;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression2;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression2;
 
 /**
  * The Interface EntityQueryConditionGroupLogicExpression.
@@ -10,8 +11,9 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression2;
  * @author zhongj
  * @param <E> the element type
  */
-public interface EntityQueryConditionGroupLogic2<E, E2, R>
-        extends EntityQueryConditionGroupLogicExpression2<E, E2, EntityQueryConditionGroup2<E, E2, R>,
-                EntityQueryConditionGroupLogic2<E, E2, R>, EntityQuerySortExpression2<E, E2, R>, R> {
+public interface EntityQueryConditionGroupLogic2<E, E2, R> extends
+    EntityQueryConditionGroupLogicExpression2<E, E2, EntityQueryConditionGroup2<E, E2, R>,
+        EntityQueryConditionGroupLogic2<E, E2, R>, EntityQuerySortExpression2<E, E2, R>,
+        EntityQuerySortedExpression2<E, E2, R>, R> {
 
 }

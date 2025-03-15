@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.repository.query;
 
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression3F;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression3;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression3;
@@ -11,8 +12,8 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpre
  * @author zhongj
  */
 public interface RepositoryQueryConditionsGroup3F extends
-        RepositoryQueryConditionsGroupExpression3<RepositoryQueryConditionsGroup3F,
-                RepositoryQueryConditionsGroupLogic3F, RepositoryQuerySortExpression3<QueryLimitExecutor>,
-                QueryLimitExecutor> {
+    RepositoryQueryConditionsGroupExpression3<RepositoryQueryConditionsGroup3F, RepositoryQueryConditionsGroupLogic3F,
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3F, QueryLimitExecutor>,
+        RepositoryQuerySortedExpression3F, QueryLimitExecutor> {
 
 }

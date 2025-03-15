@@ -3,6 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2F;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression2F;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
@@ -15,13 +16,15 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public class RepositorySqlQueryExpression2 extends
     AbstractMulitiRepositorySqlQueryConditionsGroupExpression2<RepositoryQueryConditionsGroup2F,
-        RepositoryQueryConditionsGroupLogic2F, RepositoryQuerySortExpression2<QueryLimitExecutor>, QueryLimitExecutor>
+        RepositoryQueryConditionsGroupLogic2F,
+        RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2F, QueryLimitExecutor>,
+        RepositoryQuerySortedExpression2F, QueryLimitExecutor>
     implements RepositoryQueryConditionsGroup2F, RepositoryQueryConditionsGroupLogic2F {
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryExpression2(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -31,8 +34,8 @@ public class RepositorySqlQueryExpression2 extends
     /**
      * Instantiates a new repository sql query expression.
      *
-     * @param parent         the parent
-     * @param queryRelation  the query relation
+     * @param parent the parent
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     RepositorySqlQueryExpression2(RepositoryQueryConditionsGroupLogic2F parent,

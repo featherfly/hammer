@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import cn.featherfly.common.tuple.Tuple7;
-import cn.featherfly.common.tuple.Tuple8;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
@@ -22,6 +19,8 @@ import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
@@ -31,6 +30,8 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression4;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression4;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySetSortPropertyExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.AbstractMulitiEntitySqlConditionsGroupExpression4;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryConditionGroupQuery;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -51,15 +52,17 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1, E2, E3, E4, RS,
     C extends EntityQueryConditionGroupExpression4<E1, E2, E3, E4, C, L, EntityQuerySortExpression4<E1, E2, E3, E4, RS>,
-        RS>,
+        EntityQuerySortedExpression4<E1, E2, E3, E4, RS>, RS>,
     L extends EntityQueryConditionGroupLogicExpression4<E1, E2, E3, E4, C, L,
-        EntityQuerySortExpression4<E1, E2, E3, E4, RS>, RS>>
+        EntityQuerySortExpression4<E1, E2, E3, E4, RS>, EntityQuerySortedExpression4<E1, E2, E3, E4, RS>, RS>>
     extends
     AbstractMulitiEntitySqlConditionsGroupExpression4<E1, E2, E3, E4, C, L, QueryConditionConfig,
         EntitySqlQueryRelation, SqlSelectBasicBuilder>
     implements
-    EntityQueryConditionGroupExpression4<E1, E2, E3, E4, C, L, EntityQuerySortExpression4<E1, E2, E3, E4, RS>, RS>,
-    EntityQueryConditionGroupLogicExpression4<E1, E2, E3, E4, C, L, EntityQuerySortExpression4<E1, E2, E3, E4, RS>, RS>,
+    EntityQueryConditionGroupExpression4<E1, E2, E3, E4, C, L, EntityQuerySortExpression4<E1, E2, E3, E4, RS>,
+        EntityQuerySortedExpression4<E1, E2, E3, E4, RS>, RS>,
+    EntityQueryConditionGroupLogicExpression4<E1, E2, E3, E4, C, L, EntityQuerySortExpression4<E1, E2, E3, E4, RS>,
+        EntityQuerySortedExpression4<E1, E2, E3, E4, RS>, RS>,
     EntityQuerySortExpression4<E1, E2, E3, E4, RS>, EntityQuerySortedExpression4<E1, E2, E3, E4, RS> {
 
     private SqlSortBuilder sortBuilder;
@@ -155,7 +158,21 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public EntityQuerySortExpression4<E1, E2, E3, E4, RS> sort() {
+        return this;
+    }
 
+    @Override
+    public <S1 extends EntitySortedExpression<E1, S1>, S2 extends EntitySortedExpression<E2, S2>,
+        S3 extends EntitySortedExpression<E3, S3>,
+        S4 extends EntitySortedExpression<E4, S4>> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> sort(
+            FourArgusConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+                EntitySortExpression<E4, S4>> entitySortExpresions) {
+        if (entitySortExpresions != null) {
+            entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias2, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias3, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias4, getRootSortBuilder()));
+        }
         return this;
     }
 

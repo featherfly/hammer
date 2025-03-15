@@ -7,10 +7,8 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.Queryable;
+import cn.featherfly.hammer.expression.query.QuerySingleExecutor;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression6;
 
 /**
@@ -20,11 +18,13 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
  * @param <C> the generic type
  * @param <L> the generic type
  * @param <S> the generic type
+ * @param <S2> the generic type
  * @param <Q> the generic type
  */
 public interface RepositoryQueryConditionsGroupLogicExpression6<
-    C extends RepositoryQueryConditionsGroupExpression6<C, L, S, Q>,
-    L extends RepositoryQueryConditionsGroupLogicExpression6<C, L, S, Q>, S extends RepositoryQuerySortExpression6<Q>,
-    Q extends QueryLimitExecutor> extends RepositoryConditionsGroupLogicExpression6<C, L>, Queryable<S>,
-    QueryCountExecutor, QueryConditionLimit<Q>, QueryLimitExecutor {
+    C extends RepositoryQueryConditionsGroupExpression6<C, L, S, S2, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression6<C, L, S, S2, Q>,
+    S extends RepositoryQuerySortExpression6<S2, Q>, S2 extends RepositoryQuerySortedExpression6<S2, Q>,
+    Q extends QueryLimitExecutor>
+    extends RepositoryConditionsGroupLogicExpression6<C, L>, RepositoryQueryable6<S, S2, Q>, QuerySingleExecutor {
 }

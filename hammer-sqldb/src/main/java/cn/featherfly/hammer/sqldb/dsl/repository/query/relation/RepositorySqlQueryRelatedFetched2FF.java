@@ -10,20 +10,23 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple3;
-
+import cn.featherfly.common.function.ThreeArgusConsumer;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3FFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3FFF;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate3FFR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched2FF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression3FFF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor3;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression3;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractRepositorySqlQuery3;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpression3FFF;
 
@@ -34,8 +37,9 @@ import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpress
  */
 public class RepositorySqlQueryRelatedFetched2FF extends
     AbstractRepositorySqlQuery3<RepositoryQueryRelatedFetched2FF, RepositoryQueryConditionsGroup3FFF,
-        RepositoryQueryConditionsGroupLogic3FFF, RepositoryQuerySortExpression3<QueryLimitExecutor3>,
-        QueryLimitExecutor3>
+        RepositoryQueryConditionsGroupLogic3FFF,
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FFF, QueryLimitExecutor3>,
+        RepositoryQuerySortedExpression3FFF, QueryLimitExecutor3>
     implements RepositoryQueryRelatedFetched2FF {
 
     /**
@@ -43,7 +47,7 @@ public class RepositorySqlQueryRelatedFetched2FF extends
      *
      * @param repositorySqlQueryFetch the repository sql query fetch
      */
-    public RepositorySqlQueryRelatedFetched2FF(AbstractRepositorySqlQuery3<?, ?, ?, ?, ?> repositorySqlQueryFetch) {
+    public RepositorySqlQueryRelatedFetched2FF(AbstractRepositorySqlQuery3<?, ?, ?, ?, ?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
     }
 
@@ -59,8 +63,7 @@ public class RepositorySqlQueryRelatedFetched2FF extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryOnExpression3<RepositoryQueryRelate3FFR> join(
-        Repository repository) {
+    public RepositoryOnExpression3<RepositoryQueryRelate3FFR> join(Repository repository) {
         return new RepositorySqlQueryOn3<>(new RepositorySqlQueryRelate3FFR(queryRelation, sqlPageFactory),
             queryRelation, repository, relate -> ((RepositorySqlQueryRelate3FFR) relate).setIdName());
     }
@@ -87,8 +90,19 @@ public class RepositorySqlQueryRelatedFetched2FF extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression3<QueryLimitExecutor3> sort() {
-        return new RepositorySqlQueryExpression3FFF(queryRelation, sqlPageFactory).sort();
+    public RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FFF, QueryLimitExecutor3> sort() {
+        return new RepositorySqlQueryExpression3FFF(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
+        S3 extends RepositorySortedExpression<S3>> RepositoryQuerySortedExpression3FFF sort(
+            ThreeArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>,
+                RepositorySortExpression<S3>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression3FFF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }
 
     /**
@@ -129,4 +143,5 @@ public class RepositorySqlQueryRelatedFetched2FF extends
         return new RepositorySqlQueryExpression3FFF(queryRelation, sqlPageFactory).pagination(prefixes, type1, type2,
             type3);
     }
+
 }

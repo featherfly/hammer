@@ -3,6 +3,7 @@ package cn.featherfly.hammer.dsl.entity.query;
 
 import cn.featherfly.hammer.expression.entity.query.EntityQueryExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression5;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression5;
 
 /**
  * dsl for query entity.
@@ -10,7 +11,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression5;
  * @author zhongj
  */
 public interface EntityQuery5<E, E2, E3, E4, E5, R> extends
-        EntityQueryExpression5<E, E2, E3, E4, E5, EntityQueryConditionGroup5<E, E2, E3, E4, E5, R>,
-                EntityQueryConditionGroupLogic5<E, E2, E3, E4, E5, R>, EntityQuerySortExpression5<E, E2, E3, E4, E5, R>,
-                R> {
+    EntityQueryExpression5<E, E2, E3, E4, E5, EntityQueryConditionGroup5<E, E2, E3, E4, E5, R>,
+        EntityQueryConditionGroupLogic5<E, E2, E3, E4, E5, R>, EntityQuerySortExpression5<E, E2, E3, E4, E5, R>,
+        EntityQuerySortedExpression5<E, E2, E3, E4, E5, R>, R> {
 }

@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import cn.featherfly.common.tuple.Tuple7;
-import cn.featherfly.common.tuple.Tuple8;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
@@ -22,6 +19,8 @@ import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
@@ -31,6 +30,8 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression3;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression3;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySetSortPropertyExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.AbstractMulitiEntitySqlConditionsGroupExpression3;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryConditionGroupQuery;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
@@ -49,14 +50,18 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <L> logic expression
  */
 public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression3<E1, E2, E3, RS,
-    C extends EntityQueryConditionGroupExpression3<E1, E2, E3, C, L, EntityQuerySortExpression3<E1, E2, E3, RS>, RS>,
+    C extends EntityQueryConditionGroupExpression3<E1, E2, E3, C, L, EntityQuerySortExpression3<E1, E2, E3, RS>,
+        EntityQuerySortedExpression3<E1, E2, E3, RS>, RS>,
     L extends EntityQueryConditionGroupLogicExpression3<E1, E2, E3, C, L, EntityQuerySortExpression3<E1, E2, E3, RS>,
-        RS>>
+        EntityQuerySortedExpression3<E1, E2, E3, RS>, RS>>
     extends
     AbstractMulitiEntitySqlConditionsGroupExpression3<E1, E2, E3, C, L, QueryConditionConfig, EntitySqlQueryRelation,
         SqlSelectBasicBuilder>
-    implements EntityQueryConditionGroupExpression3<E1, E2, E3, C, L, EntityQuerySortExpression3<E1, E2, E3, RS>, RS>,
-    EntityQueryConditionGroupLogicExpression3<E1, E2, E3, C, L, EntityQuerySortExpression3<E1, E2, E3, RS>, RS>,
+    implements
+    EntityQueryConditionGroupExpression3<E1, E2, E3, C, L, EntityQuerySortExpression3<E1, E2, E3, RS>,
+        EntityQuerySortedExpression3<E1, E2, E3, RS>, RS>,
+    EntityQueryConditionGroupLogicExpression3<E1, E2, E3, C, L, EntityQuerySortExpression3<E1, E2, E3, RS>,
+        EntityQuerySortedExpression3<E1, E2, E3, RS>, RS>,
     EntityQuerySortExpression3<E1, E2, E3, RS>, EntityQuerySortedExpression3<E1, E2, E3, RS> {
 
     private SqlSortBuilder sortBuilder;
@@ -152,7 +157,19 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression3<E1,
      */
     @Override
     public EntityQuerySortExpression3<E1, E2, E3, RS> sort() {
+        return this;
+    }
 
+    @Override
+    public <S1 extends EntitySortedExpression<E1, S1>, S2 extends EntitySortedExpression<E2, S2>,
+        S3 extends EntitySortedExpression<E3, S3>> EntityQuerySortedExpression3<E1, E2, E3, RS> sort(
+            ThreeArgusConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>,
+                EntitySortExpression<E3, S3>> entitySortExpresions) {
+        if (entitySortExpresions != null) {
+            entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias2, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(tableAlias3, getRootSortBuilder()));
+        }
         return this;
     }
 

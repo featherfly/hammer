@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.dsl.repository.query;
 
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression5F;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression5;
@@ -11,8 +12,8 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpre
  * @author zhongj
  */
 public interface RepositoryQueryConditionsGroup5F extends
-        RepositoryQueryConditionsGroupExpression5<RepositoryQueryConditionsGroup5F,
-                RepositoryQueryConditionsGroupLogic5F, RepositoryQuerySortExpression5<QueryLimitExecutor>,
-                QueryLimitExecutor> {
+    RepositoryQueryConditionsGroupExpression5<RepositoryQueryConditionsGroup5F, RepositoryQueryConditionsGroupLogic5F,
+        RepositoryQuerySortExpression5<RepositoryQuerySortedExpression5F, QueryLimitExecutor>,
+        RepositoryQuerySortedExpression5F, QueryLimitExecutor> {
 
 }

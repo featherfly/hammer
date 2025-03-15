@@ -19,11 +19,13 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
  * @param <C> the generic type
  * @param <L> the generic type
  * @param <S> the generic type
+ * @param <S2> the generic type
  * @param <Q> the generic type
  */
 public interface RepositoryQueryConditionsGroupExpression3<
-    C extends RepositoryQueryConditionsGroupExpression3<C, L, S, Q>,
-    L extends RepositoryQueryConditionsGroupLogicExpression3<C, L, S, Q>, S extends RepositoryQuerySortExpression3<Q>,
+    C extends RepositoryQueryConditionsGroupExpression3<C, L, S, S2, Q>,
+    L extends RepositoryQueryConditionsGroupLogicExpression3<C, L, S, S2, Q>,
+    S extends RepositoryQuerySortExpression3<S2, Q>, S2 extends RepositoryQuerySortedExpression3<S2, Q>,
     Q extends QueryLimitExecutor>
     extends RepositoryConditionsGroupExpression3<C, L>, ConditionConfigureExpression<C, QueryConditionConfig> {
 }

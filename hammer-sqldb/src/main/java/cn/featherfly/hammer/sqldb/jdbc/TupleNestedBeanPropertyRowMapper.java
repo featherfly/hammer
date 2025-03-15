@@ -12,15 +12,14 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.tuple.Tuple;
-import cn.featherfly.common.tuple.Tuples;
-
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.tuple.Tuple;
+import cn.featherfly.common.tuple.Tuples;
 
 /**
  * The Class TupleNestedBeanPropertyRowMapper.
@@ -47,7 +46,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
      * Instantiates a new tuple nested bean property row mapper.
      *
      * @param mappedClasses the mapped classes
-     * @param manager       the manager
+     * @param manager the manager
      */
     public TupleNestedBeanPropertyRowMapper(List<Class<?>> mappedClasses, SqlTypeMappingManager manager) {
         this(mappedClasses, null, manager);
@@ -57,8 +56,8 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
      * Instantiates a new tuple nested bean property row mapper.
      *
      * @param mappedClasses the mapped classes
-     * @param prefixes      the prefixes
-     * @param manager       the manager
+     * @param prefixes the prefixes
+     * @param manager the manager
      */
     public TupleNestedBeanPropertyRowMapper(List<Class<?>> mappedClasses, Tuple prefixes,
         SqlTypeMappingManager manager) {
@@ -68,9 +67,9 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
     /**
      * Instantiates a new tuple nested bean property row mapper.
      *
-     * @param mappedClasses       the mapped classes
-     * @param prefixes            the prefixes
-     * @param manager             the manager
+     * @param mappedClasses the mapped classes
+     * @param prefixes the prefixes
+     * @param manager the manager
      * @param checkFullyPopulated the check fully populated
      */
     public TupleNestedBeanPropertyRowMapper(List<Class<?>> mappedClasses, Tuple prefixes, SqlTypeMappingManager manager,
@@ -87,7 +86,7 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
                 //                    rowMapper = new SingleColumnRowMapper<>(mappedClass, manager);
                 //                    IMPLSOON 值映射的混合映射未实现
                 //                }
-                // IMPLSOON 后续来实现对象映射和值映射的混合模式
+                // IMPLSOON 后续来实现对象映射和值映射的混合模式，以及Map和对象的混合映射
                 rowMappers.add(new NestedBeanPropertyRowMapper<>(mappedClass, manager, (String) prefixes.get(index),
                     checkFullyPopulated));
             });

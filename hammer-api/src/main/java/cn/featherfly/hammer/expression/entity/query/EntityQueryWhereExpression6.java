@@ -13,14 +13,16 @@ import cn.featherfly.hammer.expression.entity.EntityWhereExpression6;
  * @param <E4> fouth filterable entity type
  * @param <E5> fifth filterable entity type
  * @param <E6> sixth filterable entity type
- * @param <C>  condition expression
- * @param <L>  logic expression
- * @param <S>  sort expression
- * @param <R>  query result type
+ * @param <C> condition expression
+ * @param <L> logic expression
+ * @param <S> sort expression
+ * @param <S2> sorted expression
+ * @param <R> query result type
  */
 public interface EntityQueryWhereExpression6<E1, E2, E3, E4, E5, E6,
-    C extends EntityQueryConditionGroupExpression6<E1, E2, E3, E4, E5, E6, C, L, S, R>,
-    L extends EntityQueryConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L, S, R>,
-    S extends EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, R>, R>
+    C extends EntityQueryConditionGroupExpression6<E1, E2, E3, E4, E5, E6, C, L, S, S2, R>,
+    L extends EntityQueryConditionGroupLogicExpression6<E1, E2, E3, E4, E5, E6, C, L, S, S2, R>,
+    S extends EntityQuerySortExpression6<E1, E2, E3, E4, E5, E6, R>,
+    S2 extends EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, R>, R>
     extends EntityWhereExpression6<E1, E2, E3, E4, E5, E6, C, L> {
 }

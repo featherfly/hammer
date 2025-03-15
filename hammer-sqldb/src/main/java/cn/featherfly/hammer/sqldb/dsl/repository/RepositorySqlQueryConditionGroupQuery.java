@@ -13,13 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuple3;
-import cn.featherfly.common.tuple.Tuple4;
-import cn.featherfly.common.tuple.Tuple5;
-import cn.featherfly.common.tuple.Tuple6;
-import cn.featherfly.common.tuple.Tuples;
-
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.SimpleExecution;
@@ -27,6 +20,12 @@ import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
+import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractMulitiRepositorySqlQueryConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractMulitiRepositorySqlQueryConditionsGroupExpression2;
@@ -94,19 +93,19 @@ public class RepositorySqlQueryConditionGroupQuery {
             expressionPage = ((AbstractMulitiRepositorySqlQueryValueConditionsGroupExpression) exp
                 .getRoot())::expressionPage;
         } else if (exp instanceof AbstractMulitiRepositorySqlQueryConditionsGroupExpression2) {
-            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression2<?, ?, ?, ?>) exp
+            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression2<?, ?, ?, ?, ?>) exp
                 .getRoot())::expressionPage;
         } else if (exp instanceof AbstractMulitiRepositorySqlQueryConditionsGroupExpression3) {
-            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression3<?, ?, ?, ?>) exp
+            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression3<?, ?, ?, ?, ?>) exp
                 .getRoot())::expressionPage;
         } else if (exp instanceof AbstractMulitiRepositorySqlQueryConditionsGroupExpression4) {
-            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression4<?, ?, ?, ?>) exp
+            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression4<?, ?, ?, ?, ?>) exp
                 .getRoot())::expressionPage;
         } else if (exp instanceof AbstractMulitiRepositorySqlQueryConditionsGroupExpression5) {
-            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression5<?, ?, ?, ?>) exp
+            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression5<?, ?, ?, ?, ?>) exp
                 .getRoot())::expressionPage;
         } else if (exp instanceof AbstractMulitiRepositorySqlQueryConditionsGroupExpression6) {
-            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression6<?, ?, ?, ?>) exp
+            expressionPage = ((AbstractMulitiRepositorySqlQueryConditionsGroupExpression6<?, ?, ?, ?, ?>) exp
                 .getRoot())::expressionPage;
         } else {
             throw new SqldbHammerException("unknow expression type " + exp.getClass().getName());

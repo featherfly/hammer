@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -11,7 +12,10 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression2;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression2;
-import cn.featherfly.hammer.expression.query.Sortable;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression2;
+import cn.featherfly.hammer.expression.entity.query.EntitySortable2;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -25,7 +29,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractEntitySqlQueryFetch2<E, E2, R> extends AbstractEntitySqlQuery<R> implements
     EntityWhereExpression2<E, E2, EntityQueryConditionGroup2<E, E2, R>, EntityQueryConditionGroupLogic2<E, E2, R>>,
-    Sortable<EntityQuerySortExpression2<E, E2, R>> {
+    EntitySortable2<E, E2, EntityQuerySortExpression2<E, E2, R>, EntityQuerySortedExpression2<E, E2, R>> {
 
     /**
      * Instantiates a new abstract entity sql query fetched.
@@ -83,6 +87,14 @@ public abstract class AbstractEntitySqlQueryFetch2<E, E2, R> extends AbstractEnt
     @Override
     public EntityQuerySortExpression2<E, E2, R> sort() {
         return new EntitySqlQueryExpression2<>(hammerConfig, factory, sqlPageFactory, queryRelation);
+    }
+
+    @Override
+    public <S1 extends EntitySortedExpression<E, S1>,
+        S2 extends EntitySortedExpression<E2, S2>> EntityQuerySortedExpression2<E, E2, R> sort(
+            BiConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>> entitySortExpresions) {
+        return new EntitySqlQueryExpression2<E, E2, R>(hammerConfig, factory, sqlPageFactory, queryRelation)
+            .sort(entitySortExpresions);
     }
 
     // ****************************************************************************************************************

@@ -3,11 +3,11 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2FF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression2FF;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
@@ -20,15 +20,16 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public class RepositorySqlQueryExpression2FF extends
     AbstractMulitiRepositorySqlQueryConditionsGroupExpression2<RepositoryQueryConditionsGroup2FF,
-        RepositoryQueryConditionsGroupLogic2FF, RepositoryQuerySortExpression2<QueryLimitExecutor2>,
-        QueryLimitExecutor2>
+        RepositoryQueryConditionsGroupLogic2FF,
+        RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2FF, QueryLimitExecutor2>,
+        RepositoryQuerySortedExpression2FF, QueryLimitExecutor2>
     implements RepositoryQueryConditionsGroup2FF, RepositoryQueryConditionsGroupLogic2FF {
     // FIXME 编译慢，调整层次， 去除 RepositoryQueryConditionsGroup2FF 这个接口层次，
     // 因为用泛型就能搞定 AbstractMulitiRepositorySqlQueryConditionsGroupExpression2
     /**
      * Instantiates a new sql query expression.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryExpression2FF(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -38,8 +39,8 @@ public class RepositorySqlQueryExpression2FF extends
     /**
      * Instantiates a new repository sql query expression.
      *
-     * @param parent         the parent
-     * @param queryRelation  the query relation
+     * @param parent the parent
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     RepositorySqlQueryExpression2FF(RepositoryQueryConditionsGroupLogic2FF parent,

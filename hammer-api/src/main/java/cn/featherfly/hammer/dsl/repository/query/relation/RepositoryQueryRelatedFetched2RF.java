@@ -14,6 +14,7 @@ import cn.featherfly.hammer.dsl.repository.RepositoryJoin;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3FF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression3FF;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression3;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
@@ -27,9 +28,8 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpre
 public interface RepositoryQueryRelatedFetched2RF
     extends RepositoryQueryRelateExpression<RepositoryQueryRelatedFetched2RF>,
     RepositoryQueryExpression3<RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF,
-        RepositoryQuerySortExpression3<QueryLimitExecutor2>, QueryLimitExecutor2>,
-    QueryLimitExecutor2,
-    RepositoryJoin<RepositoryOnExpression3<RepositoryQueryRelate3RFR>,
-        RepositoryQueryRelate3RFR> {
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
+        RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
+    QueryLimitExecutor2, RepositoryJoin<RepositoryOnExpression3<RepositoryQueryRelate3RFR>, RepositoryQueryRelate3RFR> {
 
 }

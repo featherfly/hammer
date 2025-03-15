@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.SixArgusConsumer;
 import cn.featherfly.common.function.SixArgusFunction;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup6;
@@ -10,7 +11,10 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression6;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression6;
-import cn.featherfly.hammer.expression.query.Sortable;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression6;
+import cn.featherfly.hammer.expression.entity.query.EntitySortable6;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -30,7 +34,8 @@ public abstract class AbstractEntitySqlQueryFetch6<E, E2, E3, E4, E5, E6, R> ext
     implements
     EntityWhereExpression6<E, E2, E3, E4, E5, E6, EntityQueryConditionGroup6<E, E2, E3, E4, E5, E6, R>,
         EntityQueryConditionGroupLogic6<E, E2, E3, E4, E5, E6, R>>,
-    Sortable<EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, R>> {
+    EntitySortable6<E, E2, E3, E4, E5, E6, EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, R>,
+        EntityQuerySortedExpression6<E, E2, E3, E4, E5, E6, R>> {
 
     /**
      * Instantiates a new abstract entity sql query fetched.
@@ -96,6 +101,18 @@ public abstract class AbstractEntitySqlQueryFetch6<E, E2, E3, E4, E5, E6, R> ext
     @Override
     public EntityQuerySortExpression6<E, E2, E3, E4, E5, E6, R> sort() {
         return new EntitySqlQueryExpression6<>(hammerConfig, factory, sqlPageFactory, queryRelation);
+    }
+
+    @Override
+    public <S1 extends EntitySortedExpression<E, S1>, S2 extends EntitySortedExpression<E2, S2>,
+        S3 extends EntitySortedExpression<E3, S3>, S4 extends EntitySortedExpression<E4, S4>,
+        S5 extends EntitySortedExpression<E5, S5>,
+        S6 extends EntitySortedExpression<E6, S6>> EntityQuerySortedExpression6<E, E2, E3, E4, E5, E6, R> sort(
+            SixArgusConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+                EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>,
+                EntitySortExpression<E6, S6>> entitySortExpresions) {
+        return new EntitySqlQueryExpression6<E, E2, E3, E4, E5, E6, R>(hammerConfig, factory, sqlPageFactory,
+            queryRelation).sort(entitySortExpresions);
     }
 
 }

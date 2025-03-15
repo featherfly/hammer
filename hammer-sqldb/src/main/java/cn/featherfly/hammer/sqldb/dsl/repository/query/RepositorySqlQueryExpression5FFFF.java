@@ -3,11 +3,11 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple4;
-
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup5FFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic5FFFF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression5FFFF;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor4;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression5;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
@@ -20,14 +20,15 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public class RepositorySqlQueryExpression5FFFF extends
     AbstractMulitiRepositorySqlQueryConditionsGroupExpression5<RepositoryQueryConditionsGroup5FFFF,
-        RepositoryQueryConditionsGroupLogic5FFFF, RepositoryQuerySortExpression5<QueryLimitExecutor4>,
-        QueryLimitExecutor4>
+        RepositoryQueryConditionsGroupLogic5FFFF,
+        RepositoryQuerySortExpression5<RepositoryQuerySortedExpression5FFFF, QueryLimitExecutor4>,
+        RepositoryQuerySortedExpression5FFFF, QueryLimitExecutor4>
     implements RepositoryQueryConditionsGroup5FFFF, RepositoryQueryConditionsGroupLogic5FFFF {
 
     /**
      * Instantiates a new sql query expression.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryExpression5FFFF(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -37,8 +38,8 @@ public class RepositorySqlQueryExpression5FFFF extends
     /**
      * Instantiates a new repository sql query expression.
      *
-     * @param parent         the parent
-     * @param queryRelation  the query relation
+     * @param parent the parent
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     RepositorySqlQueryExpression5FFFF(RepositoryQueryConditionsGroupLogic5FFFF parent,

@@ -2,6 +2,7 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.function.ThreeArgusConsumer;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup3;
@@ -10,7 +11,10 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.EntityWhereExpression3;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression3;
-import cn.featherfly.hammer.expression.query.Sortable;
+import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression3;
+import cn.featherfly.hammer.expression.entity.query.EntitySortable3;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
+import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -23,10 +27,10 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <E3> the generic type
  * @param <R> the generic type
  */
-public abstract class AbstractEntitySqlQueryFetch3<E, E2, E3, R> extends AbstractEntitySqlQuery<R>
-    implements EntityWhereExpression3<E, E2, E3, EntityQueryConditionGroup3<E, E2, E3, R>,
+public abstract class AbstractEntitySqlQueryFetch3<E, E2, E3, R> extends AbstractEntitySqlQuery<R> implements
+    EntityWhereExpression3<E, E2, E3, EntityQueryConditionGroup3<E, E2, E3, R>,
         EntityQueryConditionGroupLogic3<E, E2, E3, R>>,
-    Sortable<EntityQuerySortExpression3<E, E2, E3, R>> {
+    EntitySortable3<E, E2, E3, EntityQuerySortExpression3<E, E2, E3, R>, EntityQuerySortedExpression3<E, E2, E3, R>> {
 
     /**
      * Instantiates a new abstract entity sql query fetched.
@@ -86,6 +90,15 @@ public abstract class AbstractEntitySqlQueryFetch3<E, E2, E3, R> extends Abstrac
     @Override
     public EntityQuerySortExpression3<E, E2, E3, R> sort() {
         return new EntitySqlQueryExpression3<>(hammerConfig, factory, sqlPageFactory, queryRelation);
+    }
+
+    @Override
+    public <S1 extends EntitySortedExpression<E, S1>, S2 extends EntitySortedExpression<E2, S2>,
+        S3 extends EntitySortedExpression<E3, S3>> EntityQuerySortedExpression3<E, E2, E3, R> sort(
+            ThreeArgusConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>,
+                EntitySortExpression<E3, S3>> entitySortExpresions) {
+        return new EntitySqlQueryExpression3<E, E2, E3, R>(hammerConfig, factory, sqlPageFactory, queryRelation)
+            .sort(entitySortExpresions);
     }
 
 }

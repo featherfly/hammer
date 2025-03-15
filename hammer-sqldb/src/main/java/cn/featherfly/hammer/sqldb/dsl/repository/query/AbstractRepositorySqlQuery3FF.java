@@ -3,18 +3,21 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.tuple.Tuple2;
-
+import cn.featherfly.common.function.ThreeArgusConsumer;
 import cn.featherfly.common.function.ThreeArgusFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3FF;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression3FF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression3;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -25,24 +28,28 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <R> the element type
  */
 public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRelateExpression<R>> extends
-        AbstractRepositorySqlQuery3<R, RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF, RepositoryQuerySortExpression3<QueryLimitExecutor2>, QueryLimitExecutor2>
-        implements
-        RepositoryQuery3<RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF, RepositoryQuerySortExpression3<QueryLimitExecutor2>, QueryLimitExecutor2>,
-        QueryLimitExecutor2 {
+    AbstractRepositorySqlQuery3<R, RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF,
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
+        RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>
+    implements
+    RepositoryQuery3<RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF,
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
+        RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
+    QueryLimitExecutor2 {
 
     /**
      * Instantiates a new abstract repository sql query 3 FF.
      *
      * @param abstractRepositorySqlQuery the abstract repository sql query
      */
-    public AbstractRepositorySqlQuery3FF(AbstractRepositorySqlQuery3<?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
+    public AbstractRepositorySqlQuery3FF(AbstractRepositorySqlQuery3<?, ?, ?, ?, ?, ?> abstractRepositorySqlQuery) {
         super(abstractRepositorySqlQuery);
     }
 
     /**
      * Instantiates a new abstract repository sql query 3.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQuery3FF(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -62,7 +69,8 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      */
     @Override
     public RepositoryQueryConditionsGroupLogic3FF where(
-            ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+            LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
@@ -70,8 +78,19 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression3<QueryLimitExecutor2> sort() {
+    public RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, QueryLimitExecutor2> sort() {
         return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).sort();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
+        S3 extends RepositorySortedExpression<S3>> RepositoryQuerySortedExpression3FF sort(
+            ThreeArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>,
+                RepositorySortExpression<S3>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }
 
     /**
@@ -103,7 +122,7 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      */
     @Override
     public <E1, E2> PaginationResults<Tuple2<E1, E2>> pagination(Tuple2<String, String> prefixes, Class<E1> type1,
-            Class<E2> type2) {
+        Class<E2> type2) {
         return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).pagination(prefixes, type1, type2);
     }
 }

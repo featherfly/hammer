@@ -11,6 +11,7 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 import cn.featherfly.common.repository.Repository;
@@ -20,10 +21,13 @@ import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupL
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2RR;
 import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression2F;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractRepositorySqlQuery2;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpression2;
@@ -35,15 +39,18 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  */
 public class RepositorySqlQueryRelate1R extends
-        AbstractRepositorySqlQuery2<RepositoryQueryRelatedFetched1F, RepositoryQueryConditionsGroup2F, RepositoryQueryConditionsGroupLogic2F, RepositoryQuerySortExpression2<QueryLimitExecutor>, QueryLimitExecutor>
-        implements RepositoryQueryRelate1R {
+    AbstractRepositorySqlQuery2<RepositoryQueryRelatedFetched1F, RepositoryQueryConditionsGroup2F,
+        RepositoryQueryConditionsGroupLogic2F,
+        RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2F, QueryLimitExecutor>,
+        RepositoryQuerySortedExpression2F, QueryLimitExecutor>
+    implements RepositoryQueryRelate1R {
 
     /**
      * Instantiates a new repository sql query relate 1 R.
      *
      * @param repositorySqlQueryFetch the repository sql query fetch
      */
-    public RepositorySqlQueryRelate1R(AbstractRepositorySqlQuery2<?, ?, ?, ?, ?> repositorySqlQueryFetch) {
+    public RepositorySqlQueryRelate1R(AbstractRepositorySqlQuery2<?, ?, ?, ?, ?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
     }
 
@@ -51,7 +58,7 @@ public class RepositorySqlQueryRelate1R extends
      * Instantiates a new repository sql query relate 1 R.
      *
      * @param repositoryRelation the repository relation
-     * @param sqlPageFactory     the sql page factory
+     * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryRelate1R(RepositorySqlQueryRelation repositoryRelation, SqlPageFactory sqlPageFactory) {
         super(repositoryRelation, sqlPageFactory);
@@ -63,7 +70,7 @@ public class RepositorySqlQueryRelate1R extends
     @Override
     public RepositoryOnExpression2<RepositoryQueryRelate2RR> join(Repository repository) {
         return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2RR(queryRelation, sqlPageFactory),
-                queryRelation, repository, relate -> ((RepositorySqlQueryRelate2RR) relate).setIdName());
+            queryRelation, repository, relate -> ((RepositorySqlQueryRelate2RR) relate).setIdName());
     }
 
     /**
@@ -78,8 +85,8 @@ public class RepositorySqlQueryRelate1R extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryConditionsGroupLogic2F where(
-            BiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+    public RepositoryQueryConditionsGroupLogic2F where(BiFunction<RepositoryFieldOnlyExpression,
+        RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
 
@@ -87,8 +94,18 @@ public class RepositorySqlQueryRelate1R extends
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression2<QueryLimitExecutor> sort() {
-        return new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory).sort();
+    public RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2F, QueryLimitExecutor> sort() {
+        return new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <S1 extends RepositorySortedExpression<S1>,
+        S2 extends RepositorySortedExpression<S2>> RepositoryQuerySortedExpression2F sort(
+            BiConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }
 
     /**
