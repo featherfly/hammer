@@ -12,16 +12,17 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.Function;
 
+import cn.featherfly.common.db.NamedParamSql;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
-
-import cn.featherfly.common.db.NamedParamSql;
-import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilder;
 
 /**
  * jdbc query unique.
@@ -129,6 +130,33 @@ public interface JdbcQueryUnique {
     default <T> T queryUnique(NamedParamSql sql, Class<T> elementType, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryUnique(execution.getExecution(), elementType, execution.getParams());
+    }
+
+    /**
+     * Query unique.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    default <T> T queryUnique(NamedParamSql sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args) {
+        Execution execution = sql.getExecution(args);
+        return queryUnique(execution.getExecution(), mapper, execution.getParams());
     }
 
     /**
@@ -574,6 +602,17 @@ public interface JdbcQueryUnique {
      * @return single elementType object
      */
     <T> T queryUnique(String sql, Class<T> elementType, Serializable... args);
+
+    /**
+     * Query unique.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper, Serializable... args);
 
     /**
      * Query unique.

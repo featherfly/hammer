@@ -11,7 +11,9 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.repository.Execution;
@@ -22,6 +24,7 @@ import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilder;
 
 /**
  * jdbc query each. <br>
@@ -42,7 +45,7 @@ public interface JdbcQueryEach {
      * @param args args
      * @return map list
      */
-    JdbcRowIterable<Map<String, Serializable>> queryEach(String sql, Serializable... args);
+    RowIterable<Map<String, Serializable>> queryEach(String sql, Serializable... args);
 
     /**
      * query each.
@@ -97,6 +100,29 @@ public interface JdbcQueryEach {
      * @return elementType object list
      */
     <T> RowIterable<T> queryEach(String sql, Class<T> elementType, Serializable... args);
+
+    /**
+     * query each.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    <T> RowIterable<T> queryEach(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Serializable... args);
+
+    /**
+     * Query.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper, Serializable... args);
 
     /**
      * query each.
@@ -360,6 +386,33 @@ public interface JdbcQueryEach {
     default <T> RowIterable<T> queryEach(NamedParamSql sql, Class<T> elementType, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryEach(execution.getExecution(), elementType, execution.getParams());
+    }
+
+    /**
+     * query each.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    <T> RowIterable<T> queryEach(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args);
+
+    /**
+     * Query each.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    default <T> RowIterable<T> queryEach(NamedParamSql sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args) {
+        Execution execution = sql.getExecution(args);
+        return queryEach(execution.getExecution(), mapper, execution.getParams());
     }
 
     /**

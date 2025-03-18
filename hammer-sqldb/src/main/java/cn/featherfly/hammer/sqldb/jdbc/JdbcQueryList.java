@@ -13,16 +13,17 @@ package cn.featherfly.hammer.sqldb.jdbc;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
+import cn.featherfly.common.db.NamedParamSql;
+import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
-
-import cn.featherfly.common.db.NamedParamSql;
-import cn.featherfly.common.repository.Execution;
-import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilder;
 
 /**
  * jdbc query list.
@@ -117,6 +118,17 @@ public interface JdbcQueryList {
      * @return elementType object list
      */
     <T> List<T> queryList(String sql, Class<T> elementType, Serializable... args);
+
+    /**
+     * Query.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper, Serializable... args);
 
     /**
      * Query.
@@ -355,6 +367,33 @@ public interface JdbcQueryList {
     default <T> List<T> queryList(NamedParamSql sql, Class<T> elementType, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return queryList(execution.getExecution(), elementType, execution.getParams());
+    }
+
+    /**
+     * Query.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args);
+
+    /**
+     * Query.
+     *
+     * @param <T> generic type
+     * @param sql sql
+     * @param mapper the mapper
+     * @param args args
+     * @return elementType object list
+     */
+    default <T> List<T> queryList(NamedParamSql sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args) {
+        Execution execution = sql.getExecution(args);
+        return queryList(execution.getExecution(), mapper, execution.getParams());
     }
 
     /**

@@ -26,7 +26,7 @@
         </packages>
         <classes>
             <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest" />
-            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTest2" />
+            <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcExecutorTest" />
             <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcEachTest" />
             <class name="cn.featherfly.hammer.sqldb.jdbc.JdbcTransactionTest" />
         </classes>

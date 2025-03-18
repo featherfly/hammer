@@ -60,6 +60,7 @@ import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.MulitiQuery;
 import cn.featherfly.common.repository.ParamedQueryExecutor;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper;
 import cn.featherfly.common.repository.mapper.MulitiQueryTupleMapperBuilder;
 import cn.featherfly.common.repository.mapper.RowMapper;
@@ -72,6 +73,8 @@ import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.MulitiQueryTupleMapperBuilderImpl;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilder;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilderImpl;
 import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutor;
 import cn.featherfly.hammer.tpl.MapParamedExecutionExecutor;
 
@@ -137,28 +140,6 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public Dialect getDialect() {
         return dialect;
-    }
-
-    @Override
-    public <T> T execute(ConnectionCallback<T> callback) {
-        Connection conn = null;
-        try {
-            conn = new ConnectionProxy(getConnection()) {
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void close() throws SQLException {
-                    // 防止外部回调手动调用connection.close()
-                    releaseConnection(proxy);
-                }
-            };
-            return callback.doInConnection(conn, manager);
-        } catch (SQLException e) {
-            throw new JdbcException(e);
-        } finally {
-            releaseConnection(conn);
-        }
     }
 
     /**
@@ -581,10 +562,8 @@ public abstract class AbstractJdbc implements Jdbc {
             }
         }
         Connection connection = getConnection();
-        try (PreparedStatement prep = generatedKeysHolder == null
-            ? connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-            : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS, ResultSet.TYPE_FORWARD_ONLY,
-                ResultSet.CONCUR_READ_ONLY)) {
+        try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
+            : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<JdbcExecution> jdbcExecutions = new ArrayList<>();
             for (Serializable[] args : argsIter) {
                 JdbcExecution execution = preHandle(sql, args);
@@ -792,6 +771,24 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> List<T> queryList(String sql, Class<T> elementType, Serializable... args) {
         return queryList(sql, getTypeMapper(elementType), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args) {
+        return queryList(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Serializable... args) {
+        return queryList(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
     }
 
     /**
@@ -1015,6 +1012,24 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> JdbcRowIterable<T> queryEach(String sql, Class<T> elementType, Serializable... args) {
         return queryEach(sql, getTypeMapper(elementType), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> RowIterable<T> queryEach(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args) {
+        return queryEach(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> RowIterable<T> queryEach(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Serializable... args) {
+        return queryEach(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
     }
 
     /**
@@ -1255,6 +1270,24 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T> T querySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args) {
+        return querySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T querySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Serializable... args) {
+        return querySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T1, T2> Tuple2<T1, T2> querySingle(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Tuple2<String, String> prefixes, Map<String, Serializable> args) {
         return singleResult(queryList(sql, elementType1, elementType2, prefixes, args));
@@ -1427,6 +1460,24 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> T queryUnique(String sql, Class<T> elementType, Serializable... args) {
         return queryUnique(sql, getTypeMapper(elementType), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Map<String, Serializable> args) {
+        return queryUnique(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Serializable... args) {
+        return queryUnique(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
     }
 
     /**
@@ -2236,6 +2287,15 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T> List<T> callQuery(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Serializable... args) {
+        return callQuery(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MulitiQuery callMultiQuery(String name, Serializable... args) {
         String procedure = getProcedure(name, args.length);
         JdbcExecution execution = preHandle(procedure, args);
@@ -2323,52 +2383,6 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> List<Tuple2<T1, T2>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Serializable... args) {
-        return callQuery(name,
-            new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes, manager),
-            args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3> List<Tuple3<T1, T2, T3>> callQuery(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
-        return callQuery(name, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> callQuery(String name, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Serializable... args) {
-        return callQuery(name, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager), args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4, T5> List<Tuple5<T1, T2, T3, T4, T5>> callQuery(String name, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
-        return callQuery(name,
-            new TupleNestedBeanPropertyRowMapper<>(
-                ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
-                manager),
-            args);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, Serializable> callQuerySingle(String name, Serializable... args) {
         return callQuerySingle(name, new MapRowMapper(manager), args);
     }
@@ -2422,39 +2436,9 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T1, T2> Tuple2<T1, T2> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Tuple2<String, String> prefixes, Serializable... args) {
-        return singleResult(callQuery(name, elementType1, elementType2, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3> Tuple3<T1, T2, T3> callQuerySingle(String name, Class<T1> elementType1, Class<T2> elementType2,
-        Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
-        return singleResult(callQuery(name, elementType1, elementType2, elementType3, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> callQuerySingle(String name, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
-        Tuple4<String, String, String, String> prefixes, Serializable... args) {
-        return singleResult(callQuery(name, elementType1, elementType2, elementType3, elementType4, prefixes, args));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> callQuerySingle(String name, Class<T1> elementType1,
-        Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4, Class<T5> elementType5,
-        Tuple5<String, String, String, String, String> prefixes, Serializable... args) {
-        return singleResult(
-            callQuery(name, elementType1, elementType2, elementType3, elementType4, elementType5, prefixes, args));
+    public <T> T callQuerySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
+        Serializable... args) {
+        return callQuerySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
     }
 
     // ****************************************************************************************************************

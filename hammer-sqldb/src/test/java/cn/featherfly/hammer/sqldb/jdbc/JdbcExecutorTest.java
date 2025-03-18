@@ -44,7 +44,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
  *
  * @author zhongj
  */
-public class JdbcTest2 extends JdbcTestBase {
+public class JdbcExecutorTest extends JdbcTestBase {
 
     private String selectAvg;
 

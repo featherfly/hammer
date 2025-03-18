@@ -2,12 +2,14 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import cn.featherfly.common.bean.PropertyAccessorFactory;
+import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
@@ -47,6 +49,28 @@ public class JdbcSpringImpl extends AbstractJdbc {
         SqlTypeMappingManager sqlTypeMappingManager, PropertyAccessorFactory propertyAccessorFactory) {
         super(dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
         this.dataSource = dataSource;
+    }
+
+    @Override
+    public <T> T execute(ConnectionCallback<T> callback) {
+        Connection conn = null;
+        try {
+            conn = new ConnectionProxy(getConnection()) {
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void close() throws SQLException {
+                    // 防止外部回调手动调用connection.close()
+                    releaseConnection(proxy);
+                }
+            };
+            return callback.doInConnection(conn, manager);
+        } catch (SQLException e) {
+            throw new JdbcException(e);
+        } finally {
+            releaseConnection(conn);
+        }
     }
 
     /**
