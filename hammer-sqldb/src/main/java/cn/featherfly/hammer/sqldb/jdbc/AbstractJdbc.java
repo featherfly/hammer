@@ -779,7 +779,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Map<String, Serializable> args) {
-        return queryList(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return queryList(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -788,7 +788,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Serializable... args) {
-        return queryList(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return queryList(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -877,7 +877,8 @@ public abstract class AbstractJdbc implements Jdbc {
         //        }
         //        return query(sql, rowMapper, args);
         return queryList(sql,
-            new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes, manager),
+            new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes,
+                this::getTypeMapper),
             args);
     }
 
@@ -888,7 +889,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3> List<Tuple3<T1, T2, T3>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return queryList(sql, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
+            ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, this::getTypeMapper), args);
     }
 
     /**
@@ -899,7 +900,8 @@ public abstract class AbstractJdbc implements Jdbc {
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return queryList(sql, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager), args);
+            ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, this::getTypeMapper),
+            args);
     }
 
     /**
@@ -912,7 +914,7 @@ public abstract class AbstractJdbc implements Jdbc {
         return queryList(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
-                manager),
+                this::getTypeMapper),
             args);
     }
 
@@ -926,7 +928,7 @@ public abstract class AbstractJdbc implements Jdbc {
         return queryList(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5, elementType6),
-                prefixes, manager),
+                prefixes, this::getTypeMapper),
             args);
     }
 
@@ -1020,7 +1022,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> RowIterable<T> queryEach(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Map<String, Serializable> args) {
-        return queryEach(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return queryEach(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -1029,7 +1031,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> RowIterable<T> queryEach(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Serializable... args) {
-        return queryEach(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return queryEach(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -1112,7 +1114,8 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Tuple2<String, String> prefixes, Serializable... args) {
         return queryEach(sql,
-            new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes, manager),
+            new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes,
+                this::getTypeMapper),
             args);
     }
 
@@ -1123,7 +1126,7 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3> JdbcRowIterable<Tuple3<T1, T2, T3>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Tuple3<String, String, String> prefixes, Serializable... args) {
         return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, manager), args);
+            ArrayUtils.toList(elementType1, elementType2, elementType3), prefixes, this::getTypeMapper), args);
     }
 
     /**
@@ -1134,7 +1137,8 @@ public abstract class AbstractJdbc implements Jdbc {
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Serializable... args) {
         return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, manager), args);
+            ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, this::getTypeMapper),
+            args);
     }
 
     /**
@@ -1147,7 +1151,7 @@ public abstract class AbstractJdbc implements Jdbc {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5), prefixes,
-                manager),
+                this::getTypeMapper),
             args);
     }
 
@@ -1162,7 +1166,7 @@ public abstract class AbstractJdbc implements Jdbc {
         return queryEach(sql,
             new TupleNestedBeanPropertyRowMapper<>(
                 ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4, elementType5, elementType6),
-                prefixes, manager),
+                prefixes, this::getTypeMapper),
             args);
     }
 
@@ -1272,7 +1276,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> T querySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Map<String, Serializable> args) {
-        return querySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return querySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -1281,7 +1285,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> T querySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Serializable... args) {
-        return querySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return querySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -1468,7 +1472,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Map<String, Serializable> args) {
-        return queryUnique(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return queryUnique(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -1477,7 +1481,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Serializable... args) {
-        return queryUnique(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return queryUnique(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -2289,7 +2293,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> List<T> callQuery(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Serializable... args) {
-        return callQuery(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return callQuery(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     /**
@@ -2438,7 +2442,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> T callQuerySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Serializable... args) {
-        return callQuerySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(manager, this::getTypeMapper)), args);
+        return callQuerySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
     // ****************************************************************************************************************
@@ -2729,10 +2733,17 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T> RowMapper<T> getTypeMapper(Class<T> elementType) {
-        if (elementType == Object.class || manager.getSqlType(elementType) != null) {
-            return new SingleColumnRowMapper<>(elementType, manager);
+        return getTypeMapper(elementType, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> RowMapper<T> getTypeMapper(Class<T> elementType, String prefix) {
+        if (ClassUtils.isMap(elementType)) {
+            return (RowMapper<T>) new MapRowMapper(manager, prefix);
+        } else if (elementType == Object.class || manager.getSqlType(elementType) != null) {
+            return new SingleColumnRowMapper<>(elementType, manager, prefix);
         } else {
-            return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager);
+            return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager, prefix);
         }
     }
 

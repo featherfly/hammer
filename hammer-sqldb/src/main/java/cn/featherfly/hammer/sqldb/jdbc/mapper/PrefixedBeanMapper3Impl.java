@@ -9,8 +9,8 @@
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
-import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.ChainListImpl;
 import cn.featherfly.common.tuple.Tuple3;
@@ -28,21 +28,21 @@ public class PrefixedBeanMapper3Impl<T1, T2, T3> implements PrefixedBeanMapper3<
 
     private final Tuple3<String, String, String> prefixes;
 
-    private final SqlTypeMappingManager manager;
+    private final BiFunction<Class<?>, String, RowMapper<?>> getRowMapper;
 
     /**
      * Instantiates a new prefixed bean mapper 4 impl.
      *
-     * @param manager the manager
      * @param types the types
      * @param prefixes the prefixes
+     * @param getRowMapper the get row mapper
      */
-    public PrefixedBeanMapper3Impl(SqlTypeMappingManager manager, List<Class<?>> types,
-        Tuple3<String, String, String> prefixes) {
+    public PrefixedBeanMapper3Impl(List<Class<?>> types,
+        Tuple3<String, String, String> prefixes, BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
         super();
-        this.manager = manager;
         this.types = types;
         this.prefixes = prefixes;
+        this.getRowMapper = getRowMapper;
     }
 
     /**
@@ -50,7 +50,7 @@ public class PrefixedBeanMapper3Impl<T1, T2, T3> implements PrefixedBeanMapper3<
      */
     @Override
     public RowMapper<Tuple3<T1, T2, T3>> mapper() {
-        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, manager);
+        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, getRowMapper);
     }
 
     /**
@@ -58,7 +58,7 @@ public class PrefixedBeanMapper3Impl<T1, T2, T3> implements PrefixedBeanMapper3<
      */
     @Override
     public <T4> PrefixedBeanMapper4<T1, T2, T3, T4> map(String prefix, Class<T4> type) {
-        return new PrefixedBeanMapper4Impl<>(manager, new ChainListImpl<>(types).addChain(type),
-            Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefix));
+        return new PrefixedBeanMapper4Impl<>(new ChainListImpl<>(types).addChain(type),
+            Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefix), getRowMapper);
     }
 }

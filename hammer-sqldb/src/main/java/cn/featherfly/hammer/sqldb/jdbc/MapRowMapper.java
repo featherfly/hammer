@@ -13,31 +13,26 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapper.SqlResultSet;
-import cn.featherfly.common.db.mapping.JdbcMappingException;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
-import cn.featherfly.common.lang.AssertIllegalArgument;
-import cn.featherfly.common.repository.builder.AliasManager;
-import cn.featherfly.common.repository.builder.AliasManager.AliasGeneretor;
 
 /**
  * MapRowMapper.
  *
  * @author zhongj
  */
-public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowMapper<Map<String, Serializable>> {
+public class MapRowMapper extends AbstractRowMapper<Map<String, Serializable>> {
 
-    private final Map<String, Class<? extends Serializable>> mappingMap = new LinkedHashMap<>();
+    private final List<Mapping> mappings = new ArrayList<>();
 
-    private static final AliasGeneretor ALIAS_GENERETOR = (name, no) -> name + "(" + no + ")";
+    private final SqlTypeMappingManager manager;
 
-    private SqlTypeMappingManager manager;
+    private final String prefix;
 
     /**
      * Instantiates a new map row mapper.
@@ -45,51 +40,54 @@ public class MapRowMapper implements cn.featherfly.common.repository.mapper.RowM
      * @param manager the manager
      */
     public MapRowMapper(SqlTypeMappingManager manager) {
-        super();
-        this.manager = manager;
+        this(manager, null);
     }
 
     /**
-     * {@inheritDoc}
+     * Instantiates a new map row mapper.
+     *
+     * @param manager the manager
      */
-    @Override
-    public Map<String, Serializable> mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
-        ResultSet rs = null;
-        if (res instanceof SqlResultSet) {
-            SqlResultSet sqlrs = (SqlResultSet) res;
-            rs = sqlrs.getResultSet();
-            AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
-        } else {
-            throw new JdbcMappingException("ResultSet is not type of SqlResultSet");
-        }
-
-        try {
-            return mapRow(rs, rowNum);
-        } catch (SQLException e) {
-            throw new JdbcException(e);
-        }
+    public MapRowMapper(SqlTypeMappingManager manager, String prefix) {
+        super();
+        this.manager = manager;
+        this.prefix = prefix;
     }
 
+    @Override
     public Map<String, Serializable> mapRow(ResultSet res, int rowNum) throws SQLException {
         if (rowNum == 0) {
-            AliasManager aliasManager = new AliasManager(ALIAS_GENERETOR);
             ResultSetMetaData metaData = res.getMetaData();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 String name = JdbcUtils.lookupColumnName(metaData, i, true);
-                if (mappingMap.containsKey(name)) {
-                    name = aliasManager.put(name);
+                if (prefix != null) {
+                    if (name.startsWith(prefix)) {
+                        name = org.apache.commons.lang3.StringUtils.removeStart(name, prefix);
+                    } else {
+                        // need match prefix, so ignore not matched
+                        continue;
+                    }
                 }
-                mappingMap.put(name, manager.getJavaType(JdbcUtils.getResultSetType(res, i)));
+                Mapping mapping = new Mapping();
+                mapping.index = i;
+                mapping.name = name;
+                mapping.type = manager.getJavaType(JdbcUtils.getResultSetType(res, i));
+                mappings.add(mapping);
             }
         }
-        int columnIndex = 1;
         Map<String, Serializable> resultMap = new LinkedHashMap<>();
-        for (Entry<String, Class<? extends Serializable>> entry : mappingMap.entrySet()) {
-            resultMap.put(entry.getKey(), manager.get(res, columnIndex, entry.getValue()));
-            columnIndex++;
+        for (Mapping mapping : mappings) {
+            resultMap.put(mapping.name, manager.get(res, mapping.index, mapping.type));
         }
         return resultMap;
-        //        return JdbcUtils.getResultSetMap(res, manager);
     }
 
+    private class Mapping {
+
+        int index;
+
+        String name;
+
+        Class<? extends Serializable> type;
+    }
 }

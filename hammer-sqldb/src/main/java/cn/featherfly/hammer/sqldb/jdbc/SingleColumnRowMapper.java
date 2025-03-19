@@ -8,11 +8,9 @@ import javax.annotation.Nonnull;
 
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
@@ -29,7 +27,7 @@ import cn.featherfly.common.repository.mapper.RowMapper;
  * @see SqlTypeMappingManager#get(ResultSet, int, Class)
  * @since 0.5.7
  */
-public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository.mapper.RowMapper<T> {
+public class SingleColumnRowMapper<T> extends AbstractRowMapper<T> {
 
     private Class<?> requiredType;
 
@@ -37,7 +35,7 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
 
     private String prefix;
 
-    private int matchIndex = 1;
+    private int matchIndex = -1;
 
     /**
      * Create a new {@code SingleColumnRowMapper}.
@@ -77,27 +75,7 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
         this.requiredType = ClassUtils.getPrimitiveWrapped(requiredType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public T mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
-        ResultSet rs = null;
-        if (res instanceof SqlResultSet) {
-            SqlResultSet sqlrs = (SqlResultSet) res;
-            rs = sqlrs.getResultSet();
-            AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
-        } else {
-            throw new JdbcException("ResultSet is not type of SqlResultSet");
-        }
-
-        try {
-            return mapRow(rs, rowNum);
-        } catch (SQLException e) {
-            throw new JdbcException(e);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public T mapRow(ResultSet rs, int rowNum) throws SQLException {
         // Validate column count.
@@ -111,6 +89,10 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
     }
 
     private void check(ResultSet rs) throws SQLException {
+        if (matchIndex > 0) {
+            return;
+        }
+
         ResultSetMetaData rsmd = rs.getMetaData();
         if (prefix == null) {
             int nrOfColumns = rsmd.getColumnCount();
@@ -121,23 +103,23 @@ public class SingleColumnRowMapper<T> implements cn.featherfly.common.repository
             matchIndex = 1;
         } else {
             int columnCount = rsmd.getColumnCount();
-            String matchFiled = null;
+            //            String matchFiled = null;
             for (int index = 1; index <= columnCount; index++) {
-                String fieldName = JdbcUtils.getColumnName(rs, index);
+                String fieldName = JdbcUtils.lookupColumnName(rsmd, index);
                 if (fieldName.startsWith(prefix)) {
-                    if (matchFiled != null) {
-                        throw new JdbcException(
-                            Str.format("there is more than one column name [{0},{1}] with prefix {2}", matchFiled,
-                                fieldName, prefix));
-                    }
-                    matchFiled = fieldName;
+                    //                    if (matchFiled != null) {
+                    //                        throw new JdbcException(
+                    //                            Str.format("there is more than one column name [{0},{1}] with prefix {2}", matchFiled,
+                    //                                fieldName, prefix));
+                    //                    }
+                    //                    matchFiled = fieldName;
                     matchIndex = index;
+                    return;
                 }
             }
             if (matchIndex == -1) {
                 throw new JdbcException("there is no column name with prefix " + prefix);
             }
-            // TODO 未测试
         }
     }
 

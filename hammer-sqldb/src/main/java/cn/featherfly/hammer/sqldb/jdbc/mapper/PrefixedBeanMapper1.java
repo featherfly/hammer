@@ -1,11 +1,25 @@
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
+import java.io.Serializable;
+import java.util.Map;
+
 /**
  * prefixed bean mapper1.
  *
+ * @author zhongj
  * @param <T1> the generic type
  */
 public interface PrefixedBeanMapper1<T1> extends PrefixedBeanMapper<T1> {
+
+    /**
+     * Map.
+     *
+     * @param prefix the prefix
+     * @return the prefix bean property mapper 2
+     */
+    default PrefixedBeanMapper2<T1, Map<String, Serializable>> map(String prefix) {
+        return map(prefix, MAP_TYPE);
+    }
 
     /**
      * Map.

@@ -9,8 +9,8 @@
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
-import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.ChainListImpl;
 import cn.featherfly.common.tuple.Tuple5;
@@ -33,7 +33,7 @@ public class PrefixedBeanMapper5Impl<T1, T2, T3, T4, T5> implements PrefixedBean
 
     private final Tuple5<String, String, String, String, String> prefixes;
 
-    private final SqlTypeMappingManager manager;
+    private final BiFunction<Class<?>, String, RowMapper<?>> getRowMapper;
 
     /**
      * Instantiates a new prefixed bean mapper 5 impl.
@@ -42,12 +42,13 @@ public class PrefixedBeanMapper5Impl<T1, T2, T3, T4, T5> implements PrefixedBean
      * @param types the types
      * @param prefixes the prefixes
      */
-    public PrefixedBeanMapper5Impl(SqlTypeMappingManager manager, List<Class<?>> types,
-        Tuple5<String, String, String, String, String> prefixes) {
+    public PrefixedBeanMapper5Impl(List<Class<?>> types,
+        Tuple5<String, String, String, String, String> prefixes,
+        BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
         super();
-        this.manager = manager;
         this.types = types;
         this.prefixes = prefixes;
+        this.getRowMapper = getRowMapper;
     }
 
     /**
@@ -55,7 +56,7 @@ public class PrefixedBeanMapper5Impl<T1, T2, T3, T4, T5> implements PrefixedBean
      */
     @Override
     public RowMapper<Tuple5<T1, T2, T3, T4, T5>> mapper() {
-        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, manager);
+        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, getRowMapper);
     }
 
     /**
@@ -63,7 +64,8 @@ public class PrefixedBeanMapper5Impl<T1, T2, T3, T4, T5> implements PrefixedBean
      */
     @Override
     public <T6> PrefixedBeanMapper6<T1, T2, T3, T4, T5, T6> map(String prefix, Class<T6> type) {
-        return new PrefixedBeanMapper6Impl<>(manager, new ChainListImpl<>(types).addChain(type),
-            Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefixes.get3(), prefixes.get4(), prefix));
+        return new PrefixedBeanMapper6Impl<>(new ChainListImpl<>(types).addChain(type),
+            Tuples.of(prefixes.get0(), prefixes.get1(), prefixes.get2(), prefixes.get3(), prefixes.get4(), prefix),
+            getRowMapper);
     }
 }

@@ -9,14 +9,14 @@
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
-import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.hammer.sqldb.jdbc.TupleNestedBeanPropertyRowMapper;
 
 /**
- * PrefixedBeanMapper1Impl.
+ * PrefixedBeanMapper6Impl.
  *
  * @author zhongj
  */
@@ -26,17 +26,22 @@ public class PrefixedBeanMapper6Impl<T1, T2, T3, T4, T5, T6> implements Prefixed
 
     private final Tuple6<String, String, String, String, String, String> prefixes;
 
-    private final SqlTypeMappingManager manager;
+    private final BiFunction<Class<?>, String, RowMapper<?>> getRowMapper;
 
     /**
-     * @param getRowMapper
+     * Instantiates a new prefixed bean mapper 6 impl.
+     *
+     * @param types the types
+     * @param prefixes the prefixes
+     * @param getRowMapper the get row mapper
      */
-    public PrefixedBeanMapper6Impl(SqlTypeMappingManager manager, List<Class<?>> types,
-        Tuple6<String, String, String, String, String, String> prefixes) {
+    public PrefixedBeanMapper6Impl(List<Class<?>> types,
+        Tuple6<String, String, String, String, String, String> prefixes,
+        BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
         super();
-        this.manager = manager;
         this.types = types;
         this.prefixes = prefixes;
+        this.getRowMapper = getRowMapper;
     }
 
     /**
@@ -44,6 +49,6 @@ public class PrefixedBeanMapper6Impl<T1, T2, T3, T4, T5, T6> implements Prefixed
      */
     @Override
     public RowMapper<Tuple6<T1, T2, T3, T4, T5, T6>> mapper() {
-        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, manager);
+        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, getRowMapper);
     }
 }

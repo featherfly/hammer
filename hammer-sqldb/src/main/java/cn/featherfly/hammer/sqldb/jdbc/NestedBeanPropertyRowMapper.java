@@ -36,9 +36,7 @@ import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.Instantiator;
 import cn.featherfly.common.bean.NoSuchPropertyException;
 import cn.featherfly.common.bean.ReflectionInstantiator;
-import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
-import cn.featherfly.common.db.mapper.SqlResultSet;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.mapper.RowMapper;
@@ -81,7 +79,7 @@ import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
  * @since 0.1.0
  */
 // ENHANCE 后续去掉spring的相关逻辑，使用PropertyAccessorFactory对映射和属性访问进行重构
-public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repository.mapper.RowMapper<T> {
+public class NestedBeanPropertyRowMapper<T> extends AbstractRowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -162,6 +160,20 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      */
     public NestedBeanPropertyRowMapper(Instantiator<T> mapperObjectInstantiator, SqlTypeMappingManager manager) {
         this(mapperObjectInstantiator, manager, false);
+    }
+
+    /**
+     * Create a new {@code BeanPropertyRowMapper}, accepting unpopulated
+     * properties in the target bean.
+     * <p>
+     *
+     * @param mapperObjectInstantiator the mapper object instantiator
+     * @param manager the manager
+     * @param prefix the prefix
+     */
+    public NestedBeanPropertyRowMapper(Instantiator<T> mapperObjectInstantiator, SqlTypeMappingManager manager,
+        String prefix) {
+        this(mapperObjectInstantiator, manager, prefix, false);
     }
 
     /**
@@ -367,27 +379,6 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
         return name.toLowerCase(Locale.US);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public T mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
-        ResultSet rs = null;
-        if (res instanceof SqlResultSet) {
-            SqlResultSet sqlrs = (SqlResultSet) res;
-            rs = sqlrs.getResultSet();
-            AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
-        } else {
-            throw new JdbcException("ResultSet is not type of SqlResultSet");
-        }
-
-        try {
-            return mapRow(rs, rowNum);
-        } catch (SQLException e) {
-            throw new JdbcException(e);
-        }
-    }
-
     private List<Mapping> mappings;
 
     /**
@@ -401,6 +392,7 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * @throws SQLException the SQL exception
      * @see java.sql.ResultSetMetaData
      */
+    @Override
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         T mappedObject = mapperObjectInstantiator.instantiate();
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
@@ -420,9 +412,6 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
             BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
 
             for (int index = 1; index <= columnCount; index++) {
-                Mapping mapping = new Mapping();
-                mappings.add(mapping);
-
                 String column = JdbcUtils.lookupColumnName(rsmd, index);
                 if (prefix != null) {
                     if (column.startsWith(prefix)) {
@@ -439,6 +428,9 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
                     nestedProperty = true;
                     field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");
                 }
+                Mapping mapping = new Mapping();
+                mappings.add(mapping);
+                mapping.index = index;
                 mapping.column = rsmd.getColumnName(index);
                 mapping.columnAs = column;
 
@@ -491,39 +483,39 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
 
         Assert.state(mappedClass != null, "Mapped class was not specified");
 
-        for (int index = 1; index <= mappings.size(); index++) {
-            BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
-            Mapping mapping = mappings.get(index - 1);
-            if (mapping.propertyDescriptor != null) {
-                try {
-                    Object value = null;
-                    if (mapping.beanProperty != null) {
-                        value = manager.get(rs, index, mapping.beanProperty);
-                        beanDescriptor.setProperty(mappedObject, mapping.property, value);
-                    } else {
-                        value = getColumnValue(rs, index, mapping.propertyDescriptor);
-                        try {
-                            bw.setPropertyValue(mapping.propertyDescriptor.getName(), value);
-                        } catch (TypeMismatchException ex) {
-                            if (value == null && primitivesDefaultedForNullValue) {
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug(
-                                        "Intercepted TypeMismatchException for row " + rowNumber + " and column '"
-                                            + mapping.columnAs + "' with null value when setting property '"
-                                            + mapping.propertyDescriptor.getName() + "' of type '"
-                                            + ClassUtils.getQualifiedName(mapping.propertyDescriptor.getPropertyType())
-                                            + "' on object: " + mappedObject,
-                                        ex);
-                                }
-                            } else {
-                                throw ex;
+        BeanDescriptor<T> beanDescriptor = BeanDescriptor.getBeanDescriptor(mappedClass);
+        for (Mapping mapping : mappings) {
+            if (mapping.propertyDescriptor == null) {
+                continue;
+            }
+            try {
+                Object value = null;
+                if (mapping.beanProperty != null) {
+                    value = manager.get(rs, mapping.index, mapping.beanProperty);
+                    beanDescriptor.setProperty(mappedObject, mapping.property, value);
+                } else {
+                    value = getColumnValue(rs, mapping.index, mapping.propertyDescriptor);
+                    try {
+                        bw.setPropertyValue(mapping.propertyDescriptor.getName(), value);
+                    } catch (TypeMismatchException ex) {
+                        if (value == null && primitivesDefaultedForNullValue) {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug(
+                                    "Intercepted TypeMismatchException for row " + rowNumber + " and column '"
+                                        + mapping.columnAs + "' with null value when setting property '"
+                                        + mapping.propertyDescriptor.getName() + "' of type '"
+                                        + ClassUtils.getQualifiedName(mapping.propertyDescriptor.getPropertyType())
+                                        + "' on object: " + mappedObject,
+                                    ex);
                             }
+                        } else {
+                            throw ex;
                         }
                     }
-                } catch (NotWritablePropertyException ex) {
-                    throw new DataRetrievalFailureException(
-                        "Unable to map column '" + mapping.columnAs + "' to property '" + mapping.property + "'", ex);
                 }
+            } catch (NotWritablePropertyException ex) {
+                throw new DataRetrievalFailureException(
+                    "Unable to map column '" + mapping.columnAs + "' to property '" + mapping.property + "'", ex);
             }
         }
 
@@ -581,6 +573,9 @@ public class NestedBeanPropertyRowMapper<T> implements cn.featherfly.common.repo
      * @author zhongj
      */
     public static class Mapping {
+
+        /** The index. */
+        int index;
 
         /** The column. */
         String column;

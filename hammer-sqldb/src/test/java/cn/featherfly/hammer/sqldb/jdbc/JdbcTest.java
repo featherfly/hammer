@@ -340,6 +340,11 @@ public class JdbcTest extends JdbcTestBase {
         List<UserInfo> idList = jdbc.queryList(sql, b -> b.mapper(UserInfo.class));
         assertEquals(idList.size(), 1);
         assertEquals(idList.get(0).getId(), id);
+
+        sql = "select id as `ui.id`, name as `ui.name` from user_info where id = " + id;
+        List<Map<String, Serializable>> list2 = jdbc.queryList(sql, b -> b.map("ui.").mapper());
+        assertEquals(list2.size(), 1);
+        assertEquals(list2.get(0).get("id"), id);
     }
 
     @Test
@@ -351,6 +356,14 @@ public class JdbcTest extends JdbcTestBase {
             assertEquals(tuple.get0().getId(), tuple.get1().getUser().getId());
             assertNotNull(tuple.get0().getUsername());
             assertNotNull(tuple.get1().getName());
+        }
+
+        List<Tuple2<User, Map<String, Serializable>>> list2 = jdbc.queryList(sql,
+            b -> b.map("_user0.", User.class).map("ui.").mapper(), queryTupleListParamsArray);
+        for (Tuple2<User, Map<String, Serializable>> tuple : list2) {
+            assertEquals(tuple.get0().getId(), tuple.get1().get("user.id"));
+            assertNotNull(tuple.get0().getUsername());
+            assertNotNull(tuple.get1().get("name"));
         }
 
         sql = sql.replace("?", ":id");
@@ -384,6 +397,28 @@ public class JdbcTest extends JdbcTestBase {
             assertNotNull(r.get0().getUsername());
             assertNotNull(r.get1().getName());
             assertNotNull(r.get2().getRoleId());
+        }
+
+        List<Tuple3<User, UserInfo, Map<String, Serializable>>> list2 = jdbc.queryList(sql,
+            b -> b.map("_user0.", User.class).map("ui.", UserInfo.class).map("ur.").mapper(),
+            queryTupleListParamsArray);
+        for (Tuple3<User, UserInfo, Map<String, Serializable>> r : list2) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2().get("userId"));
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2().get("roleId"));
+        }
+
+        List<Tuple3<User, UserInfo, Integer>> list3 = jdbc.queryList(sql,
+            b -> b.map("_user0.", User.class).map("ui.", UserInfo.class).map("ur.", Integer.class).mapper(),
+            queryTupleListParamsArray);
+        for (Tuple3<User, UserInfo, Integer> r : list3) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2());
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2());
         }
 
         sql = sql.replace("?", ":id");
@@ -426,6 +461,34 @@ public class JdbcTest extends JdbcTestBase {
             assertNotNull(r.get1().getName());
             assertNotNull(r.get2().getRoleId());
             assertNotNull(r.get3().getName());
+        }
+
+        List<Tuple4<User, UserInfo, UserRole, Map<String, Serializable>>> list2 = jdbc.queryList(sql,
+            b -> b.map("_user0.", User.class).map("ui.", UserInfo.class).map("ur.", UserRole.class)
+                .map("r.").mapper(),
+            queryTupleListParamsArray);
+        for (Tuple4<User, UserInfo, UserRole, Map<String, Serializable>> r : list2) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
+            assertEquals(r.get2().getRoleId(), r.get3().get("id"));
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2().getRoleId());
+            assertNotNull(r.get3().get("name"));
+        }
+
+        List<Tuple4<User, UserInfo, Integer, Map<String, Serializable>>> list3 = jdbc.queryList(sql,
+            b -> b.map("_user0.", User.class).map("ui.", UserInfo.class).map("ur.", Integer.class)
+                .map("r.").mapper(),
+            queryTupleListParamsArray);
+        for (Tuple4<User, UserInfo, Integer, Map<String, Serializable>> r : list3) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2());
+            //            assertEquals(r.get2(), r.get3().get("id"));
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2());
+            assertNotNull(r.get3().get("name"));
         }
 
         sql = sql.replace("?", ":id");
@@ -475,6 +538,22 @@ public class JdbcTest extends JdbcTestBase {
             assertNotNull(r.get2().getRoleId());
             assertNotNull(r.get3().getName());
             assertNotNull(r.get4().getAppId());
+        }
+
+        List<Tuple5<User, UserInfo, UserRole, Role, Map<String, Serializable>>> list2 = jdbc.queryList(sql,
+            b -> b.map("_user0.", User.class).map("ui.", UserInfo.class).map("ur.", UserRole.class)
+                .map("r.", Role.class).map("o.").mapper(),
+            queryTupleListParamsArray);
+        for (Tuple5<User, UserInfo, UserRole, Role, Map<String, Serializable>> r : list2) {
+            assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+            assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
+            assertEquals(r.get2().getRoleId(), r.get3().getId());
+            assertEquals(r.get4().get("createUser.id"), r.get0().getId());
+            assertNotNull(r.get0().getUsername());
+            assertNotNull(r.get1().getName());
+            assertNotNull(r.get2().getRoleId());
+            assertNotNull(r.get3().getName());
+            assertNotNull(r.get4().get("appId"));
         }
 
         sql = sql.replace("?", ":id");

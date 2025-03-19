@@ -29,7 +29,25 @@ TODO dsl实体查询加入以下（EntityQuery）
     
 4. [Entity|Repository] DSL sort expression加入order(SortOperator, ...)用于通过参数确定排序方式
 
-5.  Jdbc 加入 query[List|Each|Single|Unique]|callQuery[Single] (.., Function<TupleRowMapperBuilder, RowMapper<T>>, ..)
+5. Jdbc 加入 query[List|Each|Single|Unique]|callQuery[Single] (.., Function<TupleRowMapperBuilder, RowMapper<T>>, ..)
+
+6. tuple mapping 支持混合使用 Bean, Map, and ValueObject
+
+    ```java
+    List<Tuple4<User, UserInfo, Integer, Map<String, Serializable>>> list3 = jdbc.queryList(sql,
+        b -> b.map("_user0.", User.class).map("ui.", UserInfo.class) // mapping with Bean
+        .map("ur.", Integer.class) // mapping with Integer
+        .map("r.") // mapping with Map
+        .mapper(), queryTupleListParamsArray);
+    for (Tuple4<User, UserInfo, Integer, Map<String, Serializable>> r : list3) {
+        assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
+        assertEquals(r.get1().getUser().getId(), r.get2());
+        assertNotNull(r.get0().getUsername());
+        assertNotNull(r.get1().getName());
+        assertNotNull(r.get2());
+        assertNotNull(r.get3().get("name"));
+    }
+    ```
 
 # 0.7.3 2025-02-14
 

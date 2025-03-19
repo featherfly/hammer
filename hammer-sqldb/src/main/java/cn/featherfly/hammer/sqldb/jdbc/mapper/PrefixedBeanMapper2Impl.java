@@ -9,8 +9,8 @@
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
-import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.ChainListImpl;
 import cn.featherfly.common.tuple.Tuple2;
@@ -21,6 +21,8 @@ import cn.featherfly.hammer.sqldb.jdbc.TupleNestedBeanPropertyRowMapper;
  * PrefixedBeanMapper1Impl.
  *
  * @author zhongj
+ * @param <T1> the generic type
+ * @param <T2> the generic type
  */
 public class PrefixedBeanMapper2Impl<T1, T2> implements PrefixedBeanMapper2<T1, T2> {
 
@@ -28,17 +30,21 @@ public class PrefixedBeanMapper2Impl<T1, T2> implements PrefixedBeanMapper2<T1, 
 
     private final Tuple2<String, String> prefixes;
 
-    private final SqlTypeMappingManager manager;
+    private final BiFunction<Class<?>, String, RowMapper<?>> getRowMapper;
 
     /**
-     * @param getRowMapper
+     * Instantiates a new prefixed bean mapper 2 impl.
+     *
+     * @param types the types
+     * @param prefixes the prefixes
+     * @param getRowMapper the get row mapper
      */
-    public PrefixedBeanMapper2Impl(SqlTypeMappingManager manager, List<Class<?>> types,
-        Tuple2<String, String> prefixes) {
+    public PrefixedBeanMapper2Impl(List<Class<?>> types,
+        Tuple2<String, String> prefixes, BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
         super();
-        this.manager = manager;
         this.types = types;
         this.prefixes = prefixes;
+        this.getRowMapper = getRowMapper;
     }
 
     /**
@@ -46,7 +52,7 @@ public class PrefixedBeanMapper2Impl<T1, T2> implements PrefixedBeanMapper2<T1, 
      */
     @Override
     public RowMapper<Tuple2<T1, T2>> mapper() {
-        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, manager);
+        return new TupleNestedBeanPropertyRowMapper<>(types, prefixes, getRowMapper);
     }
 
     /**
@@ -54,7 +60,7 @@ public class PrefixedBeanMapper2Impl<T1, T2> implements PrefixedBeanMapper2<T1, 
      */
     @Override
     public <T3> PrefixedBeanMapper3<T1, T2, T3> map(String prefix, Class<T3> type) {
-        return new PrefixedBeanMapper3Impl<>(manager, new ChainListImpl<>(types).addChain(type),
-            Tuples.of(prefixes.get0(), prefixes.get1(), prefix));
+        return new PrefixedBeanMapper3Impl<>(new ChainListImpl<>(types).addChain(type),
+            Tuples.of(prefixes.get0(), prefixes.get1(), prefix), getRowMapper);
     }
 }

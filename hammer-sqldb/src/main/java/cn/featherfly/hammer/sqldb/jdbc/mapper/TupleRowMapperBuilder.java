@@ -8,6 +8,9 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
@@ -21,6 +24,18 @@ import cn.featherfly.common.tuple.Tuple6;
  * @author zhongj
  */
 public interface TupleRowMapperBuilder {
+
+    /**
+     * Mapper.
+     *
+     * @param <T> the generic type
+     * @param prefix the prefix
+     * @param type the type
+     * @return the paramed mapped executor
+     */
+    default PrefixedBeanMapper1<Map<String, Serializable>> map(String prefix) {
+        return map(prefix, PrefixedBeanMapper.MAP_TYPE);
+    }
 
     /**
      * Mapper.

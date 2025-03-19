@@ -5,6 +5,7 @@ import cn.featherfly.common.tuple.Tuple6;
 /**
  * prefixed bean mapper6.
  *
+ * @author zhongj
  * @param <T1> the generic type
  * @param <T2> the generic type
  * @param <T3> the generic type
