@@ -19,9 +19,9 @@ import cn.featherfly.common.repository.MulitiQuery;
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper;
 import cn.featherfly.common.repository.mapper.MulitiQueryTupleMapperBuilder;
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
 import cn.featherfly.common.tuple.MutableTuple;
 import cn.featherfly.common.tuple.Tuple;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilder;
 
 /**
  * jdbc procedure.

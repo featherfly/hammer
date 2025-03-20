@@ -11,6 +11,8 @@ package cn.featherfly.hammer.sqldb.jdbc.mapper;
 import java.util.function.BiFunction;
 
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper1;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper2;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.tuple.Tuples;
 

@@ -8,10 +8,10 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
-import cn.featherfly.common.bean.InstantiatorFactory;
+import java.util.function.BiFunction;
+
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper6;
 import cn.featherfly.common.repository.mapper.RowMapper;
-import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
  * MulitiQueryRowMapper6.
@@ -31,10 +31,10 @@ public class MulitiQueryRowMapper6Impl<T1, T2, T3, T4, T5, T6> extends AbstractM
      * Instantiates a new muliti query row mapper 6 impl.
      *
      * @param rowMappers the row mappers
-     * @param jdbc the jdbc
-     * @param instantiatorFactory the instantiator factory
+     * @param getRowMapper the get row mapper
      */
-    public MulitiQueryRowMapper6Impl(RowMapper<?>[] rowMappers, Jdbc jdbc, InstantiatorFactory instantiatorFactory) {
-        super(rowMappers, jdbc, instantiatorFactory);
+    public MulitiQueryRowMapper6Impl(RowMapper<?>[] rowMappers,
+        BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
+        super(rowMappers, getRowMapper);
     }
 }

@@ -48,6 +48,23 @@ TODO dsl实体查询加入以下（EntityQuery）
         assertNotNull(r.get3().get("name"));
     }
     ```
+    
+7. MulitiQueryTupleMapperBuilder支持Function<TupleRowMapperBuilder, RowMapper<T>映射单个查询使用Tuple进行多重映射
+
+    ```java
+    Tuple6<List<User>, List<UserInfo2>, List<Order2>, List<Map<String, Serializable>>, List<UserRole>,
+                List<Tuple5<User, UserInfo, UserRole, Role, Order>>> mulitiList = jdbc.callMultiQuery(name,
+                    mapperBuilder -> mapperBuilder.mapper(User.class).mapper(UserInfo2.class).mapper(Order2.class).mapper()
+                        .mapper(UserRole.class)
+                        .mapper(b -> b.map("_user0.", User.class).map("ui.", UserInfo.class).map("ur.", UserRole.class)
+                            .map("r.", Role.class).map("o.", Order.class).mapper()),
+                    params);
+    for (Tuple5<User, UserInfo, UserRole, Role, Order> tuple : mulitiList.get5()) {
+        assertEquals(tuple.get0().getId(), uid);
+    }
+    ```
+
+    
 
 # 0.7.3 2025-02-14
 

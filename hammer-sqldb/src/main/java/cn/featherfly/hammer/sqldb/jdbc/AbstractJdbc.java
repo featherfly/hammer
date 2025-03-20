@@ -57,13 +57,16 @@ import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.reflect.Type;
+import cn.featherfly.common.repository.ArrayParamedExecutionExecutor;
 import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.MapParamedExecutionExecutor;
 import cn.featherfly.common.repository.MulitiQuery;
 import cn.featherfly.common.repository.ParamedQueryExecutor;
 import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper;
 import cn.featherfly.common.repository.mapper.MulitiQueryTupleMapperBuilder;
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
 import cn.featherfly.common.tuple.MutableTuple;
 import cn.featherfly.common.tuple.Tuple;
 import cn.featherfly.common.tuple.Tuple2;
@@ -73,10 +76,7 @@ import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.MulitiQueryTupleMapperBuilderImpl;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilder;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilderImpl;
-import cn.featherfly.hammer.tpl.ArrayParamedExecutionExecutor;
-import cn.featherfly.hammer.tpl.MapParamedExecutionExecutor;
 
 /**
  * AbstractJdbc.
@@ -692,6 +692,45 @@ public abstract class AbstractJdbc implements Jdbc {
     public ParamedQueryExecutor query(String sql, Map<String, Serializable> args) {
         // MapParamedExecutionExecutor has no page query api, so SqlPageFactory may be null
         return new MapParamedExecutionExecutor<>(new JdbcExecutor(this, propertyAccessorFactory, null), sql, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E query(String sql, SqlResultSetExtractor<E> extractor, Serializable... args) {
+        sql = Lang.ifNotNull(sql, String::trim);
+        if (Lang.isEmpty(sql)) {
+            return null;
+        }
+        JdbcExecution execution = preHandle(sql, args);
+        sql = execution.getExecution();
+        args = execution.getParams();
+        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        Connection con = getConnection();
+        try (PreparedStatement prep = con.prepareStatement(sql)) {
+            setParams(prep, args);
+            try (ResultSet rs = prep.executeQuery()) {
+                E result = extractor.extract(new SqlResultSet(rs));
+                return postHandle(execution.setOriginalResult(result));
+            }
+        } catch (SQLException e) {
+            releaseConnection(con);
+            con = null;
+            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+        } finally {
+            releaseConnection(con);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E> E query(String sql, SqlResultSetExtractor<E> extractor, Map<String, Serializable> args) {
+        logger.debug("sql -> {}, args -> {}", sql, args);
+        Execution execution = SqlUtils.convertNamedParamSql(sql, args);
+        return query(execution.getExecution(), extractor, execution.getParams());
     }
 
     /**
@@ -2339,7 +2378,7 @@ public abstract class AbstractJdbc implements Jdbc {
             CallableStatement call = con.prepareCall(procedure);
             Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             MulitiQueryRowMapper<T> mulitiQueryRowMapper = mapperFunction
-                .apply(new MulitiQueryTupleMapperBuilderImpl(this, propertyAccessorFactory));
+                .apply(new MulitiQueryTupleMapperBuilderImpl(this::getTypeMapper));
             RowMapper<?>[] rowMappers = mulitiQueryRowMapper.getRowMappers();
 
             List<List<?>> all = new ArrayList<>();

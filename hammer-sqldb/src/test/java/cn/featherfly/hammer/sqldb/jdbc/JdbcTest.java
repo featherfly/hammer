@@ -173,6 +173,25 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
+    public void queryExtractor() {
+        Integer id = 1;
+        String sql = "select * from user_info where id = " + id;
+
+        SqlResultSetExtractor<List<UserInfo>> extractor =
+            new BeanListResultSetExtractor<>(UserInfo.class, sqlTypeMappingManager);
+
+        List<UserInfo> list = jdbc.query(sql, extractor);
+        assertEquals(list.size(), 1);
+        assertEquals(list.get(0).getId(), id);
+
+        list = jdbc.query("", extractor);
+        assertNull(list);
+
+        list = jdbc.query("", extractor, new HashMap<>());
+        assertNull(list);
+    }
+
+    @Test
     public void queryTuple2() {
         String sql = getSql().replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple2<User, UserInfo>> list = jdbc.queryList(sql, User.class, UserInfo.class, Tuples.of("_user0.", "ui."),
@@ -2400,7 +2419,9 @@ public class JdbcTest extends JdbcTestBase {
         Serializable[] params = new Serializable[] { uid };
         Tuple6<List<User>, List<UserInfo2>, List<Order2>, List<Map<String, Serializable>>, List<UserRole>,
             List<Map<String, Serializable>>> mulitiList = jdbc.callMultiQuery(name,
-                b -> b.map(User.class).map(UserInfo2.class).map(Order2.class).map().map(UserRole.class).map(), params);
+                b -> b.mapper(User.class).mapper(UserInfo2.class).mapper(Order2.class).mapper().mapper(UserRole.class)
+                    .mapper(),
+                params);
         assertEquals(params[0], uid + 1);
         assertEquals(mulitiList.degree(), 6); // 三个查询
 
@@ -2421,6 +2442,41 @@ public class JdbcTest extends JdbcTestBase {
         }
         for (Map<String, Serializable> user : mulitiList.get5()) {
             assertEquals(user.get("id"), uid);
+        }
+    }
+
+    @Test
+    public void callMulitiQueryListWithTuple() {
+        final String name = "call_query_user_by_id6_tuple5";
+        Integer uid = 1;
+        Serializable[] params = new Serializable[] { uid };
+        Tuple6<List<User>, List<UserInfo2>, List<Order2>, List<Map<String, Serializable>>, List<UserRole>,
+            List<Tuple5<User, UserInfo, UserRole, Role, Order>>> mulitiList = jdbc.callMultiQuery(name,
+                mapperBuilder -> mapperBuilder.mapper(User.class).mapper(UserInfo2.class).mapper(Order2.class).mapper()
+                    .mapper(UserRole.class)
+                    .mapper(b -> b.map("_user0.", User.class).map("ui.", UserInfo.class).map("ur.", UserRole.class)
+                        .map("r.", Role.class).map("o.", Order.class).mapper()),
+                params);
+        assertEquals(params[0], uid + 1);
+        assertEquals(mulitiList.degree(), 6); // 三个查询
+
+        for (User user : mulitiList.get0()) {
+            assertEquals(user.getId(), uid);
+        }
+        for (UserInfo2 ui : mulitiList.get1()) {
+            assertEquals(ui.getUserId(), uid);
+        }
+        for (Order2 order : mulitiList.get2()) {
+            assertEquals(order.getCreateUser(), uid);
+        }
+        for (Map<String, Serializable> orderInfo : mulitiList.get3()) {
+            assertEquals(orderInfo.get("create_user"), uid);
+        }
+        for (UserRole userRole : mulitiList.get4()) {
+            assertEquals(userRole.getUserId(), uid);
+        }
+        for (Tuple5<User, UserInfo, UserRole, Role, Order> tuple : mulitiList.get5()) {
+            assertEquals(tuple.get0().getId(), uid);
         }
     }
 

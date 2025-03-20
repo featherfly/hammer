@@ -85,7 +85,7 @@ public class JdbcProcedureMulitiQuery implements MulitiQuery {
     @SuppressWarnings("unchecked")
     @Override
     public <E> List<E> next(RowMapper<E> mapper) {
-        RowMapperResultSetExtractor<E> extractor = new RowMapperResultSetExtractor<>(mapper);
+        RowMapperListResultSetExtractor<E> extractor = new RowMapperListResultSetExtractor<>(mapper);
         ResultSet res = nextResultSet();
         List<E> list = extractor.extract(new SqlResultSet(res));
         JdbcUtils.close(res); // stat可能不是CascadedCloseStatement，所以先手动关闭 

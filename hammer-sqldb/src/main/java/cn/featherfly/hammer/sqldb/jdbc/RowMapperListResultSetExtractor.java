@@ -15,14 +15,14 @@ import cn.featherfly.common.repository.mapper.RowMapper;
  *
  * @author zhongj
  */
-public class RowMapperResultSetExtractor<E> extends AbstractResultSetExtractor<E> {
+public class RowMapperListResultSetExtractor<E> extends AbstractListResultSetExtractor<E> {
 
     /**
      * Instantiates a new map result set extractor.
      *
      * @param rowMapper the row mapper
      */
-    public RowMapperResultSetExtractor(RowMapper<E> rowMapper) {
+    public RowMapperListResultSetExtractor(RowMapper<E> rowMapper) {
         super(rowMapper);
     }
 }

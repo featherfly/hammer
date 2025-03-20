@@ -8,9 +8,9 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
-import cn.featherfly.common.bean.InstantiatorFactory;
+import java.util.function.BiFunction;
+
 import cn.featherfly.common.repository.mapper.RowMapper;
-import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 
 /**
  * AbstractMulitiQueryRowMapper.
@@ -21,24 +21,19 @@ public abstract class AbstractMulitiQueryRowMapper {
 
     private final RowMapper<?>[] rowMappers;
 
-    /** The jdbc. */
-    protected final Jdbc jdbc;
-
-    /** The instantiator factory. */
-    protected final InstantiatorFactory instantiatorFactory;
+    /** The get row mapper. */
+    protected final BiFunction<Class<?>, String, RowMapper<?>> getRowMapper;
 
     /**
      * Instantiates a new abstract muliti query row mapper.
      *
      * @param rowMappers the row mappers
-     * @param jdbc the jdbc
-     * @param instantiatorFactory the instantiator factory
+     * @param getRowMapper the get row mapper
      */
-    protected AbstractMulitiQueryRowMapper(RowMapper<?>[] rowMappers, Jdbc jdbc,
-        InstantiatorFactory instantiatorFactory) {
+    protected AbstractMulitiQueryRowMapper(RowMapper<?>[] rowMappers,
+        BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
         this.rowMappers = rowMappers;
-        this.jdbc = jdbc;
-        this.instantiatorFactory = instantiatorFactory;
+        this.getRowMapper = getRowMapper;
     }
 
     /**
@@ -48,5 +43,17 @@ public abstract class AbstractMulitiQueryRowMapper {
      */
     public RowMapper<?>[] getRowMappers() {
         return rowMappers;
+    }
+
+    /**
+     * Gets the row mapper.
+     *
+     * @param <T> the generic type
+     * @param type the type
+     * @return the row mapper
+     */
+    @SuppressWarnings("unchecked")
+    protected <T> RowMapper<T> getRowMapper(Class<T> type) {
+        return (RowMapper<T>) getRowMapper.apply(type, null);
     }
 }

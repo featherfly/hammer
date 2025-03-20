@@ -17,12 +17,12 @@ import java.util.function.Function;
 import cn.featherfly.common.db.NamedParamSql;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilder;
 
 /**
  * jdbc query single.

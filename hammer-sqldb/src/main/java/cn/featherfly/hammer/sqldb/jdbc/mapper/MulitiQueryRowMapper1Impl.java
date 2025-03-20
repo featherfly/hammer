@@ -10,14 +10,14 @@ package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import cn.featherfly.common.bean.InstantiatorFactory;
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper1;
 import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper2;
+import cn.featherfly.common.repository.mapper.PrefixedBeanMapper;
 import cn.featherfly.common.repository.mapper.RowMapper;
-import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
-import cn.featherfly.hammer.sqldb.jdbc.MapRowMapper;
-import cn.featherfly.hammer.sqldb.jdbc.NestedBeanPropertyRowMapper;
+import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
 
 /**
  * MulitiQueryRowMapper1.
@@ -27,52 +27,47 @@ import cn.featherfly.hammer.sqldb.jdbc.NestedBeanPropertyRowMapper;
  */
 public class MulitiQueryRowMapper1Impl<T1> extends AbstractMulitiQueryRowMapper implements MulitiQueryRowMapper1<T1> {
 
-    private RowMapper<T1> rowMapper;
-
     /**
      * Instantiates a new muliti query row mapper 1 impl.
      *
      * @param rowMapper the row mapper
-     * @param jdbc the jdbc
-     * @param instantiatorFactory the instantiator factory
+     * @param getRowMapper the get row mapper
      */
-    public MulitiQueryRowMapper1Impl(RowMapper<T1> rowMapper, Jdbc jdbc, InstantiatorFactory instantiatorFactory) {
-        super(new RowMapper[] { rowMapper }, jdbc, instantiatorFactory);
-        this.rowMapper = rowMapper;
+    public MulitiQueryRowMapper1Impl(RowMapper<T1> rowMapper,
+        BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
+        super(new RowMapper[] { rowMapper }, getRowMapper);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public MulitiQueryRowMapper2<T1, Map<String, Serializable>> map() {
-        return map(new MapRowMapper(jdbc.getSqlTypeMappingManager()));
+    public MulitiQueryRowMapper2<T1, Map<String, Serializable>> mapper() {
+        return mapper(getRowMapper(PrefixedBeanMapper.MAP_TYPE));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T2> MulitiQueryRowMapper2<T1, T2> map(Class<T2> mappingType) {
-        return map(new NestedBeanPropertyRowMapper<>(instantiatorFactory.create(mappingType),
-            jdbc.getSqlTypeMappingManager()));
+    public <T2> MulitiQueryRowMapper2<T1, T2> mapper(Class<T2> mappingType) {
+        return mapper(getRowMapper(mappingType));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T2> MulitiQueryRowMapper2<T1, T2> map(RowMapper<T2> rowMapper) {
-        return new MulitiQueryRowMapper2Impl<>(new RowMapper[] { this.rowMapper, rowMapper }, jdbc,
-            instantiatorFactory);
+    public <T2> MulitiQueryRowMapper2<T1, T2> mapper(RowMapper<T2> rowMapper) {
+        return new MulitiQueryRowMapper2Impl<>(new RowMapper[] { getRowMappers()[0], rowMapper }, getRowMapper);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public RowMapper<T1> getRowMapper1() {
-        return rowMapper;
+    public <T2> MulitiQueryRowMapper2<T1, T2> mapper(Function<TupleRowMapperBuilder, RowMapper<T2>> rowMapper) {
+        return mapper(rowMapper.apply(new TupleRowMapperBuilderImpl(getRowMapper)));
     }
 
 }

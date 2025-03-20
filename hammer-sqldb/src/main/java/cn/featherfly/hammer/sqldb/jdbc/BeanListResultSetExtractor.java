@@ -8,24 +8,22 @@
  */
 package cn.featherfly.hammer.sqldb.jdbc;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 
 /**
- * MapResultSetExtractor.
+ * BeanResultSetExtractor.
  *
  * @author zhongj
  */
-public class MapResultSetExtractor extends AbstractResultSetExtractor<Map<String, Serializable>> {
+public class BeanListResultSetExtractor<E> extends AbstractListResultSetExtractor<E> {
 
     /**
-     * Instantiates a new map result set extractor.
+     * Instantiates a new bean result set extractor.
      *
+     * @param element the element
      * @param manager the manager
      */
-    public MapResultSetExtractor(SqlTypeMappingManager manager) {
-        super(new MapRowMapper(manager));
+    public BeanListResultSetExtractor(Class<E> element, SqlTypeMappingManager manager) {
+        super(new NestedBeanPropertyRowMapper<>(element, manager));
     }
 }

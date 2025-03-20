@@ -21,7 +21,7 @@ import cn.featherfly.common.repository.mapper.RowMapper;
  *
  * @author zhongj
  */
-public abstract class AbstractResultSetExtractor<E> implements SqlResultSetExtractor<E> {
+public abstract class AbstractListResultSetExtractor<E> implements SqlResultSetExtractor<List<E>> {
 
     private RowMapper<E> rowMapper;
 
@@ -30,7 +30,7 @@ public abstract class AbstractResultSetExtractor<E> implements SqlResultSetExtra
      *
      * @param rowMapper the row mapper
      */
-    protected AbstractResultSetExtractor(RowMapper<E> rowMapper) {
+    protected AbstractListResultSetExtractor(RowMapper<E> rowMapper) {
         super();
         this.rowMapper = rowMapper;
     }

@@ -304,6 +304,49 @@ BEGIN
     set arg_id = arg_id + 1;
 END;
 
+DROP PROCEDURE if EXISTS `call_query_user_by_id6_tuple5` ;
+CREATE  PROCEDURE `call_query_user_by_id6_tuple5`(INOUT `arg_id` varchar(255))
+BEGIN
+    select * from user where id = arg_id;
+    select * from user_info where user_id = arg_id;
+    select * from `order` where create_user = arg_id;
+    select * from `order_info` where create_user = arg_id;
+    select * from `user_role` where user_id = arg_id;
+    SELECT
+        _user0.`id` `_user0.id`,
+        _user0.`username` `_user0.username`,
+        _user0.`password` `_user0.pwd`,
+        _user0.`mobile_no` `_user0.mobileNo`,
+        _user0.`age` `_user0.age`,
+        ui.`province` `ui.division.province`,
+        ui.`city` `ui.division.city`,
+        ui.`district` `ui.division.district`,
+        ui.`id` `ui.id`,
+        ui.`user_id` `ui.user.id`,
+        ui.`name` `ui.name`,
+        ui.`descp` `ui.descp`,
+        ur.`user_id` `ur.userId`,
+        ur.`role_id` `ur.roleId`,
+        ur.`descp` `ur.descp`,
+        ur.`descp2` `ur.descp2`,
+        r.`id` `r.id`,
+        r.`name` `r.name`,
+        r.`descp` `r.descp`,
+        r.`create_time` `r.createTime`,
+        o.`id` `o.id`,
+        o.`app_id` `o.appId`,
+        o.`create_user` `o.createUser.id`
+    FROM
+        `user` _user0 
+        JOIN `user_info` ui ON _user0.id = ui.user_id 
+        JOIN `user_role` ur ON _user0.id = ur.user_id
+        JOIN `role` r ON ur.role_id = r.id
+        JOIN `order` o ON _user0.id = o.create_user
+    where
+        _user0.`id` = arg_id;
+    set arg_id = arg_id + 1;
+END;
+
 DROP PROCEDURE if EXISTS `call_update_user_one` ;
 CREATE  PROCEDURE `call_update_user_one`(IN `arg_id` int(0), IN `arg_username` varchar(255), OUT `out_row_count` int(0))
 BEGIN   

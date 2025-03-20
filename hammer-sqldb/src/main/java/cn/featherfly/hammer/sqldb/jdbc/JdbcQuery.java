@@ -76,4 +76,35 @@ public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle
         Execution execution = sql.getExecution(args);
         return query(execution.getExecution(), execution.getParams());
     }
+
+    /**
+     * paramed query.
+     *
+     * @param sql sql
+     * @param args args
+     * @return ParamedQueryExecutor
+     */
+    <E> E query(String sql, SqlResultSetExtractor<E> extractor, Serializable... args);
+
+    /**
+     * paramed query.
+     *
+     * @param sql sql
+     * @param args args
+     * @return ParamedQueryExecutor
+     */
+    <E> E query(String sql, SqlResultSetExtractor<E> extractor, Map<String, Serializable> args);
+
+    /**
+     * paramed query.
+     *
+     * @param sql sql
+     * @param args args
+     * @return ParamedQueryExecutor
+     */
+    default <E> E query(NamedParamSql sql, SqlResultSetExtractor<E> extractor,
+        Map<String, Serializable> args) {
+        Execution execution = sql.getExecution(args);
+        return query(execution.getExecution(), extractor, execution.getParams());
+    }
 }
