@@ -11,7 +11,7 @@ package cn.featherfly.hammer.expression.condition.field.value;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -26,13 +26,13 @@ public class SetArrayExpressionImpl<V> implements SetArrayExpression<V> {
 
     private Predicate<?> ignoreStrategy;
 
-    private ThreeArgusConsumer<V, Predicate<V>, PropertyMapping<?>> setValue;
+    private ThConsumer<V, Predicate<V>, PropertyMapping<?>> setValue;
 
     private Function<V[], PropertyMapping<?>> getArrayPropertyMapping;
 
     private Predicate<?> ignoreArrayStrategy;
 
-    private ThreeArgusConsumer<V[], Predicate<V[]>, PropertyMapping<?>> setArrayValue;
+    private ThConsumer<V[], Predicate<V[]>, PropertyMapping<?>> setArrayValue;
 
     /**
      * Instantiates a new condition entity expression array property expression
@@ -46,9 +46,9 @@ public class SetArrayExpressionImpl<V> implements SetArrayExpression<V> {
      * @param setArrayValue           the set array value
      */
     public SetArrayExpressionImpl(Function<V, PropertyMapping<?>> getPropertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<V, Predicate<V>, PropertyMapping<?>> setValue,
+            ThConsumer<V, Predicate<V>, PropertyMapping<?>> setValue,
             Function<V[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<V[]> ignoreArrayStrategy,
-            ThreeArgusConsumer<V[], Predicate<V[]>, PropertyMapping<?>> setArrayValue) {
+            ThConsumer<V[], Predicate<V[]>, PropertyMapping<?>> setArrayValue) {
         this.getPropertyMapping = getPropertyMapping;
         this.ignoreStrategy = ignoreStrategy;
         this.setValue = setValue;

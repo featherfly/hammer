@@ -12,7 +12,7 @@ import java.util.function.DoublePredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -26,7 +26,7 @@ public class SetDoubleArrayExpressionImpl extends SetDoubleExpressionImpl implem
 
     private Predicate<?> ignoreArrayStrategy;
 
-    private ThreeArgusConsumer<double[], Predicate<double[]>, PropertyMapping<?>> setArrayValue;
+    private ThConsumer<double[], Predicate<double[]>, PropertyMapping<?>> setArrayValue;
 
     /**
      * Instantiates a new condition entity expression long and array property
@@ -40,9 +40,9 @@ public class SetDoubleArrayExpressionImpl extends SetDoubleExpressionImpl implem
      * @param setArrayValue           the set array value
      */
     public SetDoubleArrayExpressionImpl(Function<Double, PropertyMapping<?>> getPropertyMapping,
-            Predicate<?> ignoreStrategy, ThreeArgusConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue,
+            Predicate<?> ignoreStrategy, ThConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue,
             Function<double[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<?> ignoreArrayStrategy,
-            ThreeArgusConsumer<double[], Predicate<double[]>, PropertyMapping<?>> setArrayValue) {
+            ThConsumer<double[], Predicate<double[]>, PropertyMapping<?>> setArrayValue) {
         super(getPropertyMapping, ignoreStrategy, setValue);
         this.getArrayPropertyMapping = getArrayPropertyMapping;
         this.ignoreArrayStrategy = ignoreArrayStrategy;

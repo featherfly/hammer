@@ -3,8 +3,8 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
-import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.function.ThConsumer;
+import cn.featherfly.common.function.ThFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery3;
@@ -69,7 +69,7 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      */
     @Override
     public RepositoryQueryConditionsGroupLogic3FF where(
-        ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        ThFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
@@ -88,7 +88,7 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
     @Override
     public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
         S3 extends RepositorySortedExpression<S3>> RepositoryQuerySortedExpression3FF sort(
-            ThreeArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>,
+            ThConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>,
                 RepositorySortExpression<S3>> repositorySortExpresions) {
         return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }

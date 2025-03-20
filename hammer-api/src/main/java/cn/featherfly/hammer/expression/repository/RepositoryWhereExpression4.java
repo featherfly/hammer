@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository;
 
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.WhereExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression4;
@@ -25,7 +25,7 @@ public interface RepositoryWhereExpression4<C extends RepositoryConditionsGroupE
      * @return filter expression
      */
     default L filter(
-            FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+            FoFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(repositoriesCondtionFuntion);
     }
 
@@ -35,5 +35,5 @@ public interface RepositoryWhereExpression4<C extends RepositoryConditionsGroupE
      * @param repositoriesCondtionFuntion the repositories condtion funtion
      * @return filter expression
      */
-    L where(FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion);
+    L where(FoFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion);
 }

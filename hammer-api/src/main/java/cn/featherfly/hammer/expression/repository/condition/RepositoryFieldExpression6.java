@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.MulitiRepositoryFieldExpression;
@@ -25,7 +25,7 @@ public interface RepositoryFieldExpression6<C extends ConditionExpression, L ext
      * @param repositoiesFieldFunction the repositoies field function
      * @return the LogicExpression
      */
-    L field(SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+    L field(SiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoiesFieldFunction);
 }

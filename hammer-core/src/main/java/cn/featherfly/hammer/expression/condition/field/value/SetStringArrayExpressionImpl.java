@@ -12,7 +12,7 @@ package cn.featherfly.hammer.expression.condition.field.value;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
@@ -30,7 +30,7 @@ public class SetStringArrayExpressionImpl implements SetStringArrayExpression {
     private Predicate<?> ignoreStrategy;
 
     /** The set value. */
-    private FourArgusConsumer<String, MatchStrategy, Predicate<String>, PropertyMapping<?>> setValue;
+    private FoConsumer<String, MatchStrategy, Predicate<String>, PropertyMapping<?>> setValue;
 
     /** The get array property mapping. */
     private Function<String[], PropertyMapping<?>> getArrayPropertyMapping;
@@ -39,7 +39,7 @@ public class SetStringArrayExpressionImpl implements SetStringArrayExpression {
     private Predicate<?> ignoreArrayStrategy;
 
     /** The set array value. */
-    private FourArgusConsumer<String[], MatchStrategy, Predicate<String[]>, PropertyMapping<?>> setArrayValue;
+    private FoConsumer<String[], MatchStrategy, Predicate<String[]>, PropertyMapping<?>> setArrayValue;
 
     /**
      * Instantiates a new condition entity expression string and array property
@@ -54,9 +54,9 @@ public class SetStringArrayExpressionImpl implements SetStringArrayExpression {
      */
     public SetStringArrayExpressionImpl(Function<String, PropertyMapping<?>> getPropertyMapping,
             Predicate<?> ignoreStrategy,
-            FourArgusConsumer<String, MatchStrategy, Predicate<String>, PropertyMapping<?>> setValue,
+            FoConsumer<String, MatchStrategy, Predicate<String>, PropertyMapping<?>> setValue,
             Function<String[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<String[]> ignoreArrayStrategy,
-            FourArgusConsumer<String[], MatchStrategy, Predicate<String[]>, PropertyMapping<?>> setArrayValue) {
+            FoConsumer<String[], MatchStrategy, Predicate<String[]>, PropertyMapping<?>> setArrayValue) {
         this.getPropertyMapping = getPropertyMapping;
         this.ignoreStrategy = ignoreStrategy;
         this.setValue = setValue;

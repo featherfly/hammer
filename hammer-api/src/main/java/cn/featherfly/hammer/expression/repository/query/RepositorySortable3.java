@@ -8,7 +8,7 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.query.Sortable;
 import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
 import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
@@ -32,6 +32,6 @@ public interface RepositorySortable3<S, Q> extends Sortable<S> {
      * @return the s
      */
     <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
-        S3 extends RepositorySortedExpression<S3>> Q sort(ThreeArgusConsumer<RepositorySortExpression<S1>,
+        S3 extends RepositorySortedExpression<S3>> Q sort(ThConsumer<RepositorySortExpression<S1>,
             RepositorySortExpression<S2>, RepositorySortExpression<S3>> repositorySortExpresions);
 }

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,6 +37,6 @@ public interface EntityLessEqualsExpression3<E, E2, E3, C extends ConditionExpre
      * @param lessEqualsEntityExpressions the less equals entity expressions
      * @return the LogicExpression
      */
-    L le(ThreeArgusConsumer<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
+    L le(ThConsumer<LessEqualsEntityExpression<E>, LessEqualsEntityExpression<E2>,
             LessEqualsEntityExpression<E3>> lessEqualsEntityExpressions);
 }

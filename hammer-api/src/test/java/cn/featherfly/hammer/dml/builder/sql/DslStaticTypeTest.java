@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.bean.function.BeanPropertySupplier;
 import cn.featherfly.common.bean.function.BeanPropertySupplierImpl;
-import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.function.ThFunction;
 import cn.featherfly.hammer.dml.builder.sql.vo.User;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 
@@ -73,7 +73,7 @@ public class DslStaticTypeTest {
         System.out.println(f.getClass().getName());
     }
 
-    <V> void f4(ThreeArgusFunction<User, Integer, Integer, String> f) {
+    <V> void f4(ThFunction<User, Integer, Integer, String> f) {
         System.out.println(f.getClass().getName());
     }
 

@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.execute;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete6;
@@ -59,7 +59,7 @@ public class EntitySqlDelete6<E1, E2, E3, E4, E5, E6> implements EntityDelete6<E
      */
     @Override
     public EntityExecutableConditionGroupLogic6<E1, E2, E3, E4, E5, E6, DeleteConditionConfig> where(
-            SixArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>, EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>, EntityConditionsGroupExpression<E5, ?, ?>, EntityConditionsGroupExpression<E6, ?, ?>, LogicExpression<?, ?>> function) {
+            SiFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>, EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>, EntityConditionsGroupExpression<E5, ?, ?>, EntityConditionsGroupExpression<E6, ?, ?>, LogicExpression<?, ?>> function) {
         EntitySqlDeleteConditions6<E1, E2, E3, E4, E5, E6> sqlDeleteExpression = createSqlDeleteExpression();
         if (function != null) {
             sqlDeleteExpression

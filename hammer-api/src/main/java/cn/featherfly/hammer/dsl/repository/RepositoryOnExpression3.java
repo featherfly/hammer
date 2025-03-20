@@ -7,7 +7,7 @@
  */
 package cn.featherfly.hammer.dsl.repository;
 
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 
@@ -32,6 +32,6 @@ public interface RepositoryOnExpression3<O> extends RepositoryOnExpression<O> {
      *                   </ol>
      * @return the RepositoryQueryRelateExpression
      */
-    O on(FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+    O on(FoFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
         RepositoryFieldOnlyExpression, LogicExpression<?, ?>> expression);
 }

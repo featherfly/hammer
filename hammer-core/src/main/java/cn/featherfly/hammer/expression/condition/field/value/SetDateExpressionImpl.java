@@ -13,7 +13,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -42,7 +42,7 @@ public class SetDateExpressionImpl<D extends Date> extends SetValueExpressionImp
      * @param setValue        the set value
      */
     public SetDateExpressionImpl(Function<D, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<D, Predicate<D>, PropertyMapping<?>> setValue) {
+            ThConsumer<D, Predicate<D>, PropertyMapping<?>> setValue) {
         super(propertyMapping, ignoreStrategy, setValue);
     }
 

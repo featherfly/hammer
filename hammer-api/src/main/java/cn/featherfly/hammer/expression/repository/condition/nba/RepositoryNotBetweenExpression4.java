@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple4;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -33,5 +33,5 @@ public interface RepositoryNotBetweenExpression4<C extends ConditionExpression, 
      * @param notBetweenExpressions the not between expressions
      * @return the LogicExpression
      */
-    L nba(FourArgusConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression> notBetweenExpressions);
+    L nba(FoConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression> notBetweenExpressions);
 }

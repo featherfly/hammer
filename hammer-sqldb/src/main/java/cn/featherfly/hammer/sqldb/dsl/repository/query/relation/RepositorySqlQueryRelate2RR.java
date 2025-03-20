@@ -11,8 +11,8 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
-import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.function.ThConsumer;
+import cn.featherfly.common.function.ThFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3F;
@@ -84,7 +84,7 @@ public class RepositorySqlQueryRelate2RR extends
      */
     @Override
     public RepositoryQueryConditionsGroupLogic3F where(
-        ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        ThFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression3F(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
@@ -103,7 +103,7 @@ public class RepositorySqlQueryRelate2RR extends
     @Override
     public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
         S3 extends RepositorySortedExpression<S3>> RepositoryQuerySortedExpression3F sort(
-            ThreeArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>,
+            ThConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>,
                 RepositorySortExpression<S3>> repositorySortExpresions) {
         return new RepositorySqlQueryExpression3F(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }

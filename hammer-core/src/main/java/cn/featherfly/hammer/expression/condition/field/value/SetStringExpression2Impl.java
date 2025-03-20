@@ -13,7 +13,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -32,7 +32,7 @@ public class SetStringExpression2Impl extends SetValueExpression2Impl<String> im
      * @param setValue        the set value
      */
     public SetStringExpression2Impl(Function<String, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            FourArgusConsumer<String, String, BiPredicate<String, String>, PropertyMapping<?>> setValue) {
+            FoConsumer<String, String, BiPredicate<String, String>, PropertyMapping<?>> setValue) {
         super(propertyMapping, ignoreStrategy, setValue);
     }
 

@@ -10,8 +10,8 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
 import java.util.List;
 
-import cn.featherfly.common.function.FourArgusConsumer;
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoConsumer;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.tuple.Tuple4;
@@ -81,7 +81,7 @@ public class RepositorySqlQueryRelatedFetched3FFF extends
      */
     @Override
     public RepositoryQueryConditionsGroupLogic4FFFF where(
-        FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        FoFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression4FFFF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
     }
@@ -101,7 +101,7 @@ public class RepositorySqlQueryRelatedFetched3FFF extends
     public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
         S3 extends RepositorySortedExpression<S3>,
         S4 extends RepositorySortedExpression<S4>> RepositoryQuerySortedExpression4FFFF sort(
-            FourArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
+            FoConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
                 RepositorySortExpression<S4>> repositorySortExpresions) {
         return new RepositorySqlQueryExpression4FFFF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }

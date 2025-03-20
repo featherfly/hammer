@@ -10,7 +10,7 @@
 package cn.featherfly.hammer.sqldb.dsl.repository;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression4;
@@ -57,7 +57,7 @@ public class RepositorySqlOn4<O, C5 extends ConditionConfig<C5>, R extends Repos
      */
     @Override
     public O on(
-        FiveArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        FiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> onExpression) {
         sqlRelation.join(joinTable, () -> onExpression.apply( //
             new RepositoryFieldOnlyExpressionImpl<>(0, sqlRelation)//

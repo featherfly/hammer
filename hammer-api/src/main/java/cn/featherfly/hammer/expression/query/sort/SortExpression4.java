@@ -1,6 +1,6 @@
 package cn.featherfly.hammer.expression.query.sort;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.common.operator.SortOperator;
 
 /**
@@ -18,7 +18,7 @@ public interface SortExpression4<S extends SortedExpression4<S>> extends SortExp
      * @param sortExpressions the sort expressions
      * @return the LogicExpression
      */
-    default S order(SortOperator order, FourArgusConsumer<SetSortFieldExpression, SetSortFieldExpression,
+    default S order(SortOperator order, FoConsumer<SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         switch (order) {
             case DESC:
@@ -34,7 +34,7 @@ public interface SortExpression4<S extends SortedExpression4<S>> extends SortExp
      * @param sortExpressions the sort expressions
      * @return the LogicExpression
      */
-    S asc(FourArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    S asc(FoConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression> sortExpressions);
 
     /**
@@ -43,7 +43,7 @@ public interface SortExpression4<S extends SortedExpression4<S>> extends SortExp
      * @param sortExpressions the sort expressions
      * @return the LogicExpression
      */
-    S desc(FourArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    S desc(FoConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression> sortExpressions);
 
 }

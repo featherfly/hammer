@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -33,5 +33,5 @@ public interface RepositoryNotStartWithExpression6<C extends ConditionExpression
      * @param notStartWithExpressions the not start with expressions
      * @return the LogicExpression
      */
-    L nsw(SixArgusConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression> notStartWithExpressions);
+    L nsw(SiConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression> notStartWithExpressions);
 }

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,6 +37,6 @@ public interface EntityContainsExpression3<E, E2, E3, C extends ConditionExpress
      * @param containsEntityExpressions the contains entity expressions
      * @return the LogicExpression
      */
-    L co(ThreeArgusConsumer<ContainsEntityExpression<E>, ContainsEntityExpression<E2>,
+    L co(ThConsumer<ContainsEntityExpression<E>, ContainsEntityExpression<E2>,
         ContainsEntityExpression<E3>> containsEntityExpressions);
 }

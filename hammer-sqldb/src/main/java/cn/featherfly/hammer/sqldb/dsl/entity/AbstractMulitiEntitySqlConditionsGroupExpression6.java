@@ -8,7 +8,7 @@ import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
@@ -155,7 +155,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lk(SixArgusConsumer<LikeEntityExpression<E1>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
+    public L lk(SiConsumer<LikeEntityExpression<E1>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
         LikeEntityExpression<E4>, LikeEntityExpression<E5>, LikeEntityExpression<E6>> likeEntityExpressions) {
         MulitiLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
         likeEntityExpressions.accept(new LikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -191,7 +191,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L sw(SixArgusConsumer<StartWithEntityExpression<E1>, StartWithEntityExpression<E2>,
+    public L sw(SiConsumer<StartWithEntityExpression<E1>, StartWithEntityExpression<E2>,
         StartWithEntityExpression<E3>, StartWithEntityExpression<E4>, StartWithEntityExpression<E5>,
         StartWithEntityExpression<E6>> startWithEntityExpressions) {
         MulitiStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
@@ -227,7 +227,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ni(SixArgusConsumer<NotInEntityExpression<E1>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
+    public L ni(SiConsumer<NotInEntityExpression<E1>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
         NotInEntityExpression<E4>, NotInEntityExpression<E5>, NotInEntityExpression<E6>> notInEntityExpressions) {
         MulitiNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
         notInEntityExpressions.accept(new NotInEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -263,7 +263,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ne(SixArgusConsumer<NotEqualsEntityExpression<E1>, NotEqualsEntityExpression<E2>,
+    public L ne(SiConsumer<NotEqualsEntityExpression<E1>, NotEqualsEntityExpression<E2>,
         NotEqualsEntityExpression<E3>, NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>,
         NotEqualsEntityExpression<E6>> notEqualsEntityExpressions) {
         MulitiNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
@@ -301,7 +301,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lt(SixArgusConsumer<LessThanEntityExpression<E1>, LessThanEntityExpression<E2>,
+    public L lt(SiConsumer<LessThanEntityExpression<E1>, LessThanEntityExpression<E2>,
         LessThanEntityExpression<E3>, LessThanEntityExpression<E4>, LessThanEntityExpression<E5>,
         LessThanEntityExpression<E6>> lessThanEntityExpressions) {
         MulitiLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
@@ -339,7 +339,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L le(SixArgusConsumer<LessEqualsEntityExpression<E1>, LessEqualsEntityExpression<E2>,
+    public L le(SiConsumer<LessEqualsEntityExpression<E1>, LessEqualsEntityExpression<E2>,
         LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>, LessEqualsEntityExpression<E5>,
         LessEqualsEntityExpression<E6>> lessEqualsEntityExpressions) {
         MulitiLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
@@ -376,7 +376,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L isn(SixArgusConsumer<IsNullEntityExpression<E1>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
+    public L isn(SiConsumer<IsNullEntityExpression<E1>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
         IsNullEntityExpression<E4>, IsNullEntityExpression<E5>, IsNullEntityExpression<E6>> isNullEntityExpressions) {
         MulitiIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
         isNullEntityExpressions.accept(new IsNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -412,7 +412,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L inn(SixArgusConsumer<IsNotNullEntityExpression<E1>, IsNotNullEntityExpression<E2>,
+    public L inn(SiConsumer<IsNotNullEntityExpression<E1>, IsNotNullEntityExpression<E2>,
         IsNotNullEntityExpression<E3>, IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>,
         IsNotNullEntityExpression<E6>> isNotNullEntityExpressions) {
         MulitiIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
@@ -448,7 +448,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L in(SixArgusConsumer<InEntityExpression<E1>, InEntityExpression<E2>, InEntityExpression<E3>,
+    public L in(SiConsumer<InEntityExpression<E1>, InEntityExpression<E2>, InEntityExpression<E3>,
         InEntityExpression<E4>, InEntityExpression<E5>, InEntityExpression<E6>> inEntityExpressions) {
         MulitiInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
         inEntityExpressions.accept(new InEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -484,7 +484,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L gt(SixArgusConsumer<GreatThanEntityExpression<E1>, GreatThanEntityExpression<E2>,
+    public L gt(SiConsumer<GreatThanEntityExpression<E1>, GreatThanEntityExpression<E2>,
         GreatThanEntityExpression<E3>, GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>,
         GreatThanEntityExpression<E6>> greatThanEntityExpressions) {
         MulitiGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
@@ -522,7 +522,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ge(SixArgusConsumer<GreatEqualsEntityExpression<E1>, GreatEqualsEntityExpression<E2>,
+    public L ge(SiConsumer<GreatEqualsEntityExpression<E1>, GreatEqualsEntityExpression<E2>,
         GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>, GreatEqualsEntityExpression<E5>,
         GreatEqualsEntityExpression<E6>> greatEqualsEntityExpressions) {
         MulitiGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
@@ -559,7 +559,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L eq(SixArgusConsumer<EqualsEntityExpression<E1>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
+    public L eq(SiConsumer<EqualsEntityExpression<E1>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
         EqualsEntityExpression<E4>, EqualsEntityExpression<E5>, EqualsEntityExpression<E6>> equalsEntityExpressions) {
         MulitiEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
         equalsEntityExpressions.accept(new EqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -595,7 +595,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ew(SixArgusConsumer<EndWithEntityExpression<E1>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
+    public L ew(SiConsumer<EndWithEntityExpression<E1>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
         EndWithEntityExpression<E4>, EndWithEntityExpression<E5>,
         EndWithEntityExpression<E6>> endWithEntityExpressions) {
         MulitiEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
@@ -632,7 +632,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L co(SixArgusConsumer<ContainsEntityExpression<E1>, ContainsEntityExpression<E2>,
+    public L co(SiConsumer<ContainsEntityExpression<E1>, ContainsEntityExpression<E2>,
         ContainsEntityExpression<E3>, ContainsEntityExpression<E4>, ContainsEntityExpression<E5>,
         ContainsEntityExpression<E6>> containsEntityExpressions) {
         MulitiContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
@@ -670,7 +670,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ba(SixArgusConsumer<BetweenEntityExpression<E1>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
+    public L ba(SiConsumer<BetweenEntityExpression<E1>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
         BetweenEntityExpression<E4>, BetweenEntityExpression<E5>,
         BetweenEntityExpression<E6>> betweenEntityExpressions) {
         MulitiBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
@@ -707,7 +707,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nba(SixArgusConsumer<NotBetweenEntityExpression<E1>, NotBetweenEntityExpression<E2>,
+    public L nba(SiConsumer<NotBetweenEntityExpression<E1>, NotBetweenEntityExpression<E2>,
         NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>, NotBetweenEntityExpression<E5>,
         NotBetweenEntityExpression<E6>> notBetweenEntityExpressions) {
         MulitiNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
@@ -746,7 +746,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nco(SixArgusConsumer<NotContainsEntityExpression<E1>, NotContainsEntityExpression<E2>,
+    public L nco(SiConsumer<NotContainsEntityExpression<E1>, NotContainsEntityExpression<E2>,
         NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>, NotContainsEntityExpression<E5>,
         NotContainsEntityExpression<E6>> notContainsEntityExpressions) {
         MulitiNotContainsExpression<C,
@@ -785,7 +785,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L newv(SixArgusConsumer<NotEndWithEntityExpression<E1>, NotEndWithEntityExpression<E2>,
+    public L newv(SiConsumer<NotEndWithEntityExpression<E1>, NotEndWithEntityExpression<E2>,
         NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>, NotEndWithEntityExpression<E5>,
         NotEndWithEntityExpression<E6>> notEndWithEntityExpressions) {
         MulitiNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
@@ -823,7 +823,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(SixArgusConsumer<NotStartWithEntityExpression<E1>, NotStartWithEntityExpression<E2>,
+    public L nsw(SiConsumer<NotStartWithEntityExpression<E1>, NotStartWithEntityExpression<E2>,
         NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>, NotStartWithEntityExpression<E5>,
         NotStartWithEntityExpression<E6>> notStartWithEntityExpressions) {
         MulitiNotStartWithExpression<C, L> mulitiExpression = new MulitiEntityNotStartWithExpressionImpl<>(this);
@@ -861,7 +861,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression6<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nl(SixArgusConsumer<NotLikeEntityExpression<E1>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
+    public L nl(SiConsumer<NotLikeEntityExpression<E1>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
         NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>,
         NotLikeEntityExpression<E6>> notLikeEntityExpressions) {
         MulitiNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);

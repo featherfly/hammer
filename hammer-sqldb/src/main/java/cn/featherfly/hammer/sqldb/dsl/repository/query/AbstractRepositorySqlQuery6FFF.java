@@ -3,8 +3,8 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.function.SixArgusConsumer;
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiConsumer;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
@@ -69,7 +69,7 @@ public abstract class AbstractRepositorySqlQuery6FFF<R extends RepositoryQueryRe
      */
     @Override
     public RepositoryQueryConditionsGroupLogic6FFF where(
-        SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        SiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression6FFF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
@@ -91,7 +91,7 @@ public abstract class AbstractRepositorySqlQuery6FFF<R extends RepositoryQueryRe
         S3 extends RepositorySortedExpression<S3>, S4 extends RepositorySortedExpression<S4>,
         S5 extends RepositorySortedExpression<S5>,
         S6 extends RepositorySortedExpression<S6>> RepositoryQuerySortedExpression6FFF sort(
-            SixArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
+            SiConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
                 RepositorySortExpression<S4>, RepositorySortExpression<S5>,
                 RepositorySortExpression<S6>> repositorySortExpresions) {
         return new RepositorySqlQueryExpression6FFF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);

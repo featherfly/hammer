@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,6 +37,6 @@ public interface EntityNotBetweenExpression3<E, E2, E3, C extends ConditionExpre
      * @param notBetweenEntityExpressions the not between entity expressions
      * @return the LogicExpression
      */
-    L nba(ThreeArgusConsumer<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>,
+    L nba(ThConsumer<NotBetweenEntityExpression<E>, NotBetweenEntityExpression<E2>,
             NotBetweenEntityExpression<E3>> notBetweenEntityExpressions);
 }

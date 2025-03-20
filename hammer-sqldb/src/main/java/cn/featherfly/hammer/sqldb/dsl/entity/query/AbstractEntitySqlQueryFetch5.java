@@ -2,8 +2,8 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.FiveArgusConsumer;
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiConsumer;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup5;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic5;
@@ -75,7 +75,7 @@ public abstract class AbstractEntitySqlQueryFetch5<E, E2, E3, E4, E5, R> extends
      */
     @Override
     public EntityQueryConditionGroupLogic5<E, E2, E3, E4, E5, R> where(
-        FiveArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+        FiFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
             EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
             EntityConditionsGroupExpression<E5, ?, ?>, LogicExpression<?, ?>> entityPropertyFuntion) {
         EntitySqlQueryExpression5<E, E2, E3, E4, E5,
@@ -103,7 +103,7 @@ public abstract class AbstractEntitySqlQueryFetch5<E, E2, E3, E4, E5, R> extends
     public <S1 extends EntitySortedExpression<E, S1>, S2 extends EntitySortedExpression<E2, S2>,
         S3 extends EntitySortedExpression<E3, S3>, S4 extends EntitySortedExpression<E4, S4>,
         S5 extends EntitySortedExpression<E5, S5>> EntityQuerySortedExpression5<E, E2, E3, E4, E5, R> sort(
-            FiveArgusConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+            FiConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>> entitySortExpresions) {
         return new EntitySqlQueryExpression5<E, E2, E3, E4, E5, R>(hammerConfig, factory, sqlPageFactory, queryRelation)
             .sort(entitySortExpresions);

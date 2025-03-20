@@ -8,8 +8,8 @@ import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.function.SixArgusConsumer;
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiConsumer;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -138,7 +138,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L field(SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+    public L field(SiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
         RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
         RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoiesFieldFunction) {
         return (L) addCondition(
@@ -177,7 +177,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L co(SixArgusConsumer<ContainsRepositoryExpression, ContainsRepositoryExpression,
+    public L co(SiConsumer<ContainsRepositoryExpression, ContainsRepositoryExpression,
         ContainsRepositoryExpression, ContainsRepositoryExpression, ContainsRepositoryExpression,
         ContainsRepositoryExpression> containsRepositoryExpressions) {
         MulitiContainsExpression<C, L> mulitiExp = new MulitiRepositoryContainsExpressionImpl<>(this);
@@ -216,7 +216,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nco(SixArgusConsumer<NotContainsRepositoryExpression, NotContainsRepositoryExpression,
+    public L nco(SiConsumer<NotContainsRepositoryExpression, NotContainsRepositoryExpression,
         NotContainsRepositoryExpression, NotContainsRepositoryExpression, NotContainsRepositoryExpression,
         NotContainsRepositoryExpression> notContainsRepositoryExpressions) {
         MulitiNotContainsExpression<C, L> mulitiExp = new MulitiRepositoryNotContainsExpressionImpl<>(this);
@@ -254,7 +254,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L eq(SixArgusConsumer<EqualsRepositoryExpression, EqualsRepositoryExpression, EqualsRepositoryExpression,
+    public L eq(SiConsumer<EqualsRepositoryExpression, EqualsRepositoryExpression, EqualsRepositoryExpression,
         EqualsRepositoryExpression, EqualsRepositoryExpression,
         EqualsRepositoryExpression> equalsRepositoryExpressions) {
         MulitiEqualsExpression<C, L> mulitiExp = new MulitiRepositoryEqualsExpressionImpl<>(this);
@@ -293,7 +293,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ne(SixArgusConsumer<NotEqualsRepositoryExpression, NotEqualsRepositoryExpression,
+    public L ne(SiConsumer<NotEqualsRepositoryExpression, NotEqualsRepositoryExpression,
         NotEqualsRepositoryExpression, NotEqualsRepositoryExpression, NotEqualsRepositoryExpression,
         NotEqualsRepositoryExpression> notEqualsRepositoryExpressions) {
         MulitiNotEqualsExpression<C, L> mulitiExp = new MulitiRepositoryNotEqualsExpressionImpl<>(this);
@@ -331,7 +331,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L isn(SixArgusConsumer<IsNullRepositoryExpression, IsNullRepositoryExpression, IsNullRepositoryExpression,
+    public L isn(SiConsumer<IsNullRepositoryExpression, IsNullRepositoryExpression, IsNullRepositoryExpression,
         IsNullRepositoryExpression, IsNullRepositoryExpression,
         IsNullRepositoryExpression> isNullRepositoryExpressions) {
         MulitiIsNullExpression<C, L> mulitiExp = new MulitiRepositoryIsNullExpressionImpl<>(this);
@@ -369,7 +369,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @Override
     @SuppressWarnings("unchecked")
-    public L inn(SixArgusConsumer<IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
+    public L inn(SiConsumer<IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
         IsNotNullRepositoryExpression, IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
         IsNotNullRepositoryExpression> isNotNullExpressions) {
         MulitiIsNotNullExpression<C, L> mulitiExp = new MulitiRepositoryIsNotNullExpressionImpl<>(this);
@@ -406,7 +406,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ew(SixArgusConsumer<EndWithRepositoryExpression, EndWithRepositoryExpression, EndWithRepositoryExpression,
+    public L ew(SiConsumer<EndWithRepositoryExpression, EndWithRepositoryExpression, EndWithRepositoryExpression,
         EndWithRepositoryExpression, EndWithRepositoryExpression, EndWithRepositoryExpression> endWithExpressions) {
         MulitiEndWithExpression<C, L> mulitiExp = new MulitiRepositoryEndWithExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -443,7 +443,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L newv(SixArgusConsumer<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
+    public L newv(SiConsumer<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
         NotEndWithRepositoryExpression, NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
         NotEndWithRepositoryExpression> notEndWithExpressions) {
         MulitiNotEndWithExpression<C, L> mulitiExp = new MulitiRepositoryNotEndWithExpressionImpl<>(this);
@@ -481,7 +481,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @Override
     @SuppressWarnings("unchecked")
-    public L sw(SixArgusConsumer<StartWithRepositoryExpression, StartWithRepositoryExpression,
+    public L sw(SiConsumer<StartWithRepositoryExpression, StartWithRepositoryExpression,
         StartWithRepositoryExpression, StartWithRepositoryExpression, StartWithRepositoryExpression,
         StartWithRepositoryExpression> startWithExpressions) {
         MulitiStartWithExpression<C, L> mulitiExp = new MulitiRepositoryStartWithExpressionImpl<>(this);
@@ -520,7 +520,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(SixArgusConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
+    public L nsw(SiConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
         NotStartWithRepositoryExpression, NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
         NotStartWithRepositoryExpression> notStartWithExpressions) {
         MulitiNotStartWithExpression<C, L> mulitiExp = new MulitiRepositoryNotStartWithExpressionImpl<>(this);
@@ -557,7 +557,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lk(SixArgusConsumer<LikeRepositoryExpression, LikeRepositoryExpression, LikeRepositoryExpression,
+    public L lk(SiConsumer<LikeRepositoryExpression, LikeRepositoryExpression, LikeRepositoryExpression,
         LikeRepositoryExpression, LikeRepositoryExpression, LikeRepositoryExpression> likeExpressions) {
         MulitiLikeExpression<C, L> mulitiExp = new MulitiRepositoryLikeExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -593,7 +593,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nl(SixArgusConsumer<NotLikeRepositoryExpression, NotLikeRepositoryExpression, NotLikeRepositoryExpression,
+    public L nl(SiConsumer<NotLikeRepositoryExpression, NotLikeRepositoryExpression, NotLikeRepositoryExpression,
         NotLikeRepositoryExpression, NotLikeRepositoryExpression, NotLikeRepositoryExpression> notLikeExpressions) {
         MulitiNotLikeExpression<C, L> mulitiExp = new MulitiRepositoryNotLikeExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -629,7 +629,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ba(SixArgusConsumer<BetweenRepositoryExpression, BetweenRepositoryExpression, BetweenRepositoryExpression,
+    public L ba(SiConsumer<BetweenRepositoryExpression, BetweenRepositoryExpression, BetweenRepositoryExpression,
         BetweenRepositoryExpression, BetweenRepositoryExpression, BetweenRepositoryExpression> betweenExpressions) {
         MulitiBetweenExpression<C, L> mulitiExp = new MulitiRepositoryBetweenExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -666,7 +666,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nba(SixArgusConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
+    public L nba(SiConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
         NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
         NotBetweenRepositoryExpression> notBetweenExpressions) {
         MulitiNotBetweenExpression<C, L> mulitiExp = new MulitiRepositoryNotBetweenExpressionImpl<>(this);
@@ -703,7 +703,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L in(SixArgusConsumer<InRepositoryExpression, InRepositoryExpression, InRepositoryExpression,
+    public L in(SiConsumer<InRepositoryExpression, InRepositoryExpression, InRepositoryExpression,
         InRepositoryExpression, InRepositoryExpression, InRepositoryExpression> inExpressions) {
         MulitiInExpression<C, L> mulitiExp = new MulitiRepositoryInExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -739,7 +739,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ni(SixArgusConsumer<NotInRepositoryExpression, NotInRepositoryExpression, NotInRepositoryExpression,
+    public L ni(SiConsumer<NotInRepositoryExpression, NotInRepositoryExpression, NotInRepositoryExpression,
         NotInRepositoryExpression, NotInRepositoryExpression, NotInRepositoryExpression> notInExpressions) {
         MulitiNotInExpression<C, L> mulitiExp = new MulitiRepositoryNotInExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -776,7 +776,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ge(SixArgusConsumer<GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
+    public L ge(SiConsumer<GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
         GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
         GreatEqualsRepositoryExpression> greatEqualsExpressions) {
         MulitiGreatEqualsExpression<C, L> mulitiExp = new MulitiRepositoryGreatEqualsExpressionImpl<>(this);
@@ -814,7 +814,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L gt(SixArgusConsumer<GreatThanRepositoryExpression, GreatThanRepositoryExpression,
+    public L gt(SiConsumer<GreatThanRepositoryExpression, GreatThanRepositoryExpression,
         GreatThanRepositoryExpression, GreatThanRepositoryExpression, GreatThanRepositoryExpression,
         GreatThanRepositoryExpression> greatThanExpressions) {
         MulitiGreatThanExpression<C, L> mulitiExp = new MulitiRepositoryGreatThanExpressionImpl<>(this);
@@ -852,7 +852,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @Override
     @SuppressWarnings("unchecked")
-    public L le(SixArgusConsumer<LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
+    public L le(SiConsumer<LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
         LessEqualsRepositoryExpression, LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
         LessEqualsRepositoryExpression> lessEqualsExpressions) {
         MulitiLessEqualsExpression<C, L> mulitiExp = new MulitiRepositoryLessEqualsExpressionImpl<>(this);
@@ -890,7 +890,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression6<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lt(SixArgusConsumer<LessThanRepositoryExpression, LessThanRepositoryExpression,
+    public L lt(SiConsumer<LessThanRepositoryExpression, LessThanRepositoryExpression,
         LessThanRepositoryExpression, LessThanRepositoryExpression, LessThanRepositoryExpression,
         LessThanRepositoryExpression> lessThanExpressions) {
         MulitiLessThanExpression<C, L> mulitiExp = new MulitiRepositoryLessThanExpressionImpl<>(this);

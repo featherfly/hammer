@@ -8,8 +8,8 @@ import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
-import cn.featherfly.common.function.FiveArgusConsumer;
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiConsumer;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
@@ -133,7 +133,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      * {@inheritDoc}
      */
     @Override
-    public L field(FiveArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+    public L field(FiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
         RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
         LogicExpression<?, ?>> repositoiesFieldFunction) {
         return (L) addCondition(
@@ -171,7 +171,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     @SuppressWarnings("unchecked")
     @Override
     public L co(
-        FiveArgusConsumer<ContainsRepositoryExpression, ContainsRepositoryExpression, ContainsRepositoryExpression,
+        FiConsumer<ContainsRepositoryExpression, ContainsRepositoryExpression, ContainsRepositoryExpression,
             ContainsRepositoryExpression, ContainsRepositoryExpression> containsRepositoryExpressions) {
         MulitiContainsExpression<C, L> mulitiExp = new MulitiRepositoryContainsExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -207,7 +207,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nco(FiveArgusConsumer<NotContainsRepositoryExpression, NotContainsRepositoryExpression,
+    public L nco(FiConsumer<NotContainsRepositoryExpression, NotContainsRepositoryExpression,
         NotContainsRepositoryExpression, NotContainsRepositoryExpression,
         NotContainsRepositoryExpression> notContainsRepositoryExpressions) {
         MulitiNotContainsExpression<C, L> mulitiExp = new MulitiRepositoryNotContainsExpressionImpl<>(this);
@@ -242,7 +242,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L eq(FiveArgusConsumer<EqualsRepositoryExpression, EqualsRepositoryExpression, EqualsRepositoryExpression,
+    public L eq(FiConsumer<EqualsRepositoryExpression, EqualsRepositoryExpression, EqualsRepositoryExpression,
         EqualsRepositoryExpression, EqualsRepositoryExpression> equalsRepositoryExpressions) {
         MulitiEqualsExpression<C, L> mulitiExp = new MulitiRepositoryEqualsExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -279,7 +279,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     @SuppressWarnings("unchecked")
     @Override
     public L ne(
-        FiveArgusConsumer<NotEqualsRepositoryExpression, NotEqualsRepositoryExpression, NotEqualsRepositoryExpression,
+        FiConsumer<NotEqualsRepositoryExpression, NotEqualsRepositoryExpression, NotEqualsRepositoryExpression,
             NotEqualsRepositoryExpression, NotEqualsRepositoryExpression> notEqualsRepositoryExpressions) {
         MulitiNotEqualsExpression<C, L> mulitiExp = new MulitiRepositoryNotEqualsExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -313,7 +313,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L isn(FiveArgusConsumer<IsNullRepositoryExpression, IsNullRepositoryExpression, IsNullRepositoryExpression,
+    public L isn(FiConsumer<IsNullRepositoryExpression, IsNullRepositoryExpression, IsNullRepositoryExpression,
         IsNullRepositoryExpression, IsNullRepositoryExpression> isNullRepositoryExpressions) {
         MulitiIsNullExpression<C, L> mulitiExp = new MulitiRepositoryIsNullExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -347,7 +347,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ew(FiveArgusConsumer<EndWithRepositoryExpression, EndWithRepositoryExpression, EndWithRepositoryExpression,
+    public L ew(FiConsumer<EndWithRepositoryExpression, EndWithRepositoryExpression, EndWithRepositoryExpression,
         EndWithRepositoryExpression, EndWithRepositoryExpression> endWithExpressions) {
         MulitiEndWithExpression<C, L> mulitiExp = new MulitiRepositoryEndWithExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -382,7 +382,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L newv(FiveArgusConsumer<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
+    public L newv(FiConsumer<NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
         NotEndWithRepositoryExpression, NotEndWithRepositoryExpression,
         NotEndWithRepositoryExpression> notEndWithExpressions) {
         MulitiNotEndWithExpression<C, L> mulitiExp = new MulitiRepositoryNotEndWithExpressionImpl<>(this);
@@ -419,7 +419,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     @Override
     @SuppressWarnings("unchecked")
     public L sw(
-        FiveArgusConsumer<StartWithRepositoryExpression, StartWithRepositoryExpression, StartWithRepositoryExpression,
+        FiConsumer<StartWithRepositoryExpression, StartWithRepositoryExpression, StartWithRepositoryExpression,
             StartWithRepositoryExpression, StartWithRepositoryExpression> startWithExpressions) {
         MulitiStartWithExpression<C, L> mulitiExp = new MulitiRepositoryStartWithExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -455,7 +455,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(FiveArgusConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
+    public L nsw(FiConsumer<NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
         NotStartWithRepositoryExpression, NotStartWithRepositoryExpression,
         NotStartWithRepositoryExpression> notStartWithExpressions) {
         MulitiNotStartWithExpression<C, L> mulitiExp = new MulitiRepositoryNotStartWithExpressionImpl<>(this);
@@ -490,7 +490,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lk(FiveArgusConsumer<LikeRepositoryExpression, LikeRepositoryExpression, LikeRepositoryExpression,
+    public L lk(FiConsumer<LikeRepositoryExpression, LikeRepositoryExpression, LikeRepositoryExpression,
         LikeRepositoryExpression, LikeRepositoryExpression> likeExpressions) {
         MulitiLikeExpression<C, L> mulitiExp = new MulitiRepositoryLikeExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -524,7 +524,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nl(FiveArgusConsumer<NotLikeRepositoryExpression, NotLikeRepositoryExpression, NotLikeRepositoryExpression,
+    public L nl(FiConsumer<NotLikeRepositoryExpression, NotLikeRepositoryExpression, NotLikeRepositoryExpression,
         NotLikeRepositoryExpression, NotLikeRepositoryExpression> notLikeExpressions) {
         MulitiNotLikeExpression<C, L> mulitiExp = new MulitiRepositoryNotLikeExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -560,7 +560,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     @Override
     @SuppressWarnings("unchecked")
     public L inn(
-        FiveArgusConsumer<IsNotNullRepositoryExpression, IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
+        FiConsumer<IsNotNullRepositoryExpression, IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
             IsNotNullRepositoryExpression, IsNotNullRepositoryExpression> isNotNullExpressions) {
         MulitiIsNotNullExpression<C, L> mulitiExp = new MulitiRepositoryIsNotNullExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -594,7 +594,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ba(FiveArgusConsumer<BetweenRepositoryExpression, BetweenRepositoryExpression, BetweenRepositoryExpression,
+    public L ba(FiConsumer<BetweenRepositoryExpression, BetweenRepositoryExpression, BetweenRepositoryExpression,
         BetweenRepositoryExpression, BetweenRepositoryExpression> betweenExpressions) {
         MulitiBetweenExpression<C, L> mulitiExp = new MulitiRepositoryBetweenExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -629,7 +629,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nba(FiveArgusConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
+    public L nba(FiConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
         NotBetweenRepositoryExpression, NotBetweenRepositoryExpression,
         NotBetweenRepositoryExpression> notBetweenExpressions) {
         MulitiNotBetweenExpression<C, L> mulitiExp = new MulitiRepositoryNotBetweenExpressionImpl<>(this);
@@ -664,7 +664,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L in(FiveArgusConsumer<InRepositoryExpression, InRepositoryExpression, InRepositoryExpression,
+    public L in(FiConsumer<InRepositoryExpression, InRepositoryExpression, InRepositoryExpression,
         InRepositoryExpression, InRepositoryExpression> inExpressions) {
         MulitiInExpression<C, L> mulitiExp = new MulitiRepositoryInExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -698,7 +698,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ni(FiveArgusConsumer<NotInRepositoryExpression, NotInRepositoryExpression, NotInRepositoryExpression,
+    public L ni(FiConsumer<NotInRepositoryExpression, NotInRepositoryExpression, NotInRepositoryExpression,
         NotInRepositoryExpression, NotInRepositoryExpression> notInExpressions) {
         MulitiNotInExpression<C, L> mulitiExp = new MulitiRepositoryNotInExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -733,7 +733,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ge(FiveArgusConsumer<GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
+    public L ge(FiConsumer<GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
         GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
         GreatEqualsRepositoryExpression> greatEqualsExpressions) {
         MulitiGreatEqualsExpression<C, L> mulitiExp = new MulitiRepositoryGreatEqualsExpressionImpl<>(this);
@@ -770,7 +770,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
     @SuppressWarnings("unchecked")
     @Override
     public L gt(
-        FiveArgusConsumer<GreatThanRepositoryExpression, GreatThanRepositoryExpression, GreatThanRepositoryExpression,
+        FiConsumer<GreatThanRepositoryExpression, GreatThanRepositoryExpression, GreatThanRepositoryExpression,
             GreatThanRepositoryExpression, GreatThanRepositoryExpression> greatThanExpressions) {
         MulitiGreatThanExpression<C, L> mulitiExp = new MulitiRepositoryGreatThanExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();
@@ -805,7 +805,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @Override
     @SuppressWarnings("unchecked")
-    public L le(FiveArgusConsumer<LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
+    public L le(FiConsumer<LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
         LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
         LessEqualsRepositoryExpression> lessEqualsExpressions) {
         MulitiLessEqualsExpression<C, L> mulitiExp = new MulitiRepositoryLessEqualsExpressionImpl<>(this);
@@ -841,7 +841,7 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpression5<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lt(FiveArgusConsumer<LessThanRepositoryExpression, LessThanRepositoryExpression,
+    public L lt(FiConsumer<LessThanRepositoryExpression, LessThanRepositoryExpression,
         LessThanRepositoryExpression, LessThanRepositoryExpression, LessThanRepositoryExpression> lessThanExpressions) {
         MulitiLessThanExpression<C, L> mulitiExp = new MulitiRepositoryLessThanExpressionImpl<>(this);
         Predicate<Object> ignoreStrategy = getIgnoreStrategy();

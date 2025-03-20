@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -35,7 +35,7 @@ public interface RepositoryIsNotNullExpression6<C extends ConditionExpression, L
      * @param isNotNullExpressions the is not null expressions
      * @return the LogicExpression
      */
-    L inn(SixArgusConsumer<IsNotNullRepositoryExpression, IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
+    L inn(SiConsumer<IsNotNullRepositoryExpression, IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
         IsNotNullRepositoryExpression, IsNotNullRepositoryExpression,
         IsNotNullRepositoryExpression> isNotNullExpressions);
 }

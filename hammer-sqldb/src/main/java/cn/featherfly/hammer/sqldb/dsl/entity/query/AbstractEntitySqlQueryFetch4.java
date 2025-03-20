@@ -2,8 +2,8 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.FourArgusConsumer;
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoConsumer;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup4;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic4;
@@ -74,7 +74,7 @@ public abstract class AbstractEntitySqlQueryFetch4<E, E2, E3, E4, R> extends Abs
      */
     @Override
     public EntityQueryConditionGroupLogic4<E, E2, E3, E4, R> where(
-        FourArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+        FoFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
             EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
             LogicExpression<?, ?>> entityPropertyFuntion) {
         EntitySqlQueryExpression4<E, E2, E3, E4,
@@ -101,7 +101,7 @@ public abstract class AbstractEntitySqlQueryFetch4<E, E2, E3, E4, R> extends Abs
     public <S1 extends EntitySortedExpression<E, S1>, S2 extends EntitySortedExpression<E2, S2>,
         S3 extends EntitySortedExpression<E3, S3>,
         S4 extends EntitySortedExpression<E4, S4>> EntityQuerySortedExpression4<E, E2, E3, E4, R> sort(
-            FourArgusConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+            FoConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>> entitySortExpresions) {
         return new EntitySqlQueryExpression4<E, E2, E3, E4, R>(hammerConfig, factory, sqlPageFactory, queryRelation)
             .sort(entitySortExpresions);

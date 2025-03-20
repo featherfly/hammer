@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -43,7 +43,7 @@ public class SetEnumExpressionImpl<E extends Enum<E>> extends SetValueExpression
      * @param setValue        the set value
      */
     public SetEnumExpressionImpl(Function<E, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<E, Predicate<E>, PropertyMapping<?>> setValue) {
+            ThConsumer<E, Predicate<E>, PropertyMapping<?>> setValue) {
         super(propertyMapping, ignoreStrategy, setValue);
     }
 

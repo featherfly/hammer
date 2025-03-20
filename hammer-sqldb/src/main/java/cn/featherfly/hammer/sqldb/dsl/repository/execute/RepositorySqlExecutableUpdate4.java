@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlUpdateSetBasicBuilder;
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -227,7 +227,7 @@ public class RepositorySqlExecutableUpdate4 implements RepositorySqlUpdate4, Rep
      */
     @Override
     public RepositoryExecutableConditionsGroupLogic4<UpdateConditionConfig> where(
-        FourArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        FoFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         RepositorySqlUpdateConditions4 sqlUpdateExpression = new RepositorySqlUpdateConditions4(update.updateRelation);
         if (repositoriesCondtionFuntion != null) {

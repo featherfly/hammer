@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
@@ -289,7 +289,7 @@ public class EntitySqlExecutableUpdate4<E, J1, J2, J3>
      */
     @Override
     public EntityExecutableConditionGroupLogic4<E, J1, J2, J3, UpdateConditionConfig> where(
-        FourArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<J1, ?, ?>,
+        FoFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<J1, ?, ?>,
             EntityConditionsGroupExpression<J2, ?, ?>, EntityConditionsGroupExpression<J3, ?, ?>,
             LogicExpression<?, ?>> entitiesCondtionFuntion) {
         EntitySqlUpdateConditions4<E, J1, J2, J3> expr = createSqlUpdateExpression();

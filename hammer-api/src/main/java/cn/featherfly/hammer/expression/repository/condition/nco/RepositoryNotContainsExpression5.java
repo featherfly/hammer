@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple5;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -33,6 +33,6 @@ public interface RepositoryNotContainsExpression5<C extends ConditionExpression,
      * @param containsRepositoryExpressions the contains repository expressions
      * @return the LogicExpression
      */
-    L nco(FiveArgusConsumer<NotContainsRepositoryExpression, NotContainsRepositoryExpression, NotContainsRepositoryExpression,
+    L nco(FiConsumer<NotContainsRepositoryExpression, NotContainsRepositoryExpression, NotContainsRepositoryExpression,
             NotContainsRepositoryExpression, NotContainsRepositoryExpression> containsRepositoryExpressions);
 }

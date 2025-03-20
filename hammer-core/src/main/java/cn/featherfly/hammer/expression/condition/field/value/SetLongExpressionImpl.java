@@ -13,7 +13,7 @@ import java.util.function.Function;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -25,7 +25,7 @@ public class SetLongExpressionImpl implements SetLongExpression {
 
     private Function<Long, PropertyMapping<?>> propertyMapping;
 
-    private ThreeArgusConsumer<Long, LongPredicate, PropertyMapping<?>> setValue;
+    private ThConsumer<Long, LongPredicate, PropertyMapping<?>> setValue;
 
     private Predicate<?> ignoreStrategy;
 
@@ -51,7 +51,7 @@ public class SetLongExpressionImpl implements SetLongExpression {
      * @param setValue        the set value
      */
     public SetLongExpressionImpl(Function<Long, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<Long, LongPredicate, PropertyMapping<?>> setValue) {
+            ThConsumer<Long, LongPredicate, PropertyMapping<?>> setValue) {
         super();
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;

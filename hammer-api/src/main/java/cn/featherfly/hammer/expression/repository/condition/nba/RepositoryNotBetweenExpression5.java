@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple5;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -33,5 +33,5 @@ public interface RepositoryNotBetweenExpression5<C extends ConditionExpression, 
      * @param notBetweenExpressions the not between expressions
      * @return the LogicExpression
      */
-    L nba(FiveArgusConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression> notBetweenExpressions);
+    L nba(FiConsumer<NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression, NotBetweenRepositoryExpression> notBetweenExpressions);
 }

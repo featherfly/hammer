@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,6 +37,6 @@ public interface EntityNotLikeExpression3<E, E2, E3, C extends ConditionExpressi
      * @param notLikeEntityExpressions the not like entity expressions
      * @return the LogicExpression
      */
-    L nl(ThreeArgusConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>,
+    L nl(ThConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>,
             NotLikeEntityExpression<E3>> notLikeEntityExpressions);
 }

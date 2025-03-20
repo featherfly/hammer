@@ -12,7 +12,7 @@ import java.time.LocalTime;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -36,10 +36,10 @@ public class SetLocalTimeArrayExpressionImpl extends SetArrayExpressionImpl<Loca
      */
     public SetLocalTimeArrayExpressionImpl(Function<LocalTime, PropertyMapping<?>> getPropertyMapping,
             Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<LocalTime, Predicate<LocalTime>, PropertyMapping<?>> setValue,
+            ThConsumer<LocalTime, Predicate<LocalTime>, PropertyMapping<?>> setValue,
             Function<LocalTime[], PropertyMapping<?>> getArrayPropertyMapping,
             Predicate<LocalTime[]> ignoreArrayStrategy,
-            ThreeArgusConsumer<LocalTime[], Predicate<LocalTime[]>, PropertyMapping<?>> setArrayValue) {
+            ThConsumer<LocalTime[], Predicate<LocalTime[]>, PropertyMapping<?>> setArrayValue) {
         super(getPropertyMapping, ignoreStrategy, setValue, getArrayPropertyMapping, ignoreArrayStrategy,
                 setArrayValue);
     }

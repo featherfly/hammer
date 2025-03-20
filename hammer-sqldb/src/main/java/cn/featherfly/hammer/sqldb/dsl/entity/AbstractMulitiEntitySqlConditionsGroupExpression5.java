@@ -8,7 +8,7 @@ import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ba.MulitiBetweenExpression;
 import cn.featherfly.hammer.expression.condition.co.MulitiContainsExpression;
@@ -153,7 +153,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L lk(FiveArgusConsumer<LikeEntityExpression<E1>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
+    public L lk(FiConsumer<LikeEntityExpression<E1>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
         LikeEntityExpression<E4>, LikeEntityExpression<E5>> likeEntityExpressions) {
         MulitiLikeExpression<C, L> mulitiExpression = new MulitiEntityLikeExpressionImpl<>(this);
         likeEntityExpressions.accept(new LikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -188,7 +188,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
     @SuppressWarnings("unchecked")
     @Override
     public L sw(
-        FiveArgusConsumer<StartWithEntityExpression<E1>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
+        FiConsumer<StartWithEntityExpression<E1>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
             StartWithEntityExpression<E4>, StartWithEntityExpression<E5>> startWithEntityExpressions) {
         MulitiStartWithExpression<C, L> expression = new MulitiEntityStartWithExpressionImpl<>(this);
         startWithEntityExpressions.accept(new StartWithEntityExpressionImpl<>(0, expression, factory, entityRelation),
@@ -221,7 +221,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ni(FiveArgusConsumer<NotInEntityExpression<E1>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
+    public L ni(FiConsumer<NotInEntityExpression<E1>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
         NotInEntityExpression<E4>, NotInEntityExpression<E5>> notInEntityExpressions) {
         MulitiNotInExpression<C, L> mulitiExpression = new MulitiEntityNotInExpressionImpl<>(this);
         notInEntityExpressions.accept(new NotInEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -256,7 +256,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
     @SuppressWarnings("unchecked")
     @Override
     public L ne(
-        FiveArgusConsumer<NotEqualsEntityExpression<E1>, NotEqualsEntityExpression<E2>, NotEqualsEntityExpression<E3>,
+        FiConsumer<NotEqualsEntityExpression<E1>, NotEqualsEntityExpression<E2>, NotEqualsEntityExpression<E3>,
             NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>> notEqualsEntityExpressions) {
         MulitiNotEqualsExpression<C, L> mulitiExpression = new MulitiEntityNotEqualsExpressionImpl<>(this);
         notEqualsEntityExpressions.accept(
@@ -292,7 +292,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
     @SuppressWarnings("unchecked")
     @Override
     public L lt(
-        FiveArgusConsumer<LessThanEntityExpression<E1>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>,
+        FiConsumer<LessThanEntityExpression<E1>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>,
             LessThanEntityExpression<E4>, LessThanEntityExpression<E5>> lessThanEntityExpressions) {
         MulitiLessThanExpression<C, L> mulitiExpression = new MulitiEntityLessThanExpressionImpl<>(this);
         lessThanEntityExpressions.accept(
@@ -327,7 +327,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L le(FiveArgusConsumer<LessEqualsEntityExpression<E1>, LessEqualsEntityExpression<E2>,
+    public L le(FiConsumer<LessEqualsEntityExpression<E1>, LessEqualsEntityExpression<E2>,
         LessEqualsEntityExpression<E3>, LessEqualsEntityExpression<E4>,
         LessEqualsEntityExpression<E5>> lessEqualsEntityExpressions) {
         MulitiLessEqualsExpression<C, L> mulitiExpression = new MulitiEntityLessEqualsExpressionImpl<>(this);
@@ -362,7 +362,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L isn(FiveArgusConsumer<IsNullEntityExpression<E1>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
+    public L isn(FiConsumer<IsNullEntityExpression<E1>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>,
         IsNullEntityExpression<E4>, IsNullEntityExpression<E5>> isNullEntityExpressions) {
         MulitiIsNullExpression<C, L> mulitiExpression = new MulitiEntityIsNullExpressionImpl<>(this);
         isNullEntityExpressions.accept(new IsNullEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -397,7 +397,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
     @SuppressWarnings("unchecked")
     @Override
     public L inn(
-        FiveArgusConsumer<IsNotNullEntityExpression<E1>, IsNotNullEntityExpression<E2>, IsNotNullEntityExpression<E3>,
+        FiConsumer<IsNotNullEntityExpression<E1>, IsNotNullEntityExpression<E2>, IsNotNullEntityExpression<E3>,
             IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>> isNotNullEntityExpressions) {
         MulitiIsNotNullExpression<C, L> mulitiExpression = new MulitiEntityIsNotNullExpressionImpl<>(this);
         isNotNullEntityExpressions.accept(
@@ -430,7 +430,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L in(FiveArgusConsumer<InEntityExpression<E1>, InEntityExpression<E2>, InEntityExpression<E3>,
+    public L in(FiConsumer<InEntityExpression<E1>, InEntityExpression<E2>, InEntityExpression<E3>,
         InEntityExpression<E4>, InEntityExpression<E5>> inEntityExpressions) {
         MulitiInExpression<C, L> mulitiExpression = new MulitiEntityInExpressionImpl<>(this);
         inEntityExpressions.accept(new InEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -465,7 +465,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
     @SuppressWarnings("unchecked")
     @Override
     public L gt(
-        FiveArgusConsumer<GreatThanEntityExpression<E1>, GreatThanEntityExpression<E2>, GreatThanEntityExpression<E3>,
+        FiConsumer<GreatThanEntityExpression<E1>, GreatThanEntityExpression<E2>, GreatThanEntityExpression<E3>,
             GreatThanEntityExpression<E4>, GreatThanEntityExpression<E5>> greatThanEntityExpressions) {
         MulitiGreatThanExpression<C, L> mulitiExpression = new MulitiEntityGreatThanExpressionImpl<>(this);
         greatThanEntityExpressions.accept(
@@ -500,7 +500,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ge(FiveArgusConsumer<GreatEqualsEntityExpression<E1>, GreatEqualsEntityExpression<E2>,
+    public L ge(FiConsumer<GreatEqualsEntityExpression<E1>, GreatEqualsEntityExpression<E2>,
         GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>,
         GreatEqualsEntityExpression<E5>> greatEqualsEntityExpressions) {
         MulitiGreatEqualsExpression<C, L> mulitiExpression = new MulitiEntityGreatEqualsExpressionImpl<>(this);
@@ -535,7 +535,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L eq(FiveArgusConsumer<EqualsEntityExpression<E1>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
+    public L eq(FiConsumer<EqualsEntityExpression<E1>, EqualsEntityExpression<E2>, EqualsEntityExpression<E3>,
         EqualsEntityExpression<E4>, EqualsEntityExpression<E5>> equalsEntityExpressions) {
         MulitiEqualsExpression<C, L> mulitiExpression = new MulitiEntityEqualsExpressionImpl<>(this);
         equalsEntityExpressions.accept(new EqualsEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -568,7 +568,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ew(FiveArgusConsumer<EndWithEntityExpression<E1>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
+    public L ew(FiConsumer<EndWithEntityExpression<E1>, EndWithEntityExpression<E2>, EndWithEntityExpression<E3>,
         EndWithEntityExpression<E4>, EndWithEntityExpression<E5>> endWithEntityExpressions) {
         MulitiEndWithExpression<C, L> mulitiExpression = new MulitiEntityEndWithExpressionImpl<>(this);
         endWithEntityExpressions.accept(new EndWithEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -603,7 +603,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
     @SuppressWarnings("unchecked")
     @Override
     public L co(
-        FiveArgusConsumer<ContainsEntityExpression<E1>, ContainsEntityExpression<E2>, ContainsEntityExpression<E3>,
+        FiConsumer<ContainsEntityExpression<E1>, ContainsEntityExpression<E2>, ContainsEntityExpression<E3>,
             ContainsEntityExpression<E4>, ContainsEntityExpression<E5>> containsEntityExpressions) {
         MulitiContainsExpression<C, L> mulitiEntityContainsExpression = new MulitiEntityContainsExpressionImpl<>(this);
         containsEntityExpressions.accept(
@@ -637,7 +637,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L ba(FiveArgusConsumer<BetweenEntityExpression<E1>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
+    public L ba(FiConsumer<BetweenEntityExpression<E1>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
         BetweenEntityExpression<E4>, BetweenEntityExpression<E5>> betweenEntityExpressions) {
         MulitiBetweenExpression<C, L> mulitiExpression = new MulitiEntityBetweenExpressionImpl<>(this);
         betweenEntityExpressions.accept(new BetweenEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),
@@ -671,7 +671,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nba(FiveArgusConsumer<NotBetweenEntityExpression<E1>, NotBetweenEntityExpression<E2>,
+    public L nba(FiConsumer<NotBetweenEntityExpression<E1>, NotBetweenEntityExpression<E2>,
         NotBetweenEntityExpression<E3>, NotBetweenEntityExpression<E4>,
         NotBetweenEntityExpression<E5>> notBetweenEntityExpressions) {
         MulitiNotBetweenExpression<C, L> mulitiExpression = new MulitiEntityNotBetweenExpressionImpl<>(this);
@@ -708,7 +708,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nco(FiveArgusConsumer<NotContainsEntityExpression<E1>, NotContainsEntityExpression<E2>,
+    public L nco(FiConsumer<NotContainsEntityExpression<E1>, NotContainsEntityExpression<E2>,
         NotContainsEntityExpression<E3>, NotContainsEntityExpression<E4>,
         NotContainsEntityExpression<E5>> notContainsEntityExpressions) {
         MulitiNotContainsExpression<C,
@@ -745,7 +745,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L newv(FiveArgusConsumer<NotEndWithEntityExpression<E1>, NotEndWithEntityExpression<E2>,
+    public L newv(FiConsumer<NotEndWithEntityExpression<E1>, NotEndWithEntityExpression<E2>,
         NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>,
         NotEndWithEntityExpression<E5>> notEndWithEntityExpressions) {
         MulitiNotEndWithExpression<C, L> mulitiExpression = new MulitiEntityNotEndWithExpressionImpl<>(this);
@@ -781,7 +781,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nsw(FiveArgusConsumer<NotStartWithEntityExpression<E1>, NotStartWithEntityExpression<E2>,
+    public L nsw(FiConsumer<NotStartWithEntityExpression<E1>, NotStartWithEntityExpression<E2>,
         NotStartWithEntityExpression<E3>, NotStartWithEntityExpression<E4>,
         NotStartWithEntityExpression<E5>> notStartWithEntityExpressions) {
         MulitiNotStartWithExpression<C, L> expression = new MulitiEntityNotStartWithExpressionImpl<>(this);
@@ -816,7 +816,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpression5<E1, E2, 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public L nl(FiveArgusConsumer<NotLikeEntityExpression<E1>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
+    public L nl(FiConsumer<NotLikeEntityExpression<E1>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
         NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>> notLikeEntityExpressions) {
         MulitiNotLikeExpression<C, L> mulitiExpression = new MulitiEntityNotLikeExpressionImpl<>(this);
         notLikeEntityExpressions.accept(new NotLikeEntityExpressionImpl<>(0, mulitiExpression, factory, entityRelation),

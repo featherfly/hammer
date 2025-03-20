@@ -13,7 +13,7 @@ import java.util.function.DoublePredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -27,7 +27,7 @@ public class SetDoubleExpressionImpl implements SetDoubleExpression {
 
     private Predicate<?> ignoreStrategy;
 
-    private ThreeArgusConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue;
+    private ThConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue;
 
     private BiConsumer<Double, DoublePredicate> setValue0;
 
@@ -53,7 +53,7 @@ public class SetDoubleExpressionImpl implements SetDoubleExpression {
      * @param setValue        the set value
      */
     public SetDoubleExpressionImpl(Function<Double, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue) {
+            ThConsumer<Double, DoublePredicate, PropertyMapping<?>> setValue) {
         super();
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;

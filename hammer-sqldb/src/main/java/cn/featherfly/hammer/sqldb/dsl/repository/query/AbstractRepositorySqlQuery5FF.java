@@ -3,8 +3,8 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.List;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiConsumer;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery5;
@@ -68,7 +68,7 @@ public abstract class AbstractRepositorySqlQuery5FF<R extends RepositoryQueryRel
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQueryConditionsGroupLogic5FF where(FiveArgusFunction<RepositoryFieldOnlyExpression,
+    public RepositoryQueryConditionsGroupLogic5FF where(FiFunction<RepositoryFieldOnlyExpression,
         RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
         RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression5FF(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
@@ -89,7 +89,7 @@ public abstract class AbstractRepositorySqlQuery5FF<R extends RepositoryQueryRel
     public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
         S3 extends RepositorySortedExpression<S3>, S4 extends RepositorySortedExpression<S4>,
         S5 extends RepositorySortedExpression<S5>> RepositoryQuerySortedExpression5FF sort(
-            FiveArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
+            FiConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
                 RepositorySortExpression<S4>, RepositorySortExpression<S5>> repositorySortExpresions) {
         return new RepositorySqlQueryExpression5FF(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
     }

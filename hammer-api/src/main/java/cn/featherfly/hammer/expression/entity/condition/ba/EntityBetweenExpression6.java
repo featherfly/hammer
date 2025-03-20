@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -51,7 +51,7 @@ public interface EntityBetweenExpression6<E, E2, E3, E4, E5, E6, C extends Condi
      * @param betweenEntityExpressions the between entity expressions
      * @return the LogicExpression
      */
-    L ba(SixArgusConsumer<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
+    L ba(SiConsumer<BetweenEntityExpression<E>, BetweenEntityExpression<E2>, BetweenEntityExpression<E3>,
             BetweenEntityExpression<E4>, BetweenEntityExpression<E5>,
             BetweenEntityExpression<E6>> betweenEntityExpressions);
 }

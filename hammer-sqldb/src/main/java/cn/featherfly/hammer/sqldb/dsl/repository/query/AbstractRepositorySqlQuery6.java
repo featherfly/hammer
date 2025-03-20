@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
 import java.util.function.Consumer;
 
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
@@ -72,7 +72,7 @@ public abstract class AbstractRepositorySqlQuery6<R extends RepositoryQueryRelat
      * @return the e
      */
     protected <E extends AbstractSqlConditionExpression<?, ?, ?>> E where(E conditions,
-        SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        SiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         if (repositoriesCondtionFuntion != null) {

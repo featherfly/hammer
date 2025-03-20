@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -42,7 +42,7 @@ public class SetNumberExpressionImpl<N extends Number> extends SetValueExpressio
      * @param setValue        the set value
      */
     public SetNumberExpressionImpl(Function<N, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<N, Predicate<N>, PropertyMapping<?>> setValue) {
+            ThConsumer<N, Predicate<N>, PropertyMapping<?>> setValue) {
         super(propertyMapping, ignoreStrategy, setValue);
     }
 

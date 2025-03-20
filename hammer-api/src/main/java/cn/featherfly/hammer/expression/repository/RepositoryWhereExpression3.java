@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.repository;
 
-import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.function.ThFunction;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.WhereExpression;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression3;
@@ -25,7 +25,7 @@ public interface RepositoryWhereExpression3<C extends RepositoryConditionsGroupE
      * @return filter expression
      */
     default L filter(
-            ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+            ThFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(repositoriesCondtionFuntion);
     }
 
@@ -35,5 +35,5 @@ public interface RepositoryWhereExpression3<C extends RepositoryConditionsGroupE
      * @param repositoriesCondtionFuntion the repositories condtion funtion
      * @return filter expression
      */
-    L where(ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion);
+    L where(ThFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion);
 }

@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -26,7 +26,7 @@ public interface EntityPropertyExpression5<E, E2, E3, E4, E5, C extends Conditio
      * @param entityPropertyFunction the entity property function
      * @return the LogicExpression
      */
-    L property(FiveArgusFunction<EntityPropertyExpression<E, ?, ?>, EntityPropertyExpression<E2, ?, ?>,
+    L property(FiFunction<EntityPropertyExpression<E, ?, ?>, EntityPropertyExpression<E2, ?, ?>,
         EntityPropertyExpression<E3, ?, ?>, EntityPropertyExpression<E4, ?, ?>, EntityPropertyExpression<E5, ?, ?>,
         LogicExpression<?, ?>> entityPropertyFunction);
 }

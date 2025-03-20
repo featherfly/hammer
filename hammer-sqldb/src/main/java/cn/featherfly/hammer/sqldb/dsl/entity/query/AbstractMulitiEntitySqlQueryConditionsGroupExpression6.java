@@ -11,7 +11,7 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
@@ -172,7 +172,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
         S3 extends EntitySortedExpression<E3, S3>, S4 extends EntitySortedExpression<E4, S4>,
         S5 extends EntitySortedExpression<E5, S5>,
         S6 extends EntitySortedExpression<E6, S6>> EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> sort(
-            SixArgusConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+            SiConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>,
                 EntitySortExpression<E6, S6>> entitySortExpresions) {
         if (entitySortExpresions != null) {
@@ -337,7 +337,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     @Override
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> asc(
-        SixArgusConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
+        SiConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
             EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
             EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions) {
         sortEntityExpressions.accept(
@@ -361,7 +361,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression6<E1,
      */
     @Override
     public EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, RS> desc(
-        SixArgusConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
+        SiConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
             EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
             EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions) {
         sortEntityExpressions.accept(

@@ -11,7 +11,7 @@ import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -25,7 +25,7 @@ public class SetIntArrayExpressionImpl extends SetIntExpressionImpl implements S
 
     private Predicate<?> ignoreArrayStrategy;
 
-    private ThreeArgusConsumer<int[], Predicate<int[]>, PropertyMapping<?>> setArrayValue;
+    private ThConsumer<int[], Predicate<int[]>, PropertyMapping<?>> setArrayValue;
 
     /**
      * Instantiates a new condition entity expression integer array property
@@ -39,9 +39,9 @@ public class SetIntArrayExpressionImpl extends SetIntExpressionImpl implements S
      * @param setArrayValue           the set array value
      */
     public SetIntArrayExpressionImpl(Function<Integer, PropertyMapping<?>> getPropertyMapping,
-            Predicate<?> ignoreStrategy, ThreeArgusConsumer<Integer, IntPredicate, PropertyMapping<?>> setValue,
+            Predicate<?> ignoreStrategy, ThConsumer<Integer, IntPredicate, PropertyMapping<?>> setValue,
             Function<int[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<?> ignoreArrayStrategy,
-            ThreeArgusConsumer<int[], Predicate<int[]>, PropertyMapping<?>> setArrayValue) {
+            ThConsumer<int[], Predicate<int[]>, PropertyMapping<?>> setArrayValue) {
         super(getPropertyMapping, ignoreStrategy, setValue);
         this.getArrayPropertyMapping = getArrayPropertyMapping;
         this.ignoreArrayStrategy = ignoreArrayStrategy;

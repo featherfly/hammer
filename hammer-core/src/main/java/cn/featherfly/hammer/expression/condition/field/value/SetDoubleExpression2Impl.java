@@ -12,7 +12,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
@@ -27,7 +27,7 @@ public class SetDoubleExpression2Impl implements SetDoubleExpression2 {
 
     private Predicate<?> ignoreStrategy;
 
-    private FourArgusConsumer<Double, Double, BiPredicate<Double, Double>, PropertyMapping<?>> setValue;
+    private FoConsumer<Double, Double, BiPredicate<Double, Double>, PropertyMapping<?>> setValue;
 
     /**
      * Instantiates a new condition entity expression property expression 2 proxy.
@@ -37,7 +37,7 @@ public class SetDoubleExpression2Impl implements SetDoubleExpression2 {
      * @param setValue        the set value
      */
     public SetDoubleExpression2Impl(Function<Double, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            FourArgusConsumer<Double, Double, BiPredicate<Double, Double>, PropertyMapping<?>> setValue) {
+            FoConsumer<Double, Double, BiPredicate<Double, Double>, PropertyMapping<?>> setValue) {
         super();
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;

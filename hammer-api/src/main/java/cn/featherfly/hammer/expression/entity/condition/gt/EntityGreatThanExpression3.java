@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,6 +37,6 @@ public interface EntityGreatThanExpression3<E, E2, E3, C extends ConditionExpres
      * @param greatThanEntityExpressions the great than entity expressions
      * @return the LogicExpression
      */
-    L gt(ThreeArgusConsumer<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
+    L gt(ThConsumer<GreatThanEntityExpression<E>, GreatThanEntityExpression<E2>,
             GreatThanEntityExpression<E3>> greatThanEntityExpressions);
 }

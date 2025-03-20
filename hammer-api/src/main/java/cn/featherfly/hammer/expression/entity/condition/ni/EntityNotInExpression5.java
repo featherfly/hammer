@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple5;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -39,6 +39,6 @@ public interface EntityNotInExpression5<E, E2, E3, E4, E5, C extends ConditionEx
      * @param notInEntityExpressions the not in entity expressions
      * @return the LogicExpression
      */
-    L ni(FiveArgusConsumer<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
+    L ni(FiConsumer<NotInEntityExpression<E>, NotInEntityExpression<E2>, NotInEntityExpression<E3>,
             NotInEntityExpression<E4>, NotInEntityExpression<E5>> notInEntityExpressions);
 }

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -37,6 +37,6 @@ public interface EntityNotContainsExpression3<E, E2, E3, C extends ConditionExpr
      * @param notContainsEntityExpressions the not contains entity expressions
      * @return the LogicExpression
      */
-    L nco(ThreeArgusConsumer<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>,
+    L nco(ThConsumer<NotContainsEntityExpression<E>, NotContainsEntityExpression<E2>,
             NotContainsEntityExpression<E3>> notContainsEntityExpressions);
 }

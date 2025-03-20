@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple5;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -33,7 +33,7 @@ public interface RepositoryLessEqualsExpression5<C extends ConditionExpression, 
      * @param lessEqualsExpressions the less equals expressions
      * @return the LogicExpression
      */
-    L le(FiveArgusConsumer<LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
+    L le(FiConsumer<LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
         LessEqualsRepositoryExpression, LessEqualsRepositoryExpression,
         LessEqualsRepositoryExpression> lessEqualsExpressions);
 }

@@ -3,7 +3,7 @@ package cn.featherfly.hammer.expression.repository.condition;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.function.ThFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.condition.MulitiRepositoryFieldExpression;
@@ -25,6 +25,6 @@ public interface RepositoryFieldExpression3<C extends ConditionExpression, L ext
      * @param repositoiesFieldFunction the repositoies field function
      * @return the LogicExpression
      */
-    L field(ThreeArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+    L field(ThFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoiesFieldFunction);
 }

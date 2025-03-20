@@ -13,7 +13,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -45,7 +45,7 @@ public class SetLocalDateTimeExpressionImpl extends SetValueExpressionImpl<Local
      */
     public SetLocalDateTimeExpressionImpl(Function<LocalDateTime, PropertyMapping<?>> propertyMapping,
             Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<LocalDateTime, Predicate<LocalDateTime>, PropertyMapping<?>> setValue) {
+            ThConsumer<LocalDateTime, Predicate<LocalDateTime>, PropertyMapping<?>> setValue) {
         super(propertyMapping, ignoreStrategy, setValue);
     }
 

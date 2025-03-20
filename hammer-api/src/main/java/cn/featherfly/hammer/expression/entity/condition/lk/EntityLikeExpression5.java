@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple5;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -39,7 +39,7 @@ public interface EntityLikeExpression5<E, E2, E3, E4, E5, C extends ConditionExp
      * @param likeEntityExpressions the like entity expressions
      * @return the LogicExpression
      */
-    L lk(FiveArgusConsumer<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
+    L lk(FiConsumer<LikeEntityExpression<E>, LikeEntityExpression<E2>, LikeEntityExpression<E3>,
         LikeEntityExpression<E4>, LikeEntityExpression<E5>> likeEntityExpressions);
 
 }

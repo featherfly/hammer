@@ -12,7 +12,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -33,7 +33,7 @@ public class SetEnumExpression2Impl<E extends Enum<E>> extends SetValueExpressio
      * @param setValue        the set value
      */
     public SetEnumExpression2Impl(Function<E, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            FourArgusConsumer<E, E, BiPredicate<E, E>, PropertyMapping<?>> setValue) {
+            FoConsumer<E, E, BiPredicate<E, E>, PropertyMapping<?>> setValue) {
         super(propertyMapping, ignoreStrategy, setValue);
     }
 

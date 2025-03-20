@@ -8,7 +8,7 @@ import java.util.Map;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
@@ -217,7 +217,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
     public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
         S3 extends RepositorySortedExpression<S3>, S4 extends RepositorySortedExpression<S4>,
         S5 extends RepositorySortedExpression<S5>> D sort(
-            FiveArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
+            FiConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
                 RepositorySortExpression<S4>, RepositorySortExpression<S5>> repositorySortExpresions) {
         if (repositorySortExpresions != null) {
             repositorySortExpresions.accept(new RepositorySortExpressionImpl<>(repositoryAlias, getRootSortBuilder()),
@@ -284,7 +284,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
      */
     @SuppressWarnings("unchecked")
     @Override
-    public D asc(FiveArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    public D asc(FiConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.ASC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC),
@@ -349,7 +349,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression5
      */
     @SuppressWarnings("unchecked")
     @Override
-    public D desc(FiveArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    public D desc(FiConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.DESC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC),

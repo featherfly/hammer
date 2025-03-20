@@ -2,8 +2,8 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.SixArgusConsumer;
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiConsumer;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup6;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic6;
@@ -77,7 +77,7 @@ public abstract class AbstractEntitySqlQueryFetch6<E, E2, E3, E4, E5, E6, R> ext
      */
     @Override
     public EntityQueryConditionGroupLogic6<E, E2, E3, E4, E5, E6, R> where(
-        SixArgusFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+        SiFunction<EntityConditionsGroupExpression<E, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
             EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
             EntityConditionsGroupExpression<E5, ?, ?>, EntityConditionsGroupExpression<E6, ?, ?>,
             LogicExpression<?, ?>> entityPropertyFuntion) {
@@ -108,7 +108,7 @@ public abstract class AbstractEntitySqlQueryFetch6<E, E2, E3, E4, E5, E6, R> ext
         S3 extends EntitySortedExpression<E3, S3>, S4 extends EntitySortedExpression<E4, S4>,
         S5 extends EntitySortedExpression<E5, S5>,
         S6 extends EntitySortedExpression<E6, S6>> EntityQuerySortedExpression6<E, E2, E3, E4, E5, E6, R> sort(
-            SixArgusConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+            SiConsumer<EntitySortExpression<E, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>,
                 EntitySortExpression<E6, S6>> entitySortExpresions) {
         return new EntitySqlQueryExpression6<E, E2, E3, E4, E5, E6, R>(hammerConfig, factory, sqlPageFactory,

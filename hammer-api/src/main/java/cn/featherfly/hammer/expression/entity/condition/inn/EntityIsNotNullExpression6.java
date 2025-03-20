@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -41,7 +41,7 @@ public interface EntityIsNotNullExpression6<E, E2, E3, E4, E5, E6, C extends Con
      * @param isNotNullEntityExpressions the is not null entity expressions
      * @return the LogicExpression
      */
-    L inn(SixArgusConsumer<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>, IsNotNullEntityExpression<E3>,
+    L inn(SiConsumer<IsNotNullEntityExpression<E>, IsNotNullEntityExpression<E2>, IsNotNullEntityExpression<E3>,
         IsNotNullEntityExpression<E4>, IsNotNullEntityExpression<E5>,
         IsNotNullEntityExpression<E6>> isNotNullEntityExpressions);
 

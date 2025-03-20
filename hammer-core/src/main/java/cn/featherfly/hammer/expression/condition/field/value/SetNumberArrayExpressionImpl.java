@@ -11,7 +11,7 @@ package cn.featherfly.hammer.expression.condition.field.value;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -35,9 +35,9 @@ public class SetNumberArrayExpressionImpl<N extends Number> extends SetArrayExpr
      * @param setArrayValue           the set array value
      */
     public SetNumberArrayExpressionImpl(Function<N, PropertyMapping<?>> getPropertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<N, Predicate<N>, PropertyMapping<?>> setValue,
+            ThConsumer<N, Predicate<N>, PropertyMapping<?>> setValue,
             Function<N[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<N[]> ignoreArrayStrategy,
-            ThreeArgusConsumer<N[], Predicate<N[]>, PropertyMapping<?>> setArrayValue) {
+            ThConsumer<N[], Predicate<N[]>, PropertyMapping<?>> setArrayValue) {
         super(getPropertyMapping, ignoreStrategy, setValue, getArrayPropertyMapping, ignoreArrayStrategy,
                 setArrayValue);
     }

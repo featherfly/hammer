@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple4;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -38,6 +38,6 @@ public interface EntityNotEndWithExpression4<E, E2, E3, E4, C extends ConditionE
      * @param notEndWithEntityExpressions the not end with entity expressions
      * @return the LogicExpression
      */
-    L newv(FourArgusConsumer<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>,
+    L newv(FoConsumer<NotEndWithEntityExpression<E>, NotEndWithEntityExpression<E2>,
             NotEndWithEntityExpression<E3>, NotEndWithEntityExpression<E4>> notEndWithEntityExpressions);
 }

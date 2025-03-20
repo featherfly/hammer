@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple4;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -38,6 +38,6 @@ public interface EntityGreatEqualsExpression4<E, E2, E3, E4, C extends Condition
      * @param greatEqualsEntityExpressions the great equals entity expressions
      * @return the LogicExpression
      */
-    L ge(FourArgusConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
+    L ge(FoConsumer<GreatEqualsEntityExpression<E>, GreatEqualsEntityExpression<E2>,
             GreatEqualsEntityExpression<E3>, GreatEqualsEntityExpression<E4>> greatEqualsEntityExpressions);
 }

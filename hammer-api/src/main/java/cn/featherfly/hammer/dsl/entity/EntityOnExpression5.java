@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.dsl.entity;
 
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.property.EntityPropertyOnlyExpression;
 
@@ -34,7 +34,7 @@ public interface EntityOnExpression5<E1, E2, E3, E4, E5, J, R> extends EntityOnE
      *                     </ol>
      * @return the RepositoryQueryRelateExpression
      */
-    R on(SixArgusFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
+    R on(SiFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
         EntityPropertyOnlyExpression<E3>, EntityPropertyOnlyExpression<E4>, EntityPropertyOnlyExpression<E5>,
         EntityPropertyOnlyExpression<J>, LogicExpression<?, ?>> onExpression);
 }

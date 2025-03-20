@@ -1,6 +1,6 @@
 package cn.featherfly.hammer.expression.entity.query.sort;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.operator.SortOperator;
 
 /**
@@ -22,7 +22,7 @@ public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpressi
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    default S order(SortOperator order, ThreeArgusConsumer<EntitySetSortPropertyExpression<E>,
+    default S order(SortOperator order, ThConsumer<EntitySetSortPropertyExpression<E>,
         EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>> sortEntityExpressions) {
         switch (order) {
             case DESC:
@@ -38,7 +38,7 @@ public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpressi
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(ThreeArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+    S asc(ThConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
         EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
 
     /**
@@ -47,7 +47,7 @@ public interface EntitySortExpression3<E, E2, E3, S extends EntitySortedExpressi
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(ThreeArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+    S desc(ThConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
         EntitySetSortPropertyExpression<E3>> sortEntityExpressions);
 
     //    /**

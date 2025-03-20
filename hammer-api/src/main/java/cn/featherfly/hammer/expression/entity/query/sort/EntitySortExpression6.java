@@ -1,6 +1,6 @@
 package cn.featherfly.hammer.expression.entity.query.sort;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.common.operator.SortOperator;
 
 /**
@@ -27,7 +27,7 @@ public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
      * @return the LogicExpression
      */
     default S order(SortOperator order,
-        SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+        SiConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
             EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
             EntitySetSortPropertyExpression<E5>, EntitySetSortPropertyExpression<E6>> sortEntityExpressions) {
         switch (order) {
@@ -44,7 +44,7 @@ public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S asc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+    S asc(SiConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
         EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>,
         EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
 
@@ -54,7 +54,7 @@ public interface EntitySortExpression6<E, E2, E3, E4, E5, E6,
      * @param sortEntityExpressions the sort entity expressions
      * @return the LogicExpression
      */
-    S desc(SixArgusConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
+    S desc(SiConsumer<EntitySetSortPropertyExpression<E>, EntitySetSortPropertyExpression<E2>,
         EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>,
         EntitySetSortPropertyExpression<E6>> sortEntityExpressions);
 

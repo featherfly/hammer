@@ -12,7 +12,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
@@ -27,7 +27,7 @@ public class SetLongExpression2Impl implements SetLongExpression2 {
 
     private Predicate<?> ignoreStrategy;
 
-    private FourArgusConsumer<Long, Long, BiPredicate<Long, Long>, PropertyMapping<?>> setValue;
+    private FoConsumer<Long, Long, BiPredicate<Long, Long>, PropertyMapping<?>> setValue;
 
     /**
      * Instantiates a new condition entity expression long property expression 2 impl.
@@ -37,7 +37,7 @@ public class SetLongExpression2Impl implements SetLongExpression2 {
      * @param setValue        the set value
      */
     public SetLongExpression2Impl(Function<Long, PropertyMapping<?>> propertyMapping, Predicate<?> ignoreStrategy,
-            FourArgusConsumer<Long, Long, BiPredicate<Long, Long>, PropertyMapping<?>> setValue) {
+            FoConsumer<Long, Long, BiPredicate<Long, Long>, PropertyMapping<?>> setValue) {
         super();
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple4;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -38,7 +38,7 @@ public interface EntityStartWithExpression4<E, E2, E3, E4, C extends ConditionEx
      * @param startWithEntityExpressions the start with entity expressions
      * @return the LogicExpression
      */
-    L sw(FourArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
+    L sw(FoConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
         StartWithEntityExpression<E4>> startWithEntityExpressions);
 
 }

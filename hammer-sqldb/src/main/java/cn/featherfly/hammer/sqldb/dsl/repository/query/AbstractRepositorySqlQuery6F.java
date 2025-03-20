@@ -1,8 +1,8 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
-import cn.featherfly.common.function.SixArgusConsumer;
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiConsumer;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup6F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic6F;
@@ -64,7 +64,7 @@ public abstract class AbstractRepositorySqlQuery6F<R extends RepositoryQueryRela
      */
     @Override
     public RepositoryQueryConditionsGroupLogic6F where(
-        SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        SiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> repositoriesCondtionFuntion) {
         return where(new RepositorySqlQueryExpression6F(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
@@ -86,7 +86,7 @@ public abstract class AbstractRepositorySqlQuery6F<R extends RepositoryQueryRela
         S3 extends RepositorySortedExpression<S3>, S4 extends RepositorySortedExpression<S4>,
         S5 extends RepositorySortedExpression<S5>,
         S6 extends RepositorySortedExpression<S6>> RepositoryQuerySortedExpression6F sort(
-            SixArgusConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
+            SiConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>, RepositorySortExpression<S3>,
                 RepositorySortExpression<S4>, RepositorySortExpression<S5>,
                 RepositorySortExpression<S6>> repositorySortExpresions) {
         return new RepositorySqlQueryExpression6F(queryRelation, sqlPageFactory).sort(repositorySortExpresions);

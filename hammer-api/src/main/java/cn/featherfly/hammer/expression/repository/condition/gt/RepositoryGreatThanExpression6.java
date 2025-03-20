@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -35,7 +35,7 @@ public interface RepositoryGreatThanExpression6<C extends ConditionExpression, L
      * @param greatThanExpressions the great than expressions
      * @return the LogicExpression
      */
-    L gt(SixArgusConsumer<GreatThanRepositoryExpression, GreatThanRepositoryExpression, GreatThanRepositoryExpression,
+    L gt(SiConsumer<GreatThanRepositoryExpression, GreatThanRepositoryExpression, GreatThanRepositoryExpression,
         GreatThanRepositoryExpression, GreatThanRepositoryExpression,
         GreatThanRepositoryExpression> greatThanExpressions);
 }

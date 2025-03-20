@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple4;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -33,6 +33,6 @@ public interface RepositoryLikeExpression4<C extends ConditionExpression, L exte
      * @param likeExpressions the like expressions
      * @return the LogicExpression
      */
-    L lk(FourArgusConsumer<LikeRepositoryExpression, LikeRepositoryExpression, LikeRepositoryExpression,
+    L lk(FoConsumer<LikeRepositoryExpression, LikeRepositoryExpression, LikeRepositoryExpression,
         LikeRepositoryExpression> likeExpressions);
 }

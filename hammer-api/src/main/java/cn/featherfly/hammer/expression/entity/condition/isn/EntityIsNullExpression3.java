@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple3;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -36,5 +36,5 @@ public interface EntityIsNullExpression3<E, E2, E3, C extends ConditionExpressio
      * @param isNullEntityExpressions the is null entity expressions
      * @return the LogicExpression
      */
-    L isn(ThreeArgusConsumer<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>> isNullEntityExpressions);
+    L isn(ThConsumer<IsNullEntityExpression<E>, IsNullEntityExpression<E2>, IsNullEntityExpression<E3>> isNullEntityExpressions);
 }

@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity.execute;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
 import cn.featherfly.hammer.dsl.entity.EntityOnExpression5;
@@ -72,7 +72,7 @@ public class EntitySqlDelete5<E1, E2, E3, E4, E5> implements EntityDelete5<E1, E
      */
     @Override
     public EntityExecutableConditionGroupLogic5<E1, E2, E3, E4, E5, DeleteConditionConfig> where(
-            FiveArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>, EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>, EntityConditionsGroupExpression<E5, ?, ?>, LogicExpression<?, ?>> function) {
+            FiFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>, EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>, EntityConditionsGroupExpression<E5, ?, ?>, LogicExpression<?, ?>> function) {
         EntitySqlDeleteConditions5<E1, E2, E3, E4, E5> sqlDeleteExpression = createSqlDeleteExpression();
         if (function != null) {
             sqlDeleteExpression

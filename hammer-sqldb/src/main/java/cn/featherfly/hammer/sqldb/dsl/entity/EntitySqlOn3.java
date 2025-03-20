@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.entity;
 
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.dsl.entity.EntityOnExpression3;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -42,7 +42,7 @@ public class EntitySqlOn3<E1, E2, E3, J, Q, C2 extends ConditionConfig<C2>, R ex
      * {@inheritDoc}
      */
     @Override
-    public Q on(FourArgusFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
+    public Q on(FoFunction<EntityPropertyOnlyExpression<E1>, EntityPropertyOnlyExpression<E2>,
         EntityPropertyOnlyExpression<E3>, EntityPropertyOnlyExpression<J>, LogicExpression<?, ?>> onExpression) {
         sqlRelation.join(factory.getClassMapping(joinType), () -> onExpression.apply( //
             new EntityPropertyOnlyExpressionImpl2<>(0, factory, sqlRelation)//

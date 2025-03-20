@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -36,9 +36,9 @@ public class SetDateArrayExpressionImpl<D extends Date> extends SetArrayExpressi
      * @param setArrayValue           the set array value
      */
     public SetDateArrayExpressionImpl(Function<D, PropertyMapping<?>> getPropertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<D, Predicate<D>, PropertyMapping<?>> setValue,
+            ThConsumer<D, Predicate<D>, PropertyMapping<?>> setValue,
             Function<D[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<D[]> ignoreArrayStrategy,
-            ThreeArgusConsumer<D[], Predicate<D[]>, PropertyMapping<?>> setArrayValue) {
+            ThConsumer<D[], Predicate<D[]>, PropertyMapping<?>> setArrayValue) {
         super(getPropertyMapping, ignoreStrategy, setValue, getArrayPropertyMapping, ignoreArrayStrategy,
                 setArrayValue);
     }

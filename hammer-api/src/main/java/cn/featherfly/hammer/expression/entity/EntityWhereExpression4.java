@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity;
 
-import cn.featherfly.common.function.FourArgusFunction;
+import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.query.WhereExpression;
@@ -26,7 +26,7 @@ public interface EntityWhereExpression4<E1, E2, E3, E4, C extends EntityConditio
      * @param entitiesCondtionFuntion the entities condtion funtion
      * @return filter expression
      */
-    default L filter(FourArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>,
+    default L filter(FoFunction<EntityConditionsGroupExpression<E1, ?, ?>,
         EntityConditionsGroupExpression<E2, ?, ?>, EntityConditionsGroupExpression<E3, ?, ?>,
         EntityConditionsGroupExpression<E4, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion) {
         return where(entitiesCondtionFuntion);
@@ -38,7 +38,7 @@ public interface EntityWhereExpression4<E1, E2, E3, E4, C extends EntityConditio
      * @param entitiesCondtionFuntion the entities condtion funtion
      * @return QueryCondition
      */
-    L where(FourArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+    L where(FoFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
         EntityConditionsGroupExpression<E3, ?, ?>, EntityConditionsGroupExpression<E4, ?, ?>,
         LogicExpression<?, ?>> entitiesCondtionFuntion);
 }

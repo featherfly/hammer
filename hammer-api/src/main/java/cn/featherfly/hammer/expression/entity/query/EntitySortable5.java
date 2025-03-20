@@ -8,7 +8,7 @@
  */
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySortExpression;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
 import cn.featherfly.hammer.expression.query.Sortable;
@@ -41,6 +41,6 @@ public interface EntitySortable5<E1, E2, E3, E4, E5, S, Q> extends Sortable<S> {
     <S1 extends EntitySortedExpression<E1, S1>, S2 extends EntitySortedExpression<E2, S2>,
         S3 extends EntitySortedExpression<E3, S3>, S4 extends EntitySortedExpression<E4, S4>,
         S5 extends EntitySortedExpression<E5, S5>> Q sort(
-            FiveArgusConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+            FiConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>> entitySortExpresions);
 }

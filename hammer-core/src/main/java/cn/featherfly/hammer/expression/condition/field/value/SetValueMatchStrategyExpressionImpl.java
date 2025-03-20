@@ -11,8 +11,8 @@ package cn.featherfly.hammer.expression.condition.field.value;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.FourArgusConsumer;
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
@@ -27,9 +27,9 @@ public class SetValueMatchStrategyExpressionImpl<V> implements SetValueMatchStra
 
     private Predicate<?> ignoreStrategy;
 
-    private FourArgusConsumer<V, MatchStrategy, Predicate<V>, PropertyMapping<?>> setValue;
+    private FoConsumer<V, MatchStrategy, Predicate<V>, PropertyMapping<?>> setValue;
 
-    private ThreeArgusConsumer<V, MatchStrategy, Predicate<V>> setValue0;
+    private ThConsumer<V, MatchStrategy, Predicate<V>> setValue0;
 
     /**
      * Instantiates a new sets the string expression impl.
@@ -38,7 +38,7 @@ public class SetValueMatchStrategyExpressionImpl<V> implements SetValueMatchStra
      * @param setValue       the set value
      */
     public SetValueMatchStrategyExpressionImpl(Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<V, MatchStrategy, Predicate<V>> setValue) {
+            ThConsumer<V, MatchStrategy, Predicate<V>> setValue) {
         this.ignoreStrategy = ignoreStrategy;
         setValue0 = setValue;
     }
@@ -52,7 +52,7 @@ public class SetValueMatchStrategyExpressionImpl<V> implements SetValueMatchStra
      */
     public SetValueMatchStrategyExpressionImpl(Function<V, PropertyMapping<?>> propertyMapping,
             Predicate<?> ignoreStrategy,
-            FourArgusConsumer<V, MatchStrategy, Predicate<V>, PropertyMapping<?>> setValue) {
+            FoConsumer<V, MatchStrategy, Predicate<V>, PropertyMapping<?>> setValue) {
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;
         this.setValue = setValue;

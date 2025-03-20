@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple4;
 
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -33,6 +33,6 @@ public interface RepositoryLessThanExpression4<C extends ConditionExpression, L 
      * @param lessThanExpressions the less than expressions
      * @return the LogicExpression
      */
-    L lt(FourArgusConsumer<LessThanRepositoryExpression, LessThanRepositoryExpression, LessThanRepositoryExpression,
+    L lt(FoConsumer<LessThanRepositoryExpression, LessThanRepositoryExpression, LessThanRepositoryExpression,
         LessThanRepositoryExpression> lessThanExpressions);
 }

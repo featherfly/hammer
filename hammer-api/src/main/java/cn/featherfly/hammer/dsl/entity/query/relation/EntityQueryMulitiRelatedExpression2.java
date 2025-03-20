@@ -11,7 +11,7 @@
 //
 //import cn.featherfly.common.tuple.Tuple3;
 //
-//import cn.featherfly.common.function.FourArgusFunction;
+//import cn.featherfly.common.function.FoFunction;
 //import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 //
 ///**
@@ -35,7 +35,7 @@
 //     * @param expression the expression
 //     * @return the re
 //     */
-//    R on(FourArgusFunction<J, E1, E2, E3, R> expression);
+//    R on(FoFunction<J, E1, E2, E3, R> expression);
 //
 //    /**
 //     * T.

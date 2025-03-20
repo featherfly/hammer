@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -41,7 +41,7 @@ public interface EntityLessThanExpression6<E, E2, E3, E4, E5, E6, C extends Cond
      * @param lessThanEntityExpressions the less than entity expressions
      * @return the LogicExpression
      */
-    L lt(SixArgusConsumer<LessThanEntityExpression<E>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>,
+    L lt(SiConsumer<LessThanEntityExpression<E>, LessThanEntityExpression<E2>, LessThanEntityExpression<E3>,
             LessThanEntityExpression<E4>, LessThanEntityExpression<E5>,
             LessThanEntityExpression<E6>> lessThanEntityExpressions);
 }

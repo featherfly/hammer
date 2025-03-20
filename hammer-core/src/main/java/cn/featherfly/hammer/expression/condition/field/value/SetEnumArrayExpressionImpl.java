@@ -11,7 +11,7 @@ package cn.featherfly.hammer.expression.condition.field.value;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -35,9 +35,9 @@ public class SetEnumArrayExpressionImpl<E extends Enum<E>> extends SetArrayExpre
      * @param setArrayValue           the set array value
      */
     public SetEnumArrayExpressionImpl(Function<E, PropertyMapping<?>> getPropertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<E, Predicate<E>, PropertyMapping<?>> setValue,
+            ThConsumer<E, Predicate<E>, PropertyMapping<?>> setValue,
             Function<E[], PropertyMapping<?>> getArrayPropertyMapping, Predicate<E[]> ignoreArrayStrategy,
-            ThreeArgusConsumer<E[], Predicate<E[]>, PropertyMapping<?>> setArrayValue) {
+            ThConsumer<E[], Predicate<E[]>, PropertyMapping<?>> setArrayValue) {
         super(getPropertyMapping, ignoreStrategy, setValue, getArrayPropertyMapping, ignoreArrayStrategy,
                 setArrayValue);
     }

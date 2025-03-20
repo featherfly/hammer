@@ -4,7 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.execute;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.db.builder.dml.basic.SqlDeleteFromBasicBuilder;
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
@@ -51,7 +51,7 @@ public class RepositorySqlDelete5 implements RepositoryDelete5 {
      */
     @Override
     public RepositoryExecutableConditionsGroupLogic5<DeleteConditionConfig> where(
-        FiveArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        FiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> filterable) {
         RepositorySqlDeleteConditions5 sqlDeleteExpression = (RepositorySqlDeleteConditions5) where();
         if (filterable != null) {

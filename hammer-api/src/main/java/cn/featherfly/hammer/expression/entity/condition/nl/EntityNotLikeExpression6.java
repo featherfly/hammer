@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -41,7 +41,7 @@ public interface EntityNotLikeExpression6<E, E2, E3, E4, E5, E6, C extends Condi
      * @param notLikeEntityExpressions the not like entity expressions
      * @return the LogicExpression
      */
-    L nl(SixArgusConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
+    L nl(SiConsumer<NotLikeEntityExpression<E>, NotLikeEntityExpression<E2>, NotLikeEntityExpression<E3>,
             NotLikeEntityExpression<E4>, NotLikeEntityExpression<E5>,
             NotLikeEntityExpression<E6>> notLikeEntityExpressions);
 

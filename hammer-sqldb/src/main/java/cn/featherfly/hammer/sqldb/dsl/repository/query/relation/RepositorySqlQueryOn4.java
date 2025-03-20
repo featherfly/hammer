@@ -9,7 +9,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
 
 import java.util.function.Consumer;
 
-import cn.featherfly.common.function.FiveArgusFunction;
+import cn.featherfly.common.function.FiFunction;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression4;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -84,7 +84,7 @@ public class RepositorySqlQueryOn4<Q extends RepositoryQueryRelateExpression<F>,
      */
     @Override
     public Q on(
-        FiveArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        FiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, LogicExpression<?, ?>> onExpression) {
         queryRelation.join(joinRepository, () -> onExpression.apply( //
             new RepositoryFieldOnlyExpressionImpl<>(0, queryRelation) //

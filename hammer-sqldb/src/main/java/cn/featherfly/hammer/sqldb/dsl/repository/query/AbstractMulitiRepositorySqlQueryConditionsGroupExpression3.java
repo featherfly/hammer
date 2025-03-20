@@ -8,7 +8,7 @@ import java.util.Map;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
@@ -220,7 +220,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression3
     @Override
     @SuppressWarnings("unchecked")
     public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
-        S3 extends RepositorySortedExpression<S3>> D sort(ThreeArgusConsumer<RepositorySortExpression<S1>,
+        S3 extends RepositorySortedExpression<S3>> D sort(ThConsumer<RepositorySortExpression<S1>,
             RepositorySortExpression<S2>, RepositorySortExpression<S3>> repositorySortExpresions) {
         if (repositorySortExpresions != null) {
             repositorySortExpresions.accept(new RepositorySortExpressionImpl<>(repositoryAlias, getRootSortBuilder()),
@@ -266,7 +266,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression3
     @SuppressWarnings("unchecked")
     @Override
     public D asc(
-        ThreeArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+        ThConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.ASC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.ASC));
@@ -309,7 +309,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression3
     @SuppressWarnings("unchecked")
     @Override
     public D desc(
-        ThreeArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
+        ThConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.DESC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias3, SortOperator.DESC));

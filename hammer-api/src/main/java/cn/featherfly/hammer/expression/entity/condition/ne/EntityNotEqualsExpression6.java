@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple6;
 
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -41,7 +41,7 @@ public interface EntityNotEqualsExpression6<E, E2, E3, E4, E5, E6, C extends Con
      * @param notEqualsEntityExpressions the not equals entity expressions
      * @return the LogicExpression
      */
-    L ne(SixArgusConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>, NotEqualsEntityExpression<E3>,
+    L ne(SiConsumer<NotEqualsEntityExpression<E>, NotEqualsEntityExpression<E2>, NotEqualsEntityExpression<E3>,
             NotEqualsEntityExpression<E4>, NotEqualsEntityExpression<E5>,
             NotEqualsEntityExpression<E6>> notEqualsEntityExpressions);
 

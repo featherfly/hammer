@@ -11,7 +11,7 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.FourArgusConsumer;
+import cn.featherfly.common.function.FoConsumer;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
@@ -165,7 +165,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
     public <S1 extends EntitySortedExpression<E1, S1>, S2 extends EntitySortedExpression<E2, S2>,
         S3 extends EntitySortedExpression<E3, S3>,
         S4 extends EntitySortedExpression<E4, S4>> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> sort(
-            FourArgusConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+            FoConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>> entitySortExpresions) {
         if (entitySortExpresions != null) {
             entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
@@ -279,7 +279,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc(
-        FourArgusConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
+        FoConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
             EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>> sortEntityExpressions) {
         sortEntityExpressions.accept(
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias, SortOperator.ASC, classMapping),
@@ -298,7 +298,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc(
-        FourArgusConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
+        FoConsumer<EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>,
             EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>> sortEntityExpressions) {
         sortEntityExpressions.accept(
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias, SortOperator.DESC, classMapping),

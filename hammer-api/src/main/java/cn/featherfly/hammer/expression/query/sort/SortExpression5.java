@@ -1,6 +1,6 @@
 package cn.featherfly.hammer.expression.query.sort;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.common.operator.SortOperator;
 
 /**
@@ -18,7 +18,7 @@ public interface SortExpression5<S extends SortedExpression5<S>> extends SortExp
      * @param sortExpressions the sort expressions
      * @return the LogicExpression
      */
-    default S order(SortOperator order, FiveArgusConsumer<SetSortFieldExpression, SetSortFieldExpression,
+    default S order(SortOperator order, FiConsumer<SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         switch (order) {
             case DESC:
@@ -34,7 +34,7 @@ public interface SortExpression5<S extends SortedExpression5<S>> extends SortExp
      * @param sortExpressions the sort expressions
      * @return the LogicExpression
      */
-    S asc(FiveArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    S asc(FiConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression> sortExpressions);
 
     /**
@@ -43,7 +43,7 @@ public interface SortExpression5<S extends SortedExpression5<S>> extends SortExp
      * @param sortExpressions the sort expressions
      * @return the LogicExpression
      */
-    S desc(FiveArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    S desc(FiConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression> sortExpressions);
 
 }

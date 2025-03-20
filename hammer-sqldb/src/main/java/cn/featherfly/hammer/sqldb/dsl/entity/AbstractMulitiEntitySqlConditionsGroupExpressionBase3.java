@@ -17,7 +17,7 @@ import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.CharPredicate;
-import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.function.ThFunction;
 import cn.featherfly.common.function.serializable.SerializableBoolSupplier;
 import cn.featherfly.common.function.serializable.SerializableBooleanSupplier;
 import cn.featherfly.common.function.serializable.SerializableCharSupplier;
@@ -2815,7 +2815,7 @@ public abstract class AbstractMulitiEntitySqlConditionsGroupExpressionBase3<E1, 
 
     @Override
     @SuppressWarnings("unchecked")
-    public L property(ThreeArgusFunction<EntityPropertyExpression<E1, ?, ?>, EntityPropertyExpression<E2, ?, ?>,
+    public L property(ThFunction<EntityPropertyExpression<E1, ?, ?>, EntityPropertyExpression<E2, ?, ?>,
         EntityPropertyExpression<E3, ?, ?>, LogicExpression<?, ?>> entitiesPropertyFunction) {
         return (L) entitiesPropertyFunction.apply(
             new EntityPropertyOnlyExpressionImpl<>(0, this, factory, entityRelation),

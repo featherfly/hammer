@@ -20,7 +20,7 @@ import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialects;
 import cn.featherfly.common.db.wrapper.ConnectionWrapper;
 import cn.featherfly.common.db.wrapper.PreparedStatementWrapper;
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.Timer;
@@ -100,13 +100,13 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
     //
     // ****************************************************************************************************************
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
+    ThConsumer<PreparedStatementWrapper, Integer,
         Object> prepSetObject = (prep, index, value) -> prep.setObject(index, value);
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
+    ThConsumer<PreparedStatementWrapper, Integer,
         Integer> prepSetInt = (prep, index, value) -> prep.setInt(index, value);
 
-    ThreeArgusConsumer<PreparedStatementWrapper, Integer,
+    ThConsumer<PreparedStatementWrapper, Integer,
         String> prepSetString = (prep, index, value) -> prep.setString(index, value);
 
     @Test

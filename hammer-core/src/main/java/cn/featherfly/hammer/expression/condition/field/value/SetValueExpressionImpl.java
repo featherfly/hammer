@@ -13,7 +13,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.ThreeArgusConsumer;
+import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 
 /**
@@ -28,7 +28,7 @@ public class SetValueExpressionImpl<V> implements SetValueExpression<V> {
 
     private Predicate<?> ignoreStrategy;
 
-    private ThreeArgusConsumer<V, Predicate<V>, PropertyMapping<?>> setValue;
+    private ThConsumer<V, Predicate<V>, PropertyMapping<?>> setValue;
 
     private BiConsumer<V, Predicate<V>> setValue0;
 
@@ -52,7 +52,7 @@ public class SetValueExpressionImpl<V> implements SetValueExpression<V> {
      * @param setValue           the set value
      */
     public SetValueExpressionImpl(Function<V, PropertyMapping<?>> getPropertyMapping, Predicate<?> ignoreStrategy,
-            ThreeArgusConsumer<V, Predicate<V>, PropertyMapping<?>> setValue) {
+            ThConsumer<V, Predicate<V>, PropertyMapping<?>> setValue) {
         super();
         this.getPropertyMapping = getPropertyMapping;
         this.ignoreStrategy = ignoreStrategy;

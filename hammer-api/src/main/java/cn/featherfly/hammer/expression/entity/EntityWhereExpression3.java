@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity;
 
-import cn.featherfly.common.function.ThreeArgusFunction;
+import cn.featherfly.common.function.ThFunction;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.query.WhereExpression;
@@ -26,7 +26,7 @@ public interface EntityWhereExpression3<E1, E2, E3, C extends EntityConditionGro
      * @return filter expression
      */
     default L filter(
-        ThreeArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+        ThFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
             EntityConditionsGroupExpression<E3, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion) {
         return where(entitiesCondtionFuntion);
     }
@@ -37,6 +37,6 @@ public interface EntityWhereExpression3<E1, E2, E3, C extends EntityConditionGro
      * @param entitiesCondtionFuntion the entities condtion funtion
      * @return QueryCondition
      */
-    L where(ThreeArgusFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
+    L where(ThFunction<EntityConditionsGroupExpression<E1, ?, ?>, EntityConditionsGroupExpression<E2, ?, ?>,
         EntityConditionsGroupExpression<E3, ?, ?>, LogicExpression<?, ?>> entitiesCondtionFuntion);
 }

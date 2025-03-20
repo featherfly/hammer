@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple5;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -39,6 +39,6 @@ public interface EntityStartWithExpression5<E, E2, E3, E4, E5, C extends Conditi
      * @param startWithEntityExpressions the start with entity expressions
      * @return the LogicExpression
      */
-    L sw(FiveArgusConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
+    L sw(FiConsumer<StartWithEntityExpression<E>, StartWithEntityExpression<E2>, StartWithEntityExpression<E3>,
         StartWithEntityExpression<E4>, StartWithEntityExpression<E5>> startWithEntityExpressions);
 }

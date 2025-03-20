@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import cn.featherfly.common.tuple.Tuple5;
 
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 
@@ -34,7 +34,7 @@ public interface RepositoryGreatEqualsExpression5<C extends ConditionExpression,
      * @param greatEqualsExpressions the great equals expressions
      * @return the LogicExpression
      */
-    L ge(FiveArgusConsumer<GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
+    L ge(FiConsumer<GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
         GreatEqualsRepositoryExpression, GreatEqualsRepositoryExpression,
         GreatEqualsRepositoryExpression> greatEqualsExpressions);
 }

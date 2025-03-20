@@ -3,7 +3,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.execute;
 
 import java.util.function.Consumer;
 
-import cn.featherfly.common.function.SixArgusFunction;
+import cn.featherfly.common.function.SiFunction;
 import cn.featherfly.hammer.config.dsl.DeleteConditionConfig;
 import cn.featherfly.hammer.config.dsl.DeleteConfig;
 import cn.featherfly.hammer.dsl.repository.execute.RepositoryDelete6;
@@ -46,7 +46,7 @@ public class RepositorySqlDelete6 implements RepositoryDelete6 {
      */
     @Override
     public RepositoryExecutableConditionsGroupLogic6<DeleteConditionConfig> where(
-        SixArgusFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
+        SiFunction<RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression, RepositoryFieldOnlyExpression,
             LogicExpression<?, ?>> filterable) {
         RepositorySqlDeleteConditions6 sqlDeleteExpression = (RepositorySqlDeleteConditions6) where();

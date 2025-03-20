@@ -11,7 +11,7 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.function.FiveArgusConsumer;
+import cn.featherfly.common.function.FiConsumer;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
@@ -166,7 +166,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
     public <S1 extends EntitySortedExpression<E1, S1>, S2 extends EntitySortedExpression<E2, S2>,
         S3 extends EntitySortedExpression<E3, S3>, S4 extends EntitySortedExpression<E4, S4>,
         S5 extends EntitySortedExpression<E5, S5>> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> sort(
-            FiveArgusConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
+            FiConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>> entitySortExpresions) {
         if (entitySortExpresions != null) {
             entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
@@ -304,7 +304,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc(FiveArgusConsumer<
+    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc(FiConsumer<
         EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
         EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions) {
         sortEntityExpressions.accept(
@@ -325,7 +325,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc(FiveArgusConsumer<
+    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc(FiConsumer<
         EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
         EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions) {
         sortEntityExpressions.accept(

@@ -8,7 +8,7 @@ import java.util.Map;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
-import cn.featherfly.common.function.SixArgusConsumer;
+import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
@@ -223,7 +223,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
     public <S1 extends RepositorySortedExpression<S1>, S2 extends RepositorySortedExpression<S2>,
         S3 extends RepositorySortedExpression<S3>, S4 extends RepositorySortedExpression<S4>,
         S5 extends RepositorySortedExpression<S5>,
-        S6 extends RepositorySortedExpression<S6>> D sort(SixArgusConsumer<RepositorySortExpression<S1>,
+        S6 extends RepositorySortedExpression<S6>> D sort(SiConsumer<RepositorySortExpression<S1>,
             RepositorySortExpression<S2>, RepositorySortExpression<S3>, RepositorySortExpression<S4>,
             RepositorySortExpression<S5>, RepositorySortExpression<S6>> repositorySortExpresions) {
         if (repositorySortExpresions != null) {
@@ -302,7 +302,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
      */
     @SuppressWarnings("unchecked")
     @Override
-    public D asc(SixArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    public D asc(SiConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.ASC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.ASC),
@@ -378,7 +378,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression6
      */
     @SuppressWarnings("unchecked")
     @Override
-    public D desc(SixArgusConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
+    public D desc(SiConsumer<SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression,
         SetSortFieldExpression, SetSortFieldExpression, SetSortFieldExpression> sortExpressions) {
         sortExpressions.accept(new SetSqlSortFieldExpression(sortBuilder, repositoryAlias, SortOperator.DESC),
             new SetSqlSortFieldExpression(sortBuilder, repositoryAlias2, SortOperator.DESC),
