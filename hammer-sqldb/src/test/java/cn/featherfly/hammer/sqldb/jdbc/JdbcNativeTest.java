@@ -90,6 +90,44 @@ public class JdbcNativeTest extends JdbcTestBase {
     }
 
     @Test
+    void multipleSql2() throws SQLException {
+        final int id = 1;
+        String sql = "select * from user where id = ?; " + "select * from user_info where id = ?;";
+        Connection conn = getConnection();
+        Console.log("execute sql: {}", sql);
+        PreparedStatement stat = conn.prepareStatement(sql);
+        stat.setInt(1, id);
+        stat.setInt(2, id);
+
+        boolean isQuery = stat.execute();
+        Console.log("stat.execute(sql) = {}", isQuery);
+        if (isQuery) {
+            try (ResultSet resultSet = stat.getResultSet()) {
+                System.out.println(JdbcUtils.getResultSetMaps(resultSet));
+            }
+        } else {
+            Console.log("updateCount: {}", stat.getUpdateCount());
+        }
+        int num = 1;
+        Console.log("sql num: {}", num);
+
+        while (stat.getMoreResults() || stat.getUpdateCount() != -1) {
+            num++;
+            Console.log("sql num: {}", num);
+
+            try (ResultSet resultSet = stat.getResultSet()) {
+                if (resultSet != null) {
+                    System.out.println("isQuery");
+                    System.out.println(JdbcUtils.getResultSetMaps(resultSet));
+                } else {
+                    int updateCount = stat.getUpdateCount();
+                    Console.log("updateCount: {}", updateCount);
+                }
+            }
+        }
+    }
+
+    @Test
     void callQuery() throws SQLException {
         Connection conn = getConnection();
         CallableStatement call = conn.prepareCall("call call_query_user(?)");
