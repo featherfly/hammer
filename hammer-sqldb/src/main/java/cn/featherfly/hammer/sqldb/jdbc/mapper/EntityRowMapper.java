@@ -19,9 +19,6 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
-
 import cn.featherfly.common.bean.Instantiator;
 import cn.featherfly.common.bean.PropertyAccessor;
 import cn.featherfly.common.db.dialect.Dialect;
@@ -31,6 +28,8 @@ import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
 
 /**
@@ -154,7 +153,7 @@ public class EntityRowMapper<T> implements RowMapper<T> {
      */
     public T mapRow(ResultSet resultSet, int rowNumber, final AtomicInteger columnStart) {
         T mappedObject = instantiator.instantiate();
-
+        final int start = columnStart.get();
         int columnIndex = columnStart.get();
         MappingDebugMessage mappingDebugMessage = logger.isDebugEnabled()
             ? new MappingDebugMessage(logger.isDebugEnabled())
@@ -176,9 +175,9 @@ public class EntityRowMapper<T> implements RowMapper<T> {
             StringBuilder debugMessage = new StringBuilder();
             debugMessage
                 .append("\n---------- Mapping " + classMapping.getType().getName() + " Start at ResultSet column index["
-                    + columnStart.get() + "] ----------\n")
+                    + start + "] ----------\n")
                 .append(mappingDebugMessage.toString()) //
-                .append("---------- Mapping " + classMapping.getType().getName() + " End  at ResultSet column index ["
+                .append("---------- Mapping " + classMapping.getType().getName() + " End   at ResultSet column index ["
                     + (columnIndex - 1) + "]----------\n");
             logger.debug(debugMessage.toString());
         }

@@ -85,6 +85,12 @@ import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilderImpl;
  */
 public abstract class AbstractJdbc implements Jdbc {
 
+    private static final String SQL_LOG = "sql -> {}, args -> {}";
+
+    private static final String SQL_RESULT_LOG = "sql -> {}, args -> {}, resultType -> {}";
+
+    private static final String SQL_EXEC_LOG = "execute sql -> {}\n args[{}] -> {}";
+
     protected static final String CALL = "call";
 
     /** The logger. */
@@ -166,18 +172,12 @@ public abstract class AbstractJdbc implements Jdbc {
 
         int columnLen = columnParams.get(0).size();
         final String[] columnNames = new String[columnLen];
-        Lang.each(columnParams.get(0).entrySet(), (entry, index) -> {
-            columnNames[index] = entry.getKey();
-        });
+        Lang.each(columnParams.get(0).entrySet(), (entry, index) -> columnNames[index] = entry.getKey());
 
         if (metadata.getFeatures().supportsBatchUpdates()) {
             //  use driver
             Serializable[][] params = new Serializable[columnParams.size()][columnLen];
-            Lang.each(columnParams, (cp, i) -> {
-                Lang.each(columnNames, (name, j) -> {
-                    params[i][j] = cp.get(name);
-                });
-            });
+            Lang.each(columnParams, (cp, i) -> Lang.each(columnNames, (name, j) -> params[i][j] = cp.get(name)));
             return insertBatchWithDriver(tableName, columnNames, batchSize, params);
         } else {
             int paramLen = columnLen * columnParams.size();
@@ -223,9 +223,8 @@ public abstract class AbstractJdbc implements Jdbc {
             // use deriver
             int actualBatchSize = args.length / columnNames.length;
             final Serializable[][] newArgs = new Serializable[actualBatchSize][columnNames.length];
-            Lang.each(args, (arg, i) -> {
-                newArgs[(i + columnNames.length) / columnNames.length - 1][i % columnNames.length] = i;
-            });
+            Lang.each(args,
+                (arg, i) -> newArgs[(i + columnNames.length) / columnNames.length - 1][i % columnNames.length] = i);
             return insertBatchWithDriver(tableName, columnNames, batchSize, newArgs);
         } else if (getDialect().supportInsertBatch()) {
             // build sql
@@ -322,7 +321,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (Lang.isEmpty(sql)) {
             return 0;
         }
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return update(execution.getExecution(), keySupplier, execution.getParams());
     }
@@ -350,7 +349,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (Lang.isEmpty(sql)) {
             return 0;
         }
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return executeUpdateBatch(execution.getExecution(), batchSize, keySupplier, execution.getParams());
     }
@@ -365,7 +364,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (Lang.isEmpty(sql)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        return executeUpdateBatch((prep, args) -> setParams(prep, args), sql, generatedKeysHolder, argsList);
+        return executeUpdateBatch(this::setParams, sql, generatedKeysHolder, argsList);
     }
 
     @Override
@@ -375,7 +374,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (Lang.isEmpty(sql)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
         }
-        return executeUpdateBatch((prep, args) -> setParams(prep, args), sql, generatedKeyHolder, argsIter, -1);
+        return executeUpdateBatch(this::setParams, sql, generatedKeyHolder, argsIter, -1);
     }
 
     @Override
@@ -434,7 +433,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args[{}] -> {}", sql, args.length, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeyHolder == null ? connection.prepareStatement(sql)
             : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -460,7 +459,7 @@ public abstract class AbstractJdbc implements Jdbc {
 
     private <T extends Serializable> int executeUpdateBatch(String sql, int batchSize,
         GeneratedKeysHolder<T> generatedKeysHolder, Serializable... args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         return executeUpdateBatch(prep -> setParams(prep, args), sql, batchSize, generatedKeysHolder, args);
     }
 
@@ -469,7 +468,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection connection = getConnection();
         try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
             : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -618,7 +617,7 @@ public abstract class AbstractJdbc implements Jdbc {
         try (PreparedStatement prep = generatedKeysHolder == null ? connection.prepareStatement(sql)
             : connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<JdbcExecution> jdbcExecutions = new ArrayList<>();
-            setArgs.accept(prep, (args) -> {
+            setArgs.accept(prep, args -> {
                 JdbcExecution execution = preHandle(sql, args);
                 jdbcExecutions.add(execution);
                 if (logger.isDebugEnabled()) {
@@ -645,12 +644,6 @@ public abstract class AbstractJdbc implements Jdbc {
             return results;
         } catch (SQLException e) {
             releaseConnection(connection);
-            //            StringBuilder strArgs = new StringBuilder();
-            //            int index = 0;
-            //            for (Serializable[] args : argsIter) {
-            //                strArgs.append("\n    batch[").append(index++).append("]: ").append(Arrays.toString(args));
-            //            }
-            //            throw new JdbcException(Str.format("executeUpdateBatch: \n  sql: {0} \n  args: {1}", sql, strArgs.toString()), e);
             throw new JdbcException(Str.format("executeUpdateBatch: \n  sql: {0} \n", sql), e);
         } finally {
             releaseConnection(connection);
@@ -706,7 +699,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -717,7 +710,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -728,7 +721,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <E> E query(String sql, SqlResultSetExtractor<E> extractor, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return query(execution.getExecution(), extractor, execution.getParams());
     }
@@ -754,7 +747,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> List<T> queryList(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryList(execution.getExecution(), rowMapper, execution.getParams());
     }
@@ -773,7 +766,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -788,7 +781,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -907,14 +900,6 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Tuple2<String, String> prefixes, Serializable... args) {
-        //        SQLType sqlType = manager.getSqlType(elementType);
-        //        RowMapper<T> rowMapper = null;
-        //        if (sqlType == null) {
-        //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
-        //        } else {
-        //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
-        //        }
-        //        return query(sql, rowMapper, args);
         return queryList(sql,
             new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes,
                 this::getTypeMapper),
@@ -996,7 +981,7 @@ public abstract class AbstractJdbc implements Jdbc {
         if (Lang.isEmpty(sql)) {
             return new JdbcRowIterable<>(null, rowMapper);
         }
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryEach0(execution.getExecution(), rowMapper, execution.getParams());
     }
@@ -1017,7 +1002,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try {
             PreparedStatement prep = con.prepareStatement(sql);
@@ -1209,27 +1194,6 @@ public abstract class AbstractJdbc implements Jdbc {
             args);
     }
 
-    //    @Override
-    //    public <T> RowIterable<T> queryEach(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
-    //        SQLType sqlType = manager.getSqlType(elementType);
-    //        RowMapper<T> rowMapper = null;
-    //        if (sqlType == null) {
-    //            rowMapper = new NestedBeanPropertyRowMapper<>(elementType, manager);
-    //        } else {
-    //            rowMapper = new SingleColumnRowMapper<>(elementType, manager);
-    //        }
-    //        return queryEach(sql, rowMapper, args);
-    //    }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> List<T> query(String sql, RowMapper<T> rowMapper, BeanPropertyValue<?>... args) {
-    //        return query(prep -> setParams(prep, args), sql, rowMapper,
-    //                Arrays.stream(args).map(arg -> arg.getValue()).toArray());
-    //    }
-
     /**
      * {@inheritDoc}
      */
@@ -1259,7 +1223,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection conn = getConnection();
         try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
             ResultSet.CONCUR_UPDATABLE)) {
@@ -1288,7 +1252,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T querySingle(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return querySingle(execution.getExecution(), rowMapper, execution.getParams());
     }
@@ -1417,14 +1381,6 @@ public abstract class AbstractJdbc implements Jdbc {
             elementType6, prefixes, args));
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public <T> T querySingle(String sql, Class<T> elementType, BeanPropertyValue<?>... args) {
-    //        return singleResult(query(sql, elementType, args));
-    //    }
-
     /**
      * {@inheritDoc}
      */
@@ -1454,7 +1410,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection conn = getConnection();
         try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
             ResultSet.CONCUR_UPDATABLE)) {
@@ -1484,7 +1440,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T queryUnique(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryUnique(execution.getExecution(), rowMapper, execution.getParams());
     }
@@ -1618,7 +1574,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
 
         if (metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.FORWARD_ONLY,
             ResultSetConcurrency.CONCUR_UPDATABLE)) {
@@ -1726,7 +1682,7 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T> Tuple2<T, Integer> querySingleUpdate(String sql, RowMapper<T> rowMapper,
         ToIntBiFunction<ResultSet, T> setValueOperator, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return querySingleUpdate(execution.getExecution(), rowMapper, setValueOperator, execution.getParams());
     }
@@ -1839,7 +1795,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public <T> T queryValue(String sql, RowMapper<T> rowMapper, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}", sql, args);
+        logger.debug(SQL_LOG, sql, args);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryValue(execution.getExecution(), rowMapper, execution.getParams());
     }
@@ -1857,7 +1813,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1873,7 +1829,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -1884,7 +1840,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public boolean queryBool(String sql, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, boolean.class);
+        logger.debug(SQL_RESULT_LOG, sql, args, boolean.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryBool(execution.getExecution(), execution.getParams());
     }
@@ -1911,7 +1867,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1927,7 +1883,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -1938,7 +1894,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public byte queryByte(String sql, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, byte.class);
+        logger.debug(SQL_RESULT_LOG, sql, args, byte.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryByte(execution.getExecution(), execution.getParams());
     }
@@ -1957,7 +1913,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -1973,7 +1929,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -1984,7 +1940,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public byte[] queryBytes(String sql, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, byte[].class);
+        logger.debug(SQL_RESULT_LOG, sql, args, byte[].class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryBytes(execution.getExecution(), execution.getParams());
     }
@@ -2003,7 +1959,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -2019,7 +1975,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -2030,7 +1986,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public short queryShort(String sql, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, short.class);
+        logger.debug(SQL_RESULT_LOG, sql, args, short.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryShort(execution.getExecution(), execution.getParams());
     }
@@ -2048,7 +2004,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -2064,7 +2020,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -2075,7 +2031,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public int queryInt(String sql, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, int.class);
+        logger.debug(SQL_RESULT_LOG, sql, args, int.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryInt(execution.getExecution(), execution.getParams());
     }
@@ -2093,7 +2049,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -2109,7 +2065,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -2120,7 +2076,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public long queryLong(String sql, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, long.class);
+        logger.debug(SQL_RESULT_LOG, sql, args, long.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryLong(execution.getExecution(), execution.getParams());
     }
@@ -2138,7 +2094,7 @@ public abstract class AbstractJdbc implements Jdbc {
         JdbcExecution execution = preHandle(sql, args);
         sql = execution.getExecution();
         args = execution.getParams();
-        logger.debug("execute sql -> {}\n args -> {}", sql, args);
+        logger.debug(SQL_EXEC_LOG, sql, args.length, args);
         Connection con = getConnection();
         try (PreparedStatement prep = con.prepareStatement(sql)) {
             setParams(prep, args);
@@ -2154,7 +2110,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+            throw wrapSqlException(e, sql, args);
         } finally {
             releaseConnection(con);
         }
@@ -2165,7 +2121,7 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     @Override
     public double queryDouble(String sql, Map<String, Serializable> args) {
-        logger.debug("sql -> {}, args -> {}, resultType -> {}", sql, args, double.class);
+        logger.debug(SQL_RESULT_LOG, sql, args, double.class);
         Execution execution = SqlUtils.convertNamedParamSql(sql, args);
         return queryDouble(execution.getExecution(), execution.getParams());
     }
@@ -2248,34 +2204,11 @@ public abstract class AbstractJdbc implements Jdbc {
             releaseConnection(con);
             con = null;
             throw new JdbcException(
-                Str.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, newArgs.toString()), e);
+                Str.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(newArgs), e));
         } finally {
             releaseConnection(con);
         }
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @SuppressWarnings("rawtypes")
-    //    @Override
-    //    public int call(String name, Map<String, Serializable> args) {
-    //        String procedure = getProcedure(name, args.size());
-    //        Connection con = getConnection(dataSource);
-    //        try (CallableStatement call = con.prepareCall(procedure)) {
-    //            Map<String, ProcedureOutParameter> outParams = setParams(call, args);
-    //            call.execute();
-    //            setOutParams2(call, outParams);
-    //            return call.getUpdateCount();
-    //        } catch (SQLException e) {
-    //            releaseConnection(con, dataSource);
-    //            con = null;
-    //            throw new JdbcException(
-    //                    Str.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, args.toString()), e);
-    //        } finally {
-    //            releaseConnection(con, getDataSource());
-    //        }
-    //    }
 
     /**
      * {@inheritDoc}
@@ -2299,7 +2232,6 @@ public abstract class AbstractJdbc implements Jdbc {
             Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             try (ResultSet rs = call.executeQuery()) {
                 setOutParams(call, outParams, args);
-                //                postHandle(execution, procedure, args);
                 List<T> list = new ArrayList<>();
                 int i = 0;
                 SqlResultSet sqlResultSet = new SqlResultSet(rs);
@@ -2311,8 +2243,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
+            throw wrapProcedureSqlException(e, procedure, args);
         } finally {
             releaseConnection(con);
         }
@@ -2351,12 +2282,11 @@ public abstract class AbstractJdbc implements Jdbc {
             call.execute();
             setOutParams(call, outParams, args);
             return new JdbcProcedureMulitiQuery(call, manager, this::getTypeMapper,
-                (list) -> postHandle(execution.setOriginalResult(list)));
+                list -> postHandle(execution.setOriginalResult(list)));
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
+            throw wrapProcedureSqlException(e, procedure, args);
         } finally {
             releaseConnection(con);
         }
@@ -2397,15 +2327,11 @@ public abstract class AbstractJdbc implements Jdbc {
                     postHandle(execution.setOriginalResult(list));
                 }
             }
-            //            @SuppressWarnings("rawtypes")
-            //            List[] listArray = CollectionUtils.toArray(all, List.class);
-            //            return (T) Tuples.ofArray(listArray);
             return (T) Tuples.ofArray(all.toArray());
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
+            throw wrapProcedureSqlException(e, procedure, args);
         } finally {
             releaseConnection(con);
         }
@@ -2460,8 +2386,7 @@ public abstract class AbstractJdbc implements Jdbc {
         } catch (SQLException e) {
             releaseConnection(con);
             con = null;
-            throw new JdbcException(
-                Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
+            throw wrapProcedureSqlException(e, procedure, args);
         } finally {
             releaseConnection(con);
         }
@@ -2528,28 +2453,6 @@ public abstract class AbstractJdbc implements Jdbc {
         } else {
             manager.set(prep, index, argu);
         }
-        //            else {
-        //            if (argu == null) {
-        //                manager.set(prep, index, argu);
-        //            } else if (argu instanceof Collection) {
-        //                int i = index;
-        //                for (Object arg : (Collection<?>) argu) {
-        //                    manager.set(prep, i, arg);
-        //                    i++;
-        //                }
-        //                return i > index ? i-- : index;
-        //            } else if (argu.getClass().isArray()) {
-        //                int i = 0;
-        //                for (; i < Array.getLength(argu); i++) {
-        //                    Object arg = Array.get(argu, i);
-        //                    manager.set(prep, i, arg);
-        //                }
-        //                return i + index > index ? i + index - 1 : index;
-        //            } else {
-        //                manager.set(prep, index, argu);
-        //            }
-        //        }
-        //        return index;
     }
 
     /**
@@ -2624,18 +2527,6 @@ public abstract class AbstractJdbc implements Jdbc {
             outParamMap.put(index, arg.getClass());
         }
     }
-
-    //    /**
-    //     * Sets the params.
-    //     *
-    //     * @param call the CallableStatement
-    //     * @param args the args
-    //     * @return the map
-    //     */
-    //    @SuppressWarnings("rawtypes")
-    //    protected Map<String, ProcedureOutParameter> setParams(CallableStatement call, Map<String, Serializable> args) {
-    //        return JdbcUtils.setParameters(call, args, manager.isEnumWithOrdinal());
-    //    }
 
     /**
      * Sets the params.
@@ -2784,6 +2675,15 @@ public abstract class AbstractJdbc implements Jdbc {
         } else {
             return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager, prefix);
         }
+    }
+
+    private JdbcException wrapSqlException(SQLException e, String sql, Serializable... args) {
+        return new JdbcException(Str.format("query: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
+    }
+
+    private JdbcException wrapProcedureSqlException(SQLException e, String procedure, Serializable... args) {
+        return new JdbcException(
+            Str.format("call procedure query: \nprocedure: {0} \nargs: {1}", procedure, Arrays.toString(args)), e);
     }
 
     /**
