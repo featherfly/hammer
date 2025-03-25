@@ -14,8 +14,8 @@ public class StringElement extends AbstractElement {
      * Instantiates a new string element.
      *
      * @param namedParamPlaceholder the named param placeholder
-     * @param previous              the previous
-     * @param parser                the parser
+     * @param previous the previous
+     * @param parser the parser
      */
     public StringElement(boolean namedParamPlaceholder, Element previous, Parser parser) {
         super(namedParamPlaceholder, previous, parser);
@@ -24,10 +24,10 @@ public class StringElement extends AbstractElement {
     /**
      * Instantiates a new string element.
      *
-     * @param value                 the value
+     * @param value the value
      * @param namedParamPlaceholder the named param placeholder
-     * @param previous              the previous
-     * @param parser                the parser
+     * @param previous the previous
+     * @param parser the parser
      */
     public StringElement(String value, boolean namedParamPlaceholder, Element previous, Parser parser) {
         super(namedParamPlaceholder, previous, parser);
@@ -51,7 +51,7 @@ public class StringElement extends AbstractElement {
     @Override
     public AbstractElement append(String str) {
         return super.append(str.chars().filter(c -> allow((char) c))
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString());
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString());
     }
 
     private boolean allow2(char c) {
@@ -79,11 +79,12 @@ public class StringElement extends AbstractElement {
     @Override
     public String getValue() {
         String result = source.toString();
-        if (result.trim().equals("(")) {
-            return result.replaceAll("\\(", "");
+        String res = result.trim();
+        if (res.equals("(")) {
+            return "";
         }
-        if (result.trim().equals(")")) {
-            return result.replaceAll("\\)", "");
+        if (res.equals(")")) {
+            return "";
         }
         return parser.scanParamName(result);
     }

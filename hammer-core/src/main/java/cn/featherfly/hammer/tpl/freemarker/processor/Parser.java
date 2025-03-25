@@ -41,7 +41,7 @@ public class Parser {
 
     private static final char[] COMMENT_SYMBOL_AFTER_DIRECTIVE_START = new char[] { '+', ' ', '\n' };
 
-    private static final String SQL_DELIM = " \n\t";
+    private static final String SQL_DELIM = " \n\t,()";
 
     private char[] directiveStart = new char[] { '/', '*' };
 
@@ -692,29 +692,34 @@ public class Parser {
             }
         }
         StringBuilder sb = new StringBuilder();
-        StringTokenizer tokenizer = new StringTokenizer(content.toString(), SQL_DELIM,
-            !templateConfig.isPrecompileMinimize());
+        StringTokenizer tokenizer = new StringTokenizer(content.toString(), SQL_DELIM, true);
         String preToken = null;
 
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
-            if (templateConfig.isPrecompileMinimize()) {
-                sb.append(" ");
+            if (token.length() == 1) { // token is delim
+                if (templateConfig.isPrecompileMinimize() && Character.isWhitespace(token.charAt(0))) {
+                    sb.append(" ");
+                } else {
+                    sb.append(token);
+                }
+                continue;
             }
+            //            System.out.println(token.charAt(0) + "    " + token + "    " + token.length());
             if (token.charAt(0) == namedParamStart) {
-                //                if (templateConfig.isPrecompileInParamPlaceholder() && "in".equalsIgnoreCase(preToken)) {
+                String name = token.substring(1);
 
+                // if (templateConfig.isPrecompileInParamPlaceholder() && "in".equalsIgnoreCase(preToken)) {
                 if (inParam || "in".equalsIgnoreCase(preToken)) {
-                    // id in :ids -> id in ${_ids}
-                    sb.append("${").append(templateConfig.getInParamPlaceholderName().apply(token.substring(1)))
+                    // change in :ids to in ${_ids}
+                    sb.append("${").append(templateConfig.getInParamPlaceholderName().apply(name))
                         .append("}");
-                    params.add(new Param(token.substring(1), true));
+                    params.add(new Param(name, true));
                     continue;
                 }
-
                 if (!templateConfig.isPrecompileNamedParamPlaceholder()) {
-                    params.add(new Param(token.substring(1)));
-                    // id = :id -> id = ?
+                    params.add(new Param(name));
+                    // change id = :id to id = ?
                     sb.append("?");
                     continue;
                 }
