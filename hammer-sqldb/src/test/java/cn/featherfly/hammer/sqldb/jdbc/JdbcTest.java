@@ -1639,35 +1639,33 @@ public class JdbcTest extends JdbcTestBase {
     @Test
     public void testIntercepor() {
         JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager,
-            propertyAccessorFactory);
+            propertyAccessorFactory, new JdbcExecutionInterceptor() {
+                @Override
+                public void preHandle(JdbcExecution execution) throws JdbcException {
+                    execution.setExecution("/*+ 加入sql hit 测试*/" + execution.getExecution());
+                }
 
-        jdbc.addInterceptor(new JdbcExecutionInterceptor() {
-            @Override
-            public void preHandle(JdbcExecution execution) throws JdbcException {
-                execution.setExecution("/*+ 加入sql hit 测试*/" + execution.getExecution());
-            }
+                @Override
+                public void postHandle(JdbcExecution execution) throws JdbcException {
+                    execution.setResult(null);
+                }
+            }, new JdbcExecutionInterceptor() {
+                @Override
+                public void preHandle(JdbcExecution execution) throws JdbcException {
+                    System.err.println(Str.format("jdbc -> {0}\n", execution.getJdbc()));
+                    System.err.println(Str.format("original sql -> {0}\n", execution.getOriginalExecution()));
+                    System.err.println(Str.format("execute sql -> {0}\n", execution.getExecution()));
+                    System.err.println(Str.format("original params -> {0}\n", execution.getOriginalParams()));
+                    execution.setParams(execution.getOriginalParams());
+                    System.err.println(Str.format("execute params -> {0}\n", execution.getParams()));
+                }
 
-            @Override
-            public void postHandle(JdbcExecution execution) throws JdbcException {
-                execution.setResult(null);
-            }
-        }, new JdbcExecutionInterceptor() {
-            @Override
-            public void preHandle(JdbcExecution execution) throws JdbcException {
-                System.err.println(Str.format("jdbc -> {0}\n", execution.getJdbc()));
-                System.err.println(Str.format("original sql -> {0}\n", execution.getOriginalExecution()));
-                System.err.println(Str.format("execute sql -> {0}\n", execution.getExecution()));
-                System.err.println(Str.format("original params -> {0}\n", execution.getOriginalParams()));
-                execution.setParams(execution.getOriginalParams());
-                System.err.println(Str.format("execute params -> {0}\n", execution.getParams()));
-            }
-
-            @Override
-            public void postHandle(JdbcExecution execution) throws JdbcException {
-                System.err.println(Str.format("original result -> {0}\n", execution.getOriginalResult()));
-                System.err.println(Str.format("execute result -> {0}\n", execution.getResult()));
-            }
-        });
+                @Override
+                public void postHandle(JdbcExecution execution) throws JdbcException {
+                    System.err.println(Str.format("original result -> {0}\n", execution.getOriginalResult()));
+                    System.err.println(Str.format("execute result -> {0}\n", execution.getResult()));
+                }
+            });
 
         List<App> appList = jdbc.queryList(
             "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",
@@ -1678,8 +1676,6 @@ public class JdbcTest extends JdbcTestBase {
 
     @Test
     public void testIntercepor2() {
-        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager,
-            propertyAccessorFactory);
 
         List<JdbcExecutionInterceptor> interceptors = new ArrayList<>();
 
@@ -1712,7 +1708,8 @@ public class JdbcTest extends JdbcTestBase {
             }
         });
 
-        jdbc.addInterceptor(interceptors);
+        JdbcSpringImpl jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager,
+            propertyAccessorFactory, interceptors);
 
         List<App> appList = jdbc.queryList(
             "select a.id, a.code, a.name, a.platform, a.last_version as \"lastVersion.id\", v.version as \"lastVersion.version\", v.version_code as \"lastVersion.versionCode\" from app a join app_version v on a.last_version = v.id",

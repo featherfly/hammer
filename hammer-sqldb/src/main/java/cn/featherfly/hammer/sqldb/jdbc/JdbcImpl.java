@@ -12,6 +12,8 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 import cn.featherfly.common.bean.PropertyAccessorFactory;
 import cn.featherfly.common.db.JdbcException;
@@ -52,6 +54,34 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * Instantiates a new jdbc impl.
      *
      * @param connection the connection
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     */
+    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        PropertyAccessorFactory propertyAccessorFactory, List<JdbcExecutionInterceptor> interceptors) {
+        this(connection, null, dialect, metadata, manager, propertyAccessorFactory, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     */
+    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        PropertyAccessorFactory propertyAccessorFactory, JdbcExecutionInterceptor... interceptors) {
+        this(connection, null, dialect, metadata, manager, propertyAccessorFactory, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
      * @param defaultIsolation the default isolation
      * @param dialect the dialect
      * @param metadata the metadata
@@ -60,7 +90,46 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      */
     public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
         SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory) {
-        super(dialect, metadata, manager, propertyAccessorFactory);
+        this(connection, defaultIsolation, dialect, metadata, manager, propertyAccessorFactory,
+            Collections.emptyList());
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param defaultIsolation the default isolation
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param interceptors the interceptors
+     */
+    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
+        SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory,
+        JdbcExecutionInterceptor... interceptors) {
+        super(dialect, metadata, manager, propertyAccessorFactory, interceptors);
+        this.connection = connection;
+        if (defaultIsolation != null) {
+            this.defaultIsolation = defaultIsolation;
+        }
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param defaultIsolation the default isolation
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param interceptors the interceptors
+     */
+    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
+        SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory,
+        List<JdbcExecutionInterceptor> interceptors) {
+        super(dialect, metadata, manager, propertyAccessorFactory, interceptors);
         this.connection = connection;
         if (defaultIsolation != null) {
             this.defaultIsolation = defaultIsolation;

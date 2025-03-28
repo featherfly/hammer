@@ -67,6 +67,7 @@ import cn.featherfly.common.repository.mapper.MulitiQueryRowMapper;
 import cn.featherfly.common.repository.mapper.MulitiQueryTupleMapperBuilder;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
+import cn.featherfly.common.structure.ChainSetImpl;
 import cn.featherfly.common.tuple.MutableTuple;
 import cn.featherfly.common.tuple.Tuple;
 import cn.featherfly.common.tuple.Tuple2;
@@ -91,12 +92,13 @@ public abstract class AbstractJdbc implements Jdbc {
 
     private static final String SQL_EXEC_LOG = "execute sql -> {}\n args[{}] -> {}";
 
+    /** The Constant CALL. */
     protected static final String CALL = "call";
 
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final Set<JdbcExecutionInterceptor> interceptors = new LinkedHashSet<>(0);
+    private final List<JdbcExecutionInterceptor> interceptors = new ArrayList<>(0);
 
     /** The dialect. */
     protected final Dialect dialect;
@@ -120,13 +122,56 @@ public abstract class AbstractJdbc implements Jdbc {
      */
     protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
         PropertyAccessorFactory propertyAccessorFactory) {
+        this(dialect, metadata, manager, propertyAccessorFactory, new JdbcExecutionInterceptor[0]);
+    }
+
+    /**
+     * Instantiates a new abstract jdbc.
+     *
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param interceptors the interceptors
+     */
+    protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        PropertyAccessorFactory propertyAccessorFactory, Collection<JdbcExecutionInterceptor> interceptors) {
         super();
         this.dialect = dialect;
         this.manager = manager;
         this.metadata = metadata;
         this.propertyAccessorFactory = propertyAccessorFactory;
+        if (Lang.isNotEmpty(interceptors)) {
+            // remove duplicate
+            Set<JdbcExecutionInterceptor> set = null;
+            if (interceptors instanceof Set) {
+                set = (Set<JdbcExecutionInterceptor>) interceptors;
+            } else {
+                set = new LinkedHashSet<>(interceptors);
+            }
+            this.interceptors.addAll(set);
+        }
     }
 
+    /**
+     * Instantiates a new abstract jdbc.
+     *
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param interceptors the interceptors
+     */
+    protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        PropertyAccessorFactory propertyAccessorFactory, JdbcExecutionInterceptor... interceptors) {
+        this(dialect, metadata, manager, propertyAccessorFactory,
+            new ChainSetImpl<JdbcExecutionInterceptor>(new LinkedHashSet<>(interceptors.length))
+                .addChain(interceptors));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PropertyAccessorFactory getPropertyAccessorFactory() {
         return propertyAccessorFactory;
@@ -164,6 +209,9 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int insertBatch(String tableName, List<Map<String, Serializable>> columnParams, int batchSize) {
         if (Lang.isEmpty(columnParams)) {
@@ -194,6 +242,9 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int insertBatch(String tableName, String[] columnNames, int batchSize, Serializable[]... args) {
         if (Lang.isEmpty(args)) {
@@ -367,6 +418,9 @@ public abstract class AbstractJdbc implements Jdbc {
         return executeUpdateBatch(this::setParams, sql, generatedKeysHolder, argsList);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
         Iterable<Serializable[]> argsIter) {
@@ -377,6 +431,9 @@ public abstract class AbstractJdbc implements Jdbc {
         return executeUpdateBatch(this::setParams, sql, generatedKeyHolder, argsIter, -1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends Serializable> int[] updateBatch(String sql, GeneratedKeysHolder<T> generatedKeyHolder,
         BiConsumer<PreparedStatement, Consumer<Serializable[]>> setArgs) {
@@ -2577,43 +2634,6 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
-    /**
-     * Adds the interceptor.
-     *
-     * @param interceptor the interceptor
-     */
-    public void addInterceptor(JdbcExecutionInterceptor interceptor) {
-        if (interceptor != null) {
-            interceptors.add(interceptor);
-        }
-    }
-
-    /**
-     * Adds the interceptor.
-     *
-     * @param interceptors the interceptors
-     */
-    public void addInterceptor(List<JdbcExecutionInterceptor> interceptors) {
-        if (interceptors != null) {
-            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
-                addInterceptor(jdbcExecutionInterceptor);
-            }
-        }
-    }
-
-    /**
-     * Adds the interceptor.
-     *
-     * @param interceptors the interceptors
-     */
-    public void addInterceptor(JdbcExecutionInterceptor... interceptors) {
-        if (interceptors != null) {
-            for (JdbcExecutionInterceptor jdbcExecutionInterceptor : interceptors) {
-                addInterceptor(jdbcExecutionInterceptor);
-            }
-        }
-    }
-
     private JdbcExecution preHandle(String sql, Serializable... params) {
         JdbcExecution jdbcExecution = new JdbcExecution(this, sql, params);
         for (JdbcExecutionInterceptor interceptor : interceptors) {
@@ -2624,8 +2644,9 @@ public abstract class AbstractJdbc implements Jdbc {
 
     @SuppressWarnings("unchecked")
     private <O> O postHandle(JdbcExecution jdbcExecution) {
-        for (JdbcExecutionInterceptor interceptor : interceptors) {
-            interceptor.postHandle(jdbcExecution);
+        // 按照拦截器的惯用模式，这里后面的先执行
+        for (int i = interceptors.size() - 1; i >= 0; i--) {
+            interceptors.get(i).postHandle(jdbcExecution);
         }
         return (O) jdbcExecution.getResult();
     }

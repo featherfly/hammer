@@ -3,6 +3,8 @@ package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -42,12 +44,73 @@ public class JdbcSpringImpl extends AbstractJdbc {
      * @param dataSource dataSource
      * @param dialect dialect
      * @param metadata the metadata
+     * @param propertyAccessorFactory the instantiator factory
+     * @param interceptors the interceptors
+     */
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
+        PropertyAccessorFactory propertyAccessorFactory, JdbcExecutionInterceptor... interceptors) {
+        this(dataSource, dialect, metadata, new SqlTypeMappingManager(), propertyAccessorFactory, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param dataSource dataSource
+     * @param dialect dialect
+     * @param metadata the metadata
+     * @param propertyAccessorFactory the instantiator factory
+     * @param interceptors the interceptors
+     */
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
+        PropertyAccessorFactory propertyAccessorFactory, List<JdbcExecutionInterceptor> interceptors) {
+        this(dataSource, dialect, metadata, new SqlTypeMappingManager(), propertyAccessorFactory, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param dataSource dataSource
+     * @param dialect dialect
+     * @param metadata the metadata
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param propertyAccessorFactory the instantiator factory
      */
     public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
         SqlTypeMappingManager sqlTypeMappingManager, PropertyAccessorFactory propertyAccessorFactory) {
-        super(dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
+        this(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory, Collections.emptyList());
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param dataSource dataSource
+     * @param dialect dialect
+     * @param metadata the metadata
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param propertyAccessorFactory the instantiator factory
+     * @param interceptors the interceptors
+     */
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
+        SqlTypeMappingManager sqlTypeMappingManager, PropertyAccessorFactory propertyAccessorFactory,
+        List<JdbcExecutionInterceptor> interceptors) {
+        super(dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory, interceptors);
+        this.dataSource = dataSource;
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param dataSource dataSource
+     * @param dialect dialect
+     * @param metadata the metadata
+     * @param sqlTypeMappingManager the sql type mapping manager
+     * @param propertyAccessorFactory the instantiator factory
+     * @param interceptors the interceptors
+     */
+    public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
+        SqlTypeMappingManager sqlTypeMappingManager, PropertyAccessorFactory propertyAccessorFactory,
+        JdbcExecutionInterceptor... interceptors) {
+        super(dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory, interceptors);
         this.dataSource = dataSource;
     }
 
