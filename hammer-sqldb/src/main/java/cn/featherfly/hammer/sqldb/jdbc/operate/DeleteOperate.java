@@ -23,7 +23,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @param <T> 对象类型
  * @since 0.1.0
  */
-public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> implements BatchExecuteOperate<T> {
+public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
 
     /**
      * 使用给定数据源以及给定对象生成删除操作.

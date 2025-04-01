@@ -55,10 +55,7 @@ public class ParserTest {
 
     @Test
     public void testNamedParamWithFun() {
-
         TplExecuteConfig config = new TplExecuteConfig();
-        // FIXME parser 在没有标签，只有命名参数时，解析出错
-        // 错误结果 "insert into role(name, descp) values(:name, ?" , config.getParamNames().length == 1
         String result =
             new Parser(templateConfig).parse("select * from user u where GET_YEAR(u.create_time) = :year", config);
         System.out.println(result);

@@ -710,7 +710,6 @@ public class TplDynamicExecutorFactory implements Opcodes {
                 methodNode.visitMethodInsn(INVOKESPECIAL, classNode.superName, parentMethod.getName(),
                     parentMethodDescriptor, false);
                 if (method.getReturnType().isPrimitive()) {
-                    // TODO 基本类型是否需要强制类型转换
                     if (method.getReturnType() == Integer.TYPE) {
                         methodNode.visitInsn(IRETURN);
                     } else if (method.getReturnType() == Byte.TYPE) {
