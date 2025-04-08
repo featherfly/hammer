@@ -22,7 +22,7 @@ public class StringElement extends AbstractElement {
     /**
      * Instantiates a new string element.
      *
-     * @param value  the value
+     * @param value the value
      * @param parser the parser
      */
     public StringElement(String value, Parser parser) {
@@ -47,7 +47,7 @@ public class StringElement extends AbstractElement {
     @Override
     public AbstractElement append(String str) {
         return super.append(str.chars().filter(c -> allow((char) c))
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString());
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString());
     }
 
     private boolean allow2(char c) {
@@ -74,12 +74,6 @@ public class StringElement extends AbstractElement {
      */
     @Override
     public String getValue() {
-        if (source.toString().trim().equals("(")) {
-            return source.toString().replaceAll("\\(", "");
-        }
-        if (source.toString().trim().equals(")")) {
-            return source.toString().replaceAll("\\)", "");
-        }
         return source.toString();
     }
 }

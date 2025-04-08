@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.TplException;
@@ -35,8 +36,10 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
     private static final String BETWEEN = "between";
 
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
-            "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
-            Pattern.CASE_INSENSITIVE);
+        "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
+        Pattern.CASE_INSENSITIVE);
+
+    private static final Pattern EMPTY_CHILDREN_PATTERN = Pattern.compile("\\(\\s*\\)");
 
     private ConditionParamsManager conditionParamsManager;
 
@@ -55,7 +58,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
      */
     @Override
     public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-            TemplateDirectiveBody body) throws TemplateException, IOException {
+        TemplateDirectiveBody body) throws TemplateException, IOException {
 
         Boolean ifParam = null;
         String nameParam = null;
@@ -99,14 +102,19 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 StringWriter stringWriter = new StringWriter();
                 body.render(stringWriter);
                 String condition = stringWriter.toString().trim();
-                if (condition.length() > 0) {
-                    String result = "";
+                if (condition.length() > 0 && !EMPTY_CHILDREN_PATTERN.matcher(condition).matches()) {
+                    StringBuilder result = new StringBuilder();
                     if (needAppendLogicWorld) {
-                        result = " " + getLogicWorld() + " ( " + condition + " )";
-                    } else {
-                        result = " ( " + condition + " )";
+                        result.append(Chars.SPACE_CHAR).append(getLogicWorld()).append(Chars.SPACE_CHAR);
                     }
-                    out.write(result);
+                    if (condition.charAt(0) != Chars.PAREN_L_CHAR) {
+                        result.append(Chars.PAREN_L_CHAR);
+                    }
+                    result.append(condition);
+                    if (condition.charAt(condition.length() - 1) != Chars.PAREN_R_CHAR) {
+                        result.append(Chars.PAREN_R_CHAR);
+                    }
+                    out.write(result.toString());
                 }
                 conditionParamsManager.endGroup();
             } else {
@@ -169,7 +177,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
             m = CONDITION_PATTERN.matcher(condition);
             if (!m.matches()) {
                 throw new IllegalArgumentException(
-                        "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
+                    "[" + condition + "] " + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">");
             }
 
             String paramType = null;
@@ -190,7 +198,7 @@ public abstract class LogicTemplateDirectiveModel implements FreemarkerDirective
                 name = m.group(1);
                 if (org.apache.commons.lang3.StringUtils.isBlank(name) || betweenAnd) {
                     throw new IllegalArgumentException("[" + condition + "] "
-                            + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
+                        + "查询条件无法获取条件名称，请直接在指令上设置参数名称<@and name=\"paramName\">或者<@and name=\"paramName1,paramName2\">");
                 }
             } else if (paramType.startsWith(":")) {
                 if (conditionParamsManager.getParamNamed() != null && conditionParamsManager.getParamNamed() == false) {

@@ -66,7 +66,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_sqlhints_result.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_sqlhints_result.sql");
         assertEquals(process, result);
     }
 
@@ -80,7 +80,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter_result.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter_result.sql");
         assertEquals(process, result);
     }
 
@@ -94,7 +94,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter2_result.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter2_result.sql");
         assertEquals(process, result);
     }
 
@@ -108,7 +108,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter3_result.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter3_result.sql");
         assertEquals(process, result);
     }
 
@@ -122,7 +122,7 @@ public class FreemarkerTemplatePreProcessorTest {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter4_result.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter4_result.sql");
         assertEquals(process, result);
     }
 
@@ -136,8 +136,56 @@ public class FreemarkerTemplatePreProcessorTest {
         System.err.println(process);
 
         String result = read(
-                ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter5_result.sql");
+            ClassUtils.packageToDir(FreemarkerTemplatePreProcessorTest.class) + "/tpl_transverter5_result.sql");
         assertEquals(process, result);
+    }
+
+    @Test
+    public void testNamedParam() {
+        FreemarkerTemplatePreProcessor processor = new FreemarkerTemplatePreProcessor();
+        String result = processor.process("insert into role(name, descp) values(:name, :descp)");
+        System.out.println(result);
+
+        assertEquals(result, "insert into role(name, descp) values(:name, :descp)");
+
+        result = processor.process("insert into role(name,descp) values(:name,:descp)");
+        System.out.println(result);
+        assertEquals(result, "insert into role(name,descp) values(:name,:descp)");
+    }
+
+    @Test
+    public void testNamedParamWithFun() {
+        FreemarkerTemplatePreProcessor processor = new FreemarkerTemplatePreProcessor();
+        String result = processor.process("select * from user u where GET_YEAR(u.create_time) = :year");
+        System.out.println(result);
+
+        assertEquals(result, "select * from user u where GET_YEAR(u.create_time) = :year");
+
+        result = processor.process("select * from user u where DATE_FORMAT(u.create_time, \"%Y:%M:%D\") = :year");
+        System.out.println(result);
+
+        assertEquals(result, "select * from user u where DATE_FORMAT(u.create_time, \"%Y:%M:%D\") = :year");
+
+        result = processor.process("select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = :year");
+        System.out.println(result);
+
+        assertEquals(result, "select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = :year");
+    }
+
+    @Test
+    public void testReplaceNamedParamWithFun() {
+        FreemarkerTemplatePreProcessor processor = new FreemarkerTemplatePreProcessor();
+        String result = processor.process("select * from user u where GET_YEAR(u.create_time) = year(/*$=:year*/5 )");
+        System.out.println(result);
+
+        assertEquals(result, "select * from user u where GET_YEAR(u.create_time) = year(:year )");
+
+        result = processor.process(
+            "select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = date_format(/*$=:date*/'2000-01-01' , '%Y:%M:%D')");
+        System.out.println(result);
+
+        assertEquals(result,
+            "select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = date_format(:date , '%Y:%M:%D')");
     }
 
     private String read(String file) throws IOException {
