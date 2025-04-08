@@ -56,26 +56,24 @@ public class ParserTest {
     @Test
     public void testNamedParamWithFun() {
         TplExecuteConfig config = new TplExecuteConfig();
-        String result =
-            new Parser(templateConfig).parse("select * from user u where GET_YEAR(u.create_time) = :year", config);
+        String result = new Parser(templateConfig).parse("select * from user u where GET_YEAR(u.create_time) = :year",
+            config);
         System.out.println(result);
 
         assertEquals(config.getParamNames().length, 1);
         assertEquals(config.getParams().length, 1);
         assertEquals(result, "select * from user u where GET_YEAR(u.create_time) = ?");
 
-        result =
-            new Parser(templateConfig)
-                .parse("select * from user u where DATE_FORMAT(u.create_time, \"%Y:%M:%D\") = :year", config);
+        result = new Parser(templateConfig)
+            .parse("select * from user u where DATE_FORMAT(u.create_time, \"%Y:%M:%D\") = :year", config);
         System.out.println(result);
 
         assertEquals(config.getParamNames().length, 1);
         assertEquals(config.getParams().length, 1);
         assertEquals(result, "select * from user u where DATE_FORMAT(u.create_time, \"%Y:%M:%D\") = ?");
 
-        result =
-            new Parser(templateConfig)
-                .parse("select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = :year", config);
+        result = new Parser(templateConfig)
+            .parse("select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = :year", config);
         System.out.println(result);
 
         assertEquals(config.getParamNames().length, 1);
@@ -83,4 +81,25 @@ public class ParserTest {
         assertEquals(result, "select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = ?");
     }
 
+    @Test
+    public void testReplaceNamedParamWithFun() {
+        TplExecuteConfig config = new TplExecuteConfig();
+        String result = new Parser(templateConfig)
+            .parse("select * from user u where GET_YEAR(u.create_time) = year(/*$=:year*/5 )", config);
+        System.out.println(result);
+
+        assertEquals(config.getParamNames().length, 1);
+        assertEquals(config.getParams().length, 1);
+        assertEquals(result, "select * from user u where GET_YEAR(u.create_time) = year(? )");
+
+        result = new Parser(templateConfig).parse(
+            "select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = date_format(/*$=:date*/'2000-01-01' , '%Y:%M:%D')",
+            config);
+        System.out.println(result);
+
+        assertEquals(config.getParamNames().length, 1);
+        assertEquals(config.getParams().length, 1);
+        assertEquals(result,
+            "select * from user u where DATE_FORMAT(u.create_time, '%Y:%M:%D') = date_format(? , '%Y:%M:%D')");
+    }
 }

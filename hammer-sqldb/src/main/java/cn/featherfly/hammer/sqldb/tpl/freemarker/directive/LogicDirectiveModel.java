@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.tpl.TplException;
@@ -35,6 +36,8 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
     private static final Pattern CONDITION_PATTERN = Pattern.compile(
         "(\\w*\\.?[\\[`'\"]?\\w+[\\]`'\"]?) *(([=><]|<>|!=|>=|<=|!>|!<| like | in | is ) *(:\\w+|\\?)|(between) +(:\\w+|\\?) *(and) *(:\\w+|\\?))",
         Pattern.CASE_INSENSITIVE);
+
+    private static final Pattern EMPTY_CHILDREN_PATTERN = Pattern.compile("\\(\\s*\\)");
 
     /**
      * Instantiates a new logic template directive model.
@@ -105,14 +108,19 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
                 StringWriter stringWriter = new StringWriter();
                 body.render(stringWriter);
                 String condition = stringWriter.toString().trim();
-                if (condition.length() > 0) {
-                    String result = "";
+                if (condition.length() > 0 && !EMPTY_CHILDREN_PATTERN.matcher(condition).matches()) {
+                    StringBuilder result = new StringBuilder();
                     if (needAppendLogicWorld) {
-                        result = " " + getLogicWorld() + " ( " + condition + " )";
-                    } else {
-                        result = " ( " + condition + " )";
+                        result.append(Chars.SPACE_CHAR).append(getLogicWorld()).append(Chars.SPACE_CHAR);
                     }
-                    out.write(result);
+                    if (condition.charAt(0) != Chars.PAREN_L_CHAR) {
+                        result.append(Chars.PAREN_L_CHAR).append(Chars.SPACE_CHAR);
+                    }
+                    result.append(condition);
+                    if (condition.charAt(condition.length() - 1) != Chars.PAREN_R_CHAR) {
+                        result.append(Chars.SPACE_CHAR).append(Chars.PAREN_R_CHAR).append(Chars.SPACE_CHAR);
+                    }
+                    out.write(result.toString());
                 }
                 conditionParamsManager.endGroup();
             } else {
@@ -158,8 +166,8 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
         }
     }
 
-    private String[] getParamNames(String name, WhereConditionParams conditionParamsManager,
-        TemplateDirectiveBody body) throws TemplateException, IOException {
+    private String[] getParamNames(String name, WhereConditionParams conditionParamsManager, TemplateDirectiveBody body)
+        throws TemplateException, IOException {
         return getParamNames(getParamName(name, conditionParamsManager, body));
     }
 

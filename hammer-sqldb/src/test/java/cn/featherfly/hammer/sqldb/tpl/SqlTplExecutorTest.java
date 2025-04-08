@@ -921,6 +921,11 @@ public class SqlTplExecutorTest extends JdbcTestBase {
         assertEquals(uis.get("password"), u.get("password"));
         assertEquals(uis.get("username"), u.get("username"));
 
+        // and group 内的条件都空
+        uis = executor.single("selectConditions2@user",
+            new ChainMapImpl<String, Serializable>().putChain("id", u.get("id")));
+        assertEquals(uis.get("id"), u.get("id"));
+
         //        <@and if=age??>id = :id</@and>
         //        <@and if=age??>age > :age</@and>
         //        <@and>

@@ -65,6 +65,13 @@ TODO dsl实体查询加入以下（EntityQuery）
     }
     ```
 
+8. 修复可覆盖占位参数在 ) 前丢失 )的问题
+
+    ```sql
+    -- 注意在可覆盖占位参数和)之间需要空格或者换行，因为可覆盖占位参数的结束是依据空格或换行判断的
+    select * from user u where GET_YEAR(u.create_time) = year(/*$=:year*/5 )
+    ```
+
     
 
 # 0.7.3 2025-02-14

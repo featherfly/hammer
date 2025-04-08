@@ -78,14 +78,6 @@ public class StringElement extends AbstractElement {
      */
     @Override
     public String getValue() {
-        String result = source.toString();
-        String res = result.trim();
-        if (res.equals("(")) {
-            return "";
-        }
-        if (res.equals(")")) {
-            return "";
-        }
-        return parser.scanParamName(result);
+        return parser.scanParamName(source.toString());
     }
 }
