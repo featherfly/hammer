@@ -35,7 +35,7 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
      */
     public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
         DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, null);
     }
 
     /**

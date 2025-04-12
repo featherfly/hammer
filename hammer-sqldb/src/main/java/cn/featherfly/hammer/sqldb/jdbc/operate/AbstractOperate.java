@@ -12,7 +12,6 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -74,7 +73,6 @@ public abstract class AbstractOperate<T> {
         for (JdbcPropertyMapping pm : classMapping.getPrimaryKeyPropertyMappings()) {
             pkProperties.add(pm);
         }
-
         initSql();
     }
 
@@ -208,54 +206,6 @@ public abstract class AbstractOperate<T> {
         } catch (SQLException e) {
             throw new JdbcException(e);
         }
-    }
-
-    /**
-     * Gets the parameters.
-     *
-     * @param entity the entity
-     * @return the parameters
-     */
-    protected Serializable[] getParameters(T entity) {
-        return getParameters(entity, paramsPropertyAndMappings);
-    }
-
-    /**
-     * Gets the parameters.
-     *
-     * @param entity the entity
-     * @param paramsPropertyAndMappings the params property and mappings
-     * @return the parameters
-     */
-    protected Serializable[] getParameters(T entity,
-        Tuple2<Function<T, Object>, JdbcPropertyMapping>[] paramsPropertyAndMappings) {
-        Serializable[] operators = new Serializable[paramsPropertyAndMappings.length];
-        int i = 0;
-        for (Tuple2<Function<T, Object>, JdbcPropertyMapping> paramsPropertyAndMapping : paramsPropertyAndMappings) {
-            operators[i] = FieldValueOperator.create(paramsPropertyAndMapping.get1(),
-                paramsPropertyAndMapping.get0().apply(entity));
-            i++;
-        }
-        return operators;
-    }
-
-    /**
-     * Gets the parameters.
-     *
-     * @param entity the entity
-     * @param mappings the mappings
-     * @return the parameters
-     */
-    protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] mappings) {
-        Serializable[] operators = new Serializable[mappings.length];
-        int i = 0;
-        for (JdbcPropertyMapping mapping : mappings) {
-            //            operators[i] = FieldValueOperator.create(mapping,
-            //                propertyAccessor.getPropertyValue(entity, mapping.getPropertyIndexes()));
-            operators[i] = FieldValueOperator.create(mapping, mapping.getGetter().apply(entity));
-            i++;
-        }
-        return operators;
     }
 
     /**

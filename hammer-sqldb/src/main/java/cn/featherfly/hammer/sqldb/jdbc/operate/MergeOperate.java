@@ -8,6 +8,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.validation.Validator;
 
 /**
  * 合并操作.
@@ -17,7 +18,7 @@ import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
  * @param <T> 对象类型
  * @since 0.1.0
  */
-public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperate<T> {
+public class MergeOperate<T> extends AbstractExecuteOperate<T> implements ExecuteOperate<T> {
     // IMPLSOON 实现批量更新
 
     private final PropertyAccessor<T> propertyAccessor;
@@ -29,11 +30,12 @@ public class MergeOperate<T> extends AbstractOperate<T> implements ExecuteOperat
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param validator the validator
      * @param propertyAccessor the property accessor
      */
     public MergeOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, PropertyAccessor<T> propertyAccessor) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, Validator validator, PropertyAccessor<T> propertyAccessor) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, validator);
         this.propertyAccessor = propertyAccessor;
     }
 

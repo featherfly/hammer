@@ -12,6 +12,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.validation.Validator;
 
 /**
  * 更新操作.
@@ -29,10 +30,11 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param validator the validator
      */
     public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, Validator validator) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, validator);
     }
 
     /**

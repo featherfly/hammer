@@ -16,6 +16,7 @@ import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeysHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.validation.Validator;
 
 /**
  * 插入操作.
@@ -33,10 +34,11 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param validator the validator
      */
     public InsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, Validator validator) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, validator);
     }
 
     /**
@@ -210,23 +212,7 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
 
     @Override
     protected Serializable[] getParameters(T entity) {
-        return getParameters(entity, paramsPropertyAndMappings);
-    }
-
-    @Override
-    protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] mappings) {
-        Serializable[] operators = new Serializable[mappings.length];
-        int i = 0;
-        for (JdbcPropertyMapping propertyMapping : mappings) {
-            if (propertyMapping.getPrimaryKey() != null) {
-                operators[i] = FieldValueOperator.create(propertyMapping,
-                    propertyMapping.getPrimaryKey().getIdGenerator().generate(entity, propertyMapping));
-            } else {
-                operators[i] = FieldValueOperator.create(propertyMapping, propertyMapping.getGetter().apply(entity));
-            }
-            i++;
-        }
-        return operators;
+        return getParameters(entity, paramsPropertyAndMappings, true);
     }
 
     @Override

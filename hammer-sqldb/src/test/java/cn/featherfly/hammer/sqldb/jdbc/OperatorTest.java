@@ -67,26 +67,27 @@ public class OperatorTest extends JdbcTestBase {
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
             propertyAccessorFactory.create(Role.class));
         roleInsert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null);
         roleDelete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         roleUpdate = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null);
         roleMerge = new MergeOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+            null,
             propertyAccessorFactory.create(Role.class));
 
         userRoleGet = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
             propertyAccessorFactory.create(UserRole.class));
         userRoleInsert = new InsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null);
         userRoleDelete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
         userRoleUpdate = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null);
         userRoleUpsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null);
 
         // 手动创建依赖
         propertyAccessorFactory.create(AppVersion.class);
@@ -99,7 +100,7 @@ public class OperatorTest extends JdbcTestBase {
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
             propertyAccessorFactory.create(App.class));
         appUpsert = new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null);
         appDelete = new DeleteOperate<>(jdbc, mappingFactory.getClassMapping(App.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata());
 

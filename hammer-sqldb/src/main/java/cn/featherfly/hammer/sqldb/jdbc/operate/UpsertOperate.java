@@ -16,6 +16,7 @@ import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeysHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.validation.Validator;
 
 /**
  * upsert.
@@ -33,10 +34,11 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param validator the validator
      */
     public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        DatabaseMetadata databaseMetadata, Validator validator) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, validator);
     }
 
     /**
@@ -170,6 +172,9 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
         };
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void validate(T entity) {
 

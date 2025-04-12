@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -431,7 +432,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdate() {
+    public void update() {
         assertTrue(hammer.update(nullObject) == 0);
         assertTrue(hammer.update(emptyList).length == 0);
         assertTrue(hammer.update(emptyArray).length == 0);
@@ -527,7 +528,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdate2() {
+    public void update2() {
         UserInfo ui = new UserInfo();
         ui.setUser(new User(1));
         ui.setDescp("descp_" + Randoms.getInt(100));
@@ -559,7 +560,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdate3() {
+    public void update3() {
         List<Role> roles = hammer.query(Role.class).list();
         for (Role role : roles) {
             role.setDescp(null);
@@ -582,8 +583,15 @@ public class HammerJdbcTest extends JdbcTestBase {
         }
     }
 
+    @Test(expectedExceptions = SqldbHammerException.class)
+    public void updateValidationException() {
+        User user = hammer.query(User.class).limit(1).single();
+        user.setUsername(null);
+        hammer.update(user);
+    }
+
     @Test
-    public void testUpdateMulityPrimaryKey() {
+    public void updateMulityPrimaryKey() {
         UserRole userRole = new UserRole();
         userRole.setRoleId(3);
         userRole.setUserId(3);
@@ -600,7 +608,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdateMulityPrimaryKey2() {
+    public void updateMulityPrimaryKey2() {
         UserRole2 userRole = new UserRole2();
         userRole.setRole(new Role(3));
         userRole.setUser(new User(3));
@@ -617,7 +625,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     //    @Test
-    //    public void testUpdateLock() {
+    //    public void updateLock() {
     //        Role r = new Role();
     //        r.setName("name");
     //        r.setDescp("descp");
@@ -663,13 +671,13 @@ public class HammerJdbcTest extends JdbcTestBase {
     //    }
     //
     //    @Test
-    //    public void testUpdateLockNull() {
+    //    public void updateLockNull() {
     //        assertEquals(hammer.updateLock(null, t -> t), 0);
     //        assertEquals(hammer.updateLock(null, Role.class, t -> t), 0);
     //    }
 
     @Test
-    public void testUpdateFetch() {
+    public void updateFetch() {
         Role r = new Role();
         r.setName("name");
         r.setDescp("descp");
@@ -705,13 +713,13 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdateFetchNull() {
+    public void updateFetchNull() {
         assertNull(hammer.updateFetch(null, t -> t));
         assertNull(hammer.updateFetch(null, Role.class, t -> t));
     }
 
     @Test
-    public void testMerge() {
+    public void merge() {
         assertTrue(hammer.merge(nullObject) == 0);
         assertTrue(hammer.merge(emptyList).length == 0);
         assertTrue(hammer.merge(emptyArray).length == 0);
@@ -785,7 +793,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testMergeNotChange() {
+    public void mergeNotChange() {
         Role r = new Role();
         r.setName("name");
         r.setDescp("descp");
@@ -816,7 +824,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testMerge2() {
+    public void merge2() {
         UserInfo ui = new UserInfo();
         ui.setId(2);
         ui.setDescp("descp_" + Randoms.getInt(100));
@@ -840,7 +848,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testMergeMulityPrimaryKey() {
+    public void mergeMulityPrimaryKey() {
         UserRole ur = new UserRole();
         ur.setRoleId(4);
         ur.setUserId(4);
@@ -854,6 +862,29 @@ public class HammerJdbcTest extends JdbcTestBase {
         assertEquals(userRole.getDescp(), ur.getDescp());
         assertNull(ur.getDescp2());
         assertNotNull(userRole.getDescp2());
+    }
+
+    @Test
+    public void mergeIgnoreValidation() {
+        User user = hammer.query(User.class).limit(1).single();
+        user.setId(null);
+        user.setUsername(user.getUsername() + "_merge");
+        user.setMobileNo(StringUtils.reverse(user.getMobileNo()));
+        hammer.save(user);
+
+        User merge = new User();
+        merge.setId(user.getId());
+        merge.setAge(99);
+        hammer.merge(merge);
+
+        User last = hammer.get(merge);
+
+        assertEquals(last.getAge(), merge.getAge());
+        assertNotEquals(last.getAge(), user.getAge());
+
+        assertEquals(last.getUsername(), user.getUsername());
+
+        assertEquals(last.getMobileNo(), user.getMobileNo());
     }
 
     @Test
@@ -1041,7 +1072,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdater() {
+    public void updater() {
         int id = 10;
         String updated = "descp_1122";
         int result = hammer.update("role").set("descp", updated).where().eq("id", id).execute();
@@ -1052,7 +1083,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdaterEntity() {
+    public void updaterEntity() {
         int id = 10;
         String newName = "name_updater_" + Randoms.getInt(99);
         String newDescp = "descp_updater_" + Randoms.getInt(99);
@@ -1104,7 +1135,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdaterEntity2() {
+    public void updaterEntity2() {
         int id = 10;
         String newName = "name_updater_" + Randoms.getInt(99);
         String newDescp = "descp_updater_" + Randoms.getInt(99);
@@ -1189,7 +1220,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     }
 
     //    @Test
-    //    public void testUpdater2() {
+    //    public void updater2() {
     //        User user = new User();
     //        user.setAge(10);
     //        user.setUsername(Randoms.getString(10));
@@ -1201,7 +1232,7 @@ public class HammerJdbcTest extends JdbcTestBase {
     //    }
 
     @Test
-    public void testUpdaterEntityIncrease() {
+    public void updaterEntityIncrease() {
         Integer id = 1;
         User user = hammer.get(new User(id));
 

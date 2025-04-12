@@ -13,6 +13,7 @@ package cn.featherfly.hammer.sqldb.jdbc.operate;
 import java.io.Serializable;
 import java.util.List;
 
+import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
@@ -20,6 +21,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.validation.Validator;
 
 /**
  * AbstractBatchExecuteOperate.
@@ -38,10 +40,11 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param validator the validator
      */
     protected AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata);
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata, Validator validator) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, validator);
     }
 
     /**
@@ -146,20 +149,43 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
      *
      * @param entities the entities
      * @param propertyPositions the property positions
+     * @param useIdGenerator the use id generator
      * @return the batch parameters
      */
-    protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
+    protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions,
+        boolean useIdGenerator) {
+        StringBuilder errorMessage = new StringBuilder();
         Serializable[] params = new Serializable[propertyPositions.length * entities.size()];
         for (int i = 0; i < entities.size(); i++) {
             T entity = entities.get(i);
             int columnNum = 0;
             for (JdbcPropertyMapping propertyMapping : propertyPositions) {
-                //                params[i * propertyPositions.length + index] = propertyAccessor.getPropertyValue(entity,
-                //                    propertyMapping.getPropertyIndexes());
-                params[i * propertyPositions.length + columnNum] = propertyMapping.getGetter().apply(entity);
+                if (useIdGenerator && propertyMapping.getPrimaryKey() != null) {
+                    Serializable propertyValue =
+                        propertyMapping.getPrimaryKey().getIdGenerator().generate(entity, propertyMapping);
+                    validate(entity, propertyMapping, errorMessage);
+                    params[i * propertyPositions.length + columnNum] =
+                        FieldValueOperator.create(propertyMapping, propertyValue);
+                } else {
+                    Serializable propertyValue = propertyMapping.getGetter().apply(entity);
+                    validate(entity, propertyMapping, errorMessage);
+                    params[i * propertyPositions.length + columnNum] = propertyValue;
+                    // params[i * propertyPositions.length + index] = propertyAccessor.getPropertyValue(entity,propertyMapping.getPropertyIndexes());
+                }
                 columnNum++;
             }
         }
         return params;
+    }
+
+    /**
+     * Gets the batch parameters.
+     *
+     * @param entities the entities
+     * @param propertyPositions the property positions
+     * @return the batch parameters
+     */
+    protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
+        return getBatchParameters(entities, propertyPositions, false);
     }
 }
