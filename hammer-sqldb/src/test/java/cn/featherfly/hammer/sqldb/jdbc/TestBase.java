@@ -51,11 +51,12 @@ public class TestBase {
     protected String username2 = "featherfly";
     protected int age2 = 5;
 
-    public boolean devMode = true;
+    public static boolean devMode = true;
 
     // 高版本mysql-connector已经不需要serverTimezone=CTT
     // "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false"
-    protected static final String MYSQL_URL = "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?rewriteBatchedStatements=true&allowMultiQueries=true&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true";
+    protected static final String MYSQL_URL =
+        "jdbc:mysql://127.0.0.1:3306/hammer_jdbc?rewriteBatchedStatements=true&allowMultiQueries=true&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true";
     protected static final String MYSQL_USER = "root";
     protected static final String MYSQL_PWD = "123456";
 
@@ -64,7 +65,7 @@ public class TestBase {
     protected static String jdbcUsername;
     protected static String jdbcPassword;
 
-    private boolean cascadeWrpper = false;
+    private static boolean cascadeWrpper = false;
 
     protected static final PropertyAccessorFactory PROPERTY_ACCESSOR_FACTORY = new AsmPropertyAccessorFactory(
         Thread.currentThread().getContextClassLoader());
@@ -72,7 +73,7 @@ public class TestBase {
     @BeforeSuite
     @Parameters({ "devMode" })
     public void _beforeSuite(@Optional("mysql") boolean devMode) throws IOException {
-        this.devMode = devMode;
+        TestBase.devMode = devMode;
     }
 
     @BeforeTest
@@ -130,11 +131,11 @@ public class TestBase {
         }
     }
 
-    protected DataSource initDataSource() {
-        return initDataSource("dbcp");
+    protected static DataSource initDataSource() {
+        return initDataSource("hikari");
     }
 
-    protected DataSource initDataSource(String pool) {
+    protected static DataSource initDataSource(String pool) {
         DataSource dataSource = null;
         switch (pool) {
             case "dbcp":
@@ -153,7 +154,7 @@ public class TestBase {
         }
     }
 
-    private DataSource initDbcp() {
+    private static DataSource initDbcp() {
         BasicDataSource ds = new BasicDataSource();
         ds.setUrl(jdbcUrl);
         ds.setDriverClassName(jdbcDriverName);
@@ -162,7 +163,7 @@ public class TestBase {
         return ds;
     }
 
-    private DataSource initHikari() {
+    private static DataSource initHikari() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(jdbcUrl);
         config.setDriverClassName(jdbcDriverName);

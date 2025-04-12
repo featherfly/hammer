@@ -8,9 +8,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.DelegatingSmartContextLoader;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -25,8 +22,7 @@ import cn.featherfly.hammer.sqldb.tpl.UserMapper;
  *
  * @author zhongj
  */
-@ContextConfiguration(loader = DelegatingSmartContextLoader.class, locations = "classpath:app.xml")
-public class TplDynamicExecutorSpringRegistorTest extends AbstractTestNGSpringContextTests {
+public class TplDynamicExecutorSpringRegistorTest extends SpringTestBase {
 
     @Resource
     UserMapper userMapper;

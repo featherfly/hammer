@@ -42,17 +42,18 @@ public class DatabaseTestBase extends TestBase {
 
     public static String configFile = "";
 
-    private DataSource dataSource;
+    private static DataSource dataSource;
 
-    private Dialect dialect;
+    private static Dialect dialect;
 
-    private DatabaseMetadata metadata;
+    private static DatabaseMetadata metadata;
 
-    private Jdbc jdbc;
+    private static Jdbc jdbc;
 
-    private JdbcMappingFactory mappingFactory;
+    private static JdbcMappingFactory mappingFactory;
 
-    protected Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initDataBase(String dataBase,
+    protected static Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initDataBase(
+        String dataBase,
         String pool, SqlTypeMappingManager sqlTypeMappingManager, IdGeneratorManager idGeneratorManager,
         PropertyAccessorFactory propertyAccessorFactory) throws IOException {
         System.err.println("***********************************************");
@@ -79,7 +80,7 @@ public class DatabaseTestBase extends TestBase {
         return result;
     }
 
-    protected Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initMysql(
+    protected static Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initMysql(
         SqlTypeMappingManager sqlTypeMappingManager, IdGeneratorManager idGeneratorManager,
         PropertyAccessorFactory propertyAccessorFactory) throws IOException {
         System.err.println("initMysql");
@@ -92,7 +93,7 @@ public class DatabaseTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
-        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", this.getClass())));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.mysql.sql", DatabaseTestBase.class)));
 
         dialect = Dialects.mysql();
 
@@ -113,7 +114,7 @@ public class DatabaseTestBase extends TestBase {
         return Tuples.of(dataSource, dialect, metadata, jdbc, mappingFactory);
     }
 
-    protected Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initPostgresql(
+    protected static Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initPostgresql(
         SqlTypeMappingManager sqlTypeMappingManager, IdGeneratorManager idGeneratorManager,
         PropertyAccessorFactory propertyAccessorFactory) throws IOException {
         System.err.println("initPostgresql");
@@ -128,7 +129,7 @@ public class DatabaseTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
-        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.postgresql.sql", this.getClass())));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.postgresql.sql", DatabaseTestBase.class)));
 
         PostgreSQLDialect postgreSQLDialect = new PostgreSQLDialect();
         //        postgreSQLDialect.setTableAndColumnNameUppercase(StringConverter.UPPER_CASE);
@@ -143,7 +144,7 @@ public class DatabaseTestBase extends TestBase {
         return Tuples.of(dataSource, dialect, metadata, jdbc, mappingFactory);
     }
 
-    protected Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initSQLite(
+    protected static Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initSQLite(
         SqlTypeMappingManager sqlTypeMappingManager, IdGeneratorManager idGeneratorManager,
         PropertyAccessorFactory propertyAccessorFactory) throws IOException {
         System.err.println("initSQLite");
@@ -157,7 +158,7 @@ public class DatabaseTestBase extends TestBase {
 
         // 初始化数据库
         SqlExecutor sqlExecutor = new SqlExecutor(dataSource);
-        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", this.getClass())));
+        sqlExecutor.execute(SqlFile.read(ClassLoaderUtils.getResource("test.sqlite.sql", DatabaseTestBase.class)));
 
         dialect = Dialects.sqlite();
 

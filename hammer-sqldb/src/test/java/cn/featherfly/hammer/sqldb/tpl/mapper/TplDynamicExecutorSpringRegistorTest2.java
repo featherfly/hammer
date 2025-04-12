@@ -7,16 +7,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.DelegatingSmartContextLoader;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.TestConstants;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
@@ -26,8 +22,7 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
  *
  * @author zhongj
  */
-@ContextConfiguration(loader = DelegatingSmartContextLoader.class, locations = "classpath:app.xml")
-public class TplDynamicExecutorSpringRegistorTest2 extends AbstractTestNGSpringContextTests {
+public class TplDynamicExecutorSpringRegistorTest2 extends SpringTestBase {
 
     @Resource
     UserInfoTupleMapper tupleMapper;

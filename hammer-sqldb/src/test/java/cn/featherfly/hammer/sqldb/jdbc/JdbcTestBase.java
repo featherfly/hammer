@@ -71,7 +71,7 @@ public class JdbcTestBase extends DatabaseTestBase {
 
     @BeforeSuite
     @Parameters({ "dataBase", "pool" })
-    public void init(@Optional("mysql") String dataBase, @Optional("hikari") String pool) throws IOException {
+    public static void init(@Optional("mysql") String dataBase, @Optional("hikari") String pool) throws IOException {
         Configurator.initialize("log4j2_dev", "log4j2_dev.xml");
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
