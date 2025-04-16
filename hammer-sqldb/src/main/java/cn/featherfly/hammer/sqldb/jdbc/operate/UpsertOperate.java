@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import cn.featherfly.common.bean.BeanDescriptor;
-import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.mapping.ClassMappingUtils;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
@@ -92,8 +91,8 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
                 @Override
                 public void acceptKey(Serializable key) {
                     // YUFEI_TEST 需要更多测试各种情况是否正确
-                    if (BeanUtils.getProperty(entity, pks.get(0).getPropertyName()) == null) {
-                        BeanUtils.setProperty(entity, pks.get(0).getPropertyName(), key);
+                    if (pks.get(0).getProperty().get(entity) == null) {
+                        pks.get(0).getProperty().set(entity, key);
                     }
                 }
 
@@ -146,8 +145,8 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
             public void acceptKey(Serializable key, int row) {
                 if (row < entities.size()) {
                     // YUFEI_TEST 需要更多测试各种情况是否正确
-                    if (BeanUtils.getProperty(entities.get(row), pks.get(0).getPropertyName()) == null) {
-                        BeanUtils.setProperty(entities.get(row), pks.get(0).getPropertyName(), key);
+                    if (pks.get(0).getProperty().get(entities.get(row)) == null) {
+                        pks.get(0).getProperty().set(entities.get(row), key);
                     }
                 }
             }

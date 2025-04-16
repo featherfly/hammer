@@ -290,6 +290,15 @@ public class SqlDslExpressionTest extends JdbcTestBase {
             .property(UserInfo::getId).eq(1).execute();
         assertTrue(no == 1);
 
+        DistrictDivision division2 = new DistrictDivision();
+        division2.setProvince("四川2");
+        UserInfo ui = new UserInfo();
+        ui.setDivision(division2);
+
+        no = sqlUpdater.update(UserInfo.class).set(ui::getDivision, DistrictDivision::getProvince).where()
+            .property(UserInfo::getId).eq(1).execute();
+        assertTrue(no == 1);
+
         no = sqlUpdater.update(UserInfo.class).property(UserInfo::getDivision, DistrictDivision::getProvince).set("四川")
             .where().property(UserInfo::getId).eq(1).execute();
         assertTrue(no == 1);

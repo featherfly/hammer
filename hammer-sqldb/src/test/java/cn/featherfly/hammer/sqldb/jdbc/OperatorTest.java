@@ -73,8 +73,7 @@ public class OperatorTest extends JdbcTestBase {
         roleUpdate = new UpdateOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
             mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null);
         roleMerge = new MergeOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
-            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-            null,
+            mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), null,
             propertyAccessorFactory.create(Role.class));
 
         userRoleGet = new GetOperate<>(jdbc, mappingFactory.getClassMapping(UserRole.class),
@@ -107,7 +106,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testInsert() {
+    public void insert() {
         Role r = role();
         roleInsert.execute(r);
         assertNotNull(r.getId());
@@ -124,7 +123,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testInsert2() {
+    public void insert2() {
         UserRole ur = new UserRole();
         ur.setUserId(1);
         ur.setRoleId(1);
@@ -158,7 +157,7 @@ public class OperatorTest extends JdbcTestBase {
     //    }
 
     @Test
-    public void testInsertBatch() throws SQLException {
+    public void insertBatch() throws SQLException {
         assertInsertBatch(roleInsert, roleDelete, roleGet, null);
         assertInsertBatch(roleInsert, roleDelete, roleGet, 3);
 
@@ -209,7 +208,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testInsertMultyKey() {
+    public void insertMultyKey() {
         UserRole ur = new UserRole();
         ur.setUserId(123);
         ur.setRoleId(321);
@@ -230,7 +229,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdate() {
+    public void update() {
         Role r = new Role();
         r.setId(10);
         r.setName("name_update_" + Randoms.getInt(99));
@@ -245,7 +244,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testUpdateIdNull() {
+    public void updateIdNull() {
         Role r = new Role();
         r.setName("name_update_" + Randoms.getInt(99));
         r.setDescp("descp_update_" + Randoms.getInt(99));
@@ -253,7 +252,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testMerge() {
+    public void merge() {
         Integer id = 10;
         Role orginal = roleGet.get(id);
 
@@ -271,7 +270,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test(expectedExceptions = SqldbHammerException.class)
-    public void testMergeIdNull() {
+    public void mergeIdNull() {
         Role merged = new Role();
         merged.setName("name_update_" + Randoms.getInt(99));
         int result = roleMerge.execute(merged);
@@ -279,7 +278,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdateMulityPrimaryKey() {
+    public void updateMulityPrimaryKey() {
         UserRole userRole = new UserRole();
         userRole.setRoleId(3);
         userRole.setUserId(3);
@@ -484,7 +483,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpsert() {
+    public void upsert() {
         App app = new App();
         app.setCode("code01");
         app.setName("name01");
@@ -508,7 +507,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpsert2() {
+    public void upsert2() {
 
         UserRole ur = new UserRole();
         ur.setUserId(1);
@@ -533,7 +532,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpsertBatch() {
+    public void upsertBatch() {
         List<App> apps = new ArrayList<>();
 
         App app = new App();
@@ -576,7 +575,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdateFetch() {
+    public void updateFetch() {
         UpdateFetchOperate<
             Role> updateFetch = new UpdateFetchOperate<>(jdbc, mappingFactory.getClassMapping(Role.class),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), roleGet, roleUpdate, key -> {
@@ -610,7 +609,7 @@ public class OperatorTest extends JdbcTestBase {
     }
 
     @Test
-    public void testUpdateFetchMulitiPk() {
+    public void updateFetchMulitiPk() {
         UpdateFetchOperate<UserRole> updateFetch = new UpdateFetchOperate<>(jdbc,
             mappingFactory.getClassMapping(UserRole.class), mappingFactory.getSqlTypeMappingManager(),
             mappingFactory.getMetadata(), userRoleGet, userRoleUpdate, key -> {

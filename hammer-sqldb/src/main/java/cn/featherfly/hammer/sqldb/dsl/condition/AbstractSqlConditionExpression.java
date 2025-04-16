@@ -14,10 +14,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
-
-import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.BuilderUtils;
@@ -35,6 +31,8 @@ import cn.featherfly.common.repository.Params.ParamType;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.AbstractConditionExpression;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -254,7 +252,7 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
                 if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
                     && propertyMapping.getPropertyType() == value.getClass()) {
                     for (JdbcPropertyMapping pm : propertyMapping.getPropertyMappings()) {
-                        Object obj = BeanUtils.getProperty(value, pm.getPropertyName());
+                        Object obj = pm.getProperty().get(value);
                         // TODO 这里的返回值不是R类型
                         Optional<R> optional = Optional.empty();
                         if (obj != null) {

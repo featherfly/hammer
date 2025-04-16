@@ -70,7 +70,6 @@ import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
-import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
@@ -7232,28 +7231,28 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
 
     // ****************************************************************************************************************
 
-    /**
-     * Supplier.
-     *
-     * @param <R> the generic type
-     * @param info the info
-     * @param value the value
-     * @return LogicExpressionist
-     */
-    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {
-        return supplier(info, value, classMapping);
-    }
-
-    /**
-     * Supplier.
-     *
-     * @param <R> the generic type
-     * @param info the info
-     * @return LogicExpressionist
-     */
-    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
-        return supplier(info, classMapping);
-    }
+    //    /**
+    //     * Supplier.
+    //     *
+    //     * @param <R> the generic type
+    //     * @param info the info
+    //     * @param value the value
+    //     * @return LogicExpressionist
+    //     */
+    //    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value) {
+    //        return supplier(info, value, classMapping);
+    //    }
+    //
+    //    /**
+    //     * Supplier.
+    //     *
+    //     * @param <R> the generic type
+    //     * @param info the info
+    //     * @return LogicExpressionist
+    //     */
+    //    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info) {
+    //        return supplier(info, classMapping);
+    //    }
 
     // ********************************************************************
     // property

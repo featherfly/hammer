@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
@@ -382,7 +381,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         }
 
         @SuppressWarnings("unchecked")
-        O value = (O) BeanUtils.getProperty(property.get(), npn);
+        O value = (O) spm.getProperty().get(property.get());
         builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // 忽略
             return this;
@@ -471,7 +470,7 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         }
 
         @SuppressWarnings("unchecked")
-        N value = (N) BeanUtils.getProperty(property.get(), npn);
+        N value = (N) spm.getProperty().get(property.get());
         builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // 忽略
             return this;

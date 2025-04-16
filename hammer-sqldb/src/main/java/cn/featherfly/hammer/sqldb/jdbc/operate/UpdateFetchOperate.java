@@ -9,7 +9,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.JdbcException;
@@ -236,17 +235,15 @@ public class UpdateFetchOperate<T> extends AbstractOperate<T> implements Execute
         }
     }
 
-    private int updateValue(ResultSet res, T mappedObject, T originalEntity, JdbcPropertyMapping propertyMapping,
+    private int updateValue(ResultSet res, T updateEntity, T originalEntity, JdbcPropertyMapping propertyMapping,
         int index, UpdateDebugMessage updateDebugMessage) {
-        Object value = BeanUtils.getProperty(mappedObject, propertyMapping.getPropertyFullName());
-        // ENHANCE 使用PropertyAccessor替换BeanUtils
+        Object value = propertyMapping.getProperty().get(updateEntity);
         if (fullUpdate()) {
             updateDebugMessage.debug(m -> m.addPropertyUpdate(propertyMapping.getPropertyFullName(),
-                propertyMapping.getRepositoryFieldName(),
-                BeanUtils.getProperty(originalEntity, propertyMapping.getPropertyFullName()), value));
+                propertyMapping.getRepositoryFieldName(), propertyMapping.getProperty().get(originalEntity), value));
             JdbcUtils.setParameter(res, index, FieldValueOperator.create(propertyMapping, value));
         } else {
-            Object original = BeanUtils.getProperty(originalEntity, propertyMapping.getPropertyFullName());
+            Object original = propertyMapping.getProperty().get(originalEntity);
             if (!Lang.equals(original, value)) {
                 updateDebugMessage.debug(m -> m.addPropertyUpdate(propertyMapping.getPropertyFullName(),
                     propertyMapping.getRepositoryFieldName(), original, value));
