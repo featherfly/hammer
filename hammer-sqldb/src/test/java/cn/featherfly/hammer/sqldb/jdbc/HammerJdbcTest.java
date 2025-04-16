@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -25,6 +24,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Randoms;
+import cn.featherfly.common.lang.Randoms.CharType;
 import cn.featherfly.common.operator.LogicOperator;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.Params;
@@ -868,13 +868,13 @@ public class HammerJdbcTest extends JdbcTestBase {
     public void mergeIgnoreValidation() {
         User user = hammer.query(User.class).limit(1).single();
         user.setId(null);
-        user.setUsername(user.getUsername() + "_merge");
-        user.setMobileNo(StringUtils.reverse(user.getMobileNo()));
+        user.setUsername("new_name_" + Randoms.getString(4));
+        user.setMobileNo("11111" + Randoms.getString(6, CharType.NUMBER_CASE));
         hammer.save(user);
 
         User merge = new User();
         merge.setId(user.getId());
-        merge.setAge(99);
+        merge.setAge(54);
         hammer.merge(merge);
 
         User last = hammer.get(merge);
@@ -935,8 +935,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         results = hammer.save(roles);
         res = hammer.delete(roles.stream().map(r -> r.getId()).collect(Collectors.toList()), Role.class);
-        assertEquals(res.length,
-            results.length);
+        assertEquals(res.length, results.length);
 
         results = hammer.save(roles);
         res = hammer.delete(CollectionUtils.toArray(roles.stream().map(r -> r.getId()).collect(Collectors.toList())),

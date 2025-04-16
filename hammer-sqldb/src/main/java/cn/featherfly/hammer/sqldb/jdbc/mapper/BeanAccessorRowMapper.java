@@ -28,12 +28,15 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcException;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapper.SqlResultSet;
+import cn.featherfly.common.db.mapping.JdbcClassMapping;
+import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Asserts;
 import cn.featherfly.common.lang.WordUtils;
 import cn.featherfly.common.repository.mapper.RowMapper;
-import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.sqldb.jdbc.debug.MappingDebugMessage;
 
@@ -51,9 +54,11 @@ public class BeanAccessorRowMapper<T> implements RowMapper<T> {
 
     private final SqlTypeMappingManager manager;
 
-    private List<Tuple2<BiConsumer<T, Serializable>, Property<T, Serializable>>> properties;
+    private final JdbcClassMapping<T> classMapping;
 
-    private NoPropertyMatchStrategy noPropertyMatchStrategy = NoPropertyMatchStrategy.IGNORE;
+    private final NoPropertyMatchStrategy noPropertyMatchStrategy;
+
+    private List<Tuple3<BiConsumer<T, Serializable>, Property<T, Serializable>, Integer>> properties;
 
     /**
      * Instantiates a new property accessor row mapper.
@@ -74,11 +79,40 @@ public class BeanAccessorRowMapper<T> implements RowMapper<T> {
      * @param noPropertyMatchStrategy the no property match strategy
      */
     public BeanAccessorRowMapper(@Nonnull PropertyAccessor<T> propertyAccessor, @Nonnull SqlTypeMappingManager manager,
-        NoPropertyMatchStrategy noPropertyMatchStrategy) {
+        @Nonnull NoPropertyMatchStrategy noPropertyMatchStrategy) {
+        this(propertyAccessor, manager, null, noPropertyMatchStrategy);
+    }
+
+    /**
+     * Instantiates a new property accessor row mapper.
+     *
+     * @param propertyAccessor the property accessor
+     * @param manager the manager
+     */
+    public BeanAccessorRowMapper(@Nonnull PropertyAccessor<T> propertyAccessor, @Nonnull SqlTypeMappingManager manager,
+        JdbcMappingFactory mappingFactory) {
+        this(propertyAccessor, manager, mappingFactory, NoPropertyMatchStrategy.IGNORE);
+    }
+
+    /**
+     * Instantiates a new property accessor row mapper.
+     *
+     * @param propertyAccessor the property accessor
+     * @param manager the manager
+     * @param classMapping the class mapping
+     * @param noPropertyMatchStrategy the no property match strategy
+     */
+    public BeanAccessorRowMapper(@Nonnull PropertyAccessor<T> propertyAccessor, @Nonnull SqlTypeMappingManager manager,
+        JdbcMappingFactory mappingFactory, @Nonnull NoPropertyMatchStrategy noPropertyMatchStrategy) {
         super();
         this.propertyAccessor = propertyAccessor;
         this.manager = manager;
         this.noPropertyMatchStrategy = noPropertyMatchStrategy;
+        if (mappingFactory != null) {
+            classMapping = mappingFactory.getClassMapping(propertyAccessor.getType());
+        } else {
+            classMapping = null;
+        }
     }
 
     /**
@@ -124,7 +158,7 @@ public class BeanAccessorRowMapper<T> implements RowMapper<T> {
                 if (columnLabel.contains(Chars.DOT)) {
                     String[] names = columnLabel.split("\\.");
                     properties.add(Tuples.of((obj, pv) -> propertyAccessor.setPropertyValue(obj, names, pv),
-                        propertyAccessor.getProperty(names)));
+                        propertyAccessor.getProperty(names), index));
 
                     if (LOGGER.isDebugEnabled()) {
                         mappingDebugMessage.addMapping(rsmd.getColumnName(index), columnLabel, columnLabel,
@@ -132,10 +166,20 @@ public class BeanAccessorRowMapper<T> implements RowMapper<T> {
                     }
                 } else {
                     String field = WordUtils.parseToUpperFirst(columnLabel, '_');
+                    Property<T, Serializable> property = null;
+                    if (classMapping != null) {
+                        JdbcPropertyMapping jpm = classMapping
+                            .getPropertyMappingByPersitField(rsmd.getColumnName(index));
+                        if (jpm != null) {
+                            property = getProperty(jpm);
+                        }
+                    }
                     try {
-                        Property<T, Serializable> property = propertyAccessor.getProperty(field);
+                        if (property == null) {
+                            property = propertyAccessor.getProperty(field);
+                        }
                         assertProperty(property, columnLabel, field);
-                        properties.add(Tuples.of(property::set, property));
+                        properties.add(Tuples.of(property::set, property, index));
                         if (LOGGER.isDebugEnabled()) {
                             mappingDebugMessage.addMapping(rsmd.getColumnName(index), columnLabel, property.getName(),
                                 property.getTypeName());
@@ -156,10 +200,8 @@ public class BeanAccessorRowMapper<T> implements RowMapper<T> {
             }
         }
 
-        int index = 1;
-        for (Tuple2<BiConsumer<T, Serializable>, Property<T, Serializable>> propertyTuple : properties) {
-            propertyTuple.get0().accept(mappedObject, manager.get(rs, index, propertyTuple.get1()));
-            index++;
+        for (Tuple3<BiConsumer<T, Serializable>, Property<T, Serializable>, Integer> propertyTuple : properties) {
+            propertyTuple.get0().accept(mappedObject, manager.get(rs, propertyTuple.get2(), propertyTuple.get1()));
 
             // ENHANCE 这里包装异常
             // throw new DataRetrievalFailureException(
@@ -167,6 +209,11 @@ public class BeanAccessorRowMapper<T> implements RowMapper<T> {
             //  ex);
         }
         return mappedObject;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Property<T, Serializable> getProperty(JdbcPropertyMapping jpm) {
+        return (Property<T, Serializable>) jpm.getProperty();
     }
 
     private void assertProperty(Property<?, ?> property, String column, String field) {

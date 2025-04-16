@@ -17,6 +17,7 @@ import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityRowMapperFactory;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ArrayToStringSqlTypeMapper;
 import cn.featherfly.hammer.sqldb.jdbc.mappingtype.sqltype.ListToStringSqlTypeMapper;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article2;
@@ -35,7 +36,8 @@ public class HammerJdbcMappingTypeTest extends JdbcTestBase {
 
     @BeforeClass
     void be() throws TemplateModelException {
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory,
+            new EntityRowMapperFactory(mappingFactory));
 
         Class<Article2> type = Article2.class;
 

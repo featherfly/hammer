@@ -21,6 +21,7 @@ import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapperFactory;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.Isolation;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
 import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransactionImpl;
@@ -58,9 +59,42 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param metadata the metadata
      * @param manager the manager
      * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
+     */
+    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        PropertyAccessorFactory propertyAccessorFactory, BeanRowMapperFactory beanRowMapperFactory) {
+        this(connection, null, dialect, metadata, manager, propertyAccessorFactory, beanRowMapperFactory);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param interceptors the interceptors
      */
     public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
         PropertyAccessorFactory propertyAccessorFactory, List<JdbcExecutionInterceptor> interceptors) {
+        this(connection, null, dialect, metadata, manager, propertyAccessorFactory, null, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
+     * @param interceptors the interceptors
+     */
+    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        PropertyAccessorFactory propertyAccessorFactory, BeanRowMapperFactory beanRowMapperFactory,
+        List<JdbcExecutionInterceptor> interceptors) {
         this(connection, null, dialect, metadata, manager, propertyAccessorFactory, interceptors);
     }
 
@@ -72,10 +106,28 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param metadata the metadata
      * @param manager the manager
      * @param propertyAccessorFactory the property accessor factory
+     * @param interceptors the interceptors
      */
     public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
         PropertyAccessorFactory propertyAccessorFactory, JdbcExecutionInterceptor... interceptors) {
         this(connection, null, dialect, metadata, manager, propertyAccessorFactory, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
+     * @param interceptors the interceptors
+     */
+    public JdbcImpl(Connection connection, Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
+        PropertyAccessorFactory propertyAccessorFactory, BeanRowMapperFactory beanRowMapperFactory,
+        JdbcExecutionInterceptor... interceptors) {
+        this(connection, null, dialect, metadata, manager, propertyAccessorFactory, beanRowMapperFactory, interceptors);
     }
 
     /**
@@ -103,12 +155,48 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
      * @param metadata the metadata
      * @param manager the manager
      * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
+     */
+    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
+        SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory,
+        BeanRowMapperFactory beanRowMapperFactory) {
+        this(connection, defaultIsolation, dialect, metadata, manager, propertyAccessorFactory, beanRowMapperFactory,
+            Collections.emptyList());
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param defaultIsolation the default isolation
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
      * @param interceptors the interceptors
      */
     public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
         SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory,
         JdbcExecutionInterceptor... interceptors) {
-        super(dialect, metadata, manager, propertyAccessorFactory, interceptors);
+        this(connection, defaultIsolation, dialect, metadata, manager, propertyAccessorFactory, null, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param defaultIsolation the default isolation
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
+     * @param interceptors the interceptors
+     */
+    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
+        SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory,
+        BeanRowMapperFactory beanRowMapperFactory, JdbcExecutionInterceptor... interceptors) {
+        super(dialect, metadata, manager, propertyAccessorFactory, beanRowMapperFactory, interceptors);
         this.connection = connection;
         if (defaultIsolation != null) {
             this.defaultIsolation = defaultIsolation;
@@ -129,13 +217,34 @@ public class JdbcImpl extends AbstractJdbc implements JdbcSession {
     public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
         SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory,
         List<JdbcExecutionInterceptor> interceptors) {
-        super(dialect, metadata, manager, propertyAccessorFactory, interceptors);
+        this(connection, defaultIsolation, dialect, metadata, manager, propertyAccessorFactory, null, interceptors);
+    }
+
+    /**
+     * Instantiates a new jdbc impl.
+     *
+     * @param connection the connection
+     * @param defaultIsolation the default isolation
+     * @param dialect the dialect
+     * @param metadata the metadata
+     * @param manager the manager
+     * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
+     * @param interceptors the interceptors
+     */
+    public JdbcImpl(Connection connection, Isolation defaultIsolation, Dialect dialect, DatabaseMetadata metadata,
+        SqlTypeMappingManager manager, PropertyAccessorFactory propertyAccessorFactory,
+        BeanRowMapperFactory beanRowMapperFactory, List<JdbcExecutionInterceptor> interceptors) {
+        super(dialect, metadata, manager, propertyAccessorFactory, beanRowMapperFactory, interceptors);
         this.connection = connection;
         if (defaultIsolation != null) {
             this.defaultIsolation = defaultIsolation;
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T execute(ConnectionCallback<T> callback) {
         try {

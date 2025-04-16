@@ -27,6 +27,7 @@ import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityRowMapperFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
@@ -53,9 +54,8 @@ public class DatabaseTestBase extends TestBase {
     private static JdbcMappingFactory mappingFactory;
 
     protected static Tuple5<DataSource, Dialect, DatabaseMetadata, Jdbc, JdbcMappingFactory> initDataBase(
-        String dataBase,
-        String pool, SqlTypeMappingManager sqlTypeMappingManager, IdGeneratorManager idGeneratorManager,
-        PropertyAccessorFactory propertyAccessorFactory) throws IOException {
+        String dataBase, String pool, SqlTypeMappingManager sqlTypeMappingManager,
+        IdGeneratorManager idGeneratorManager, PropertyAccessorFactory propertyAccessorFactory) throws IOException {
         System.err.println("***********************************************");
         System.err.println("***********************************************");
         configFile = String.format(CONFIG_FILE_PATTERN, dataBase);
@@ -98,7 +98,8 @@ public class DatabaseTestBase extends TestBase {
         dialect = Dialects.mysql();
 
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory,
+            new EntityRowMapperFactory(mappingFactory));
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
             propertyAccessorFactory);
@@ -136,7 +137,8 @@ public class DatabaseTestBase extends TestBase {
         dialect = postgreSQLDialect;
 
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory,
+            new EntityRowMapperFactory(mappingFactory));
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
             propertyAccessorFactory);
@@ -163,7 +165,8 @@ public class DatabaseTestBase extends TestBase {
         dialect = Dialects.sqlite();
 
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
-        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
+        jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory,
+            new EntityRowMapperFactory(mappingFactory));
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
             propertyAccessorFactory);

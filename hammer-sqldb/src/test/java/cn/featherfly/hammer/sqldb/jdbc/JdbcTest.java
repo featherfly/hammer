@@ -178,7 +178,13 @@ public class JdbcTest extends JdbcTestBase {
     public void queryBeanAccessorRowMapper() {
         Integer id = 1;
 
-        String sql = "select * from role where id = ?";
+        String sql = "select * from user where id = ?";
+
+        User user = jdbc.querySingle(sql, new BeanAccessorRowMapper<>(BeanDescriptor.getBeanDescriptor(User.class),
+            sqlTypeMappingManager, mappingFactory), id);
+        assertNotNull(user.getPwd());
+
+        sql = "select * from role where id = ?";
 
         Role role = jdbc.querySingle(sql,
             new BeanAccessorRowMapper<>(BeanDescriptor.getBeanDescriptor(Role.class), sqlTypeMappingManager), id);
@@ -192,7 +198,12 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(ui.getDivision().getProvince());
         assertNotNull(ui.getDivision().getCity());
         assertNotNull(ui.getDivision().getDistrict());
+    }
 
+    @Test(expectedExceptions = JdbcException.class)
+    public void queryBeanAccessorRowMapperException() {
+        Integer id = 1;
+        String sql = "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
         jdbc.querySingle(sql, new BeanAccessorRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class),
             sqlTypeMappingManager, NoPropertyMatchStrategy.EXCEPTION), id);
     }

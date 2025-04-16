@@ -28,6 +28,7 @@ import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityRowMapperFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorScanSpringRegistor;
@@ -81,9 +82,12 @@ public class Appconfig extends JdbcTestBase {
             .failFast(false).buildValidatorFactory().getValidator()));
         hammerConfig = hammerConfigImpl;
 
-        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, propertyAccessorFactory);
+        SqlTypeMappingManager manager = new SqlTypeMappingManager();
 
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, new SqlTypeMappingManager(),
+        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, manager, propertyAccessorFactory,
+            new EntityRowMapperFactory(mappingFactory));
+
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, manager,
             new IdGeneratorManager(), propertyAccessorFactory);
 
         Set<String> basePackages = new HashSet<>();

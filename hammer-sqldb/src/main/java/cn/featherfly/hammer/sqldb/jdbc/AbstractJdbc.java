@@ -76,6 +76,8 @@ import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanAccessorRowMapper;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapperFactory;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.MulitiQueryTupleMapperBuilderImpl;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilderImpl;
 
@@ -112,6 +114,9 @@ public abstract class AbstractJdbc implements Jdbc {
     /** The property accessor factory. */
     protected final PropertyAccessorFactory propertyAccessorFactory;
 
+    /** The bean row mapper factory. */
+    protected final BeanRowMapperFactory beanRowMapperFactory;
+
     /**
      * Instantiates a new abstract jdbc.
      *
@@ -119,10 +124,12 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param metadata the metadata
      * @param manager the manager
      * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
      */
     protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
-        PropertyAccessorFactory propertyAccessorFactory) {
-        this(dialect, metadata, manager, propertyAccessorFactory, new JdbcExecutionInterceptor[0]);
+        PropertyAccessorFactory propertyAccessorFactory, BeanRowMapperFactory beanRowMapperFactory) {
+        this(dialect, metadata, manager, propertyAccessorFactory, beanRowMapperFactory,
+            new JdbcExecutionInterceptor[0]);
     }
 
     /**
@@ -132,15 +139,18 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param metadata the metadata
      * @param manager the manager
      * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
      * @param interceptors the interceptors
      */
     protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
-        PropertyAccessorFactory propertyAccessorFactory, Collection<JdbcExecutionInterceptor> interceptors) {
+        PropertyAccessorFactory propertyAccessorFactory, BeanRowMapperFactory beanRowMapperFactory,
+        Collection<JdbcExecutionInterceptor> interceptors) {
         super();
         this.dialect = dialect;
         this.manager = manager;
         this.metadata = metadata;
         this.propertyAccessorFactory = propertyAccessorFactory;
+        this.beanRowMapperFactory = beanRowMapperFactory;
         if (Lang.isNotEmpty(interceptors)) {
             // remove duplicate
             Set<JdbcExecutionInterceptor> set = null;
@@ -160,11 +170,13 @@ public abstract class AbstractJdbc implements Jdbc {
      * @param metadata the metadata
      * @param manager the manager
      * @param propertyAccessorFactory the property accessor factory
+     * @param beanRowMapperFactory the bean row mapper factory
      * @param interceptors the interceptors
      */
     protected AbstractJdbc(Dialect dialect, DatabaseMetadata metadata, SqlTypeMappingManager manager,
-        PropertyAccessorFactory propertyAccessorFactory, JdbcExecutionInterceptor... interceptors) {
-        this(dialect, metadata, manager, propertyAccessorFactory,
+        PropertyAccessorFactory propertyAccessorFactory, BeanRowMapperFactory beanRowMapperFactory,
+        JdbcExecutionInterceptor... interceptors) {
+        this(dialect, metadata, manager, propertyAccessorFactory, beanRowMapperFactory,
             new ChainSetImpl<JdbcExecutionInterceptor>(new LinkedHashSet<>(interceptors.length))
                 .addChain(interceptors));
     }
@@ -957,10 +969,8 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2> List<Tuple2<T1, T2>> queryList(String sql, Class<T1> elementType1, Class<T2> elementType2,
         Tuple2<String, String> prefixes, Serializable... args) {
-        return queryList(sql,
-            new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes,
-                this::getTypeMapper),
-            args);
+        return queryList(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
+            prefixes, this::getTypeMapper), args);
     }
 
     /**
@@ -980,8 +990,10 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3, T4> List<Tuple4<T1, T2, T3, T4>> queryList(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Serializable... args) {
-        return queryList(sql, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, this::getTypeMapper),
+        return queryList(sql,
+            new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes,
+                this::getTypeMapper),
             args);
     }
 
@@ -1194,10 +1206,8 @@ public abstract class AbstractJdbc implements Jdbc {
     @Override
     public <T1, T2> JdbcRowIterable<Tuple2<T1, T2>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Tuple2<String, String> prefixes, Serializable... args) {
-        return queryEach(sql,
-            new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2), prefixes,
-                this::getTypeMapper),
-            args);
+        return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(elementType1, elementType2),
+            prefixes, this::getTypeMapper), args);
     }
 
     /**
@@ -1217,8 +1227,10 @@ public abstract class AbstractJdbc implements Jdbc {
     public <T1, T2, T3, T4> JdbcRowIterable<Tuple4<T1, T2, T3, T4>> queryEach(String sql, Class<T1> elementType1,
         Class<T2> elementType2, Class<T3> elementType3, Class<T4> elementType4,
         Tuple4<String, String, String, String> prefixes, Serializable... args) {
-        return queryEach(sql, new TupleNestedBeanPropertyRowMapper<>(
-            ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes, this::getTypeMapper),
+        return queryEach(sql,
+            new TupleNestedBeanPropertyRowMapper<>(
+                ArrayUtils.toList(elementType1, elementType2, elementType3, elementType4), prefixes,
+                this::getTypeMapper),
             args);
     }
 
@@ -1343,8 +1355,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T querySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
-        Serializable... args) {
+    public <T> T querySingle(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper, Serializable... args) {
         return querySingle(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
@@ -1531,8 +1542,7 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
-    public <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
-        Serializable... args) {
+    public <T> T queryUnique(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper, Serializable... args) {
         return queryUnique(sql, mapper.apply(new TupleRowMapperBuilderImpl(this::getTypeMapper)), args);
     }
 
@@ -2694,6 +2704,15 @@ public abstract class AbstractJdbc implements Jdbc {
         } else if (elementType == Object.class || manager.getSqlType(elementType) != null) {
             return new SingleColumnRowMapper<>(elementType, manager, prefix);
         } else {
+            if (prefix == null) {
+                // YUFEI_TEST 这里在全量单元测试时有部分正确的测试会报错，应该是全局初始化的问题
+                //                if (beanRowMapperFactory != null) {
+                //                    return beanRowMapperFactory.createRowMapper(propertyAccessorFactory.create(elementType), manager,
+                //                        prefix);
+                //                }
+                return new BeanAccessorRowMapper<>(propertyAccessorFactory.create(elementType), manager);
+            }
+            // ENHANCE  后续使用BeanAccessorRowMapper代替下面的NestedBeanPropertyRowMapper
             return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager, prefix);
         }
     }
