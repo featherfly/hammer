@@ -1084,14 +1084,6 @@ public class SqlQueryTest extends JdbcTestBase {
 
         // ----------------------------------------------------------------------------------------------------------------
 
-        //  query.find(Role.class) //
-        //   .fetch(Role::getCreateTime) //
-        //   .where() //
-        //   .property(Role::getCreateTime).getYear().eq(year) //
-        //   FIXME eq 其实使用的是property(Role::getCreateTime)的 propertyMapping, (LocalDateTime)
-        //   所以在设置year(int)时，会报类型错误, 传入Jdbc的对象是FiledOperator<LocalDateTime>
-        //   .valueList() //
-
         // getYear
         assertYear.accept(query.find(Role.class).fetch(Role::getCreateTime).where().property(Role::getCreateTime)
             .getYear().eq(year).valueList().stream().map(dt -> Dates.toDate(dt)).collect(Collectors.toList()));

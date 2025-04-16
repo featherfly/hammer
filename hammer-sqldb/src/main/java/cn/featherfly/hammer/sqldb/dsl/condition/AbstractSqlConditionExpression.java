@@ -12,18 +12,14 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import cn.featherfly.common.db.FieldValueOperator;
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.BuilderUtils;
 import cn.featherfly.common.db.builder.model.SqlElement;
 import cn.featherfly.common.db.dialect.Dialect;
-import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.Console;
-import cn.featherfly.common.lang.LambdaUtils.SerializableSupplierLambdaInfo;
-import cn.featherfly.common.lang.LambdaUtils.SerializedLambdaInfo;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.repository.Field;
@@ -31,8 +27,6 @@ import cn.featherfly.common.repository.Params.ParamType;
 import cn.featherfly.common.repository.builder.BuilderException;
 import cn.featherfly.common.repository.builder.BuilderExceptionCode;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.AbstractConditionExpression;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
@@ -232,54 +226,54 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
         return this;
     }
 
-    /**
-     * Supplier.
-     *
-     * @param <R> the generic type
-     * @param info the info
-     * @param value the value
-     * @param classMapping the class mapping
-     * @return LogicExpressionist
-     */
-    @SuppressWarnings("unchecked")
-    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value,
-        JdbcClassMapping<?> classMapping) {
-        List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
-        if (value != null) {
-            String propertyName = info.getPropertyName();
-            if (classMapping != null) {
-                JdbcPropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
-                if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
-                    && propertyMapping.getPropertyType() == value.getClass()) {
-                    for (JdbcPropertyMapping pm : propertyMapping.getPropertyMappings()) {
-                        Object obj = pm.getProperty().get(value);
-                        // TODO 这里的返回值不是R类型
-                        Optional<R> optional = Optional.empty();
-                        if (obj != null) {
-                            optional = (Optional<R>) Optional.of(obj);
-                        }
-                        list.add(Tuples.of(pm.getRepositoryFieldName(), optional));
-                    }
-                    return list;
-                }
-            }
-            list.add(Tuples.of(propertyName, Optional.of(value)));
-        }
-        return list;
-    }
-
-    /**
-     * Supplier.
-     *
-     * @param <R> the generic type
-     * @param info the info
-     * @param classMapping the class mapping
-     * @return LogicExpressionist
-     */
-    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
-        JdbcClassMapping<?> classMapping) {
-        return supplier(info.getSerializedLambdaInfo(), info.get(), classMapping);
-    }
+    //    /**
+    //     * Supplier.
+    //     *
+    //     * @param <R> the generic type
+    //     * @param info the info
+    //     * @param value the value
+    //     * @param classMapping the class mapping
+    //     * @return LogicExpressionist
+    //     */
+    //    @SuppressWarnings("unchecked")
+    //    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializedLambdaInfo info, R value,
+    //        JdbcClassMapping<?> classMapping) {
+    //        List<Tuple2<String, Optional<R>>> list = new ArrayList<>();
+    //        if (value != null) {
+    //            String propertyName = info.getPropertyName();
+    //            if (classMapping != null) {
+    //                JdbcPropertyMapping propertyMapping = classMapping.getPropertyMapping(propertyName);
+    //                if (Lang.isNotEmpty(propertyMapping.getPropertyMappings())
+    //                    && propertyMapping.getPropertyType() == value.getClass()) {
+    //                    for (JdbcPropertyMapping pm : propertyMapping.getPropertyMappings()) {
+    //                        Object obj = pm.getProperty().get(value);
+    //                        // TODO 这里的返回值不是R类型
+    //                        Optional<R> optional = Optional.empty();
+    //                        if (obj != null) {
+    //                            optional = (Optional<R>) Optional.of(obj);
+    //                        }
+    //                        list.add(Tuples.of(pm.getRepositoryFieldName(), optional));
+    //                    }
+    //                    return list;
+    //                }
+    //            }
+    //            list.add(Tuples.of(propertyName, Optional.of(value)));
+    //        }
+    //        return list;
+    //    }
+    //
+    //    /**
+    //     * Supplier.
+    //     *
+    //     * @param <R> the generic type
+    //     * @param info the info
+    //     * @param classMapping the class mapping
+    //     * @return LogicExpressionist
+    //     */
+    //    protected <R> List<Tuple2<String, Optional<R>>> supplier(SerializableSupplierLambdaInfo<R> info,
+    //        JdbcClassMapping<?> classMapping) {
+    //        return supplier(info.getSerializedLambdaInfo(), info.get(), classMapping);
+    //    }
 
     // ****************************************************************************************************************
 
