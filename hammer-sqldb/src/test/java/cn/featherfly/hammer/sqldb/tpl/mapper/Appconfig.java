@@ -28,7 +28,7 @@ import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityRowMapperFactory;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityBeanRowMapperFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.mapper.DynamicTplExecutorScanSpringRegistor;
@@ -85,7 +85,7 @@ public class Appconfig extends JdbcTestBase {
         SqlTypeMappingManager manager = new SqlTypeMappingManager();
 
         Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, manager, propertyAccessorFactory,
-            new EntityRowMapperFactory(mappingFactory));
+            new EntityBeanRowMapperFactory(mappingFactory));
 
         JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, manager,
             new IdGeneratorManager(), propertyAccessorFactory);

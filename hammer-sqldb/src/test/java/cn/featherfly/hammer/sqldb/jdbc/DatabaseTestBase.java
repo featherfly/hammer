@@ -27,7 +27,7 @@ import cn.featherfly.common.lang.UriUtils;
 import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuples;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityRowMapperFactory;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityBeanRowMapperFactory;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
@@ -99,7 +99,7 @@ public class DatabaseTestBase extends TestBase {
 
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory,
-            new EntityRowMapperFactory(mappingFactory));
+            new EntityBeanRowMapperFactory(mappingFactory));
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
             propertyAccessorFactory);
@@ -138,7 +138,7 @@ public class DatabaseTestBase extends TestBase {
 
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory,
-            new EntityRowMapperFactory(mappingFactory));
+            new EntityBeanRowMapperFactory(mappingFactory));
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
             propertyAccessorFactory);
@@ -166,7 +166,7 @@ public class DatabaseTestBase extends TestBase {
 
         metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "main");
         jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory,
-            new EntityRowMapperFactory(mappingFactory));
+            new EntityBeanRowMapperFactory(mappingFactory));
 
         mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager, idGeneratorManager,
             propertyAccessorFactory);

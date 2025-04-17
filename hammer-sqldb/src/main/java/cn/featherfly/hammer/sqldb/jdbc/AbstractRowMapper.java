@@ -17,7 +17,7 @@ import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.repository.mapper.RowMapper;
 
 /**
- * JdbcRowMapper.
+ * AbstractRowMapper.
  *
  * @author zhongj
  * @param <E> the element type
@@ -29,8 +29,17 @@ public abstract class AbstractRowMapper<E> implements RowMapper<E> {
      */
     @Override
     public E mapRow(cn.featherfly.common.repository.mapper.ResultSet res, int rowNum) {
+        ResultSet rs = null;
+        if (res instanceof SqlResultSet) {
+            SqlResultSet sqlrs = (SqlResultSet) res;
+            rs = sqlrs.getResultSet();
+            AssertIllegalArgument.isNotNull(rs, "java.sql.ResultSet");
+        } else {
+            throw new JdbcException("ResultSet is not type of SqlResultSet");
+        }
+
         try {
-            return mapRow(getResultSet(res), rowNum);
+            return mapRow(rs, rowNum);
         } catch (SQLException e) {
             throw new JdbcException(e);
         }

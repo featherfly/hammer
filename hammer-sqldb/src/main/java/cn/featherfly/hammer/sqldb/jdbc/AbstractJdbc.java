@@ -76,7 +76,7 @@ import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.common.tuple.Tuples;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanAccessorRowMapper;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapperFactory;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.MulitiQueryTupleMapperBuilderImpl;
 import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilderImpl;
@@ -2710,7 +2710,7 @@ public abstract class AbstractJdbc implements Jdbc {
                 //                    return beanRowMapperFactory.createRowMapper(propertyAccessorFactory.create(elementType), manager,
                 //                        prefix);
                 //                }
-                return new BeanAccessorRowMapper<>(propertyAccessorFactory.create(elementType), manager);
+                return new BeanRowMapper<>(propertyAccessorFactory.create(elementType), manager);
             }
             // ENHANCE  后续使用BeanAccessorRowMapper代替下面的NestedBeanPropertyRowMapper
             return new NestedBeanPropertyRowMapper<>(propertyAccessorFactory.create(elementType), manager, prefix);

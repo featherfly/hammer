@@ -53,8 +53,9 @@ import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
 import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.common.tuple.mutable.MutableTuple3;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanAccessorRowMapper;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanAccessorRowMapper.NoPropertyMatchStrategy;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapper;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapper.NoPropertyMatchStrategy;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.EntityBeanRowMapper;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article;
@@ -175,24 +176,44 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void queryBeanAccessorRowMapper() {
+    public void queryBeanRowMapper() {
         Integer id = 1;
 
-        String sql = "select * from user where id = ?";
-
-        User user = jdbc.querySingle(sql, new BeanAccessorRowMapper<>(BeanDescriptor.getBeanDescriptor(User.class),
-            sqlTypeMappingManager, mappingFactory), id);
-        assertNotNull(user.getPwd());
-
-        sql = "select * from role where id = ?";
+        String sql = "select * from role where id = ?";
 
         Role role = jdbc.querySingle(sql,
-            new BeanAccessorRowMapper<>(BeanDescriptor.getBeanDescriptor(Role.class), sqlTypeMappingManager), id);
+            new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(Role.class), sqlTypeMappingManager), id);
         assertNotNull(role.getCreateTime());
 
         sql = "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
         UserInfo ui = jdbc.querySingle(sql,
-            new BeanAccessorRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class), sqlTypeMappingManager), id);
+            new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class), sqlTypeMappingManager), id);
+        assertNotNull(ui);
+        assertNotNull(ui.getDivision());
+        assertNotNull(ui.getDivision().getProvince());
+        assertNotNull(ui.getDivision().getCity());
+        assertNotNull(ui.getDivision().getDistrict());
+    }
+
+    @Test
+    public void queryEntityBeanRowMapper() {
+        Integer id = 1;
+
+        String sql = "select * from user where id = ?";
+
+        User user = jdbc.querySingle(sql, new EntityBeanRowMapper<>(BeanDescriptor.getBeanDescriptor(User.class),
+            sqlTypeMappingManager, mappingFactory.getClassMapping(User.class)), id);
+        assertNotNull(user.getPwd());
+
+        sql = "select * from role where id = ?";
+
+        Role role = jdbc.querySingle(sql, new EntityBeanRowMapper<>(BeanDescriptor.getBeanDescriptor(Role.class),
+            sqlTypeMappingManager, mappingFactory.getClassMapping(Role.class)), id);
+        assertNotNull(role.getCreateTime());
+
+        sql = "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
+        UserInfo ui = jdbc.querySingle(sql, new EntityBeanRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class),
+            sqlTypeMappingManager, mappingFactory.getClassMapping(UserInfo.class)), id);
         assertNotNull(ui);
         assertNotNull(ui.getDivision());
         assertNotNull(ui.getDivision().getProvince());
@@ -204,7 +225,7 @@ public class JdbcTest extends JdbcTestBase {
     public void queryBeanAccessorRowMapperException() {
         Integer id = 1;
         String sql = "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
-        jdbc.querySingle(sql, new BeanAccessorRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class),
+        jdbc.querySingle(sql, new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class),
             sqlTypeMappingManager, NoPropertyMatchStrategy.EXCEPTION), id);
     }
 

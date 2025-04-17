@@ -11,41 +11,33 @@ package cn.featherfly.hammer.sqldb.jdbc.mapper;
 import javax.annotation.Nonnull;
 
 import cn.featherfly.common.bean.PropertyAccessor;
-import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.repository.mapper.RowMapper;
-import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanAccessorRowMapper.NoPropertyMatchStrategy;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapper.NoPropertyMatchStrategy;
 
 /**
- * EntityRowMapperFactory.
+ * BeanRowMapperFactoryImpl.
  *
  * @author zhongj
  */
-public class EntityRowMapperFactory implements BeanRowMapperFactory {
+public class BeanRowMapperFactoryImpl implements BeanRowMapperFactory {
 
-    private final JdbcMappingFactory factory;
-
-    private final NoPropertyMatchStrategy noPropertyMatchStrategy;
+    protected final NoPropertyMatchStrategy noPropertyMatchStrategy;
 
     /**
      * Instantiates a new entity row mapper factory.
-     *
-     * @param factory the factory
      */
-    public EntityRowMapperFactory(@Nonnull JdbcMappingFactory factory) {
-        this(factory, NoPropertyMatchStrategy.IGNORE);
+    public BeanRowMapperFactoryImpl() {
+        this(NoPropertyMatchStrategy.IGNORE);
     }
 
     /**
      * Instantiates a new entity row mapper factory.
      *
-     * @param factory the factory
      * @param noPropertyMatchStrategy the no property match strategy
      */
-    public EntityRowMapperFactory(@Nonnull JdbcMappingFactory factory,
-        @Nonnull NoPropertyMatchStrategy noPropertyMatchStrategy) {
+    public BeanRowMapperFactoryImpl(@Nonnull NoPropertyMatchStrategy noPropertyMatchStrategy) {
         super();
-        this.factory = factory;
         this.noPropertyMatchStrategy = noPropertyMatchStrategy;
     }
 
@@ -54,7 +46,8 @@ public class EntityRowMapperFactory implements BeanRowMapperFactory {
      */
     @Override
     public <T> RowMapper<T> createRowMapper(PropertyAccessor<T> type, SqlTypeMappingManager manager, String prefix) {
-        return new BeanAccessorRowMapper<>(type, manager, factory, noPropertyMatchStrategy);
+        // FIXME prefix 还没有实现prefix支持
+        return new BeanRowMapper<>(type, manager, noPropertyMatchStrategy);
     }
 
 }
