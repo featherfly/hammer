@@ -4649,8 +4649,15 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
     @Override
     public <R extends Collection<E>,
         E> EntityTypePropertyExpression<E, C, L> property(SerializableToCollectionFunction<E1, R, E> name) {
-        // IMPLSOON 后续来实现集合类型property
-        throw new NotImplementedException();
+        //        return new EntityTypePropertyExpressionImpl<>(index, Lang.list(name), this, factory, entityRelation);
+        // IMPLSOON 这里没有ONE_TO_MANY的映射，需要在MappingFactory中实现
+        switch (getClassMapping().getPropertyMapping(getPropertyName(name)).getMode()) {
+            case ONE_TO_MANY:
+                return new EntityTypePropertyExpressionImpl<>(index, Lang.list(name), this, factory, entityRelation);
+            default:
+                // IMPLSOON 后续来实现集合类型property
+                throw new NotImplementedException();
+        }
     }
 
     /**

@@ -35,6 +35,8 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.sqldb.dsl.entity.query.EntitySqlQueryExpression;
 import cn.featherfly.hammer.sqldb.dsl.query.SqlQuery;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.App;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.AppVersion;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Order;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
@@ -700,7 +702,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
     //    }
 
     @Test
-    void property_eq_manyToOne_pk() {
+    void property_eq_ManyToOne_pk() {
         List<UserInfo> userInfos = null;
 
         User user = new User();
@@ -737,8 +739,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         final Consumer<List<Order>> assertOrder = orders -> {
             for (Order order : orders) {
-                UserInfo userInfo =
-                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                UserInfo userInfo = query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
                 User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
 
                 assertEquals(u.getUsername(), user.getUsername());
@@ -763,8 +764,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         final Consumer<List<Order>> assertOrder = orders -> {
             for (Order order : orders) {
-                UserInfo userInfo =
-                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                UserInfo userInfo = query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
                 User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
 
                 assertEquals(u.getUsername(), user.getUsername());
@@ -778,6 +778,16 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .list();
 
         assertOrder.accept(orderList);
+    }
+
+    @Test
+    void property_eq_OneToMany_pk() {
+        App app = new App();
+        app.setId(1L);
+
+        List<App> apps = query.find(App.class).where().property(App::getVersions).property(AppVersion::getId).eq(2L)
+            .list();
+        assertEquals(apps.size(), 1);
     }
 
     @Test
@@ -1429,8 +1439,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         final Consumer<List<Order>> assertOrder = orders -> {
             for (Order order : orders) {
-                UserInfo userInfo =
-                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                UserInfo userInfo = query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
                 User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
 
                 assertEquals(u.getUsername(), user.getUsername());
@@ -1465,8 +1474,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         final Consumer<List<Order>> assertOrder = orders -> {
             assertEquals(orders.size(), 1);
             for (Order order : orders) {
-                UserInfo ui =
-                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                UserInfo ui = query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
                 User u = query.find(User.class).where().eq(User::getId, userInfo.getUser().getId()).single();
 
                 assertEquals(ui.getDivision().getProvince(), userInfo.getDivision().getProvince());
@@ -1486,12 +1494,11 @@ public class EntitySqlQueryTest extends JdbcTestBase {
                         .eq(userInfo.getDivision().getProvince()) //
                         .and().eq(DistrictDivision::getCity, userInfo.getDivision().getCity()) //
                         .and().eq(DistrictDivision::getDistrict, userInfo.getDivision().getDistrict()) //
-                ).and()
-                    .property(UserInfo::getUser, // 
-                        propUser -> propUser.property(User::getUsername) //
-                            .eq(user.getUsername()) //
-                            .and().eq(user::getMobileNo) //
-                    ) //
+                ).and().property(UserInfo::getUser, // 
+                    propUser -> propUser.property(User::getUsername) //
+                        .eq(user.getUsername()) //
+                        .and().eq(user::getMobileNo) //
+                ) //
             )  //
             .list();
 
@@ -1507,8 +1514,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
 
         final Consumer<List<Order>> assertOrder = orders -> {
             for (Order order : orders) {
-                UserInfo ui =
-                    query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
+                UserInfo ui = query.find(UserInfo.class).where().eq(order.getUserInfo()::getId).single();
                 assertEquals(ui.getDivision().getProvince(), userInfo.getDivision().getProvince());
                 assertEquals(ui.getDivision().getCity(), userInfo.getDivision().getCity());
                 assertEquals(ui.getDivision().getDistrict(), userInfo.getDivision().getDistrict());

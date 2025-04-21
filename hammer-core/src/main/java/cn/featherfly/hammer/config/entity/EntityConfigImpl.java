@@ -22,6 +22,7 @@ public class EntityConfigImpl implements EntityConfig {
 
     private final OperatorConfig insert = new OperatorConfigImpl(batchSize);
     private final OperatorConfig update = new OperatorConfigImpl(batchSize);
+    private final OperatorConfig upsert = new OperatorConfigImpl(batchSize);
     private final OperatorConfig delete = new OperatorConfigImpl(batchSize);
     private final Set<String> basePackages = new HashSet<>(0);
 
@@ -59,6 +60,7 @@ public class EntityConfigImpl implements EntityConfig {
         this.batchSize = batchSize;
         insert.setBatchSize(batchSize);
         update.setBatchSize(batchSize);
+        upsert.setBatchSize(batchSize);
         delete.setBatchSize(batchSize);
         return this;
     }
@@ -77,6 +79,14 @@ public class EntityConfigImpl implements EntityConfig {
     @Override
     public OperatorConfig getUpdate() {
         return update;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OperatorConfig getUpsert() {
+        return upsert;
     }
 
     /**

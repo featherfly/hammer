@@ -1,9 +1,12 @@
 package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import cn.featherfly.common.model.app.Platform;
@@ -30,6 +33,9 @@ public class App {
     @ManyToOne
     @Column(name = "last_version")
     private AppVersion lastVersion;
+
+    @OneToMany
+    private List<AppVersion> versions;
 
     /**
      * get id value
@@ -140,12 +146,30 @@ public class App {
     }
 
     /**
+     * get versions value
+     *
+     * @return versions
+     */
+    public List<AppVersion> getVersions() {
+        return versions;
+    }
+
+    /**
+     * set versions value
+     *
+     * @param versions versions
+     */
+    public void setVersions(List<AppVersion> versions) {
+        this.versions = versions;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return "App [id=" + id + ", code=" + code + ", name=" + name + ", descp=" + descp + ", platform=" + platform
-                + ", lastVersion=" + lastVersion + "]";
+            + ", lastVersion=" + lastVersion + "]";
     }
 
 }

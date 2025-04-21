@@ -32,10 +32,11 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param batchSize the batch size
      */
     public DeleteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, null);
+        DatabaseMetadata databaseMetadata, int batchSize) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, batchSize, null);
     }
 
     /**
@@ -72,6 +73,14 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
         return deleteBatch(ids, ids.size());
     }
 
+    /**
+     * Delete batch.
+     *
+     * @param <ID> the generic type
+     * @param ids the ids
+     * @param batchSize the batch size
+     * @return the int[]
+     */
     public <ID extends Serializable> int[] deleteBatch(final List<ID> ids, int batchSize) {
         if (Lang.isEmpty(ids)) {
             return ArrayUtils.EMPTY_INT_ARRAY;
@@ -160,12 +169,27 @@ public class DeleteOperate<T> extends AbstractBatchExecuteOperate<T> {
         return jdbc.updateBatch(sql, argsList);
     }
 
+    /**
+     * Do jdbc execute batch id.
+     *
+     * @param <ID> the generic type
+     * @param ids the ids
+     * @return the int[]
+     */
     protected <ID extends Serializable> int[] doJdbcExecuteBatchId(List<ID> ids) {
         Serializable[][] args = new Serializable[ids.size()][];
         Lang.each(ids, (e, i) -> args[i] = new Serializable[] { e });
         return jdbc.updateBatch(sql, args);
     }
 
+    /**
+     * Do jdbc execute batch id.
+     *
+     * @param <ID> the generic type
+     * @param ids the ids
+     * @param batchSize the batch size
+     * @return the int[]
+     */
     protected <ID extends Serializable> int[] doJdbcExecuteBatchId(List<ID> ids, int batchSize) {
         if (ids.size() <= batchSize) {
             return doJdbcExecuteBatchId(ids);

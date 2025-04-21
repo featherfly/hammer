@@ -29,15 +29,12 @@ public interface BatchExecuteOperate<T> {
      * @param entities the entity
      * @return the execute success row num
      */
-    default int[] executeBatch(final List<T> entities) {
-        // ENHANCE 后续加入batchSize配置
-        return executeBatch(entities, entities.size());
-    }
+    int[] executeBatch(final List<T> entities);
 
     /**
      * Execute batch.
      *
-     * @param entities  the entity
+     * @param entities the entity
      * @param batchSize the batch size
      * @return the execute success row num
      */

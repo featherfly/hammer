@@ -81,8 +81,7 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name,
         InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
         EntitySqlRelation<?, ?> queryRelation) {
-        this(index, Lang.list(name), null, ArrayUtils.EMPTY_OBJECT_ARRAY, expression, factory,
-            queryRelation);
+        this(index, Lang.list(name), null, ArrayUtils.EMPTY_OBJECT_ARRAY, expression, factory, queryRelation);
     }
 
     /**
@@ -96,11 +95,10 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
      * @param factory the factory
      * @param queryRelation the query relation
      */
-    protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name,
-        Function function, Object[] argus, InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+    protected AbstractMulitiEntityPropertyExpression(AtomicInteger index, Serializable name, Function function,
+        Object[] argus, InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
         EntitySqlRelation<?, ?> queryRelation) {
-        this(index, Lang.list(name), function, argus, expression, factory,
-            queryRelation);
+        this(index, Lang.list(name), function, argus, expression, factory, queryRelation);
     }
 
     /**
@@ -208,11 +206,15 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
     private PropertyMapping<?> getSubPropertyMapping(Serializable property, Serializable subProperty, Object value) {
         final int currentIndex = index.get();
         ClassMapping<?, JdbcPropertyMapping> classMapping = expression.getClassMapping(currentIndex);
-        JdbcPropertyMapping pm = classMapping
-            .getPropertyMapping(LambdaUtils.getLambdaPropertyName(property));
+        String name = LambdaUtils.getLambdaPropertyName(property);
+        JdbcPropertyMapping pm = classMapping.getPropertyMapping(name);
         if (value == null) {
             // ENHANCE 这个查询值为null则直接返回对象映射的逻辑后续考虑是否合理
             return pm;
+        }
+        if (pm == null) {
+            throw new SqldbHammerException("there is no property mapping for {}.{}",
+                new Object[] { classMapping.getType().getName(), name });
         }
 
         SerializedLambdaInfo propertyInfo = LambdaUtils.getLambdaInfo(subProperty);

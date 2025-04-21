@@ -193,9 +193,9 @@ public class EntityPropertyExpressionImpl2<E, C extends ConditionExpression, L e
     public <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
         L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<E, R> name,
             Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
-        // IMPLSOON 后续来实现内嵌类型property
-        throw new NotImplementedException();
-        //        return entityTypePropertyExpressionConsumer.apply((C2) property(name));
+        // YUFEI_TEST 还未测试
+        entityTypePropertyExpressionConsumer.accept((EntityTypePropertyExpression<R, C2, L2>) property(name));
+        return (L) expression;
     }
 
     /**

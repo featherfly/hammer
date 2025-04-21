@@ -33,6 +33,9 @@ import cn.featherfly.validation.Validator;
 public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOperate<T>
     implements BatchExecuteOperate<T> {
 
+    /** The batch size. */
+    protected final int batchSize;
+
     /**
      * Instantiates a new abstract batch execute operate.
      *
@@ -40,11 +43,22 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param batchSize the batch size
      * @param validator the validator
      */
     protected AbstractBatchExecuteOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping,
-        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata, Validator validator) {
+        SqlTypeMappingManager sqlTypeMappingManager, DatabaseMetadata databaseMetadata, int batchSize,
+        Validator validator) {
         super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, validator);
+        this.batchSize = batchSize;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int[] executeBatch(final List<T> entities) {
+        return executeBatch(entities, batchSize);
     }
 
     /**
@@ -161,11 +175,11 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
             int columnNum = 0;
             for (JdbcPropertyMapping propertyMapping : propertyPositions) {
                 if (useIdGenerator && propertyMapping.getPrimaryKey() != null) {
-                    Serializable propertyValue =
-                        propertyMapping.getPrimaryKey().getIdGenerator().generate(entity, propertyMapping);
+                    Serializable propertyValue = propertyMapping.getPrimaryKey().getIdGenerator().generate(entity,
+                        propertyMapping);
                     validate(entity, propertyMapping, errorMessage);
-                    params[i * propertyPositions.length + columnNum] =
-                        FieldValueOperator.create(propertyMapping, propertyValue);
+                    params[i * propertyPositions.length + columnNum] = FieldValueOperator.create(propertyMapping,
+                        propertyValue);
                 } else {
                     Serializable propertyValue = propertyMapping.getGetter().apply(entity);
                     validate(entity, propertyMapping, errorMessage);
@@ -187,5 +201,14 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
      */
     protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions) {
         return getBatchParameters(entities, propertyPositions, false);
+    }
+
+    /**
+     * Gets the batch size.
+     *
+     * @return the batch size
+     */
+    public int getBatchSize() {
+        return batchSize;
     }
 }

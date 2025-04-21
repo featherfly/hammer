@@ -30,11 +30,12 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param batchSize the batch size
      * @param validator the validator
      */
     public UpdateOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,
-        DatabaseMetadata databaseMetadata, Validator validator) {
-        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, validator);
+        DatabaseMetadata databaseMetadata, int batchSize, Validator validator) {
+        super(jdbc, classMapping, sqlTypeMappingManager, databaseMetadata, batchSize, validator);
     }
 
     /**

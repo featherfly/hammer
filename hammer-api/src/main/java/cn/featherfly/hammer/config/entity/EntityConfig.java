@@ -55,6 +55,13 @@ public interface EntityConfig {
     OperatorConfig getUpdate();
 
     /**
+     * Gets the upsert.
+     *
+     * @return the upsert
+     */
+    OperatorConfig getUpsert();
+
+    /**
      * Gets the delete.
      *
      * @return the delete
