@@ -30,9 +30,11 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
 import cn.featherfly.hammer.config.TemplateConfigImpl;
+import cn.featherfly.hammer.config.validator.ValidatorConfigImpl;
 import cn.featherfly.hammer.entity.EntityPreparer;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -90,8 +92,9 @@ public class HammerBenchmark extends AbstractBenchmark {
             new EntityBeanRowMapperFactory(mappingFactory));
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl();
-        hammerConfig.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
-            .failFast(false).buildValidatorFactory().getValidator()));
+        hammerConfig.setValidatorConfig(
+            new ValidatorConfigImpl(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator(), HammerValidateException::new)));
 
         hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig)
             .build();

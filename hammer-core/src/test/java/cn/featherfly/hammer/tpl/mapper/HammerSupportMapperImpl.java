@@ -1,6 +1,7 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
+import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.repository.Params;
 import cn.featherfly.hammer.Hammer;
 import cn.featherfly.hammer.config.HammerConfig;
@@ -21,6 +22,8 @@ public class HammerSupportMapperImpl extends BasedMapper implements HammerSuppor
 
     @Override
     public User getByUsername(String username) {
+        hammerConfig.getValidatorConfig().validateParameters(this,
+            ClassUtils.getMethod(HammerSupportMapper.class, "getByUsername", String.class), new Object[] { username });
         return tplExecutor.single(new TplExecuteIdFileImpl("getByUsername", "HammerSupport", parser), User.class,
             new Params().set("username", username));
     }

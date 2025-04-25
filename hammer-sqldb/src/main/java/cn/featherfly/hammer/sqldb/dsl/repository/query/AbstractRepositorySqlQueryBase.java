@@ -4,11 +4,11 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.structure.page.Limit;
-import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.query.QueryConditionLimit;
 import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.WhereExpression;
+import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlRelation.RepositoryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -21,7 +21,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQueryBase<C extends ConditionExpression, Q>
-        implements QueryCountExecutor, QueryConditionLimit<Q>, WhereExpression<C> {
+    implements QueryCountExecutor, QueryConditionLimit<Q>, WhereExpression<C> {
 
     /** The query relation. */
     protected final RepositorySqlQueryRelation queryRelation;
@@ -41,12 +41,12 @@ public abstract class AbstractRepositorySqlQueryBase<C extends ConditionExpressi
     /**
      * Instantiates a new abstract sql query entity properties.
      *
-     * @param index          the index
-     * @param queryRelation  the query relation
+     * @param index the index
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQueryBase(int index, RepositorySqlQueryRelation queryRelation,
-            SqlPageFactory sqlPageFactory) {
+        SqlPageFactory sqlPageFactory) {
         this.index = index;
         this.queryRelation = queryRelation;
         this.sqlPageFactory = sqlPageFactory;
@@ -84,7 +84,7 @@ public abstract class AbstractRepositorySqlQueryBase<C extends ConditionExpressi
      */
     protected String getIdName() {
         if (Lang.isEmpty(idName)) {
-            throw new HammerException("primary key column name is null");
+            throw new SqldbHammerException("primary key column name is null");
         }
         return idName;
     }

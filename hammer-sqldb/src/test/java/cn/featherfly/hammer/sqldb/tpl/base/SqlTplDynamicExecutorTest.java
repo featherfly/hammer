@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.base;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -11,7 +11,6 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -29,41 +28,26 @@ import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
  *
  * @author zhongj
  */
-public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
+public class SqlTplDynamicExecutorTest extends JdbcTestBase {
 
-    UserMapper3 userMapper;
+    UserMapper userMapper;
 
     @BeforeClass
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
-        userMapper = mapperFactory.newInstance(UserMapper3.class, hammer, hammerConfig);
-    }
-
-    @Test
-    void testSave() {
-        User user = new User();
-        user.setAge(18);
-        user.setUsername("username_" + Randoms.getString(5));
-        userMapper.save(user);
-
-        User u = userMapper.get(user.getId());
-        assertEquals(u.getAge(), user.getAge());
-        assertEquals(u.getUsername(), user.getUsername());
-
+        userMapper = mapperFactory.newInstance(UserMapper.class, hammer, hammerConfig);
     }
 
     @Test
     void testMapperString() {
         String str = userMapper.selectString();
-
         System.out.println("selectString = " + str);
         assertEquals(str, "yufei");
 
         str = userMapper.selectString2(2);
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
-
     }
 
     @Test
@@ -87,21 +71,6 @@ public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
 
         String password = "123456";
         u = userMapper.selectByUsernameAndPassword(username, password);
-        System.out.println(u);
-        assertEquals(u.getUsername(), username);
-        assertEquals(u.getPwd(), password);
-
-        u = userMapper.getByUsernameAndPassword(username, password);
-        System.out.println(u);
-        assertEquals(u.getUsername(), username);
-        assertEquals(u.getPwd(), password);
-
-        u = userMapper.getByUsernameAndPassword2(username, password);
-        System.out.println(u);
-        assertEquals(u.getUsername(), username);
-        assertEquals(u.getPwd(), password);
-
-        u = userMapper.getByUsernameAndPassword3(username, password);
         System.out.println(u);
         assertEquals(u.getUsername(), username);
         assertEquals(u.getPwd(), password);
@@ -136,24 +105,25 @@ public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
     @Test
     void testMapperPage() {
         int limit = 1;
+        int age = 10;
         Page page = new SimplePagination(0, limit);
 
-        List<User> list = userMapper.selectByAge2(10, 0, limit);
+        List<User> list = userMapper.selectByAge2(age, 0, limit);
         System.out.println(list.size());
         System.out.println(list);
         assertEquals(list.size(), limit);
 
-        list = userMapper.selectByAge2(10, page);
+        list = userMapper.selectByAge2(age, page);
         System.out.println(list.size());
         System.out.println(list);
         assertEquals(list.size(), limit);
 
-        PaginationResults<User> us = userMapper.selectByAge2Page(10, 0, limit);
+        PaginationResults<User> us = userMapper.selectByAge2Page(age, 0, limit);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
         assertEquals(us.getResultSize(), Integer.valueOf(limit));
 
-        us = userMapper.selectByAge2Page(10, page);
+        us = userMapper.selectByAge2Page(age, page);
         System.out.println(us.getResultSize());
         System.out.println(us.getPageResults());
         assertEquals(us.getResultSize(), Integer.valueOf(limit));

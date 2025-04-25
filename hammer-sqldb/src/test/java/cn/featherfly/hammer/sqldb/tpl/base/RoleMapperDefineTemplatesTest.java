@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.base;
 
 import static org.testng.Assert.assertTrue;
 
@@ -31,7 +31,7 @@ public class RoleMapperDefineTemplatesTest extends JdbcTestBase {
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Set<String> basePackages = new HashSet<>();
-        basePackages.add("cn.featherfly.hammer.sqldb.tpl");
+        basePackages.add("cn.featherfly.hammer.sqldb.tpl.base");
         configFactory = TplConfigFactoryImpl.builder() //
             .prefixes("tpl/").suffixes(".yaml.tpl").basePackages(basePackages).config(hammerConfig.getTemplateConfig())
             .preCompile(new FreemarkerTemplatePreProcessor(

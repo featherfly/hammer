@@ -241,13 +241,6 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * {@inheritDoc}
      */
     @Override
-    protected void validate(T entity) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected String getName() {
         return "insert";
     }

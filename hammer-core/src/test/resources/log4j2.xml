@@ -3,8 +3,9 @@
     
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%d{dd HH:mm:ss,SSS} %highlight{%-5p}] [%t] %highlight{%C.%M} Line:%L - %m%n" />
+            <PatternLayout pattern="[%d{dd HH:mm:ss,SSS} %highlight{%-5p}{TRACE=Bright magenta}] [%t] %highlight{%C.%M}{TRACE=Bright magenta} Line:%L - %m%n" />
         </Console>
+        
     </Appenders>
 
     <Loggers>

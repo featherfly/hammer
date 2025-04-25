@@ -27,7 +27,7 @@ import cn.featherfly.hammer.sqldb.TestConstants;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
-import cn.featherfly.hammer.sqldb.tpl.SqlTplExecutorTest;
+import cn.featherfly.hammer.sqldb.tpl.base.SqlTplExecutorTest;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateEngine;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;

@@ -18,6 +18,7 @@ import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.annotation.Mapper;
+import cn.featherfly.hammer.config.HammerConfig;
 
 /**
  * 自动注册配置信息到spring context .
@@ -39,14 +40,18 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
 
     private final ClassLoader classLoader;
 
+    private final HammerConfig hammerConfig;
+
     /**
      * Instantiates a new dynamic tpl executor spring registor.
      *
      * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
+     * @param hammerConfig the hammer config
      */
-    public DynamicTplExecutorSpringRegistor(String hammerReference, String hammerConfigReference) {
-        this(null, hammerReference, hammerConfigReference);
+    public DynamicTplExecutorSpringRegistor(String hammerReference, String hammerConfigReference,
+        HammerConfig hammerConfig) {
+        this(null, hammerReference, hammerConfigReference, hammerConfig);
     }
 
     /**
@@ -54,11 +59,12 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      *
      * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
+     * @param hammerConfig the hammer config
      * @param classLoader the class loader
      */
     public DynamicTplExecutorSpringRegistor(String hammerReference, String hammerConfigReference,
-        ClassLoader classLoader) {
-        this(null, hammerReference, hammerConfigReference, classLoader);
+        HammerConfig hammerConfig, ClassLoader classLoader) {
+        this(null, hammerReference, hammerConfigReference, hammerConfig, classLoader);
     }
 
     /**
@@ -67,10 +73,11 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      * @param metadataReaders metadataReaders
      * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
+     * @param hammerConfig the hammer config
      */
     public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference,
-        String hammerConfigReference) {
-        this(metadataReaders, hammerReference, hammerConfigReference, null);
+        String hammerConfigReference, HammerConfig hammerConfig) {
+        this(metadataReaders, hammerReference, hammerConfigReference, hammerConfig, null);
     }
 
     /**
@@ -79,16 +86,17 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
      * @param metadataReaders metadataReaders
      * @param hammerReference hammerReference
      * @param hammerConfigReference the hammer config reference
+     * @param hammerConfig the hammer config
      * @param classLoader the class loader
      */
     public DynamicTplExecutorSpringRegistor(Set<MetadataReader> metadataReaders, String hammerReference,
-        String hammerConfigReference, ClassLoader classLoader) {
+        String hammerConfigReference, HammerConfig hammerConfig, ClassLoader classLoader) {
         super();
         this.hammerReference = hammerReference;
         this.hammerConfigReference = hammerConfigReference;
         this.classLoader = classLoader;
+        this.hammerConfig = hammerConfig;
         CollectionUtils.addAll(this.metadataReaders, metadataReaders);
-
     }
 
     /**
@@ -112,7 +120,7 @@ public class DynamicTplExecutorSpringRegistor implements BeanDefinitionRegistryP
             if (metadataReader.getAnnotationMetadata().hasAnnotation(Mapper.class.getName())) {
                 try {
                     Class<?> type = ClassUtils.forName(metadataReader.getClassMetadata().getClassName());
-                    String dynamicImplName = dynamicExecutorFactory.create(type, classLoader);
+                    String dynamicImplName = dynamicExecutorFactory.create(type, hammerConfig, classLoader);
                     logger.debug("create class {} for {} with hammerReference {}, hammerConfigReference {}",
                         dynamicImplName, type.getName(), hammerReference, hammerConfigReference);
                     Class<?> newType = null;

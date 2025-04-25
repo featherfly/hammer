@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.base;
 
 import cn.featherfly.hammer.annotation.Mapper;
 import cn.featherfly.hammer.annotation.Template;

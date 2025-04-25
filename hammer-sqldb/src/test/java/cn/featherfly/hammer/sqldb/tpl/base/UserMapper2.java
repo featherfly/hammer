@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.base;
 
 import java.io.Serializable;
 import java.util.List;

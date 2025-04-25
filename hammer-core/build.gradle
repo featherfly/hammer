@@ -21,6 +21,11 @@ dependencies {
 	//api group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
 	
 
+    // validation
+    testImplementation 'cn.featherfly.validation:javax.validation-api:0.3.0'
+    testImplementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0' // hibernate-validator 需要使用 
+    testImplementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.5.Final'
+
     //implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 	implementation group: 'org.springframework', name: 'spring-context', version: sv
 		

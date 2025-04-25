@@ -14,7 +14,6 @@ import cn.featherfly.hammer.config.cache.CacheConfig;
 import cn.featherfly.hammer.config.dsl.DslConfig;
 import cn.featherfly.hammer.config.entity.EntityConfig;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
-import cn.featherfly.validation.Validator;
 
 /**
  * HammerConfig.
@@ -38,11 +37,11 @@ public interface HammerConfig {
     DslConfig getDslConfig();
 
     /**
-     * Gets the validator.
+     * Gets the validator config.
      *
-     * @return the validator
+     * @return the validator config
      */
-    Validator getValidator();
+    ValidatorConfig getValidatorConfig();
 
     /**
      * Gets the entity config.

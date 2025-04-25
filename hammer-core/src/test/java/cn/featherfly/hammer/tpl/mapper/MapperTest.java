@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 
 /**
  * <p>
@@ -37,8 +39,9 @@ public class MapperTest {
 
     @Test
     public void testTestMapper2() throws Exception {
+        HammerConfig config = new HammerConfigImpl();
         Class<?> type = ClassUtils
-            .forName(factory.create(TestMapper2.class, Thread.currentThread().getContextClassLoader()));
+            .forName(factory.create(TestMapper2.class, config, Thread.currentThread().getContextClassLoader()));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));

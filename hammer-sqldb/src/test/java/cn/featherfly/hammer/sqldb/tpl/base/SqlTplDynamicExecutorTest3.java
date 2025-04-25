@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.base;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -11,6 +11,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -28,15 +29,28 @@ import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
  *
  * @author zhongj
  */
-public class SqlTplDynamicExecutorTest3WithoutParamName extends JdbcTestBase {
+public class SqlTplDynamicExecutorTest3 extends JdbcTestBase {
 
-    UserMapper3WithoutParamName userMapper;
+    UserMapper3 userMapper;
 
     @BeforeClass
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
-        userMapper = mapperFactory.newInstance(UserMapper3WithoutParamName.class, hammer, hammerConfig);
+        userMapper = mapperFactory.newInstance(UserMapper3.class, hammer, hammerConfig);
+    }
+
+    @Test
+    void testSave() {
+        User user = new User();
+        user.setAge(18);
+        user.setUsername("username_" + Randoms.getString(5));
+        userMapper.save(user);
+
+        User u = userMapper.get(user.getId());
+        assertEquals(u.getAge(), user.getAge());
+        assertEquals(u.getUsername(), user.getUsername());
+
     }
 
     @Test

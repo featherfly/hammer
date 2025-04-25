@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
+import javax.validation.constraints.NotNull;
+
 import cn.featherfly.hammer.HammerSupport;
 import cn.featherfly.hammer.annotation.Mapper;
 
@@ -18,5 +20,5 @@ public interface HammerSupportMapper extends HammerSupport {
         return getHammer().get(id, User.class);
     }
 
-    User getByUsername(String username);
+    User getByUsername(@NotNull String username);
 }

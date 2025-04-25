@@ -17,7 +17,7 @@ import cn.featherfly.hammer.config.dsl.DslConfigImpl;
 import cn.featherfly.hammer.config.entity.EntityConfig;
 import cn.featherfly.hammer.config.entity.EntityConfigImpl;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
-import cn.featherfly.validation.Validator;
+import cn.featherfly.hammer.config.validator.ValidatorConfigImpl;
 
 /**
  * HammerConfigImpl.
@@ -26,15 +26,15 @@ import cn.featherfly.validation.Validator;
  */
 public class HammerConfigImpl implements HammerConfig {
 
+    private final boolean devMode;
+
+    private ValidatorConfig validatorConfig = new ValidatorConfigImpl(null, null);
+
     private DslConfig dslConfig = new DslConfigImpl();
 
     private EntityConfig entityConfig = new EntityConfigImpl();
 
-    private Validator validator;
-
     private TemplateConfigImpl templateConfig = new TemplateConfigImpl();
-
-    private final boolean devMode;
 
     private Supplier<ClassLoader> classLoaderSupplier = () -> Thread.currentThread().getContextClassLoader();
 
@@ -68,8 +68,8 @@ public class HammerConfigImpl implements HammerConfig {
      * {@inheritDoc}
      */
     @Override
-    public Validator getValidator() {
-        return validator;
+    public ValidatorConfig getValidatorConfig() {
+        return validatorConfig;
     }
 
     /**
@@ -89,8 +89,8 @@ public class HammerConfigImpl implements HammerConfig {
      * @param validator the new validator
      * @return the hammer config impl
      */
-    public HammerConfigImpl setValidator(Validator validator) {
-        this.validator = validator;
+    public HammerConfigImpl setValidatorConfig(ValidatorConfig validatorConfig) {
+        this.validatorConfig = validatorConfig;
         return this;
     }
 

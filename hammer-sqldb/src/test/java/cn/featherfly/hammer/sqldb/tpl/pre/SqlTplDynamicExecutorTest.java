@@ -19,14 +19,16 @@ import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.config.validator.ValidatorConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.TestConstants;
 import cn.featherfly.hammer.sqldb.jdbc.DataSourceTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
-import cn.featherfly.hammer.sqldb.tpl.RoleMapper;
-import cn.featherfly.hammer.sqldb.tpl.UserMapper;
+import cn.featherfly.hammer.sqldb.tpl.base.RoleMapper;
+import cn.featherfly.hammer.sqldb.tpl.base.UserMapper;
 import cn.featherfly.hammer.tpl.TplConfigFactoryImpl;
 import cn.featherfly.hammer.tpl.freemarker.FreemarkerTemplatePreProcessor;
 import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
@@ -61,8 +63,9 @@ public class SqlTplDynamicExecutorTest extends DataSourceTestBase {
         //        Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory, transverterManager);
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl(devMode);
-        hammerConfig.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
-            .failFast(false).buildValidatorFactory().getValidator()));
+        hammerConfig.setValidatorConfig(
+            new ValidatorConfigImpl(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator(), HammerValidateException::new)));
 
         Hammer hammer = SqldbHammerImpl
             .builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();

@@ -15,7 +15,7 @@ import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo2;
-import cn.featherfly.hammer.sqldb.tpl.UserMapper;
+import cn.featherfly.hammer.sqldb.tpl.base.UserMapper;
 
 /**
  * TplDynamicExecutorSpringRegistorTest.

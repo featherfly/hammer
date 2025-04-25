@@ -31,9 +31,9 @@ import cn.featherfly.common.repository.Params;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.expression.query.FetchField;
 import cn.featherfly.hammer.sqldb.SqldbHammer;
-import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Article;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
@@ -250,7 +250,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         hammer.save(user);
     }
 
-    @Test(expectedExceptions = SqldbHammerException.class)
+    @Test(expectedExceptions = HammerValidateException.class)
     public void saveValidationException() {
         User user = new User();
         hammer.save(user);
@@ -583,7 +583,7 @@ public class HammerJdbcTest extends JdbcTestBase {
         }
     }
 
-    @Test(expectedExceptions = SqldbHammerException.class)
+    @Test(expectedExceptions = HammerValidateException.class)
     public void updateValidationException() {
         User user = hammer.query(User.class).limit(1).single();
         user.setUsername(null);

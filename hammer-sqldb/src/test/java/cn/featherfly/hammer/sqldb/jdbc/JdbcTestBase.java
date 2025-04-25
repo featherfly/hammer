@@ -24,8 +24,10 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.repository.id.IdGeneratorManager;
 import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.config.validator.ValidatorConfigImpl;
 import cn.featherfly.hammer.entity.EntityPreparer;
 import cn.featherfly.hammer.sqldb.tpl.freemarker.SqldbFreemarkerTemplateProcessEnv;
 import cn.featherfly.hammer.tpl.TplConfigFactory;
@@ -75,8 +77,9 @@ public class JdbcTestBase extends DatabaseTestBase {
         Configurator.initialize("log4j2_dev", "log4j2_dev.xml");
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
-        hammerConfigImpl.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
-            .failFast(false).buildValidatorFactory().getValidator()));
+        hammerConfigImpl.setValidatorConfig(
+            new ValidatorConfigImpl(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator(), HammerValidateException::new)));
         hammerConfig = hammerConfigImpl;
 
         propertyAccessorFactory = PROPERTY_ACCESSOR_FACTORY;

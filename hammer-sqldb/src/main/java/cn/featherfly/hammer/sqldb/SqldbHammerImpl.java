@@ -699,8 +699,8 @@ public class SqldbHammerImpl implements SqldbHammer {
     private <E> MergeOperate<E> mergeOperate(final Class<E> entityType) {
         return (MergeOperate<E>) mergeOperates.computeIfAbsent(entityType,
             type -> new MergeOperate<E>(jdbc, mappingFactory.getClassMapping(entityType),
-                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(), hammerConfig.getValidator(),
-                propertyAccessorFactory.create(entityType)));
+                mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
+                hammerConfig.getValidatorConfig().getValidator(), propertyAccessorFactory.create(entityType)));
     }
 
     @SuppressWarnings("unchecked")
@@ -713,7 +713,8 @@ public class SqldbHammerImpl implements SqldbHammer {
         return (UpdateOperate<E>) updateOperates.computeIfAbsent(entityType,
             type -> new UpdateOperate<E>(jdbc, mappingFactory.getClassMapping(entityType),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                hammerConfig.getEntityConfig().getUpdate().getBatchSize(), hammerConfig.getValidator()));
+                hammerConfig.getEntityConfig().getUpdate().getBatchSize(),
+                hammerConfig.getValidatorConfig().getValidator()));
     }
 
     @SuppressWarnings("unchecked")
@@ -743,7 +744,8 @@ public class SqldbHammerImpl implements SqldbHammer {
         return (InsertOperate<E>) insertOperates.computeIfAbsent(entityType,
             type -> new InsertOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                hammerConfig.getEntityConfig().getInsert().getBatchSize(), hammerConfig.getValidator()));
+                hammerConfig.getEntityConfig().getInsert().getBatchSize(),
+                hammerConfig.getValidatorConfig().getValidator()));
     }
 
     @SuppressWarnings("unchecked")
@@ -761,7 +763,8 @@ public class SqldbHammerImpl implements SqldbHammer {
         return (UpsertOperate<E>) upsertOperates.computeIfAbsent(entityType,
             type -> new UpsertOperate<>(jdbc, mappingFactory.getClassMapping(entityType),
                 mappingFactory.getSqlTypeMappingManager(), mappingFactory.getMetadata(),
-                hammerConfig.getEntityConfig().getUpsert().getBatchSize(), hammerConfig.getValidator()));
+                hammerConfig.getEntityConfig().getUpsert().getBatchSize(),
+                hammerConfig.getValidatorConfig().getValidator()));
     }
 
     private <E> DeleteOperate<E> deleteOperate(Collection<E> entities) {

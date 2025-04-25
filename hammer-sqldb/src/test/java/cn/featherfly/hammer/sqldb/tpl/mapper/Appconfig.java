@@ -22,8 +22,10 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.db.metadata.DatabaseMetadataManager;
 import cn.featherfly.common.repository.id.IdGeneratorManager;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.config.validator.ValidatorConfigImpl;
 import cn.featherfly.hammer.sqldb.SqldbHammerImpl;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.JdbcSpringImpl;
@@ -50,12 +52,12 @@ public class Appconfig extends JdbcTestBase {
     }
 
     @Bean
-    public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
+    public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor(HammerConfig hammerConfig) {
         Set<String> packages = new HashSet<>();
-        packages.add("cn.featherfly");
-        //packages.add("你需要扫描的包路径");
+        packages.add("cn.featherfly.hammer.sqldb.tpl.base");
+        packages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
         DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer",
-            "hammerConfig");
+            "hammerConfig", hammerConfig);
         //        registor.setClassLoader(classLoader);
         return registor;
     }
@@ -78,8 +80,9 @@ public class Appconfig extends JdbcTestBase {
         Dialect dialect = Dialects.mysql();
 
         HammerConfigImpl hammerConfigImpl = new HammerConfigImpl(devMode);
-        hammerConfigImpl.setValidator(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
-            .failFast(false).buildValidatorFactory().getValidator()));
+        hammerConfigImpl.setValidatorConfig(
+            new ValidatorConfigImpl(new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator(), HammerValidateException::new)));
         hammerConfig = hammerConfigImpl;
 
         SqlTypeMappingManager manager = new SqlTypeMappingManager();

@@ -71,8 +71,21 @@ TODO dsl实体查询加入以下（EntityQuery）
     -- 注意在可覆盖占位参数和)之间需要空格或者换行，因为可覆盖占位参数的结束是依据空格或换行判断的
     select * from user u where GET_YEAR(u.create_time) = year(/*$=:year*/5 )
     ```
-
     
+9. Mapper加入validation api(jsr380)支持，验证不通过抛出HammerValidationException
+   
+   ```java
+   @Mapper(namespace = "user")
+   public interface UserMapperValidationApi extends HammerSupport {
+       User selectByUsername(@NotNull String username);
+       default User getByUsername(@NotNull String username) {
+           return getHammer().query(User.class).where().eq(User::getUsername, username).single();
+       }
+       User selectByUsernameAndPassword(@NotNull String username, @NotNull String pwd);
+   }
+   ```
+   
+   
 
 # 0.7.3 2025-02-14
 

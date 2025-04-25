@@ -12,7 +12,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.hammer.sqldb.SqldbHammerException;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.validation.Validator;
 import cn.featherfly.validation.metadata.ConstraintViolation;
@@ -52,7 +52,7 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      */
     @Override
     public int execute(final T entity) {
-        validate(entity);
+        assertIdNotNullOrNotEmpty(entity);
         return jdbc.update(sql, getParameters(entity));
     }
 
@@ -101,8 +101,7 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
         StringBuilder errorMessage = new StringBuilder();
         for (JdbcPropertyMapping mapping : mappings) {
             if (useIdGenerator && mapping.getPrimaryKey() != null) {
-                Serializable propertyValue =
-                    mapping.getPrimaryKey().getIdGenerator().generate(entity, mapping);
+                Serializable propertyValue = mapping.getPrimaryKey().getIdGenerator().generate(entity, mapping);
                 validate(entity, mapping, errorMessage);
                 operators[i] = FieldValueOperator.create(mapping, propertyValue);
             } else {
@@ -115,7 +114,7 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
         }
         if (errorMessage.length() > 0) {
             errorMessage.deleteCharAt(errorMessage.length() - 1);
-            throw new SqldbHammerException(errorMessage.toString());
+            throw new HammerValidateException(errorMessage.toString());
         }
         return operators;
     }
@@ -146,7 +145,7 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      *
      * @param entity the entity
      */
-    protected void validate(T entity) {
+    protected void assertIdNotNullOrNotEmpty(T entity) {
         for (JdbcPropertyMapping pkp : pkProperties) {
             if (Lang.isEmpty(pkp.getGetter().apply(entity))) {
                 throw idNullOrEmptyException(entity.getClass());

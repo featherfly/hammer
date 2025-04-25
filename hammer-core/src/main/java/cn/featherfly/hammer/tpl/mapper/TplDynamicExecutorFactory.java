@@ -10,13 +10,17 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
@@ -49,6 +53,7 @@ import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuple5;
 import cn.featherfly.common.tuple.Tuple6;
+import cn.featherfly.common.tuple.Tuples;
 import cn.featherfly.hammer.GenericHammer;
 import cn.featherfly.hammer.GenericHammerSupport;
 import cn.featherfly.hammer.Hammer;
@@ -58,6 +63,7 @@ import cn.featherfly.hammer.annotation.Param;
 import cn.featherfly.hammer.annotation.ParamType;
 import cn.featherfly.hammer.annotation.Template;
 import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.ValidatorConfig;
 import cn.featherfly.hammer.tpl.ExecutionType;
 import cn.featherfly.hammer.tpl.TplExecuteIdFileImpl;
 import cn.featherfly.hammer.tpl.TplExecuteIdParser;
@@ -69,6 +75,17 @@ import cn.featherfly.hammer.tpl.TplExecutor;
  * @author zhongj
  */
 public class TplDynamicExecutorFactory implements Opcodes {
+
+    private enum TplDynamicExecutorFactoryInstance {
+
+        INSTANCE(new TplDynamicExecutorFactory());
+
+        private TplDynamicExecutorFactory factory;
+
+        TplDynamicExecutorFactoryInstance(TplDynamicExecutorFactory factory) {
+            this.factory = factory;
+        }
+    }
 
     /** The Constant HAMMER_FIELD_NAME. */
     public static final String HAMMER_FIELD_NAME = "hammer";
@@ -88,8 +105,6 @@ public class TplDynamicExecutorFactory implements Opcodes {
     private ClassLoader classLoader;
 
     private Set<Class<?>> types = new HashSet<>();
-
-    private static final TplDynamicExecutorFactory INSTANCE = new TplDynamicExecutorFactory();
 
     private Map<Class<?>, Object> typeInstances = new HashMap<>();
 
@@ -520,33 +535,47 @@ public class TplDynamicExecutorFactory implements Opcodes {
      * @return DynamicTplMapperFactory
      */
     public static TplDynamicExecutorFactory getInstance() {
-        return INSTANCE;
+        return TplDynamicExecutorFactoryInstance.INSTANCE.factory;
     }
+
+    //    /**
+    //     * remove the created type.
+    //     *
+    //     * @param type the type
+    //     * @return true, if successful
+    //     */
+    //    public boolean remove(Class<?> type) {
+    //        return types.remove(type);
+    //    }
+    // TODO 只删除这里没用，下次再生成，类名会和之前的一致，导致类重名错误，需要再处理重名的类
 
     /**
      * create mapper interface implemented class.
      *
      * @param type configuration interface class
+     * @param hammerConfig the hammer config
      * @return implemented class name
      * @throws IOException Signals that an I/O exception has occurred.
      * @throws NoSuchMethodException the no such method exception
      * @throws SecurityException the security exception
      */
-    public String create(Class<?> type) throws IOException, NoSuchMethodException, SecurityException {
-        return create(type, Thread.currentThread().getContextClassLoader());
+    public String create(Class<?> type, HammerConfig hammerConfig)
+        throws IOException, NoSuchMethodException, SecurityException {
+        return create(type, hammerConfig, Thread.currentThread().getContextClassLoader());
     }
 
     /**
      * create mapper interface implemented class.
      *
      * @param type configuration interface class
+     * @param hammerConfig the hammer config
      * @param classLoader the class loader
      * @return implemented class name
      * @throws IOException Signals that an I/O exception has occurred.
      * @throws NoSuchMethodException the no such method exception
      * @throws SecurityException the security exception
      */
-    public String create(Class<?> type, ClassLoader classLoader)
+    public String create(Class<?> type, HammerConfig hammerConfig, ClassLoader classLoader)
         throws IOException, NoSuchMethodException, SecurityException {
         if (classLoader == null) {
             classLoader = Thread.currentThread().getContextClassLoader();
@@ -560,111 +589,120 @@ public class TplDynamicExecutorFactory implements Opcodes {
             clear();
             this.classLoader = classLoader;
         }
+
+        String implClassName = type.getName() + CLASS_NAME_SUFFIX;
+        if (types.contains(type)) {
+            return implClassName;
+        }
+
         //        ClassReader classReader = new ClassReader(type.getName());
         ClassReader classReader;
         try (InputStream is = classLoader.getResourceAsStream(type.getName().replace('.', '/') + ".class")) {
             classReader = new ClassReader(is);
         }
         ClassWriter cw = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
-        String implClassName = type.getName() + CLASS_NAME_SUFFIX;
         String implClassByteCodeName = Asm.getName(implClassName);
 
         Class<?> parentHammer = null;
-        if (!types.contains(type)) {
-            String globalNamespace = getNamespace(type);
 
-            ClassNode cn = new ClassNode();
-            cn.version = V1_8;
-            cn.access = ACC_PUBLIC;
-            cn.name = implClassByteCodeName;
-            cn.interfaces.add(Asm.getName(type));
+        String globalNamespace = getNamespace(type);
 
-            if (ClassUtils.isParent(GenericHammer.class, type)
-                || ClassUtils.isParent(GenericHammerSupport.class, type)) {
-                if (ClassUtils.isParent(GenericHammer.class, type)) {
-                    parentHammer = GenericHammer.class;
-                    cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
-                } else {
-                    parentHammer = GenericHammerSupport.class;
-                    cn.superName = Type.getInternalName(BasedGenericMapper.class);
-                }
+        ClassNode cn = new ClassNode();
+        cn.version = V1_8;
+        cn.access = ACC_PUBLIC;
+        cn.name = implClassByteCodeName;
+        cn.interfaces.add(Asm.getName(type));
 
-                String typeName = null;
-                Class<?> genericType = null;
-                Class<?> idType = null;
-
-                for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
-                    ParameterizedType parameterizedType = (ParameterizedType) implType;
-                    if (parameterizedType.getRawType() == GenericHammer.class
-                        || parameterizedType.getRawType() == GenericHammerSupport.class) {
-                        typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
-                        genericType = ClassUtils.forName(typeName);
-                        idType = ClassUtils.forName(parameterizedType.getActualTypeArguments()[1].getTypeName());
-                        break;
-                    }
-                }
-                //                parentHammer = GenericHammer.class;
-                //                cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
-                SignatureWriter signature = new SignatureWriter();
-                SignatureVisitor superVisitor = signature.visitSuperclass();
-                superVisitor.visitClassType(cn.superName);
-                SignatureVisitor typeVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
-                typeVisitor.visitClassType(Type.getInternalName(genericType));
-                typeVisitor.visitEnd();
-                SignatureVisitor idVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
-                idVisitor.visitClassType(Type.getInternalName(idType));
-                idVisitor.visitEnd();
-                superVisitor.visitEnd();
-
-                cn.signature = signature.toString();
-
-                MethodNode constructor = new MethodNode(ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor, null,
-                    null);
-                constructor.visitVarInsn(ALOAD, 0);
-                constructor.visitVarInsn(ALOAD, 1);
-                constructor.visitLdcInsn(Type.getType(genericType));
-                constructor.visitVarInsn(ALOAD, 2);
-                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD,
-                    Asm.getConstructorDescriptor(Hammer.class, Class.class, HammerConfig.class), false);
-                constructor.visitInsn(RETURN);
-                constructor.visitMaxs(1, 1);
-                constructor.visitEnd();
-                cn.methods.add(constructor);
+        if (ClassUtils.isParent(GenericHammer.class, type)
+            || ClassUtils.isParent(GenericHammerSupport.class, type)) {
+            if (ClassUtils.isParent(GenericHammer.class, type)) {
+                parentHammer = GenericHammer.class;
+                cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
             } else {
-                if (ClassUtils.isParent(Hammer.class, type)) {
-                    parentHammer = Hammer.class;
-                    cn.superName = Type.getInternalName(BasedTplHammer.class);
-                } else { // HammerSupport
-                    parentHammer = BasedMapper.class;
-                    cn.superName = Type.getInternalName(BasedMapper.class);
-                }
-                MethodNode constructor = new MethodNode(ASM9, ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor,
-                    null, null);
-                constructor.visitVarInsn(ALOAD, 0);
-                constructor.visitVarInsn(ALOAD, 1);
-                constructor.visitVarInsn(ALOAD, 2);
-                constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD, constructorDescriptor,
-                    false);
-                constructor.visitInsn(RETURN);
-                constructor.visitMaxs(1, 1);
-                constructor.visitEnd();
-                cn.methods.add(constructor);
+                parentHammer = GenericHammerSupport.class;
+                cn.superName = Type.getInternalName(BasedGenericMapper.class);
             }
 
-            addImplMethods(type, globalNamespace, cn, parentHammer);
-            cn.accept(cw);
-            byte[] code = cw.toByteArray();
-            // 定义类
-            final ClassLoader cl = classLoader;
-            ClassLoaderUtils.defineClass(cl, implClassName, code, type.getProtectionDomain(), () -> {
-                try {
-                    return ReflectUtils.defineClass(implClassName, code, cl, type.getProtectionDomain(), type);
-                } catch (Exception e) {
-                    throw new HammerException(e);
+            String typeName = null;
+            Class<?> genericType = null;
+            Class<?> idType = null;
+
+            for (java.lang.reflect.Type implType : type.getGenericInterfaces()) {
+                ParameterizedType parameterizedType = (ParameterizedType) implType;
+                if (parameterizedType.getRawType() == GenericHammer.class
+                    || parameterizedType.getRawType() == GenericHammerSupport.class) {
+                    typeName = parameterizedType.getActualTypeArguments()[0].getTypeName();
+                    genericType = ClassUtils.forName(typeName);
+                    idType = ClassUtils.forName(parameterizedType.getActualTypeArguments()[1].getTypeName());
+                    break;
                 }
-            });
-            types.add(type);
+            }
+            //                parentHammer = GenericHammer.class;
+            //                cn.superName = Type.getInternalName(BasedTplGenericHammer.class);
+            SignatureWriter signature = new SignatureWriter();
+            SignatureVisitor superVisitor = signature.visitSuperclass();
+            superVisitor.visitClassType(cn.superName);
+            SignatureVisitor typeVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+            typeVisitor.visitClassType(Type.getInternalName(genericType));
+            typeVisitor.visitEnd();
+            SignatureVisitor idVisitor = superVisitor.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+            idVisitor.visitClassType(Type.getInternalName(idType));
+            idVisitor.visitEnd();
+            superVisitor.visitEnd();
+
+            cn.signature = signature.toString();
+
+            MethodNode constructor =
+                new MethodNode(ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor, null,
+                    null);
+            constructor.visitVarInsn(ALOAD, 0);
+            constructor.visitVarInsn(ALOAD, 1);
+            constructor.visitLdcInsn(Type.getType(genericType));
+            constructor.visitVarInsn(ALOAD, 2);
+            constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD,
+                Asm.getConstructorDescriptor(Hammer.class, Class.class, HammerConfig.class), false);
+            constructor.visitInsn(RETURN);
+            constructor.visitMaxs(1, 1);
+            constructor.visitEnd();
+            cn.methods.add(constructor);
+        } else {
+            if (ClassUtils.isParent(Hammer.class, type)) {
+                parentHammer = Hammer.class;
+                cn.superName = Type.getInternalName(BasedTplHammer.class);
+            } else { // HammerSupport
+                parentHammer = BasedMapper.class;
+                cn.superName = Type.getInternalName(BasedMapper.class);
+            }
+            MethodNode constructor =
+                new MethodNode(ASM9, ACC_PUBLIC, Asm.CONSTRUCT_METHOD, constructorDescriptor,
+                    null, null);
+            constructor.visitVarInsn(ALOAD, 0);
+            constructor.visitVarInsn(ALOAD, 1);
+            constructor.visitVarInsn(ALOAD, 2);
+            constructor.visitMethodInsn(INVOKESPECIAL, cn.superName, Asm.CONSTRUCT_METHOD,
+                constructorDescriptor,
+                false);
+            constructor.visitInsn(RETURN);
+            constructor.visitMaxs(1, 1);
+            constructor.visitEnd();
+            cn.methods.add(constructor);
         }
+
+        Set<Tuple2<Method, Integer>> validationMethods = new LinkedHashSet<>();
+        addImplMethods(type, globalNamespace, cn, parentHammer, hammerConfig, validationMethods);
+        setValidation(cn, validationMethods);
+        cn.accept(cw);
+        byte[] code = cw.toByteArray();
+        // 定义类
+        final ClassLoader cl = classLoader;
+        ClassLoaderUtils.defineClass(cl, implClassName, code, type.getProtectionDomain(), () -> {
+            try {
+                return ReflectUtils.defineClass(implClassName, code, cl, type.getProtectionDomain(), type);
+            } catch (Exception e) {
+                throw new HammerException(e);
+            }
+        });
+        types.add(type);
         return implClassName;
     }
 
@@ -673,12 +711,15 @@ public class TplDynamicExecutorFactory implements Opcodes {
         typeInstances.clear();
     }
 
-    private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer)
+    private void addImplMethods(Class<?> type, String globalNamespace, ClassNode classNode, Class<?> parentHammer,
+        HammerConfig hammerConfig, Set<Tuple2<Method, Integer>> validationMethods)
         throws NoSuchMethodException, SecurityException {
         Map<String,
             java.lang.reflect.Type> genericTypes = ClassUtils.getInterfaceGenericTypeMap(type, GenericHammer.class);
+        int methodIndex = 0;
         for (Method method : type.getDeclaredMethods()) {
-            if (method.isDefault()) {
+            boolean needValidation = needValidation(method, hammerConfig);
+            if (method.isDefault() && !needValidation) {
                 continue;
             }
             // $deserializeLambda
@@ -686,400 +727,29 @@ public class TplDynamicExecutorFactory implements Opcodes {
                 continue;
             }
             int localeSize = method.getParameters().length + 1;
-            int stackSize = 1;
+            AtomicInteger stackSize = new AtomicInteger(0);
 
-            // TODO 注解annotation要代理到实现类
             MethodNode methodNode = null;
             Method parentMethod = getMethodFromParent(parentHammer, method, genericTypes);
             if (parentMethod != null) {
-                stackSize = 2;
-                // TODO 未处理泛型
-                String methodDescriptor = Type.getMethodDescriptor(method);
-                String parentMethodDescriptor = Type.getMethodDescriptor(parentMethod);
-                methodNode = new MethodNode(ACC_PUBLIC, method.getName(), methodDescriptor, null, null);
-                setAnnotations(methodNode, method);
-                methodNode.parameters = new ArrayList<>();
-                methodNode.visitVarInsn(ALOAD, 0);
-                int size = method.getParameters().length + 1;
-                for (int i = 1; i < size; i++) {
-                    methodNode.visitVarInsn(ALOAD, i);
-                    ParameterNode parameterNode = new ParameterNode(method.getParameters()[i - 1].getName(),
-                        Opcodes.ACC_MANDATED);
-                    methodNode.parameters.add(parameterNode);
-                }
-                methodNode.visitMethodInsn(INVOKESPECIAL, classNode.superName, parentMethod.getName(),
-                    parentMethodDescriptor, false);
-                if (method.getReturnType().isPrimitive()) {
-                    if (method.getReturnType() == Integer.TYPE) {
-                        methodNode.visitInsn(IRETURN);
-                    } else if (method.getReturnType() == Byte.TYPE) {
-                        methodNode.visitInsn(IRETURN);
-                    } else if (method.getReturnType() == Short.TYPE) {
-                        methodNode.visitInsn(IRETURN);
-                    } else if (method.getReturnType() == Character.TYPE) {
-                        methodNode.visitInsn(IRETURN);
-                    } else if (method.getReturnType() == Boolean.TYPE) {
-                        methodNode.visitInsn(IRETURN);
-                    } else if (method.getReturnType() == Long.TYPE) {
-                        methodNode.visitInsn(LRETURN);
-                    } else if (method.getReturnType() == Double.TYPE) {
-                        methodNode.visitInsn(DRETURN);
-                    } else if (method.getReturnType() == Float.TYPE) {
-                        methodNode.visitInsn(FRETURN);
-                    } else {
-                        methodNode.visitInsn(RETURN);
-                    }
-                } else {
-                    methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
-                    methodNode.visitInsn(ARETURN);
-                }
-                methodNode.visitMaxs(stackSize, localeSize);
-                methodNode.visitEnd();
+                // override parent GenericHammer generic method
+                methodNode =
+                    forParentMethod(method, parentMethod, methodIndex, classNode, stackSize, localeSize, needValidation,
+                        validationMethods, hammerConfig);
+            } else if (method.isDefault()) {
+                // default method only need validate can go here
+                methodNode = validateForDefaultMethod(type, method, methodIndex, classNode, stackSize, localeSize,
+                    validationMethods, hammerConfig);
             } else {
-                String namespace = getNamespace(method, globalNamespace);
-                String name = getName(method);
-
-                // TODO 未处理泛型
-                methodNode = new MethodNode(ACC_PUBLIC, method.getName(), Type.getMethodDescriptor(method), null, null);
-                setAnnotations(methodNode, method);
-                methodNode.parameters = new ArrayList<>();
-                methodNode.visitVarInsn(ALOAD, 0);
-                methodNode.visitFieldInsn(GETFIELD, classNode.name, TPLEXECUTOR_FIELD_NAME, tplExecutorDescriptor);
-                ExecutionType tplType = getType(method);
-
-                //                    String typeDescriptor = Type.getDescriptor(TplExecuteIdFileImpl.class);
-                String executeIdType = Type.getInternalName(TplExecuteIdFileImpl.class);
-                methodNode.visitTypeInsn(NEW, executeIdType);
-                methodNode.visitInsn(DUP);
-                methodNode.visitLdcInsn(name);
-                methodNode.visitLdcInsn(namespace);
-                methodNode.visitVarInsn(ALOAD, 0);
-                methodNode.visitFieldInsn(GETFIELD, classNode.name, TPLID_PARSER_NAME, tplExecuteIdParserDescriptor);
-                methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
-                    Asm.getConstructorDescriptor(String.class, String.class, TplExecuteIdParser.class), false);
-                stackSize = 5;
-
-                //                String hammerTpe = Type.getInternalName(AbstractBasedHammer.class);
-                //                methodNode.visitLdcInsn(name);
-                //                methodNode.visitLdcInsn(namespace);
-                //                methodNode.visitMethodInsn(INVOKEVIRTUAL, hammerTpe, fileExecuteIdMethod.getName(),
-                //                        fileExecuteIdDescriptor, false);
-                //                stackSize = 6;
-
-                if (method.getReturnType() == void.class) {
-                    setParams(methodNode, method);
-                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, executeMethod.getName(),
-                        executeMethodDescriptor, true);
-                    methodNode.visitInsn(POP);
-                    methodNode.visitInsn(RETURN);
-                    methodNode.visitMaxs(stackSize, localeSize);
-                    methodNode.visitEnd();
-                } else if (method.getReturnType() == Integer.TYPE
-                    && (tplType == ExecutionType.AUTO || tplType == ExecutionType.EXECUTE)) {
-                    setParams(methodNode, method);
-                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, executeMethod.getName(),
-                        executeMethodDescriptor, true);
-                    methodNode.visitInsn(IRETURN);
-                    methodNode.visitMaxs(stackSize, localeSize);
-                    methodNode.visitEnd();
-                } else if (ClassUtils.isParent(List.class, method.getReturnType())) {
-                    GenericType<?> elementType = ClassUtils.Methods.getReturnTypeGenericParameterType(type, method);
-                    //                    String returnTypeName = getReturnTypeName(method);
-                    //                    if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                    if (ClassUtils.isParent(Map.class, elementType.getType())) {
-                        ParamPosition position = setParams(methodNode, method);
-                        if (position.limitParamPosition > 0) {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listMapLimitMethod.getName(),
-                                listMapLimitMethodDescriptor, true);
-                        } else if (position.pageParamPosition > 0) {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listMapPageMethod.getName(),
-                                listMapPageMethodDescriptor, true);
-                        } else {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listMapMethod.getName(),
-                                listMapMethodDescriptor, true);
-                        }
-
-                        methodNode.visitInsn(ARETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    } else if (ClassUtils.isParent(Tuple.class, elementType.getType())) {
-                        for (GenericType<?> gt : elementType.getGenericTypes()) {
-                            methodNode.visitLdcInsn(Type.getType(gt.getType()));
-                        }
-                        ParamPosition position = setParams(methodNode, method, elementType.getGenericTypes().size());
-                        if (position.commonParamNum > 0) {
-                            stackSize++;
-                        }
-                        if (ClassUtils.isParent(Tuple2.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple2LimitMethod.getName(), listTuple2LimitMethodDescriptor, true);
-                            } else if (position.pageParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple2PageMethod.getName(), listTuple2PageMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple2Method.getName(),
-                                    listTuple2MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple3.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple3LimitMethod.getName(), listTuple3LimitMethodDescriptor, true);
-                            } else if (position.pageParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple3PageMethod.getName(), listTuple3PageMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple3Method.getName(),
-                                    listTuple3MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple4.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple4LimitMethod.getName(), listTuple4LimitMethodDescriptor, true);
-                            } else if (position.pageParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple4PageMethod.getName(), listTuple4PageMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple4Method.getName(),
-                                    listTuple4MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple5.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple5LimitMethod.getName(), listTuple5LimitMethodDescriptor, true);
-                            } else if (position.pageParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple5PageMethod.getName(), listTuple5PageMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple5Method.getName(),
-                                    listTuple5MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple6LimitMethod.getName(), listTuple6LimitMethodDescriptor, true);
-                            } else if (position.pageParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    listTuple6PageMethod.getName(), listTuple6PageMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTuple6Method.getName(),
-                                    listTuple6MethodDescriptor, true);
-                            }
-                        } else {
-                            throw new HammerException("only support Tuple2...Tuple6");
-                        }
-                        methodNode.visitInsn(ARETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    } else {
-                        methodNode.visitLdcInsn(Type.getType(elementType.getType()));
-                        ParamPosition position = setParams(methodNode, method);
-                        if (position.commonParamNum > 0) {
-                            stackSize++;
-                        }
-                        if (position.limitParamPosition > 0) {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTypeLimitMethod.getName(),
-                                listTypeLimitMethodDescriptor, true);
-                        } else if (position.pageParamPosition > 0) {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTypePageMethod.getName(),
-                                listTypePageMethodDescriptor, true);
-                        } else {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTypeMethod.getName(),
-                                listTypeMethodDescriptor, true);
-                        }
-                        methodNode.visitInsn(ARETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    }
-                } else if (ClassUtils.isParent(PaginationResults.class, method.getReturnType())) {
-                    GenericType<?> elementType = ClassUtils.Methods.getReturnTypeGenericParameterType(type, method);
-                    //                    String returnTypeName = getReturnTypeName(method);
-                    //                    if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
-                    if (ClassUtils.isParent(Map.class, elementType.getType())) {
-                        ParamPosition position = setParams(methodNode, method);
-                        if (position.limitParamPosition > 0) {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                paginationMapLimitMethod.getName(), paginationMapLimitMethodDescriptor, true);
-                        } else {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, paginationMapMethod.getName(),
-                                paginationMapMethodDescriptor, true);
-                        }
-                        methodNode.visitInsn(ARETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-
-                    } else if (ClassUtils.isParent(Tuple.class, elementType.getType())) {
-                        for (GenericType<?> gt : elementType.getGenericTypes()) {
-                            methodNode.visitLdcInsn(Type.getType(gt.getType()));
-                        }
-                        ParamPosition position = setParams(methodNode, method, elementType.getGenericTypes().size());
-                        if (position.commonParamNum > 0) {
-                            stackSize++;
-                        }
-                        if (ClassUtils.isParent(Tuple2.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple2LimitMethod.getName(), paginationTuple2LimitMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple2Method.getName(), paginationTuple2MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple3.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple3LimitMethod.getName(), paginationTuple3LimitMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple3Method.getName(), paginationTuple3MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple4.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple4LimitMethod.getName(), paginationTuple4LimitMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple4Method.getName(), paginationTuple4MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple5.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple5LimitMethod.getName(), paginationTuple5LimitMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple5Method.getName(), paginationTuple5MethodDescriptor, true);
-                            }
-                        } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
-                            if (position.limitParamPosition > 0) {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple6LimitMethod.getName(), paginationTuple6LimitMethodDescriptor, true);
-                            } else {
-                                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                    paginationTuple6Method.getName(), paginationTuple6MethodDescriptor, true);
-                            }
-                        } else {
-                            throw new HammerException("only support Tuple2...Tuple6");
-                        }
-                        methodNode.visitInsn(ARETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    } else {
-                        //                        methodNode.visitLdcInsn(Type.getType(ClassUtils.forName(returnTypeName)));
-                        methodNode.visitLdcInsn(Type.getType(elementType.getType()));
-                        ParamPosition position = setParams(methodNode, method);
-                        if (position.commonParamNum > 0) {
-                            stackSize++;
-                        }
-                        if (position.limitParamPosition > 0) {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
-                                paginationTypeLimitMethod.getName(), paginationTypeLimitMethodDescriptor, true);
-                        } else {
-                            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, paginationTypeMethod.getName(),
-                                paginationTypeMethodDescriptor, true);
-                        }
-                        methodNode.visitInsn(ARETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    }
-                } else if (ClassUtils.isParent(Number.class, method.getReturnType())) {
-                    if (method.getParameters().length > 0) {
-                        stackSize++;
-                    }
-                    methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
-                    setParams(methodNode, method);
-                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, numberMethod.getName(),
-                        numberMethodDescriptor, true);
-                    methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
-                    methodNode.visitInsn(ARETURN);
-                    methodNode.visitMaxs(stackSize, localeSize);
-                    methodNode.visitEnd();
-                } else if (method.getReturnType().isPrimitive()) {
-                    if (method.getReturnType() == Integer.TYPE) {
-                        setParams(methodNode, method);
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, intValueMethod.getName(),
-                            intValueMethodDescriptor, true);
-                        methodNode.visitInsn(IRETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    } else if (method.getReturnType() == Long.TYPE) {
-                        setParams(methodNode, method);
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, longValueMethod.getName(),
-                            longValueMethodDescriptor, true);
-                        methodNode.visitInsn(LRETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    } else if (method.getReturnType() == Double.TYPE) {
-                        setParams(methodNode, method);
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, doubleValueMethod.getName(),
-                            doubleValueMethodDescriptor, true);
-                        methodNode.visitInsn(DRETURN);
-                        methodNode.visitMaxs(stackSize, localeSize);
-                        methodNode.visitEnd();
-                    } else {
-                        // ENHANCE 使用exception code
-                        throw new HammerException("unsupport query return type with primitive type "
-                            + method.getReturnType() + ", you can use wrapper type instead");
-                    }
-                } else if (String.class == method.getReturnType()) {
-                    setParams(methodNode, method);
-                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, stringMethod.getName(),
-                        stringMethodDescriptor, true);
-                    methodNode.visitInsn(ARETURN);
-                    methodNode.visitMaxs(stackSize, localeSize);
-                    methodNode.visitEnd();
-                } else if (ClassUtils.isParent(Map.class, method.getReturnType())) {
-                    setParams(methodNode, method);
-                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleMapMethod.getName(),
-                        singleMapMethodDescriptor, true);
-                    methodNode.visitInsn(ARETURN);
-                    methodNode.visitMaxs(stackSize, localeSize);
-                    methodNode.visitEnd();
-                } else if (ClassUtils.isParent(Tuple.class, method.getReturnType())) {
-                    if (method.getParameters().length > 0) {
-                        stackSize++;
-                    }
-                    List<GenericType<?>> gts = ClassUtils.Methods.getReturnTypeGenericParameterTypes(type, method);
-                    for (GenericType<?> gt : gts) {
-                        methodNode.visitLdcInsn(Type.getType(gt.getType()));
-                    }
-                    setParams(methodNode, method, gts.size());
-                    if (ClassUtils.isParent(Tuple2.class, method.getReturnType())) {
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple2Method.getName(),
-                            singleTuple2MethodDescriptor, true);
-                    } else if (ClassUtils.isParent(Tuple3.class, method.getReturnType())) {
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple3Method.getName(),
-                            singleTuple3MethodDescriptor, true);
-                    } else if (ClassUtils.isParent(Tuple4.class, method.getReturnType())) {
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple4Method.getName(),
-                            singleTuple4MethodDescriptor, true);
-                    } else if (ClassUtils.isParent(Tuple5.class, method.getReturnType())) {
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple5Method.getName(),
-                            singleTuple5MethodDescriptor, true);
-                    } else if (ClassUtils.isParent(Tuple6.class, method.getReturnType())) {
-                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple6Method.getName(),
-                            singleTuple6MethodDescriptor, true);
-                    } else {
-                        throw new HammerException("only support Tuple2...Tuple6");
-                    }
-                    methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
-                    methodNode.visitInsn(ARETURN);
-                    methodNode.visitMaxs(stackSize, localeSize);
-                    methodNode.visitEnd();
-                } else {
-                    if (method.getParameters().length > 0) {
-                        stackSize++;
-                    }
-                    methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
-                    setParams(methodNode, method);
-                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTypeMethod.getName(),
-                        singleTypeMethodDescriptor, true);
-                    methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
-                    methodNode.visitInsn(ARETURN);
-                    methodNode.visitMaxs(stackSize, localeSize);
-                    methodNode.visitEnd();
-                }
-                logger.debug("generate method {}", method.getName());
+                // method for template execute (query, update, delete)
+                methodNode =
+                    templateMethod(type, method, methodIndex, classNode, stackSize, localeSize, globalNamespace,
+                        needValidation, validationMethods, hammerConfig);
             }
             if (methodNode != null) {
+                classNode.methods.add(methodNode);
+
+                // for debug
                 if (logger.isTraceEnabled()) {
                     StringBuilder javapString = new StringBuilder();
                     javapString.append(methodNode.access + " " + methodNode.name + methodNode.desc)
@@ -1097,55 +767,544 @@ public class TplDynamicExecutorFactory implements Opcodes {
                     }
                     logger.trace(javapString.toString());
                 }
-                classNode.methods.add(methodNode);
             }
+            methodIndex++;
         }
+    }
+
+    private MethodNode forParentMethod(Method method, Method parentMethod, int methodIndex, ClassNode classNode,
+        AtomicInteger stackSize, int localeSize, boolean needValidation, Set<Tuple2<Method, Integer>> validationMethods,
+        HammerConfig hammerConfig) {
+        String methodDescriptor = Type.getMethodDescriptor(method);
+        String parentMethodDescriptor = Type.getMethodDescriptor(parentMethod);
+        // TODO 未处理泛型
+        MethodNode methodNode = new MethodNode(ACC_PUBLIC, method.getName(), methodDescriptor, null, null);
+        setAnnotations(methodNode, method);
+        if (needValidation) {
+            setValidation(classNode, methodNode, method, methodIndex, hammerConfig, validationMethods, stackSize);
+        }
+        methodNode.parameters = new ArrayList<>();
+        methodNode.visitVarInsn(ALOAD, 0);
+        int size = method.getParameters().length + 1;
+        for (int i = 1; i < size; i++) {
+            methodNode.visitVarInsn(ALOAD, i);
+            ParameterNode parameterNode = new ParameterNode(method.getParameters()[i - 1].getName(),
+                Opcodes.ACC_MANDATED);
+            methodNode.parameters.add(parameterNode);
+        }
+        methodNode.visitMethodInsn(INVOKESPECIAL, classNode.superName, parentMethod.getName(),
+            parentMethodDescriptor, false);
+        if (method.getReturnType().isPrimitive()) {
+            visitReturn(methodNode, method.getReturnType());
+        } else {
+            methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
+            methodNode.visitInsn(ARETURN);
+        }
+        methodNode.visitMaxs(stackSize.intValue(), localeSize);
+        methodNode.visitEnd();
+        return methodNode;
+    }
+
+    private MethodNode validateForDefaultMethod(Class<?> type, Method method, int methodIndex, ClassNode classNode,
+        AtomicInteger stackSize, int localeSize, Set<Tuple2<Method, Integer>> validationMethods,
+        HammerConfig hammerConfig) {
+        String methodDescriptor = Type.getMethodDescriptor(method);
+        MethodNode methodNode = new MethodNode(ACC_PUBLIC, method.getName(), methodDescriptor, null, null);
+        setAnnotations(methodNode, method);
+        setValidation(classNode, methodNode, method, methodIndex, hammerConfig, validationMethods, stackSize);
+        for (int i = 0; i < localeSize; i++) {
+            methodNode.visitVarInsn(ALOAD, i);
+            stackSize.incrementAndGet();
+        }
+        methodNode.visitMethodInsn(INVOKESPECIAL, Asm.getName(type), method.getName(),
+            Type.getMethodDescriptor(method), true);
+        methodNode.visitInsn(ARETURN);
+        methodNode.visitMaxs(stackSize.intValue(), localeSize);
+        methodNode.visitEnd();
+        return methodNode;
+    }
+
+    private MethodNode templateMethod(Class<?> type, Method method, int methodIndex, ClassNode classNode,
+        AtomicInteger stackSize, int localeSize, String globalNamespace, boolean needValidation,
+        Set<Tuple2<Method, Integer>> validationMethods, HammerConfig hammerConfig)
+        throws NoSuchMethodException, SecurityException {
+        String namespace = getNamespace(method, globalNamespace);
+        String name = getName(method);
+
+        // TODO 未处理泛型
+        MethodNode methodNode =
+            new MethodNode(ACC_PUBLIC, method.getName(), Type.getMethodDescriptor(method), null, null);
+        setAnnotations(methodNode, method);
+        if (needValidation) {
+            setValidation(classNode, methodNode, method, methodIndex, hammerConfig, validationMethods, stackSize);
+        }
+        methodNode.parameters = new ArrayList<>();
+        methodNode.visitVarInsn(ALOAD, 0);
+        stackSize.incrementAndGet();
+        methodNode.visitFieldInsn(GETFIELD, classNode.name, TPLEXECUTOR_FIELD_NAME, tplExecutorDescriptor);
+        ExecutionType tplType = getType(method);
+        // String typeDescriptor = Type.getDescriptor(TplExecuteIdFileImpl.class);
+        String executeIdType = Type.getInternalName(TplExecuteIdFileImpl.class);
+        methodNode.visitTypeInsn(NEW, executeIdType);
+        methodNode.visitInsn(DUP);
+        methodNode.visitLdcInsn(name);
+        methodNode.visitLdcInsn(namespace);
+        methodNode.visitVarInsn(ALOAD, 0);
+        stackSize.incrementAndGet();
+        methodNode.visitFieldInsn(GETFIELD, classNode.name, TPLID_PARSER_NAME,
+            tplExecuteIdParserDescriptor);
+        methodNode.visitMethodInsn(INVOKESPECIAL, executeIdType, Asm.CONSTRUCT_METHOD,
+            Asm.getConstructorDescriptor(String.class, String.class, TplExecuteIdParser.class), false);
+        // YUFEI_TEST 这里的stackSize需要测试
+        if (method.getReturnType() == void.class) {
+            setParams(methodNode, method, stackSize);
+            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, executeMethod.getName(),
+                executeMethodDescriptor, true);
+            methodNode.visitInsn(POP);
+            methodNode.visitInsn(RETURN);
+            methodNode.visitMaxs(stackSize.intValue(), localeSize);
+            methodNode.visitEnd();
+        } else if (method.getReturnType() == Integer.TYPE
+            && (tplType == ExecutionType.AUTO || tplType == ExecutionType.EXECUTE)) {
+            setParams(methodNode, method, stackSize);
+            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, executeMethod.getName(),
+                executeMethodDescriptor, true);
+            methodNode.visitInsn(IRETURN);
+            methodNode.visitMaxs(stackSize.intValue(), localeSize);
+            methodNode.visitEnd();
+        } else if (ClassUtils.isParent(List.class, method.getReturnType())) {
+            GenericType<?> elementType = ClassUtils.Methods.getReturnTypeGenericParameterType(type, method);
+            //                    String returnTypeName = getReturnTypeName(method);
+            //                    if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
+            if (ClassUtils.isParent(Map.class, elementType.getType())) {
+                ParamPosition position = setParams(methodNode, method, stackSize);
+                if (position.limitParamPosition > 0) {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        listMapLimitMethod.getName(),
+                        listMapLimitMethodDescriptor, true);
+                } else if (position.pageParamPosition > 0) {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        listMapPageMethod.getName(),
+                        listMapPageMethodDescriptor, true);
+                } else {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listMapMethod.getName(),
+                        listMapMethodDescriptor, true);
+                }
+
+                methodNode.visitInsn(ARETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            } else if (ClassUtils.isParent(Tuple.class, elementType.getType())) {
+                for (GenericType<?> gt : elementType.getGenericTypes()) {
+                    methodNode.visitLdcInsn(Type.getType(gt.getType()));
+                }
+                ParamPosition position =
+                    setParams(methodNode, method, stackSize, elementType.getGenericTypes().size());
+                if (ClassUtils.isParent(Tuple2.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple2LimitMethod.getName(), listTuple2LimitMethodDescriptor, true);
+                    } else if (position.pageParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple2PageMethod.getName(), listTuple2PageMethodDescriptor, true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple2Method.getName(),
+                            listTuple2MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple3.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple3LimitMethod.getName(), listTuple3LimitMethodDescriptor, true);
+                    } else if (position.pageParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple3PageMethod.getName(), listTuple3PageMethodDescriptor, true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple3Method.getName(),
+                            listTuple3MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple4.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple4LimitMethod.getName(), listTuple4LimitMethodDescriptor, true);
+                    } else if (position.pageParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple4PageMethod.getName(), listTuple4PageMethodDescriptor, true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple4Method.getName(),
+                            listTuple4MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple5.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple5LimitMethod.getName(), listTuple5LimitMethodDescriptor, true);
+                    } else if (position.pageParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple5PageMethod.getName(), listTuple5PageMethodDescriptor, true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple5Method.getName(),
+                            listTuple5MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple6LimitMethod.getName(), listTuple6LimitMethodDescriptor, true);
+                    } else if (position.pageParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple6PageMethod.getName(), listTuple6PageMethodDescriptor, true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            listTuple6Method.getName(),
+                            listTuple6MethodDescriptor, true);
+                    }
+                } else {
+                    throw new HammerException("only support Tuple2...Tuple6");
+                }
+                methodNode.visitInsn(ARETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            } else {
+                methodNode.visitLdcInsn(Type.getType(elementType.getType()));
+                ParamPosition position = setParams(methodNode, method, stackSize);
+                if (position.limitParamPosition > 0) {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        listTypeLimitMethod.getName(),
+                        listTypeLimitMethodDescriptor, true);
+                } else if (position.pageParamPosition > 0) {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        listTypePageMethod.getName(),
+                        listTypePageMethodDescriptor, true);
+                } else {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, listTypeMethod.getName(),
+                        listTypeMethodDescriptor, true);
+                }
+                methodNode.visitInsn(ARETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            }
+        } else if (ClassUtils.isParent(PaginationResults.class, method.getReturnType())) {
+            GenericType<?> elementType = ClassUtils.Methods.getReturnTypeGenericParameterType(type, method);
+            //                    String returnTypeName = getReturnTypeName(method);
+            //                    if (ClassUtils.isParent(Map.class, ClassUtils.forName(returnTypeName))) {
+            if (ClassUtils.isParent(Map.class, elementType.getType())) {
+                ParamPosition position = setParams(methodNode, method, stackSize);
+                if (position.limitParamPosition > 0) {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        paginationMapLimitMethod.getName(), paginationMapLimitMethodDescriptor, true);
+                } else {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        paginationMapMethod.getName(),
+                        paginationMapMethodDescriptor, true);
+                }
+                methodNode.visitInsn(ARETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+
+            } else if (ClassUtils.isParent(Tuple.class, elementType.getType())) {
+                for (GenericType<?> gt : elementType.getGenericTypes()) {
+                    methodNode.visitLdcInsn(Type.getType(gt.getType()));
+                }
+                ParamPosition position =
+                    setParams(methodNode, method, stackSize, elementType.getGenericTypes().size());
+                if (ClassUtils.isParent(Tuple2.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple2LimitMethod.getName(), paginationTuple2LimitMethodDescriptor,
+                            true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple2Method.getName(), paginationTuple2MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple3.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple3LimitMethod.getName(), paginationTuple3LimitMethodDescriptor,
+                            true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple3Method.getName(), paginationTuple3MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple4.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple4LimitMethod.getName(), paginationTuple4LimitMethodDescriptor,
+                            true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple4Method.getName(), paginationTuple4MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple5.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple5LimitMethod.getName(), paginationTuple5LimitMethodDescriptor,
+                            true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple5Method.getName(), paginationTuple5MethodDescriptor, true);
+                    }
+                } else if (ClassUtils.isParent(Tuple6.class, elementType.getType())) {
+                    if (position.limitParamPosition > 0) {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple6LimitMethod.getName(), paginationTuple6LimitMethodDescriptor,
+                            true);
+                    } else {
+                        methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                            paginationTuple6Method.getName(), paginationTuple6MethodDescriptor, true);
+                    }
+                } else {
+                    throw new HammerException("only support Tuple2...Tuple6");
+                }
+                methodNode.visitInsn(ARETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            } else {
+                //                        methodNode.visitLdcInsn(Type.getType(ClassUtils.forName(returnTypeName)));
+                methodNode.visitLdcInsn(Type.getType(elementType.getType()));
+                ParamPosition position = setParams(methodNode, method, stackSize);
+                if (position.limitParamPosition > 0) {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        paginationTypeLimitMethod.getName(), paginationTypeLimitMethodDescriptor, true);
+                } else {
+                    methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName,
+                        paginationTypeMethod.getName(),
+                        paginationTypeMethodDescriptor, true);
+                }
+                methodNode.visitInsn(ARETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            }
+        } else if (ClassUtils.isParent(Number.class, method.getReturnType())) {
+            methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
+            setParams(methodNode, method, stackSize);
+            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, numberMethod.getName(),
+                numberMethodDescriptor, true);
+            methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
+            methodNode.visitInsn(ARETURN);
+            methodNode.visitMaxs(stackSize.intValue(), localeSize);
+            methodNode.visitEnd();
+        } else if (method.getReturnType().isPrimitive()) {
+            if (method.getReturnType() == Integer.TYPE) {
+                setParams(methodNode, method, stackSize);
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, intValueMethod.getName(),
+                    intValueMethodDescriptor, true);
+                methodNode.visitInsn(IRETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            } else if (method.getReturnType() == Long.TYPE) {
+                setParams(methodNode, method, stackSize);
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, longValueMethod.getName(),
+                    longValueMethodDescriptor, true);
+                methodNode.visitInsn(LRETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            } else if (method.getReturnType() == Double.TYPE) {
+                setParams(methodNode, method, stackSize);
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, doubleValueMethod.getName(),
+                    doubleValueMethodDescriptor, true);
+                methodNode.visitInsn(DRETURN);
+                methodNode.visitMaxs(stackSize.intValue(), localeSize);
+                methodNode.visitEnd();
+            } else {
+                // ENHANCE 使用exception code
+                throw new HammerException("unsupport query return type with primitive type "
+                    + method.getReturnType() + ", you can use wrapper type instead");
+            }
+        } else if (String.class == method.getReturnType()) {
+            setParams(methodNode, method, stackSize);
+            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, stringMethod.getName(),
+                stringMethodDescriptor, true);
+            methodNode.visitInsn(ARETURN);
+            methodNode.visitMaxs(stackSize.intValue(), localeSize);
+            methodNode.visitEnd();
+        } else if (ClassUtils.isParent(Map.class, method.getReturnType())) {
+            setParams(methodNode, method, stackSize);
+            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleMapMethod.getName(),
+                singleMapMethodDescriptor, true);
+            methodNode.visitInsn(ARETURN);
+            methodNode.visitMaxs(stackSize.intValue(), localeSize);
+            methodNode.visitEnd();
+        } else if (ClassUtils.isParent(Tuple.class, method.getReturnType())) {
+            List<GenericType<?>> gts = ClassUtils.Methods.getReturnTypeGenericParameterTypes(type, method);
+            for (GenericType<?> gt : gts) {
+                methodNode.visitLdcInsn(Type.getType(gt.getType()));
+            }
+            setParams(methodNode, method, stackSize, gts.size());
+            if (ClassUtils.isParent(Tuple2.class, method.getReturnType())) {
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple2Method.getName(),
+                    singleTuple2MethodDescriptor, true);
+            } else if (ClassUtils.isParent(Tuple3.class, method.getReturnType())) {
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple3Method.getName(),
+                    singleTuple3MethodDescriptor, true);
+            } else if (ClassUtils.isParent(Tuple4.class, method.getReturnType())) {
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple4Method.getName(),
+                    singleTuple4MethodDescriptor, true);
+            } else if (ClassUtils.isParent(Tuple5.class, method.getReturnType())) {
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple5Method.getName(),
+                    singleTuple5MethodDescriptor, true);
+            } else if (ClassUtils.isParent(Tuple6.class, method.getReturnType())) {
+                methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTuple6Method.getName(),
+                    singleTuple6MethodDescriptor, true);
+            } else {
+                throw new HammerException("only support Tuple2...Tuple6");
+            }
+            methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
+            methodNode.visitInsn(ARETURN);
+            methodNode.visitMaxs(stackSize.intValue(), localeSize);
+            methodNode.visitEnd();
+        } else {
+            methodNode.visitLdcInsn(Type.getType(method.getReturnType()));
+            setParams(methodNode, method, stackSize);
+            methodNode.visitMethodInsn(INVOKEINTERFACE, tplExecutorName, singleTypeMethod.getName(),
+                singleTypeMethodDescriptor, true);
+            methodNode.visitTypeInsn(CHECKCAST, Type.getInternalName(method.getReturnType()));
+            methodNode.visitInsn(ARETURN);
+            methodNode.visitMaxs(stackSize.intValue(), localeSize);
+            methodNode.visitEnd();
+        }
+        logger.debug("generate method {}", method.getName());
+        return methodNode;
     }
 
     private static class ParamPosition {
         int pageParamPosition = -1;
         int offsetParamPosition = -1;
         int limitParamPosition = -1;
-        int commonParamNum = 0;
+        //        int commonParamNum = 0;
 
         /**
+         * Instantiates a new param position.
          */
-        public ParamPosition() {
+        private ParamPosition() {
+            super();
         }
+    }
+
+    private String getConstMethodName(Method method, int methodIndex) {
+        //        StringBuilder name = new StringBuilder();
+        //        name.append("$").append(method.getName());
+        //        for (Class<?> parameterType : method.getParameterTypes()) {
+        //            name.append("_").append(parameterType.getSimpleName());
+        //        }
+        //        return name.toString();
+        return "$" + method.getName() + methodIndex;
+    }
+
+    private void setValidation(ClassNode classNode, Set<Tuple2<Method, Integer>> validationMethods) {
+        for (Tuple2<Method, Integer> tuple : validationMethods) {
+            Method validationMethod = tuple.get0();
+            FieldVisitor fieldVisitor =
+                classNode.visitField(ACC_PRIVATE | ACC_FINAL | ACC_STATIC,
+                    getConstMethodName(validationMethod, tuple.get1()),
+                    "Ljava/lang/reflect/Method;", null,
+                    null);
+            fieldVisitor.visitEnd();
+        }
+        MethodVisitor methodVisitor = classNode.visitMethod(ACC_STATIC, "<clinit>", "()V", null, null);
+        methodVisitor.visitCode();
+        for (Tuple2<Method, Integer> tuple : validationMethods) {
+            Method validationMethod = tuple.get0();
+            methodVisitor.visitLdcInsn(Asm.getType(validationMethod.getDeclaringClass()));
+            methodVisitor.visitLdcInsn(validationMethod.getName());
+            visitInt(methodVisitor, validationMethod.getParameterCount());
+            methodVisitor.visitTypeInsn(ANEWARRAY, "java/lang/Class");
+            for (int i = 0; i < validationMethod.getParameterCount(); i++) {
+                methodVisitor.visitInsn(DUP);
+                visitInt(methodVisitor, i); // methodVisitor.visitInsn(ICONST_0);
+                methodVisitor.visitLdcInsn(Asm.getType(validationMethod.getParameters()[i].getType())); // methodVisitor.visitLdcInsn(Type.getType("Ljava/lang/String;"));
+                methodVisitor.visitInsn(AASTORE);
+            }
+            methodVisitor.visitMethodInsn(INVOKESTATIC, "cn/featherfly/common/lang/ClassUtils", "getMethod",
+                "(Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;", false);
+            methodVisitor.visitFieldInsn(PUTSTATIC, classNode.name, getConstMethodName(validationMethod, tuple.get1()),
+                "Ljava/lang/reflect/Method;");
+        }
+        methodVisitor.visitInsn(RETURN);
+        methodVisitor.visitMaxs(6, 0);
+        methodVisitor.visitEnd();
+    }
+
+    private void setValidation(ClassNode classNode, MethodNode methodNode, Method method, int methodIndex,
+        HammerConfig config,
+        Set<Tuple2<Method, Integer>> validationMethods, AtomicInteger stackSize) {
+        int paramsCount = method.getParameters().length;
+
+        methodNode.visitVarInsn(ALOAD, 0);
+        stackSize.incrementAndGet();
+        methodNode.visitFieldInsn(GETFIELD, classNode.name, "hammerConfig",
+            Asm.getType(HammerConfig.class).getDescriptor());
+        methodNode.visitMethodInsn(INVOKEINTERFACE, Asm.getName(HammerConfig.class), "getValidatorConfig",
+            "()" + Asm.getType(ValidatorConfig.class).getDescriptor(), true);
+        methodNode.visitVarInsn(ALOAD, 0);
+        stackSize.incrementAndGet();
+        // validation parameter Method
+        methodNode.visitFieldInsn(GETSTATIC, classNode.name, getConstMethodName(method, methodIndex),
+            "Ljava/lang/reflect/Method;");
+        // validation parameter values
+        visitInt(methodNode, paramsCount);
+        methodNode.visitTypeInsn(ANEWARRAY, "java/lang/Object");
+        for (int i = 0; i < paramsCount; i++) {
+            methodNode.visitInsn(DUP);
+            visitInt(methodNode, i);
+            // TODO 处理自动装箱的问题
+            methodNode.visitVarInsn(Asm.getLoadCode(method.getParameters()[i].getType()), i + 1);
+            stackSize.incrementAndGet();
+            methodNode.visitInsn(AASTORE);
+        }
+        // validation group parameter
+        methodNode.visitInsn(ICONST_0);
+        methodNode.visitTypeInsn(ANEWARRAY, "java/lang/Class");
+        methodNode.visitMethodInsn(INVOKEINTERFACE, Asm.getName(ValidatorConfig.class), "validateParameters",
+            "(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;[Ljava/lang/Class;)V", true);
+        validationMethods.add(Tuples.of(method, methodIndex));
+    }
+
+    private boolean needValidation(Method method, HammerConfig config) {
+        for (Annotation[] parameterAnnotations : method.getParameterAnnotations()) {
+            for (Annotation parameterAnnotation : parameterAnnotations) {
+                if (config.getValidatorConfig().isConstraint(parameterAnnotation.annotationType())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void setAnnotations(MethodNode methodNode, Method method) {
         Annotation[] annotations = method.getAnnotations();
-        if (Lang.isNotEmpty(annotations)) {
-            for (Annotation annotation : annotations) {
-                AnnotationVisitor visitor = methodNode.visitAnnotation(Type.getDescriptor(annotation.annotationType()),
-                    true);
-                for (Method annotationMethod : annotation.annotationType().getDeclaredMethods()) {
-                    Object value = ClassUtils.invokeMethod(annotation, annotationMethod);
-                    if (value.getClass().isArray()) {
-                        AnnotationVisitor as = visitor.visitArray(annotationMethod.getName());
-                        for (int i = 0; i < Array.getLength(value); i++) {
-                            Object a = Array.get(value, i);
-                            as.visit(annotationMethod.getName(), a);
-                        }
-                    } else if (value.getClass().isEnum()) {
-                        visitor.visitEnum(annotationMethod.getName(), Type.getDescriptor(value.getClass()),
-                            ((Enum<?>) value).name());
-                    } else {
-                        visitor.visit(annotationMethod.getName(), value);
+        if (Lang.isEmpty(annotations)) {
+            return;
+        }
+        for (Annotation annotation : annotations) {
+            AnnotationVisitor visitor = methodNode.visitAnnotation(Type.getDescriptor(annotation.annotationType()),
+                true);
+            for (Method annotationMethod : annotation.annotationType().getDeclaredMethods()) {
+                Object value = ClassUtils.invokeMethod(annotation, annotationMethod);
+                if (value.getClass().isArray()) {
+                    AnnotationVisitor as = visitor.visitArray(annotationMethod.getName());
+                    for (int i = 0; i < Array.getLength(value); i++) {
+                        Object a = Array.get(value, i);
+                        as.visit(annotationMethod.getName(), a);
                     }
+                } else if (value.getClass().isEnum()) {
+                    visitor.visitEnum(annotationMethod.getName(), Type.getDescriptor(value.getClass()),
+                        ((Enum<?>) value).name());
+                } else {
+                    visitor.visit(annotationMethod.getName(), value);
                 }
-                visitor.visitEnd();
             }
+            visitor.visitEnd();
         }
     }
 
-    private ParamPosition setParams(MethodNode methodNode, Method method)
+    private ParamPosition setParams(MethodNode methodNode, Method method, AtomicInteger stackSize)
         throws NoSuchMethodException, SecurityException {
-        return setParams(methodNode, method, 1);
+        return setParams(methodNode, method, stackSize, 1);
     }
 
-    private ParamPosition setParams(MethodNode methodNode, Method method, int commonParamIndex)
+    private ParamPosition setParams(MethodNode methodNode, Method method, AtomicInteger stackSize, int commonParamIndex)
         throws NoSuchMethodException, SecurityException {
         ParamPosition position = new ParamPosition();
 
@@ -1162,9 +1321,11 @@ public class TplDynamicExecutorFactory implements Opcodes {
                 case COMMON:
                     methodNode.visitLdcInsn(getParamName(parameter, paramIndex));
                     methodNode.visitVarInsn(Asm.getLoadCode(parameter.getType()), paramIndex + 1);
+                    stackSize.incrementAndGet();
                     if (parameter.getType().isPrimitive()) {
                         methodNode.visitMethodInsn(INVOKESTATIC, Asm.getPrimitiveWrapperName(parameter.getType()),
-                            Asm.PRIMITIVE_BOXING_METHOD, Asm.getPrimitiveBoxingMethodDescriptor(parameter.getType()),
+                            Asm.PRIMITIVE_BOXING_METHOD,
+                            Asm.getPrimitiveBoxingMethodDescriptor(parameter.getType()),
                             false);
                     }
                     if (commonParamIndex == 1) {
@@ -1187,17 +1348,20 @@ public class TplDynamicExecutorFactory implements Opcodes {
                     break;
             }
         }
-        position.commonParamNum = commonParamIndex - 1;
+        //        position.commonParamNum = commonParamIndex - 1;
 
         if (position.pageParamPosition > 0) {
             methodNode.visitVarInsn(ALOAD, position.pageParamPosition);
+            stackSize.incrementAndGet();
         } else if (position.limitParamPosition > 0) {
             if (position.offsetParamPosition > 0) {
                 methodNode.visitVarInsn(ILOAD, position.offsetParamPosition);
                 methodNode.visitVarInsn(ILOAD, position.limitParamPosition);
+                stackSize.addAndGet(2);
             } else {
                 methodNode.visitInsn(ICONST_0);
                 methodNode.visitVarInsn(ILOAD, position.limitParamPosition);
+                stackSize.incrementAndGet();
             }
         }
         return position;
@@ -1268,7 +1432,7 @@ public class TplDynamicExecutorFactory implements Opcodes {
     @SuppressWarnings("unchecked")
     public <E> E newInstance(Class<E> type, Hammer hammer, HammerConfig hammerConfig) {
         try {
-            return (E) ClassUtils.forName(create(type)).getConstructor(Hammer.class, HammerConfig.class)
+            return (E) ClassUtils.forName(create(type, hammerConfig)).getConstructor(Hammer.class, HammerConfig.class)
                 .newInstance(hammer, hammerConfig);
         } catch (Exception e) {
             throw new HammerException(e);
@@ -1367,6 +1531,88 @@ public class TplDynamicExecutorFactory implements Opcodes {
             return ParamType.PAGE;
         } else {
             return ParamType.COMMON;
+        }
+    }
+
+    private void visitReturn(MethodNode methodNode, Class<?> type) {
+        if (type == Integer.TYPE) {
+            methodNode.visitInsn(IRETURN);
+        } else if (type == Byte.TYPE) {
+            methodNode.visitInsn(IRETURN);
+        } else if (type == Short.TYPE) {
+            methodNode.visitInsn(IRETURN);
+        } else if (type == Character.TYPE) {
+            methodNode.visitInsn(IRETURN);
+        } else if (type == Boolean.TYPE) {
+            methodNode.visitInsn(IRETURN);
+        } else if (type == Long.TYPE) {
+            methodNode.visitInsn(LRETURN);
+        } else if (type == Double.TYPE) {
+            methodNode.visitInsn(DRETURN);
+        } else if (type == Float.TYPE) {
+            methodNode.visitInsn(FRETURN);
+        } else if (type == Void.TYPE) {
+            methodNode.visitInsn(RETURN);
+        } else {
+            methodNode.visitInsn(ARETURN);
+        }
+    }
+
+    private void visitInt(MethodVisitor methodVisitor, int value) {
+        switch (value) {
+            case -1:
+                methodVisitor.visitInsn(ICONST_M1);
+                return;
+            case 0:
+                methodVisitor.visitInsn(ICONST_0);
+                return;
+            case 1:
+                methodVisitor.visitInsn(ICONST_1);
+                return;
+            case 2:
+                methodVisitor.visitInsn(ICONST_2);
+                return;
+            case 3:
+                methodVisitor.visitInsn(ICONST_3);
+                return;
+            case 4:
+                methodVisitor.visitInsn(ICONST_4);
+                return;
+            case 5:
+                methodVisitor.visitInsn(ICONST_5);
+                return;
+            default:
+                methodVisitor.visitVarInsn(ILOAD, value);
+                return;
+        }
+    }
+
+    private void visitInt(MethodNode methodNode, int value) {
+        switch (value) {
+            case -1:
+                methodNode.visitInsn(ICONST_M1);
+                return;
+            case 0:
+                methodNode.visitInsn(ICONST_0);
+                return;
+            case 1:
+                methodNode.visitInsn(ICONST_1);
+                return;
+            case 2:
+                methodNode.visitInsn(ICONST_2);
+                return;
+            case 3:
+                methodNode.visitInsn(ICONST_3);
+                return;
+            case 4:
+                methodNode.visitInsn(ICONST_4);
+                return;
+            case 5:
+                methodNode.visitInsn(ICONST_5);
+                return;
+            default:
+                methodNode.visitVarInsn(ILOAD, value);
+                return;
         }
     }
 

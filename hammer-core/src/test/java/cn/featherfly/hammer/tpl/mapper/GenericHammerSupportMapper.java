@@ -1,13 +1,13 @@
 
 package cn.featherfly.hammer.tpl.mapper;
 
+import javax.validation.constraints.NotNull;
+
 import cn.featherfly.hammer.GenericHammerSupport;
 import cn.featherfly.hammer.annotation.Mapper;
 
 /**
- * <p>
  * TestMapper
- * </p>
  *
  * @author zhongj
  */
@@ -18,5 +18,16 @@ public interface GenericHammerSupportMapper extends GenericHammerSupport<User, L
         return getHammer().get(id);
     }
 
-    User getByUsername(String username);
+    default User get2(@NotNull Long id) {
+        return getHammer().get(id);
+    }
+
+    default User getUser(@NotNull String username, @NotNull String password) {
+        return getHammer().query().where().eq(User::getUsername, username).and().eq(User::getPassword, password)
+            .single();
+    }
+
+    User getByUsername(@NotNull String username);
+
+    User getByUsernameAndPassword(@NotNull String username, @NotNull String password);
 }

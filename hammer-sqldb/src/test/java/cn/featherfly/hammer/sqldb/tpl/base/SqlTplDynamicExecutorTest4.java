@@ -1,5 +1,5 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.base;
 
 import static org.testng.Assert.assertEquals;
 
@@ -20,27 +20,25 @@ import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
  *
  * @author zhongj
  */
-public class SqlTplDynamicExecutorTest5 extends JdbcTestBase {
+public class SqlTplDynamicExecutorTest4 extends JdbcTestBase {
 
-    UserMapper5 userMapper;
-    UserMapper4 userMapper4;
+    UserMapper4 userMapper;
 
     @BeforeClass
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
-        userMapper = mapperFactory.newInstance(UserMapper5.class, hammer, hammerConfig);
-        userMapper4 = mapperFactory.newInstance(UserMapper4.class, hammer, hammerConfig);
+        userMapper = mapperFactory.newInstance(UserMapper4.class, hammer, hammerConfig);
     }
 
     @Test
-    void testGetByUsername() {
+    void testGet() {
         User user = new User();
         user.setAge(18);
         user.setUsername("username_" + Randoms.getString(5));
-        userMapper4.save(user);
+        userMapper.save(user);
 
-        User u = userMapper.getByUsername(user.getUsername());
+        User u = userMapper.get(user.getId());
         assertEquals(u.getAge(), user.getAge());
         assertEquals(u.getUsername(), user.getUsername());
 

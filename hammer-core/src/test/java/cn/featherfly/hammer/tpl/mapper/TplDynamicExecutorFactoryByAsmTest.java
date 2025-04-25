@@ -16,6 +16,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import javax.validation.Validation;
+
 import org.apache.logging.log4j.core.config.Configurator;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
@@ -30,7 +32,10 @@ import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.ParamedExecutionExecutorEx;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.HammerValidateException;
+import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.HammerConfigImpl;
+import cn.featherfly.hammer.config.validator.ValidatorConfigImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityDelete;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdate;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
@@ -40,6 +45,7 @@ import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetch;
 import cn.featherfly.hammer.tpl.TplExecuteId;
 import cn.featherfly.hammer.tpl.TplExecuteIdBuilder;
 import cn.featherfly.hammer.tpl.TplExecutor;
+import cn.featherfly.validation.JavaxValidator;
 
 /**
  * <p>
@@ -56,17 +62,28 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
     Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
+    HammerConfig config;
+
     @BeforeSuite
     public void init() throws IOException {
         Configurator.initialize("log4j2", "log4j2.xml");
 
         logger.debug("init");
+
+        config = new HammerConfigImpl();
+
+        HammerConfigImpl hammerConfig = new HammerConfigImpl(true);
+        hammerConfig.setValidatorConfig(
+            new ValidatorConfigImpl(
+                new JavaxValidator(Validation.byDefaultProvider().configure().buildValidatorFactory().getValidator(),
+                    HammerValidateException::new)));
+        config = hammerConfig;
     }
 
     @Test
     public void testNoExtends() throws Exception {
         Class<?> type = ClassUtils
-            .forName(factory.create(TeMapper.class, Thread.currentThread().getContextClassLoader()));
+            .forName(factory.create(TeMapper.class, config, Thread.currentThread().getContextClassLoader()));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -78,7 +95,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
     @Test
     public void testExtendsHammer() throws Exception {
-        Class<?> type = ClassUtils.forName(factory.create(TMapper.class));
+        Class<?> type = ClassUtils.forName(factory.create(TMapper.class, config));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -90,7 +107,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
     @Test
     public void testExtendsGenericHammer() throws Exception {
-        Class<?> type = ClassUtils.forName(factory.create(TMapper2.class));
+        Class<?> type = ClassUtils.forName(factory.create(TMapper2.class, config));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -101,7 +118,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
     @Test
     public void testExtendsGenericHammer2() throws Exception {
         Class<?> c = TestMapper.class;
-        Class<?> type = ClassUtils.forName(factory.create(c, Thread.currentThread().getContextClassLoader()));
+        Class<?> type = ClassUtils.forName(factory.create(c, config, Thread.currentThread().getContextClassLoader()));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
@@ -128,7 +145,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
     public void testGenericHammerSupport() throws Exception {
         @SuppressWarnings("unchecked")
         Class<GenericHammerSupportMapper> type = (Class<GenericHammerSupportMapper>) ClassUtils
-            .forName(factory.create(GenericHammerSupportMapper.class));
+            .forName(factory.create(GenericHammerSupportMapper.class, config));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -145,9 +162,41 @@ public class TplDynamicExecutorFactoryByAsmTest {
         assertNull(u);
     }
 
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void testGenericHammerSupport2() throws Exception {
+        @SuppressWarnings("unchecked")
+        Class<GenericHammerSupportMapper> type = (Class<GenericHammerSupportMapper>) ClassUtils
+            .forName(factory.create(GenericHammerSupportMapper.class, config));
+
+        Class<User> userClass = User.class;
+        Long userId = 1L;
+
+        GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
+            config);
+
+        User u = mapper.getByUsername(null);
+        assertNull(u);
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void testGenericHammerSupport3() throws Exception {
+        @SuppressWarnings("unchecked")
+        Class<GenericHammerSupportMapper> type = (Class<GenericHammerSupportMapper>) ClassUtils
+            .forName(factory.create(GenericHammerSupportMapper.class, config));
+
+        Class<User> userClass = User.class;
+        Long userId = 1L;
+
+        GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
+            config);
+
+        User u = mapper.getUser(null, null);
+        assertNull(u);
+    }
+
     @Test
     public void testHammerSupport() throws Exception {
-        Class<?> type = ClassUtils.forName(factory.create(TMapper3.class));
+        Class<?> type = ClassUtils.forName(factory.create(TMapper3.class, config));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
@@ -159,7 +208,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
     public void testHammerSupport2() throws Exception {
         @SuppressWarnings("unchecked")
         Class<HammerSupportMapper> type = (Class<HammerSupportMapper>) ClassUtils
-            .forName(factory.create(HammerSupportMapper.class));
+            .forName(factory.create(HammerSupportMapper.class, config));
         //        Class<TMapper> type = forName(factory.create(TMapper.class));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));

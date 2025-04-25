@@ -1,18 +1,16 @@
 
-package cn.featherfly.hammer.sqldb.tpl;
+package cn.featherfly.hammer.sqldb.tpl.base;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePagination;
@@ -30,15 +28,15 @@ import cn.featherfly.hammer.tpl.mapper.TplDynamicExecutorFactory;
  *
  * @author zhongj
  */
-public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
+public class SqlTplDynamicExecutorTest3WithoutParamName extends JdbcTestBase {
 
-    UserMapper2 userMapper;
+    UserMapper3WithoutParamName userMapper;
 
     @BeforeClass
     void setup() {
         TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
         Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
-        userMapper = mapperFactory.newInstance(UserMapper2.class, hammer, hammerConfig);
+        userMapper = mapperFactory.newInstance(UserMapper3WithoutParamName.class, hammer, hammerConfig);
     }
 
     @Test
@@ -49,14 +47,6 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
         assertEquals(str, "yufei");
 
         str = userMapper.selectString2(2);
-        System.out.println("selectString = " + str);
-        assertEquals(str, "featherfly");
-
-        str = userMapper.template().string("selectString", new HashMap<>());
-        System.out.println("selectString = " + str);
-        assertEquals(str, "yufei");
-
-        str = userMapper.template().string("selectString2", new ChainMapImpl<String, Serializable>().putChain("id", 2));
         System.out.println("selectString = " + str);
         assertEquals(str, "featherfly");
 
@@ -83,6 +73,21 @@ public class SqlTplDynamicExecutorTest2 extends JdbcTestBase {
 
         String password = "123456";
         u = userMapper.selectByUsernameAndPassword(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword2(username, password);
+        System.out.println(u);
+        assertEquals(u.getUsername(), username);
+        assertEquals(u.getPwd(), password);
+
+        u = userMapper.getByUsernameAndPassword3(username, password);
         System.out.println(u);
         assertEquals(u.getUsername(), username);
         assertEquals(u.getPwd(), password);

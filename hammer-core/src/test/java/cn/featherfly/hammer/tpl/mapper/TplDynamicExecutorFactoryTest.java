@@ -7,6 +7,8 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.hammer.Hammer;
+import cn.featherfly.hammer.config.HammerConfig;
+import cn.featherfly.hammer.config.HammerConfigImpl;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -26,10 +28,12 @@ public class TplDynamicExecutorFactoryTest {
 
     TplDynamicExecutorFactory factory = TplDynamicExecutorFactory.getInstance();
 
+    HammerConfig config = new HammerConfigImpl();
+
     @Test
     public void test() throws Exception {
         //        Class<?> type = ClassUtils.forName(factory.create(TestMapper.class));;
-        Class<TestMapper> type = forName(factory.create(TestMapper.class));
+        Class<TestMapper> type = forName(factory.create(TestMapper.class, config));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
@@ -40,7 +44,7 @@ public class TplDynamicExecutorFactoryTest {
 
     @Test
     public void test2() throws Exception {
-        Class<TestMapper2> type = forName(factory.create(TestMapper2.class));
+        Class<TestMapper2> type = forName(factory.create(TestMapper2.class, config));
         System.out.println(type);
         System.out.println(Arrays.toString(type.getInterfaces()));
         System.out.println(type.getGenericSuperclass());
@@ -63,8 +67,8 @@ public class TplDynamicExecutorFactoryTest {
         System.out.println(newClass);
 
         CtConstructor constraConstructor = new CtConstructor(
-                new CtClass[] { pool.getCtClass(Hammer.class.getName()), pool.getCtClass(String.class.getName()) },
-                newClass);
+            new CtClass[] { pool.getCtClass(Hammer.class.getName()), pool.getCtClass(String.class.getName()) },
+            newClass);
         constraConstructor.setModifiers(Modifier.PUBLIC);
         System.out.println(constraConstructor);
 
