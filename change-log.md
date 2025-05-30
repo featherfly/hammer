@@ -301,9 +301,21 @@ TODO dsl实体查询加入以下（EntityQuery）
     User user = jdbc.querySingle(namedParamSql, User.class, params); // 这里只是举两例子，更多用法参考Jdbc类
     ```
 
-    
+# 0.6.9 2025-04-08
+
+1. 修复可覆盖占位参数在 ) 前丢失 )的问题
+
+```
+-- 注意在可覆盖占位参数和)之间需要空格或者换行，因为可覆盖占位参数的结束是依据空格或换行判断的
+select * from user u where GET_YEAR(u.create_time) = year(/*$=:year*/5 )
+```
+
+# 0.6.8 2025-01-06
+
+1. 去掉objenesis的依赖，使用ReflectUtils代替
 
 # 0.6.7 2023-04-18
+
 1. 修复eq参数为空时报错的问题
 
 # 0.6.6 2022-08-26
