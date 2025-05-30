@@ -5,10 +5,9 @@ dependencies {
     api group: 'cn.featherfly.common', name: 'common-asm', version: '0.3.2'
     //api group: 'cn.featherfly.common', name: 'common-tuple', version: '1.0.0'
     api group: 'cn.featherfly.constant', name: 'constant-core', version: '1.6.9'
-	api group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'	
-	api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.2'
-    api group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.18.2'
-    api group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
+	api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.19.0'
+    api group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.19.0'
+    api group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
     
     // 3.2 去掉了DefineClassHelper，未找到替代实现前暂不升级
     // api group: 'org.objenesis', name: 'objenesis', version: '3.1'
@@ -19,8 +18,7 @@ dependencies {
 	//api group: 'org.ow2.asm', name: 'asm-util', version: '9.0'
 	//api group: 'org.ow2.asm', name: 'asm-common', version: '9.0'
 	//api group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
-	
-
+	    
     // validation
     testImplementation 'cn.featherfly.validation:javax.validation-api:0.3.0'
     testImplementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0' // hibernate-validator 需要使用 
