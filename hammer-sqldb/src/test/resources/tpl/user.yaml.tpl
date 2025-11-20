@@ -27,6 +27,28 @@ selectConditions: "select id, username, password pwd, mobile_no, age from ${tpl_
     age <= :maxAge
 </@and>
 </@where>"
+selectConditions1: >
+    select <@prop repo='user'>*</@prop> from <@wrap>user</@wrap>
+    <@where>
+    <@and if=id??>id = :id</@and>
+    <@and if=age??>age > :age</@and>
+    <@and>
+        username = 'yufei'
+    </@and>
+    </@where>
+selectConditions2: >
+    select <@prop repo='user'>*</@prop> from <@wrap>user</@wrap>
+    <@where>
+    <@and if=id??>id = :id</@and>
+    <@and if=age??>age > :age</@and>
+    <@and>
+    (
+        <@and if=username??>username = :username</@and>
+        <@or if=password??>password = :password</@or>
+        <@or if=mobile??>mobile_no = :mobile</@or>
+    )
+    </@and>
+    </@where>
 selectAvg: "select avg(age) from ${tpl_wrap('user')}"
 selectSum: "select sum(age) from ${tpl_wrap('user')}"
 selectCount: "select count(id) from ${tpl_wrap('user')}"
@@ -42,19 +64,6 @@ selectListOrderByAge: "select age from ${tpl_wrap('user')} order by age ${sortab
 selectListOrderByAge2: "select age from ${tpl_wrap('user')} order by age ${tpl_str(sortable)}"
 selectListOrderByAge3: "select age from ${tpl_wrap('user')} order by age <@str value=sortable></@str>"
 selectListOrderByAge4: "select age from ${tpl_wrap('user')} order by age <@str>${sortable}</@str>"
-selectConditions2: >
-    select <@prop repo='user'>*</@prop> from <@wrap>user</@wrap>
-    <@where>
-    <@and if=id??>id = :id</@and>
-    <@and if=age??>age > :age</@and>
-    <@and>
-    (
-        <@and if=username??>username = :username</@and>
-        <@or if=password??>password = :password</@or>
-        <@or if=mobile??>mobile_no = :mobile</@or>
-    )
-    </@and>
-    </@where>
 selectIn: >
     select <@columns table='user'/> from <@wrap value='user'/> 
     <@where> 

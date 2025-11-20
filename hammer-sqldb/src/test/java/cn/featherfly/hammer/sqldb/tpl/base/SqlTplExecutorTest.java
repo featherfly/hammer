@@ -905,6 +905,24 @@ public class SqlTplExecutorTest extends JdbcTestBase {
     }
 
     @Test
+    public void selectConditions1() {
+        Map<String, Serializable> u = executor.single("selectById2@user",
+            new ChainMapImpl<String, Serializable>().putChain("id", 1));
+
+        Map<String, Serializable> uis = executor.single("selectConditions1@user",
+            new ChainMapImpl<String, Serializable>().putChain("id", u.get("id")));
+        assertNotNull(uis);
+        assertEquals(uis.get("id"), u.get("id"));
+        assertEquals(uis.get("username"), "yufei");
+
+        // 最后一个无if条件的and 前面条件都没了
+        uis = executor.single("selectConditions1@user", new ChainMapImpl<>());
+        assertNotNull(uis);
+        assertEquals(uis.get("id"), u.get("id"));
+        assertEquals(uis.get("username"), "yufei");
+    }
+
+    @Test
     public void selectConditions2() {
         Map<String, Serializable> u = executor.single("selectById2@user",
             new ChainMapImpl<String, Serializable>().putChain("id", 1));
