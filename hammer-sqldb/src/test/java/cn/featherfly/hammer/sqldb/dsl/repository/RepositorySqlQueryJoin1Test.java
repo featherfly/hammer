@@ -18,12 +18,11 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.tuple.Tuple2;
-
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleAliasRepository;
+import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Order2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
@@ -61,20 +60,20 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
         String queryTableAlias = "_user0";
         String joinTableAlias = "_user_info0";
         // AliasManger with default alias generetor
-        list = query.find("user").fields(fields) //
+        list = query.find("user").fetch(fields) //
             .join("user_info").on("user_id").fetch(joinFields) //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
-        list = query.find("user").fields("username", "password").field("age") //
+        list = query.find("user").fetch("username", "password").fetch("age") //
             .join("user_info").on("user_id").fetch("id", "name").fetch("user_id") //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
         String[] joinFields2 = Lang.array("id", "name", "userId");
-        list = query.find("user").fields(fields) //
+        list = query.find("user").fetch(fields) //
             .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.fetch( //
                 fieldBuilder.name("id"), //
                 fieldBuilder.name("name"), //
@@ -83,8 +82,8 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
-        list = query.find("user").fields(fields) //
-            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.field( //
+        list = query.find("user").fetch(fields) //
+            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.fetch( //
                 fieldBuilder.name("id"), //
                 fieldBuilder.name("name"), //
                 fieldBuilder.name("user_id").as("userId"))) //
@@ -92,7 +91,7 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
-        list = query.find("user").fields(fields) //
+        list = query.find("user").fetch(fields) //
             .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
                 .fetch(fieldBuilder.name("name")) //
                 .fetch(fieldBuilder.name("user_id").as("userId")) //
@@ -101,10 +100,10 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
-        list = query.find("user").fields(fields) //
-            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.field(fieldBuilder.name("id")) //
-                .field(fieldBuilder.name("name")) //
-                .field(fieldBuilder.name("user_id").as("userId")) //
+        list = query.find("user").fetch(fields) //
+            .join("user_info").on("user_id").fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
+                .fetch(fieldBuilder.name("name")) //
+                .fetch(fieldBuilder.name("user_id").as("userId")) //
             ) //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
@@ -117,13 +116,13 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
         String[] joinFields = Lang.array("id", "name", "user_id");
         String queryTableAlias = "u";
         String joinTableAlias = "ui";
-        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fields(fields) //
+        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fetch(fields) //
             .join(new SimpleAliasRepository("user_info", joinTableAlias)).on("user_id").fetch(joinFields) //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
-        list = query.find(r -> r.name("user").as(queryTableAlias)).fields(fields) //
+        list = query.find(r -> r.name("user").as(queryTableAlias)).fetch(fields) //
             .join(r -> r.name("user_info").as(joinTableAlias)).on("user_id").fetch(joinFields) //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
@@ -131,15 +130,14 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
 
         // ----------------------------------------------------------------------------------------------------------------
 
-        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fields("username", "password")
-            .field("age") //
+        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fetch("username", "password").fetch("age") //
             .join(new SimpleAliasRepository("user_info", joinTableAlias)).on("user_id").fetch("id", "name")
             .fetch("user_id") //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
-        list = query.find(r -> r.name("user").as(queryTableAlias)).fields("username", "password").field("age") //
+        list = query.find(r -> r.name("user").as(queryTableAlias)).fetch("username", "password").fetch("age") //
             .join(r -> r.name("user_info").as(joinTableAlias)).on("user_id").fetch("id", "name").fetch("user_id") //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
@@ -148,7 +146,7 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
         // ----------------------------------------------------------------------------------------------------------------
 
         String[] joinFields2 = Lang.array("id", "name", "userId");
-        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fields(fields) //
+        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fetch(fields) //
             .join(new SimpleAliasRepository("user_info", joinTableAlias)).on("user_id")
             .fetch((repo, fieldBuilder) -> repo.fetch( //
                 fieldBuilder.name("id"), //
@@ -158,7 +156,7 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
 
-        list = query.find(r -> r.name("user").as(queryTableAlias)).fields(fields) //
+        list = query.find(r -> r.name("user").as(queryTableAlias)).fetch(fields) //
             .join(r -> r.name("user_info").as(joinTableAlias)).on("user_id").fetch((repo, fieldBuilder) -> repo.fetch( //
                 fieldBuilder.name("id"), //
                 fieldBuilder.name("name"), //
@@ -169,17 +167,17 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
 
         // ----------------------------------------------------------------------------------------------------------------
 
-        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fields(fields) //
+        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fetch(fields) //
             .join(new SimpleAliasRepository("user_info", joinTableAlias)).on("user_id")
-            .fetch((repo, fieldBuilder) -> repo.field( //
+            .fetch((repo, fieldBuilder) -> repo.fetch( //
                 fieldBuilder.name("id"), //
                 fieldBuilder.name("name"), //
                 fieldBuilder.name("user_id").as("userId"))) //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
-        list = query.find(r -> r.name("user").as(queryTableAlias)).fields(fields) //
-            .join(r -> r.name("user_info").as(joinTableAlias)).on("user_id").fetch((repo, fieldBuilder) -> repo.field( //
+        list = query.find(r -> r.name("user").as(queryTableAlias)).fetch(fields) //
+            .join(r -> r.name("user_info").as(joinTableAlias)).on("user_id").fetch((repo, fieldBuilder) -> repo.fetch( //
                 fieldBuilder.name("id"), //
                 fieldBuilder.name("name"), //
                 fieldBuilder.name("user_id").as("userId"))) //
@@ -189,7 +187,7 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
 
         // ----------------------------------------------------------------------------------------------------------------
 
-        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fields(fields) //
+        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fetch(fields) //
             .join(new SimpleAliasRepository("user_info", joinTableAlias)).on("user_id")
             .fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
                 .fetch(fieldBuilder.name("name")) //
@@ -198,7 +196,7 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
-        list = query.find(r -> r.name("user").as(queryTableAlias)).fields(fields) //
+        list = query.find(r -> r.name("user").as(queryTableAlias)).fetch(fields) //
             .join(r -> r.name("user_info").as(joinTableAlias)).on("user_id")
             .fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
                 .fetch(fieldBuilder.name("name")) //
@@ -210,20 +208,20 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
 
         // ----------------------------------------------------------------------------------------------------------------
 
-        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fields(fields) //
+        list = query.find(new SimpleAliasRepository("user", queryTableAlias)).fetch(fields) //
             .join(new SimpleAliasRepository("user_info", joinTableAlias)).on("user_id")
-            .fetch((repo, fieldBuilder) -> repo.field(fieldBuilder.name("id")) //
-                .field(fieldBuilder.name("name")) //
-                .field(fieldBuilder.name("user_id").as("userId")) //
+            .fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
+                .fetch(fieldBuilder.name("name")) //
+                .fetch(fieldBuilder.name("user_id").as("userId")) //
             ) //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
             Arrays.stream(joinFields2).map(f -> joinTableAlias + "." + f).toArray(num -> new String[num]));
-        list = query.find(r -> r.name("user").as(queryTableAlias)).fields(fields) //
+        list = query.find(r -> r.name("user").as(queryTableAlias)).fetch(fields) //
             .join(r -> r.name("user_info").as(joinTableAlias)).on("user_id")
-            .fetch((repo, fieldBuilder) -> repo.field(fieldBuilder.name("id")) //
-                .field(fieldBuilder.name("name")) //
-                .field(fieldBuilder.name("user_id").as("userId")) //
+            .fetch((repo, fieldBuilder) -> repo.fetch(fieldBuilder.name("id")) //
+                .fetch(fieldBuilder.name("name")) //
+                .fetch(fieldBuilder.name("user_id").as("userId")) //
             ) //
             .list();
         assertFields(list, Arrays.stream(fields).map(f -> queryTableAlias + "." + f).toArray(num -> new String[num]),
@@ -232,33 +230,33 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void joinCondition() {
-        //        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
+        //        List<Map<String, Serializable>> list = query.find("user").fetch("username", "password", "age") //
         //                .join("user_info").on("user_id") //
         //                .where().eq("user_info", "name", "羽飞") //
         //                .list();
-        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fetch("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where().eq2("name", "羽飞") //
             .list();
         assertEquals(list.size(), 1);
 
-        //        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        //        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
         //                .eq(1, "name", "羽飞").list();
-        list = query.find("user").fields("username", "password", "age") //
+        list = query.find("user").fetch("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where() //
             .eq2(UserInfo::getName, "羽飞") //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .eq((r1, r2) -> r2.accept("name", "羽飞")).list();
         assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .eq((r1, r2) -> r2.field("name").value("羽飞")).list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username") //
                 .eq("yufei") //
                 .and() //
@@ -268,7 +266,7 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
             .list();
         assertEquals(list.size(), 0);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username") //
                 .eq("featherfly") //
                 .and() //
@@ -278,20 +276,20 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username").eq("yufei").and().fieldAsNumber("age").gt(18)) //
             .list();
         assertEquals(list.size(), 0);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username").eq(username2).and().fieldAsNumber("age").eq(age2)) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field(es -> es.get1(), "name").eq("羽飞").list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username").eq(username2).and().fieldAsNumber("age").eq(age2) //
                 .and(e1.field("name").eq(name2)) //
             ) //
@@ -302,43 +300,43 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void joinCondition2() {
-        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fetch("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where((r1, r2) -> r2.field("name").eq("羽飞"))//
             .list();
         assertEquals(list.size(), 1);
 
-        //        list = query.find("user").fields("username", "password", "age") //
+        //        list = query.find("user").fetch("username", "password", "age") //
         //            .join("user_info").on("user_id") //
         //            .where((r1, r2) -> r2.field(UserInfo::getName).eq("羽飞")) // TODO 是否需要加入UserInfo::getName方法定义后续再考虑
         //            .list();
         //        assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id") //
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id") //
             .where((r1, r2) -> r1.field("username").eq("yufei") //
                 .and().field("age").gt(18)) //
             .list();
         assertEquals(list.size(), 0);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id") //
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id") //
             .where((r1, r2) -> r1.field("username").eq("yufei") //
                 .and().fieldAsNumber("age").gt(18)) //
             .list();
         assertEquals(list.size(), 0);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id") //
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id") //
             .where((r1, r2) -> r1.field("username").eq("featherfly") //
                 .and().field("age").eq(5)) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id") //
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id") //
             .where((r1, r2) -> r1.field("username").eq("featherfly") //
                 .and().fieldAsNumber("age").eq(5)) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id") //
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id") //
             .where((e0, e1) -> e0.field("username").eq(username2).and().fieldAsNumber("age").eq(age2) //
                 .and(e1.field("name").eq(name2)) //
             ) //
@@ -348,8 +346,8 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
 
     @Test
     void joinCondition2_EqColumn() {
-        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age")
-            .join("user_info").on("user_id") //
+        List<Map<String, Serializable>> list = query.find("user").fetch("username", "password", "age").join("user_info")
+            .on("user_id") //
             .where((e0, e1) -> e0.field("username").eq(e1.field("name"))) //
             .list();
         assertEquals(list.size(), 2);

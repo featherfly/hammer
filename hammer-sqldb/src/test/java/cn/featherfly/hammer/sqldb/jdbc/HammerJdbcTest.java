@@ -1261,11 +1261,11 @@ public class HammerJdbcTest extends JdbcTestBase {
     @Test
     public void testQuery() {
         List<Map<String, Serializable>> list = hammer.query("user") //
-            .field(f -> {
+            .fetch(f -> {
                 f.name("username");
             })//
-            .field((Consumer<FetchField>) f -> f.name("password")) //
-            .field(f -> {
+            .fetch((Consumer<FetchField>) f -> f.name("password")) //
+            .fetch(f -> {
                 f.name("age");
             })
             //                .field("username", "password", "age")
@@ -1281,7 +1281,7 @@ public class HammerJdbcTest extends JdbcTestBase {
 
         age = Integer.MIN_VALUE;
         list = hammer.query("user")
-            .field((q, f) -> q.field(f.name("username")).field(f.name("password")).field(f.name("age"))) //
+            .fetch((q, f) -> q.fetch(f.name("username")).fetch(f.name("password")).fetch(f.name("age"))) //
             .sort().asc("age") //
             .list();
         for (Map<String, Serializable> map : list) {

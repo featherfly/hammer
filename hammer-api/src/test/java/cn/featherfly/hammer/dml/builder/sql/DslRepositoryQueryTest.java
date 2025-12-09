@@ -42,23 +42,23 @@ public class DslRepositoryQueryTest {
 
         query.find("user").sort();
 
-        list = query.find(data).field("name").list();
-        list = query.find(data).field("name").list(String.class);
+        list = query.find(data).fetch("name").list();
+        list = query.find(data).fetch("name").list(String.class);
 
         // FIXME 没有进行条件帅选就能进行唯一值返回是错误的
         // 因为统计函数可能返回唯一值，所以这里还需要再考虑如何实现，先这样，由用户自行决定返回结果是单值还是多值
-        query.find(data).field("name").number(Integer.class);
-        query.find(data).field("name").intNumber();
-        query.find(data).field("name").intValue();
+        query.find(data).fetch("name").number(Integer.class);
+        query.find(data).fetch("name").intNumber();
+        query.find(data).fetch("name").intValue();
 
         //
-        query.find(data).field("name").limit(1).number(Integer.class);
-        query.find(data).field("name").limit(1).intNumber();
-        query.find(data).field("name").limit(1).intValue();
-        str = query.find(data).field("name").limit(1).value();
-        query.find(data).field("name").limit(1).single(Integer.class);
-        query.find(data).field("name").where().eq("id", 1).single(Integer.class);
-        query.find(data).field("name").where().eq("id", 1).number(Integer.class);
+        query.find(data).fetch("name").limit(1).number(Integer.class);
+        query.find(data).fetch("name").limit(1).intNumber();
+        query.find(data).fetch("name").limit(1).intValue();
+        str = query.find(data).fetch("name").limit(1).value();
+        query.find(data).fetch("name").limit(1).single(Integer.class);
+        query.find(data).fetch("name").where().eq("id", 1).single(Integer.class);
+        query.find(data).fetch("name").where().eq("id", 1).number(Integer.class);
         //        query.find(data).where().eq("id", 1).number(Integer.class);
 
         query.find(data).max("age").number(Integer.class);
@@ -66,41 +66,41 @@ public class DslRepositoryQueryTest {
         query.find(data).max("age").list(Integer.class);
 
         query.find(data).count();
-        query.find(data).field("name").number(Integer.class);
+        //        query.find(data).field("name").number(Integer.class);
         query.find(data).fetch("name").number(Integer.class);
-        query.find(data).field("name").intNumber();
+        //        query.find(data).field("name").intNumber();
         query.find(data).fetch("name").intNumber();
-        query.find(data).field("sum(price)").decimal();
+        //        query.find(data).field("sum(price)").decimal();
         query.find(data).fetch("sum(price)").decimal();
-        query.find(data).field(AggregateFunction.SUM, "price").decimal();
+        //        query.find(data).field(AggregateFunction.SUM, "price").decimal();
         query.find(data).fetch(AggregateFunction.SUM, "price").decimal();
         query.find(data).sum("price").decimal();
-        query.find(data).field(AggregateFunction.COUNT, "id").intNumber();
+        //        query.find(data).field(AggregateFunction.COUNT, "id").intNumber();
         query.find(data).fetch(AggregateFunction.COUNT, "id").intNumber();
         query.find(data).count("id").intNumber();
-        query.find(data).field(AggregateFunction.COUNT, "id").longNumber();
+        //        query.find(data).field(AggregateFunction.COUNT, "id").longNumber();
         query.find(data).fetch(AggregateFunction.COUNT, "id").longNumber();
         query.find(data).count("id").longNumber();
 
         query.find(data).sum("id").longNumber();
 
-        query.find(data).field("count(*)").where().lt("age", 18).longNumber();
-        query.find(data).field(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
+        query.find(data).fetch("count(*)").where().lt("age", 18).longNumber();
+        query.find(data).fetch(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
 
         query.find(data).where().lt("age", 18).count();
 
-        query.find(data).field("name").where().eq("", 1).and().lt("age", 18).and().group(t -> t.gt("score", 80))
+        query.find(data).fetch("name").where().eq("", 1).and().lt("age", 18).and().group(t -> t.gt("score", 80))
             .limit(11, 10).list(User.class);
 
-        query.find(data).field("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
+        query.find(data).fetch("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
             .list(User.class);
 
         query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).single(User.class);
 
-        query.find(data).field("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
+        query.find(data).fetch("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
             .list(User.class);
 
-        query.find(data).field("name").where().field("").eq(1).and().field("age").lt(18).and().group().field("score")
+        query.find(data).fetch("name").where().field("").eq(1).and().field("age").lt(18).and().group().field("score")
             .gt(80).limit(11, 10).list(User.class);
 
         query.find(data).where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")
@@ -124,16 +124,16 @@ public class DslRepositoryQueryTest {
         queryFetch.sort();
 
         // 因为统计函数可能返回唯一值，所以这里还需要再考虑如何实现，先这样，由用户自行决定返回结果是单值还是多值
-        queryFetch.field("name").number(Integer.class);
-        queryFetch.field("name").intValue();
-        queryFetch.field("name").list();
+        queryFetch.fetch("name").number(Integer.class);
+        queryFetch.fetch("name").intValue();
+        queryFetch.fetch("name").list();
         integer = queryFetch.count("id").value(); // 统计函数可能返回唯一值
-        //        query.field("name").limit(1).number(Integer.class);
-        queryFetch.field("name").limit(1).intValue();
-        queryFetch.field("name").limit(1).value(Integer.class);
-        queryFetch.field("name").limit(1).single(Integer.class);
-        queryFetch.field("name").where().eq("id", 1).single(Integer.class);
-        queryFetch.field("name").where().eq("id", 1).number(Integer.class);
+        //        query.fetch("name").limit(1).number(Integer.class);
+        queryFetch.fetch("name").limit(1).intValue();
+        queryFetch.fetch("name").limit(1).value(Integer.class);
+        queryFetch.fetch("name").limit(1).single(Integer.class);
+        queryFetch.fetch("name").where().eq("id", 1).single(Integer.class);
+        queryFetch.fetch("name").where().eq("id", 1).number(Integer.class);
         //        queryFetch.where().eq("id", 1).number(Integer.class); // 这个是错误的，因为是返回多个数据
 
         queryFetch.max("age").number(Integer.class);
@@ -141,34 +141,34 @@ public class DslRepositoryQueryTest {
         queryFetch.max("age").list(Integer.class);
 
         integer = queryFetch.max("age").value();
-        str = queryFetch.field("name").limit(1).value();
+        str = queryFetch.fetch("name").limit(1).value();
 
         intList = queryFetch.max("age").list();
-        strList = queryFetch.field("name").limit(1).list();
+        strList = queryFetch.fetch("name").limit(1).list();
 
         queryFetch.count();
-        queryFetch.field("name").number(Integer.class);
+        //        queryFetch.field("name").number(Integer.class);
         queryFetch.fetch("name").number(Integer.class);
-        queryFetch.field("name").intNumber();
+        //        queryFetch.field("name").intNumber();
         queryFetch.fetch("name").intNumber();
-        queryFetch.field("sum(price)").decimal();
+        //        queryFetch.field("sum(price)").decimal();
         queryFetch.fetch("sum(price)").decimal();
-        queryFetch.field(AggregateFunction.SUM, "price").decimal();
+        //        queryFetch.field(AggregateFunction.SUM, "price").decimal();
         queryFetch.fetch(AggregateFunction.SUM, "price").decimal();
         queryFetch.sum("price").decimal();
-        queryFetch.field(AggregateFunction.COUNT, "id").intNumber();
+        //        queryFetch.field(AggregateFunction.COUNT, "id").intNumber();
         queryFetch.fetch(AggregateFunction.COUNT, "id").intNumber();
         queryFetch.count("id").intNumber();
-        queryFetch.field(AggregateFunction.COUNT, "id").longNumber();
+        //        queryFetch.field(AggregateFunction.COUNT, "id").longNumber();
         queryFetch.fetch(AggregateFunction.COUNT, "id").longNumber();
         queryFetch.count("id").intNumber();
 
         queryFetch.sum("id").longNumber();
 
-        queryFetch.field("count(*)").where().lt("age", 18).longNumber();
-        queryFetch.field(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
+        queryFetch.fetch("count(*)").where().lt("age", 18).longNumber();
+        queryFetch.fetch(AggregateFunction.COUNT, "id").where().lt("age", 18).longNumber();
 
-        queryFetch.field("id").field("name").field("age").distinct("username");
+        queryFetch.fetch("id").fetch("name").fetch("age").distinct("username");
 
         queryFetch.where().lt("age", 18).count();
 
@@ -183,27 +183,27 @@ public class DslRepositoryQueryTest {
         // FIXME  这里的endGroup是错误的
         queryFetch.where().eq("", 1).and().group().group().eq("", 1).endGroup().endGroup().endGroup();
 
-        queryFetch.field("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).endGroup()
+        queryFetch.fetch("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).endGroup()
             .limit(11, 10).list(User.class);
 
-        queryFetch.field("name").where().eq("", 1).and().lt("age", 18).and().group(t -> t.gt("score", 80)).limit(11, 10)
+        queryFetch.fetch("name").where().eq("", 1).and().lt("age", 18).and().group(t -> t.gt("score", 80)).limit(11, 10)
             .list(User.class);
 
-        queryFetch.field("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
+        queryFetch.fetch("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
             .list(User.class);
 
         queryFetch.where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).single(User.class);
 
-        queryFetch.field("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
+        queryFetch.fetch("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).limit(11, 10)
             .list(User.class);
 
-        queryFetch.field("name").where().field("");
+        queryFetch.fetch("name").where().field("");
 
         query.find("user") //
-            .field((Consumer<FetchField>) f -> f.name("password")) //
+            .fetch((Consumer<FetchField>) f -> f.name("password")) //
             .list();
         query.find("user") //
-            .field(f -> {
+            .fetch(f -> {
                 f.name("password");
                 f.name("age");
                 f.name("password").as("pwd");
@@ -215,7 +215,7 @@ public class DslRepositoryQueryTest {
             .list();
 
         query.find("user") //
-            .field((q, f) -> q.field( //
+            .fetch((q, f) -> q.fetch( //
                 f.name("username") //
                 , f.name("password") //
                 , f.name("age") //
@@ -230,21 +230,21 @@ public class DslRepositoryQueryTest {
             .sort().asc("age") //
             .list();
         query.find("user") //
-            .field((q, f) -> q.field(f.name("username")) //
-                .field(f.name("password")) //
-                .field(f.name("age")) //
-                .field(f.name("password").as("pwd")) //
-                .field(f.distinct().name("username").as("uname")) //
-                .field(f.avg().distinct().name("age").as("a")) //
-                .field(f.avg().name("age").as("a")) //
-                .field(f.avg("age").distinct()) //
+            .fetch((q, f) -> q.fetch(f.name("username")) //
+                .fetch(f.name("password")) //
+                .fetch(f.name("age")) //
+                .fetch(f.name("password").as("pwd")) //
+                .fetch(f.distinct().name("username").as("uname")) //
+                .fetch(f.avg().distinct().name("age").as("a")) //
+                .fetch(f.avg().name("age").as("a")) //
+                .fetch(f.avg("age").distinct()) //
             ) //
             .sort().asc("age") //
             .list();
 
-        queryFetch.field("name").where().field("").eq(1).and().field("age").lt(18).and().group().field("score").gt(80)
+        queryFetch.fetch("name").where().field("").eq(1).and().field("age").lt(18).and().group().field("score").gt(80)
             .limit(11, 10).list(User.class);
-        queryFetch.field("name").where().field("").eq(1).and().field("age").lt(18).and().group().field("score").gt(80)
+        queryFetch.fetch("name").where().field("").eq(1).and().field("age").lt(18).and().group().field("score").gt(80)
             .limit(11, 10).list(User.class);
 
         queryFetch.where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).sort().asc("name")

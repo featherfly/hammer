@@ -21,93 +21,93 @@ public class RepositorySqlQueryJoin5EqTest extends AbstractRepositorySqlQueryTes
 
     @Test
     void joinOnce() {
-        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fetch("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where().eq2("name", name1) //
             .list();
         assertEquals(list.size(), 1);
 
-        //        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        //        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
         //                .eq(1, "name", name1).list();
-        list = query.find("user").fields("username", "password", "age") //
+        list = query.find("user").fetch("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where() //
             .eq2(UserInfo::getName, name1) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .eq((r1, r2) -> r2.accept("name", name1)).list();
         assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .eq((r1, r2) -> r2.field("name").value(name1)).list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username").eq(username2).and().field("age").eq(age2)) //
             .list();
         assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username").eq(username2).and().fieldAsNumber("age").eq(age2)) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e1.field("name").eq(name2).and(e0.field("age").eq(age2))) //
             .list();
         assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e1.field("name").eq(name2).and(e0.fieldAsNumber("age").eq(age2))) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field(es -> es.get1(), "name").eq(name1).list();
         assertEquals(list.size(), 1);
     }
 
     @Test
     void joinTwice() {
-        List<Map<String, Serializable>> list = query.find("user").fields("username", "password", "age") //
+        List<Map<String, Serializable>> list = query.find("user").fetch("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where().eq2("name", name1) //
             .list();
         assertEquals(list.size(), 1);
 
-        //        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        //        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
         //                .eq(1, "name", name1).list();
-        list = query.find("user").fields("username", "password", "age") //
+        list = query.find("user").fetch("username", "password", "age") //
             .join("user_info").on("user_id") //
             .where() //
             .eq2(UserInfo::getName, name1) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .eq((r1, r2) -> r2.accept("name", name1)).list();
         assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .eq((r1, r2) -> r2.field("name").value(name1)).list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username").eq(username2).and().field("age").eq(age2)) //
             .list();
         assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e0.field("username").eq(username2).and().fieldAsNumber("age").eq(age2)) //
             .list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field(es -> es.get1(), "name").eq(name1).list();
         assertEquals(list.size(), 1);
 
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e1.field("name").eq(name2).and(e0.field("age").eq(age2))) //
             .list();
         assertEquals(list.size(), 1);
-        list = query.find("user").fields("username", "password", "age").join("user_info").on("user_id").where()
+        list = query.find("user").fetch("username", "password", "age").join("user_info").on("user_id").where()
             .field((e0, e1) -> e1.field("name").eq(name2).and(e0.fieldAsNumber("age").eq(age2))) //
             .list();
         assertEquals(list.size(), 1);
