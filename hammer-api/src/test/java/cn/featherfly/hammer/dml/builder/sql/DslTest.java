@@ -157,7 +157,8 @@ public class DslTest {
         query.find(User.class).max(User::getAge).value();
         query.find(User.class).count(User::getAge).value();
         query.find(User.class).fetch(AggregateFunction.AVG, User::getAge).value();
-        query.find(User.class).property(AggregateFunction.SUM, User::getAge).value();
+        query.find(User.class).fetch(AggregateFunction.SUM, User::getAge).value();
+        // query.find(User.class).property(AggregateFunction.SUM, User::getAge).value(); // 删掉property方法
 
         // sort
         query.find(User.class).sort().asc(User::getAge);
@@ -165,7 +166,7 @@ public class DslTest {
         query.find(User.class).avg(User::getAge).where().eq(User::getAge, 5).sort().asc(User::getAge);
 
         // fetch
-        query.find(User.class).property(User::getUserInfo); // IMPLSOON 这个方法调用后，直接关联查询
+        // query.find(User.class).property(User::getUserInfo); // 删掉property方法
         query.find(User.class).fetch(User::getUserInfo); // IMPLSOON 这个方法调用后，直接关联查询
 
         // query.find(User.class).property("name").number(Integer.class);
@@ -181,8 +182,8 @@ public class DslTest {
         //        query.find(User.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
         //                .limit(11, 10).list();
 
-        query.find(User.class).property(User::getUsername).where().eq(User::getId, 1).and().group().gt(User::getAge, 18)
-            .and().lt(User::getAge, 80).limit(11, 10).list();
+        //        query.find(User.class).property(User::getUsername).where().eq(User::getId, 1).and().group().gt(User::getAge, 18)
+        //            .and().lt(User::getAge, 80).limit(11, 10).list(); // 删掉property方法
         query.find(User.class).fetch(User::getUsername).where().eq(User::getId, 1).and().group().gt(User::getAge, 18)
             .and().lt(User::getAge, 80).limit(11, 10).list();
 
@@ -235,8 +236,11 @@ public class DslTest {
         //        query.find(User.class).property("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80)
         //                .limit(11, 10).list();
 
-        //        query.find(User.class).property("name").where().property("").eq(1).and().property("age").lt(18).and().group()
-        //                .property("score").gt(80).limit(11, 10).list();
+        query.find(User.class).where().property(User::getId).eq(1) //
+            .and().property(User::getAge).lt(18) //
+            .and().group().property(User::getAge).gt(80) //
+            .limit(11, 10) //
+            .list();
 
         //        query.find(User.class).where().eq(User::getId, 1).and().lt("age", 18).and().group().gt("score", 80).sort()
         //                .asc("name").limit(2).list();

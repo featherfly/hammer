@@ -79,7 +79,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      * {@inheritDoc}
      */
     @Override
-    public EntityQueryFetchedProperties<E> property(
+    public EntityQueryFetchedProperties<E> fetch(
         @SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
         return new EntitySqlQueryFetchedProperties<>(hammerConfig, factory, sqlPageFactory, queryRelation,
             propertyNames);
@@ -89,7 +89,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      * {@inheritDoc}
      */
     @Override
-    public <V> EntityQueryOneFetchedProperty<E, V> property(boolean distinct, SerializableFunction<E, V> propertyName) {
+    public <V> EntityQueryOneFetchedProperty<E, V> fetch(boolean distinct, SerializableFunction<E, V> propertyName) {
         return new EntitySqlQueryFetchedOneProperty<>(hammerConfig, factory, sqlPageFactory, queryRelation, distinct,
             propertyName);
     }
@@ -98,7 +98,7 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
      * {@inheritDoc}
      */
     @Override
-    public <V> EntityQueryOneFetchedProperty<E, V> property(AggregateFunction aggregateFunction, boolean distinct,
+    public <V> EntityQueryOneFetchedProperty<E, V> fetch(AggregateFunction aggregateFunction, boolean distinct,
         SerializableFunction<E, V> propertyName) {
         return new EntitySqlQueryFetchedOneProperty<>(hammerConfig, factory, sqlPageFactory, queryRelation,
             aggregateFunction, distinct, propertyName);

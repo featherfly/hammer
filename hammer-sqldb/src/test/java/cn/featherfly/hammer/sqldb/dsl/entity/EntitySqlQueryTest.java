@@ -118,9 +118,9 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertEquals(ignoreStrategy.get0().get(), IgnoreStrategy.EMPTY);
 
         query.find(User2.class) //
-            .property(User2::getId) //
+            .fetch(User2::getId) //
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
-            .property(User2::getUsername) //
+            .fetch(User2::getUsername) //
             .join(UserInfo2.class).on(UserInfo2::getUserId) //
             .where(); //
         query.find(User2.class) //
@@ -134,9 +134,9 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         assertTrue(users.size() > 0);
 
         users = query.find(User2.class) //
-            .property(User2::getId) //
+            .fetch(User2::getId) //
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
-            .property(User2::getUsername) //
+            .fetch(User2::getUsername) //
             .join(UserInfo2.class).on(UserInfo2::getUserId) //
             .where().eq(User2::getUsername, "").list();
         assertTrue(users.size() > 0);
@@ -424,7 +424,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         query.find(User.class).where().eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group()
             .gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
 
-        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
+        query.find(User.class).fetch(User::getUsername, User::getPwd, User::getAge).where()
             .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
             .lt(User::getAge, 60).list();
         /*
@@ -436,7 +436,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
          * "user_role").on("id", "role_id")
          * query.find("user_info").join("user_id", "user")
          */
-        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
+        query.find(User.class).fetch(User::getUsername, User::getPwd, User::getAge).where()
             .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
             .lt(User::getAge, 60).list();
     }
@@ -465,11 +465,11 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         query.find(User.class).where().property(User::getUsername).eq("yufei").and().property(User::getPwd).eq("123456")
             .and().group().gt(User::getAge, 18).and().property(User::getAge).lt(60).list();
 
-        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
+        query.find(User.class).fetch(User::getUsername, User::getPwd, User::getAge).where()
             .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
             .lt(User::getAge, 60).list();
 
-        query.find(User.class).property(User::getUsername, User::getPwd, User::getAge).where()
+        query.find(User.class).fetch(User::getUsername, User::getPwd, User::getAge).where()
             .eq(User::getUsername, "yufei").and().eq(User::getPwd, "123456").and().group().gt(User::getAge, 18).and()
             .lt(User::getAge, 60).list();
     }

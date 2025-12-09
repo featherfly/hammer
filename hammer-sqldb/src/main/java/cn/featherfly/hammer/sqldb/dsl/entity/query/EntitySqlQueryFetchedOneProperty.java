@@ -86,9 +86,9 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
         super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
         SerializedLambdaInfo info = LambdaUtils.getLambdaInfo(property);
         if (aggregateFunction != null) {
-            property(aggregateFunction, distinct, property);
+            fetch(aggregateFunction, distinct, property);
         } else {
-            property(distinct, property);
+            fetch(distinct, property);
         }
         valueType = (Class<V>) info.getPropertyType();
     }
@@ -100,9 +100,9 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      * @return the e
      */
     @Override
-    public EntityQueryFetchedProperties<E> property(String... propertyNames) {
+    public EntityQueryFetchedProperties<E> fetch(String... propertyNames) {
         return new EntitySqlQueryFetchedProperties<E>(hammerConfig, factory, sqlPageFactory, queryRelation)
-            .property(propertyNames);
+            .fetch(propertyNames);
     }
 
     /**
@@ -112,9 +112,9 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      * @return the e
      */
     @Override
-    public EntityQueryFetchedProperties<E> property(Collection<String> propertyNames) {
+    public EntityQueryFetchedProperties<E> fetch(Collection<String> propertyNames) {
         return new EntitySqlQueryFetchedProperties<E>(hammerConfig, factory, sqlPageFactory, queryRelation)
-            .property(propertyNames);
+            .fetch(propertyNames);
     }
 
     /**
@@ -125,9 +125,9 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      * @return the e
      */
     @Override
-    public EntityQueryFetchedProperties<E> property(boolean distinct, String propertyName) {
+    public EntityQueryFetchedProperties<E> fetch(boolean distinct, String propertyName) {
         return new EntitySqlQueryFetchedProperties<E>(hammerConfig, factory, sqlPageFactory, queryRelation)
-            .property(distinct, propertyName);
+            .fetch(distinct, propertyName);
     }
 
     /**
@@ -139,10 +139,10 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      * @return the e
      */
     @Override
-    public EntityQueryFetchedProperties<E> property(AggregateFunction aggregateFunction, boolean distinct,
+    public EntityQueryFetchedProperties<E> fetch(AggregateFunction aggregateFunction, boolean distinct,
         String propertyName) {
         return new EntitySqlQueryFetchedProperties<E>(hammerConfig, factory, sqlPageFactory, queryRelation)
-            .property(aggregateFunction, distinct, propertyName);
+            .fetch(aggregateFunction, distinct, propertyName);
     }
 
     /**
@@ -153,9 +153,9 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      * @return the e
      */
     @Override
-    public EntityQueryFetchedProperties<E> propertyAlias(String columnName, String alias) {
+    public EntityQueryFetchedProperties<E> fetchAlias(String columnName, String alias) {
         return new EntitySqlQueryFetchedProperties<E>(hammerConfig, factory, sqlPageFactory, queryRelation)
-            .propertyAlias(columnName, alias);
+            .fetchAlias(columnName, alias);
     }
 
     /**
@@ -165,9 +165,9 @@ public class EntitySqlQueryFetchedOneProperty<E, V> extends
      * @return the e
      */
     @Override
-    public EntityQueryFetchedProperties<E> propertyAlias(Map<String, String> columnNameMap) {
+    public EntityQueryFetchedProperties<E> fetchAlias(Map<String, String> columnNameMap) {
         return new EntitySqlQueryFetchedProperties<E>(hammerConfig, factory, sqlPageFactory, queryRelation)
-            .propertyAlias(columnNameMap);
+            .fetchAlias(columnNameMap);
     }
 
     /**

@@ -54,7 +54,7 @@ public class EntitySqlQueryFetchedProperties<E>
         SqlPageFactory sqlPageFactory, EntitySqlQueryRelation entitySqlQueryRelation,
         @SuppressWarnings("unchecked") SerializableFunction<E, ?>... properties) {
         super(hammerConfig, factory, sqlPageFactory, entitySqlQueryRelation);
-        property(properties);
+        fetch(properties);
     }
 
     /**

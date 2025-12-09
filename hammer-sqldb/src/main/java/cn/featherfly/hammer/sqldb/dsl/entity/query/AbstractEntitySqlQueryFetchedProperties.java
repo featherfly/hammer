@@ -103,9 +103,9 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P property(String... propertyNames) {
+    public P fetch(String... propertyNames) {
         for (String propertyName : propertyNames) {
-            property(false, propertyName);
+            fetch(false, propertyName);
         }
         return (P) this;
     }
@@ -117,22 +117,19 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P property(Collection<String> propertyNames) {
+    public P fetch(Collection<String> propertyNames) {
         for (String propertyName : propertyNames) {
-            property(false, propertyName);
+            fetch(false, propertyName);
         }
         return (P) this;
     }
 
     /**
-     * Property.
-     *
-     * @param propertyNames the property names
-     * @return the e
+     * {@inheritDoc}
      */
     @Override
-    public P property(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
-        return property(
+    public P fetch(@SuppressWarnings("unchecked") SerializableFunction<E, ?>... propertyNames) {
+        return fetch(
             Arrays.stream(propertyNames).map(LambdaUtils::getLambdaPropertyName).collect(Collectors.toList()));
     }
 
@@ -144,7 +141,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P property(boolean distinct, String propertyName) {
+    public P fetch(boolean distinct, String propertyName) {
         //        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
         //            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
         //        if (Lang.isEmpty(columnAndProperty.get1())) {
@@ -165,7 +162,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P property(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
+    public P fetch(AggregateFunction aggregateFunction, boolean distinct, String propertyName) {
         queryRelation.fetchProperty(0, aggregateFunction, distinct, propertyName);
         //        Tuple2<String, String> columnAndProperty = ClassMappingUtils.getColumnAndPropertyName(propertyName,
         //            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping());
@@ -179,31 +176,19 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
     }
 
     /**
-     * Property.
-     *
-     * @param <R> the generic type
-     * @param aggregateFunction the aggregate function
-     * @param distinct the distinct
-     * @param propertyName the property name
-     * @return the e
+     * {@inheritDoc}
      */
     @Override
-    public <R> P property(AggregateFunction aggregateFunction, boolean distinct,
-        SerializableFunction<E, R> propertyName) {
-        return property(aggregateFunction, distinct, LambdaUtils.getLambdaPropertyName(propertyName));
+    public <R> P fetch(AggregateFunction aggregateFunction, boolean distinct, SerializableFunction<E, R> propertyName) {
+        return fetch(aggregateFunction, distinct, LambdaUtils.getLambdaPropertyName(propertyName));
     }
 
     /**
-     * Property.
-     *
-     * @param <R> the generic type
-     * @param distinct the distinct
-     * @param propertyName the property name
-     * @return the e
+     * {@inheritDoc}
      */
     @Override
-    public <R> P property(boolean distinct, SerializableFunction<E, R> propertyName) {
-        return property(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
+    public <R> P fetch(boolean distinct, SerializableFunction<E, R> propertyName) {
+        return fetch(distinct, LambdaUtils.getLambdaPropertyName(propertyName));
     }
 
     /**
@@ -214,8 +199,8 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * @param alias the alias
      * @return the e
      */
-    public <R> P propertyAlias(SerializableFunction<E, R> propertyName, String alias) {
-        return propertyAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
+    public <R> P fetchAlias(SerializableFunction<E, R> propertyName, String alias) {
+        return fetchAlias(LambdaUtils.getLambdaPropertyName(propertyName), alias);
     }
 
     /**
@@ -226,7 +211,7 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P propertyAlias(String propertyName, String alias) {
+    public P fetchAlias(String propertyName, String alias) {
         //        queryRelation.getBuilder().addColumn(ClassMappingUtils.getColumnName(columnName,
         //            queryRelation.getEntityRelationTuple().getOrNull0().getClassMapping()), alias);
         queryRelation.fetchProperty(0, propertyName);
@@ -240,9 +225,9 @@ public abstract class AbstractEntitySqlQueryFetchedProperties<E, P extends Entit
      * @return the e
      */
     @SuppressWarnings("unchecked")
-    public P propertyAlias(Map<String, String> columnNameMap) {
+    public P fetchAlias(Map<String, String> columnNameMap) {
         columnNameMap.forEach((k, v) -> {
-            propertyAlias(k, v);
+            fetchAlias(k, v);
         });
         return (P) this;
     }
