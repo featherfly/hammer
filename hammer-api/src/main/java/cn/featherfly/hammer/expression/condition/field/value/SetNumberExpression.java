@@ -8,12 +8,28 @@
  */
 package cn.featherfly.hammer.expression.condition.field.value;
 
+import java.util.function.Predicate;
+
 /**
  * set number expression.
  *
  * @author zhongj
  * @param <V> the value type
  */
-public interface SetNumberExpression<V extends Number> extends SetValueExpression<V> {
+public interface SetNumberExpression<V extends Number> {
 
+    /**
+     * Value.
+     *
+     * @param value the value
+     */
+    void value(V value);
+
+    /**
+     * Value.
+     *
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     */
+    void value(V value, Predicate<V> ignoreStrategy);
 }

@@ -524,21 +524,22 @@ public class SqlQueryTest extends JdbcTestBase {
             assertNotEquals(userId, id);
         }
 
+        Integer id2 = null;
         long c1 = query.find("user") //
             .where() //
-            .ne("id", null) //
+            .ne("id", (Integer) null) //
             .count();
         long total = query.find("user").count();
         assertEquals(c1, total);
 
         long c2 = query.find("user") //
             .where() //
-            .ne("id", null, IgnoreStrategy.NONE) // 不忽略空值
+            .ne("id", id2, IgnoreStrategy.NONE) // 不忽略空值
             .count();
         assertEquals(c2, 0);
         c2 = query.find("user") //
             .where() //
-            .ne("id", null, v -> false) // 不忽略空值
+            .ne("id", id2, v -> false) // 不忽略空值
             .count();
         assertEquals(c2, 0);
     }

@@ -10,7 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.condition;
 
-import cn.featherfly.hammer.expression.condition.field.value.SetValueMatchStrategyExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetMatchStrategyValueExpression;
 
 /**
  * The Interface EqualsNotEqualsEntityExpression.
@@ -19,6 +19,6 @@ import cn.featherfly.hammer.expression.condition.field.value.SetValueMatchStrate
  * @param <T> the element type
  */
 public interface EqualsOrNotEqualsEntityPropertyExpression<T> extends EqualsOrNotEqualsEntityExpression<T>,
-        SetValueMatchStrategyExpression<T>, CompareEntityPropertyExpression<T> {
+        SetMatchStrategyValueExpression<T>, CompareEntityPropertyExpression<T> {
 
 }

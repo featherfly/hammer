@@ -25,7 +25,7 @@ public class DslEntityConditionStringTest {
 
     boolean ignore = true;
 
-    public void testEntityQueryJoinConditionCo() {
+    public void entityQueryJoinConditionCo() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).co("yufei").list();
 
@@ -83,7 +83,7 @@ public class DslEntityConditionStringTest {
             .co((e0, e1, e2, e3) -> e3.accept(Tree2::getName, "yufei")).list();
     }
 
-    public void testEntityQueryJoinConditionEw() {
+    public void entityQueryJoinConditionEw() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).ew("yufei").list();
 
@@ -142,7 +142,7 @@ public class DslEntityConditionStringTest {
             .ew((e0, e1, e2, e3) -> e3.accept(Tree2::getName, "yufei")).list();
     }
 
-    public void testEntityQueryJoinConditionSw() {
+    public void entityQueryJoinConditionSw() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).sw("yufei").list();
 
@@ -201,7 +201,7 @@ public class DslEntityConditionStringTest {
             .sw((e0, e1, e2, e3) -> e3.accept(Tree2::getName, "yufei")).list();
     }
 
-    public void testEntityQueryJoinConditionLk() {
+    public void entityQueryJoinConditionLk() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).lk("yufei").list();
 

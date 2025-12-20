@@ -13,6 +13,6 @@ package cn.featherfly.hammer.expression.condition.field.value;
  *
  * @author zhongj
  */
-public interface SetStringExpression extends SetValueMatchStrategyExpression<String> {
+public interface SetStringExpression extends SetMatchStrategyValueExpression<String> {
 
 }

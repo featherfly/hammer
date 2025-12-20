@@ -17,7 +17,7 @@ import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.hammer.expression.condition.field.value.SetValueMatchStrategyExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetMatchStrategyValueExpression;
 
 /**
  * The Interface EqualsOrNotEqualsRepositoryExpression.
@@ -33,7 +33,7 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
      * @param name the name
      * @return set value match strategy expression.
      */
-    <V> SetValueMatchStrategyExpression<V> field(String name);
+    <V> SetMatchStrategyValueExpression<V> field(String name);
 
     /**
      * get set value match strategy expression with name.
@@ -42,7 +42,7 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
      * @param field the field
      * @return set value match strategy expression.
      */
-    default <V> SetValueMatchStrategyExpression<V> field(Field field) {
+    default <V> SetMatchStrategyValueExpression<V> field(Field field) {
         return field(field.name());
     }
 
@@ -53,7 +53,7 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
      * @param field the field
      * @return set value match strategy expression.
      */
-    default <V> SetValueMatchStrategyExpression<V> field(AliasField field) {
+    default <V> SetMatchStrategyValueExpression<V> field(AliasField field) {
         return field(field.getAliasOrName());
     }
 
@@ -65,7 +65,7 @@ public interface EqualsOrNotEqualsRepositoryExpression extends CompareRepository
      * @param name the name
      * @return set value match strategy expression.
      */
-    default <T, V> SetValueMatchStrategyExpression<V> field(SerializableFunction<T, V> name) {
+    default <T, V> SetMatchStrategyValueExpression<V> field(SerializableFunction<T, V> name) {
         return field(LambdaUtils.getLambdaPropertyName(name));
     }
 

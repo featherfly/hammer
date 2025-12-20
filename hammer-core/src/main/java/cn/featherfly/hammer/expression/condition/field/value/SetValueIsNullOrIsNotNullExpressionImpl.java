@@ -19,7 +19,7 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
  *
  * @author zhongj
  */
-public class SetValueIsNullOrIsNotNullExpressionImpl implements SetValueIsNullOrIsNotNullExpression {
+public class SetValueIsNullOrIsNotNullExpressionImpl implements SetIsNullOrIsNotNullValueExpression {
 
     private Function<Boolean, PropertyMapping<?>> getPropertyMapping;
 

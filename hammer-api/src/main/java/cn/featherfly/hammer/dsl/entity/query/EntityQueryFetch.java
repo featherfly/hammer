@@ -1,10 +1,13 @@
 
 package cn.featherfly.hammer.dsl.entity.query;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.operator.DateFunction;
 import cn.featherfly.common.operator.Function;
+import cn.featherfly.hammer.dsl.entity.query.compatible.EntityQueryFetchCompat;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
 
 /**
@@ -14,6 +17,13 @@ import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
  * @param <E> the element type
  */
 public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQuery<E, EntityQueryFetch<E>> {
+
+    /**
+     * compatible query
+     *
+     * @return CompatibleEntityQueryFetch
+     */
+    EntityQueryFetchCompat<E> compat();
 
     //    /**
     //     * 批量添加查询出来的属性.
@@ -128,6 +138,9 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
     default <V> EntityQueryOneFetchedProperty<E, V> fetch(Function function, SerializableFunction<E, V> propertyName) {
         if (function instanceof AggregateFunction) {
             return fetch((AggregateFunction) function, propertyName);
+        } else if (function instanceof DateFunction) {
+            // NOIMPL 还未实现
+            throw new NotImplementedException();
         } else {
             // TODO 后续实现了相关Function再来修改
             throw new UnsupportedException();

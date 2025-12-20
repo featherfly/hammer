@@ -9,11 +9,26 @@
 package cn.featherfly.hammer.expression.condition.field.value;
 
 import java.time.LocalDateTime;
+import java.util.function.Predicate;
 
 /**
  * set LocalDateTime expression.
  *
  * @author zhongj
  */
-public interface SetLocalDateTimeExpression extends SetValueExpression<LocalDateTime> {
+public interface SetLocalDateTimeExpression {
+    /**
+     * Value.
+     *
+     * @param value the value
+     */
+    void value(LocalDateTime value);
+
+    /**
+     * Value.
+     *
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     */
+    void value(LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
 }

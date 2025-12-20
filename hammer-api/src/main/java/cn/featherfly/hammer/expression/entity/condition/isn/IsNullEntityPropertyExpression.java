@@ -2,7 +2,7 @@
 package cn.featherfly.hammer.expression.entity.condition.isn;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.hammer.expression.condition.field.value.SetValueIsNullOrIsNotNullExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetIsNullOrIsNotNullValueExpression;
 import cn.featherfly.hammer.expression.entity.condition.NullNotNullEntityExpression;
 
 /**
@@ -12,7 +12,7 @@ import cn.featherfly.hammer.expression.entity.condition.NullNotNullEntityExpress
  * @param <T> the value type
  */
 public interface IsNullEntityPropertyExpression<T>
-    extends SetValueIsNullOrIsNotNullExpression, NullNotNullEntityExpression<T> {
+    extends SetIsNullOrIsNotNullValueExpression, NullNotNullEntityExpression<T> {
 
     /**
      * entity is null function property expression.

@@ -17,13 +17,15 @@ import cn.featherfly.common.function.serializable.SerializableToStringFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.hammer.expression.condition.field.MatchStringExpression;
+import cn.featherfly.hammer.expression.condition.field.MatchStringSupplierExpression;
 
 /**
  * The Interface MatchStringRepositoryExpression.
  *
  * @author zhongj
  */
-public interface MatchStringRepositoryExpression extends MatchStringExpression, MatchStringRepositoryFieldExpression {
+public interface MatchStringRepositoryExpression
+    extends MatchStringExpression, MatchStringSupplierExpression, MatchStringRepositoryFieldExpression {
 
     /**
      * match value. 匹配value.
@@ -74,9 +76,12 @@ public interface MatchStringRepositoryExpression extends MatchStringExpression, 
         accept(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    default void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+    default void accept(SerializableStringSupplier property, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
-        accept(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy, ignoreStrategy);
+        accept(LambdaUtils.getLambdaPropertyName(property), property.get(), matchStrategy, ignoreStrategy);
     }
 }

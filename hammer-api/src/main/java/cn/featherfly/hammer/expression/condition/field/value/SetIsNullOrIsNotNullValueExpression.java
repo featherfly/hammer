@@ -6,7 +6,7 @@ package cn.featherfly.hammer.expression.condition.field.value;
  *
  * @author zhongj
  */
-public interface SetValueIsNullOrIsNotNullExpression {
+public interface SetIsNullOrIsNotNullValueExpression {
 
     /**
      * Value.

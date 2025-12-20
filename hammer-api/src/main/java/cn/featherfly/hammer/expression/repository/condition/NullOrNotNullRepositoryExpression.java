@@ -3,14 +3,15 @@ package cn.featherfly.hammer.expression.repository.condition;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.repository.Field;
-import cn.featherfly.hammer.expression.condition.field.value.SetValueIsNullOrIsNotNullExpression;
+import cn.featherfly.hammer.expression.condition.NullOrNotNullExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetIsNullOrIsNotNullValueExpression;
 
 /**
  * The Interface NullOrNotNullRepositoryExpression.
  *
  * @author zhongj
  */
-public interface NullOrNotNullRepositoryExpression {
+public interface NullOrNotNullRepositoryExpression extends NullOrNotNullExpression {
 
     /**
      * repository is not null field expression.
@@ -18,17 +19,17 @@ public interface NullOrNotNullRepositoryExpression {
      * @param name the name
      * @return repository is not null field expression
      */
-    SetValueIsNullOrIsNotNullExpression field(String name);
+    SetIsNullOrIsNotNullValueExpression field(String name);
 
     /**
      * repository is not null field expression.
      *
-     * @param <T>  the generic type
-     * @param <R>  the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param name the name
      * @return repository is not null field expression
      */
-    <T, R> SetValueIsNullOrIsNotNullExpression field(SerializableFunction<T, R> name);
+    <T, R> SetIsNullOrIsNotNullValueExpression field(SerializableFunction<T, R> name);
 
     /**
      * is null value or is not null value.
@@ -52,25 +53,8 @@ public interface NullOrNotNullRepositoryExpression {
     /**
      * is null value or is not null value.
      *
-     * @param name the name
-     */
-    default void accept(String name) {
-        accept(name, true);
-    }
-
-    /**
-     * is null value or is not null value.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    void accept(String name, Boolean value);
-
-    /**
-     * is null value or is not null value.
-     *
-     * @param <E>      the element type
-     * @param <R>      the generic type
+     * @param <E> the element type
+     * @param <R> the generic type
      * @param property the property
      */
     default <E, R> void accept(SerializableFunction<E, R> property) {
@@ -80,10 +64,10 @@ public interface NullOrNotNullRepositoryExpression {
     /**
      * is null value or is not null value.
      *
-     * @param <E>      the element type
-     * @param <R>      the generic type
+     * @param <E> the element type
+     * @param <R> the generic type
      * @param property the property
-     * @param value    the value
+     * @param value the value
      */
     <E, R> void accept(SerializableFunction<E, R> property, Boolean value);
 }

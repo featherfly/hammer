@@ -22,8 +22,6 @@ import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-import cn.featherfly.common.tuple.Tuple;
-
 import cn.featherfly.common.db.SqlUtils;
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.function.CharPredicate;
@@ -38,6 +36,7 @@ import cn.featherfly.common.operator.ComparisonOperator;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Execution;
 import cn.featherfly.common.repository.Field;
+import cn.featherfly.common.tuple.Tuple;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
@@ -354,6 +353,102 @@ public abstract class AbstractMulitiRepositorySqlConditionsExpressionBase<C exte
      */
     @Override
     public <R extends Serializable> L ne(String name, R value, Predicate<R> ignoreStrategy) {
+        return ne(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ne(String name, N value) {
+        return ne(name, value, getIgnoreStrategy(), repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <N extends Number> L ne(String name, N value, Predicate<N> ignoreStrategy) {
+        return ne(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ne(String name, E value) {
+        return ne(name, value, getIgnoreStrategy(), repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <E extends Enum<E>> L ne(String name, E value, Predicate<E> ignoreStrategy) {
+        return ne(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ne(String name, D value) {
+        return ne(name, value, getIgnoreStrategy(), repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <D extends Date> L ne(String name, D value, Predicate<D> ignoreStrategy) {
+        return ne(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String name, LocalTime value) {
+        return ne(name, value, getIgnoreStrategy(), repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+        return ne(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String name, LocalDate value) {
+        return ne(name, value, getIgnoreStrategy(), repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+        return ne(name, value, ignoreStrategy, repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String name, LocalDateTime value) {
+        return ne(name, value, getIgnoreStrategy(), repositoryAlias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public L ne(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
         return ne(name, value, ignoreStrategy, repositoryAlias);
     }
 

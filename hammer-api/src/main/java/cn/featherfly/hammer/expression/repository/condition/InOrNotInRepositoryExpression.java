@@ -8,200 +8,19 @@ import java.util.function.Predicate;
 
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.Field;
+import cn.featherfly.hammer.expression.condition.InOrNotInExpression;
 
 /**
  * The Interface InNotInRepositoryExpression.
  *
  * @author zhongj
  */
-public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldExpression {
+public interface InOrNotInRepositoryExpression extends InOrNotInExpression, InOrNotInRepositoryFieldExpression {
 
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
-     * @param name  the name
-     * @param value the value
-     */
-    <R> void accept(String name, R value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    <R> void accept(String name, R value, Predicate<R> ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name          the name
-     * @param value         the value
-     * @param matchStrategy the match strategy
-     */
-    void accept(String name, String value, MatchStrategy matchStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    void accept(String name, int value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String name, int value, IntPredicate ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    void accept(String name, long value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String name, long value, LongPredicate ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    void accept(String name, double value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String name, double value, DoublePredicate ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param <R>   the generic type
-     * @param name  the name
-     * @param value the value
-     */
-    <R> void accept(String name, @SuppressWarnings("unchecked") R... value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name          the name
-     * @param value         the value
-     * @param matchStrategy the match strategy
-     */
-    void accept(String name, String[] value, MatchStrategy matchStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String name, String[] value, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    void accept(String name, int... value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    void accept(String name, long... value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    <R> void accept(String name, R[] value, Predicate<R[]> ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String name, int[] value, Predicate<int[]> ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String name, long[] value, Predicate<long[]> ignoreStrategy);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param <R>   the generic type
-     * @param name  the name
-     * @param value the value
-     */
-    <R> void accept(String name, Collection<R> value);
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    <R> void accept(String name, Collection<R> value, Predicate<Collection<R>> ignoreStrategy);
-
-    // ----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
-     *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      */
@@ -212,9 +31,9 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <R> void accept(Field field, R value, Predicate<R> ignoreStrategy) {
@@ -224,8 +43,8 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field         the field
-     * @param value         the value
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy) {
@@ -235,9 +54,9 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
@@ -257,8 +76,8 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, int value, IntPredicate ignoreStrategy) {
@@ -278,8 +97,8 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, long value, LongPredicate ignoreStrategy) {
@@ -299,8 +118,8 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, double value, DoublePredicate ignoreStrategy) {
@@ -310,7 +129,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      */
@@ -321,8 +140,8 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field         the field
-     * @param value         the value
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     default void accept(Field field, String[] value, MatchStrategy matchStrategy) {
@@ -332,9 +151,9 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, String[] value, MatchStrategy matchStrategy, Predicate<String[]> ignoreStrategy) {
@@ -364,9 +183,9 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <R> void accept(Field field, R[] value, Predicate<R[]> ignoreStrategy) {
@@ -376,8 +195,8 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, int[] value, Predicate<int[]> ignoreStrategy) {
@@ -387,8 +206,8 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, long[] value, Predicate<long[]> ignoreStrategy) {
@@ -398,7 +217,7 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      */
@@ -409,9 +228,9 @@ public interface InOrNotInRepositoryExpression extends InOrNotInRepositoryFieldE
     /**
      * values in or not values in. 包含指定，sql中的in或者不包含指定，sql中的not in.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <R> void accept(Field field, Collection<R> value, Predicate<Collection<R>> ignoreStrategy) {

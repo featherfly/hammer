@@ -9,15 +9,6 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
-import cn.featherfly.common.function.serializable.SerializableIntSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLongSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
 import cn.featherfly.common.function.serializable.SerializableToIntFunction;
@@ -235,80 +226,80 @@ public abstract class AbstractGreatEqualsRepositoryExpression<C extends Conditio
         expression.ge(index, name, value, ignoreStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <N extends Number> void accept(SerializableNumberSupplier<N> property, N value,
-        Predicate<N> ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
-        Predicate<LocalDateTime> ignoreStrategy) {
-        expression.ge(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
-        expression.ge(index, property, value, matchStrategy, ignoreStrategy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> void accept(SerializableNumberSupplier<N> property, N value,
+    //        Predicate<N> ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+    //        Predicate<LocalDateTime> ignoreStrategy) {
+    //        expression.ge(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+    //        Predicate<String> ignoreStrategy) {
+    //        expression.ge(index, property, value, matchStrategy, ignoreStrategy);
+    //    }
 
     // ----------------------------------------------------------------------------------------------------------------
 
