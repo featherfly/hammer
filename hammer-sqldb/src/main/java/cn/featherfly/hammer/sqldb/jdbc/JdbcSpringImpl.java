@@ -128,7 +128,8 @@ public class JdbcSpringImpl extends AbstractJdbc {
     public <T> T execute(ConnectionCallback<T> callback) {
         Connection conn = null;
         try {
-            conn = new ConnectionProxy(getConnection()) {
+            conn = getConnection();
+            return callback.doInConnection(new ConnectionProxy(conn) {
                 /**
                  * {@inheritDoc}
                  */
@@ -137,8 +138,7 @@ public class JdbcSpringImpl extends AbstractJdbc {
                     // 防止外部回调手动调用connection.close()
                     releaseConnection(proxy);
                 }
-            };
-            return callback.doInConnection(conn, manager);
+            }, manager);
         } catch (SQLException e) {
             throw new JdbcException(e);
         } finally {
