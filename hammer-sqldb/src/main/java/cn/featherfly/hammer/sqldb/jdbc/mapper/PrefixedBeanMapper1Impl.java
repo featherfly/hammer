@@ -20,6 +20,7 @@ import cn.featherfly.common.tuple.Tuples;
  * PrefixedBeanMapper1Impl.
  *
  * @author zhongj
+ * @param <T1> the generic type
  */
 public class PrefixedBeanMapper1Impl<T1> implements PrefixedBeanMapper1<T1> {
 
@@ -32,7 +33,6 @@ public class PrefixedBeanMapper1Impl<T1> implements PrefixedBeanMapper1<T1> {
     /**
      * Instantiates a new prefixed bean mapper 1 impl.
      *
-     * @param manager the manager
      * @param prefix the prefix
      * @param type the type
      * @param getRowMapper the get row mapper

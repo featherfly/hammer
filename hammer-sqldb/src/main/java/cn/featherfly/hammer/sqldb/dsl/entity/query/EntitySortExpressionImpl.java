@@ -18,6 +18,8 @@ import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression;
  * SortExpression.
  *
  * @author zhongj
+ * @param <E> the element type
+ * @param <S> the generic type
  */
 public class EntitySortExpressionImpl<E, S extends EntitySortedExpression<E, S>>
     implements EntitySortExpression<E, S>, EntitySortedExpression<E, S> {
@@ -27,8 +29,10 @@ public class EntitySortExpressionImpl<E, S extends EntitySortedExpression<E, S>>
     private final SortBuilder sortBuilder;
 
     /**
-     * @param tableAlias
-     * @param sortBuilder
+     * Instantiates a new entity sort expression impl.
+     *
+     * @param tableAlias the table alias
+     * @param sortBuilder the sort builder
      */
     public EntitySortExpressionImpl(String tableAlias, SortBuilder sortBuilder) {
         super();

@@ -33,6 +33,7 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
      * @param classMapping the class mapping
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param databaseMetadata the database metadata
+     * @param batchSize the batch size
      * @param validator the validator
      */
     public UpsertOperate(Jdbc jdbc, JdbcClassMapping<T> classMapping, SqlTypeMappingManager sqlTypeMappingManager,

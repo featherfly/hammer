@@ -40,12 +40,11 @@ public class PrefixedBeanMapper5Impl<T1, T2, T3, T4, T5> implements PrefixedBean
     /**
      * Instantiates a new prefixed bean mapper 5 impl.
      *
-     * @param manager the manager
      * @param types the types
      * @param prefixes the prefixes
+     * @param getRowMapper the get row mapper
      */
-    public PrefixedBeanMapper5Impl(List<Class<?>> types,
-        Tuple5<String, String, String, String, String> prefixes,
+    public PrefixedBeanMapper5Impl(List<Class<?>> types, Tuple5<String, String, String, String, String> prefixes,
         BiFunction<Class<?>, String, RowMapper<?>> getRowMapper) {
         super();
         this.types = types;

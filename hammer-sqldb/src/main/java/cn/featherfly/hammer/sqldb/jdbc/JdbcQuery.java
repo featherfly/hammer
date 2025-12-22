@@ -80,7 +80,9 @@ public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle
     /**
      * paramed query.
      *
+     * @param <E> the element type
      * @param sql sql
+     * @param extractor the extractor
      * @param args args
      * @return ParamedQueryExecutor
      */
@@ -89,7 +91,9 @@ public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle
     /**
      * paramed query.
      *
+     * @param <E> the element type
      * @param sql sql
+     * @param extractor the extractor
      * @param args args
      * @return ParamedQueryExecutor
      */
@@ -98,12 +102,13 @@ public interface JdbcQuery extends JdbcQueryList, JdbcQueryEach, JdbcQuerySingle
     /**
      * paramed query.
      *
+     * @param <E> the element type
      * @param sql sql
+     * @param extractor the extractor
      * @param args args
      * @return ParamedQueryExecutor
      */
-    default <E> E query(NamedParamSql sql, SqlResultSetExtractor<E> extractor,
-        Map<String, Serializable> args) {
+    default <E> E query(NamedParamSql sql, SqlResultSetExtractor<E> extractor, Map<String, Serializable> args) {
         Execution execution = sql.getExecution(args);
         return query(execution.getExecution(), extractor, execution.getParams());
     }
