@@ -11,9 +11,6 @@ package cn.featherfly.hammer.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import org.springframework.core.type.classreading.MetadataReader;
 
 import cn.featherfly.common.bean.PropertyAccessorFactory;
@@ -61,13 +58,11 @@ public class EntityPreparer {
      */
     public EntityPreparer prepare() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        for (MetadataReader metadataReader : metadataReaders) {
-            if (metadataReader.getAnnotationMetadata().hasAnnotation(Table.class.getName())
-                || metadataReader.getAnnotationMetadata().hasAnnotation(Entity.class.getName())) {
+        for (final MetadataReader metadataReader : metadataReaders) {
+            if (EntityUtils.isEntity(metadataReader)) {
                 try {
                     Class<?> type = ClassUtils.forName(metadataReader.getClassMetadata().getClassName());
                     propertyAccessorFactory.create(type, classLoader);
-
                 } catch (Exception e) {
                     throw new HammerException(e);
                 }

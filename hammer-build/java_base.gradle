@@ -8,6 +8,10 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs << "-parameters"
     //options.compilerArgs << "-verbose"
+    int runJdkVersion = Integer.parseInt(ant.properties['java.version'].split("\\.")[0])
+    if (runJdkVersion > 8) {
+        options.release.set(Integer.parseInt(targetVersion))
+    }
 }
 tasks.withType(Javadoc) {
     options.encoding = "UTF-8"
@@ -19,5 +23,6 @@ jar {
     manifest.attributes 'Build-By': "zhong ji"
     manifest.attributes 'Build-Tool' : "gradle " + gradle.gradleVersion
     manifest.attributes 'Build-Jdk' : ant.properties['java.runtime.version']
+    manifest.attributes 'Java-Version' : targetVersion
     manifest.attributes 'Bundle-License': 'http://www.apache.org/licenses/LICENSE-2.0'
 }
