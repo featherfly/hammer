@@ -50,10 +50,13 @@ public class BeanRowMapper<T> extends AbstractRowMapper<T> {
     /** The logger. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /** The property accessor. */
     protected final PropertyAccessor<T> propertyAccessor;
 
+    /** The manager. */
     protected final SqlTypeMappingManager manager;
 
+    /** The no property match strategy. */
     protected final NoPropertyMatchStrategy noPropertyMatchStrategy;
 
     /** The properties. */
@@ -183,8 +186,8 @@ public class BeanRowMapper<T> extends AbstractRowMapper<T> {
      * Inits the property.
      *
      * @param rs the rs
-     * @param rsmd the rsmd
      * @param columnIndex the column index
+     * @param columnName the column name
      * @param columnLabel the column label
      * @param field the field
      * @param mappingDebugMessage the mapping debug message
@@ -208,6 +211,7 @@ public class BeanRowMapper<T> extends AbstractRowMapper<T> {
      * @param property the property
      * @param column the column
      * @param field the field
+     * @return true, if successful
      */
     protected boolean assertProperty(Property<?, ?> property, String column, String field) {
         if (property != null) {

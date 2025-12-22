@@ -47,6 +47,7 @@ public class MapRowMapper extends AbstractRowMapper<Map<String, Serializable>> {
      * Instantiates a new map row mapper.
      *
      * @param manager the manager
+     * @param prefix the prefix
      */
     public MapRowMapper(SqlTypeMappingManager manager, String prefix) {
         super();

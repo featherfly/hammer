@@ -930,7 +930,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .in(User::getId, ids, IgnoreStrategy.NONE) // 不忽略
             .count();
         assertEquals(c, 0);
-        ids = Lang.array(1, 2);
+        ids = new Integer[] { 1, 2 };
         c = query.find(User.class) //
             .where() //
             .in(User::getId, ids) // 不忽略
@@ -959,7 +959,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
             .in(User::getId, idsInt, IgnoreStrategy.NONE) // 不忽略
             .count();
         assertEquals(c, 0);
-        idsInt = new int[] { 1, 2, 3 };
+        idsInt = Lang.array(1, 2, 3);
         c = query.find(User.class) //
             .where() //
             .in(User::getId, idsInt) // 不忽略

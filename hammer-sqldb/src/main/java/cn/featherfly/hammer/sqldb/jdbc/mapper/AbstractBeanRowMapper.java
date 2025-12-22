@@ -10,15 +10,14 @@ package cn.featherfly.hammer.sqldb.jdbc.mapper;
 
 import java.util.Locale;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.hammer.entity.EntityUtils;
 
 /**
  * AbstractBeanRowMapper.
  *
  * @author zhongj
+ * @param <T> the generic type
  */
 public abstract class AbstractBeanRowMapper<T> implements RowMapper<T> {
 
@@ -28,13 +27,20 @@ public abstract class AbstractBeanRowMapper<T> implements RowMapper<T> {
      *
      * @param name the original name
      * @return the converted name
-     * @since 4.2
+     * @since 0.7.4
      */
     protected String lowerCaseName(String name) {
         return name.toLowerCase(Locale.US);
     }
 
+    /**
+     * Checks if is entity.
+     *
+     * @param type the type
+     * @return true, if is entity
+     * @since 0.7.4
+     */
     protected boolean isEntity(Class<?> type) {
-        return type.getAnnotation(Table.class) != null || type.getAnnotation(Entity.class) != null;
+        return EntityUtils.isEntity(type);
     }
 }

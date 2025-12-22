@@ -48,6 +48,7 @@ public class JdbcSpringImpl extends AbstractJdbc {
      * @param metadata the metadata
      * @param sqlTypeMappingManager the sql type mapping manager
      * @param propertyAccessorFactory the instantiator factory
+     * @param beanRowMapperFactory the bean row mapper factory
      */
     public JdbcSpringImpl(DataSource dataSource, Dialect dialect, DatabaseMetadata metadata,
         SqlTypeMappingManager sqlTypeMappingManager, PropertyAccessorFactory propertyAccessorFactory,

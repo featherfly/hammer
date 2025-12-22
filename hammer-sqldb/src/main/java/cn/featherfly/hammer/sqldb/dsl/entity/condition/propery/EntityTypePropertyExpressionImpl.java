@@ -52,13 +52,11 @@ import cn.featherfly.hammer.sqldb.dsl.entity.condition.InternalMulitiEntityCondi
  * @author zhongj
  * @param <T> the entity type
  * @param <P> the property type
- * @param <F> the property
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpression,
-    L extends LogicExpression<C, L>> extends AbstractMulitiEntityGenericPropertyExpression<T, P, C, L>
-    implements EntityTypePropertyExpression<P, C, L> {
+public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpression, L extends LogicExpression<C, L>>
+    extends AbstractMulitiEntityGenericPropertyExpression<T, P, C, L> implements EntityTypePropertyExpression<P, C, L> {
 
     // TODO 多级join在这里把关系确定，确定property对应的entity的index,
 
@@ -72,8 +70,8 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
      * @param queryRelation the query relation
      */
     public EntityTypePropertyExpressionImpl(int index, SerializableFunction<T, P> name,
-        InternalMulitiEntityCondition<L> expression,
-        JdbcMappingFactory factory, EntitySqlRelation<?, ?> queryRelation) {
+        InternalMulitiEntityCondition<L> expression, JdbcMappingFactory factory,
+        EntitySqlRelation<?, ?> queryRelation) {
         super(new AtomicInteger(index), name, expression, factory, queryRelation);
         init();
     }
@@ -228,8 +226,7 @@ public class EntityTypePropertyExpressionImpl<T, P, C extends ConditionExpressio
         L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(SerializableFunction<P, R> name,
             Consumer<EntityTypePropertyExpression<R, C2, L2>> entityTypePropertyExpressionConsumer) {
         propertyList.add(name);
-        return expression.property(index.incrementAndGet(), propertyList,
-            entityTypePropertyExpressionConsumer);
+        return expression.property(index.incrementAndGet(), propertyList, entityTypePropertyExpressionConsumer);
     }
 
     /**

@@ -24,15 +24,19 @@ public class ValidatorConfigImpl implements ValidatorConfig {
     private ExecutableValidator executableValidator;
 
     /**
-     * @param validator
+     * Instantiates a new validator config impl.
+     *
+     * @param validator the validator
      */
     public ValidatorConfigImpl(Validator validator) {
         this(validator, validator.forExecutables());
     }
 
     /**
-     * @param validator
-     * @param executableValidator
+     * Instantiates a new validator config impl.
+     *
+     * @param validator the validator
+     * @param executableValidator the executable validator
      */
     public ValidatorConfigImpl(Validator validator, ExecutableValidator executableValidator) {
         super();

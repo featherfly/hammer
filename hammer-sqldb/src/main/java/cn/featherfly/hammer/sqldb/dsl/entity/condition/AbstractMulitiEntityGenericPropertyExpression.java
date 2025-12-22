@@ -18,13 +18,11 @@ import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlRelation;
  * @author zhongj
  * @param <E> the element type
  * @param <P> the element type
- * @param <F> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */
-public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P,
-    C extends ConditionExpression, L extends LogicExpression<C, L>>
-    extends AbstractMulitiEntityPropertyExpression<E, C, L> {
+public abstract class AbstractMulitiEntityGenericPropertyExpression<E, P, C extends ConditionExpression,
+    L extends LogicExpression<C, L>> extends AbstractMulitiEntityPropertyExpression<E, C, L> {
 
     /**
      * Instantiates a new abstract muliti entity generic property expression.

@@ -168,6 +168,7 @@ public interface Jdbc extends JdbcQuery, JdbcProcedure, JdbcUpdate, JdbcQueryPro
      *
      * @param tableName the table name
      * @param columnNames the column names
+     * @param batchSize the batch size
      * @param args the args
      * @return insert row count
      */
