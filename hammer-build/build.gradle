@@ -1,9 +1,13 @@
+plugins {
+    id 'org.jreleaser' version '1.21.0'
+}
+
 allprojects {
     apply from: rootDir.getAbsolutePath() +  '/java_base.gradle'   
-    apply from: rootDir.getAbsolutePath() +  '/maven_push.gradle'
+    apply from: rootDir.getAbsolutePath() +  '/maven_push_jreleaser.gradle'
     
     ext {
-        lv = '2.24.2'
+        lv = '2.25.3'
         slf4jimpl = "org.apache.logging.log4j:log4j-slf4j-impl:${lv}"
         //log4japi = "org.apache.logging.log4j:log4j-api:${lv}"
         log4jcore = "org.apache.logging.log4j:log4j-core:${lv}"
@@ -16,8 +20,8 @@ allprojects {
 //        api group: 'cn.featherfly.common', name: 'common-api', version: '0.5.0'
         api group: 'cn.featherfly.common', name: 'common-core', version: '1.15.2'
 
-        testImplementation group: 'org.testng', name: 'testng', version: '7.5.1'
-        testImplementation group: 'com.google.inject', name: 'guice', version: '4.2.3'
+        testImplementation 'org.testng:testng:7.5.1'
+        testImplementation 'com.google.inject:guice:4.2.3'
         testImplementation slf4jimpl
         testImplementation log4jcore
     }

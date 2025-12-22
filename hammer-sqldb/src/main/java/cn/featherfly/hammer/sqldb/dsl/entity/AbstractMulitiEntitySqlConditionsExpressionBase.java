@@ -4867,7 +4867,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param classMapping the class mapping
      * @param property the property
      * @param value the value
-     * @param queryAlias the query alias
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4898,7 +4897,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param classMapping the class mapping
      * @param property the property
      * @param value the value
-     * @param queryAlias the query alias
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -4929,7 +4927,6 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param classMapping the class mapping
      * @param property the property
      * @param value the value
-     * @param queryAlias the query alias
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */
@@ -5606,7 +5603,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      *
      * @param classMapping the class mapping
      * @param property the property
-     * @param queryAlias the query alias
+     * @param value the value
      * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
@@ -5902,8 +5899,8 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
      * @param classMapping the class mapping
      * @param property the property
      * @param value the value
-     * @param matchStrategy the match strategy
      * @param queryAlias the query alias
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return the l
      */

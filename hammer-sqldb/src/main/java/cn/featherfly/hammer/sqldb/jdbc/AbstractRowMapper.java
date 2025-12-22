@@ -51,6 +51,7 @@ public abstract class AbstractRowMapper<E> implements RowMapper<E> {
      * @param res the res
      * @param rowNum the row num
      * @return the e
+     * @throws SQLException the SQL exception
      */
     public abstract E mapRow(ResultSet res, int rowNum) throws SQLException;
 

@@ -149,7 +149,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * save or update entity.
      *
-     * @param <E> the element type
      * @param entity the entity
      * @return effect data row num
      */
@@ -158,7 +157,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * save or update entity.
      *
-     * @param <E> the element type
      * @param entity the entity
      * @param updatable the updatable
      * @return effect data row num
@@ -168,7 +166,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity array.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @return effect data row num
      */
@@ -183,7 +180,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity array.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @param updatable the updatable
      * @return effect data row num
@@ -199,7 +195,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity array.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @param batchSize the batch size
      * @return effect data row num
@@ -215,7 +210,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity array.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @param batchSize the batch size
      * @param updatable the updatable
@@ -232,7 +226,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity list.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @return effect data row num
      */
@@ -241,7 +234,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity list.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @param updatable the updatable
      * @return effect data row num
@@ -251,7 +243,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity list.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @param batchSize the batch size
      * @return effect data row num
@@ -261,7 +252,6 @@ public interface GenericHammer<E, ID extends Serializable> {
     /**
      * batch save or update entity list.
      *
-     * @param <E> the element type
      * @param entities the entities
      * @param batchSize the batch size
      * @param updatable the updatable

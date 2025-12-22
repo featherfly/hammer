@@ -86,7 +86,7 @@ public class HammerConfigImpl implements HammerConfig {
     /**
      * Sets the validator.
      *
-     * @param validator the new validator
+     * @param validatorConfig the validator config
      * @return the hammer config impl
      */
     public HammerConfigImpl setValidatorConfig(ValidatorConfig validatorConfig) {

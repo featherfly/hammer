@@ -26,7 +26,7 @@ public interface BeanRowMapperFactory {
      * @param type the type
      * @param manager the manager
      * @param prefix the prefix
-     * @return the row mapper< t>
+     * @return the row mapper&lt;T&gt;
      */
     <T> RowMapper<T> createRowMapper(PropertyAccessor<T> type, SqlTypeMappingManager manager, String prefix);
 }
