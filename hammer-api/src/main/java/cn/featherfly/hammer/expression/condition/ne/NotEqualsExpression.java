@@ -2,6 +2,10 @@
 package cn.featherfly.hammer.expression.condition.ne;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
@@ -27,7 +31,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -36,7 +40,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -45,8 +49,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -55,7 +59,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -64,8 +68,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -74,7 +78,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -83,8 +87,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -93,7 +97,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -102,8 +106,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -112,7 +116,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -123,8 +127,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -135,8 +139,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -147,8 +151,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the query policy
      * @return LogicExpression
      */
@@ -157,9 +161,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -170,9 +174,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -181,8 +185,128 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>   the generic type
-     * @param name  the name
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    <N extends Number> L ne(String name, N value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <N extends Number> L ne(String name, N value, Predicate<N> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ne(String name, E value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <E extends Enum<E>> L ne(String name, E value, Predicate<E> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    <D extends Date> L ne(String name, D value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    <D extends Date> L ne(String name, D value, Predicate<D> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(String name, LocalTime value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(String name, LocalDate value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @return LogicExpression
+     */
+    L ne(String name, LocalDateTime value);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return LogicExpression
+     */
+    L ne(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
+
+    /**
+     * not equals. 不等于.
+     *
+     * @param <R> the generic type
+     * @param name the name
      * @param value the value
      * @return LogicExpression
      */
@@ -191,9 +315,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -204,9 +328,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param name           the name
-     * @param value          the value
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -217,7 +341,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -229,9 +353,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -242,9 +366,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -266,8 +390,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -278,8 +402,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -290,8 +414,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field         the field
-     * @param value         the value
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -302,9 +426,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -315,9 +439,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -328,7 +452,7 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>   the generic type
+     * @param <R> the generic type
      * @param field the field
      * @param value the value
      * @return LogicExpression
@@ -340,9 +464,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -353,9 +477,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param <R>            the generic type
-     * @param field          the field
-     * @param value          the value
+     * @param <R> the generic type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -377,8 +501,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -389,8 +513,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -401,8 +525,8 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field         the field
-     * @param value         the value
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      * @return LogicExpression
      */
@@ -413,9 +537,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */
@@ -426,9 +550,9 @@ public interface NotEqualsExpression<C extends ConditionExpression, L extends Lo
     /**
      * not equals. 不等于.
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      * @return LogicExpression
      */

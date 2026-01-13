@@ -10,7 +10,7 @@ import java.util.function.Predicate;
  * @author zhongj
  * @param <V> the value type
  */
-public interface SetValueInOrNotInExpression<V> {
+public interface SetInOrNotInValueExpression<V> {
 
     /**
      * Value.

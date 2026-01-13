@@ -45,33 +45,6 @@ public class DslTest {
 
     boolean ignore = true;
 
-    //    public static void main(String[] args) {
-    //        System.out.println(Tuple2.getter0().apply(Tuples.of(1, 2)));
-    //        System.out.println(Tuple2.getter1().apply(Tuples.of(1, 2)));
-    //        User user = new User();
-    //        Tuple2<Integer, String> t2 = Tuples.of(user.getAge(), user.getPwd());
-    //        t2 = Tuples.toTuple(User::getAge, User::getPwd).apply(user);
-    //        t2 = TupleBuilder.builder().add(1).add("str").build();
-    //    }
-
-    //    public void testQueryJoin() {
-    //        query.find("user").relate("user_info").on("user_id").fetch().relate("role").on("id", "user_role", "role_id")
-    //                .fetch();
-    //        query.find("user").relate("user_info").on("user_id").relate("role").on("id", "user_role", "role_id").fetch();
-    //
-    //        query.find("user").relate("user_info").on("user_id").where();
-    //        query.find("user").relate("user_info").on("user_id").fetch().where();
-    //        query.find("user").relate("user_info").on("user_id").relate("user_role").on("user_id", "id").relate("role")
-    //                .on("id", "user_role", "role_id").fetch();
-    //
-    //        query.find("user").relate("user_info").on("user_id").fetch("name").fetch();
-    //
-    //        query.find("user").relate("user_info").on("user_id").fetch("name").relate("user_role").on("user_id", "id")
-    //                .relate("role").on("id", "user_role", "role_id").fetch();
-    //
-    //        query.find("user").relate("user_info").on("user_id").where().eq("id", 1).intValue();
-    //    }
-
     public void entityQueryFetchOne() {
         LocalDateTime localDateTime = null;
         LocalDate localDate = null;
@@ -134,7 +107,7 @@ public class DslTest {
         //        valuesTuple = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).tuple();
     }
 
-    public void testEntityQuery() {
+    public void entityQuery() {
         query.find(User.class).list();
         query.find(User.class).count();
         query.find(User.class).limit(10).list();
@@ -269,7 +242,7 @@ public class DslTest {
         //        f.apply(User.class).where().co(User::getUsername, "").and().co((SerializableStringSupplier) null).single();
     }
 
-    public void testEntityQuerySort() {
+    public void entityQuerySort() {
         query.find(User2.class).sort().asc(User2::getAge);
         query.find(User2.class).sort().asc(User2::getAge).asc(User2::getId);
         query.find(User2.class).sort().asc(User2::getAge, User2::getId);
@@ -364,7 +337,7 @@ public class DslTest {
         //                .join(Tree::getParent).sort().asc((e0, e1, e2, e3, e4) -> e0.accept(Tree::getId)).asc5(Tree::getName);
     }
 
-    public void testEntityUpdate() {
+    public void entityUpdate() {
         Updater updater = null;
 
         updater.update(User.class).set(User::getUsername, "yufei").set(User::getPwd, "123456")

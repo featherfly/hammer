@@ -32,7 +32,7 @@ public class DslEntityConditionOtherTest {
 
     boolean ignore = true;
 
-    public void testEntityQueryJoinConditionIsn() {
+    public void entityQueryJoinConditionIsn() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).isn().list();
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).isn(true).list();
@@ -109,7 +109,7 @@ public class DslEntityConditionOtherTest {
             }).and().isn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
 
-    public void testEntityQueryJoinConditionInn() {
+    public void entityQueryJoinConditionInn() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).inn().list();
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).inn(true).list();
@@ -181,7 +181,7 @@ public class DslEntityConditionOtherTest {
             }).and().inn((e0, e1, e2, e3) -> e3.accept(Tree2::getName)).list();
     }
 
-    public void testEntityQueryJoinConditionIn() {
+    public void entityQueryJoinConditionIn() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).in("yufei").list();
 
@@ -315,7 +315,7 @@ public class DslEntityConditionOtherTest {
             .in((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
-    public void testEntityQueryJoinConditionNin() {
+    public void entityQueryJoinConditionNin() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).ni("yufei").list();
 

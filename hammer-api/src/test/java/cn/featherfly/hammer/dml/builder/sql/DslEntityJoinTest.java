@@ -57,7 +57,7 @@ public class DslEntityJoinTest {
     //        query.find("user").relate("user_info").on("user_id").where().eq("id", 1).intValue();
     //    }
 
-    public void testEntityQuery() {
+    public void entityQuery() {
         UserInfo2 ui = null;
         Tuple2<UserInfo2, User2> tupleUserInfoUser = null;
         Tuple2<User2, UserInfo2> tupleUserUserInfo = null;
@@ -92,7 +92,7 @@ public class DslEntityJoinTest {
 
     }
 
-    public void testEntityQueryJoinOrm() {
+    public void entityQueryJoinOrm() {
         //        query.find(User.class).with(User::getId).where().list();
         //        query.find(User.class).join(User::getId).where().eq(User::getId, 1).list();
         //        query.find(User.class).join(User::getId).fetch().where().eq(User::getId, 1).list();
@@ -275,7 +275,7 @@ public class DslEntityJoinTest {
          */
     }
 
-    public void testEntityQueryJoin() {
+    public void entityQueryJoin() {
         UserInfo2 ui = null;
         Tuple2<UserInfo2, User2> tupleUserInfoUser = null;
         User2 user = null;
@@ -468,7 +468,7 @@ public class DslEntityJoinTest {
         //        tree = query.find(Tree2.class).join(Tree2.class).on(Tree2::getId,  Tree2::getParentId)
     }
 
-    public void testEntityQueryJoin2() {
+    public void entityQueryJoin2() {
 
         query.find(UserInfo.class) //
             .join(UserInfo::getUser) //

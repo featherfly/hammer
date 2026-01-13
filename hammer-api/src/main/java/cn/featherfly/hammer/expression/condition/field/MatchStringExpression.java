@@ -12,7 +12,6 @@ package cn.featherfly.hammer.expression.condition.field;
 
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
@@ -155,89 +154,89 @@ public interface MatchStringExpression extends IgnorableExpression {
      */
     void accept(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 
-    /**
-     * match value. 匹配value.
-     *
-     * @param propertyValue the property value
-     */
-    default void accept(SerializableStringSupplier propertyValue) {
-        accept(propertyValue, propertyValue.get());
-    }
-
-    /**
-     * match value. 匹配value.
-     *
-     * @param propertyValue the property value
-     * @param ignoreStrategy the ignore strategy
-     */
-    default void accept(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
-        accept(propertyValue, propertyValue.get(), ignoreStrategy);
-    }
-
-    /**
-     * match value. 匹配value.
-     *
-     * @param propertyValue the property value
-     * @param matchStrategy the match strategy
-     */
-    default void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
-        accept(propertyValue, propertyValue.get(), matchStrategy);
-    }
-
-    /**
-     * match value. 匹配value.
-     *
-     * @param propertyValue the property value
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     */
-    default void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
-        accept(propertyValue, propertyValue.get(), matchStrategy);
-    }
-
     // ----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * match value. 匹配value.
-     *
-     * @param property the property
-     * @param value the value
-     */
-    default void accept(SerializableStringSupplier property, String value) {
-        accept(property, value, MatchStrategy.AUTO);
-    }
-
-    /**
-     * match value. 匹配value.
-     *
-     * @param property the property
-     * @param value the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    default void accept(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
-        accept(property, value, MatchStrategy.AUTO, ignoreStrategy);
-    }
-
-    /**
-     * match value. 匹配value.
-     *
-     * @param property the property
-     * @param value the value
-     * @param matchStrategy the match strategy
-     */
-    default void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
-        accept(property, value, matchStrategy, v -> getIgnoreStrategy().test(v));
-    }
-
-    /**
-     * match value. 匹配value.
-     *
-     * @param property the property
-     * @param value the value
-     * @param matchStrategy the match strategy
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy);
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param propertyValue the property value
+    //     */
+    //    default void accept(SerializableStringSupplier propertyValue) {
+    //        accept(propertyValue, propertyValue.get());
+    //    }
+    //
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param propertyValue the property value
+    //     * @param ignoreStrategy the ignore strategy
+    //     */
+    //    default void accept(SerializableStringSupplier propertyValue, Predicate<String> ignoreStrategy) {
+    //        accept(propertyValue, propertyValue.get(), ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param propertyValue the property value
+    //     * @param matchStrategy the match strategy
+    //     */
+    //    default void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy) {
+    //        accept(propertyValue, propertyValue.get(), matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param propertyValue the property value
+    //     * @param matchStrategy the match strategy
+    //     * @param ignoreStrategy the ignore strategy
+    //     */
+    //    default void accept(SerializableStringSupplier propertyValue, MatchStrategy matchStrategy,
+    //        Predicate<String> ignoreStrategy) {
+    //        accept(propertyValue, propertyValue.get(), matchStrategy);
+    //    }
+    //
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param property the property
+    //     * @param value the value
+    //     */
+    //    default void accept(SerializableStringSupplier property, String value) {
+    //        accept(property, value, MatchStrategy.AUTO);
+    //    }
+    //
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param property the property
+    //     * @param value the value
+    //     * @param ignoreStrategy the ignore strategy
+    //     */
+    //    default void accept(SerializableStringSupplier property, String value, Predicate<String> ignoreStrategy) {
+    //        accept(property, value, MatchStrategy.AUTO, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param property the property
+    //     * @param value the value
+    //     * @param matchStrategy the match strategy
+    //     */
+    //    default void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
+    //        accept(property, value, matchStrategy, v -> getIgnoreStrategy().test(v));
+    //    }
+    //
+    //    /**
+    //     * match value. 匹配value.
+    //     *
+    //     * @param property the property
+    //     * @param value the value
+    //     * @param matchStrategy the match strategy
+    //     * @param ignoreStrategy the ignore strategy
+    //     */
+    //    void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+    //        Predicate<String> ignoreStrategy);
 }

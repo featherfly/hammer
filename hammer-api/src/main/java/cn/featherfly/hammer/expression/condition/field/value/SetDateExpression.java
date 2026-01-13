@@ -9,6 +9,7 @@
 package cn.featherfly.hammer.expression.condition.field.value;
 
 import java.util.Date;
+import java.util.function.Predicate;
 
 /**
  * set data expression.
@@ -16,6 +17,19 @@ import java.util.Date;
  * @author zhongj
  * @param <V> the value type
  */
-public interface SetDateExpression<V extends Date> extends SetValueExpression<V> {
+public interface SetDateExpression<V extends Date> {
+    /**
+     * Value.
+     *
+     * @param value the value
+     */
+    void value(V value);
 
+    /**
+     * Value.
+     *
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     */
+    void value(V value, Predicate<V> ignoreStrategy);
 }

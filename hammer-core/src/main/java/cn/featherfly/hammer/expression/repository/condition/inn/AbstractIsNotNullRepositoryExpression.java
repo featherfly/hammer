@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.condition.field.value.SetValueIsNullOrIsNotNullExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetIsNullOrIsNotNullValueExpression;
 import cn.featherfly.hammer.expression.condition.field.value.SetValueIsNullOrIsNotNullExpressionImpl;
 import cn.featherfly.hammer.expression.condition.inn.MulitiIsNotNullExpression;
 import cn.featherfly.hammer.expression.repository.condition.AbstractRepositoryIndexableConditionExpression;
@@ -46,7 +46,7 @@ public abstract class AbstractIsNotNullRepositoryExpression<C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public SetValueIsNullOrIsNotNullExpression field(String name) {
+    public SetIsNullOrIsNotNullValueExpression field(String name) {
         return new SetValueIsNullOrIsNotNullExpressionImpl(v -> expression.inn(index, name, v));
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractIsNotNullRepositoryExpression<C extends ConditionE
      * {@inheritDoc}
      */
     @Override
-    public <T, R> SetValueIsNullOrIsNotNullExpression field(SerializableFunction<T, R> name) {
+    public <T, R> SetIsNullOrIsNotNullValueExpression field(SerializableFunction<T, R> name) {
         return new SetValueIsNullOrIsNotNullExpressionImpl(v -> expression.inn(index, name, v));
     }
 

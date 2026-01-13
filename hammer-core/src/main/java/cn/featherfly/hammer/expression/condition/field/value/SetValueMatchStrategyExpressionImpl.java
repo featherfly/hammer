@@ -21,7 +21,7 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
  *
  * @author zhongj
  */
-public class SetValueMatchStrategyExpressionImpl<V> implements SetValueMatchStrategyExpression<V> {
+public class SetValueMatchStrategyExpressionImpl<V> implements SetMatchStrategyValueExpression<V> {
 
     private Function<V, PropertyMapping<?>> propertyMapping;
 

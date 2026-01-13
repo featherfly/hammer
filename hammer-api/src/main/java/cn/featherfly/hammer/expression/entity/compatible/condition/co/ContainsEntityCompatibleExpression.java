@@ -10,9 +10,7 @@
  */
 package cn.featherfly.hammer.expression.entity.compatible.condition.co;
 
-import java.util.function.Predicate;
-
-import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.hammer.expression.entity.compatible.condition.MatchStringEntityPropertyCompatibleExpression;
 import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpression;
 
 /**
@@ -21,41 +19,7 @@ import cn.featherfly.hammer.expression.entity.condition.co.ContainsEntityExpress
  * @author zhongj
  * @param <E> the element type
  */
-public interface ContainsEntityCompatibleExpression<E> extends ContainsEntityExpression<E> {
+public interface ContainsEntityCompatibleExpression<E>
+    extends ContainsEntityExpression<E>, MatchStringEntityPropertyCompatibleExpression<E> {
 
-    /**
-     * contains value. 包含value.
-     *
-     * @param property the property
-     * @param value    the value
-     */
-    void accept(String property, String value);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param property      the property
-     * @param value         the value
-     * @param matchStrategy the match strategy
-     */
-    void accept(String property, String value, MatchStrategy matchStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param property       the property
-     * @param value          the value
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String property, String value, Predicate<String> ignoreStrategy);
-
-    /**
-     * contains value. 包含value.
-     *
-     * @param property       the property
-     * @param value          the value
-     * @param matchStrategy  the match strategy
-     * @param ignoreStrategy the ignore strategy
-     */
-    void accept(String property, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
 }

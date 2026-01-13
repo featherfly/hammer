@@ -1,7 +1,7 @@
 
 package cn.featherfly.hammer.expression.entity.condition.in;
 
-import cn.featherfly.hammer.expression.condition.field.value.SetValueInOrNotInExpression;
+import cn.featherfly.hammer.expression.condition.field.value.SetInOrNotInValueExpression;
 
 /**
  * The Interface InEntityPropertyValueExpression.
@@ -9,6 +9,6 @@ import cn.featherfly.hammer.expression.condition.field.value.SetValueInOrNotInEx
  * @author zhongj
  * @param <V> the value type
  */
-public interface InEntityPropertyValueExpression<V> extends SetValueInOrNotInExpression<V> {
+public interface InEntityPropertyValueExpression<V> extends SetInOrNotInValueExpression<V> {
 
 }

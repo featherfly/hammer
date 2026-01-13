@@ -11,7 +11,7 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
  * @author zhongj
  * @param <V> the value type
  */
-public interface SetValueMatchStrategyExpression<V> extends SetValueExpression<V> {
+public interface SetMatchStrategyValueExpression<V> extends SetValueExpression<V> {
 
     /**
      * {@inheritDoc}

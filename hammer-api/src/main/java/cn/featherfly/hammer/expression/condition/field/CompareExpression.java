@@ -23,18 +23,19 @@ import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
 import cn.featherfly.common.repository.AliasField;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.hammer.expression.condition.IgnorableExpression;
 
 /**
  * compare expression.
  *
  * @author zhongj
  */
-public interface CompareExpression extends CompareSupplierExpression {
+public interface CompareExpression extends IgnorableExpression {
 
     /**
      * compare. 比较
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      */
     default void accept(String name, int value) {
@@ -44,8 +45,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, int value, IntPredicate ignoreStrategy);
@@ -53,8 +54,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, int value, IgnoreStrategy ignoreStrategy) {
@@ -74,8 +75,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(Field field, int value, IntPredicate ignoIntPredicate) {
@@ -85,8 +86,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, int value, IgnoreStrategy ignoreStrategy) {
@@ -106,8 +107,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(AliasField field, int value, IntPredicate ignoIntPredicate) {
@@ -117,8 +118,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, int value, IgnoreStrategy ignoreStrategy) {
@@ -128,7 +129,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      */
     default void accept(String name, long value) {
@@ -158,8 +159,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, long value, LongPredicate ignoreStrategy);
@@ -167,8 +168,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, long value, IgnoreStrategy ignoreStrategy) {
@@ -178,8 +179,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(Field field, long value, LongPredicate ignoIntPredicate) {
@@ -189,8 +190,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(Field field, long value, IgnoreStrategy ignoIntPredicate) {
@@ -200,8 +201,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(AliasField field, long value, LongPredicate ignoIntPredicate) {
@@ -211,8 +212,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(AliasField field, long value, IgnoreStrategy ignoIntPredicate) {
@@ -222,7 +223,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      */
     default void accept(String name, double value) {
@@ -252,8 +253,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, double value, DoublePredicate ignoreStrategy);
@@ -261,8 +262,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, double value, IgnoreStrategy ignoreStrategy) {
@@ -272,8 +273,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(Field field, double value, DoublePredicate ignoIntPredicate) {
@@ -283,8 +284,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(Field field, double value, IgnoreStrategy ignoIntPredicate) {
@@ -294,8 +295,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(AliasField field, double value, DoublePredicate ignoIntPredicate) {
@@ -305,8 +306,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field            the field
-     * @param value            the value
+     * @param field the field
+     * @param value the value
      * @param ignoIntPredicate the igno int predicate
      */
     default void accept(AliasField field, double value, IgnoreStrategy ignoIntPredicate) {
@@ -316,8 +317,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>   number type
-     * @param name  the name
+     * @param <N> number type
+     * @param name the name
      * @param value the value
      */
     default <N extends Number> void accept(String name, N value) {
@@ -327,9 +328,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <N extends Number> void accept(String name, N value, Predicate<N> ignoreStrategy);
@@ -337,9 +338,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>            number type
-     * @param name           the name
-     * @param value          the value
+     * @param <N> number type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <N extends Number> void accept(String name, N value, IgnoreStrategy ignoreStrategy) {
@@ -349,7 +350,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param field the field
      * @param value the value
      */
@@ -360,9 +361,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>            number type
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <N extends Number> void accept(Field field, N value, Predicate<N> ignoreStrategy) {
@@ -372,9 +373,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>            number type
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <N extends Number> void accept(Field field, N value, IgnoreStrategy ignoreStrategy) {
@@ -384,7 +385,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>   number type
+     * @param <N> number type
      * @param field the field
      * @param value the value
      */
@@ -395,9 +396,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>            number type
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <N extends Number> void accept(AliasField field, N value, Predicate<N> ignoreStrategy) {
@@ -407,9 +408,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <N>            number type
-     * @param field          the field
-     * @param value          the value
+     * @param <N> number type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <N extends Number> void accept(AliasField field, N value, IgnoreStrategy ignoreStrategy) {
@@ -419,8 +420,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>   date type
-     * @param name  the name
+     * @param <D> date type
+     * @param name the name
      * @param value the value
      */
     default <D extends Date> void accept(String name, D value) {
@@ -430,9 +431,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <D extends Date> void accept(String name, D value, Predicate<D> ignoreStrategy);
@@ -440,9 +441,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
-     * @param name           the name
-     * @param value          the value
+     * @param <D> date type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <D extends Date> void accept(String name, D value, IgnoreStrategy ignoreStrategy) {
@@ -452,7 +453,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param field the field
      * @param value the value
      */
@@ -463,9 +464,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <D extends Date> void accept(Field field, D value, Predicate<D> ignoreStrategy) {
@@ -475,9 +476,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <D extends Date> void accept(Field field, D value, IgnoreStrategy ignoreStrategy) {
@@ -487,7 +488,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>   date type
+     * @param <D> date type
      * @param field the field
      * @param value the value
      */
@@ -498,9 +499,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <D extends Date> void accept(AliasField field, D value, Predicate<D> ignoreStrategy) {
@@ -510,9 +511,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <D>            date type
-     * @param field          the field
-     * @param value          the value
+     * @param <D> date type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <D extends Date> void accept(AliasField field, D value, IgnoreStrategy ignoreStrategy) {
@@ -522,8 +523,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>   the element type
-     * @param name  the name
+     * @param <E> the element type
+     * @param name the name
      * @param value the value
      */
     default <E extends Enum<E>> void accept(String name, E value) {
@@ -533,9 +534,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     <E extends Enum<E>> void accept(String name, E value, Predicate<E> ignoreStrategy);
@@ -543,9 +544,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>            the element type
-     * @param name           the name
-     * @param value          the value
+     * @param <E> the element type
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <E extends Enum<E>> void accept(String name, E value, IgnoreStrategy ignoreStrategy) {
@@ -555,7 +556,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param field the field
      * @param value the value
      */
@@ -566,9 +567,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>            the element type
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <E extends Enum<E>> void accept(Field field, E value, Predicate<E> ignoreStrategy) {
@@ -578,9 +579,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>            the element type
-     * @param field          the field
-     * @param value          the value
+     * @param <E> the element type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <E extends Enum<E>> void accept(Field field, E value, IgnoreStrategy ignoreStrategy) {
@@ -590,7 +591,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>   the element type
+     * @param <E> the element type
      * @param field the field
      * @param value the value
      */
@@ -601,9 +602,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>            date type
-     * @param field          the field
-     * @param value          the value
+     * @param <E> date type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <E extends Enum<E>> void accept(AliasField field, E value, Predicate<E> ignoreStrategy) {
@@ -613,9 +614,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param <E>            date type
-     * @param field          the field
-     * @param value          the value
+     * @param <E> date type
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default <E extends Enum<E>> void accept(AliasField field, E value, IgnoreStrategy ignoreStrategy) {
@@ -625,7 +626,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      */
     default void accept(String name, LocalTime value) {
@@ -635,8 +636,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, LocalTime value, Predicate<LocalTime> ignoreStrategy);
@@ -644,8 +645,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, LocalTime value, IgnoreStrategy ignoreStrategy) {
@@ -665,8 +666,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
@@ -676,8 +677,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, LocalTime value, IgnoreStrategy ignoreStrategy) {
@@ -697,8 +698,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
@@ -708,8 +709,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, LocalTime value, IgnoreStrategy ignoreStrategy) {
@@ -719,7 +720,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      */
     default void accept(String name, LocalDate value) {
@@ -729,8 +730,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, LocalDate value, Predicate<LocalDate> ignoreStrategy);
@@ -738,8 +739,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, LocalDate value, IgnoreStrategy ignoreStrategy) {
@@ -759,8 +760,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
@@ -770,8 +771,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, LocalDate value, IgnoreStrategy ignoreStrategy) {
@@ -791,8 +792,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
@@ -802,8 +803,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, LocalDate value, IgnoreStrategy ignoreStrategy) {
@@ -813,7 +814,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      */
     default void accept(String name, LocalDateTime value) {
@@ -823,8 +824,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy);
@@ -832,8 +833,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
@@ -853,8 +854,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
@@ -864,8 +865,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
@@ -885,8 +886,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, LocalDateTime value, Predicate<LocalDateTime> ignoreStrategy) {
@@ -896,8 +897,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, LocalDateTime value, IgnoreStrategy ignoreStrategy) {
@@ -907,7 +908,7 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name  the name
+     * @param name the name
      * @param value the value
      */
     default void accept(String name, String value) {
@@ -917,8 +918,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name          the name
-     * @param value         the value
+     * @param name the name
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     default void accept(String name, String value, MatchStrategy matchStrategy) {
@@ -928,8 +929,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, String value, Predicate<String> ignoreStrategy) {
@@ -939,9 +940,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     void accept(String name, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy);
@@ -949,8 +950,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
+     * @param name the name
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, String value, IgnoreStrategy ignoreStrategy) {
@@ -960,9 +961,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param name           the name
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param name the name
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(String name, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
@@ -982,8 +983,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field         the field
-     * @param value         the value
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy) {
@@ -993,8 +994,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, String value, Predicate<String> ignoreStrategy) {
@@ -1004,9 +1005,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
@@ -1016,8 +1017,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, String value, IgnoreStrategy ignoreStrategy) {
@@ -1027,9 +1028,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(Field field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {
@@ -1049,8 +1050,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field         the field
-     * @param value         the value
+     * @param field the field
+     * @param value the value
      * @param matchStrategy the match strategy
      */
     default void accept(AliasField field, String value, MatchStrategy matchStrategy) {
@@ -1060,8 +1061,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, String value, Predicate<String> ignoreStrategy) {
@@ -1071,9 +1072,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, String value, MatchStrategy matchStrategy, Predicate<String> ignoreStrategy) {
@@ -1083,8 +1084,8 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
+     * @param field the field
+     * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, String value, IgnoreStrategy ignoreStrategy) {
@@ -1094,9 +1095,9 @@ public interface CompareExpression extends CompareSupplierExpression {
     /**
      * compare. 比较
      *
-     * @param field          the field
-     * @param value          the value
-     * @param matchStrategy  the match strategy
+     * @param field the field
+     * @param value the value
+     * @param matchStrategy the match strategy
      * @param ignoreStrategy the ignore strategy
      */
     default void accept(AliasField field, String value, MatchStrategy matchStrategy, IgnoreStrategy ignoreStrategy) {

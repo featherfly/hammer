@@ -28,7 +28,7 @@ public class DslEntityConditionCompareTest {
 
     boolean ignore = true;
 
-    public void testEntityQueryJoinConditionEq() {
+    public void entityQueryJoinConditionEq() {
         // value property
         query.find(UserInfo.class) //
             .join(User::getUserInfo) //
@@ -133,7 +133,7 @@ public class DslEntityConditionCompareTest {
             .eq((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
-    public void testEntityQueryJoinConditionNe() {
+    public void entityQueryJoinConditionNe() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getId).ne(1).list();
 
@@ -189,7 +189,7 @@ public class DslEntityConditionCompareTest {
             .ne((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
-    public void testEntityQueryJoinConditionGe() {
+    public void entityQueryJoinConditionGe() {
         // value property
         query.find(UserInfo.class) //
             .join(User::getUserInfo) //
@@ -275,7 +275,7 @@ public class DslEntityConditionCompareTest {
             .ge((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
-    public void testEntityQueryJoinConditionGt() {
+    public void entityQueryJoinConditionGt() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).gt("yufei").list();
 
@@ -345,7 +345,7 @@ public class DslEntityConditionCompareTest {
             .gt((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
-    public void testEntityQueryJoinConditionLe() {
+    public void entityQueryJoinConditionLe() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).le("yufei").list();
 
@@ -415,7 +415,7 @@ public class DslEntityConditionCompareTest {
             .le((e0, e1, e2, e3) -> e3.accept(Tree2::getId, 1)).list();
     }
 
-    public void testEntityQueryJoinConditionLt() {
+    public void entityQueryJoinConditionLt() {
         // value property
         query.find(UserInfo.class).join(User::getUserInfo).where().property(UserInfo::getName).lt("yufei").list();
 

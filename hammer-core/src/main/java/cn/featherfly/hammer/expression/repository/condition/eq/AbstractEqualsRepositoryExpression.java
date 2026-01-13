@@ -19,16 +19,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.function.serializable.SerializableDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableDoubleSupplier;
 import cn.featherfly.common.function.serializable.SerializableFunction;
-import cn.featherfly.common.function.serializable.SerializableIntSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalDateTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLocalTimeSupplier;
-import cn.featherfly.common.function.serializable.SerializableLongSupplier;
-import cn.featherfly.common.function.serializable.SerializableNumberSupplier;
-import cn.featherfly.common.function.serializable.SerializableStringSupplier;
 import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToDateFunction;
 import cn.featherfly.common.function.serializable.SerializableToDoubleFunction;
@@ -59,11 +50,11 @@ import cn.featherfly.hammer.expression.condition.field.value.SetLocalTimeExpress
 import cn.featherfly.hammer.expression.condition.field.value.SetLocalTimeExpressionImpl;
 import cn.featherfly.hammer.expression.condition.field.value.SetLongExpression;
 import cn.featherfly.hammer.expression.condition.field.value.SetLongExpressionImpl;
+import cn.featherfly.hammer.expression.condition.field.value.SetMatchStrategyValueExpression;
 import cn.featherfly.hammer.expression.condition.field.value.SetNumberExpression;
 import cn.featherfly.hammer.expression.condition.field.value.SetNumberExpressionImpl;
 import cn.featherfly.hammer.expression.condition.field.value.SetStringExpression;
 import cn.featherfly.hammer.expression.condition.field.value.SetStringExpressionImpl;
-import cn.featherfly.hammer.expression.condition.field.value.SetValueMatchStrategyExpression;
 import cn.featherfly.hammer.expression.condition.field.value.SetValueMatchStrategyExpressionImpl;
 import cn.featherfly.hammer.expression.repository.condition.AbstractRepositoryIndexableConditionExpression;
 
@@ -264,80 +255,80 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
         expression.eq(index, name, value, ignoreStrategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <N extends Number> void accept(SerializableNumberSupplier<N> property, N value,
-        Predicate<N> ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
-        Predicate<LocalDateTime> ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
-        Predicate<String> ignoreStrategy) {
-        expression.eq(index, property, value, ignoreStrategy);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableIntSupplier property, int value, IntPredicate ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLongSupplier property, long value, LongPredicate ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableDoubleSupplier property, double value, DoublePredicate ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <D extends Date> void accept(SerializableDateSupplier<D> property, D value, Predicate<D> ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <N extends Number> void accept(SerializableNumberSupplier<N> property, N value,
+    //        Predicate<N> ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLocalDateSupplier property, LocalDate value, Predicate<LocalDate> ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLocalTimeSupplier property, LocalTime value, Predicate<LocalTime> ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableLocalDateTimeSupplier property, LocalDateTime value,
+    //        Predicate<LocalDateTime> ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public void accept(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
+    //        Predicate<String> ignoreStrategy) {
+    //        expression.eq(index, property, value, ignoreStrategy);
+    //    }
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -345,7 +336,7 @@ public abstract class AbstractEqualsRepositoryExpression<C extends ConditionExpr
      * {@inheritDoc}
      */
     @Override
-    public <V> SetValueMatchStrategyExpression<V> field(String name) {
+    public <V> SetMatchStrategyValueExpression<V> field(String name) {
         return new SetValueMatchStrategyExpressionImpl<>(ignoreStrategy,
             (value, match, ignore) -> expression.eq(index, name, value, match, ignore));
     }
