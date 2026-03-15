@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import cn.featherfly.common.tuple.Tuple7;
-import cn.featherfly.common.tuple.Tuple8;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
@@ -20,6 +17,8 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
@@ -194,7 +193,8 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression<E1> asc(SerializableFunction<E1, R> name) {
-        return asc(getPropertyName(name));
+        // select u.order_no orderNo from user u order by [u.order_no|orderNo], can not be u.orderNo
+        return asc(getFieldName(name, classMapping));
     }
 
     /**
@@ -234,7 +234,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression<E1> desc(SerializableFunction<E1, R> name) {
-        return desc(getPropertyName(name));
+        return desc(getFieldName(name, classMapping));
     }
 
     /**

@@ -3,6 +3,10 @@ TODO dsl实体查询加入以下（EntityQuery）
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 2. 为mapper加入@Nonnull 支持，以及validation-api 支持再考虑
 
+# 0.7.5 2026-03-15
+
+1. 修复entity query dsl 排序 [asc|desc] (SerializableFunction) 生成sql报错的问题（使用了别名）
+
 # 0.7.4 2025-12-22
 
 1. Hammer, GenericHammer加入saveOrUpdate的批量处理的重载方法

@@ -162,8 +162,8 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
         S2 extends EntitySortedExpression<E2, S2>> EntityQuerySortedExpression2<E1, E2, RS> sort(
             BiConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>> entitySortExpresions) {
         if (entitySortExpresions != null) {
-            entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias2, getRootSortBuilder()));
+            entitySortExpresions.accept(new EntitySortExpressionImpl<>(classMapping, tableAlias, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping2, tableAlias2, getRootSortBuilder()));
         }
         return this;
     }
@@ -223,7 +223,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <P> EntityQuerySortedExpression2<E1, E2, RS> asc(SerializableFunction<E1, P> name) {
-        return asc(getPropertyName(name));
+        return asc(getFieldName(name, classMapping));
     }
 
     /**
@@ -242,7 +242,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <P> EntityQuerySortedExpression2<E1, E2, RS> desc(SerializableFunction<E1, P> name) {
-        return desc(getPropertyName(name));
+        return desc(getFieldName(name, classMapping));
     }
 
     /**
@@ -409,7 +409,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression2<E1, E2, RS> asc2(SerializableFunction<E2, R> name) {
-        return asc2(getPropertyName(name));
+        return asc2(getFieldName(name, classMapping2));
     }
 
     /**
@@ -428,7 +428,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression2<E1, E2, RS> desc2(SerializableFunction<E2, R> name) {
-        return desc2(getPropertyName(name));
+        return desc2(getFieldName(name, classMapping2));
     }
 
     /**

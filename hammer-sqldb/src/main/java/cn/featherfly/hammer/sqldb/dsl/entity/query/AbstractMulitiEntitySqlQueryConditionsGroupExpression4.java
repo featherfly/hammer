@@ -168,10 +168,10 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
             FoConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>> entitySortExpresions) {
         if (entitySortExpresions != null) {
-            entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias2, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias3, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias4, getRootSortBuilder()));
+            entitySortExpresions.accept(new EntitySortExpressionImpl<>(classMapping, tableAlias, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping2, tableAlias2, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping3, tableAlias3, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping4, tableAlias4, getRootSortBuilder()));
         }
         return this;
     }
@@ -317,7 +317,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc4(SerializableFunction<E4, R> name) {
-        return asc4(getPropertyName(name));
+        return asc4(getFieldName(name, classMapping4));
     }
 
     /**
@@ -336,7 +336,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc4(SerializableFunction<E4, R> name) {
-        return desc4(getPropertyName(name));
+        return desc4(getFieldName(name, classMapping4));
     }
 
     /**
@@ -355,7 +355,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc3(SerializableFunction<E3, R> name) {
-        return asc3(getPropertyName(name));
+        return asc3(getFieldName(name, classMapping3));
     }
 
     /**
@@ -374,7 +374,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc3(SerializableFunction<E3, R> name) {
-        return desc3(getPropertyName(name));
+        return desc3(getFieldName(name, classMapping3));
     }
 
     /**
@@ -393,7 +393,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc2(SerializableFunction<E2, R> name) {
-        return asc2(getPropertyName(name));
+        return asc2(getFieldName(name, classMapping2));
     }
 
     /**
@@ -412,7 +412,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc2(SerializableFunction<E2, R> name) {
-        return desc2(getPropertyName(name));
+        return desc2(getFieldName(name, classMapping2));
     }
 
     /**
@@ -431,7 +431,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> asc(SerializableFunction<E1, R> name) {
-        return asc(getPropertyName(name));
+        return asc(getFieldName(name, classMapping));
     }
 
     /**
@@ -450,7 +450,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression4<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression4<E1, E2, E3, E4, RS> desc(SerializableFunction<E1, R> name) {
-        return desc(getPropertyName(name));
+        return desc(getFieldName(name, classMapping));
     }
 
     /**

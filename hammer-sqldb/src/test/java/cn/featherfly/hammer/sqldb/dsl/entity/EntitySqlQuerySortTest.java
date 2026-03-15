@@ -17,6 +17,7 @@ import cn.featherfly.hammer.sqldb.jdbc.JdbcTestBase;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Tree;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Tree2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.User2;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.UserInfo2;
 
@@ -61,8 +62,48 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
         trees = new ArrayList<>();
     }
 
+    static void assertTreeDesc(List<Tree> treeList) {
+        Tree preTree = null;
+        for (Tree tree : treeList) {
+            if (preTree != null) {
+                assertTrue(preTree.getParent().getId() >= tree.getParent().getId());
+            }
+            preTree = tree;
+        }
+    }
+
+    static void assertTreeAsc(List<Tree> treeList) {
+        Tree preTree = null;
+        for (Tree tree : treeList) {
+            if (preTree != null) {
+                assertTrue(preTree.getParent().getId() <= tree.getParent().getId());
+            }
+            preTree = tree;
+        }
+    }
+
+    static void assertTree2Desc(List<Tree2> tree2List) {
+        Tree2 preTree2 = null;
+        for (Tree2 tree2 : tree2List) {
+            if (preTree2 != null) {
+                assertTrue(preTree2.getParentId() >= tree2.getParentId());
+            }
+            preTree2 = tree2;
+        }
+    }
+
+    static void assertTree2Asc(List<Tree2> tree2List) {
+        Tree2 preTree2 = null;
+        for (Tree2 tree2 : tree2List) {
+            if (preTree2 != null) {
+                assertTrue(preTree2.getParentId() <= tree2.getParentId());
+            }
+            preTree2 = tree2;
+        }
+    }
+
     @Test
-    void testSort() {
+    void sort() {
         List<User2> users = query.find(User2.class)//
             .sort()//
             .asc(User2::getId)//
@@ -126,10 +167,30 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
             .order(SortOperator.DESC, User2::getId)//
             .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        assertTree2Asc(query.find(Tree2.class) //
+            .where().inn(Tree2::getParentId) //
+            .sort().asc(Tree2::getParentId) //
+            .list());
+
+        assertTree2Desc(query.find(Tree2.class) //
+            .where().inn(Tree2::getParentId) //
+            .sort().desc(Tree2::getParentId) //
+            .list());
+
+        assertTreeAsc(query.find(Tree.class) //
+            .where().inn(Tree::getParent) //
+            .sort().asc(Tree::getParent) //
+            .list());
+
+        assertTreeDesc(query.find(Tree.class) //
+            .where().inn(Tree::getParent) //
+            .sort().desc(Tree::getParent) //
+            .list());
     }
 
     @Test
-    void testSort2() {
+    void sort2() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .sort()//
@@ -200,10 +261,54 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
             .order2(SortOperator.DESC, UserInfo2::getId)//
             .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        assertTree2Asc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().asc(Tree2::getParentId) //
+            .list());
+        assertTree2Asc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().asc2(Tree2::getParentId) //
+            .list());
+
+        assertTree2Desc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().desc(Tree2::getParentId) //
+            .list());
+        assertTree2Desc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().desc2(Tree2::getParentId) //
+            .list());
+
+        assertTreeAsc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().asc(Tree::getParent) //
+            .list());
+        assertTreeAsc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().asc2(Tree::getParent) //
+            .list());
+
+        assertTreeDesc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().desc(Tree::getParent) //
+            .list());
+        assertTreeDesc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().desc2(Tree::getParent) //
+            .list());
     }
 
     @Test
-    void testSort2_2() {
+    void sort2_2() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .sort()//
@@ -275,10 +380,54 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
             .order(SortOperator.DESC, (e1, e2) -> e2.property(UserInfo2::getId))//
             .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        assertTree2Asc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().asc((e1, e2) -> e1.property(Tree2::getParentId)) //
+            .list());
+        assertTree2Asc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().asc((e1, e2) -> e2.property(Tree2::getParentId)) //
+            .list());
+
+        assertTree2Desc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().desc((e1, e2) -> e1.property(Tree2::getParentId)) //
+            .list());
+        assertTree2Desc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort().desc((e1, e2) -> e2.property(Tree2::getParentId)) //
+            .list());
+
+        assertTreeAsc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().asc((e1, e2) -> e1.property(Tree::getParent)) //
+            .list());
+        assertTreeAsc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().asc((e1, e2) -> e2.property(Tree::getParent)) //
+            .list());
+
+        assertTreeDesc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().desc((e1, e2) -> e1.property(Tree::getParent)) //
+            .list());
+        assertTreeDesc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort().desc((e1, e2) -> e2.property(Tree::getParent)) //
+            .list());
     }
 
     @Test
-    void testSort2_3() {
+    void sort2_3() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .sort((e1, e2) -> e2.asc(UserInfo2::getId))//
@@ -344,10 +493,54 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
             .sort((e1, e2) -> e2.order(SortOperator.DESC, UserInfo2::getId))//
             .list();
         assertTrue(users.get(0).getId() > users.get(1).getId());
+
+        assertTree2Asc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort((e1, e2) -> e1.asc(Tree2::getParentId)) //
+            .list());
+        assertTree2Asc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort((e1, e2) -> e2.asc(Tree2::getParentId)) //
+            .list());
+
+        assertTree2Desc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort((e1, e2) -> e1.desc(Tree2::getParentId)) //
+            .list());
+        assertTree2Desc(query.find(Tree2.class) //
+            .join(Tree2.class).on(Tree2::getParentId, Tree2::getId) //
+            .where().inn(Tree2::getParentId) //
+            .sort((e1, e2) -> e2.desc(Tree2::getParentId)) //
+            .list());
+
+        assertTreeAsc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort((e1, e2) -> e1.asc(Tree::getParent)) //
+            .list());
+        assertTreeAsc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort((e1, e2) -> e2.asc(Tree::getParent)) //
+            .list());
+
+        assertTreeDesc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort((e1, e2) -> e1.desc(Tree::getParent)) //
+            .list());
+        assertTreeDesc(query.find(Tree.class) //
+            .join(Tree::getParent) //
+            .where().inn(Tree::getParent) //
+            .sort((e1, e2) -> e2.desc(Tree::getParent)) //
+            .list());
     }
 
     @Test
-    void testSort3() {
+    void sort3() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
@@ -446,7 +639,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
     }
 
     @Test
-    void testSort3_2() {
+    void sort3_2() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
@@ -545,7 +738,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
     }
 
     @Test
-    void testSort3_3() {
+    void sort3_3() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
@@ -653,7 +846,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
     }
 
     @Test
-    void testSort4() {
+    void sort4() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
@@ -768,7 +961,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
     }
 
     @Test
-    void testSort4_2() {
+    void sort4_2() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
@@ -883,7 +1076,7 @@ public class EntitySqlQuerySortTest extends JdbcTestBase {
     }
 
     @Test
-    void testSort4_3() {
+    void sort4_3() {
         List<User2> users = query.find(User2.class)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
             .join(UserInfo2.class).on(UserInfo2::getUserId)//
