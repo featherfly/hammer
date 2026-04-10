@@ -17,6 +17,6 @@ import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression1;
  * @author zhongj
  */
 public interface RepositoryQueryRelate0 extends RepositoryJoin<
-    RepositoryOnExpression1<RepositoryQueryRelate1R>, RepositoryQueryRelate1R> {
+    RepositoryOnExpression1<RepositoryQueryRelate1>, RepositoryQueryRelate1> {
 
 }

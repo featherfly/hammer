@@ -1,12 +1,17 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.util.function.Function;
+
 import cn.featherfly.common.db.Table;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
 import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.WhereExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
@@ -21,7 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <Q> the generic type
  */
 public abstract class AbstractRepositorySqlQueryBase<C extends ConditionExpression, Q>
-    implements QueryCountExecutor, QueryConditionLimit<Q>, WhereExpression<C> {
+    implements QueryCountExecutor, QueryLimitSetter<Q>, WhereExpression<C> {
 
     /** The query relation. */
     protected final RepositorySqlQueryRelation queryRelation;
@@ -99,14 +104,27 @@ public abstract class AbstractRepositorySqlQueryBase<C extends ConditionExpressi
         return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).count();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public Q limit(Limit limit) {
-        this.limit = limit;
-        return (Q) this;
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @SuppressWarnings("unchecked")
+    //    @Override
+    //    public Q limit(Limit limit) {
+    //        return (Q) new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit);
+    //        //        this.limit = limit;
+    //        //        return (Q) this;
+    //    }
+
+    public <T> QueryExecutor<T> mapper(RowMapper<T> rowMapper) {
+        return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).mapper(rowMapper);
+    }
+
+    public <T> QueryExecutor<T> mapper(Class<T> type) {
+        return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).mapper(type);
+    }
+
+    public <T> QueryExecutor<T> mapper(Function<TupleRowMapperBuilder, RowMapper<T>> mapperBuilderFunction) {
+        return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).mapper(mapperBuilderFunction);
     }
 
     //    public C where(Consumer<C> consumer) {

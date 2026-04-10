@@ -4,10 +4,7 @@ package cn.featherfly.hammer.sqldb.dsl.repository.query;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import cn.featherfly.common.tuple.Tuple1;
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
+import java.util.function.Function;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
@@ -15,22 +12,32 @@ import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.db.dialect.Dialect;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple1;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.data.query.LimitAwareQuery1;
+import cn.featherfly.data.query.QueryExecutor;
+import cn.featherfly.data.query.QueryPageExecutor;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
 import cn.featherfly.hammer.sqldb.dsl.repository.AbstractMulitiRepositorySqlConditionsGroupExpressionBase;
+import cn.featherfly.hammer.sqldb.dsl.repository.LimitAwareRepositoryQuery;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryConditionGroupQuery;
+import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilderImpl;
 
 /**
  * abstract muliti repository sql query conditions group expression.
@@ -45,7 +52,7 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
     //    RepositoryQueryableExpression<RepositoryQuerySortExpression, QueryLimitExecutor>, //
     //    ConditionConfigureExpression<RepositoryQuery, QueryConditionConfig>, //
     RepositoryQueryConditionsGroup, RepositoryQueryConditionsGroupLogic, //
-    RepositoryQuerySortExpression, RepositoryQuerySortedExpression {
+    RepositoryQuerySortExpression, RepositoryQuerySortedExpression, QueryPageExecutor<Map<String, Serializable>> {
 
     private SqlSortBuilder sortBuilder;
 
@@ -75,13 +82,38 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
             queryRelation);
     }
 
+    // ****************************************************************************************************************
+    //  mapper
+    // ****************************************************************************************************************
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public QueryLimitExecutor limit(Limit limit) {
+    public <T> QueryExecutor<T> mapper(Class<T> type) {
+        return mapper(repositorySqlQueryConditionGroupQuery.createRowMapper(type));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> QueryExecutor<T> mapper(RowMapper<T> rowMapper) {
+        return new RepositorySqlQueryLimitExecutor<>(repositorySqlQueryConditionGroupQuery, rowMapper);
+    }
+
+    public <T> QueryExecutor<T> mapper(Function<TupleRowMapperBuilder, RowMapper<T>> tupleRowMapperBuilderFunction) {
+        return mapper(tupleRowMapperBuilderFunction
+            .apply(new TupleRowMapperBuilderImpl(repositorySqlQueryConditionGroupQuery::createRowMapper)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LimitAwareQuery1<Map<String, Serializable>> limit(Limit limit) {
         repositorySqlQueryConditionGroupQuery.setLimit(limit);
-        return this;
+        return new LimitAwareRepositoryQuery(repositorySqlQueryConditionGroupQuery);
     }
 
     /**
@@ -97,25 +129,33 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
      * {@inheritDoc}
      */
     @Override
+    public RowIterable<Map<String, Serializable>> each() {
+        return repositorySqlQueryConditionGroupQuery.each();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Map<String, Serializable>> list() {
         return repositorySqlQueryConditionGroupQuery.list();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(Class<E> type) {
-        return repositorySqlQueryConditionGroupQuery.list(type);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(RowMapper<E> rowMapper) {
-        return repositorySqlQueryConditionGroupQuery.list(rowMapper);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> List<E> list(Class<E> type) {
+    //        return repositorySqlQueryConditionGroupQuery.list(type);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> List<E> list(RowMapper<E> rowMapper) {
+    //        return repositorySqlQueryConditionGroupQuery.list(rowMapper);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -125,21 +165,21 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
         return repositorySqlQueryConditionGroupQuery.pagination();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> PaginationResults<E> pagination(Class<E> type) {
-        return repositorySqlQueryConditionGroupQuery.pagination(type);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
-        return repositorySqlQueryConditionGroupQuery.pagination(rowMapper);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> PaginationResults<E> pagination(Class<E> type) {
+    //        return repositorySqlQueryConditionGroupQuery.pagination(type);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
+    //        return repositorySqlQueryConditionGroupQuery.pagination(rowMapper);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -149,21 +189,21 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
         return repositorySqlQueryConditionGroupQuery.single();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E single(Class<E> type) {
-        return repositorySqlQueryConditionGroupQuery.single(type);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E single(RowMapper<E> rowMapper) {
-        return repositorySqlQueryConditionGroupQuery.single(rowMapper);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> E single(Class<E> type) {
+    //        return repositorySqlQueryConditionGroupQuery.single(type);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> E single(RowMapper<E> rowMapper) {
+    //        return repositorySqlQueryConditionGroupQuery.single(rowMapper);
+    //    }
 
     /**
      * {@inheritDoc}
@@ -173,21 +213,21 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
         return repositorySqlQueryConditionGroupQuery.unique();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E unique(Class<E> type) {
-        return repositorySqlQueryConditionGroupQuery.unique(type);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E unique(RowMapper<E> rowMapper) {
-        return repositorySqlQueryConditionGroupQuery.unique(rowMapper);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> E unique(Class<E> type) {
+    //        return repositorySqlQueryConditionGroupQuery.unique(type);
+    //    }
+    //
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> E unique(RowMapper<E> rowMapper) {
+    //        return repositorySqlQueryConditionGroupQuery.unique(rowMapper);
+    //    }
 
     // ****************************************************************************************************************
     //	sort

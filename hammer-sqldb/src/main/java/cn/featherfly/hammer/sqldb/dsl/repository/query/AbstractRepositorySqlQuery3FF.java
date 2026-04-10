@@ -1,18 +1,18 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Map;
 
 import cn.featherfly.common.function.ThConsumer;
 import cn.featherfly.common.function.ThFunction;
-import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.data.query.LimitAwareQuery2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery3;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup3FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic3FF;
 import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression3FF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression3;
@@ -29,13 +29,12 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRelateExpression<R>> extends
     AbstractRepositorySqlQuery3<R, RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF,
-        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
-        RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, LimitAwareQuery2<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression3FF, LimitAwareQuery2<Map<String, Serializable>>>
     implements
     RepositoryQuery3<RepositoryQueryConditionsGroup3FF, RepositoryQueryConditionsGroupLogic3FF,
-        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
-        RepositoryQuerySortedExpression3FF, QueryLimitExecutor2>,
-    QueryLimitExecutor2 {
+        RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, LimitAwareQuery2<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression3FF, LimitAwareQuery2<Map<String, Serializable>>> {
 
     /**
      * Instantiates a new abstract repository sql query 3 FF.
@@ -78,7 +77,8 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF, QueryLimitExecutor2> sort() {
+    public RepositoryQuerySortExpression3<RepositoryQuerySortedExpression3FF,
+        LimitAwareQuery2<Map<String, Serializable>>> sort() {
         return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).sort();
     }
 
@@ -97,32 +97,7 @@ public abstract class AbstractRepositorySqlQuery3FF<R extends RepositoryQueryRel
      * {@inheritDoc}
      */
     @Override
-    public <E1, E2> List<Tuple2<E1, E2>> list(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).list(prefixes, type1, type2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2> Tuple2<E1, E2> single(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).single(prefixes, type1, type2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2> Tuple2<E1, E2> unique(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).unique(prefixes, type1, type2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2> PaginationResults<Tuple2<E1, E2>> pagination(Tuple2<String, String> prefixes, Class<E1> type1,
-        Class<E2> type2) {
-        return new RepositorySqlQueryExpression3FF(queryRelation, sqlPageFactory).pagination(prefixes, type1, type2);
+    public LimitAwareQuery2<Map<String, Serializable>> limit(Limit limit) {
+        return new RepositorySqlQueryExpression2FF(queryRelation, sqlPageFactory).limit(limit);
     }
 }

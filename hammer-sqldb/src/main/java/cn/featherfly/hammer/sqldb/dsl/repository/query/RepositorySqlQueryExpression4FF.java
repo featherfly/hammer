@@ -1,14 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Map;
 
-import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.data.query.LimitAwareQuery2;
+import cn.featherfly.data.query.QueryMapperSetter2;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup4FF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic4FF;
 import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression4FF;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor2;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression4;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -21,9 +21,9 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 public class RepositorySqlQueryExpression4FF extends
     AbstractMulitiRepositorySqlQueryConditionsGroupExpression4<RepositoryQueryConditionsGroup4FF,
         RepositoryQueryConditionsGroupLogic4FF,
-        RepositoryQuerySortExpression4<RepositoryQuerySortedExpression4FF, QueryLimitExecutor2>,
-        RepositoryQuerySortedExpression4FF, QueryLimitExecutor2>
-    implements RepositoryQueryConditionsGroup4FF, RepositoryQueryConditionsGroupLogic4FF {
+        RepositoryQuerySortExpression4<RepositoryQuerySortedExpression4FF, LimitAwareQuery2<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression4FF, LimitAwareQuery2<Map<String, Serializable>>>
+    implements RepositoryQueryConditionsGroup4FF, RepositoryQueryConditionsGroupLogic4FF, QueryMapperSetter2 {
 
     /**
      * Instantiates a new sql query expression.
@@ -56,36 +56,4 @@ public class RepositorySqlQueryExpression4FF extends
         return new RepositorySqlQueryExpression4FF(parent, repositoryRelation, sqlPageFactory);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2> List<Tuple2<E1, E2>> list(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        return repositorySqlQueryConditionGroupQuery.list(prefixes, type1, type2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2> PaginationResults<Tuple2<E1, E2>> pagination(Tuple2<String, String> prefixes, Class<E1> type1,
-        Class<E2> type2) {
-        return repositorySqlQueryConditionGroupQuery.pagination(prefixes, type1, type2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2> Tuple2<E1, E2> single(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        return repositorySqlQueryConditionGroupQuery.single(prefixes, type1, type2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2> Tuple2<E1, E2> unique(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        return repositorySqlQueryConditionGroupQuery.unique(prefixes, type1, type2);
-    }
 }

@@ -1,17 +1,14 @@
 
 package cn.featherfly.hammer.expression.entity.compatible.query;
 
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryListExecutor;
+import cn.featherfly.data.query.QueryValueExecutor;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.ConfigureExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryListExecutor;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryValueConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryValueWhereExpression;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
-import cn.featherfly.hammer.expression.query.QueryValueConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryValueListExecutor;
+import cn.featherfly.hammer.expression.entity.query.EntityQueryValueLimitExecutor;
 import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
@@ -26,11 +23,12 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * @param <T> this expression
  */
 public interface EntityQueryValueCompatibleExpression<E, V,
-    C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
-    L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
-    S extends EntityQueryValueSortExpression<E, V>, T extends EntityQueryValueCompatibleExpression<E, V, C, L, S, T>>
-    extends EntityQueryValueWhereExpression<E, V, C, L, S>, EntityQueryListExecutor<E>, QueryValueListExecutor,
-    QueryCountExecutor, QueryValueConditionLimit, Queryable<S>,
+    C extends EntityQueryValueConditionGroupCompatibleExpression<E, V, C, L, S>,
+    L extends EntityQueryValueConditionGroupLogicCompatibleExpression<E, V, C, L, S>,
+    S extends EntityQueryValueSortCompatibleExpression<E, V>,
+    T extends EntityQueryValueCompatibleExpression<E, V, C, L, S, T>>
+    extends EntityQueryValueWhereCompatibleExpression<E, V, C, L, S>, QueryListExecutor<E>, QueryValueExecutor,
+    QueryCountExecutor, QueryLimitSetter<EntityQueryValueLimitExecutor<E, V>>, Queryable<S>,
     ConfigureExpression<T, DslQueryConfig, QueryConditionConfig> {
 
 }

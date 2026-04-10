@@ -30,6 +30,8 @@ public class DslEntityCompatTest {
 
     private EntityQueryFetch<User> entityQueryFetch;
 
+    User user;
+
     Query query = null;
 
     Deleter deleter = null;
@@ -43,32 +45,65 @@ public class DslEntityCompatTest {
         LocalDate localDate = null;
         LocalTime localTime = null;
         Date date = null;
+        Number number = null;
+        Long count = null;
+        Integer i = null;
 
         query.find(User.class).compat().fetch("localDateTime") //
             .fetch("localDate").list();
         query.find(User.class).compat().fetch("localDateTime") //
             .fetch("localDate").limit(1).single();
 
+        query.find(User.class).compat().count();
+
         query.find(User.class).compat().count("localDateTime").list(); // FIXME 不应该能够调用list
         query.find(User.class).compat().count("localDateTime").value(); // NOIMPL 后续来实现
 
-        localDateTime = query.find(User.class).compat().fetch("localDateTime").limit(1).value();
+        user = query.find(User.class).compat().fetch("localDateTime").limit(1).single();
+        user = query.find(User.class).compat().fetch("localDateTime").limit(1).unique();
+        localDateTime = (LocalDateTime) query.find(User.class).compat().fetch("localDateTime").limit(1).value();
+        // FIXME 使用下面这个替代上面
+        // localDateTime = (LocalDateTime) query.find(User.class).compat().fetch("localDateTime").limit(1).spread().single();
+        // localDateTime = (LocalDateTime) query.find(User.class).compat().fetch("localDateTime").limit(1).spread().unique();
+        user = query.find(User.class).compat().fetch(User::getLocalDateTime).limit(1).single();
+        user = query.find(User.class).compat().fetch(User::getLocalDateTime).limit(1).unique();
         localDateTime = query.find(User.class).compat().fetch(User::getLocalDateTime).limit(1).value();
-        localDate = query.find(User.class).compat().fetch("localDate").limit(1).value();
+        // FIXME 使用下面这个替代上面
+        // localDateTime = query.find(User.class).compat().fetch(User::getLocalDateTime).limit(1).spread().single();
+        // localDateTime = query.find(User.class).compat().fetch(User::getLocalDateTime).limit(1).spread().unique();
+
+        localDateTime = (LocalDateTime) query.find(User.class).compat().fetch("localDateTime").limit(1).value();
+        // IMPLSOON 后续所有的的查询都在最终获取方法(list, single, unique, pagination)前加入mapper方法
+        // 在fetch一行数据一个属性（字段）时，如果能拿到具体类型，则使用只有value方法的exectutor，如果不能拿到类型，则加入intValue,longValue那一系列方法的executor，如果再mapper了，则返回value executor
+        // localDateTime = (LocalDateTime) query.find(User.class).compat().fetch("localDateTime").limit(1).mapper(LocalDateTime.class).value();
+        localDateTime = query.find(User.class).compat().fetch("localDateTime", LocalDateTime.class).limit(1).value();
+        localDateTime = query.find(User.class).compat().fetch(User::getLocalDateTime).limit(1).value();
+        localDate = (LocalDate) query.find(User.class).compat().fetch("localDate").limit(1).value();
+        localDate = query.find(User.class).compat().fetch("localDate", LocalDate.class).limit(1).value();
         localDate = query.find(User.class).compat().fetch(User::getLocalDate).limit(1).value();
-        localTime = query.find(User.class).compat().fetch("localTime").limit(1).value();
+        localTime = (LocalTime) query.find(User.class).compat().fetch("localTime").limit(1).value();
+        localTime = query.find(User.class).compat().fetch("localTime", LocalTime.class).limit(1).value();
         localTime = query.find(User.class).compat().fetch(User::getLocalTime).limit(1).value();
-        date = query.find(User.class).compat().fetch("date").limit(1).value();
+        date = (Date) query.find(User.class).compat().fetch("date").limit(1).value();
+        date = query.find(User.class).compat().fetch("date", Date.class).limit(1).value();
         date = query.find(User.class).compat().fetch(User::getDate).limit(1).value();
 
-        localDateTime = query.find(User.class).compat().fetch("localDateTime").where().eq("id", 1).value();
+        query.find(User.class).compat().where().eq("id", 1);
+
+        localDateTime = (LocalDateTime) query.find(User.class).compat().fetch("localDateTime").where()
+            .eq(User::getId, 1).value();
+        localDateTime = query.find(User.class).compat().fetch("localDateTime", LocalDateTime.class).where()
+            .eq(User::getId, 1).value();
         localDateTime = query.find(User.class).compat().fetch(User::getLocalDateTime).where().eq(User::getId, 1)
             .value();
-        localDate = query.find(User.class).compat().fetch("localDate").where().eq("id", 1).value();
+        localDate = (LocalDate) query.find(User.class).compat().fetch("localDate").where().eq("id", 1).value();
+        localDate = query.find(User.class).compat().fetch("localDate", LocalDate.class).where().eq("id", 1).value();
         localDate = query.find(User.class).compat().fetch(User::getLocalDate).where().eq(User::getId, 1).value();
-        localTime = query.find(User.class).compat().fetch("localTime").where().eq("id", 1).value();
+        localTime = (LocalTime) query.find(User.class).compat().fetch("localTime").where().eq("id", 1).value();
+        localTime = query.find(User.class).compat().fetch("localTime", LocalTime.class).where().eq("id", 1).value();
         localTime = query.find(User.class).compat().fetch(User::getLocalTime).where().eq(User::getId, 1).value();
-        date = query.find(User.class).compat().fetch("date").where().eq("id", 1).value();
+        date = (Date) query.find(User.class).compat().fetch("date").where().eq("id", 1).value();
+        date = query.find(User.class).compat().fetch("date", Date.class).where().eq("id", 1).value();
         date = query.find(User.class).compat().fetch(User::getDate).where().eq(User::getId, 1).value();
 
         PaginationResults<
@@ -93,12 +128,23 @@ public class DslEntityCompatTest {
         query.find(User.class).compat().fetch("age").list();
         query.find(User.class).compat().fetch(User::getAge).value();
         // YUFEI_TODO 后续区实现使用了分组函数才能使用.value()返回一条数据，相当于分组函数的作用和limit一样（用于筛选就能调用返回一条数据的方法）
-        query.find(User.class).compat().avg("age").value();
-        query.find(User.class).compat().avg(User::getAge).value();
-        query.find(User.class).compat().sum("age").value();
-        query.find(User.class).compat().sum(User::getAge).value();
-        query.find(User.class).compat().min("age").value();
-        query.find(User.class).compat().min(User::getAge).value();
+        number = query.find(User.class).compat().avg("age").single();
+        number = query.find(User.class).compat().avg("age").unique();
+        number = query.find(User.class).compat().avg("age").value();
+        i = query.find(User.class).compat().avg(User::getAge).single();
+        i = query.find(User.class).compat().avg(User::getAge).unique();
+        i = query.find(User.class).compat().avg(User::getAge).value();
+        number = query.find(User.class).compat().min("age").single();
+        number = query.find(User.class).compat().min("age").unique();
+        number = query.find(User.class).compat().min("age").value();
+        i = query.find(User.class).compat().min(User::getAge).single();
+        i = query.find(User.class).compat().min(User::getAge).unique();
+        i = query.find(User.class).compat().min(User::getAge).value();
+
+        // IMPLSOON 后续加入expand()方法用于在fetch后进行值映射
+        //        query.find(User.class).compat().min(User::getAge).spread().single();
+        //        query.find(User.class).compat().min(User::getAge).expand().unique();
+
         query.find(User.class).compat().max("age").value();
         query.find(User.class).compat().max(User::getAge).value();
         query.find(User.class).compat().count("age").value();

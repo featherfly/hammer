@@ -7,7 +7,10 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery0;
 import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression6;
 
 /**
@@ -18,6 +21,6 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpre
  * @param <Q> the generic type
  */
 public interface RepositoryQuerySortExpression6<S extends RepositoryQuerySortedExpression6<S, Q>,
-    Q extends QueryLimitExecutor> extends RepositorySortExpression6<S> {
+    Q extends LimitAwareQuery0<Map<String, Serializable>>> extends RepositorySortExpression6<S> {
 
 }

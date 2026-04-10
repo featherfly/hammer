@@ -11,7 +11,7 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
  * @param <E> the element type
  */
 public interface EntityQueryConditionGroupLogic<E>
-        //        extends EntityQueryConditionLimit<E>,
+        //        extends EntityQueryLimitSetter<E>,
         //        EntityQueryExecutor<E>, QueryCountExecutor, QueryValueExecutor, EntityConditionGroupLogicExpression<E,
         //                EntityQueryConditionGroupExpression<E>, EntityQueryConditionGroupLogicExpression<E>> {
         extends EntityQueryConditionGroupLogicExpression<E, EntityQueryConditionGroup<E>,

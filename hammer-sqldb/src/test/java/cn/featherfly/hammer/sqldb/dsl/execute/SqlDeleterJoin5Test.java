@@ -780,13 +780,13 @@ public class SqlDeleterJoin5Test extends AbstractDeleterTest {
         assertNull(load);
 
         //                // ----------------------------------------------------------------------------------------------------------------
-        //        
+        //
         //                hammer.save(order);
         //                load = hammer.get(order);
         //                assertEquals(load.getId(), order.getId());
         //                assertEquals(load.getNo(), order.getNo());
         //                assertEquals(load.getAppId(), order.getAppId());
-        //        
+        //
         //                result = deleter.delete(ORDER_TABLE) //
         //                    .join(USER_TABLE).on((e1, j) -> e1.field(ORDER_FIELD_CREATE_USER) //
         //                        .eq(j.field(USER_FIELD_ID))) //
@@ -807,7 +807,7 @@ public class SqlDeleterJoin5Test extends AbstractDeleterTest {
         ////                      YUFEI_TODO 没有定义field(User::getUsername)
         //                    .execute();
         //                assertEquals(result, 1);
-        //        
+        //
         //                load = hammer.get(order);
         //                assertNull(load);
     }

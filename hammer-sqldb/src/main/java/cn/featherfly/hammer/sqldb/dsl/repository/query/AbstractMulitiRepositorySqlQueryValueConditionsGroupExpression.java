@@ -10,11 +10,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import cn.featherfly.common.tuple.Tuple1;
-import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.common.tuple.Tuples;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.SqlUtils;
@@ -22,18 +17,26 @@ import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.repository.mapper.RowMapper;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
+import cn.featherfly.common.tuple.Tuple1;
+import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.data.query.LimitAwareQueryValue;
+import cn.featherfly.data.query.QueryExecutor;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroupLogic;
-import cn.featherfly.hammer.expression.query.QueryValueLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryValueSortExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryValueSortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.AbstractMulitiRepositorySqlConditionsGroupExpressionBase;
+import cn.featherfly.hammer.sqldb.dsl.repository.LimitAwareRepositoryQueryValue;
+import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryConditionGroupQuery;
+import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -101,9 +104,28 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      * {@inheritDoc}
      */
     @Override
-    public QueryValueLimitExecutor limit(Limit limit) {
+    public <T> QueryExecutor<T> mapper(Class<T> type) {
+        return new RepositorySqlQueryLimitExecutor<>(
+            new RepositorySqlQueryConditionGroupQuery(this, sqlPageFactory, repositoryRelation),
+            repositoryRelation.getJdbc().createRowMapper(type));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> QueryExecutor<T> mapper(RowMapper<T> rowMapper) {
+        return new RepositorySqlQueryLimitExecutor<>(
+            new RepositorySqlQueryConditionGroupQuery(this, sqlPageFactory, repositoryRelation), rowMapper);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LimitAwareQueryValue limit(Limit limit) {
         this.limit = limit;
-        return this;
+        return new LimitAwareRepositoryQueryValue(this);
     }
 
     /**
@@ -127,8 +149,12 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     /**
      * {@inheritDoc}
      */
-    @Override
+    //    @Override
     public <E> List<E> list(Class<E> type) {
+        return list(jdbc.createRowMapper(type));
+    }
+
+    public <E> List<E> list(RowMapper<E> rowMapper) {
         String sql = getRoot().expression();
         Serializable[] params = getRoot().getParamsArray();
         if (limit != null) {
@@ -137,61 +163,55 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
             sql = pageQuery.getSql();
             params = pageQuery.getParams();
         }
-        return jdbc.queryList(sql, type, params);
+        return jdbc.queryList(sql, rowMapper, params);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public PaginationResults<Map<String, Serializable>> pagination() {
+    public <E> RowIterable<E> each() {
+        return (RowIterable<E>) each(Object.class);
+    }
+
+    public <E> RowIterable<E> each(Class<E> type) {
+        return each(getJdbc().createRowMapper(type));
+    }
+
+    public <E> RowIterable<E> each(RowMapper<E> rowMapper) {
         String sql = getRoot().expression();
-        String countSql = SqlUtils.convertSelectToCount(sql);
         Serializable[] params = getRoot().getParamsArray();
-        SimplePaginationResults<Map<String, Serializable>> pagination = new SimplePaginationResults<>(limit);
         if (limit != null) {
             SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
                 limit.getLimit(), params);
-            List<Map<String, Serializable>> list = jdbc.queryList(pageQuery.getSql(), pageQuery.getParams());
-            pagination.setPageResults(list);
-            int total = jdbc.queryInt(countSql, params);
-            pagination.setTotal(total);
-        } else {
-            List<Map<String, Serializable>> list = jdbc.queryList(sql, params);
-            pagination.setPageResults(list);
-            pagination.setTotal(list.size());
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
         }
-        return pagination;
+        return jdbc.queryEach(sql, rowMapper, params);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
+    public <E> PaginationResults<E> pagination() {
+        return (PaginationResults<E>) pagination(Object.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    //    @Override
     public <E> PaginationResults<E> pagination(Class<E> type) {
-        String sql = getRoot().expression();
-        String countSql = SqlUtils.convertSelectToCount(sql);
-        Serializable[] params = Lang.toArray(getRoot().getParams(), Serializable.class);
-        SimplePaginationResults<E> pagination = new SimplePaginationResults<>(limit);
-        if (limit != null) {
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(dialect, sql, limit.getOffset(),
-                limit.getLimit(), params);
-            List<E> list = jdbc.queryList(pageQuery.getSql(), type, pageQuery.getParams());
-            pagination.setPageResults(list);
-            int total = jdbc.queryInt(countSql, params);
-            pagination.setTotal(total);
-        } else {
-            List<E> list = jdbc.queryList(sql, type, params);
-            pagination.setPageResults(list);
-            pagination.setTotal(list.size());
-        }
-        return pagination;
+        return pagination(getJdbc().createRowMapper(type));
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
+    //    @Override
     public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
@@ -312,7 +332,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      * {@inheritDoc}
      */
     @Override
-    public int intValue() {
+    public int int32() {
         return jdbc.queryInt(getRoot().expression(), getRoot().getParamsArray());
     }
 
@@ -320,7 +340,7 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
      * {@inheritDoc}
      */
     @Override
-    public long longValue() {
+    public long longInt64() {
         return jdbc.queryLong(getRoot().expression(), getRoot().getParamsArray());
     }
 
@@ -356,6 +376,10 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         return jdbc.querySingle(getRoot().expression(), type, getRoot().getParamsArray());
     }
 
+    public <T> T single(RowMapper<T> rowMapper) {
+        return jdbc.querySingle(getRoot().expression(), rowMapper, getRoot().getParamsArray());
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -371,6 +395,10 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     @Override
     public <T> T unique(Class<T> type) {
         return jdbc.queryUnique(getRoot().expression(), type, getRoot().getParamsArray());
+    }
+
+    public <T> T unique(RowMapper<T> rowMapper) {
+        return jdbc.queryUnique(getRoot().expression(), rowMapper, getRoot().getParamsArray());
     }
 
     /**

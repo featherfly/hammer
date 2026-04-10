@@ -16,7 +16,7 @@ public class RepositorySqlQueryValueExpression extends AbstractMulitiRepositoryS
     /**
      * Instantiates a new repository sql query value expression.
      *
-     * @param queryRelation  the query relation
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryValueExpression(RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
@@ -26,12 +26,12 @@ public class RepositorySqlQueryValueExpression extends AbstractMulitiRepositoryS
     /**
      * Instantiates a new repository sql query value expression.
      *
-     * @param parent         the parent
-     * @param queryRelation  the query relation
+     * @param parent the parent
+     * @param queryRelation the query relation
      * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryValueExpression(RepositoryQueryValueConditionsGroupLogic parent,
-            RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
+        RepositorySqlQueryRelation queryRelation, SqlPageFactory sqlPageFactory) {
         super(parent, 0, queryRelation, sqlPageFactory);
     }
 

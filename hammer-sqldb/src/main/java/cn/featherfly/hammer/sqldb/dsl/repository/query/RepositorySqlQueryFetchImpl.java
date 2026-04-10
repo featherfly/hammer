@@ -16,18 +16,17 @@ import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetched1Field;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.FetchField;
 import cn.featherfly.hammer.expression.query.FetchFieldImpl;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.relation.RepositorySqlQueryOn1;
-import cn.featherfly.hammer.sqldb.dsl.repository.query.relation.RepositorySqlQueryRelate1R;
+import cn.featherfly.hammer.sqldb.dsl.repository.query.relation.RepositorySqlQueryRelate1;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
@@ -36,14 +35,13 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  */
 public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch<RepositoryQueryFetched1Field,
-    RepositoryQueryFetchedFields, RepositoryQueryConditionsGroup, QueryLimitExecutor>
-    implements RepositorySqlQueryFetch {
+    RepositoryQueryFetchedFields, RepositoryQueryConditionsGroup> implements RepositorySqlQueryFetch {
 
     /**
      * Instantiates a new sql query entity properties.
      *
      * @param repositoryRelation the repository relation
-     * @param sqlPageFactory     the sql page factory
+     * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryFetchImpl(RepositorySqlQueryRelation repositoryRelation, SqlPageFactory sqlPageFactory) {
         super(repositoryRelation, sqlPageFactory);
@@ -176,9 +174,8 @@ public class RepositorySqlQueryFetchImpl extends AbstractRepositorySqlQueryFetch
      * {@inheritDoc}
      */
     @Override
-    public RepositoryOnExpression1<RepositoryQueryRelate1R> join(
-        Repository repository) {
-        return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1R(queryRelation, sqlPageFactory), queryRelation,
-            repository, relate -> ((RepositorySqlQueryRelate1R) relate).setIdName());
+    public RepositoryOnExpression1<RepositoryQueryRelate1> join(Repository repository) {
+        return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1(queryRelation, sqlPageFactory), queryRelation,
+            repository, relate -> ((RepositorySqlQueryRelate1) relate).setIdName());
     }
 }

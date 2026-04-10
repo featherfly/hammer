@@ -1,10 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.data.query.LimitAwareQuery1;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryFetchFieldExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -13,22 +17,23 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * AbstractRepositorySqlQueryFetch.
  *
  * @author zhongj
- * @param <Q>  the element type
+ * @param <Q> the element type
  * @param <Q2> the generic type
- * @param <C>  the generic type
- * @param <L>  the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
-public abstract class AbstractRepositorySqlQueryFetch<Q, Q2, C extends ConditionExpression, L> extends
-        AbstractRepositorySqlQuery<C, L> implements RepositoryQueryFetchFieldExpression<Q, Q2>, QueryLimitExecutor {
+public abstract class AbstractRepositorySqlQueryFetch<Q, Q2, C extends ConditionExpression>
+    extends AbstractRepositorySqlQuery<C, LimitAwareQuery1<Map<String, Serializable>>>
+    implements RepositoryQueryFetchFieldExpression<Q, Q2> {
 
     /**
      * Instantiates a new abstract sql query entity properties.
      *
      * @param repositoryRelation the repository relation
-     * @param sqlPageFactory     the sql page factory
+     * @param sqlPageFactory the sql page factory
      */
     protected AbstractRepositorySqlQueryFetch(RepositorySqlQueryRelation repositoryRelation,
-            SqlPageFactory sqlPageFactory) {
+        SqlPageFactory sqlPageFactory) {
         super(0, repositoryRelation, sqlPageFactory);
     }
 
@@ -39,6 +44,11 @@ public abstract class AbstractRepositorySqlQueryFetch<Q, Q2, C extends Condition
      */
     protected AbstractRepositorySqlQueryFetch(AbstractRepositorySqlQueryBase<?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
+    }
+
+    @Override
+    public LimitAwareQuery1<Map<String, Serializable>> limit(Limit limit) {
+        return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit);
     }
 
     //    /**
@@ -157,8 +167,8 @@ public abstract class AbstractRepositorySqlQueryFetch<Q, Q2, C extends Condition
     /**
      * Id.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the e
      */

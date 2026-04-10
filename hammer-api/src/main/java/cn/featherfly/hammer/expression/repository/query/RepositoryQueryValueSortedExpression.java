@@ -1,8 +1,10 @@
 
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryValueConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryValueExecutor;
+import cn.featherfly.data.query.LimitAwareQueryValue;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryMapperSetter1;
+import cn.featherfly.data.query.QueryValueExecutor;
 import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 
 /**
@@ -10,7 +12,8 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExp
  *
  * @author zhongj
  */
-public interface RepositoryQueryValueSortedExpression extends
-    RepositorySortedExpression<RepositoryQueryValueSortedExpression>, QueryValueConditionLimit, QueryValueExecutor {
+public interface RepositoryQueryValueSortedExpression
+    extends RepositorySortedExpression<RepositoryQueryValueSortedExpression>, QueryLimitSetter<LimitAwareQueryValue>,
+    QueryValueExecutor, QueryMapperSetter1 {
 
 }

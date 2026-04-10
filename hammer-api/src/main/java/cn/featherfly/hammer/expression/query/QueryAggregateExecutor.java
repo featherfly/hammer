@@ -2,6 +2,8 @@
 package cn.featherfly.hammer.expression.query;
 
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryValueOneExecutor;
 
 /**
  * dsl for query count number executor.
@@ -24,7 +26,7 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Count.
      *
-     * @param distinct     the distinct
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -33,8 +35,8 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Count.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -45,9 +47,9 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Count.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -66,7 +68,7 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Sum.
      *
-     * @param distinct     the distinct
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -75,8 +77,8 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Sum.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -87,9 +89,9 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Sum.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -108,7 +110,7 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Max.
      *
-     * @param distinct     the distinct
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -117,8 +119,8 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Max.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -129,9 +131,9 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Max.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -150,7 +152,7 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Min.
      *
-     * @param distinct     the distinct
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -159,8 +161,8 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Min.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -171,9 +173,9 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Min.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -192,7 +194,7 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Avg.
      *
-     * @param distinct     the distinct
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */
@@ -201,8 +203,8 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Avg.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
+     * @param <T> the generic type
+     * @param <R> the generic type
      * @param propertyName the property name
      * @return the q
      */
@@ -213,9 +215,9 @@ public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends
     /**
      * Avg.
      *
-     * @param <T>          the generic type
-     * @param <R>          the generic type
-     * @param distinct     the distinct
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param distinct the distinct
      * @param propertyName the property name
      * @return the q
      */

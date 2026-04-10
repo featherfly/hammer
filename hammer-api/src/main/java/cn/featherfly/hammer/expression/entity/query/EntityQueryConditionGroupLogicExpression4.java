@@ -1,8 +1,10 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
 import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression4;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 
 /**
  * The Interface EntityConditionGroupLogicExpression4.
@@ -23,6 +25,6 @@ public interface EntityQueryConditionGroupLogicExpression4<E1, E2, E3, E4,
     L extends EntityQueryConditionGroupLogicExpression4<E1, E2, E3, E4, C, L, S, S2, R>,
     S extends EntityQuerySortExpression4<E1, E2, E3, E4, R>, S2 extends EntityQuerySortedExpression4<E1, E2, E3, E4, R>,
     R> extends EntityConditionGroupLogicExpression4<E1, E2, E3, E4, C, L>, EntityQueryable4<E1, E2, E3, E4, S, S2>,
-    EntityQueryConditionLimit<EntityQueryLimitExecutor<R>>, EntityQueryLimitExecutor<R>, QueryCountExecutor {
+    QueryLimitSetter<QueryLimitExecutor<R>>, QueryLimitExecutor<R>, QueryCountExecutor {
 
 }

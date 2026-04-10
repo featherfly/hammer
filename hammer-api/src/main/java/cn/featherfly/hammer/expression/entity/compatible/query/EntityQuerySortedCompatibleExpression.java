@@ -8,8 +8,8 @@
  */
 package cn.featherfly.hammer.expression.entity.compatible.query;
 
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionLimit;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedCompatibleExpression;
 import cn.featherfly.hammer.expression.query.sort.SortedExpression;
 
@@ -21,7 +21,7 @@ import cn.featherfly.hammer.expression.query.sort.SortedExpression;
  */
 public interface EntityQuerySortedCompatibleExpression<E>
     extends EntitySortedCompatibleExpression<E, EntityQuerySortedCompatibleExpression<E>>,
-    SortedExpression<EntityQuerySortedCompatibleExpression<E>>, EntityQueryConditionLimit<EntityQueryLimitExecutor<E>>,
-    EntityQueryLimitExecutor<E> {
+    SortedExpression<EntityQuerySortedCompatibleExpression<E>>, QueryLimitSetter<QueryLimitExecutor<E>>,
+    QueryLimitExecutor<E> {
 
 }

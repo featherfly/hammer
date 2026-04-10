@@ -36,6 +36,7 @@ import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.Instantiator;
 import cn.featherfly.common.bean.NoSuchPropertyException;
 import cn.featherfly.common.bean.ReflectionInstantiator;
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -423,7 +424,9 @@ public class NestedBeanPropertyRowMapper<T> extends AbstractRowMapper<T> {
                 }
                 String field = lowerCaseName(org.springframework.util.StringUtils.delete(column, " "));
                 boolean nestedProperty = false;
-
+                if (field.charAt(0) == Chars.DOT_CHAR) {
+                    field = field.substring(1);
+                }
                 if (field.contains(".")) {
                     nestedProperty = true;
                     field = org.apache.commons.lang3.StringUtils.substringBefore(field, ".");
@@ -500,13 +503,11 @@ public class NestedBeanPropertyRowMapper<T> extends AbstractRowMapper<T> {
                     } catch (TypeMismatchException ex) {
                         if (value == null && primitivesDefaultedForNullValue) {
                             if (logger.isDebugEnabled()) {
-                                logger.debug(
-                                    "Intercepted TypeMismatchException for row " + rowNumber + " and column '"
-                                        + mapping.columnAs + "' with null value when setting property '"
-                                        + mapping.propertyDescriptor.getName() + "' of type '"
-                                        + ClassUtils.getQualifiedName(mapping.propertyDescriptor.getPropertyType())
-                                        + "' on object: " + mappedObject,
-                                    ex);
+                                logger.debug("Intercepted TypeMismatchException for row " + rowNumber + " and column '"
+                                    + mapping.columnAs + "' with null value when setting property '"
+                                    + mapping.propertyDescriptor.getName() + "' of type '"
+                                    + ClassUtils.getQualifiedName(mapping.propertyDescriptor.getPropertyType())
+                                    + "' on object: " + mappedObject, ex);
                             }
                         } else {
                             throw ex;

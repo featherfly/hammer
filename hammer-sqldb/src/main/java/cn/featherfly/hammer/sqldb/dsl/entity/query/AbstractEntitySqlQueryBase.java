@@ -5,13 +5,14 @@ import java.util.List;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.lang.AssertIllegalArgument;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
 import cn.featherfly.hammer.config.HammerConfig;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionLimit;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryValueExpression;
@@ -25,7 +26,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <L> the generic type
  */
 public abstract class AbstractEntitySqlQueryBase<E, L>
-    implements EntityQueryConditionLimit<L>, EntityQueryLimitExecutor<E>, QueryCountExecutor {
+    implements QueryLimitSetter<L>, QueryLimitExecutor<E>, QueryCountExecutor {
 
     /** The factory. */
     protected final JdbcMappingFactory factory;
@@ -85,6 +86,15 @@ public abstract class AbstractEntitySqlQueryBase<E, L>
     public L limit(Limit limit) {
         this.limit = limit;
         return (L) this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RowIterable<E> each() {
+        return new EntitySqlQueryExpression<E>(hammerConfig, factory, sqlPageFactory, queryRelation).limit(limit)
+            .each();
     }
 
     /**

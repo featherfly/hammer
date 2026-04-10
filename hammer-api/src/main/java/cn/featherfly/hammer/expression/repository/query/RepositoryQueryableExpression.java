@@ -1,10 +1,15 @@
 
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.QueryListExecutor;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery1;
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryEachExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryListExecutor;
+import cn.featherfly.data.query.QueryMapperSetter1;
 import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
@@ -14,6 +19,7 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * @param <S> the sort type
  * @param <Q> the QueryLimitExecutor type
  */
-public interface RepositoryQueryableExpression<S, Q extends QueryLimitExecutor>
-    extends Queryable<S>, QueryListExecutor, QueryCountExecutor, QueryConditionLimit<Q> {
+public interface RepositoryQueryableExpression<S, Q extends LimitAwareQuery1<Map<String, Serializable>>>
+    extends Queryable<S>, QueryListExecutor<Map<String, Serializable>>, QueryEachExecutor<Map<String, Serializable>>,
+    QueryCountExecutor, QueryLimitSetter<Q>, QueryMapperSetter1 {
 }

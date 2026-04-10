@@ -6,22 +6,22 @@ import java.util.Map;
 import java.util.function.Function;
 
 import cn.featherfly.common.operator.LogicOperator;
-import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.Page;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.data.query.QueryExecutor;
+import cn.featherfly.data.query.QueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
 import cn.featherfly.hammer.expression.condition.ConditionExpression;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryExecutor;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 
 public class UserTableLogic implements
     //RepositoryQueryConditionsGroupLogicExpression<UserTableFilterable, UserTableLogic, RepositoryQuerySortExpression>
-    GroupEndExpression<UserTableFilterable, UserTableLogic>, QueryExecutor, QueryLimitExecutor,
-    QueryConditionLimit<QueryLimitExecutor> {
+    GroupEndExpression<UserTableFilterable, UserTableLogic>, QueryExecutor<Map<String, Serializable>>,
+    QueryLimitExecutor<Map<String, Serializable>>, QueryLimitSetter<QueryLimitExecutor<Map<String, Serializable>>> {
 
     private UserTableFilterable query;
 
@@ -100,87 +100,6 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Serializable>> list() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(RowMapper<E> rowMapper) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(Class<E> type) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, Serializable> single() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, Serializable> unique() {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E single(Class<E> type) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E unique(Class<E> type) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E single(RowMapper<E> rowMapper) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> E unique(RowMapper<E> rowMapper) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public PaginationResults<Map<String, Serializable>> pagination() {
 
         return null;
@@ -190,7 +109,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(Class<E> type) {
+    public QueryLimitExecutor<Map<String, Serializable>> limit(int limit) {
 
         return null;
     }
@@ -199,7 +118,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
+    public QueryLimitExecutor<Map<String, Serializable>> limit(int offset, int limit) {
 
         return null;
     }
@@ -208,7 +127,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public QueryLimitExecutor limit(int limit) {
+    public QueryLimitExecutor<Map<String, Serializable>> limit(Page page) {
 
         return null;
     }
@@ -217,25 +136,7 @@ public class UserTableLogic implements
      * {@inheritDoc}
      */
     @Override
-    public QueryLimitExecutor limit(int offset, int limit) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Page page) {
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public QueryLimitExecutor limit(Limit limit) {
+    public QueryLimitExecutor<Map<String, Serializable>> limit(Limit limit) {
 
         return null;
     }
@@ -293,6 +194,38 @@ public class UserTableLogic implements
     public <G extends GroupExpression<GC, GL>, GC extends ConditionExpression,
         GL extends GroupEndExpression<GC, GL>> G or(G conditionExpression) {
 
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, Serializable>> list() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RowIterable<Map<String, Serializable>> each() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Serializable> single() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Serializable> unique() {
         return null;
     }
 }

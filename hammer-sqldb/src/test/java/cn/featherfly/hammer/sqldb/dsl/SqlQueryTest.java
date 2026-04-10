@@ -140,10 +140,11 @@ public class SqlQueryTest extends JdbcTestBase {
         };
 
         List<User> list = null;
-        list = query.find("user").list(User.class);
+        list = query.find("user").mapper(User.class).list();
         assertUser.accept(list);
 
-        list = query.find("user").fetch("username", "password", "age").list(User.class);
+        list = query.find("user").fetch("username", "password", "age") //
+            .mapper(User.class).list();
         assertUser.accept(list);
 
         String username = "yufei";
@@ -167,7 +168,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq("password", password)//
             .and().group()//
             .gt("age", min).and().lt("age", max) //
-            .list(User.class);
+            .mapper(User.class).list();
         assertUser2.accept(list);
 
         list = query.find("user").fetch("username", "password", "age")//
@@ -176,7 +177,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .and() //
             .eq("password", password)//
             .and().group(g -> g.gt("age", min).and().lt("age", max)) //
-            .list(User.class);
+            .mapper(User.class).list();
         assertUser2.accept(list);
 
         list = query.find("user").fetch("username", "password", "age")//
@@ -186,7 +187,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq("password", password) //
             .and((Function<RepositoryQueryConditionsGroup,
                 RepositoryQueryConditionsGroupLogic>) g -> g.gt("age", min).and().lt("age", max)) //
-            .list(User.class);
+            .mapper(User.class).list();
         assertUser2.accept(list);
 
         // ----------------------------------------------------------------------------------------------------------------
@@ -198,7 +199,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq("password", password) //
             .and().group() //
             .gt("age", min).and().lt("age", max) //
-            .list(User.class);
+            .mapper(User.class).list();
         assertUser2.accept(list);
 
         list = query.find(new SimpleAliasRepository("user", "u")) //
@@ -208,7 +209,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq("password", password) //
             .and().group() //
             .gt("age", min).and().lt("age", max) //
-            .list(User.class);
+            .mapper(User.class).list();
         assertUser2.accept(list);
 
         Repository repository = new SimpleAliasRepository("user", "u");
@@ -219,7 +220,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .eq("password", password) //
             .and().group() //
             .gt("age", min).and().lt("age", max) //
-            .list(User.class);
+            .mapper(User.class).list();
         assertUser2.accept(list);
     }
 
@@ -500,7 +501,7 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Order2> orders = query.find("order") //
             .where(r -> r.field("create_user").eq( //
                 r.field("user1")))
-            .list(Order2.class);
+            .mapper(Order2.class).list();
         for (Order2 order : orders) {
             assertEquals(order.getCreateUser(), order.getUser1());
         }
@@ -519,7 +520,15 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Integer> userIds = query.find("user").fetch("id") //
             .where() //
             .ne("id", id) //
-            .list(Integer.class);
+            .list();
+        for (Integer userId : userIds) {
+            assertNotEquals(userId, id);
+        }
+
+        userIds = query.find("user").fetch("id") //
+            .where() //
+            .ne("id", id) //
+            .mapper(Integer.class).list();
         for (Integer userId : userIds) {
             assertNotEquals(userId, id);
         }
@@ -550,7 +559,15 @@ public class SqlQueryTest extends JdbcTestBase {
         List<String> usernames = query.find("user").fetch("username") //
             .where() //
             .sw("username", sw) //
-            .list(String.class);
+            .list();
+        for (String username : usernames) {
+            assertTrue(Str.startsWith(username, sw));
+        }
+
+        usernames = query.find("user").fetch("username") //
+            .where() //
+            .sw("username", sw) //
+            .mapper(String.class).list();
         for (String username : usernames) {
             assertTrue(Str.startsWith(username, sw));
         }
@@ -587,7 +604,15 @@ public class SqlQueryTest extends JdbcTestBase {
         List<String> usernames = query.find("user").fetch("username") //
             .where() //
             .ew("username", ew) //
-            .list(String.class);
+            .list();
+        for (String username : usernames) {
+            assertTrue(Str.endWith(username, ew));
+        }
+
+        usernames = query.find("user").fetch("username") //
+            .where() //
+            .ew("username", ew) //
+            .mapper(String.class).list();
         for (String username : usernames) {
             assertTrue(Str.endWith(username, ew));
         }
@@ -624,7 +649,16 @@ public class SqlQueryTest extends JdbcTestBase {
         List<String> usernames = query.find("user").fetch("username") //
             .where() //
             .co("username", co) //
-            .list(String.class);
+            .list();
+        for (String username : usernames) {
+            assertTrue(Str.contains(username, co));
+        }
+
+        usernames = query.find("user").fetch("username") //
+            .where() //
+            .co("username", co) //
+            .mapper(String.class) //
+            .list();
         for (String username : usernames) {
             assertTrue(Str.contains(username, co));
         }
@@ -668,7 +702,8 @@ public class SqlQueryTest extends JdbcTestBase {
         List<String> usernames = query.find("user").fetch("username") //
             .where() //
             .sw("username", sw + "%") //
-            .list(String.class);
+            .mapper(String.class)   //
+            .list();
         for (String username : usernames) {
             assertTrue(Str.startsWith(username, sw));
         }
@@ -677,7 +712,8 @@ public class SqlQueryTest extends JdbcTestBase {
         usernames = query.find("user").fetch("username") //
             .where() //
             .ew("username", "%" + ew) //
-            .list(String.class);
+            .mapper(String.class)   //
+            .list();
         for (String username : usernames) {
             assertTrue(Str.endWith(username, ew));
         }
@@ -686,7 +722,7 @@ public class SqlQueryTest extends JdbcTestBase {
         usernames = query.find("user").fetch("username") //
             .where() //
             .co("username", "%" + co + "%") //
-            .list(String.class);
+            .list();
         for (String username : usernames) {
             assertTrue(Str.contains(username, co));
         }
@@ -723,7 +759,14 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Integer> ages = query.find("user").fetch("age") //
             .where() //
             .gt("age", ageValue) //
-            .list(Integer.class);
+            .list();
+        for (Integer age : ages) {
+            assertTrue(age > ageValue);
+        }
+        ages = query.find("user").fetch("age") //
+            .where() //
+            .gt("age", ageValue) //
+            .mapper(Integer.class).list();
         for (Integer age : ages) {
             assertTrue(age > ageValue);
         }
@@ -766,7 +809,15 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Integer> ages = query.find("user").fetch("age") //
             .where() //
             .ge("age", ageValue) //
-            .list(Integer.class);
+            .list();
+        for (Integer age : ages) {
+            assertTrue(age >= ageValue);
+        }
+        ages = query.find("user").fetch("age") //
+            .where() //
+            .ge("age", ageValue) //
+            .mapper(Integer.class) //
+            .list();
         for (Integer age : ages) {
             assertTrue(age >= ageValue);
         }
@@ -809,7 +860,15 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Integer> ages = query.find("user").fetch("age") //
             .where() //
             .lt("age", ageValue) //
-            .list(Integer.class);
+            .list();
+        for (Integer age : ages) {
+            assertTrue(age < ageValue);
+        }
+        ages = query.find("user").fetch("age") //
+            .where() //
+            .lt("age", ageValue) //
+            .mapper(Integer.class) //
+            .list();
         for (Integer age : ages) {
             assertTrue(age < ageValue);
         }
@@ -852,7 +911,15 @@ public class SqlQueryTest extends JdbcTestBase {
         List<Integer> ages = query.find("user").fetch("age") //
             .where() //
             .le("age", ageValue) //
-            .list(Integer.class);
+            .list();
+        for (Integer age : ages) {
+            assertTrue(age <= ageValue);
+        }
+        ages = query.find("user").fetch("age") //
+            .where() //
+            .le("age", ageValue) //
+            .mapper(Integer.class) //
+            .list();
         for (Integer age : ages) {
             assertTrue(age <= ageValue);
         }
@@ -1174,43 +1241,43 @@ public class SqlQueryTest extends JdbcTestBase {
 
         // getYear
         assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
-            .list(LocalDateTime.class));
+            .mapper(LocalDateTime.class).list());
 
         // getMonth
         assertMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMonth()
-            .eq(month).list(LocalDateTime.class));
+            .eq(month).mapper(LocalDateTime.class).list());
 
         // getDayOfMonth
         assertDayOfMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
-            .getDayOfMonth().eq(dayOfMonth).list(LocalDateTime.class));
+            .getDayOfMonth().eq(dayOfMonth).mapper(LocalDateTime.class).list());
 
         // getHour
         assertHour.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getHour().eq(hour)
-            .list(LocalDateTime.class));
+            .mapper(LocalDateTime.class).list());
 
         // getMinute
         assertMinute.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMinute()
-            .eq(minute).list(LocalDateTime.class));
+            .eq(minute).mapper(LocalDateTime.class).list());
 
         // getSecond
         assertSecond.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getSecond()
-            .eq(second).list(LocalDateTime.class));
+            .eq(second).mapper(LocalDateTime.class).list());
 
         // getWeekDay
         assertDayOfWeek.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getWeekDay()
-            .eq(dayOfWeek).list(LocalDateTime.class));
+            .eq(dayOfWeek).mapper(LocalDateTime.class).list());
 
         // getDayOfYear
         assertDayOfYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getDayOfYear()
-            .eq(dayOfYear).list(LocalDateTime.class));
+            .eq(dayOfYear).mapper(LocalDateTime.class).list());
 
         // getQuarter
         assertQuarter.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getQuarter()
-            .eq(quarter).list(LocalDateTime.class));
+            .eq(quarter).mapper(LocalDateTime.class).list());
 
         // format date
         assertFormat.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
-            .format("%Y-%m-%d %H:%i:%s").eq(dateTime).list(LocalDateTime.class));
+            .format("%Y-%m-%d %H:%i:%s").eq(dateTime).mapper(LocalDateTime.class).list());
 
         // ----------------------------------------------------------------------------------------------------------------
 
@@ -1305,31 +1372,31 @@ public class SqlQueryTest extends JdbcTestBase {
 
         // getYear
         assertYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getYear().eq(year)
-            .list(LocalDate.class));
+            .mapper(LocalDate.class).list());
 
         // getMonth
         assertMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMonth()
-            .eq(month).list(LocalDate.class));
+            .eq(month).mapper(LocalDate.class).list());
 
         // getDayOfMonth
         assertDayOfMonth.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
-            .getDayOfMonth().eq(dayOfMonth).list(LocalDate.class));
+            .getDayOfMonth().eq(dayOfMonth).mapper(LocalDate.class).list());
 
         // getWeekDay
         assertDayOfWeek.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getWeekDay()
-            .eq(dayOfWeek).list(LocalDate.class));
+            .eq(dayOfWeek).mapper(LocalDate.class).list());
 
         // getDayOfYear
         assertDayOfYear.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getDayOfYear()
-            .eq(dayOfYear).list(LocalDate.class));
+            .eq(dayOfYear).mapper(LocalDate.class).list());
 
         // getQuarter
         assertQuarter.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getQuarter()
-            .eq(quarter).list(LocalDate.class));
+            .eq(quarter).mapper(LocalDate.class).list());
 
         // format date
         assertFormat.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
-            .format("%H:%i:%s").eq(date).list(LocalDate.class));
+            .format("%H:%i:%s").eq(date).mapper(LocalDate.class).list());
 
         // ----------------------------------------------------------------------------------------------------------------
 
@@ -1384,19 +1451,19 @@ public class SqlQueryTest extends JdbcTestBase {
 
         // getHour
         assertHour.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getHour().eq(hour)
-            .list(LocalTime.class));
+            .mapper(LocalTime.class).list());
 
         // getMinute
         assertMinute.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getMinute()
-            .eq(minute).list(LocalTime.class));
+            .eq(minute).mapper(LocalTime.class).list());
 
         // getSecond
         assertSecond.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time").getSecond()
-            .eq(second).list(LocalTime.class));
+            .eq(second).mapper(LocalTime.class).list());
 
         // format date
         assertFormat.accept(query.find("role").fetch("create_time").where().fieldAsDate("create_time")
-            .format("%H:%i:%s").eq(time).list(LocalTime.class));
+            .format("%H:%i:%s").eq(time).mapper(LocalTime.class).list());
 
         // ----------------------------------------------------------------------------------------------------------------
 
@@ -1501,8 +1568,9 @@ public class SqlQueryTest extends JdbcTestBase {
 
         int pageSize = 3;
         Long total = 10L;
-        List<Role> roleList = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
-            .list(Role.class);
+        List<Role> roleList = query.find(new SimpleRepository("role")) //
+            .where().le("id", total).limit(2, pageSize) //
+            .mapper(Role.class).list();
         assertEquals(roleList.size(), pageSize);
 
         List<Map<String, Serializable>> roleList2 = query.find(new SimpleRepository("role")).where().le("id", total)
@@ -1510,11 +1578,13 @@ public class SqlQueryTest extends JdbcTestBase {
         assertEquals(roleList2.size(), pageSize);
 
         List<Integer> roleList3 = query.find(new SimpleRepository("role")).where().le("id", total).limit(2, pageSize)
-            .list((res, rowNum) -> res.getInt("id"));
+            .mapper((res, rowNum) -> res.getInt("id")).list();
         assertEquals(roleList3.size(), pageSize);
 
-        PaginationResults<Role> rolePage = query.find(new SimpleRepository("role")).where().le("id", total)
-            .limit(2, pageSize).pagination(Role.class);
+        PaginationResults<Role> rolePage = query.find(new SimpleRepository("role")) //
+            .where().le("id", total) //
+            .limit(2, pageSize) //
+            .mapper(Role.class).pagination();
         assertEquals(rolePage.getTotal(), total);
         assertEquals(rolePage.getPageResults().size(), pageSize);
 
@@ -1523,8 +1593,11 @@ public class SqlQueryTest extends JdbcTestBase {
         assertEquals(rolePage2.getTotal(), total);
         assertEquals(rolePage2.getPageResults().size(), pageSize);
 
-        PaginationResults<Integer> rolePage3 = query.find(new SimpleRepository("role")).where().le("id", total)
-            .limit(2, pageSize).pagination((res, rowNum) -> res.getInt("id"));
+        PaginationResults<Integer> rolePage3 = query.find(new SimpleRepository("role")) //
+            .where().le("id", total) //
+            .limit(2, pageSize) //
+            .mapper((res, rowNum) -> res.getInt("id")) //
+            .pagination();
         assertEquals(rolePage3.getTotal(), total);
         assertEquals(rolePage3.getPageResults().size(), pageSize);
     }
@@ -1534,6 +1607,9 @@ public class SqlQueryTest extends JdbcTestBase {
         final String table = "user";
         final Table tm = metadata.getTable(table);
 
+        //        cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryFetchImpl cannot be cast to class 
+        //        cn.featherfly.data.query.LimitAwareQuery1 (cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryFetchImpl 
+        //        and cn.featherfly.data.query.LimitAwareQuery1 are in unnamed module of loader 'app'
         map = query.find(table)//
             .limit(1) //
             .single();

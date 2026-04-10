@@ -16,17 +16,18 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.tuple.Tuple7;
 import cn.featherfly.common.tuple.Tuple8;
+import cn.featherfly.data.query.QueryLimitExecutor;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression5;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression5;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression5;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySetSortPropertyExpression;
@@ -104,9 +105,17 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      * @return the type query limit executor
      */
     @Override
-    public EntityQueryLimitExecutor<RS> limit(Limit limit) {
+    public QueryLimitExecutor<RS> limit(Limit limit) {
         entitySqlQueryConditionGroupQuery.setLimit(limit);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RowIterable<RS> each() {
+        return entitySqlQueryConditionGroupQuery.each();
     }
 
     /**
@@ -169,11 +178,11 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
             FiConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>, EntitySortExpression<E3, S3>,
                 EntitySortExpression<E4, S4>, EntitySortExpression<E5, S5>> entitySortExpresions) {
         if (entitySortExpresions != null) {
-            entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias2, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias3, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias4, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias5, getRootSortBuilder()));
+            entitySortExpresions.accept(new EntitySortExpressionImpl<>(classMapping, tableAlias, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping2, tableAlias2, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping3, tableAlias3, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping4, tableAlias4, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping5, tableAlias5, getRootSortBuilder()));
         }
         return this;
     }
@@ -304,9 +313,9 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc(FiConsumer<
-        EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
-        EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions) {
+    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc(FiConsumer<EntitySetSortPropertyExpression<E1>,
+        EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
+        EntitySetSortPropertyExpression<E5>> sortEntityExpressions) {
         sortEntityExpressions.accept(
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias, SortOperator.ASC, classMapping),
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias2, SortOperator.ASC,
@@ -325,9 +334,9 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      * {@inheritDoc}
      */
     @Override
-    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc(FiConsumer<
-        EntitySetSortPropertyExpression<E1>, EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>,
-        EntitySetSortPropertyExpression<E4>, EntitySetSortPropertyExpression<E5>> sortEntityExpressions) {
+    public EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc(FiConsumer<EntitySetSortPropertyExpression<E1>,
+        EntitySetSortPropertyExpression<E2>, EntitySetSortPropertyExpression<E3>, EntitySetSortPropertyExpression<E4>,
+        EntitySetSortPropertyExpression<E5>> sortEntityExpressions) {
         sortEntityExpressions.accept(
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias, SortOperator.DESC, classMapping),
             new EntitySetSqlSortPropertyExpression<>(getRootSortBuilder(), tableAlias2, SortOperator.DESC,
@@ -347,7 +356,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc5(SerializableFunction<E5, R> name) {
-        return asc5(getPropertyName(name));
+        return asc5(getFieldName(name, classMapping5));
     }
 
     /**
@@ -366,7 +375,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc5(SerializableFunction<E5, R> name) {
-        return desc5(getPropertyName(name));
+        return desc5(getFieldName(name, classMapping5));
     }
 
     /**
@@ -385,7 +394,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc4(SerializableFunction<E4, R> name) {
-        return asc4(getPropertyName(name));
+        return asc4(getFieldName(name, classMapping4));
     }
 
     /**
@@ -404,7 +413,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc4(SerializableFunction<E4, R> name) {
-        return desc4(getPropertyName(name));
+        return desc4(getFieldName(name, classMapping4));
     }
 
     /**
@@ -423,7 +432,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc3(SerializableFunction<E3, R> name) {
-        return asc3(getPropertyName(name));
+        return asc3(getFieldName(name, classMapping3));
     }
 
     /**
@@ -442,7 +451,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc3(SerializableFunction<E3, R> name) {
-        return desc3(getPropertyName(name));
+        return desc3(getFieldName(name, classMapping3));
     }
 
     /**
@@ -461,7 +470,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc2(SerializableFunction<E2, R> name) {
-        return asc2(getPropertyName(name));
+        return asc2(getFieldName(name, classMapping2));
     }
 
     /**
@@ -480,7 +489,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc2(SerializableFunction<E2, R> name) {
-        return desc2(getPropertyName(name));
+        return desc2(getFieldName(name, classMapping2));
     }
 
     /**
@@ -499,7 +508,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> asc(SerializableFunction<E1, R> name) {
-        return asc(getPropertyName(name));
+        return asc(getFieldName(name, classMapping));
     }
 
     /**
@@ -518,7 +527,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression5<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression5<E1, E2, E3, E4, E5, RS> desc(SerializableFunction<E1, R> name) {
-        return desc(getPropertyName(name));
+        return desc(getFieldName(name, classMapping));
     }
 
     /**

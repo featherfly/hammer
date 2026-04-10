@@ -1,9 +1,10 @@
 
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
-import cn.featherfly.hammer.expression.query.QueryValueConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryValueListExecutor;
+import cn.featherfly.data.query.LimitAwareQueryValue;
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryValueListExecutor;
 import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
@@ -15,7 +16,7 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * @param <S> the generic type
  */
 public interface RepositoryQueryValueExpression<C extends RepositoryQueryValueConditionsGroupExpression<C, L, S>,
-        L extends RepositoryQueryValueConditionsGroupLogicExpression<C, L, S>,
-        S extends RepositoryQueryValueSortExpression> extends RepositoryQueryValueWhereExpression<C, L, S>,
-        QueryValueListExecutor, QueryCountExecutor, QueryValueConditionLimit, Queryable<S> {
+    L extends RepositoryQueryValueConditionsGroupLogicExpression<C, L, S>, S extends RepositoryQueryValueSortExpression>
+    extends RepositoryQueryValueWhereExpression<C, L, S>, QueryValueListExecutor, QueryCountExecutor,
+    QueryLimitSetter<LimitAwareQueryValue>, Queryable<S> {
 }

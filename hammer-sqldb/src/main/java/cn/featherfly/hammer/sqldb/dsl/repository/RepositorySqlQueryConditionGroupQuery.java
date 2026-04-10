@@ -11,15 +11,19 @@ package cn.featherfly.hammer.sqldb.dsl.repository;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.Execution;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.SimpleExecution;
 import cn.featherfly.common.repository.mapper.RowMapper;
+import cn.featherfly.common.repository.mapper.TupleRowMapperBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
+import cn.featherfly.common.tuple.Tuple;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.common.tuple.Tuple4;
@@ -36,6 +40,7 @@ import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractMulitiRepositoryS
 import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractMulitiRepositorySqlQueryValueConditionsGroupExpression;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory.SqlPageQuery;
+import cn.featherfly.hammer.sqldb.jdbc.mapper.TupleRowMapperBuilderImpl;
 
 /**
  * repository sql query condition group query.
@@ -113,12 +118,160 @@ public class RepositorySqlQueryConditionGroupQuery {
     }
 
     /**
+     * Creates the row mapper.
+     *
+     * @param <T> the generic type
+     * @param type the type
+     * @return the row mapper
+     */
+    public <T> RowMapper<T> createRowMapper(Class<T> type) {
+        return queryRelation.getJdbc().createRowMapper(type);
+    }
+
+    /**
+     * Creates the row mapper.
+     *
+     * @param <T> the generic type
+     * @param type the type
+     * @return the row mapper
+     */
+    public TupleRowMapperBuilder createTupleRowMapperBuilder() {
+        return new TupleRowMapperBuilderImpl(queryRelation.getJdbc()::createRowMapper);
+    }
+
+    /**
+     * Creates the row mapper.
+     *
+     * @param <T> the generic type
+     * @param type the type
+     * @return the row mapper
+     */
+    public <T> RowMapper<T> createRowMapper(Class<T> type, String prefix) {
+        return queryRelation.getJdbc().createRowMapper(type, prefix);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Tuple> T getPrefixes() {
+        return (T) Tuples
+            .ofArray(queryRelation.getAliasManager().getNameAlias().keySet().stream().map(a -> a + ".").toArray());
+    }
+
+    /**
+     * Creates the row mapper.
+     *
+     * @param <T1> the generic type
+     * @param <T2> the generic type
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @return the row mapper
+     */
+    public <T1, T2> RowMapper<Tuple2<T1, T2>> createRowMapper(Class<T1> type1, Class<T2> type2) {
+        return queryRelation.getJdbc().createRowMapper(type1, type2, getPrefixes());
+    }
+
+    /**
+     * Creates the row mapper.
+     *
+     * @param <T1> the generic type
+     * @param <T2> the generic type
+     * @param <T3> the generic type
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
+     * @return the row mapper
+     */
+    public <T1, T2, T3> RowMapper<Tuple3<T1, T2, T3>> createRowMapper(Class<T1> type1, Class<T2> type2,
+        Class<T3> type3) {
+        return queryRelation.getJdbc().createRowMapper(type1, type2, type3, getPrefixes());
+    }
+
+    /**
+     * Creates the row mapper.
+     *
+     * @param <T1> the generic type
+     * @param <T2> the generic type
+     * @param <T3> the generic type
+     * @param <T4> the generic type
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
+     * @param type4 the type 4
+     * @return the row mapper
+     */
+    public <T1, T2, T3, T4> RowMapper<Tuple4<T1, T2, T3, T4>> createRowMapper(Class<T1> type1, Class<T2> type2,
+        Class<T3> type3, Class<T4> type4) {
+        return queryRelation.getJdbc().createRowMapper(type1, type2, type3, type4, getPrefixes());
+    }
+
+    /**
+     * Creates the row mapper.
+     *
+     * @param <T1> the generic type
+     * @param <T2> the generic type
+     * @param <T3> the generic type
+     * @param <T4> the generic type
+     * @param <T5> the generic type
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
+     * @param type4 the type 4
+     * @param type5 the type 5
+     * @return the row mapper
+     */
+    public <T1, T2, T3, T4, T5> RowMapper<Tuple5<T1, T2, T3, T4, T5>> createRowMapper(Class<T1> type1, Class<T2> type2,
+        Class<T3> type3, Class<T4> type4, Class<T5> type5) {
+        return queryRelation.getJdbc().createRowMapper(type1, type2, type3, type4, type5, getPrefixes());
+    }
+
+    /**
+     * Creates the row mapper.
+     *
+     * @param <T1> the generic type
+     * @param <T2> the generic type
+     * @param <T3> the generic type
+     * @param <T4> the generic type
+     * @param <T5> the generic type
+     * @param <T6> the generic type
+     * @param type1 the type 1
+     * @param type2 the type 2
+     * @param type3 the type 3
+     * @param type4 the type 4
+     * @param type5 the type 5
+     * @param type6 the type 6
+     * @return the row mapper
+     */
+    public <T1, T2, T3, T4, T5, T6> RowMapper<Tuple6<T1, T2, T3, T4, T5, T6>> createRowMapper(Class<T1> type1,
+        Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5, Class<T6> type6) {
+        return queryRelation.getJdbc().createRowMapper(type1, type2, type3, type4, type5, type6, getPrefixes());
+    }
+
+    /**
      * set limit value.
      *
      * @param limit limit
      */
     public void setLimit(Limit limit) {
         this.limit = limit;
+    }
+
+    /**
+     * count.
+     *
+     * @return count value
+     */
+    public long count() {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryLong(execution.getExecution(), execution.getParams());
+    }
+
+    public <T> T value() {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryValue(execution.getExecution(), execution.getParams());
+    }
+
+    public <T> T value(Class<T> type) {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
     }
 
     /**
@@ -136,112 +289,6 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * List.
      *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @return the list
-     */
-    public <E1, E2> List<Tuple2<E1, E2>> list(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * List.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @return the list
-     */
-    public <E1, E2, E3> List<Tuple3<E1, E2, E3>> list(Tuple3<String, String, String> prefixes, Class<E1> type1,
-        Class<E2> type2, Class<E3> type3) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * List.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @return the list
-     */
-    public <E1, E2, E3, E4> List<Tuple4<E1, E2, E3, E4>> list(Tuple4<String, String, String, String> prefixes,
-        Class<E1> type1, Class<E2> type2, Class<E3> type3, Class<E4> type4) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, type4, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * List.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @return the list
-     */
-    public <E1, E2, E3, E4, E5> List<Tuple5<E1, E2, E3, E4, E5>> list(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, type4, type5, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * List.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param <E6> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @param type6 the type 6
-     * @return the list
-     */
-    public <E1, E2, E3, E4, E5, E6> List<Tuple6<E1, E2, E3, E4, E5, E6>> list(
-        Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
-        Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryList(execution.getExecution(), type1, type2, type3, type4, type5, type6,
-            prefixes, execution.getParams());
-    }
-
-    /**
-     * List.
-     *
      * @param <E> the element type
      * @param rowMapper the row mapper
      * @return the list
@@ -254,11 +301,59 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * List.
      *
-     * @return LogicExpressionist
+     * @param <E> the element type
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
+     * @return the list
+     */
+    public <E> List<E> list(Function<TupleRowMapperBuilder, RowMapper<E>> tupleRowMapperBuilderFunction) {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryList(execution.getExecution(), tupleRowMapperBuilderFunction,
+            execution.getParams());
+    }
+
+    /**
+     * List.
+     *
+     * @return list
      */
     public List<Map<String, Serializable>> list() {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryList(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * each.
+     *
+     * @return each iterable
+     */
+    public RowIterable<Map<String, Serializable>> each() {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryEach(execution.getExecution(), execution.getParams());
+    }
+
+    /**
+     * each.
+     *
+     * @param <E> the element type
+     * @param rowMapper the row mapper
+     * @return each iterable
+     */
+    public <E> RowIterable<E> each(RowMapper<E> rowMapper) {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryEach(execution.getExecution(), rowMapper, execution.getParams());
+    }
+
+    /**
+     * each.
+     *
+     * @param <E> the element type
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
+     * @return each iterable
+     */
+    public <E> RowIterable<E> each(Function<TupleRowMapperBuilder, RowMapper<E>> tupleRowMapperBuilderFunction) {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryEach(execution.getExecution(), tupleRowMapperBuilderFunction,
+            execution.getParams());
     }
 
     /**
@@ -338,239 +433,6 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Pagination.
      *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @return the pagination results
-     */
-    public <E1, E2> PaginationResults<Tuple2<E1, E2>> pagination(Tuple2<String, String> prefixes, Class<E1> type1,
-        Class<E2> type2) {
-        Tuple2<String, String> sqlTuple = null;
-        if (limit != null) {
-            sqlTuple = expressionPage.get();
-        } else {
-            sqlTuple = Tuples.of(exp.getRoot().expression(), null);
-        }
-        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
-        String sql = sqlTuple.get0();
-        Serializable[] params = oraginalParams;
-        SimplePaginationResults<Tuple2<E1, E2>> pagination = new SimplePaginationResults<>(limit);
-        List<Tuple2<E1, E2>> list = null;
-        if (limit != null) {
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
-                limit.getLimit(), params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        list = queryRelation.getJdbc().queryList(sql, type1, type2, prefixes, params);
-        pagination.setPageResults(list);
-
-        if (limit != null) {
-            int total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
-            pagination.setTotal(total);
-        } else {
-            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
-            pagination.setTotal(list.size());
-        }
-        return pagination;
-    }
-
-    /**
-     * Pagination.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @return the pagination results
-     */
-    public <E1, E2, E3> PaginationResults<Tuple3<E1, E2, E3>> pagination(Tuple3<String, String, String> prefixes,
-        Class<E1> type1, Class<E2> type2, Class<E3> type3) {
-        Tuple2<String, String> sqlTuple = null;
-        if (limit != null) {
-            sqlTuple = expressionPage.get();
-        } else {
-            sqlTuple = Tuples.of(exp.getRoot().expression(), null);
-        }
-        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
-        String sql = sqlTuple.get0();
-        Serializable[] params = oraginalParams;
-        SimplePaginationResults<Tuple3<E1, E2, E3>> pagination = new SimplePaginationResults<>(limit);
-        List<Tuple3<E1, E2, E3>> list = null;
-        if (limit != null) {
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
-                limit.getLimit(), params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, prefixes, params);
-        pagination.setPageResults(list);
-
-        if (limit != null) {
-            int total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
-            pagination.setTotal(total);
-        } else {
-            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
-            pagination.setTotal(list.size());
-        }
-        return pagination;
-    }
-
-    /**
-     * Pagination.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @return the pagination results
-     */
-    public <E1, E2, E3, E4> PaginationResults<Tuple4<E1, E2, E3, E4>> pagination(
-        Tuple4<String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4) {
-        Tuple2<String, String> sqlTuple = null;
-        if (limit != null) {
-            sqlTuple = expressionPage.get();
-        } else {
-            sqlTuple = Tuples.of(exp.getRoot().expression(), null);
-        }
-        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
-        String sql = sqlTuple.get0();
-        Serializable[] params = oraginalParams;
-        SimplePaginationResults<Tuple4<E1, E2, E3, E4>> pagination = new SimplePaginationResults<>(limit);
-        List<Tuple4<E1, E2, E3, E4>> list = null;
-        if (limit != null) {
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
-                limit.getLimit(), params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, type4, prefixes, params);
-        pagination.setPageResults(list);
-
-        if (limit != null) {
-            int total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
-            pagination.setTotal(total);
-        } else {
-            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
-            pagination.setTotal(list.size());
-        }
-        return pagination;
-    }
-
-    /**
-     * Pagination.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @return the pagination results
-     */
-    public <E1, E2, E3, E4, E5> PaginationResults<Tuple5<E1, E2, E3, E4, E5>> pagination(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        Tuple2<String, String> sqlTuple = null;
-        if (limit != null) {
-            sqlTuple = expressionPage.get();
-        } else {
-            sqlTuple = Tuples.of(exp.getRoot().expression(), null);
-        }
-        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
-        String sql = sqlTuple.get0();
-        Serializable[] params = oraginalParams;
-        SimplePaginationResults<Tuple5<E1, E2, E3, E4, E5>> pagination = new SimplePaginationResults<>(limit);
-        List<Tuple5<E1, E2, E3, E4, E5>> list = null;
-        if (limit != null) {
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
-                limit.getLimit(), params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, type4, type5, prefixes, params);
-        pagination.setPageResults(list);
-
-        if (limit != null) {
-            int total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
-            pagination.setTotal(total);
-        } else {
-            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
-            pagination.setTotal(list.size());
-        }
-        return pagination;
-    }
-
-    /**
-     * Pagination.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param <E6> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @param type6 the type 6
-     * @return the pagination results
-     */
-    public <E1, E2, E3, E4, E5, E6> PaginationResults<Tuple6<E1, E2, E3, E4, E5, E6>> pagination(
-        Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
-        Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
-        Tuple2<String, String> sqlTuple = null;
-        if (limit != null) {
-            sqlTuple = expressionPage.get();
-        } else {
-            sqlTuple = Tuples.of(exp.getRoot().expression(), null);
-        }
-        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
-        String sql = sqlTuple.get0();
-        Serializable[] params = oraginalParams;
-        SimplePaginationResults<Tuple6<E1, E2, E3, E4, E5, E6>> pagination = new SimplePaginationResults<>(limit);
-        List<Tuple6<E1, E2, E3, E4, E5, E6>> list = null;
-        if (limit != null) {
-            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
-                limit.getLimit(), params);
-            sql = pageQuery.getSql();
-            params = pageQuery.getParams();
-        }
-        list = queryRelation.getJdbc().queryList(sql, type1, type2, type3, type4, type5, type6, prefixes, params);
-        pagination.setPageResults(list);
-
-        if (limit != null) {
-            int total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
-            pagination.setTotal(total);
-        } else {
-            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
-            pagination.setTotal(list.size());
-        }
-        return pagination;
-    }
-
-    /**
-     * Pagination.
-     *
      * @param <T> the generic type
      * @param rowMapper the row mapper
      * @return the pagination results
@@ -607,6 +469,45 @@ public class RepositorySqlQueryConditionGroupQuery {
     }
 
     /**
+     * each.
+     *
+     * @param <T> the element type
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
+     * @return each iterable
+     */
+    public <T> PaginationResults<T> pagination(
+        Function<TupleRowMapperBuilder, RowMapper<T>> tupleRowMapperBuilderFunction) {
+        Tuple2<String, String> sqlTuple = null;
+        if (limit != null) {
+            sqlTuple = expressionPage.get();
+        } else {
+            sqlTuple = Tuples.of(exp.getRoot().expression(), null);
+        }
+        Serializable[] oraginalParams = Lang.toArray(exp.getRoot().getParams(), Serializable.class);
+        String sql = sqlTuple.get0();
+        Serializable[] params = oraginalParams;
+        SimplePaginationResults<T> pagination = new SimplePaginationResults<>(limit);
+        List<T> list = null;
+        if (limit != null) {
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, limit.getOffset(),
+                limit.getLimit(), params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        list = queryRelation.getJdbc().queryList(sql, tupleRowMapperBuilderFunction, params);
+        pagination.setPageResults(list);
+
+        if (limit != null) {
+            int total = queryRelation.getJdbc().queryInt(sqlTuple.get1(), oraginalParams);
+            pagination.setTotal(total);
+        } else {
+            // 如果没有设置分页，则查询出来的就是全量数据，不用再去做数量count了
+            pagination.setTotal(list.size());
+        }
+        return pagination;
+    }
+
+    /**
      * Single.
      *
      * @return the map
@@ -628,6 +529,12 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().querySingle(execution.getExecution(), rowMapper, execution.getParams());
     }
 
+    public <E> E single(Function<TupleRowMapperBuilder, RowMapper<E>> tupleRowMapperBuilderFunction) {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().querySingle(execution.getExecution(), tupleRowMapperBuilderFunction,
+            execution.getParams());
+    }
+
     /**
      * Single.
      *
@@ -638,112 +545,6 @@ public class RepositorySqlQueryConditionGroupQuery {
     public <E> E single(Class<E> type) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().querySingle(execution.getExecution(), type, execution.getParams());
-    }
-
-    /**
-     * Single.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @return the tuple 2
-     */
-    public <E1, E2> Tuple2<E1, E2> single(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().querySingle(execution.getExecution(), type1, type2, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * Single.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @return the tuple 3
-     */
-    public <E1, E2, E3> Tuple3<E1, E2, E3> single(Tuple3<String, String, String> prefixes, Class<E1> type1,
-        Class<E2> type2, Class<E3> type3) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().querySingle(execution.getExecution(), type1, type2, type3, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * Single.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @return the tuple 4
-     */
-    public <E1, E2, E3, E4> Tuple4<E1, E2, E3, E4> single(Tuple4<String, String, String, String> prefixes,
-        Class<E1> type1, Class<E2> type2, Class<E3> type3, Class<E4> type4) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().querySingle(execution.getExecution(), type1, type2, type3, type4, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * Single.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @return the tuple 5
-     */
-    public <E1, E2, E3, E4, E5> Tuple5<E1, E2, E3, E4, E5> single(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().querySingle(execution.getExecution(), type1, type2, type3, type4, type5,
-            prefixes, execution.getParams());
-    }
-
-    /**
-     * Single.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param <E6> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @param type6 the type 6
-     * @return the tuple 6
-     */
-    public <E1, E2, E3, E4, E5, E6> Tuple6<E1, E2, E3, E4, E5, E6> single(
-        Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
-        Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().querySingle(execution.getExecution(), type1, type2, type3, type4, type5, type6,
-            prefixes, execution.getParams());
     }
 
     /**
@@ -768,6 +569,12 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().queryUnique(execution.getExecution(), rowMapper, execution.getParams());
     }
 
+    public <E> E unique(Function<TupleRowMapperBuilder, RowMapper<E>> tupleRowMapperBuilderFunction) {
+        Execution execution = getExecution();
+        return queryRelation.getJdbc().queryUnique(execution.getExecution(), tupleRowMapperBuilderFunction,
+            execution.getParams());
+    }
+
     /**
      * unique.
      *
@@ -778,112 +585,6 @@ public class RepositorySqlQueryConditionGroupQuery {
     public <E> E unique(Class<E> type) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryUnique(execution.getExecution(), type, execution.getParams());
-    }
-
-    /**
-     * Unique.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @return the tuple 2
-     */
-    public <E1, E2> Tuple2<E1, E2> unique(Tuple2<String, String> prefixes, Class<E1> type1, Class<E2> type2) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryUnique(execution.getExecution(), type1, type2, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * Unique.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @return the tuple 3
-     */
-    public <E1, E2, E3> Tuple3<E1, E2, E3> unique(Tuple3<String, String, String> prefixes, Class<E1> type1,
-        Class<E2> type2, Class<E3> type3) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryUnique(execution.getExecution(), type1, type2, type3, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * Unique.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @return the tuple 4
-     */
-    public <E1, E2, E3, E4> Tuple4<E1, E2, E3, E4> unique(Tuple4<String, String, String, String> prefixes,
-        Class<E1> type1, Class<E2> type2, Class<E3> type3, Class<E4> type4) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryUnique(execution.getExecution(), type1, type2, type3, type4, prefixes,
-            execution.getParams());
-    }
-
-    /**
-     * Unique.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @return the tuple 5
-     */
-    public <E1, E2, E3, E4, E5> Tuple5<E1, E2, E3, E4, E5> unique(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryUnique(execution.getExecution(), type1, type2, type3, type4, type5,
-            prefixes, execution.getParams());
-    }
-
-    /**
-     * Unique.
-     *
-     * @param <E1> the generic type
-     * @param <E2> the generic type
-     * @param <E3> the generic type
-     * @param <E4> the generic type
-     * @param <E5> the generic type
-     * @param <E6> the generic type
-     * @param prefixes the prefixes
-     * @param type1 the type 1
-     * @param type2 the type 2
-     * @param type3 the type 3
-     * @param type4 the type 4
-     * @param type5 the type 5
-     * @param type6 the type 6
-     * @return the tuple 6
-     */
-    public <E1, E2, E3, E4, E5, E6> Tuple6<E1, E2, E3, E4, E5, E6> unique(
-        Tuple6<String, String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2,
-        Class<E3> type3, Class<E4> type4, Class<E5> type5, Class<E6> type6) {
-        Execution execution = getExecution();
-        return queryRelation.getJdbc().queryUnique(execution.getExecution(), type1, type2, type3, type4, type5, type6,
-            prefixes, execution.getParams());
     }
 
     private Execution getExecution() {

@@ -21,13 +21,14 @@ import javax.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.tuple.Tuple7;
-import cn.featherfly.common.tuple.Tuple8;
-
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.repository.EmptyRowIterable;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.structure.page.SimplePaginationResults;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.cache.QueryPageResult.PageInfo;
 import cn.featherfly.hammer.sqldb.SqldbHammerException;
@@ -190,10 +191,19 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     /**
      * List.
      *
-     * @return LogicExpressionist
+     * @return list
      */
     public List<R> list() {
         return list((Class<R>) null);
+    }
+
+    /**
+     * each.
+     *
+     * @return each iterable
+     */
+    public RowIterable<R> each() {
+        return each0((Class<R>) null);
     }
 
     /**
@@ -225,6 +235,17 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     }
 
     /**
+     * each.
+     *
+     * @param <V> the value type
+     * @param type the type
+     * @return each iterable
+     */
+    public <V> Iterable<V> each(Class<V> type) {
+        return each0(type);
+    }
+
+    /**
      * List.
      *
      * @param <V> the value type
@@ -249,6 +270,48 @@ public class EntitySqlQueryConditionGroupQuery<R> {
     // ****************************************************************************************************************
     //	private method
     // ****************************************************************************************************************
+
+    private <E> RowIterable<E> each0(Class<E> type) {
+        Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,
+            Function<Object, Serializable>, Optional<Boolean>> tupleResult = prepareList.apply(limit);
+        String sql = tupleResult.get0();
+        Limit newLimit = tupleResult.get2().orElse(null);
+        List<Serializable> paramList = tupleResult.get1();
+        Serializable[] params = paramList.toArray(new Serializable[paramList.size()]);
+        paramList.add(0, tupleResult.get4());
+        QueryPageResult queryPageResult = tupleResult.get3().orElse(null);
+
+        RowIterable<E> iter = null;
+        if (newLimit != null) {
+            // each 是流式映射，所以不缓存
+            //            queryPageResult = queryPageResults(queryPageResult, paramList);
+            //            iter = getCacheList(queryPageResult, limit);
+            //            if (iter != null) {
+            //                return iter;
+            //            }
+            SqlPageQuery<Serializable[]> pageQuery = sqlPageFactory.toPage(exp.getDialect(), sql, newLimit.getOffset(),
+                newLimit.getLimit(), params);
+            sql = pageQuery.getSql();
+            params = pageQuery.getParams();
+        }
+        if (!tupleResult.get6().isPresent()) {
+            iter = EmptyRowIterable.emptyRowIterable();
+        } else {
+            if (type == null) {
+                iter = queryRelation.each(sql, params);
+            } else {
+                iter = queryRelation.getJdbc().queryEach(sql, type, params);
+            }
+        }
+
+        if (queryPageResultCache != null && limit != null) {
+            // 流式获取结果不放缓存，因为流式结果一般用于大数据量，比如数据导出，这里拿不到流式数据的所有数据，所以没法缓存结果数据
+            queryPageResult = setCacheList(Collections.emptyList(), queryPageResult, limit, tupleResult.get5(),
+                type == null);
+            queryPageResultCache.put(paramList, queryPageResult);
+        }
+        return iter;
+    }
 
     private <E> List<E> list0(Class<E> type) {
         Tuple7<String, List<Serializable>, Optional<Limit>, Optional<QueryPageResult>, String,

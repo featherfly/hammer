@@ -19,21 +19,21 @@ import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.repository.Field;
 import cn.featherfly.common.repository.Repository;
 import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.data.query.LimitAwareQueryValue;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression1;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryFetchedFields;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroup;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryValueConditionsGroupLogic;
-import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1R;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.query.FetchField;
-import cn.featherfly.hammer.expression.query.QueryValueLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryValueSortExpression;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.dsl.repository.condition.field.RepositoryFieldOnlyExpressionImpl;
 import cn.featherfly.hammer.sqldb.dsl.repository.query.relation.RepositorySqlQueryOn1;
-import cn.featherfly.hammer.sqldb.dsl.repository.query.relation.RepositorySqlQueryRelate1R;
+import cn.featherfly.hammer.sqldb.dsl.repository.query.relation.RepositorySqlQueryRelate1;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
@@ -42,13 +42,13 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  */
 public class RepositorySqlQueryFetched1FieldImpl
-    extends AbstractRepositorySqlQueryBase<RepositoryQueryValueConditionsGroup, QueryValueLimitExecutor>
+    extends AbstractRepositorySqlQueryBase<RepositoryQueryValueConditionsGroup, LimitAwareQueryValue>
     implements RepositorySqlQueryFetched1Field {
 
     /**
      * Instantiates a new sql query entity properties.
      *
-     * @param queryRelation  the repository relation
+     * @param queryRelation the repository relation
      * @param sqlPageFactory the sql page factory
      */
     public RepositorySqlQueryFetched1FieldImpl(RepositorySqlQueryRelation queryRelation,
@@ -61,7 +61,7 @@ public class RepositorySqlQueryFetched1FieldImpl
      *
      * @param repositorySqlQueryFetch the repository sql query fetch
      */
-    RepositorySqlQueryFetched1FieldImpl(AbstractRepositorySqlQueryFetch<?, ?, ?, ?> repositorySqlQueryFetch) {
+    RepositorySqlQueryFetched1FieldImpl(AbstractRepositorySqlQueryFetch<?, ?, ?> repositorySqlQueryFetch) {
         super(repositorySqlQueryFetch);
     }
 
@@ -96,19 +96,19 @@ public class RepositorySqlQueryFetched1FieldImpl
         return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).list();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E> List<E> list(Class<E> type) {
-        return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).list(type);
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public <E> List<E> list(Class<E> type) {
+    //        return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).list(type);
+    //    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public QueryValueLimitExecutor limit(Limit limit) {
+    public LimitAwareQueryValue limit(Limit limit) {
         return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).limit(limit);
     }
 
@@ -283,16 +283,16 @@ public class RepositorySqlQueryFetched1FieldImpl
      * {@inheritDoc}
      */
     @Override
-    public int intValue() {
-        return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).intValue();
+    public int int32() {
+        return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).int32();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public long longValue() {
-        return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).longValue();
+    public long longInt64() {
+        return new RepositorySqlQueryValueExpression(queryRelation, sqlPageFactory).longInt64();
     }
 
     /**
@@ -347,10 +347,9 @@ public class RepositorySqlQueryFetched1FieldImpl
      * {@inheritDoc}
      */
     @Override
-    public RepositoryOnExpression1<RepositoryQueryRelate1R> join(
-        Repository repository) {
+    public RepositoryOnExpression1<RepositoryQueryRelate1> join(Repository repository) {
         // ENHANCE 目前Fetch1Field在join后和其他的一样，后续考虑是否特化
-        return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1R(queryRelation, sqlPageFactory), queryRelation,
-            repository, relate -> ((RepositorySqlQueryRelate1R) relate).setIdName());
+        return new RepositorySqlQueryOn1<>(new RepositorySqlQueryRelate1(queryRelation, sqlPageFactory), queryRelation,
+            repository, relate -> ((RepositorySqlQueryRelate1) relate).setIdName());
     }
 }

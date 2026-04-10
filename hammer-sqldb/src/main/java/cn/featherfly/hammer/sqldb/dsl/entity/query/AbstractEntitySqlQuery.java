@@ -2,8 +2,8 @@
 package cn.featherfly.hammer.sqldb.dsl.entity.query;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.data.query.QueryLimitExecutor;
 import cn.featherfly.hammer.config.HammerConfig;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
@@ -13,7 +13,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @author zhongj
  * @param <E> the element type
  */
-public abstract class AbstractEntitySqlQuery<E> extends AbstractEntitySqlQueryBase<E, EntityQueryLimitExecutor<E>> {
+public abstract class AbstractEntitySqlQuery<E> extends AbstractEntitySqlQueryBase<E, QueryLimitExecutor<E>> {
 
     /**
      * Instantiates a new abstract sql query entity properties.

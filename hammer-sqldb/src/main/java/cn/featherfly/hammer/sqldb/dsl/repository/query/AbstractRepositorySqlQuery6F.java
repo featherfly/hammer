@@ -1,14 +1,18 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.common.function.SiFunction;
+import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.data.query.LimitAwareQuery1;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup6F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic6F;
 import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression6F;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression6;
@@ -25,12 +29,12 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractRepositorySqlQuery6F<R extends RepositoryQueryRelateExpression<R>> extends
     AbstractRepositorySqlQuery6<R, RepositoryQueryConditionsGroup6F, RepositoryQueryConditionsGroupLogic6F,
-        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F, QueryLimitExecutor>,
-        RepositoryQuerySortedExpression6F, QueryLimitExecutor>
+        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F, LimitAwareQuery1<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression6F, LimitAwareQuery1<Map<String, Serializable>>>
     implements
     RepositoryQuery6<RepositoryQueryConditionsGroup6F, RepositoryQueryConditionsGroupLogic6F,
-        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F, QueryLimitExecutor>,
-        RepositoryQuerySortedExpression6F, QueryLimitExecutor> {
+        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F, LimitAwareQuery1<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression6F, LimitAwareQuery1<Map<String, Serializable>>> {
 
     /**
      * Instantiates a new abstract repository sql query 6 FF.
@@ -74,7 +78,8 @@ public abstract class AbstractRepositorySqlQuery6F<R extends RepositoryQueryRela
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F, QueryLimitExecutor> sort() {
+    public RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F,
+        LimitAwareQuery1<Map<String, Serializable>>> sort() {
         return new RepositorySqlQueryExpression6F(queryRelation, sqlPageFactory).sort();
     }
 
@@ -90,5 +95,13 @@ public abstract class AbstractRepositorySqlQuery6F<R extends RepositoryQueryRela
                 RepositorySortExpression<S4>, RepositorySortExpression<S5>,
                 RepositorySortExpression<S6>> repositorySortExpresions) {
         return new RepositorySqlQueryExpression6F(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LimitAwareQuery1<Map<String, Serializable>> limit(Limit limit) {
+        return new RepositorySqlQueryExpression6F(queryRelation, sqlPageFactory).limit(limit);
     }
 }

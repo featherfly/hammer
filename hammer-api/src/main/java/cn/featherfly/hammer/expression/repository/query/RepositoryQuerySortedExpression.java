@@ -1,8 +1,13 @@
 
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery1;
+import cn.featherfly.data.query.QueryExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryMapperSetter1;
 import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
 
 /**
@@ -11,6 +16,7 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExp
  * @author zhongj
  */
 public interface RepositoryQuerySortedExpression extends RepositorySortedExpression<RepositoryQuerySortedExpression>,
-        QueryConditionLimit<QueryLimitExecutor>, QueryLimitExecutor {
+    QueryLimitSetter<LimitAwareQuery1<Map<String, Serializable>>>, QueryExecutor<Map<String, Serializable>>,
+    QueryMapperSetter1 {
 
 }

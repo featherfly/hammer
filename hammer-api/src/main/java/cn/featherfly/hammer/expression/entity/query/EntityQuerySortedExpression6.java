@@ -1,6 +1,8 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
+import cn.featherfly.data.query.QueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression6;
 
 /**
@@ -13,10 +15,10 @@ import cn.featherfly.hammer.expression.entity.query.sort.EntitySortedExpression6
  * @param <E4> fouth filterable entity type
  * @param <E5> fifth filterable entity type
  * @param <E6> sixth filterable entity type
- * @param <R>  query result type
+ * @param <R> query result type
  */
 public interface EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, R>
     extends EntitySortedExpression6<E1, E2, E3, E4, E5, E6, EntityQuerySortedExpression6<E1, E2, E3, E4, E5, E6, R>>,
-    EntityQueryConditionLimit<EntityQueryLimitExecutor<R>>, EntityQueryLimitExecutor<R> {
+    QueryLimitSetter<QueryLimitExecutor<R>>, QueryLimitExecutor<R> {
 
 }

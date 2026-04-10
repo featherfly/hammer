@@ -20,6 +20,7 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.builder.AliasManager;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.common.tuple.Tuple3;
@@ -517,6 +518,51 @@ public class EntitySqlQueryRelation extends EntitySqlRelation<EntitySqlQueryRela
                     params);
             case 6:
                 return (List<R>) jdbc.queryList(sql,
+                    new TupleEntityRowMapper<>(entityQueryFetchMapping.get(0).getMapper(),
+                        entityQueryFetchMapping.get(1).getMapper(), entityQueryFetchMapping.get(2).getMapper(),
+                        entityQueryFetchMapping.get(3).getMapper(), entityQueryFetchMapping.get(4).getMapper(),
+                        entityQueryFetchMapping.get(5).getMapper()),
+                    params);
+            default:
+                throw new SqldbHammerException("entity query fetch times must be 2-6");
+        }
+    }
+
+    /**
+     * List tuple.
+     *
+     * @param <R> the generic type
+     * @param sql the sql
+     * @param params the params
+     * @return LogicExpressionist
+     */
+    @SuppressWarnings("unchecked")
+    public <R> RowIterable<R> each(String sql, Serializable[] params) {
+        switch (entityQueryFetchMapping.size()) {
+            case 1:
+                return (RowIterable<R>) jdbc.queryEach(sql, entityQueryFetchMapping.get(0).getMapper(), params);
+            case 2:
+                return (RowIterable<R>) jdbc.queryEach(sql, new TupleEntityRowMapper<>(
+                    entityQueryFetchMapping.get(0).getMapper(), entityQueryFetchMapping.get(1).getMapper()), params);
+            case 3:
+                return (RowIterable<R>) jdbc.queryEach(sql,
+                    new TupleEntityRowMapper<>(entityQueryFetchMapping.get(0).getMapper(),
+                        entityQueryFetchMapping.get(1).getMapper(), entityQueryFetchMapping.get(2).getMapper()),
+                    params);
+            case 4:
+                return (RowIterable<R>) jdbc.queryEach(sql,
+                    new TupleEntityRowMapper<>(entityQueryFetchMapping.get(0).getMapper(),
+                        entityQueryFetchMapping.get(1).getMapper(), entityQueryFetchMapping.get(2).getMapper(),
+                        entityQueryFetchMapping.get(3).getMapper()),
+                    params);
+            case 5:
+                return (RowIterable<R>) jdbc.queryEach(sql,
+                    new TupleEntityRowMapper<>(entityQueryFetchMapping.get(0).getMapper(),
+                        entityQueryFetchMapping.get(1).getMapper(), entityQueryFetchMapping.get(2).getMapper(),
+                        entityQueryFetchMapping.get(3).getMapper(), entityQueryFetchMapping.get(4).getMapper()),
+                    params);
+            case 6:
+                return (RowIterable<R>) jdbc.queryList(sql,
                     new TupleEntityRowMapper<>(entityQueryFetchMapping.get(0).getMapper(),
                         entityQueryFetchMapping.get(1).getMapper(), entityQueryFetchMapping.get(2).getMapper(),
                         entityQueryFetchMapping.get(3).getMapper(), entityQueryFetchMapping.get(4).getMapper(),

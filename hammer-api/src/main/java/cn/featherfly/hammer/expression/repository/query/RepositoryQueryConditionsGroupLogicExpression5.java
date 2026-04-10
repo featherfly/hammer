@@ -7,8 +7,12 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
-import cn.featherfly.hammer.expression.query.QuerySingleExecutor;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery0;
+import cn.featherfly.data.query.QueryMapperSetter0;
+import cn.featherfly.data.query.QueryOneExecutor;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupLogicExpression5;
 
 /**
@@ -25,6 +29,6 @@ public interface RepositoryQueryConditionsGroupLogicExpression5<
     C extends RepositoryQueryConditionsGroupExpression5<C, L, S, S2, Q>,
     L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, S2, Q>,
     S extends RepositoryQuerySortExpression5<S2, Q>, S2 extends RepositoryQuerySortedExpression5<S2, Q>,
-    Q extends QueryLimitExecutor>
-    extends RepositoryConditionsGroupLogicExpression5<C, L>, RepositoryQueryable5<S, S2, Q>, QuerySingleExecutor {
+    Q extends LimitAwareQuery0<Map<String, Serializable>>> extends RepositoryConditionsGroupLogicExpression5<C, L>,
+    RepositoryQueryable5<S, S2, Q>, QueryOneExecutor<Map<String, Serializable>>, QueryMapperSetter0 {
 }

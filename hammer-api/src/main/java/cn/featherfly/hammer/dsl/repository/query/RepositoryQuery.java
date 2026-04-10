@@ -10,5 +10,5 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpre
  * @author zhongj
  */
 public interface RepositoryQuery extends RepositoryQueryExpression<RepositoryQueryConditionsGroup,
-        RepositoryQueryConditionsGroupLogic, RepositoryQuerySortExpression> {
+    RepositoryQueryConditionsGroupLogic, RepositoryQuerySortExpression> {
 }

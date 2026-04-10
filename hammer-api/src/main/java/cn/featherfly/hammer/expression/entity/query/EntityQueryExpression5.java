@@ -1,7 +1,10 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryListExecutor;
 
 /**
  * The Interface EntityQueryExpression5.
@@ -22,7 +25,7 @@ public interface EntityQueryExpression5<E1, E2, E3, E4, E5,
     C extends EntityQueryConditionGroupExpression5<E1, E2, E3, E4, E5, C, L, S, S2, R>,
     L extends EntityQueryConditionGroupLogicExpression5<E1, E2, E3, E4, E5, C, L, S, S2, R>,
     S extends EntityQuerySortExpression5<E1, E2, E3, E4, E5, R>,
-    S2 extends EntityQuerySortedExpression5<E1, E2, E3, E4, E5, R>, R> extends
-    EntityQueryWhereExpression5<E1, E2, E3, E4, E5, C, L, S, S2, R>, EntityQueryListExecutor<R>, QueryCountExecutor,
-    EntityQueryConditionLimit<EntityQueryLimitExecutor<R>>, EntitySortable5<E1, E2, E3, E4, E5, S, S2> {
+    S2 extends EntityQuerySortedExpression5<E1, E2, E3, E4, E5, R>, R>
+    extends EntityQueryWhereExpression5<E1, E2, E3, E4, E5, C, L, S, S2, R>, QueryListExecutor<R>, QueryCountExecutor,
+    QueryLimitSetter<QueryLimitExecutor<R>>, EntitySortable5<E1, E2, E3, E4, E5, S, S2> {
 }

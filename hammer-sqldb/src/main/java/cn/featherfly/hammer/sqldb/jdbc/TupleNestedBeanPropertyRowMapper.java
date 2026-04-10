@@ -28,8 +28,7 @@ import cn.featherfly.common.tuple.Tuples;
  * @param <T> the result tuple type
  * @since 0.7.0
  */
-public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
-    extends AbstractRowMapper<T> {
+public class TupleNestedBeanPropertyRowMapper<T extends Tuple> extends AbstractRowMapper<T> {
 
     /** Logger available to subclasses. */
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -96,8 +95,8 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple>
             }
             return (T) Tuples.ofArray(results.toArray());
         }
-        ResultSet rs = getResultSet(res);
 
+        ResultSet rs = getResultSet(res);
         try {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();

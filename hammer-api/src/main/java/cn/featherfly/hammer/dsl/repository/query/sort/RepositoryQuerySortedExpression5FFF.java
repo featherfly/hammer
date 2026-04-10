@@ -8,7 +8,11 @@
  */
 package cn.featherfly.hammer.dsl.repository.query.sort;
 
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor3;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery3;
+import cn.featherfly.data.query.QueryMapperSetter3;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExpression5;
 
 /**
@@ -17,5 +21,6 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExp
  * @author zhongj
  */
 public interface RepositoryQuerySortedExpression5FFF extends
-    RepositoryQuerySortedExpression5<RepositoryQuerySortedExpression5FFF, QueryLimitExecutor3>, QueryLimitExecutor3 {
+    RepositoryQuerySortedExpression5<RepositoryQuerySortedExpression5FFF, LimitAwareQuery3<Map<String, Serializable>>>,
+    QueryMapperSetter3 {
 }

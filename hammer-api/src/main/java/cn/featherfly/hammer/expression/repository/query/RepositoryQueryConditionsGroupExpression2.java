@@ -7,9 +7,12 @@
  */
 package cn.featherfly.hammer.expression.repository.query;
 
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery0;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.condition.ConditionConfigureExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.RepositoryConditionsGroupExpression2;
 
 /**
@@ -26,7 +29,7 @@ public interface RepositoryQueryConditionsGroupExpression2<
     C extends RepositoryQueryConditionsGroupExpression2<C, L, S, S2, Q>,
     L extends RepositoryQueryConditionsGroupLogicExpression2<C, L, S, S2, Q>,
     S extends RepositoryQuerySortExpression2<S2, Q>, S2 extends RepositoryQuerySortedExpression2<S2, Q>,
-    Q extends QueryLimitExecutor>
+    Q extends LimitAwareQuery0<Map<String, Serializable>>>
     extends RepositoryConditionsGroupExpression2<C, L>, ConditionConfigureExpression<C, QueryConditionConfig> {
 
 }

@@ -7,7 +7,7 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.DateFunction;
 import cn.featherfly.common.operator.Function;
-import cn.featherfly.hammer.dsl.entity.query.compatible.EntityQueryFetchCompat;
+import cn.featherfly.hammer.dsl.entity.compat.query.EntityQueryFetchCompat;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
 
 /**
@@ -190,7 +190,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @param propertyName the property name
      * @return the q
      */
-    default <V> EntityQueryOneFetchedProperty<E, V> count(SerializableFunction<E, V> propertyName) {
+    default <V> EntityQueryOneFetchedProperty<E, Long> count(SerializableFunction<E, V> propertyName) {
         return count(false, propertyName);
     }
 
@@ -202,8 +202,10 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @param propertyName the property name
      * @return the q
      */
-    default <V> EntityQueryOneFetchedProperty<E, V> count(boolean distinct, SerializableFunction<E, V> propertyName) {
-        return fetch(AggregateFunction.COUNT, distinct, propertyName);
+    @SuppressWarnings("unchecked")
+    default <V> EntityQueryOneFetchedProperty<E, Long> count(boolean distinct,
+        SerializableFunction<E, V> propertyName) {
+        return (EntityQueryOneFetchedProperty<E, Long>) fetch(AggregateFunction.COUNT, distinct, propertyName);
     }
 
     /**
@@ -213,7 +215,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @param propertyName the property name
      * @return the q
      */
-    default <V> EntityQueryOneFetchedProperty<E, V> sum(SerializableFunction<E, V> propertyName) {
+    default <V extends Number> EntityQueryOneFetchedProperty<E, V> sum(SerializableFunction<E, V> propertyName) {
         return sum(false, propertyName);
     }
 
@@ -225,7 +227,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @param propertyName the property name
      * @return the q
      */
-    default <V> EntityQueryOneFetchedProperty<E, V> sum(boolean distinct, SerializableFunction<E, V> propertyName) {
+    default <V extends Number> EntityQueryOneFetchedProperty<E, V> sum(boolean distinct,
+        SerializableFunction<E, V> propertyName) {
         return fetch(AggregateFunction.SUM, distinct, propertyName);
     }
 
@@ -282,7 +285,7 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @param propertyName the property name
      * @return the q
      */
-    default <V> EntityQueryOneFetchedProperty<E, V> avg(SerializableFunction<E, V> propertyName) {
+    default <V extends Number> EntityQueryOneFetchedProperty<E, V> avg(SerializableFunction<E, V> propertyName) {
         return avg(false, propertyName);
     }
 
@@ -294,7 +297,8 @@ public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQue
      * @param propertyName the property name
      * @return the q
      */
-    default <V> EntityQueryOneFetchedProperty<E, V> avg(boolean distinct, SerializableFunction<E, V> propertyName) {
+    default <V extends Number> EntityQueryOneFetchedProperty<E, V> avg(boolean distinct,
+        SerializableFunction<E, V> propertyName) {
         return fetch(AggregateFunction.AVG, distinct, propertyName);
     }
 }

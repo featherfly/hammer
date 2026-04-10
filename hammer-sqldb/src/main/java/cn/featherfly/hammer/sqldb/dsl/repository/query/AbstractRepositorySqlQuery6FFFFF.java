@@ -1,18 +1,19 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Map;
 
 import cn.featherfly.common.function.SiConsumer;
 import cn.featherfly.common.function.SiFunction;
-import cn.featherfly.common.structure.page.PaginationResults;
-import cn.featherfly.common.tuple.Tuple5;
+import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.data.query.LimitAwareQuery5;
+import cn.featherfly.data.query.QueryMapperSetter5;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery6;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup6FFFFF;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic6FFFFF;
 import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression6FFFFF;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor5;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryRelateExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression6;
@@ -29,13 +30,15 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  */
 public abstract class AbstractRepositorySqlQuery6FFFFF<R extends RepositoryQueryRelateExpression<R>> extends
     AbstractRepositorySqlQuery6<R, RepositoryQueryConditionsGroup6FFFFF, RepositoryQueryConditionsGroupLogic6FFFFF,
-        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6FFFFF, QueryLimitExecutor5>,
-        RepositoryQuerySortedExpression6FFFFF, QueryLimitExecutor5>
+        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6FFFFF,
+            LimitAwareQuery5<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression6FFFFF, LimitAwareQuery5<Map<String, Serializable>>>
     implements
     RepositoryQuery6<RepositoryQueryConditionsGroup6FFFFF, RepositoryQueryConditionsGroupLogic6FFFFF,
-        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6FFFFF, QueryLimitExecutor5>,
-        RepositoryQuerySortedExpression6FFFFF, QueryLimitExecutor5>,
-    QueryLimitExecutor5 {
+        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6FFFFF,
+            LimitAwareQuery5<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression6FFFFF, LimitAwareQuery5<Map<String, Serializable>>>,
+    QueryMapperSetter5 {
 
     /**
      * Instantiates a new abstract repository sql query 6 FFFFF.
@@ -81,7 +84,8 @@ public abstract class AbstractRepositorySqlQuery6FFFFF<R extends RepositoryQuery
      * {@inheritDoc}
      */
     @Override
-    public RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6FFFFF, QueryLimitExecutor5> sort() {
+    public RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6FFFFF,
+        LimitAwareQuery5<Map<String, Serializable>>> sort() {
         return new RepositorySqlQueryExpression6FFFFF(queryRelation, sqlPageFactory).sort();
     }
 
@@ -103,43 +107,7 @@ public abstract class AbstractRepositorySqlQuery6FFFFF<R extends RepositoryQuery
      * {@inheritDoc}
      */
     @Override
-    public <E1, E2, E3, E4, E5> List<Tuple5<E1, E2, E3, E4, E5>> list(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        return new RepositorySqlQueryExpression6FFFFF(queryRelation, sqlPageFactory).list(prefixes, type1, type2, type3,
-            type4, type5);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2, E3, E4, E5> Tuple5<E1, E2, E3, E4, E5> single(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        return new RepositorySqlQueryExpression6FFFFF(queryRelation, sqlPageFactory).single(prefixes, type1, type2,
-            type3, type4, type5);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2, E3, E4, E5> Tuple5<E1, E2, E3, E4, E5> unique(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        return new RepositorySqlQueryExpression6FFFFF(queryRelation, sqlPageFactory).unique(prefixes, type1, type2,
-            type3, type4, type5);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <E1, E2, E3, E4, E5> PaginationResults<Tuple5<E1, E2, E3, E4, E5>> pagination(
-        Tuple5<String, String, String, String, String> prefixes, Class<E1> type1, Class<E2> type2, Class<E3> type3,
-        Class<E4> type4, Class<E5> type5) {
-        return new RepositorySqlQueryExpression6FFFFF(queryRelation, sqlPageFactory).pagination(prefixes, type1, type2,
-            type3, type4, type5);
+    public LimitAwareQuery5<Map<String, Serializable>> limit(Limit limit) {
+        return new RepositorySqlQueryExpression6FFFFF(queryRelation, sqlPageFactory).limit(limit);
     }
 }

@@ -1,9 +1,12 @@
 
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryConditionLimit;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
-import cn.featherfly.hammer.expression.query.QueryListExecutor;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryListExecutor;
 import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
@@ -14,6 +17,6 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * @param <S2> the sorted type
  * @param <Q> the QueryLimitExecutor type
  */
-public interface RepositoryQueryable5<S, S2, Q>
-    extends Queryable<S>, RepositorySortable5<S, S2>, QueryListExecutor, QueryCountExecutor, QueryConditionLimit<Q> {
+public interface RepositoryQueryable5<S, S2, Q> extends Queryable<S>, RepositorySortable5<S, S2>,
+    QueryListExecutor<Map<String, Serializable>>, QueryCountExecutor, QueryLimitSetter<Q> {
 }

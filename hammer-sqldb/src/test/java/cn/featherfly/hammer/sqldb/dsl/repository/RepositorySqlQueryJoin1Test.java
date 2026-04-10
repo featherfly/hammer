@@ -375,7 +375,8 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
             .join(USER_REPO).on("id", "create_user") //
             .where() //
             .eq("id", oid1) //
-            .single(Order2.class);
+            .mapper(Order2.class) //
+            .single();
         assertNotNull(order2);
         assertEquals(order2.getId(), oid1);
 
@@ -383,7 +384,8 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
             .join(USER_REPO).on("id", "create_user") //
             .where().configure(c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY)) //
             .eq("id", oid1) //
-            .single(Order2.class);
+            .mapper(Order2.class) //
+            .single();
         assertNotNull(order2);
         assertEquals(order2.getId(), oid1);
 
@@ -391,7 +393,8 @@ public class RepositorySqlQueryJoin1Test extends AbstractRepositorySqlQueryTest 
             .join(USER_REPO).on("id", "create_user").fetch() //
             .where() //
             .eq("id", oid1) //
-            .single(Order2.class, User2.class);
+            .mapper(Order2.class, User2.class) //
+            .single();
         assertNotNull(orderUser);
         assertEquals(orderUser.get0().getId(), oid1);
         assertEquals(orderUser.get1().getId(), orderUser.get0().getCreateUser());

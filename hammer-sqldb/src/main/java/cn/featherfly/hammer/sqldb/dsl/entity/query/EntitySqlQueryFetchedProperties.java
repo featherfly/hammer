@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.data.query.QueryLimitExecutor;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
@@ -13,7 +14,6 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetchedProperties;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -25,7 +25,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <E> the element type
  */
 public class EntitySqlQueryFetchedProperties<E>
-    extends AbstractEntitySqlQueryFetchedProperties<E, EntityQueryFetchedProperties<E>, EntityQueryLimitExecutor<E>>
+    extends AbstractEntitySqlQueryFetchedProperties<E, EntityQueryFetchedProperties<E>, QueryLimitExecutor<E>>
     implements EntityQueryFetchedProperties<E> {
 
     /**

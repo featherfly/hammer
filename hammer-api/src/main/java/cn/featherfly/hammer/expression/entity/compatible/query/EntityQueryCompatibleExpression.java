@@ -8,13 +8,13 @@
  */
 package cn.featherfly.hammer.expression.entity.compatible.query;
 
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryListExecutor;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.ConfigureExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionLimit;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryListExecutor;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
@@ -31,7 +31,7 @@ public interface EntityQueryCompatibleExpression<E1,
     C extends EntityQueryConditionGroupCompatibleExpression<E1, C, L, S>,
     L extends EntityQueryConditionGroupLogicCompatibleExpression<E1, C, L, S>,
     S extends EntityQuerySortCompatibleExpression<E1>, T extends EntityQueryCompatibleExpression<E1, C, L, S, T>>
-    extends EntityQueryWhereCompatibleExpression<E1, C, L, S>, EntityQueryListExecutor<E1>, QueryCountExecutor,
-    EntityQueryConditionLimit<EntityQueryLimitExecutor<E1>>, Queryable<S>,
+    extends EntityQueryWhereCompatibleExpression<E1, C, L, S>, QueryListExecutor<E1>, QueryCountExecutor,
+    QueryLimitSetter<QueryLimitExecutor<E1>>, Queryable<S>,
     ConfigureExpression<T, DslQueryConfig, QueryConditionConfig> {
 }

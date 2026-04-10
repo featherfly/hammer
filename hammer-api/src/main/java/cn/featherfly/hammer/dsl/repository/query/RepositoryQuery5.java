@@ -1,7 +1,10 @@
 
 package cn.featherfly.hammer.dsl.repository.query;
 
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery0;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression5;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryExpression5;
@@ -21,5 +24,5 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortedExp
 public interface RepositoryQuery5<C extends RepositoryQueryConditionsGroupExpression5<C, L, S, S2, Q>,
     L extends RepositoryQueryConditionsGroupLogicExpression5<C, L, S, S2, Q>,
     S extends RepositoryQuerySortExpression5<S2, Q>, S2 extends RepositoryQuerySortedExpression5<S2, Q>,
-    Q extends QueryLimitExecutor> extends RepositoryQueryExpression5<C, L, S, S2, Q> {
+    Q extends LimitAwareQuery0<Map<String, Serializable>>> extends RepositoryQueryExpression5<C, L, S, S2, Q> {
 }

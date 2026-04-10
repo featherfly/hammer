@@ -82,10 +82,6 @@ public abstract class AbstractSqlConditionExpression<C extends ConditionExpressi
     /**
      * {@inheritDoc}
      */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String expression() {
         //      String parentCondition = parent == null ? "" : ((Builder) parent).build();

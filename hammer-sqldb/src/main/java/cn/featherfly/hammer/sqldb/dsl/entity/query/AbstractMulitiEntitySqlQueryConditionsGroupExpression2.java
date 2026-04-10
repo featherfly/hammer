@@ -16,17 +16,18 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.SortOperator;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
 import cn.featherfly.common.tuple.Tuple7;
 import cn.featherfly.common.tuple.Tuple8;
+import cn.featherfly.data.query.QueryLimitExecutor;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression2;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression2;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression2;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression2;
 import cn.featherfly.hammer.expression.entity.query.sort.EntitySetSortPropertyExpression;
@@ -99,7 +100,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      * @return the type query limit executor
      */
     @Override
-    public EntityQueryLimitExecutor<RS> limit(Limit limit) {
+    public QueryLimitExecutor<RS> limit(Limit limit) {
         entitySqlQueryConditionGroupQuery.setLimit(limit);
         return this;
     }
@@ -111,6 +112,14 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
     public long count() {
         entityRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
         return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RowIterable<RS> each() {
+        return entitySqlQueryConditionGroupQuery.each();
     }
 
     /**
@@ -162,8 +171,8 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
         S2 extends EntitySortedExpression<E2, S2>> EntityQuerySortedExpression2<E1, E2, RS> sort(
             BiConsumer<EntitySortExpression<E1, S1>, EntitySortExpression<E2, S2>> entitySortExpresions) {
         if (entitySortExpresions != null) {
-            entitySortExpresions.accept(new EntitySortExpressionImpl<>(tableAlias, getRootSortBuilder()),
-                new EntitySortExpressionImpl<>(tableAlias2, getRootSortBuilder()));
+            entitySortExpresions.accept(new EntitySortExpressionImpl<>(classMapping, tableAlias, getRootSortBuilder()),
+                new EntitySortExpressionImpl<>(classMapping2, tableAlias2, getRootSortBuilder()));
         }
         return this;
     }
@@ -223,7 +232,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <P> EntityQuerySortedExpression2<E1, E2, RS> asc(SerializableFunction<E1, P> name) {
-        return asc(getPropertyName(name));
+        return asc(getFieldName(name, classMapping));
     }
 
     /**
@@ -242,7 +251,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <P> EntityQuerySortedExpression2<E1, E2, RS> desc(SerializableFunction<E1, P> name) {
-        return desc(getPropertyName(name));
+        return desc(getFieldName(name, classMapping));
     }
 
     /**
@@ -409,7 +418,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression2<E1, E2, RS> asc2(SerializableFunction<E2, R> name) {
-        return asc2(getPropertyName(name));
+        return asc2(getFieldName(name, classMapping2));
     }
 
     /**
@@ -428,7 +437,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression2<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression2<E1, E2, RS> desc2(SerializableFunction<E2, R> name) {
-        return desc2(getPropertyName(name));
+        return desc2(getFieldName(name, classMapping2));
     }
 
     /**

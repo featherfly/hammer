@@ -23,7 +23,6 @@ import cn.featherfly.hammer.dml.builder.sql.vo.User;
 import cn.featherfly.hammer.dml.builder.sql.vo.User2;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo2;
-import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
 import cn.featherfly.hammer.dsl.execute.Deleter;
 import cn.featherfly.hammer.dsl.execute.Updater;
 import cn.featherfly.hammer.dsl.query.Query;
@@ -35,32 +34,80 @@ import cn.featherfly.hammer.dsl.query.Query;
  */
 public class DslTest {
 
-    private EntityQueryFetch<User> entityQueryFetch;
+    //    private EntityQueryFetch<User> entityQueryFetch;
 
-    Query query = null;
+    Query query;
 
-    Deleter deleter = null;
+    Deleter deleter;
 
-    Repository data = null;
+    Repository data;
 
     boolean ignore = true;
 
+    User user;
+    List<User> userList;
+    PaginationResults<User> userPage;
+
+    LocalDateTime localDateTime;
+    LocalDate localDate;
+    LocalTime localTime;
+    Date date;
+
+    List<LocalDateTime> localDateTimeList;
+    List<LocalDate> localDateList;
+    List<LocalTime> localTimeList;
+    List<Date> dateList;
+
+    PaginationResults<LocalDateTime> localDateTimePage;
+    PaginationResults<LocalDate> localDatePage;
+    PaginationResults<LocalTime> localTimePage;
+    PaginationResults<Date> datePage;
+
+    long count = 0;
+
+    public void entityQueryAggregate() {
+        count = query.find(User.class).count();
+        count = query.find(User.class).where().gt(User::getId, 0).count();
+
+        count = query.find(User.class).count(User::getId).value();
+        // FIXME 下面这两都应该去掉 .valueList() .list()，使用了聚合函数，没有进行group by的话，只会有一条数据
+        query.find(User.class).count(User::getId).valueList();
+        query.find(User.class).count(User::getId).list();
+
+        count = query.find(User.class).count(User::getId).where().gt(User::getId, 0).value();
+        // FIXME 下面六个都应该去掉 .valueList() 到 .pagination()
+        query.find(User.class).count(User::getId).where().gt(User::getId, 0).valueList();
+        query.find(User.class).count(User::getId).where().gt(User::getId, 0).valuePagination();
+        query.find(User.class).count(User::getId).where().gt(User::getId, 0).single();
+        query.find(User.class).count(User::getId).where().gt(User::getId, 0).unique();
+        query.find(User.class).count(User::getId).where().gt(User::getId, 0).list();
+        query.find(User.class).count(User::getId).where().gt(User::getId, 0).pagination();
+    }
+
+    public void entityQueryAggregateGroupBy() {
+        query.find(User.class).count(User::getId).fetch(User::getAge).list();
+
+        //        query.find(User.class).count(User::getId).fetch(User::getAge).where().gt(User::getId, 0).and().group()
+        //            .eq(User::getAge, 0).endGroup() //
+        //            .and().group(c -> c.eq(User::getAge, 0)) //
+        //            .and(c -> c.eq(User::getAge, 0));
+
+        List<Tuple2<Long, Integer>> tuple2List = query.find(User.class).count(User::getId).fetch(User::getAge)
+            .groupBy(User::getId).spread().list();
+
+        tuple2List = query.find(User.class).count(User::getId).fetch(User::getAge).where().gt(User::getId, 0).and()
+            .group().eq(User::getAge, 0).endGroup() //
+            .and().group(c -> c.eq(User::getAge, 0)) //
+            .groupBy(User::getId).spread().list();
+    }
+
     public void entityQueryFetchOne() {
-        LocalDateTime localDateTime = null;
-        LocalDate localDate = null;
-        LocalTime localTime = null;
-        Date date = null;
-        //      localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
-        //        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
+        user = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
+        user = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
+
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).value();
-        //        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).single();
-        //        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).unique();
         localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).value();
-        //        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).single();
-        //        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).unique();
         localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).value();
-        //        date = query.find(User.class).fetch(User::getDate).limit(1).single();
-        //        date = query.find(User.class).fetch(User::getDate).limit(1).unique();
         date = query.find(User.class).fetch(User::getDate).limit(1).value();
 
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).value();
@@ -68,23 +115,21 @@ public class DslTest {
         localTime = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).value();
         date = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).value();
 
-        localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).value();
-        localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).value();
-        localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).value();
-        date = query.find(User.class).fetch(User::getDate).limit(1).value();
-        PaginationResults<Date> pagination = query.find(User.class).fetch(User::getDate).limit(1).valuePagination();
-
-        List<LocalDateTime> localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).valueList();
-        List<LocalDate> localDateList = query.find(User.class).fetch(User::getLocalDate).valueList();
-        List<LocalTime> localTimeList = query.find(User.class).fetch(User::getLocalTime).valueList();
-        List<Date> dateList = query.find(User.class).fetch(User::getDate).valueList();
+        localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).valueList();
+        localDateList = query.find(User.class).fetch(User::getLocalDate).valueList();
+        localTimeList = query.find(User.class).fetch(User::getLocalTime).valueList();
+        dateList = query.find(User.class).fetch(User::getDate).valueList();
         //        dateList = query.find(User.class).fetch(User::getDate).list();
 
         localDateTimeList = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).valueList();
         localDateList = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).valueList();
         localTimeList = query.find(User.class).fetch(User::getLocalTime).where().eq(User::getId, 1).valueList();
         dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).valueList();
-        //        dateList = query.find(User.class).fetch(User::getDate).where().eq(User::getId, 1).list();
+
+        localDateTimePage = query.find(User.class).fetch(User::getLocalDateTime).limit(1).valuePagination();
+        localDatePage = query.find(User.class).fetch(User::getLocalDate).limit(1).valuePagination();
+        localTimePage = query.find(User.class).fetch(User::getLocalTime).limit(1).valuePagination();
+        datePage = query.find(User.class).fetch(User::getDate).limit(1).valuePagination();
 
         // IMPLSOON 加入fetch映射
         // int year = query.find(User.class).fetch(User::getLocalDateTime).getYear().where().eq(User::getId, 1).value();
@@ -95,16 +140,68 @@ public class DslTest {
         //   .where().eq(User::getId, 1).singleTuple();
         // query.find("user").fetch("c1", "c2", "c3", "c4").limit(1)
         //   .singleTuple(int.class, int.class, long.class, String.class);
+
     }
 
     public void entityQueryFetchMoreThanOne() {
-        Object[] values = null;
-        Tuple2<LocalDateTime, Integer> valuesTuple = null;
+        List<Tuple2<LocalDateTime, Integer>> tuple2List = null;
+        Tuple2<LocalDateTime, Integer> tuple2 = null;
+        PaginationResults<Tuple2<LocalDateTime, Integer>> tuple2Page = null;
 
-        // IMPLSOON value array
-        //        values = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).values();
-        // IMPLSOON value tuple
-        //        valuesTuple = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).tuple();
+        //        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).single();
+        //        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).unique();
+        userList = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).list();
+        //        userPage = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).pagination();
+
+        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).single();
+        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).unique();
+        userList = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).list();
+        userPage = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).pagination();
+
+        // -----
+
+        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).single();
+        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).unique();
+        userList = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).list();
+        userPage = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).pagination();
+
+        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).limit(1).single();
+        user = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).limit(1).unique();
+        userList = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).limit(1).list();
+        userPage = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+            .gt(User::getId, 0).limit(1).pagination();
+
+        // IMPLSOON spread()
+        //        tuple2 = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).spread().single();
+        //        tuple2 = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).limit(1).spread().unique();
+        //        tuple2List = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).spread().list();
+        //        tuple2Page = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).spread().pagination();
+        //
+        //        // IMPLSOON spread()
+        //        tuple2 = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).limit(1).spread().single();
+        //        tuple2 = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).limit(1).spread().unique();
+        //        tuple2List = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).limit(1).spread().list();
+        //        tuple2Page = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).limit(1).spread().pagination();
+        //
+        //        tuple2 = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).spread().single();
+        //        tuple2 = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).spread().unique();
+        //        tuple2List = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).spread().list();
+        //        tuple2Page = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getId).where() //
+        //            .gt(User::getId, 0).spread().pagination();
     }
 
     public void entityQuery() {
@@ -332,6 +429,13 @@ public class DslTest {
             .and() //
             .ba((e0, e1) -> e1.property(UserInfo2::getAge).value(18, 22, (min, max) -> false)) //
             .list();
+
+        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
+            // IMPLSOON 加入 .sort((sorter, e0, e1, e2, e3, e4) -> sorter.asc(e0.property(Tree::getId)).desc(e1.property(Tree::getName))
+            .sort((e0, e1, e2, e3, e4) -> {
+                e0.asc(Tree::getId).desc(Tree::getName);
+                e1.asc(Tree::getId).desc(Tree::getName);
+            });
 
         //        query.find(Tree.class).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent).join(Tree::getParent)
         //                .join(Tree::getParent).sort().asc((e0, e1, e2, e3, e4) -> e0.accept(Tree::getId)).asc5(Tree::getName);

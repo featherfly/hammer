@@ -1,10 +1,14 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery1;
+import cn.featherfly.data.query.QueryMapperSetter1;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup6F;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic6F;
 import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression6F;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression6;
 import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
@@ -17,9 +21,9 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 public class RepositorySqlQueryExpression6F extends
     AbstractMulitiRepositorySqlQueryConditionsGroupExpression6<RepositoryQueryConditionsGroup6F,
         RepositoryQueryConditionsGroupLogic6F,
-        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F, QueryLimitExecutor>,
-        RepositoryQuerySortedExpression6F, QueryLimitExecutor>
-    implements RepositoryQueryConditionsGroup6F, RepositoryQueryConditionsGroupLogic6F {
+        RepositoryQuerySortExpression6<RepositoryQuerySortedExpression6F, LimitAwareQuery1<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression6F, LimitAwareQuery1<Map<String, Serializable>>>
+    implements RepositoryQueryConditionsGroup6F, RepositoryQueryConditionsGroupLogic6F, QueryMapperSetter1 {
 
     /**
      * Instantiates a new sql query expression.
@@ -51,4 +55,5 @@ public class RepositorySqlQueryExpression6F extends
     protected RepositoryQueryConditionsGroup6F createGroup(RepositoryQueryConditionsGroupLogic6F parent) {
         return new RepositorySqlQueryExpression6F(parent, repositoryRelation, sqlPageFactory);
     }
+
 }

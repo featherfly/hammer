@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import cn.featherfly.common.tuple.Tuple7;
-import cn.featherfly.common.tuple.Tuple8;
-
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.db.builder.dml.SqlSortBuilder;
 import cn.featherfly.common.db.builder.dml.basic.SqlSelectBasicBuilder;
@@ -17,15 +14,18 @@ import cn.featherfly.common.db.mapping.JdbcMappingFactory;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.lang.LambdaUtils;
 import cn.featherfly.common.operator.AggregateFunction;
+import cn.featherfly.common.repository.RowIterable;
 import cn.featherfly.common.repository.builder.dml.SortBuilder;
 import cn.featherfly.common.structure.page.Limit;
 import cn.featherfly.common.structure.page.PaginationResults;
+import cn.featherfly.common.tuple.Tuple7;
+import cn.featherfly.common.tuple.Tuple8;
+import cn.featherfly.data.query.QueryLimitExecutor;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.cache.QueryPageResult;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQueryConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.entity.query.EntityQueryLimitExecutor;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
 import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression;
 import cn.featherfly.hammer.sqldb.dsl.entity.AbstractMulitiEntitySqlConditionsGroupExpressionBase;
@@ -111,7 +111,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     //    }
 
     @Override
-    public EntityQueryLimitExecutor<E1> limit(Limit limit) {
+    public QueryLimitExecutor<E1> limit(Limit limit) {
         entitySqlQueryConditionGroupQuery.setLimit(limit);
         return this;
     }
@@ -123,6 +123,14 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
     public long count() {
         entityRelation.getBuilder().clearColumns().addColumn(AggregateFunction.COUNT, Chars.STAR);
         return entityRelation.getJdbc().queryLong(getRoot().expression(), getRoot().getParamsArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RowIterable<E1> each() {
+        return entitySqlQueryConditionGroupQuery.each();
     }
 
     /**
@@ -194,7 +202,8 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression<E1> asc(SerializableFunction<E1, R> name) {
-        return asc(getPropertyName(name));
+        // select u.order_no orderNo from user u order by [u.order_no|orderNo], can not be u.orderNo
+        return asc(getFieldName(name, classMapping));
     }
 
     /**
@@ -234,7 +243,7 @@ public abstract class AbstractMulitiEntitySqlQueryConditionsGroupExpression<E1,
      */
     @Override
     public <R> EntityQuerySortedExpression<E1> desc(SerializableFunction<E1, R> name) {
-        return desc(getPropertyName(name));
+        return desc(getFieldName(name, classMapping));
     }
 
     /**

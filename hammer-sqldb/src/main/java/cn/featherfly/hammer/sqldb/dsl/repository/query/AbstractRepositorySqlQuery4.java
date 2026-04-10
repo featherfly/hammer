@@ -1,15 +1,17 @@
 
 package cn.featherfly.hammer.sqldb.dsl.repository.query;
 
+import java.io.Serializable;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import cn.featherfly.common.function.FoFunction;
 import cn.featherfly.common.tuple.Tuple4;
 import cn.featherfly.common.tuple.Tuples;
+import cn.featherfly.data.query.LimitAwareQuery0;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.dsl.repository.query.RepositoryQuery4;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression4;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupLogicExpression4;
@@ -37,7 +39,7 @@ public abstract class AbstractRepositorySqlQuery4<R extends RepositoryQueryRelat
     C extends RepositoryQueryConditionsGroupExpression4<C, L, S, S2, Q>,
     L extends RepositoryQueryConditionsGroupLogicExpression4<C, L, S, S2, Q>,
     S extends RepositoryQuerySortExpression4<S2, Q>, S2 extends RepositoryQuerySortedExpression4<S2, Q>,
-    Q extends QueryLimitExecutor> extends AbstractRepositorySqlQueryJoin<R, C, Q>
+    Q extends LimitAwareQuery0<Map<String, Serializable>>> extends AbstractRepositorySqlQueryJoin<R, C, Q>
     implements RepositoryQuery4<C, L, S, S2, Q> {
 
     /** The Constant RELATIONS_TUPLE. */

@@ -1,9 +1,10 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
 import cn.featherfly.hammer.expression.condition.ValueLogicExpression;
 import cn.featherfly.hammer.expression.entity.EntityConditionGroupLogicExpression;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
@@ -17,10 +18,9 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * @param <S> the generic type
  */
 public interface EntityQueryValueConditionGroupLogicExpression<E, V,
-        C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
-        L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
-        S extends EntityQueryValueSortExpression<E, V>>
-        extends ValueLogicExpression<C, L>, EntityConditionGroupLogicExpression<E, C, L>, Queryable<S>,
-        EntityQueryConditionLimit<EntityQueryValueLimitExecutor<E, V>>, EntityQueryValueLimitExecutor<E, V>,
-        QueryCountExecutor {
+    C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
+    L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
+    S extends EntityQueryValueSortExpression<E, V>>
+    extends ValueLogicExpression<C, L>, EntityConditionGroupLogicExpression<E, C, L>, Queryable<S>,
+    QueryLimitSetter<EntityQueryValueLimitExecutor<E, V>>, EntityQueryValueLimitExecutor<E, V>, QueryCountExecutor {
 }

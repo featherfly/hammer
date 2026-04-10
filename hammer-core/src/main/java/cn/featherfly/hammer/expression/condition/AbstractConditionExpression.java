@@ -23,6 +23,7 @@ import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.common.function.serializable.SerializableToLongFunction;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.LambdaUtils;
+import cn.featherfly.common.repository.mapping.ClassMapping;
 import cn.featherfly.common.repository.mapping.PropertyMapping;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 
@@ -106,6 +107,18 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
      */
     protected String getPropertyName(SerializableBooleanSupplier name) {
         return LambdaUtils.getLambdaPropertyName(name);
+    }
+
+    /**
+     * Gets the property name.
+     *
+     * @param <T> the generic type
+     * @param <R> the generic type
+     * @param name the name
+     * @return the property name
+     */
+    protected <T, R> String getFieldName(SerializableFunction<T, R> name, ClassMapping<T, ?> classMapping) {
+        return classMapping.getPropertyMapping(getPropertyName(name)).getRepositoryFieldName();
     }
 
     /**

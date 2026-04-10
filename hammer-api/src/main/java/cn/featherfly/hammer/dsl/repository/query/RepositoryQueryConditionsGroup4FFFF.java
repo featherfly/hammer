@@ -1,8 +1,11 @@
 
 package cn.featherfly.hammer.dsl.repository.query;
 
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery4;
 import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression4FFFF;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor4;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQueryConditionsGroupExpression4;
 import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression4;
 
@@ -14,6 +17,7 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpre
 public interface RepositoryQueryConditionsGroup4FFFF extends
     RepositoryQueryConditionsGroupExpression4<RepositoryQueryConditionsGroup4FFFF,
         RepositoryQueryConditionsGroupLogic4FFFF,
-        RepositoryQuerySortExpression4<RepositoryQuerySortedExpression4FFFF, QueryLimitExecutor4>,
-        RepositoryQuerySortedExpression4FFFF, QueryLimitExecutor4> {
+        RepositoryQuerySortExpression4<RepositoryQuerySortedExpression4FFFF,
+            LimitAwareQuery4<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression4FFFF, LimitAwareQuery4<Map<String, Serializable>>> {
 }

@@ -1,10 +1,12 @@
 
 package cn.featherfly.hammer.expression.entity.query;
 
+import cn.featherfly.data.query.QueryCountExecutor;
+import cn.featherfly.data.query.QueryLimitSetter;
+import cn.featherfly.data.query.QueryListExecutor;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
 import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.ConfigureExpression;
-import cn.featherfly.hammer.expression.query.QueryCountExecutor;
 import cn.featherfly.hammer.expression.query.Queryable;
 
 /**
@@ -21,8 +23,8 @@ import cn.featherfly.hammer.expression.query.Queryable;
 public interface EntityQueryValueExpression<E, V, C extends EntityQueryValueConditionGroupExpression<E, V, C, L, S>,
     L extends EntityQueryValueConditionGroupLogicExpression<E, V, C, L, S>,
     S extends EntityQueryValueSortExpression<E, V>, T extends EntityQueryValueExpression<E, V, C, L, S, T>>
-    extends EntityQueryValueWhereExpression<E, V, C, L, S>, EntityQueryListExecutor<E>, EntityQueryValueExecutor<V>,
-    QueryCountExecutor, EntityQueryConditionLimit<EntityQueryValueLimitExecutor<E, V>>, Queryable<S>,
+    extends EntityQueryValueWhereExpression<E, V, C, L, S>, QueryListExecutor<E>, EntityQueryValueExecutor<V>,
+    QueryCountExecutor, QueryLimitSetter<EntityQueryValueLimitExecutor<E, V>>, Queryable<S>,
     ConfigureExpression<T, DslQueryConfig, QueryConditionConfig> {
 
 }

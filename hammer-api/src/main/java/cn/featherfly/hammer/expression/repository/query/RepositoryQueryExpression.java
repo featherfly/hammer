@@ -1,10 +1,13 @@
 
 package cn.featherfly.hammer.expression.repository.query;
 
-import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
+import java.io.Serializable;
+import java.util.Map;
+
+import cn.featherfly.data.query.LimitAwareQuery1;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
+import cn.featherfly.hammer.config.dsl.QueryConditionConfig;
 import cn.featherfly.hammer.expression.ConfigureExpression;
-import cn.featherfly.hammer.expression.query.QueryLimitExecutor;
 
 /**
  * repository query expression.
@@ -18,5 +21,5 @@ public interface RepositoryQueryExpression<C extends RepositoryQueryConditionsGr
     L extends RepositoryQueryConditionsGroupLogicExpression<C, L, S>, S extends RepositoryQuerySortExpression>
     extends RepositoryQueryWhereExpression<C, L, S>,
     ConfigureExpression<RepositoryQueryExpression<C, L, S>, DslQueryConfig, QueryConditionConfig>,
-    RepositoryQueryableExpression<S, QueryLimitExecutor> {
+    RepositoryQueryableExpression<S, LimitAwareQuery1<Map<String, Serializable>>> {
 }

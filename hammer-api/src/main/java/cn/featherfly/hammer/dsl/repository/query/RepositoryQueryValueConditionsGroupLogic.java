@@ -9,6 +9,6 @@ import cn.featherfly.hammer.expression.repository.query.RepositoryQueryValueSort
  *
  * @author zhongj
  */
-public interface RepositoryQueryValueConditionsGroupLogic extends
-        RepositoryQueryValueConditionsGroupLogicExpression<RepositoryQueryValueConditionsGroup, RepositoryQueryValueConditionsGroupLogic, RepositoryQueryValueSortExpression> {
+public interface RepositoryQueryValueConditionsGroupLogic extends RepositoryQueryValueConditionsGroupLogicExpression<
+    RepositoryQueryValueConditionsGroup, RepositoryQueryValueConditionsGroupLogic, RepositoryQueryValueSortExpression> {
 }

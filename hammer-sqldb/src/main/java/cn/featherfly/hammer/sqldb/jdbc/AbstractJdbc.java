@@ -209,6 +209,72 @@ public abstract class AbstractJdbc implements Jdbc {
      * {@inheritDoc}
      */
     @Override
+    public <T> RowMapper<T> createRowMapper(Class<T> type) {
+        return getTypeMapper(type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> RowMapper<T> createRowMapper(Class<T> type, String prefix) {
+        return getTypeMapper(type, prefix);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2> RowMapper<Tuple2<T1, T2>> createRowMapper(Class<T1> type1, Class<T2> type2,
+        Tuple2<String, String> prefixes) {
+        return new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(type1, type2), prefixes, this::getTypeMapper);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3> RowMapper<Tuple3<T1, T2, T3>> createRowMapper(Class<T1> type1, Class<T2> type2, Class<T3> type3,
+        Tuple3<String, String, String> prefixes) {
+        return new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(type1, type2, type3), prefixes,
+            this::getTypeMapper);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4> RowMapper<Tuple4<T1, T2, T3, T4>> createRowMapper(Class<T1> type1, Class<T2> type2,
+        Class<T3> type3, Class<T4> type4, Tuple4<String, String, String, String> prefixes) {
+        return new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(type1, type2, type3, type4), prefixes,
+            this::getTypeMapper);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5> RowMapper<Tuple5<T1, T2, T3, T4, T5>> createRowMapper(Class<T1> type1, Class<T2> type2,
+        Class<T3> type3, Class<T4> type4, Class<T5> type5, Tuple5<String, String, String, String, String> prefixes) {
+        return new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(type1, type2, type3, type4, type5), prefixes,
+            this::getTypeMapper);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T1, T2, T3, T4, T5, T6> RowMapper<Tuple6<T1, T2, T3, T4, T5, T6>> createRowMapper(Class<T1> type1,
+        Class<T2> type2, Class<T3> type3, Class<T4> type4, Class<T5> type5, Class<T6> type6,
+        Tuple6<String, String, String, String, String, String> prefixes) {
+        return new TupleNestedBeanPropertyRowMapper<>(ArrayUtils.toList(type1, type2, type3, type4, type5, type6),
+            prefixes, this::getTypeMapper);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T extends Serializable> int insert(String tableName, String[] columnNames, GeneratedKeyHolder<T> keyHolder,
         Serializable... args) {
         if (metadata.getTable(tableName).getPrimaryColumns().size() == 1) {

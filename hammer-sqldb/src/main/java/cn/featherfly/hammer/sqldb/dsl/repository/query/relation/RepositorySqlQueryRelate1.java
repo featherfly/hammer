@@ -1,0 +1,131 @@
+/*
+ * All rights Reserved, Designed By zhongj
+ * @Title: EntitySqlQueryRelate1R.java
+ * @Package cn.featherfly.hammer.sqldb.jdbc.dsl.entity.query.relation
+ * @Description: todo (用一句话描述该文件做什么)
+ * @author: zhongj
+ * @date: 2023年9月26日 下午5:51:29
+ * @version V1.0
+ * @Copyright: 2023 www.featherfly.cn Inc. All rights reserved.
+ */
+
+package cn.featherfly.hammer.sqldb.dsl.repository.query.relation;
+
+import java.io.Serializable;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+
+import cn.featherfly.common.repository.Repository;
+import cn.featherfly.common.structure.page.Limit;
+import cn.featherfly.data.query.LimitAwareQuery1;
+import cn.featherfly.hammer.dsl.repository.RepositoryOnExpression2;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroup2F;
+import cn.featherfly.hammer.dsl.repository.query.RepositoryQueryConditionsGroupLogic2F;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate1;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelate2;
+import cn.featherfly.hammer.dsl.repository.query.relation.RepositoryQueryRelatedFetched1F;
+import cn.featherfly.hammer.dsl.repository.query.sort.RepositoryQuerySortedExpression2F;
+import cn.featherfly.hammer.expression.condition.LogicExpression;
+import cn.featherfly.hammer.expression.repository.condition.field.RepositoryFieldOnlyExpression;
+import cn.featherfly.hammer.expression.repository.query.RepositoryQuerySortExpression2;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortExpression;
+import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExpression;
+import cn.featherfly.hammer.sqldb.dsl.repository.RepositorySqlQueryRelation;
+import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractRepositorySqlQuery2;
+import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpression;
+import cn.featherfly.hammer.sqldb.dsl.repository.query.RepositorySqlQueryExpression2;
+import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
+
+/**
+ * The Class RepositorySqlQueryRelate1R.
+ *
+ * @author zhongj
+ */
+public class RepositorySqlQueryRelate1 extends
+    AbstractRepositorySqlQuery2<RepositoryQueryRelatedFetched1F, RepositoryQueryConditionsGroup2F,
+        RepositoryQueryConditionsGroupLogic2F,
+        RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2F, LimitAwareQuery1<Map<String, Serializable>>>,
+        RepositoryQuerySortedExpression2F, LimitAwareQuery1<Map<String, Serializable>>>
+    implements RepositoryQueryRelate1 {
+
+    /**
+     * Instantiates a new repository sql query relate 1 R.
+     *
+     * @param repositorySqlQueryFetch the repository sql query fetch
+     */
+    public RepositorySqlQueryRelate1(AbstractRepositorySqlQuery2<?, ?, ?, ?, ?, ?> repositorySqlQueryFetch) {
+        super(repositorySqlQueryFetch);
+    }
+
+    /**
+     * Instantiates a new repository sql query relate 1 R.
+     *
+     * @param repositoryRelation the repository relation
+     * @param sqlPageFactory the sql page factory
+     */
+    public RepositorySqlQueryRelate1(RepositorySqlQueryRelation repositoryRelation, SqlPageFactory sqlPageFactory) {
+        super(repositoryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryOnExpression2<RepositoryQueryRelate2> join(Repository repository) {
+        return new RepositorySqlQueryOn2<>(new RepositorySqlQueryRelate2(queryRelation, sqlPageFactory), queryRelation,
+            repository, relate -> ((RepositorySqlQueryRelate2) relate).setIdName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroup2F where() {
+        return new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQueryConditionsGroupLogic2F where(BiFunction<RepositoryFieldOnlyExpression,
+        RepositoryFieldOnlyExpression, LogicExpression<?, ?>> repositoriesCondtionFuntion) {
+        return where(new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory), repositoriesCondtionFuntion);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryQuerySortExpression2<RepositoryQuerySortedExpression2F,
+        LimitAwareQuery1<Map<String, Serializable>>> sort() {
+        return new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <S1 extends RepositorySortedExpression<S1>,
+        S2 extends RepositorySortedExpression<S2>> RepositoryQuerySortedExpression2F sort(
+            BiConsumer<RepositorySortExpression<S1>, RepositorySortExpression<S2>> repositorySortExpresions) {
+        return new RepositorySqlQueryExpression2(queryRelation, sqlPageFactory).sort(repositorySortExpresions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected RepositoryQueryRelatedFetched1F createFetched() {
+        return new RepositorySqlQueryRelatedFetched1F(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LimitAwareQuery1<Map<String, Serializable>> limit(Limit limit) {
+        return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit);
+    }
+}
