@@ -4582,7 +4582,7 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
             if (names.length() > 0) {
                 names.deleteCharAt(names.length() - 1);
             }
-            throw new HammerException("properties is not found {}", Lang.array(names.toString()));
+            throw new HammerException("properties is not found {}", names.toString());
         }
         //        final int i = properties.size() - 1;
         //        final Serializable name = properties.get(i);
@@ -4653,7 +4653,9 @@ public abstract class AbstractMulitiEntitySqlConditionsExpressionBase<E1, C exte
         // IMPLSOON 这里没有ONE_TO_MANY的映射，需要在MappingFactory中实现
         switch (getClassMapping().getPropertyMapping(getPropertyName(name)).getMode()) {
             case ONE_TO_MANY:
-                return new EntityTypePropertyExpressionImpl<>(index, Lang.list(name), this, factory, entityRelation);
+                // IMPLSOON 后续来实现集合类型property
+                throw new NotImplementedException();
+            //                return new EntityTypePropertyExpressionImpl<>(index, Lang.list(name), this, factory, entityRelation);
             default:
                 // IMPLSOON 后续来实现集合类型property
                 throw new NotImplementedException();

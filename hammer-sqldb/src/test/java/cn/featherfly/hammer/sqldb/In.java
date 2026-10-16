@@ -68,6 +68,7 @@ class InvokerImpl<E extends InterceptionExecution> implements Invoker<E> {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         In<JdbcExecution> in1 = (invoker, execution) -> {
             System.out.println("before invoke 1");
@@ -102,7 +103,7 @@ class InvokerImpl<E extends InterceptionExecution> implements Invoker<E> {
             interceptor.postHandle(execution);
         };
 
-        InvokerImpl<JdbcExecution> invoker = new InvokerImpl(Lang.list(in1, in2, in3));
+        InvokerImpl<JdbcExecution> invoker = new InvokerImpl<>(Lang.list(in1, in2, in3));
 
         invoker.invoke(null);
     }

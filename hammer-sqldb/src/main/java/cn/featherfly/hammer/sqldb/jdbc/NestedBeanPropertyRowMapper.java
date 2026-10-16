@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -416,7 +417,7 @@ public class NestedBeanPropertyRowMapper<T> extends AbstractRowMapper<T> {
                 String column = JdbcUtils.lookupColumnName(rsmd, index);
                 if (prefix != null) {
                     if (column.startsWith(prefix)) {
-                        column = org.apache.commons.lang3.StringUtils.removeStart(column, prefix);
+                        column = Strings.CS.removeStart(column, prefix);
                     } else {
                         // need match prefix, so ignore not matched
                         continue;

@@ -14,6 +14,7 @@ import cn.featherfly.hammer.config.cache.CacheConfig;
 import cn.featherfly.hammer.config.cache.CacheConfigImpl;
 import cn.featherfly.hammer.config.dsl.DslConfig;
 import cn.featherfly.hammer.config.dsl.DslConfigImpl;
+import cn.featherfly.hammer.config.dsl.UpdateConfigImpl;
 import cn.featherfly.hammer.config.entity.EntityConfig;
 import cn.featherfly.hammer.config.entity.EntityConfigImpl;
 import cn.featherfly.hammer.config.tpl.TemplateConfig;
@@ -30,7 +31,7 @@ public class HammerConfigImpl implements HammerConfig {
 
     private ValidatorConfig validatorConfig = new ValidatorConfigImpl(null, null);
 
-    private DslConfig dslConfig = new DslConfigImpl();
+    private DslConfig dslConfig = new DslConfigImpl(validatorConfig);
 
     private EntityConfig entityConfig = new EntityConfigImpl();
 
@@ -91,6 +92,7 @@ public class HammerConfigImpl implements HammerConfig {
      */
     public HammerConfigImpl setValidatorConfig(ValidatorConfig validatorConfig) {
         this.validatorConfig = validatorConfig;
+        ((UpdateConfigImpl) dslConfig.getUpdateConfig()).setValidatorConfig(validatorConfig);
         return this;
     }
 

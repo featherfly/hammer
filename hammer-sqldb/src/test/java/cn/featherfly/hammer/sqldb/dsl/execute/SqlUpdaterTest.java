@@ -28,12 +28,15 @@ import cn.featherfly.common.lang.Randoms;
 import cn.featherfly.common.lang.Randoms.CharType;
 import cn.featherfly.common.repository.IgnoreStrategy;
 import cn.featherfly.common.repository.SimpleRepository;
+import cn.featherfly.hammer.HammerException;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.config.dsl.EmptyConditionStrategy;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Address;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.s.Role2;
 
 /**
  * SqlUpdaterTest.
@@ -46,6 +49,8 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
     //    public void testException() {
     //        new SqlUpdater(jdbc, metadata, hammerConfig.getDslConfig().getUpdateConfig()).update(User.class);
     //    }
+
+    final Predicate<Object> alwaysIgnore = o -> true;
 
     @Test
     public void updateSet() {
@@ -82,7 +87,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
     @Test
     public void updateSet3() {
-        String strDate = Dates.formatTime(new Date());
+        String strDate = Dates.formatDateTime(new Date());
         Long count = hammer.query(Role.class).count();
         int result = updater.update("role").set("create_time", strDate).execute();
         assertEquals(result, 0);
@@ -199,7 +204,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
     @Test
     public void updateSetIgnore() {
-        String strDate = Dates.formatTime(new Date());
+        String strDate = Dates.formatDateTime(new Date());
         Long count = hammer.query(Role.class).count();
         int result = updater.update("role").set("create_time", strDate).where().configure(
             c -> c.setIgnoreStrategy(IgnoreStrategy.EMPTY).setEmptyConditionStrategy(EmptyConditionStrategy.EXECUTION))
@@ -322,6 +327,26 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
     }
 
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void updateEntitySetValidator() {
+        int id = 10;
+        updater.update(Role2.class) //
+            .set(Role2::getUpdateTime, null) // not null
+            .where() //
+            .eq(Role2::getId, id) //
+            .execute();
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void updateEntitySetValidator2() {
+        int id = 10;
+        updater.update(Role2.class) //
+            .set(Role2::getName, Randoms.getString(50)) // max size 20
+            .where() //
+            .eq(Role2::getId, id) //
+            .execute();
+    }
+
     @Test
     public void updateEntityIncrease() {
         User user = user();
@@ -414,6 +439,16 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         assertNotNull(load.getUser().getId());
         assertEquals(load.getUser().getId().intValue(), newUserId2);
 
+        result = hammer.update(UserInfo.class) //
+            .set(UserInfo::getUser, newUserId) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId);
+
         // ---------------------------------------------------------------------------------------------------------------
 
         User user = new User(newUserId);
@@ -490,12 +525,48 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         assertNotNull(load.getUser());
         assertNull(load.getUser().getId());
 
+        // ----------------------------------------------------------------------------------------------------------------
+
+        // set @Embedded value
+        DistrictDivision newDivision = new DistrictDivision();
+        newDivision.setCity("city");
+        newDivision.setDistrict("district");
+
+        result = hammer.update(UserInfo.class) //
+            .property(UserInfo::getDivision, DistrictDivision::getCity).set(newDivision.getCity()) // 
+            .property(UserInfo::getDivision, DistrictDivision::getDistrict).set(newDivision.getDistrict()) // 
+            .where() //
+            .eq(UserInfo::getId, ui.getId()) //
+            .execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertEquals(load.getDivision().getCity(), newDivision.getCity());
+        assertEquals(load.getDivision().getDistrict(), newDivision.getDistrict());
+        assertEquals(load.getDivision().getProvince(), ui.getDivision().getProvince()); // 没有修改，因为IgnoreStrategy.NULL
+
+        newDivision = new DistrictDivision();
+        newDivision.setCity("city2");
+        newDivision.setDistrict("district2");
+        result = hammer.update(UserInfo.class) //
+            .property(UserInfo::getDivision, DistrictDivision::getCity).set(newDivision.getCity()) // 
+            .property(UserInfo::getDivision, DistrictDivision::getDistrict).set(newDivision.getDistrict()) // 
+            .property(UserInfo::getDivision, DistrictDivision::getProvince) //
+            .set((String) null) // 
+            .where() //
+            .eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertEquals(load.getDivision().getCity(), newDivision.getCity());
+        assertEquals(load.getDivision().getDistrict(), newDivision.getDistrict());
+        assertEquals(load.getDivision().getProvince(), null); // 新对象是空
+
         //-------------------------------------------------------------------------------------------------------------
 
         // rollback changed value
 
         result = hammer.update(UserInfo.class).set(UserInfo::getDescp, ui.getDescp()) //
             .set(UserInfo::getUser, User::getId, ui.getUser().getId()) //
+            .set(UserInfo::getDivision, ui.getDivision()) //
             .where().eq(UserInfo::getId, ui.getId()).execute();
         assertEquals(result, 1);
         load = hammer.get(id, UserInfo.class);
@@ -504,6 +575,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         assertNotNull(load.getUser().getId());
         assertEquals(load.getUser().getId(), ui.getUser().getId());
         assertEquals(load.getDescp(), ui.getDescp());
+        assertEquals(load.getDivision(), ui.getDivision());
 
         result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, ui.getUser().getId(), v -> false)
             .where().eq(UserInfo::getId, ui.getId()).execute();
@@ -515,6 +587,236 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         assertNotNull(load.getUser().getId());
         assertEquals(load.getUser().getId(), ui.getUser().getId());
 
+    }
+
+    @Test
+    public void updateEntitySetNestedProperty2() {
+        final int id = 6;
+        UserInfo ui = hammer.get(id, UserInfo.class);
+        assertNotNull(ui);
+        assertNotNull(ui.getUser());
+        assertNotNull(ui.getUser().getId());
+
+        int newUserId = 2;
+        int newUserId2 = 3;
+        String newDescp = "newDescp_" + Randoms.getInt(100);
+        String newDescp2 = "newDescp2_" + Randoms.getInt(100);
+
+        // set value
+        int result = hammer.update(UserInfo.class) //
+            .set(UserInfo::getUser, new User(newUserId)) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        UserInfo load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId);
+
+        result = hammer.update(UserInfo.class) //
+            .set(UserInfo::getDescp, newDescp) //
+            .set(UserInfo::getUser, new User(newUserId2), v -> true) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId);
+        assertEquals(load.getDescp(), newDescp);
+
+        result = hammer.update(UserInfo.class) //
+            .set(UserInfo::getUser, new User(newUserId2), IgnoreStrategy.NONE) //
+            .where() // 
+            .eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId2);
+
+        // ---------------------------------------------------------------------------------------------------------------
+
+        User user = new User(newUserId);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUser(user);
+
+        result = hammer.update(UserInfo.class).set(userInfo::getUser) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), user.getId().intValue());
+        assertEquals(load.getUser().getId().intValue(), newUserId);
+
+        userInfo.setUser(new User(newUserId2));
+        result = hammer.update(UserInfo.class) //
+            .set(userInfo::getUser, IgnoreStrategy.NONE) //
+            .where() //
+            .eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId().intValue(), newUserId2);
+
+        userInfo.setDescp(newDescp2);
+        result = hammer.update(UserInfo.class) //
+            .set(userInfo::getDescp) //
+            .set(userInfo::getUser, alwaysIgnore::test) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getDescp(), userInfo.getDescp());
+        assertEquals(load.getDescp(), newDescp2);
+
+        // --------------------------------------------------------------------------------------------------------------
+
+        // set null value
+        result = hammer.update(UserInfo.class) //
+            .set(UserInfo::getUser, (User) null, IgnoreStrategy.NONE) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNull(load.getUser().getId());
+
+        result = hammer.update(UserInfo.class) //
+            .set(UserInfo::getUser, (User) null, IgnoreStrategy.NONE).where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+
+        //-------------------------------------------------------------------------------------------------------------
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, newUserId).where()
+            .eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+
+        userInfo.setUser(null);
+        result = hammer.update(UserInfo.class).set(userInfo::getUser, User::getId).where()
+            .eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNull(load.getUser().getId());
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+        // set @Embedded value
+        DistrictDivision newDivision = new DistrictDivision();
+        newDivision.setCity("city");
+        newDivision.setDistrict("district");
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getDivision, newDivision, IgnoreStrategy.NULL) // 
+            .where() //
+            .eq(UserInfo::getId, ui.getId()) //
+            .execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertEquals(load.getDivision().getCity(), newDivision.getCity());
+        assertEquals(load.getDivision().getDistrict(), newDivision.getDistrict());
+        assertEquals(load.getDivision().getProvince(), ui.getDivision().getProvince()); // 没有修改，因为IgnoreStrategy.NULL
+
+        newDivision = new DistrictDivision();
+        newDivision.setCity("city2");
+        newDivision.setDistrict("district2");
+        result = hammer.update(UserInfo.class).set(UserInfo::getDivision, newDivision) // 
+            .where() //
+            .eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertEquals(load.getDivision().getCity(), newDivision.getCity());
+        assertEquals(load.getDivision().getDistrict(), newDivision.getDistrict());
+        assertEquals(load.getDivision().getProvince(), null); // 新对象是空
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getDivision, null) // 
+            .where() //
+            .eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(ui.getId(), UserInfo.class);
+        assertEquals(load.getDivision().getCity(), null);
+        assertEquals(load.getDivision().getDistrict(), null);
+        assertEquals(load.getDivision().getProvince(), null);
+
+        //-------------------------------------------------------------------------------------------------------------
+
+        // rollback changed value
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getDescp, ui.getDescp()) //
+            .set(UserInfo::getUser, User::getId, ui.getUser().getId()) //
+            .set(UserInfo::getDivision, ui.getDivision()) //
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
+        assertEquals(load.getDescp(), ui.getDescp());
+        assertEquals(load.getDivision(), ui.getDivision());
+
+        result = hammer.update(UserInfo.class).set(UserInfo::getUser, User::getId, ui.getUser().getId(), v -> false)
+            .where().eq(UserInfo::getId, ui.getId()).execute();
+        assertEquals(result, 1);
+
+        load = hammer.get(id, UserInfo.class);
+        assertNotNull(load);
+        assertNotNull(load.getUser());
+        assertNotNull(load.getUser().getId());
+        assertEquals(load.getUser().getId(), ui.getUser().getId());
+    }
+
+    @Test(expectedExceptions = HammerException.class)
+    public void updateEntitySetNestedPropertyEmbeddedException() {
+        hammer.update(UserInfo.class) //
+            .set(UserInfo::getDivision, "city") // 这里抛出异常，因为Embedded为多个列映射，无法确定使用哪个 
+            .where() //
+            .eq(UserInfo::getId, 6) //
+            .execute();
+
+        hammer.update(UserInfo.class) //
+            .set(UserInfo::getUser, 2) // 这里能正常运行，因为many to one能找到唯一映射的列
+            .where().eq(UserInfo::getId, 6).execute();
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void updateEntitySetNestedPropertyValidator() {
+        final int id = 6;
+        // set @Embedded value
+        hammer.update(UserInfo.class) //
+            .set(UserInfo::getDivision, DistrictDivision::getCity, "city" + Randoms.getString(20)) // 
+            // max size 20
+            .where() //
+            .eq(UserInfo::getId, id) //
+            .execute();
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void updateEntitySetNestedPropertyValidator2() {
+        final int id = 6;
+        // set @Embedded value
+        DistrictDivision newDivision = new DistrictDivision();
+        newDivision.setCity("city" + Randoms.getString(20)); // max size 20
+        newDivision.setDistrict("district");
+
+        hammer.update(UserInfo.class).set(UserInfo::getDivision, newDivision) // 
+            .where() //
+            .eq(UserInfo::getId, id) //
+            .execute();
     }
 
     @Test
@@ -542,7 +844,7 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
 
         LocalDateTime createTime = jdbc.queryValue("select create_time from role where  id = ?", LocalDateTime.class,
             1);
-        assertEquals(Dates.formatTime(createTime), Dates.formatTime(now));
+        assertEquals(Dates.formatDateTime(createTime), Dates.formatDateTime(now));
 
         result = updater.update(Role.class).set(Role::getCreateTime, now).where()
             .configure(c -> c.setIgnoreStrategy(IgnoreStrategy.NONE)).eq(Role::getId, null).execute();
@@ -587,9 +889,12 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         User user = new User(newUserId);
 
         // set @ManyToOne value
-        int result = hammer.update(UserInfo.class).property(UserInfo::getUser).set(user) // 
+        int result = hammer.update(UserInfo.class) //
+            .property(UserInfo::getUser) //
+            .set(user) // 
             .where() //
-            .eq(UserInfo::getId, ui.getId()).execute();
+            .eq(UserInfo::getId, ui.getId()) //
+            .execute();
         assertEquals(result, 1);
         UserInfo load = hammer.get(ui.getId(), UserInfo.class);
         assertNotNull(load);

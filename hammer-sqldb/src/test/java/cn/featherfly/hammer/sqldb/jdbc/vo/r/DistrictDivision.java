@@ -4,6 +4,7 @@ package cn.featherfly.hammer.sqldb.jdbc.vo.r;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.validation.constraints.Size;
 
 /**
  * <p>
@@ -17,10 +18,13 @@ public class DistrictDivision implements Serializable {
     private static final long serialVersionUID = -7643332722392401960L;
 
     @Column
+    @Size(max = 20)
     private String city;
 
+    @Size(max = 20)
     private String province;
 
+    @Size(max = 20)
     private String district;
 
     /**

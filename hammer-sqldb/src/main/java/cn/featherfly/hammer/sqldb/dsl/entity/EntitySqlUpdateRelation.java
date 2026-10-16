@@ -81,7 +81,7 @@ public class EntitySqlUpdateRelation extends EntitySqlRelation<EntitySqlUpdateRe
     @Override
     protected void initBuilder(EntityRelation<?> erm) {
         updateBuilder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), erm.getClassMapping().getRepositoryName(),
-            erm.getTableAlias(), getConfig().getIgnoreStrategy()::test);
+            erm.getTableAlias(), getConfig().getSetValueIgnoreStrategy());
     }
 
     /**

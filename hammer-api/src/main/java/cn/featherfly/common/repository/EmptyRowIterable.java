@@ -11,8 +11,6 @@ package cn.featherfly.common.repository;
 import java.util.Collections;
 import java.util.Iterator;
 
-import cn.featherfly.common.exception.BaseException;
-
 /**
  * EmptyRowIterable.
  *
@@ -39,7 +37,7 @@ public class EmptyRowIterable<T> implements RowIterable<T> {
      * {@inheritDoc}
      */
     @Override
-    public void close() throws BaseException {
+    public void close() throws RuntimeException {
     }
 
     /**

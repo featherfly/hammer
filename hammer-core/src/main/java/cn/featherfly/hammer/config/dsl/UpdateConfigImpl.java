@@ -11,6 +11,7 @@ package cn.featherfly.hammer.config.dsl;
 import java.util.function.Predicate;
 
 import cn.featherfly.common.repository.IgnoreStrategy;
+import cn.featherfly.hammer.config.ValidatorConfig;
 
 /**
  * The Class UpdateConfigImpl.
@@ -27,11 +28,15 @@ public class UpdateConfigImpl implements UpdateConfig, Cloneable {
 
     private EmptyConditionStrategy emptyConditionStrategy = EmptyConditionStrategy.NON_EXECUTION;
 
+    private ValidatorConfig validatorConfig;
+
     /**
      * Instantiates a new query config impl.
+     *
+     * @param validatorConfig the validator config
      */
-    public UpdateConfigImpl() {
-        super();
+    public UpdateConfigImpl(ValidatorConfig validatorConfig) {
+        this.validatorConfig = validatorConfig;
     }
 
     /**
@@ -89,11 +94,28 @@ public class UpdateConfigImpl implements UpdateConfig, Cloneable {
      * {@inheritDoc}
      */
     @Override
+    public ValidatorConfig getValidatorConfig() {
+        return validatorConfig;
+    }
+
+    /**
+     * set validatorConfig value
+     *
+     * @param validatorConfig validatorConfig
+     */
+    public void setValidatorConfig(ValidatorConfig validatorConfig) {
+        this.validatorConfig = validatorConfig;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UpdateConfig clone() {
         if (clone) {
             return this;
         } else {
-            UpdateConfigImpl config = new UpdateConfigImpl();
+            UpdateConfigImpl config = new UpdateConfigImpl(validatorConfig);
             config.setEmptyConditionStrategy(emptyConditionStrategy);
             config.setIgnoreStrategy(ignoreStrategy);
             config.setSetValueIgnoreStrategy(setValueIgnoreStrategy);
@@ -108,6 +130,8 @@ public class UpdateConfigImpl implements UpdateConfig, Cloneable {
     @Override
     public String toString() {
         return "UpdateConfigImpl [clone=" + clone + ", ignoreStrategy=" + ignoreStrategy + ", setValueIgnoreStrategy="
-            + setValueIgnoreStrategy + ", emptyConditionStrategy=" + emptyConditionStrategy + "] " + super.toString();
+            + setValueIgnoreStrategy + ", emptyConditionStrategy=" + emptyConditionStrategy + ", validatorConfig="
+            + validatorConfig + "]";
     }
+
 }

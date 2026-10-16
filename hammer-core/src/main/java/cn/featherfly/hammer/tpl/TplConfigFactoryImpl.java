@@ -249,8 +249,8 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
         StringBuilder message = new StringBuilder("\n---------- template config start ----------\n");
         for (Entry<String, TplExecuteConfigs> entry : configsMap.entrySet()) {
             TplExecuteConfigs configs = entry.getValue();
-            message.append(Str.format("  Config { key={0}  namespace={1}  filePath={2} types={3} }\n",
-                entry.getKey(), configs.getNamespace(), configs.getFilePath(),
+            message.append(Str.format("  Config { key={0}  namespace={1}  filePath={2} types={3} }\n", entry.getKey(),
+                configs.getNamespace(), configs.getFilePath(),
                 configs.getTypes().stream().map((t) -> t.getName()).collect(Collectors.toList())));
             for (Entry<String, Object> e : configs.entrySet()) {
                 Object v = e.getValue();
@@ -538,10 +538,10 @@ public class TplConfigFactoryImpl implements TplConfigFactory {
                 (Consumer<String>) cc -> Lang.ifNotEmpty(cc, (Consumer<String>) ns -> mutableNamespace.setValue(ns)));
             bis.reset();
             final String namespace;
-            if (mutableNamespace.getValue().contains("=")) {
-                namespace = mutableNamespace.getValue().split("=")[1];
+            if (mutableNamespace.get().contains("=")) {
+                namespace = mutableNamespace.get().split("=")[1];
             } else {
-                namespace = mutableNamespace.getValue();
+                namespace = mutableNamespace.get();
             }
             TplExecuteConfigs tplExecuteConfigs = mapper.readerFor(TplExecuteConfigs.class).readValue(bis);
             TplExecuteConfigs newConfigs = Lang.ifNull(configsMap.get(namespace), () -> {

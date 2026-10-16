@@ -16,8 +16,9 @@ import cn.featherfly.common.function.serializable.SerializableSupplier;
 import cn.featherfly.common.function.serializable.SerializableToNumberFunction;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.LambdaUtils;
-import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.repository.builder.AliasManager;
+import cn.featherfly.common.repository.mapping.PropertyMapping.Mode;
+import cn.featherfly.hammer.HammerException;
 import cn.featherfly.hammer.config.dsl.UpdateConditionConfig;
 import cn.featherfly.hammer.config.dsl.UpdateConfig;
 import cn.featherfly.hammer.dsl.entity.EntityOnExpression1;
@@ -29,6 +30,7 @@ import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedNumberValueImpl
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNestedValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateNumberValueImpl;
 import cn.featherfly.hammer.dsl.entity.execute.EntityUpdateValueImpl;
+import cn.featherfly.hammer.entity.operator.OperatorType;
 import cn.featherfly.hammer.expression.condition.LogicExpression;
 import cn.featherfly.hammer.expression.entity.condition.EntityConditionsGroupExpression;
 import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
@@ -40,6 +42,7 @@ import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlOn1;
 import cn.featherfly.hammer.sqldb.dsl.entity.EntitySqlUpdateRelation;
 import cn.featherfly.hammer.sqldb.dsl.execute.AbstractSqlExecutableUpdate;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.util.ValidatorUtils;
 
 /**
  * sql entity executable update .
@@ -98,6 +101,11 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         EntityExecutableConditionGroupLogic<E, UpdateConditionConfig>>> consumer) {
         consumer.accept(this);
         return this;
+    }
+
+    private void revertBuilderIgnoreStrategy() {
+        // revert default ignoreStrategy
+        builder.setIgnoreStrategy(updateConfig.getSetValueIgnoreStrategy());
     }
 
     /**
@@ -339,120 +347,131 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
     // ----------------------------------------------------------------------------------------------------------------
 
     private <R> EntityExecutableUpdate<E> set0(Serializable name, R value, Predicate<R> ignoreStrategy) {
-        builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) {// ignore, 忽略
             return this;
-        } else {
-            return set0(classMapping.getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
         }
+        return set0(classMapping.getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
     }
 
     private <R, O> EntityExecutableUpdate<E> set0(SerializableFunction<E, R> property,
         SerializableFunction<R, O> nestedProperty, O value, Predicate<O> ignoreStrategy) {
-        builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // ignore, 忽略
             return this;
         }
         JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         String npn = getPropertyName(nestedProperty);
         JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        return set0(spm, FieldValueOperator.create(spm, value));
+        return set1(spm, FieldValueOperator.create(spm, value), ignoreStrategy);
     }
 
     private <R, O> EntityExecutableUpdate<E> setSupplier(SerializableSupplier<R> property,
         SerializableFunction<R, O> nestedProperty, Predicate<O> ignoreStrategy) {
         boolean enableNull = false;
         if (property.get() == null) {
-            builder.setIgnoreStrategy(ignoreStrategy);
-            if (ignoreStrategy.test(null)) {
+            if (ignoreStrategy.test(null)) { // ignore
                 return this;
             } else {
                 // not ignore null
                 enableNull = true;
             }
         }
+
         JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         String npn = getPropertyName(nestedProperty);
-        JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
+        JdbcPropertyMapping npm = pm.getPropertyMapping(npn);
 
         if (enableNull) {
             // set null value
-            return set0(spm, FieldValueOperator.create(spm, null), ignoreStrategy);
+            return set1(npm, FieldValueOperator.create(npm, null), ignoreStrategy);
         }
 
         @SuppressWarnings("unchecked")
-        O value = (O) spm.getProperty().get(property.get());
-        builder.setIgnoreStrategy(ignoreStrategy);
-        if (ignoreStrategy.test(value)) { // 忽略
+        O value = (O) npm.getProperty().get(property.get());
+        if (ignoreStrategy.test(value)) { // ignore
             return this;
         }
-        return set0(spm, FieldValueOperator.create(spm, value));
+        return set1(npm, FieldValueOperator.create(npm, value), ignoreStrategy);
     }
 
     @SuppressWarnings("unchecked")
-    private <R> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, R value, Predicate<?> ignoreStrategy) {
-        if (value == null) {
-            return set0(pm.getRepositoryFieldName(), (FieldValueOperator<R>) null, ignoreStrategy);
+    private <R> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, R value, Predicate<R> ignoreStrategy) {
+        if (pm.getMode() == Mode.SINGLE) { // single field property
+            return set1(pm, FieldValueOperator.create(pm, value), ignoreStrategy);
         }
-        if (Lang.isEmpty(pm.getPropertyMappings())) {
-            return set0(pm.getRepositoryFieldName(), FieldValueOperator.create(pm, value), ignoreStrategy);
+        if (value != null && !ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
+            // many to one set id
+            if (pm.getMode() == Mode.MANY_TO_ONE) {
+                for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+                    if (((Predicate<Object>) ignoreStrategy).test(value)) {
+                        continue;
+                    }
+                    set1(spm, FieldValueOperator.create(spm, value), ignoreStrategy);
+                }
+                return this;
+            } else {
+                throw new HammerException("can not set property {}[{}] for value {}[{}}", pm.getPropertyName(),
+                    pm.getPropertyType().getName(), value, value.getClass().getName());
+            }
         }
 
-        if (ClassUtils.isParent(pm.getPropertyType(), value.getClass())) {
-            for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                Object ov = spm.getProperty().get(value);
-                if (!((Predicate<Object>) ignoreStrategy).test(ov)) {
-                    set0(spm, FieldValueOperator.create(spm, ov));
-                }
+        // Embedded or ManyToOne Object
+        for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
+            Object ov = null;
+            if (value != null) {
+                ov = spm.getProperty().get(value);
             }
-        } else {
-            for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
-                if (ClassUtils.isParent(spm.getPropertyType(), value.getClass())) {
-                    if (!((Predicate<Object>) ignoreStrategy).test(value)) {
-                        set0(spm, FieldValueOperator.create(spm, value));
-                    }
-                }
+            if (((Predicate<Object>) ignoreStrategy).test(ov)) {
+                continue;
             }
+            set1(spm, FieldValueOperator.create(spm, ov), ignoreStrategy);
         }
         return this;
     }
 
-    private <V> EntitySqlExecutableUpdate<E> set0(JdbcPropertyMapping pm, FieldValueOperator<V> value) {
-        return set0(pm.getRepositoryFieldName(), value);
+    private <V> EntitySqlExecutableUpdate<E> set1(JdbcPropertyMapping propertyMapping, FieldValueOperator<V> value,
+        Predicate<?> ignoreStrategy) {
+        ValidatorUtils.validatePropertyValue(updateConfig.getValidatorConfig().getValidator(), OperatorType.UPDATE,
+            propertyMapping.getProperty().getInstanceType(), propertyMapping, getValue(value));
+        builder.setIgnoreStrategy(ignoreStrategy);
+        set0(propertyMapping.getRepositoryFieldName(), value, ignoreStrategy);
+        revertBuilderIgnoreStrategy();
+        return this;
+    }
+
+    private <V> V getValue(FieldValueOperator<V> value) {
+        return value == null ? null : value.getValue();
     }
 
     // ----------------------------------------------------------------------------------------------------------------
 
     private <N extends Number> EntityExecutableUpdate<E> increase0(Serializable name, N value,
         Predicate<N> ignoreStrategy) {
-        builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) {// ignore, 忽略
             return this;
         } else {
-            return increase0(classMapping.getPropertyMapping(getPropertyName(name)), value, ignoreStrategy);
+            JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(name));
+            return increase1(pm, FieldValueOperator.create(pm, value), ignoreStrategy);
         }
     }
 
     private <R, N extends Number> EntityExecutableUpdate<E> increase0(SerializableFunction<E, R> property,
         SerializableFunction<R, N> nestedProperty, N value, Predicate<N> ignoreStrategy) {
-        builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // ignore, 忽略
             return this;
         }
         JdbcPropertyMapping pm = classMapping.getPropertyMapping(getPropertyName(property));
         if (value == null) {
-            return increase0(pm.getRepositoryFieldName(), (FieldValueOperator<N>) null, ignoreStrategy);
+            return increase1(pm, (FieldValueOperator<N>) null, ignoreStrategy);
         }
         String npn = getPropertyName(nestedProperty);
         JdbcPropertyMapping spm = pm.getPropertyMapping(npn);
-        return increase0(spm, FieldValueOperator.create(spm, value));
+        return increase1(spm, FieldValueOperator.create(spm, value), ignoreStrategy);
     }
 
     private <R, N extends Number> EntityExecutableUpdate<E> increase0(SerializableSupplier<R> property,
         SerializableFunction<R, N> nestedProperty, Predicate<N> ignoreStrategy) {
         boolean enableNull = false;
         if (property.get() == null) {
-            builder.setIgnoreStrategy(ignoreStrategy);
             if (ignoreStrategy.test(null)) {
                 return this;
             } else {
@@ -466,30 +485,23 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
 
         if (enableNull) {
             // set null value
-            return increase0(spm, FieldValueOperator.create(spm, null));
+            return increase1(spm, FieldValueOperator.create(spm, null), ignoreStrategy);
         }
 
         @SuppressWarnings("unchecked")
         N value = (N) spm.getProperty().get(property.get());
-        builder.setIgnoreStrategy(ignoreStrategy);
         if (ignoreStrategy.test(value)) { // 忽略
             return this;
         }
-        return increase0(spm, FieldValueOperator.create(spm, value));
+        return increase1(spm, FieldValueOperator.create(spm, value), ignoreStrategy);
     }
 
-    private <N extends Number> EntitySqlExecutableUpdate<E> increase0(JdbcPropertyMapping pm, N value,
-        Predicate<?> ignoreStrategy) {
-        if (value == null) {
-            return increase0(pm.getRepositoryFieldName(), (FieldValueOperator<N>) null, ignoreStrategy);
-        }
-        return increase0(pm.getRepositoryFieldName(), FieldValueOperator.create(pm, value), ignoreStrategy);
-        // 都是数字类型才能increase，所以不存在嵌套对象的情况
-    }
-
-    private <N extends Number> EntitySqlExecutableUpdate<E> increase0(JdbcPropertyMapping pm,
-        FieldValueOperator<N> value) {
-        return increase0(pm.getRepositoryFieldName(), value);
+    private <N extends Number> EntitySqlExecutableUpdate<E> increase1(JdbcPropertyMapping pm,
+        FieldValueOperator<N> value, Predicate<?> ignoreStrategy) {
+        builder.setIgnoreStrategy(ignoreStrategy);
+        increase0(pm.getRepositoryFieldName(), value, ignoreStrategy);
+        revertBuilderIgnoreStrategy();
+        return this;
     }
 
     private EntitySqlUpdateConditions<E> createSqlUpdateExpression() {

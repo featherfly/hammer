@@ -71,30 +71,6 @@ public abstract class AbstractSqlExecutableUpdate<U extends AbstractSqlExecutabl
     }
 
     /**
-     * Instantiates a new sql executable update.
-     *
-     * @param tableName tableName
-     * @param tableAlias the table alias
-     * @param jdbc jdbc
-     * @param aliasManager the alias manager
-     * @param updateConfig the update config
-     * @param builder the builder
-     */
-    protected AbstractSqlExecutableUpdate(String tableName, String tableAlias, Jdbc jdbc, AliasManager aliasManager,
-        UpdateConfig updateConfig, SqlUpdateSetBasicBuilder builder) {
-        this.jdbc = jdbc;
-        this.aliasManager = aliasManager;
-        this.updateConfig = updateConfig.clone();
-        if (Lang.isEmpty(tableAlias)) {
-            tableAlias = aliasManager.put(tableName);
-        }
-        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias,
-            v -> this.updateConfig.getSetValueIgnoreStrategy().test(v));
-        //        builder = new SqlUpdateSetBasicBuilder(jdbc.getDialect(), tableName, tableAlias, this::test);
-        // YUFEI_TEST 需要测试这个逻辑
-    }
-
-    /**
      * Sets value.
      *
      * @param <V> the value type

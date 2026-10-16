@@ -8,6 +8,8 @@
  */
 package cn.featherfly.hammer.config.dsl;
 
+import cn.featherfly.hammer.config.ValidatorConfig;
+
 /**
  * DslConfigImpl.
  *
@@ -22,10 +24,10 @@ public class DslConfigImpl implements DslConfig {
     /**
      * Instantiates a new dsl config impl.
      */
-    public DslConfigImpl() {
+    public DslConfigImpl(ValidatorConfig validatorConfig) {
         queryConfig = new DslQueryConfigImpl();
         deleteConfig = new DeleteConfigImpl();
-        updateConfig = new UpdateConfigImpl();
+        updateConfig = new UpdateConfigImpl(validatorConfig);
     }
 
     /**

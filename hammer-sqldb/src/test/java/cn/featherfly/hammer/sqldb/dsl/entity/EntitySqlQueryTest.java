@@ -235,27 +235,27 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         List<User> users = null;
 
         users = query.find(User.class).where() //
-            .ignore(mut.getValue() == null, exp -> exp.isn(User::getId)).list();
+            .ignore(mut.get() == null, exp -> exp.isn(User::getId)).list();
         assertEquals(users.size(), count);
 
         mut.setValue(query.find(User.class).where().eq(User::getId, 1).single());
 
         users = query.find(User.class).where() //
-            .ignore(mut.getValue() == null, exp -> exp.inn(User::getId)).list();
+            .ignore(mut.get() == null, exp -> exp.inn(User::getId)).list();
         assertEquals(users.size(), count);
 
         users = query.find(User.class).where() //
-            .ignore(mut.getValue() == null, //
+            .ignore(mut.get() == null, //
                 exp -> exp.inn(User::getId) //
-                    .and().eq(User::getId, mut.getValue().getId()) //
-                    .and().eq(User::getAge, mut.getValue().getAge()) //
-                    .and().eq(User::getPwd, mut.getValue().getPwd()) //
+                    .and().eq(User::getId, mut.get().getId()) //
+                    .and().eq(User::getAge, mut.get().getAge()) //
+                    .and().eq(User::getPwd, mut.get().getPwd()) //
             ) //
             .list();
 
         assertEquals(users.size(), 1);
 
-        assertEquals(users.get(0), mut.getValue());
+        assertEquals(users.get(0), mut.get());
     }
 
     @Test

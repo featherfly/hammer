@@ -18,6 +18,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.Strings;
+
 import cn.featherfly.common.db.JdbcUtils;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 
@@ -63,7 +65,7 @@ public class MapRowMapper extends AbstractRowMapper<Map<String, Serializable>> {
                 String name = JdbcUtils.lookupColumnName(metaData, i, true);
                 if (prefix != null) {
                     if (name.startsWith(prefix)) {
-                        name = org.apache.commons.lang3.StringUtils.removeStart(name, prefix);
+                        name = Strings.CS.removeStart(name, prefix);
                     } else {
                         // need match prefix, so ignore not matched
                         continue;

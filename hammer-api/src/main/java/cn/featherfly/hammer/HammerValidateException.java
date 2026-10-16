@@ -13,6 +13,8 @@ public class HammerValidateException extends HammerException {
     private static final long serialVersionUID = 5804112221375517754L;
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
      * @param locale locale
      * @param ex ex
@@ -22,6 +24,8 @@ public class HammerValidateException extends HammerException {
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
      * @param locale locale
      */
@@ -30,42 +34,52 @@ public class HammerValidateException extends HammerException {
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
-     * @param args args
      * @param locale locale
      * @param ex ex
+     * @param args args
      */
-    public HammerValidateException(String message, Object[] args, Locale locale, Throwable ex) {
+    public HammerValidateException(String message, Locale locale, Throwable ex, Object... args) {
         super(message, args, locale, ex);
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
-     * @param args args
      * @param locale locale
+     * @param args args
      */
-    public HammerValidateException(String message, Object[] args, Locale locale) {
+    public HammerValidateException(String message, Locale locale, Object... args) {
         super(message, args, locale);
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
-     * @param args args
      * @param ex ex
+     * @param args args
      */
-    public HammerValidateException(String message, Object[] args, Throwable ex) {
+    public HammerValidateException(String message, Throwable ex, Object... args) {
         super(message, args, ex);
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
      * @param args args
      */
-    public HammerValidateException(String message, Object[] args) {
+    public HammerValidateException(String message, Object... args) {
         super(message, args);
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
      * @param ex ex
      */
@@ -74,6 +88,8 @@ public class HammerValidateException extends HammerException {
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param message message
      */
     public HammerValidateException(String message) {
@@ -81,6 +97,8 @@ public class HammerValidateException extends HammerException {
     }
 
     /**
+     * Instantiates a new hammer validate exception.
+     *
      * @param ex ex
      */
     public HammerValidateException(Throwable ex) {

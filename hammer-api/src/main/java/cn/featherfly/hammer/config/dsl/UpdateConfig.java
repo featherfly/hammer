@@ -10,6 +10,8 @@ package cn.featherfly.hammer.config.dsl;
 
 import java.util.function.Predicate;
 
+import cn.featherfly.hammer.config.ValidatorConfig;
+
 /**
  * The Interface UpdateConfig.
  *
@@ -31,4 +33,11 @@ public interface UpdateConfig extends DslConfigBase<UpdateConfig, UpdateConditio
      * @return the sets the value ignore strategy
      */
     Predicate<Object> getSetValueIgnoreStrategy();
+
+    /**
+     * Gets the validator config.
+     *
+     * @return the validator config
+     */
+    ValidatorConfig getValidatorConfig();
 }
