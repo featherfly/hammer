@@ -7,6 +7,7 @@ import cn.featherfly.common.db.mapping.JdbcPropertyMapping;
 import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.tuple.Tuple4;
+import cn.featherfly.hammer.entity.operator.OperatorType;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.validation.Validator;
 
@@ -95,5 +96,13 @@ public class MergeOperate<T> extends AbstractExecuteOperate<T> implements Execut
     @Override
     protected String getName() {
         return "mergeById";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected OperatorType getOperatorType() {
+        return OperatorType.UPDATE;
     }
 }

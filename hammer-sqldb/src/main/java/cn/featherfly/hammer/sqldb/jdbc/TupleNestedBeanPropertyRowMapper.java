@@ -63,16 +63,6 @@ public class TupleNestedBeanPropertyRowMapper<T extends Tuple> extends AbstractR
         this.getRowMapper = getRowMapper;
         if (prefixes != null) {
             Lang.each(mappedClasses, (mappedClass, index) -> {
-                //                SQLType sqlType = manager.getSqlType(mappedClass);
-                //                RowMapper<?> rowMapper = null;
-                //                if (sqlType == null) {
-                //                    rowMapper = new NestedBeanPropertyRowMapper<>(mappedClass, (String) prefixes.get(index), manager,
-                //                            checkFullyPopulated);
-                //                } else {
-                //                    rowMapper = new SingleColumnRowMapper<>(mappedClass, manager);
-                //                    IMPLSOON 值映射的混合映射未实现
-                //                }
-                // IMPLSOON 后续来实现对象映射和值映射的混合模式，以及Map和对象的混合映射
                 rowMappers.add(getRowMapper.apply(mappedClass, (String) prefixes.get(index)));
             });
         } else {

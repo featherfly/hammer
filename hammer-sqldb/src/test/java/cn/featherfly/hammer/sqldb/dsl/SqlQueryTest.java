@@ -606,7 +606,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .ew("username", ew) //
             .list();
         for (String username : usernames) {
-            assertTrue(Str.endWith(username, ew));
+            assertTrue(Str.endsWith(username, ew));
         }
 
         usernames = query.find("user").fetch("username") //
@@ -614,7 +614,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .ew("username", ew) //
             .mapper(String.class).list();
         for (String username : usernames) {
-            assertTrue(Str.endWith(username, ew));
+            assertTrue(Str.endsWith(username, ew));
         }
 
         long c = query.find("user")//
@@ -715,7 +715,7 @@ public class SqlQueryTest extends JdbcTestBase {
             .mapper(String.class)   //
             .list();
         for (String username : usernames) {
-            assertTrue(Str.endWith(username, ew));
+            assertTrue(Str.endsWith(username, ew));
         }
 
         String co = "uf";

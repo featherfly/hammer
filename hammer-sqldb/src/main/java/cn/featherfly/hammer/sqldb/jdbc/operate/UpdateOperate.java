@@ -11,6 +11,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.exception.UnsupportedException;
 import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.hammer.entity.operator.OperatorType;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.validation.Validator;
 
@@ -105,5 +106,13 @@ public class UpdateOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     protected String getName() {
         return "updateById";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected OperatorType getOperatorType() {
+        return OperatorType.UPDATE;
     }
 }

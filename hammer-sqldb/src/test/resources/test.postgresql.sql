@@ -11,6 +11,7 @@ CREATE TABLE "public"."role" (
   "name" varchar(20) COLLATE "pg_catalog"."default",
   "descp" varchar(36) COLLATE "pg_catalog"."default",
   "create_time" timestamp,
+  "update_time" timestamp,
   CONSTRAINT "role_pkey" PRIMARY KEY ("id")
 )
 ;
@@ -21,18 +22,18 @@ ALTER TABLE "public"."role"
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO "role" VALUES ('1', 'n_init_1', 'descp_1', '2011-1-1 1:1:1');
-INSERT INTO "role" VALUES ('2', 'n_init_2', 'descp_2', '2012-2-2 2:2:2');
-INSERT INTO "role" VALUES ('3', 'n_init_3', 'descp_3', '2013-3-3 3:3:3');
-INSERT INTO "role" VALUES ('4', 'n_init_4', 'descp_4', '2014-4-4 4:4:4');
-INSERT INTO "role" VALUES ('5', 'n_init_5', 'descp_5', '2015-1-1 1:1:1');
-INSERT INTO "role" VALUES ('6', 'n_init_11', 'descp_64', '2015-2-2 2:2:2');
-INSERT INTO "role" VALUES ('7', 'name_init_98', 'descp_79', '2015-3-3 3:3:3');
-INSERT INTO "role" VALUES ('8', 'name_init_21', 'descp_5', '2015-4-4 4:4:4');
-INSERT INTO "role" VALUES ('9', 'name_init_96', 'descp_98', now());
-INSERT INTO "role" VALUES ('10', 'n_96', 'descp_29', now());
-INSERT INTO "role" VALUES ('11', 'n_42', 'descp_54', now());
-INSERT INTO "role" VALUES ('12', 'n_12', 'descp_65', now());
+INSERT INTO "role" VALUES ('1', 'n_init_1', 'descp_1', '2011-1-1 1:1:1', null);
+INSERT INTO "role" VALUES ('2', 'n_init_2', 'descp_2', '2012-2-2 2:2:2', null);
+INSERT INTO "role" VALUES ('3', 'n_init_3', 'descp_3', '2013-3-3 3:3:3', null);
+INSERT INTO "role" VALUES ('4', 'n_init_4', 'descp_4', '2014-4-4 4:4:4', null);
+INSERT INTO "role" VALUES ('5', 'n_init_5', 'descp_5', '2015-1-1 1:1:1', null);
+INSERT INTO "role" VALUES ('6', 'n_init_11', 'descp_64', '2015-2-2 2:2:2', null);
+INSERT INTO "role" VALUES ('7', 'name_init_98', 'descp_79', '2015-3-3 3:3:3', null);
+INSERT INTO "role" VALUES ('8', 'name_init_21', 'descp_5', '2015-4-4 4:4:4', null);
+INSERT INTO "role" VALUES ('9', 'name_init_96', 'descp_98', now(), now());
+INSERT INTO "role" VALUES ('10', 'n_96', 'descp_29', now(), now());
+INSERT INTO "role" VALUES ('11', 'n_42', 'descp_54', now(), now());
+INSERT INTO "role" VALUES ('12', 'n_12', 'descp_65', now(), now());
 
 -- ----------------------------
 -- Table structure for user

@@ -20,6 +20,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.validation.Validator;
 
@@ -168,8 +169,8 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
      */
     protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions,
         boolean useIdGenerator) {
-        StringBuilder errorMessage = new StringBuilder();
         Serializable[] params = new Serializable[propertyPositions.length * entities.size()];
+        StringBuilder errorMessage = new StringBuilder();
         for (int i = 0; i < entities.size(); i++) {
             T entity = entities.get(i);
             int columnNum = 0;
@@ -187,6 +188,10 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
                     // params[i * propertyPositions.length + index] = propertyAccessor.getPropertyValue(entity,propertyMapping.getPropertyIndexes());
                 }
                 columnNum++;
+            }
+            if (errorMessage.length() > 0) {
+                errorMessage.deleteCharAt(errorMessage.length() - 1);
+                throw new HammerValidateException(errorMessage.toString());
             }
         }
         return params;

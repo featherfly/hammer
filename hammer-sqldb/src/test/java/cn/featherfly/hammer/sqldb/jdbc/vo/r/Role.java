@@ -11,6 +11,7 @@ import javax.persistence.Table;
  * <p>
  * Role
  * </p>
+ * .
  *
  * @author zhongj
  */
@@ -31,13 +32,18 @@ public class Role implements Serializable {
 
     private LocalDateTime createTime;
 
+    private LocalDateTime updateTime;
+
     /**
+     * Instantiates a new role.
      */
     public Role() {
     }
 
     /**
-     * @param id
+     * Instantiates a new role.
+     *
+     * @param id the id
      */
     public Role(Integer id) {
         super();
@@ -45,7 +51,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * 返回id
+     * 返回id.
      *
      * @return id
      */
@@ -54,7 +60,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * 设置id
+     * 设置id.
      *
      * @param id id
      */
@@ -63,7 +69,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * 返回name
+     * 返回name.
      *
      * @return name
      */
@@ -72,7 +78,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * 设置name
+     * 设置name.
      *
      * @param name name
      */
@@ -81,7 +87,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * 返回descp
+     * 返回descp.
      *
      * @return descp
      */
@@ -90,7 +96,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * 设置descp
+     * 设置descp.
      *
      * @param descp descp
      */
@@ -99,7 +105,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * get createTime value
+     * get createTime value.
      *
      * @return createTime
      */
@@ -108,7 +114,7 @@ public class Role implements Serializable {
     }
 
     /**
-     * set createTime value
+     * set createTime value.
      *
      * @param createTime createTime
      */
@@ -117,11 +123,30 @@ public class Role implements Serializable {
     }
 
     /**
+     * Gets the update time.
+     *
+     * @return the update time
+     */
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * Sets the update time.
+     *
+     * @param updateTime the new update time
+     */
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return "Role [id=" + id + ", name=" + name + ", descp=" + descp + "]";
+        return "Role [id=" + id + ", name=" + name + ", descp=" + descp + ", createTime=" + createTime + ", updateTime="
+            + updateTime + "]";
     }
 
 }

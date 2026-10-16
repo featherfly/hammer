@@ -12,6 +12,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.hammer.entity.operator.OperatorType;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeysHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -178,6 +179,14 @@ public class UpsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     protected String getName() {
         return "insertOrUpdateById";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected OperatorType getOperatorType() {
+        return OperatorType.UPSERT;
     }
 
     //    /**

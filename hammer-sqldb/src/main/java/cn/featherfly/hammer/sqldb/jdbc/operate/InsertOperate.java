@@ -13,6 +13,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.tuple.Tuple2;
+import cn.featherfly.hammer.entity.operator.OperatorType;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeyHolder;
 import cn.featherfly.hammer.sqldb.jdbc.GeneratedKeysHolder;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
@@ -243,5 +244,13 @@ public class InsertOperate<T> extends AbstractBatchExecuteOperate<T> {
     @Override
     protected String getName() {
         return "insert";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected OperatorType getOperatorType() {
+        return OperatorType.INSERT;
     }
 }

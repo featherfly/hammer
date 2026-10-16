@@ -13,6 +13,7 @@ import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.tuple.Tuple2;
 import cn.featherfly.hammer.HammerValidateException;
+import cn.featherfly.hammer.entity.operator.OperatorType;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
 import cn.featherfly.validation.Validator;
 import cn.featherfly.validation.metadata.ConstraintViolation;
@@ -134,9 +135,14 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
         if (validator == null) {
             return;
         }
-        Set<ConstraintViolation<T>> cons = validator.validateProperty(entity, mapping.getPropertyName());
-        for (ConstraintViolation<T> constraintViolation : cons) {
-            errorMessage.append(constraintViolation.getMessage()).append(",");
+        // TODO OperatorType.UPSERT 还未支持
+        if (mapping.isInsertable() && !mapping.isIgnoreAtInsert() && getOperatorType() == OperatorType.INSERT
+            || mapping.isUpdatable() && getOperatorType() == OperatorType.UPDATE) {
+            // TODO 还未测试内嵌对象 xxx.yyy
+            Set<ConstraintViolation<T>> cons = validator.validateProperty(entity, mapping.getPropertyName());
+            for (ConstraintViolation<T> constraintViolation : cons) {
+                errorMessage.append(mapping.getPropertyFullName()).append(constraintViolation.getMessage()).append(",");
+            }
         }
     }
 
@@ -152,4 +158,11 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
             }
         }
     }
+
+    /**
+     * Gets the operator type.
+     *
+     * @return the operator type
+     */
+    protected abstract OperatorType getOperatorType();
 }
