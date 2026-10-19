@@ -2,7 +2,6 @@
 package cn.featherfly.hammer.sqldb.jdbc.operate;
 
 import java.io.Serializable;
-import java.util.Set;
 import java.util.function.Function;
 
 import cn.featherfly.common.db.FieldValueOperator;
@@ -12,11 +11,10 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.tuple.Tuple2;
-import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.entity.operator.OperatorType;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.util.ValidatorUtils;
 import cn.featherfly.validation.Validator;
-import cn.featherfly.validation.metadata.ConstraintViolation;
 
 /**
  * 数据库操作的抽象类.
@@ -92,30 +90,23 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      * Gets the parameters.
      *
      * @param entity the entity
-     * @param mappings the mappings
+     * @param propertyMappings the mappings
      * @param useIdGenerator the use id generator
      * @return the parameters
      */
-    protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] mappings, boolean useIdGenerator) {
-        Serializable[] operators = new Serializable[mappings.length];
+    protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] propertyMappings, boolean useIdGenerator) {
+        ValidatorUtils.validate(validator, getOperatorType(), entity, propertyMappings);
+        Serializable[] operators = new Serializable[propertyMappings.length];
         int i = 0;
-        StringBuilder errorMessage = new StringBuilder();
-        for (JdbcPropertyMapping mapping : mappings) {
+        for (JdbcPropertyMapping mapping : propertyMappings) {
             if (useIdGenerator && mapping.getPrimaryKey() != null) {
                 Serializable propertyValue = mapping.getPrimaryKey().getIdGenerator().generate(entity, mapping);
-                validate(entity, mapping, errorMessage);
                 operators[i] = FieldValueOperator.create(mapping, propertyValue);
             } else {
-                // operators[i] = FieldValueOperator.create(mapping,propertyAccessor.getPropertyValue(entity, mapping.getPropertyIndexes()));
                 Object propertyValue = mapping.getGetter().apply(entity);
-                validate(entity, mapping, errorMessage);
                 operators[i] = FieldValueOperator.create(mapping, propertyValue);
             }
             i++;
-        }
-        if (errorMessage.length() > 0) {
-            errorMessage.deleteCharAt(errorMessage.length() - 1);
-            throw new HammerValidateException(errorMessage.toString());
         }
         return operators;
     }
@@ -129,21 +120,6 @@ public abstract class AbstractExecuteOperate<T> extends AbstractOperate<T> imple
      */
     protected Serializable[] getParameters(T entity, JdbcPropertyMapping[] mappings) {
         return getParameters(entity, mappings, false);
-    }
-
-    protected void validate(T entity, JdbcPropertyMapping mapping, StringBuilder errorMessage) {
-        if (validator == null) {
-            return;
-        }
-        // TODO OperatorType.UPSERT 还未支持
-        if (mapping.isInsertable() && !mapping.isIgnoreAtInsert() && getOperatorType() == OperatorType.INSERT
-            || mapping.isUpdatable() && getOperatorType() == OperatorType.UPDATE) {
-            // TODO 还未测试内嵌对象 xxx.yyy
-            Set<ConstraintViolation<T>> cons = validator.validateProperty(entity, mapping.getPropertyName());
-            for (ConstraintViolation<T> constraintViolation : cons) {
-                errorMessage.append(mapping.getPropertyFullName()).append(constraintViolation.getMessage()).append(",");
-            }
-        }
     }
 
     /**

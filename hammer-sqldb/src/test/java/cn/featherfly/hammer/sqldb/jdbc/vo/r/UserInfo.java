@@ -160,6 +160,6 @@ public class UserInfo {
     @Override
     public String toString() {
         return "UserInfo [id=" + id + ", name=" + name + ", descp=" + descp + ", user=" + user + ", division="
-                + division + ", address=" + address + "]";
+            + division + ", address=" + address + "]";
     }
 }

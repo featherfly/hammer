@@ -40,6 +40,8 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo3;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo4;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserRole2;
 import freemarker.template.TemplateModelException;
@@ -254,6 +256,29 @@ public class HammerJdbcTest extends JdbcTestBase {
     public void saveValidationException() {
         User user = new User();
         hammer.save(user);
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void saveEmbeddedValidationException() {
+        UserInfo3 userInfo = new UserInfo3();
+        DistrictDivision division = new DistrictDivision();
+        division.setCity("city_" + Randoms.getString(50));
+        userInfo.setDivision(division);
+        hammer.save(userInfo);
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void saveEmbeddedValidationException3() {
+        UserInfo3 userInfo = new UserInfo3();
+        userInfo.setDivision(null);
+        hammer.save(userInfo);
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void saveEmbeddedValidationException4() {
+        UserInfo4 userInfo = new UserInfo4();
+        userInfo.setDivision(null);
+        hammer.save(userInfo);
     }
 
     @Test

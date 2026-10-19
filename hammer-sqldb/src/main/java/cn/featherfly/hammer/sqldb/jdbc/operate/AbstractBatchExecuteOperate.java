@@ -20,8 +20,8 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
 import cn.featherfly.common.db.metadata.DatabaseMetadata;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.sqldb.jdbc.Jdbc;
+import cn.featherfly.hammer.sqldb.util.ValidatorUtils;
 import cn.featherfly.validation.Validator;
 
 /**
@@ -170,28 +170,21 @@ public abstract class AbstractBatchExecuteOperate<T> extends AbstractExecuteOper
     protected Serializable[] getBatchParameters(List<T> entities, JdbcPropertyMapping[] propertyPositions,
         boolean useIdGenerator) {
         Serializable[] params = new Serializable[propertyPositions.length * entities.size()];
-        StringBuilder errorMessage = new StringBuilder();
         for (int i = 0; i < entities.size(); i++) {
             T entity = entities.get(i);
+            ValidatorUtils.validate(validator, getOperatorType(), entity, propertyPositions);
             int columnNum = 0;
             for (JdbcPropertyMapping propertyMapping : propertyPositions) {
                 if (useIdGenerator && propertyMapping.getPrimaryKey() != null) {
                     Serializable propertyValue = propertyMapping.getPrimaryKey().getIdGenerator().generate(entity,
                         propertyMapping);
-                    validate(entity, propertyMapping, errorMessage);
                     params[i * propertyPositions.length + columnNum] = FieldValueOperator.create(propertyMapping,
                         propertyValue);
                 } else {
                     Serializable propertyValue = propertyMapping.getGetter().apply(entity);
-                    validate(entity, propertyMapping, errorMessage);
                     params[i * propertyPositions.length + columnNum] = propertyValue;
-                    // params[i * propertyPositions.length + index] = propertyAccessor.getPropertyValue(entity,propertyMapping.getPropertyIndexes());
                 }
                 columnNum++;
-            }
-            if (errorMessage.length() > 0) {
-                errorMessage.deleteCharAt(errorMessage.length() - 1);
-                throw new HammerValidateException(errorMessage.toString());
             }
         }
         return params;

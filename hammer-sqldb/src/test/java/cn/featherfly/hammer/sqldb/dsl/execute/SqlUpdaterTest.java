@@ -36,6 +36,8 @@ import cn.featherfly.hammer.sqldb.jdbc.vo.r.DistrictDivision;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.Role;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo3;
+import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo4;
 import cn.featherfly.hammer.sqldb.jdbc.vo.s.Role2;
 
 /**
@@ -813,9 +815,32 @@ public class SqlUpdaterTest extends AbstractUpdaterTest {
         newDivision.setCity("city" + Randoms.getString(20)); // max size 20
         newDivision.setDistrict("district");
 
-        hammer.update(UserInfo.class).set(UserInfo::getDivision, newDivision) // 
+        hammer.update(UserInfo.class) //
+            .set(UserInfo::getDivision, newDivision) // 
             .where() //
             .eq(UserInfo::getId, id) //
+            .execute();
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void updateEntitySetNestedPropertyValidator3() {
+        int id = 10;
+        updater.update(UserInfo3.class) //
+            .configure(c -> c.setSetValueIgnoreStrategy(IgnoreStrategy.NONE)) //
+            .set(UserInfo3::getDivision, null) //
+            .where() //
+            .eq(UserInfo3::getId, id) //
+            .execute();
+    }
+
+    @Test(expectedExceptions = HammerValidateException.class)
+    public void updateEntitySetNestedPropertyValidator4() {
+        int id = 10;
+        updater.update(UserInfo4.class) //
+            .configure(c -> c.setSetValueIgnoreStrategy(IgnoreStrategy.NONE)) //
+            .set(UserInfo4::getDivision, null) //
+            .where() //
+            .eq(UserInfo4::getId, id) //
             .execute();
     }
 

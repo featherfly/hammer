@@ -415,6 +415,9 @@ public class EntitySqlExecutableUpdate<E> extends AbstractSqlExecutableUpdate<En
         }
 
         // Embedded or ManyToOne Object
+        // validate object if it marked
+        ValidatorUtils.validatePropertyValue(updateConfig.getValidatorConfig().getValidator(), OperatorType.UPDATE,
+            pm.getProperty().getInstanceType(), pm, value);
         for (JdbcPropertyMapping spm : pm.getPropertyMappings()) {
             Object ov = null;
             if (value != null) {

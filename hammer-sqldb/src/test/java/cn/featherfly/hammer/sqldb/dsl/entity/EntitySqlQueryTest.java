@@ -785,6 +785,7 @@ public class EntitySqlQueryTest extends JdbcTestBase {
         App app = new App();
         app.setId(1L);
 
+        // FIXME OneToMany自动join还未实现
         List<App> apps = query.find(App.class).where().property(App::getVersions).property(AppVersion::getId).eq(2L)
             .list();
         assertEquals(apps.size(), 1);

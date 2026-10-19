@@ -28,7 +28,7 @@ dependencies {
     testImplementation 'com.github.ben-manes.caffeine:jcache:2.9.3'
 
     // validation
-    testImplementation 'cn.featherfly.validation:javax.validation-api:0.3.0'
+    testImplementation 'cn.featherfly.validation:javax.validation-api:0.4.0'
     testImplementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0' // hibernate-validator 需要使用 
     testImplementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.5.Final'
     
