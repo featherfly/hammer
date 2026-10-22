@@ -8,8 +8,10 @@ package cn.featherfly.hammer.config;
  */
 public abstract class HammerConstant {
 
+    /** The Constant DEFAULT_SUFFIX. */
     public static final String DEFAULT_SUFFIX = ".yaml.sql";
 
+    /** The Constant DEFAULT_PREFIX. */
     public static final String DEFAULT_PREFIX = "";
 
     //    @Constant(value = "TplConfig file suffix")

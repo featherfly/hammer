@@ -18,20 +18,30 @@ import freemarker.template.TemplateScalarModel;
  */
 public interface FreemarkerDirective extends TemplateDirective, TemplateDirectiveModel {
 
+    /**
+     * Gets the string value.
+     *
+     * @param tagName the tag name
+     * @param params the params
+     * @param name the name
+     * @param nullable the nullable
+     * @return the string value
+     * @throws TemplateModelException the template model exception
+     */
     default String getStringValue(String tagName, Map<String, TemplateModel> params, String name, boolean nullable)
-            throws TemplateModelException {
+        throws TemplateModelException {
         TemplateModel paramValue = params.get(name);
         if (paramValue == null) {
             if (nullable) {
                 return null;
             } else {
                 throw new TplException(
-                        Str.format("The \"{}\" parameter of directive \"{}\" can not be null.", tagName, name));
+                    Str.format("The \"{}\" parameter of directive \"{}\" can not be null.", tagName, name));
             }
         }
         if (!(paramValue instanceof TemplateScalarModel)) {
             throw new TplException(
-                    Str.format("The \"{}\" parameter of directive \"{}\" must be a String.", tagName, name));
+                Str.format("The \"{}\" parameter of directive \"{}\" must be a String.", tagName, name));
         }
         return ((TemplateScalarModel) paramValue).getAsString();
     }

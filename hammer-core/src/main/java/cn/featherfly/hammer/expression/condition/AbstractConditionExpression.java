@@ -115,6 +115,7 @@ public abstract class AbstractConditionExpression<C extends ConditionConfig<C>> 
      * @param <T> the generic type
      * @param <R> the generic type
      * @param name the name
+     * @param classMapping the class mapping
      * @return the property name
      */
     protected <T, R> String getFieldName(SerializableFunction<T, R> name, ClassMapping<T, ?> classMapping) {

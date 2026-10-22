@@ -15,16 +15,22 @@ public class JdbcExecution implements InterceptionExecution {
     /** The jdbc. */
     private Jdbc jdbc;
 
+    /** The execution. */
     protected String execution;
 
+    /** The original execution. */
     protected String originalExecution;
 
+    /** The params. */
     protected Serializable[] params;
 
+    /** The original params. */
     protected Serializable[] originalParams;
 
+    /** The result. */
     protected Object result;
 
+    /** The original result. */
     protected Object originalResult;
 
     /**
@@ -42,6 +48,12 @@ public class JdbcExecution implements InterceptionExecution {
         this.params = params;
     }
 
+    /**
+     * Sets the original result.
+     *
+     * @param result the result
+     * @return the jdbc execution
+     */
     JdbcExecution setOriginalResult(Object result) {
         originalResult = result;
         this.result = result;
@@ -136,7 +148,7 @@ public class JdbcExecution implements InterceptionExecution {
     }
 
     /**
-     * get originalResult value
+     * get originalResult value.
      *
      * @return originalResult
      */

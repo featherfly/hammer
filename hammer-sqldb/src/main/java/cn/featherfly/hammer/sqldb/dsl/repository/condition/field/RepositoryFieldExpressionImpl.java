@@ -34,18 +34,22 @@ import cn.featherfly.hammer.sqldb.dsl.repository.condition.InternalMulitiReposit
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
+ * @param <C2> the generic type
+ * @param <S> the generic type
+ * @param <B> the generic type
  */
 @SuppressWarnings("unchecked")
 public class RepositoryFieldExpressionImpl<C extends ConditionExpression, L extends LogicExpression<C, L>,
     C2 extends ConditionConfig<C2>, S extends RepositorySqlRelation<S, B>, B extends SqlBuilder>
     implements RepositoryFieldExpression<C, L> {
 
+    /** The expression. */
     protected final InternalMulitiRepositoryFieldOnlyConditionImpl<C2, S, B> expression;
 
     /**
      * Instantiates a new entity property function impl.
      *
-     * @param index              the index
+     * @param index the index
      * @param repositoryRelation the repository relation
      */
     public RepositoryFieldExpressionImpl(int index, S repositoryRelation) {

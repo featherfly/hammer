@@ -58,6 +58,9 @@ public abstract class AbstractRepositorySqlQueryBase<C extends ConditionExpressi
         setIdName();
     }
 
+    /**
+     * Sets the id name.
+     */
     public void setIdName() {
         RepositoryRelation relation = queryRelation.getRepositoryRelation(index);
         if (relation != null) {
@@ -115,14 +118,35 @@ public abstract class AbstractRepositorySqlQueryBase<C extends ConditionExpressi
     //        //        return (Q) this;
     //    }
 
+    /**
+     * Mapper.
+     *
+     * @param <T> the generic type
+     * @param rowMapper the row mapper
+     * @return the query executor
+     */
     public <T> QueryExecutor<T> mapper(RowMapper<T> rowMapper) {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).mapper(rowMapper);
     }
 
+    /**
+     * Mapper.
+     *
+     * @param <T> the generic type
+     * @param type the type
+     * @return the query executor
+     */
     public <T> QueryExecutor<T> mapper(Class<T> type) {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).mapper(type);
     }
 
+    /**
+     * Mapper.
+     *
+     * @param <T> the generic type
+     * @param mapperBuilderFunction the mapper builder function
+     * @return the query executor
+     */
     public <T> QueryExecutor<T> mapper(Function<TupleRowMapperBuilder, RowMapper<T>> mapperBuilderFunction) {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).mapper(mapperBuilderFunction);
     }

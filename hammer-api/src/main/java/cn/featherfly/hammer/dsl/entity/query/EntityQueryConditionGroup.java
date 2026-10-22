@@ -8,8 +8,9 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortExpression;
  * The Interface EntityQueryConditionGroupExpression.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public interface EntityQueryConditionGroup<E> extends EntityQueryConditionGroupExpression<E,
-        EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>, EntityQuerySortExpression<E>> {
+    EntityQueryConditionGroup<E>, EntityQueryConditionGroupLogic<E>, EntityQuerySortExpression<E>> {
 
 }

@@ -8,7 +8,8 @@ import java.util.List;
  * <p>
  * Condition
  * </p>
- * 
+ * .
+ *
  * @author zhongj
  */
 public class ConditionGroup {
@@ -19,18 +20,26 @@ public class ConditionGroup {
 
     private List<ConditionGroup> child = new ArrayList<>();
 
+    /**
+     * Adds the child.
+     *
+     * @param group the group
+     */
     public void addChild(ConditionGroup group) {
         child.add(group);
         group.setParent(this);
     }
 
+    /**
+     * Adds the condition.
+     */
     public void addCondition() {
         amount++;
     }
 
     /**
-     * 返回amount
-     * 
+     * 返回amount.
+     *
      * @return amount
      */
     public int getAmount() {
@@ -38,8 +47,8 @@ public class ConditionGroup {
     }
 
     /**
-     * 返回child
-     * 
+     * 返回child.
+     *
      * @return child
      */
     public List<ConditionGroup> getChild() {
@@ -47,8 +56,8 @@ public class ConditionGroup {
     }
 
     /**
-     * 返回parent
-     * 
+     * 返回parent.
+     *
      * @return parent
      */
     public ConditionGroup getParent() {
@@ -56,10 +65,9 @@ public class ConditionGroup {
     }
 
     /**
-     * 设置parent
-     * 
-     * @param parent
-     *            parent
+     * 设置parent.
+     *
+     * @param parent parent
      */
     public void setParent(ConditionGroup parent) {
         this.parent = parent;

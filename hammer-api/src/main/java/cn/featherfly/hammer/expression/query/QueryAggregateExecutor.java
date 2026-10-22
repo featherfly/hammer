@@ -9,6 +9,7 @@ import cn.featherfly.data.query.QueryValueOneExecutor;
  * dsl for query count number executor.
  *
  * @author zhongj
+ * @param <Q> the generic type
  */
 // IMPLSOON 这个接口暂时还没有使用，没有引入DSL体系
 public interface QueryAggregateExecutor<Q extends QueryValueOneExecutor> extends QueryCountExecutor {

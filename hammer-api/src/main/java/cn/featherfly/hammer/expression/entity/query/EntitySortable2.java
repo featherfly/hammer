@@ -21,6 +21,7 @@ import cn.featherfly.hammer.expression.query.Sortable;
  * @param <E1> the generic type
  * @param <E2> the generic type
  * @param <S> the generic type
+ * @param <Q> the generic type
  */
 public interface EntitySortable2<E1, E2, S, Q> extends Sortable<S> {
 

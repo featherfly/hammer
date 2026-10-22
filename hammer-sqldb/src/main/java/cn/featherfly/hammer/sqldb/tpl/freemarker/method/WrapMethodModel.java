@@ -12,7 +12,8 @@ import freemarker.template.TemplateModelException;
  * <p>
  * WrapMethodModel
  * </p>
- * 
+ * .
+ *
  * @author zhongj
  */
 public class WrapMethodModel implements FreemarkerMethod, WrapMethod {
@@ -20,6 +21,8 @@ public class WrapMethodModel implements FreemarkerMethod, WrapMethod {
     private Dialect dialect;
 
     /**
+     * Instantiates a new wrap method model.
+     *
      * @param dialect dialect
      */
     public WrapMethodModel(Dialect dialect) {

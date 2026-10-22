@@ -20,6 +20,12 @@ import cn.featherfly.hammer.sqldb.jdbc.TupleNestedBeanPropertyRowMapper;
  * PrefixedBeanMapper6Impl.
  *
  * @author zhongj
+ * @param <T1> the generic type
+ * @param <T2> the generic type
+ * @param <T3> the generic type
+ * @param <T4> the generic type
+ * @param <T5> the generic type
+ * @param <T6> the generic type
  */
 public class PrefixedBeanMapper6Impl<T1, T2, T3, T4, T5, T6> implements PrefixedBeanMapper6<T1, T2, T3, T4, T5, T6> {
 

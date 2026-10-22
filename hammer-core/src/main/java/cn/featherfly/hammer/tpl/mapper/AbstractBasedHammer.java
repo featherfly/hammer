@@ -21,12 +21,13 @@ public class AbstractBasedHammer {
     /** The tpl executor. */
     protected final TplExecutor tplExecutor;
 
+    /** The parser. */
     protected final TplExecuteIdParser parser;
 
     /**
      * Instantiates a new based hammer tpl executor.
      *
-     * @param tplExecutor  the tpl executor
+     * @param tplExecutor the tpl executor
      * @param hammerConfig the hammer config
      */
     public AbstractBasedHammer(TplExecutor tplExecutor, HammerConfig hammerConfig) {
@@ -38,7 +39,7 @@ public class AbstractBasedHammer {
     /**
      * File execute id.
      *
-     * @param name      the name
+     * @param name the name
      * @param namespace the namespace
      * @return the tpl execute id
      */
@@ -49,17 +50,17 @@ public class AbstractBasedHammer {
     /**
      * Mapper execute id.
      *
-     * @param name      the name
+     * @param name the name
      * @param namespace the namespace
      * @return the tpl execute id
      */
     protected final TplExecuteId mapperExecuteId(String name, String namespace) {
         return new TplExecuteIdMapperImpl(name, namespace, this.getClass(),
-                hammerConfig.getTemplateConfig().getTplExecuteIdParser());
+            hammerConfig.getTemplateConfig().getTplExecuteIdParser());
     }
 
     /**
-     * get hammerConfig value
+     * get hammerConfig value.
      *
      * @return hammerConfig
      */

@@ -15,5 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Mapper {
 
+    /**
+     * Namespace.
+     *
+     * @return the string
+     */
     String namespace() default "";
 }

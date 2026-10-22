@@ -1597,6 +1597,9 @@ public class SqlTplExecutor implements TplExecutor {
 
     // ----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RowIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), params);
@@ -1620,6 +1623,9 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <E> RowIterable<E> each(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType, params);
@@ -1681,6 +1687,9 @@ public class SqlTplExecutor implements TplExecutor {
         throw new NotImplementedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RowIterable<Map<String, Serializable>> each(String tplExecuteId, Map<String, Serializable> params,
         int offset, int limit) {
@@ -1697,6 +1706,9 @@ public class SqlTplExecutor implements TplExecutor {
         return findEach(tplExecuteId, params, offset, limit).get0();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <E> RowIterable<E> each(String tplExecuteId, Class<E> entityType, Map<String, Serializable> params,
         int offset, int limit) {
@@ -1713,6 +1725,17 @@ public class SqlTplExecutor implements TplExecutor {
         return findEach(tplExecuteId, entityType, params, offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2> RowIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
         Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
@@ -1743,6 +1766,19 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2> RowIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
         Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
@@ -1758,6 +1794,18 @@ public class SqlTplExecutor implements TplExecutor {
         return findEach(tplExecuteId, entityType1, entityType2, null, params, offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param prefixes the prefixes
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2> RowIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
         Tuple2<String, String> prefixes, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
@@ -1783,6 +1831,20 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param prefixes the prefixes
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2> RowIterable<Tuple2<R1, R2>> each(String tplExecuteId, Class<R1> entityType1, Class<R2> entityType2,
         Tuple2<String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
@@ -1799,6 +1861,19 @@ public class SqlTplExecutor implements TplExecutor {
         return findEach(tplExecuteId, entityType1, entityType2, prefixes, params, offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3> RowIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
@@ -1828,6 +1903,21 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3> RowIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Map<String, Serializable> params, int offset, int limit) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
@@ -1843,6 +1933,20 @@ public class SqlTplExecutor implements TplExecutor {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, null, params, offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param prefixes the prefixes
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3> RowIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
         Map<String, Serializable> params) {
@@ -1871,6 +1975,22 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param prefixes the prefixes
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3> RowIterable<Tuple3<R1, R2, R3>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Tuple3<String, String, String> prefixes,
         Map<String, Serializable> params, int offset, int limit) {
@@ -1888,6 +2008,21 @@ public class SqlTplExecutor implements TplExecutor {
         return findEach(tplExecuteId, entityType1, entityType2, entityType3, prefixes, params, offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4> RowIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params) {
         return each(hammerConfig.getTemplateConfig().getTplExecuteIdParser().parse(tplExecuteId), entityType1,
@@ -1919,6 +2054,23 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4> RowIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Map<String, Serializable> params,
         int offset, int limit) {
@@ -1937,6 +2089,22 @@ public class SqlTplExecutor implements TplExecutor {
             .get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param prefixes the prefixes
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4> RowIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params) {
@@ -1965,6 +2133,24 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param prefixes the prefixes
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4> RowIterable<Tuple4<R1, R2, R3, R4>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Tuple4<String, String, String, String> prefixes, Map<String, Serializable> params, int offset, int limit) {
@@ -1983,6 +2169,23 @@ public class SqlTplExecutor implements TplExecutor {
             limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5> RowIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
         Map<String, Serializable> params) {
@@ -2016,6 +2219,25 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5> RowIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
         Map<String, Serializable> params, int offset, int limit) {
@@ -2034,6 +2256,24 @@ public class SqlTplExecutor implements TplExecutor {
             offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param prefixes the prefixes
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5> RowIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
         Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params) {
@@ -2063,6 +2303,26 @@ public class SqlTplExecutor implements TplExecutor {
         }
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param prefixes the prefixes
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5> RowIterable<Tuple5<R1, R2, R3, R4, R5>> each(String tplExecuteId, Class<R1> entityType1,
         Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4, Class<R5> entityType5,
         Tuple5<String, String, String, String, String> prefixes, Map<String, Serializable> params, int offset,
@@ -2083,6 +2343,25 @@ public class SqlTplExecutor implements TplExecutor {
             offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param <R6> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param entityType6 the entity type 6
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5, R6> RowIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params) {
@@ -2090,6 +2369,27 @@ public class SqlTplExecutor implements TplExecutor {
             entityType2, entityType3, entityType4, entityType5, entityType6, params);
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param <R6> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param entityType6 the entity type 6
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5, R6> RowIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Map<String, Serializable> params, int offset, int limit) {
@@ -2135,6 +2435,26 @@ public class SqlTplExecutor implements TplExecutor {
             null, params, offset, limit).get0();
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param <R6> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param entityType6 the entity type 6
+     * @param prefixes the prefixes
+     * @param params the params
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5, R6> RowIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,
@@ -2143,6 +2463,28 @@ public class SqlTplExecutor implements TplExecutor {
             entityType2, entityType3, entityType4, entityType5, entityType6, prefixes, params);
     }
 
+    /**
+     * Each.
+     *
+     * @param <R1> the generic type
+     * @param <R2> the generic type
+     * @param <R3> the generic type
+     * @param <R4> the generic type
+     * @param <R5> the generic type
+     * @param <R6> the generic type
+     * @param tplExecuteId the tpl execute id
+     * @param entityType1 the entity type 1
+     * @param entityType2 the entity type 2
+     * @param entityType3 the entity type 3
+     * @param entityType4 the entity type 4
+     * @param entityType5 the entity type 5
+     * @param entityType6 the entity type 6
+     * @param prefixes the prefixes
+     * @param params the params
+     * @param offset the offset
+     * @param limit the limit
+     * @return the row iterable
+     */
     public <R1, R2, R3, R4, R5, R6> RowIterable<Tuple6<R1, R2, R3, R4, R5, R6>> each(String tplExecuteId,
         Class<R1> entityType1, Class<R2> entityType2, Class<R3> entityType3, Class<R4> entityType4,
         Class<R5> entityType5, Class<R6> entityType6, Tuple6<String, String, String, String, String, String> prefixes,

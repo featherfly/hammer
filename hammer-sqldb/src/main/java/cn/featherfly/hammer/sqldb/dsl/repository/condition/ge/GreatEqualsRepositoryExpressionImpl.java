@@ -10,6 +10,8 @@ import cn.featherfly.hammer.expression.repository.condition.ge.AbstractGreatEqua
 import cn.featherfly.hammer.expression.repository.condition.ge.GreatEqualsRepositoryExpression;
 
 /**
+ * The Class GreatEqualsRepositoryExpressionImpl.
+ *
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
@@ -18,8 +20,10 @@ public class GreatEqualsRepositoryExpressionImpl<C extends ConditionExpression, 
     extends AbstractGreatEqualsRepositoryExpression<C, L> implements GreatEqualsRepositoryExpression {
 
     /**
-     * @param index            the index
-     * @param expression       the expression
+     * Instantiates a new great equals repository expression impl.
+     *
+     * @param index the index
+     * @param expression the expression
      * @param ignorepPredicate the ignorep predicate
      */
     public GreatEqualsRepositoryExpressionImpl(int index, MulitiGreatEqualsExpression<C, L> expression,

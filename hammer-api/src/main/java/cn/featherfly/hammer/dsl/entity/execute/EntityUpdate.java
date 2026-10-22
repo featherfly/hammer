@@ -9,6 +9,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityUpdateExpression;
  * EntityUpdate.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public interface EntityUpdate<E> extends
     EntityUpdateExpression<E, EntityExecutableUpdate<E>, EntityExecutableConditionGroup<E, UpdateConditionConfig>,
@@ -17,7 +18,7 @@ public interface EntityUpdate<E> extends
     /**
      * Join.
      *
-     * @param <J>      the generic type
+     * @param <J> the generic type
      * @param joinType the join type
      * @return the entity on expression1
      */

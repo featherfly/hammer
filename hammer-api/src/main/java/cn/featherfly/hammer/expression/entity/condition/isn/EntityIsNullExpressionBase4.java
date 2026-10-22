@@ -12,6 +12,8 @@ import cn.featherfly.hammer.expression.condition.isn.IsNullSupplierExpression4;
  * @author zhongj
  * @param <E> the element type
  * @param <E2> the generic type
+ * @param <E3> the generic type
+ * @param <E4> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */

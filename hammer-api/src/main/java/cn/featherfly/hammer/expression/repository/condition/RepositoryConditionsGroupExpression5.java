@@ -7,6 +7,8 @@ import cn.featherfly.hammer.expression.condition.GroupExpression;
  * repository all conditions group expression5.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface RepositoryConditionsGroupExpression5<C extends RepositoryConditionsGroupExpression5<C, L>,
     L extends RepositoryConditionsGroupLogicExpression5<C, L>>

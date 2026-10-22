@@ -22,7 +22,7 @@ import cn.featherfly.hammer.sqldb.jdbc.mapper.BeanRowMapper.NoPropertyMatchStrat
  */
 public class BeanRowMapperFactoryImpl implements BeanRowMapperFactory {
 
-    protected final NoPropertyMatchStrategy noPropertyMatchStrategy;
+    private final NoPropertyMatchStrategy noPropertyMatchStrategy;
 
     /**
      * Instantiates a new entity row mapper factory.
@@ -48,6 +48,15 @@ public class BeanRowMapperFactoryImpl implements BeanRowMapperFactory {
     public <T> RowMapper<T> createRowMapper(PropertyAccessor<T> type, SqlTypeMappingManager manager, String prefix) {
         // FIXME prefix 还没有实现prefix支持
         return new BeanRowMapper<>(type, manager, noPropertyMatchStrategy);
+    }
+
+    /**
+     * Gets the no property match strategy.
+     *
+     * @return the no property match strategy
+     */
+    public NoPropertyMatchStrategy getNoPropertyMatchStrategy() {
+        return noPropertyMatchStrategy;
     }
 
 }

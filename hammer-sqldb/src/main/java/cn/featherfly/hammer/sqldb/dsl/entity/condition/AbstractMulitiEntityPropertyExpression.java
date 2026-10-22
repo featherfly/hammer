@@ -260,6 +260,12 @@ public abstract class AbstractMulitiEntityPropertyExpression<E, C extends Condit
         throw new UnsupportedException();
     }
 
+    /**
+     * Gets the column element.
+     *
+     * @param propertyMapping the property mapping
+     * @return the column element
+     */
     protected ColumnElement getColumnElement(PropertyMapping<?> propertyMapping) {
         if (arithmeticColumnElement.get() != null) {
             return arithmeticColumnElement.get();

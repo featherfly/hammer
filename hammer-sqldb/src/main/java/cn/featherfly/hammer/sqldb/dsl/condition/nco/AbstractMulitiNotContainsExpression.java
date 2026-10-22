@@ -23,6 +23,7 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * abstract muliti not contains expression.
  *
  * @author zhongj
+ * @param <I> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */

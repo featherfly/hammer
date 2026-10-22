@@ -7,7 +7,6 @@ import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.common.operator.DateFunction;
 import cn.featherfly.common.operator.Function;
-import cn.featherfly.hammer.dsl.entity.compat.query.EntityQueryFetchCompat;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
 
 /**
@@ -18,12 +17,12 @@ import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelateBase;
  */
 public interface EntityQueryFetch<E> extends EntityQueryRelateBase<E>, EntityQuery<E, EntityQueryFetch<E>> {
 
-    /**
-     * compatible query
-     *
-     * @return CompatibleEntityQueryFetch
-     */
-    EntityQueryFetchCompat<E> compat();
+    //    /** TODO 功能未实现，发布版本先屏蔽
+    //     * compatible query
+    //     *
+    //     * @return CompatibleEntityQueryFetch
+    //     */
+    //    EntityQueryFetchCompat<E> compat();
 
     //    /**
     //     * 批量添加查询出来的属性.

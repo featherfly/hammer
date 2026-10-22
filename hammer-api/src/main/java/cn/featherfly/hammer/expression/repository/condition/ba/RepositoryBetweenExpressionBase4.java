@@ -311,66 +311,102 @@ public interface RepositoryBetweenExpressionBase4<C extends ConditionExpression,
 
     // ----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default <N extends Number> L ba4(SerializableNumberSupplier<N> property, N min, N max) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default <N extends Number> L ba4(SerializableNumberSupplier<N> property, N min, N max,
         BiPredicate<N, N> ignoreStrategy) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default <D extends Date> L ba4(SerializableDateSupplier<D> property, D min, D max) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default <D extends Date> L ba4(SerializableDateSupplier<D> property, D min, D max,
         BiPredicate<D, D> ignoreStrategy) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableLocalTimeSupplier property, LocalTime min, LocalTime max,
         BiPredicate<LocalTime, LocalTime> ignoreStrategy) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableLocalDateSupplier property, LocalDate min, LocalDate max) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableLocalDateSupplier property, LocalDate min, LocalDate max,
         BiPredicate<LocalDate, LocalDate> ignoreStrategy) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableLocalDateTimeSupplier property, LocalDateTime min, LocalDateTime max,
         BiPredicate<LocalDateTime, LocalDateTime> ignoreStrategy) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableStringSupplier property, String min, String max) {
         return ba4(LambdaUtils.getLambdaPropertyName(property), min, max);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L ba4(SerializableStringSupplier property, String min, String max,
         BiPredicate<String, String> ignoreStrategy) {

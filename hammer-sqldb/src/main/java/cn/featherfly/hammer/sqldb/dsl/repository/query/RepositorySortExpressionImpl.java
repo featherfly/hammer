@@ -16,6 +16,7 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExp
  * RepositorySortExpressionImpl.
  *
  * @author zhongj
+ * @param <S> the generic type
  */
 public class RepositorySortExpressionImpl<S extends RepositorySortedExpression<S>>
     implements RepositorySortExpression<S>, RepositorySortedExpression<S> {

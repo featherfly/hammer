@@ -18,8 +18,8 @@ public interface TplExecuteIdBuilder {
     /**
      * Name.
      *
-     * @param  name the name
-     * @return      the named execute id
+     * @param name the name
+     * @return the named execute id
      */
     NamedExecuteId name(String name);
 
@@ -33,8 +33,8 @@ public interface TplExecuteIdBuilder {
         /**
          * Namespace.
          *
-         * @param  namespace the namespace
-         * @return           the tpl execute id
+         * @param namespace the namespace
+         * @return the tpl execute id
          */
         TplExecuteId namespace(String namespace);
     }

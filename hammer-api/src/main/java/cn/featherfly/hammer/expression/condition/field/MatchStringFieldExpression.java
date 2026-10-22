@@ -18,6 +18,7 @@ import cn.featherfly.hammer.expression.condition.field.value.SetStringFuzzyQuery
  * The Interface MatchStringFieldExpression.
  *
  * @author zhongj
+ * @param <M> the generic type
  */
 public interface MatchStringFieldExpression<M extends SetStringFuzzyQueryExpression> {
 

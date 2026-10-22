@@ -14,5 +14,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Templates {
 
+    /**
+     * Value.
+     *
+     * @return the template[]
+     */
     Template[] value();
 }

@@ -55,7 +55,7 @@ public class EntityBeanRowMapperFactory extends BeanRowMapperFactoryImpl {
         JdbcClassMapping<T> cm = factory.getClassMapping(type.getType());
         if (cm != null) {
             // FIXME prefix 还没有实现prefix支持
-            return new EntityBeanRowMapper<>(type, manager, cm, noPropertyMatchStrategy);
+            return new EntityBeanRowMapper<>(type, manager, cm, getNoPropertyMatchStrategy());
         }
         return super.createRowMapper(type, manager, prefix);
     }

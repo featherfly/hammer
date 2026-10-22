@@ -15,6 +15,7 @@ import cn.featherfly.hammer.expression.entity.compatible.query.EntityQuerySortCo
  * The Interface EntityQueryConditionGroupExpression.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public interface EntityQueryConditionGroupCompat<E>
     extends EntityQueryConditionGroupCompatibleExpression<E, EntityQueryConditionGroupCompat<E>,

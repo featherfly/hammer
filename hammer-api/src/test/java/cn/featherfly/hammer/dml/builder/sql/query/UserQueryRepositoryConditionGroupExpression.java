@@ -4741,7 +4741,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ne(String name, N value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4751,7 +4751,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <N extends Number> UserQueryRepositoryConditionGroupExpression ne(String name, N value,
         Predicate<N> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4760,7 +4760,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression ne(String name, E value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4770,7 +4770,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <E extends Enum<E>> UserQueryRepositoryConditionGroupExpression ne(String name, E value,
         Predicate<E> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4779,7 +4779,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ne(String name, D value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4789,7 +4789,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public <D extends Date> UserQueryRepositoryConditionGroupExpression ne(String name, D value,
         Predicate<D> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4798,7 +4798,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ne(String name, LocalTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4808,7 +4808,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public UserQueryRepositoryConditionGroupExpression ne(String name, LocalTime value,
         Predicate<LocalTime> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4817,7 +4817,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ne(String name, LocalDate value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4827,7 +4827,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public UserQueryRepositoryConditionGroupExpression ne(String name, LocalDate value,
         Predicate<LocalDate> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4836,7 +4836,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
      */
     @Override
     public UserQueryRepositoryConditionGroupExpression ne(String name, LocalDateTime value) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 
@@ -4846,7 +4846,7 @@ public class UserQueryRepositoryConditionGroupExpression implements
     @Override
     public UserQueryRepositoryConditionGroupExpression ne(String name, LocalDateTime value,
         Predicate<LocalDateTime> ignoreStrategy) {
-        // YUFEI_TODO Auto-generated method stub
+
         return null;
     }
 

@@ -8,7 +8,6 @@ import java.util.function.Predicate;
  * set value in or not in expression.
  *
  * @author zhongj
- * @param <V> the value type
  */
 public interface SetCompareValueExpression extends SetIntExpression, SetLongExpression, SetDoubleExpression,
     SetLocalDateExpression, SetLocalTimeExpression, SetLocalDateTimeExpression, SetStringExpression {
@@ -16,6 +15,7 @@ public interface SetCompareValueExpression extends SetIntExpression, SetLongExpr
     /**
      * Value.
      *
+     * @param <E> the element type
      * @param value the value
      */
     <E extends Number> void value(E value);
@@ -23,6 +23,7 @@ public interface SetCompareValueExpression extends SetIntExpression, SetLongExpr
     /**
      * Value.
      *
+     * @param <E> the element type
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
@@ -31,6 +32,7 @@ public interface SetCompareValueExpression extends SetIntExpression, SetLongExpr
     /**
      * Value.
      *
+     * @param <E> the element type
      * @param value the value
      */
     <E extends Date> void value(E value);
@@ -38,6 +40,7 @@ public interface SetCompareValueExpression extends SetIntExpression, SetLongExpr
     /**
      * Value.
      *
+     * @param <E> the element type
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      */
@@ -46,6 +49,7 @@ public interface SetCompareValueExpression extends SetIntExpression, SetLongExpr
     /**
      * Value.
      *
+     * @param <E> the element type
      * @param value the value
      */
     <E extends Enum<E>> void value(E value);
@@ -53,6 +57,7 @@ public interface SetCompareValueExpression extends SetIntExpression, SetLongExpr
     /**
      * Value.
      *
+     * @param <E> the element type
      * @param value the value
      * @param ignoreStrategy the ignore strategy
      */

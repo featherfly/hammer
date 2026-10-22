@@ -8,18 +8,18 @@
  */
 package cn.featherfly.hammer.dsl.entity.compat.query;
 
-import cn.featherfly.hammer.expression.entity.compatible.query.EntityQueryOneValueCompatibleExpression;
-import cn.featherfly.hammer.expression.entity.compatible.query.EntityQueryValueSortCompatibleExpression;
-
-/**
- * dsl for entity query value.
- *
- * @author zhongj
- * @param <E> the query entity type
- * @param <V> the fetch value type
- * @param <T> this expression
- */
-public interface EntityQueryOneValueCompat<E, V, T extends EntityQueryOneValueCompat<E, V, T>>
-    extends EntityQueryOneValueCompatibleExpression<E, V, EntityQueryValueConditionGroupCompat<E, V>,
-        EntityQueryValueConditionGroupLogicCompat<E, V>, EntityQueryValueSortCompatibleExpression<E, V>, T> {
-}
+//TODO 编译报错，发布版本先屏蔽
+// 错误: 类型cn.featherfly.data.query.QueryListExecutor<E>和cn.featherfly.data.query.QueryValueListExecutor不兼容;
+// 两者都定义了list(), 但却带有不相关的返回类型
+// /**
+// * dsl for entity query value.
+// *
+// * @author zhongj
+// * @param <E> the query entity type
+// * @param <V> the fetch value type
+// * @param <T> this expression
+// */
+//public interface EntityQueryOneValueCompat<E, V, T extends EntityQueryOneValueCompat<E, V, T>>
+//    extends EntityQueryOneValueCompatibleExpression<E, V, EntityQueryValueConditionGroupCompat<E, V>,
+//        EntityQueryValueConditionGroupLogicCompat<E, V>, EntityQueryValueSortCompatibleExpression<E, V>, T> {
+//}

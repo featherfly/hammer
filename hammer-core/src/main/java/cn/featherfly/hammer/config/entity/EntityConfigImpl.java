@@ -27,6 +27,7 @@ public class EntityConfigImpl implements EntityConfig {
     private final Set<String> basePackages = new HashSet<>(0);
 
     /**
+     * Instantiates a new entity config impl.
      */
     public EntityConfigImpl() {
         super();
@@ -43,7 +44,7 @@ public class EntityConfigImpl implements EntityConfig {
     }
 
     /**
-     * get basePackages value
+     * get basePackages value.
      *
      * @return basePackages
      */

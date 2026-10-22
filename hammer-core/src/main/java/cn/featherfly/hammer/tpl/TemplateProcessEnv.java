@@ -5,22 +5,23 @@ import cn.featherfly.hammer.tpl.directive.TemplateDirective;
 import cn.featherfly.hammer.tpl.method.TemplateMethod;
 
 /**
- * <p>
- * TemplateFacotry
- * </p>
+ * TemplateFacotry.
  *
  * @author zhongj
+ * @param <D> the generic type
+ * @param <M> the generic type
  */
 public interface TemplateProcessEnv<D extends TemplateDirective, M extends TemplateMethod> {
+
     /**
-     * create directives
+     * create directives.
      *
      * @return TemplateDirectives
      */
     TemplateDirectives<D> createDirectives();
 
     /**
-     * create methods
+     * create methods.
      *
      * @return TemplateMethods
      */

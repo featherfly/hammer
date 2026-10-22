@@ -5,8 +5,10 @@ import cn.featherfly.hammer.dsl.entity.query.EntityQuery6;
 import cn.featherfly.hammer.expression.query.QueryRelateExpression;
 
 /**
+ * The Interface EntityQueryRelate5RRRRR.
+ *
  * @author zhongj
- * @param <E>  query type
+ * @param <E> query type
  * @param <R1> query or joined type
  * @param <R2> query or joined type
  * @param <R3> query or joined type
@@ -14,6 +16,7 @@ import cn.featherfly.hammer.expression.query.QueryRelateExpression;
  * @param <R5> query or joined type
  */
 public interface EntityQueryRelate5RRRRR<E, R1, R2, R3, R4, R5> extends
-        QueryRelateExpression<EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>>, EntityQuery6<E, R1, R2, R3, R4, R5, E> {
+    QueryRelateExpression<EntityQueryRelatedFetched5RRRRF<E, R1, R2, R3, R4, R5>>,
+    EntityQuery6<E, R1, R2, R3, R4, R5, E> {
 
 }

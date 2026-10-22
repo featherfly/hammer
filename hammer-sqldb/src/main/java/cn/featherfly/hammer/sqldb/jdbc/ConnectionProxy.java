@@ -34,6 +34,7 @@ import java.util.concurrent.Executor;
  */
 public class ConnectionProxy implements Connection {
 
+    /** The proxy. */
     protected final Connection proxy;
 
     /**

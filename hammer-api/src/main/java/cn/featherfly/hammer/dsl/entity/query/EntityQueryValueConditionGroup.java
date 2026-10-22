@@ -9,9 +9,10 @@ import cn.featherfly.hammer.expression.entity.query.EntityQueryValueSortExpressi
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <V> the value type
  */
 public interface EntityQueryValueConditionGroup<E, V>
-        extends EntityQueryValueConditionGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>,
-                EntityQueryValueConditionGroupLogic<E, V>, EntityQueryValueSortExpression<E, V>> {
+    extends EntityQueryValueConditionGroupExpression<E, V, EntityQueryValueConditionGroup<E, V>,
+        EntityQueryValueConditionGroupLogic<E, V>, EntityQueryValueSortExpression<E, V>> {
 
 }

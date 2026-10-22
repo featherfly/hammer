@@ -11,7 +11,6 @@
 package cn.featherfly.hammer.sqldb.jdbc;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -112,17 +111,6 @@ public interface JdbcQueryEach {
      */
     <T> RowIterable<T> queryEach(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper,
         Serializable... args);
-
-    /**
-     * Query.
-     *
-     * @param <T> generic type
-     * @param sql sql
-     * @param mapper the mapper
-     * @param args args
-     * @return elementType object list
-     */
-    <T> List<T> queryList(String sql, Function<TupleRowMapperBuilder, RowMapper<T>> mapper, Serializable... args);
 
     /**
      * query each.

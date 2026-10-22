@@ -7,6 +7,8 @@ import java.util.function.Function;
  * condition expression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface GroupExpression<C extends ConditionExpression, L extends GroupEndExpression<C, L>>
     extends ConditionExpression {

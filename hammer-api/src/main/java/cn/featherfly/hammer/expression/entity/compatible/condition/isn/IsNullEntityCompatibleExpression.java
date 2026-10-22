@@ -23,7 +23,6 @@ public interface IsNullEntityCompatibleExpression<E> extends IsNullEntityExpress
     /**
      * entity is null function property expression.
      *
-     * @param <R> the generic type
      * @param name the name
      * @return entity is null function property expression
      */

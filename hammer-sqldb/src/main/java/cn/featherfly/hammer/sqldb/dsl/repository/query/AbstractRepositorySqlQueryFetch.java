@@ -20,7 +20,6 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <Q> the element type
  * @param <Q2> the generic type
  * @param <C> the generic type
- * @param <L> the generic type
  */
 public abstract class AbstractRepositorySqlQueryFetch<Q, Q2, C extends ConditionExpression>
     extends AbstractRepositorySqlQuery<C, LimitAwareQuery1<Map<String, Serializable>>>
@@ -46,6 +45,9 @@ public abstract class AbstractRepositorySqlQueryFetch<Q, Q2, C extends Condition
         super(repositorySqlQueryFetch);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LimitAwareQuery1<Map<String, Serializable>> limit(Limit limit) {
         return new RepositorySqlQueryExpression(queryRelation, sqlPageFactory).limit(limit);

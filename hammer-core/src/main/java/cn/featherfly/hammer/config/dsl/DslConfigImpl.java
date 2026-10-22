@@ -23,6 +23,8 @@ public class DslConfigImpl implements DslConfig {
 
     /**
      * Instantiates a new dsl config impl.
+     *
+     * @param validatorConfig the validator config
      */
     public DslConfigImpl(ValidatorConfig validatorConfig) {
         queryConfig = new DslQueryConfigImpl();

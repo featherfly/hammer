@@ -27,6 +27,11 @@ public class ConditionParamsManager {
         this.indexToName = indexToName;
     }
 
+    /**
+     * Adds the where.
+     *
+     * @return the where condition params
+     */
     public WhereConditionParams addWhere() {
         WhereConditionParams conditionParamsManager = new WhereConditionParams(indexToName);
         paramsManagers.add(conditionParamsManager);

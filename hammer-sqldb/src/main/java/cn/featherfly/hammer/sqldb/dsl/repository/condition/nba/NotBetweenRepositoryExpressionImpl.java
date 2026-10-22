@@ -9,6 +9,8 @@ import cn.featherfly.hammer.expression.condition.nba.MulitiNotBetweenExpression;
 import cn.featherfly.hammer.expression.repository.condition.nba.AbstractNotBetweenRepositoryExpression;
 
 /**
+ * The Class NotBetweenRepositoryExpressionImpl.
+ *
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
@@ -17,8 +19,10 @@ public class NotBetweenRepositoryExpressionImpl<C extends ConditionExpression, L
     extends AbstractNotBetweenRepositoryExpression<C, L> {
 
     /**
-     * @param index          the index
-     * @param expression     the expression
+     * Instantiates a new not between repository expression impl.
+     *
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     public NotBetweenRepositoryExpressionImpl(int index, MulitiNotBetweenExpression<C, L> expression,

@@ -10,6 +10,8 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.bean.function.BeanPropertySupplier;
 import cn.featherfly.common.bean.function.BeanPropertySupplierImpl;
 import cn.featherfly.common.function.ThFunction;
+import cn.featherfly.common.function.serializable.SerializableFunction;
+import cn.featherfly.common.function.serializable.SerializableToIntFunction;
 import cn.featherfly.hammer.dml.builder.sql.vo.User;
 import cn.featherfly.hammer.dml.builder.sql.vo.UserInfo;
 
@@ -75,6 +77,19 @@ public class DslStaticTypeTest {
 
     <V> void f4(ThFunction<User, Integer, Integer, String> f) {
         System.out.println(f.getClass().getName());
+    }
+
+    <V extends Number> void number(SerializableFunction<User, V> f) {
+        System.out.println(f.getClass().getName());
+    }
+
+    void number(SerializableToIntFunction<User> f) {
+        System.out.println(f.getClass().getName());
+    }
+
+    @Test
+    public void testNumber() {
+        number(User::getId);
     }
 
     @Test

@@ -147,13 +147,23 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     }
 
     /**
-     * {@inheritDoc}
+     * List.
+     *
+     * @param <E> the element type
+     * @param type the type
+     * @return the list
      */
-    //    @Override
     public <E> List<E> list(Class<E> type) {
         return list(jdbc.createRowMapper(type));
     }
 
+    /**
+     * List.
+     *
+     * @param <E> the element type
+     * @param rowMapper the row mapper
+     * @return the list
+     */
     public <E> List<E> list(RowMapper<E> rowMapper) {
         String sql = getRoot().expression();
         Serializable[] params = getRoot().getParamsArray();
@@ -175,10 +185,24 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         return (RowIterable<E>) each(Object.class);
     }
 
+    /**
+     * Each.
+     *
+     * @param <E> the element type
+     * @param type the type
+     * @return the row iterable
+     */
     public <E> RowIterable<E> each(Class<E> type) {
         return each(getJdbc().createRowMapper(type));
     }
 
+    /**
+     * Each.
+     *
+     * @param <E> the element type
+     * @param rowMapper the row mapper
+     * @return the row iterable
+     */
     public <E> RowIterable<E> each(RowMapper<E> rowMapper) {
         String sql = getRoot().expression();
         Serializable[] params = getRoot().getParamsArray();
@@ -201,17 +225,23 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
     }
 
     /**
-     * {@inheritDoc}
+     * Pagination.
+     *
+     * @param <E> the element type
+     * @param type the type
+     * @return the pagination results
      */
-    //    @Override
     public <E> PaginationResults<E> pagination(Class<E> type) {
         return pagination(getJdbc().createRowMapper(type));
     }
 
     /**
-     * {@inheritDoc}
+     * Pagination.
+     *
+     * @param <E> the element type
+     * @param rowMapper the row mapper
+     * @return the pagination results
      */
-    //    @Override
     public <E> PaginationResults<E> pagination(RowMapper<E> rowMapper) {
         String sql = getRoot().expression();
         String countSql = SqlUtils.convertSelectToCount(sql);
@@ -376,6 +406,13 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         return jdbc.querySingle(getRoot().expression(), type, getRoot().getParamsArray());
     }
 
+    /**
+     * Single.
+     *
+     * @param <T> the generic type
+     * @param rowMapper the row mapper
+     * @return the t
+     */
     public <T> T single(RowMapper<T> rowMapper) {
         return jdbc.querySingle(getRoot().expression(), rowMapper, getRoot().getParamsArray());
     }
@@ -397,6 +434,13 @@ public abstract class AbstractMulitiRepositorySqlQueryValueConditionsGroupExpres
         return jdbc.queryUnique(getRoot().expression(), type, getRoot().getParamsArray());
     }
 
+    /**
+     * Unique.
+     *
+     * @param <T> the generic type
+     * @param rowMapper the row mapper
+     * @return the t
+     */
     public <T> T unique(RowMapper<T> rowMapper) {
         return jdbc.queryUnique(getRoot().expression(), rowMapper, getRoot().getParamsArray());
     }

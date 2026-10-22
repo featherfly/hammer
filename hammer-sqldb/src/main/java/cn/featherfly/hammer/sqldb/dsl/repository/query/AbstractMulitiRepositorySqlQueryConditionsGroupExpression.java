@@ -102,6 +102,13 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
         return new RepositorySqlQueryLimitExecutor<>(repositorySqlQueryConditionGroupQuery, rowMapper);
     }
 
+    /**
+     * Mapper.
+     *
+     * @param <T> the generic type
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
+     * @return the query executor
+     */
     public <T> QueryExecutor<T> mapper(Function<TupleRowMapperBuilder, RowMapper<T>> tupleRowMapperBuilderFunction) {
         return mapper(tupleRowMapperBuilderFunction
             .apply(new TupleRowMapperBuilderImpl(repositorySqlQueryConditionGroupQuery::createRowMapper)));
@@ -297,6 +304,16 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
         return expressionPage(super.expression(), parent, repositoryRelation, getRootSortBuilder(), dialect);
     }
 
+    /**
+     * Expression.
+     *
+     * @param condition the condition
+     * @param parent the parent
+     * @param queryRelation the query relation
+     * @param sortBuilder the sort builder
+     * @param dialect the dialect
+     * @return the string
+     */
     static String expression(String condition, LogicExpression<?, ?> parent, RepositorySqlQueryRelation queryRelation,
         SortBuilder sortBuilder, Dialect dialect) {
         if (parent == null) {
@@ -312,6 +329,16 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression 
         }
     }
 
+    /**
+     * Expression page.
+     *
+     * @param condition the condition
+     * @param parent the parent
+     * @param queryRelation the query relation
+     * @param sortBuilder the sort builder
+     * @param dialect the dialect
+     * @return the tuple 2
+     */
     static Tuple2<String, String> expressionPage(String condition, LogicExpression<?, ?> parent,
         RepositorySqlQueryRelation queryRelation, SortBuilder sortBuilder, Dialect dialect) {
         if (parent == null) {

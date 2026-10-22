@@ -9,6 +9,7 @@ import cn.featherfly.hammer.expression.entity.compatible.query.EntityQueryValueS
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <V> the value type
  */
 public interface EntityQueryValueConditionGroupCompat<E, V>
     extends EntityQueryValueConditionGroupCompatibleExpression<E, V, EntityQueryValueConditionGroupCompat<E, V>,

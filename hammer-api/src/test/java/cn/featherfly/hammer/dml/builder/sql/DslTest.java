@@ -52,6 +52,7 @@ public class DslTest {
     LocalDate localDate;
     LocalTime localTime;
     Date date;
+    Integer integer;
 
     List<LocalDateTime> localDateTimeList;
     List<LocalDate> localDateList;
@@ -77,10 +78,12 @@ public class DslTest {
         count = query.find(User.class).count(User::getId).where().gt(User::getId, 0).value();
         // FIXME 下面六个都应该去掉 .valueList() 到 .pagination()
         query.find(User.class).count(User::getId).where().gt(User::getId, 0).valueList();
+        // FIXME 没有分页，确能调用valuePagination
         query.find(User.class).count(User::getId).where().gt(User::getId, 0).valuePagination();
         query.find(User.class).count(User::getId).where().gt(User::getId, 0).single();
         query.find(User.class).count(User::getId).where().gt(User::getId, 0).unique();
         query.find(User.class).count(User::getId).where().gt(User::getId, 0).list();
+        // FIXME 没有分页，确能调用pagination
         query.find(User.class).count(User::getId).where().gt(User::getId, 0).pagination();
     }
 
@@ -105,10 +108,14 @@ public class DslTest {
         user = query.find(User.class).fetch(User::getLocalDateTime).limit(1).single();
         user = query.find(User.class).fetch(User::getLocalDateTime).limit(1).unique();
 
+        // FIXME 后续加入.spread().value() 表示获取fetch的属性，不调用.spread()只能返回查询的实体对象，并且去掉value方法
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).value();
         localDate = query.find(User.class).fetch(User::getLocalDate).limit(1).value();
         localTime = query.find(User.class).fetch(User::getLocalTime).limit(1).value();
         date = query.find(User.class).fetch(User::getDate).limit(1).value();
+        // FIXME .spread().value() 表示获取fetch的属性
+        // localDateTime = query.find(User.class).fetch(User::getLocalDateTime).limit(1).spread().single();
+        // Tuple2<LocalDateTime, Integer> userFetch2 = query.find(User.class).fetch(User::getLocalDateTime).fetch(User::getAge).limit(1).spread().single();
 
         localDateTime = query.find(User.class).fetch(User::getLocalDateTime).where().eq(User::getId, 1).value();
         localDate = query.find(User.class).fetch(User::getLocalDate).where().eq(User::getId, 1).value();

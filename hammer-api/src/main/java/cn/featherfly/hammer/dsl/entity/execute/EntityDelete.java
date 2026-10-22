@@ -18,6 +18,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityDeleteExpression;
  * EntityDelete.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public interface EntityDelete<E>
     extends EntityDeleteExpression<E, EntityExecutableConditionGroup<E, DeleteConditionConfig>,
@@ -26,7 +27,7 @@ public interface EntityDelete<E>
     /**
      * Join.
      *
-     * @param <J>      the generic type
+     * @param <J> the generic type
      * @param joinType the join type
      * @return the entity on expression1
      */

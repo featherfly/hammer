@@ -17,8 +17,8 @@ public interface OperatorConfig {
     /**
      * Sets the batch size.
      *
-     * @param  batchSize the batch size
-     * @return           the operator config
+     * @param batchSize the batch size
+     * @return the operator config
      */
     OperatorConfig setBatchSize(int batchSize);
 

@@ -25,6 +25,7 @@ public class DirectiveElement extends AbstractElement {
     //
     //    protected char macro = '#';
 
+    /** The symbol. */
     protected final char symbol;
 
     /**
@@ -207,6 +208,12 @@ public class DirectiveElement extends AbstractElement {
         return attrs;
     }
 
+    /**
+     * Check name.
+     *
+     * @param attrName the attr name
+     * @return the string
+     */
     protected String checkName(String attrName) {
         if (PATTERN.matcher(attrName).matches()) {
             return attrName;
@@ -215,6 +222,12 @@ public class DirectiveElement extends AbstractElement {
             Str.format("{} direcitve(tag) attribute names can only be alphabetic, error with {}", getName(), attrName));
     }
 
+    /**
+     * Trim symbol.
+     *
+     * @param attrToken the attr token
+     * @return the string
+     */
     protected String trimSymbol(String attrToken) {
         return Str.trimStartEnd(Str.trimStartEnd(attrToken, "\""), "\'");
     }

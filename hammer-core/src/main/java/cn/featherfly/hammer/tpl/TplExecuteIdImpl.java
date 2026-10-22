@@ -8,16 +8,19 @@ package cn.featherfly.hammer.tpl;
  */
 public class TplExecuteIdImpl implements TplExecuteId {
 
+    /** The name. */
     protected final String name;
 
-    protected String namespace;
+    /** The namespace. */
+    protected final String namespace;
 
+    /** The parser. */
     protected final TplExecuteIdParser parser;
 
     /**
      * Instantiates a new tpl execute id impl.
      *
-     * @param name   the name
+     * @param name the name
      * @param parser the parser
      */
     protected TplExecuteIdImpl(String name, TplExecuteIdParser parser) {
@@ -27,9 +30,9 @@ public class TplExecuteIdImpl implements TplExecuteId {
     /**
      * Instantiates a new tpl execute id impl.
      *
-     * @param name      the name
+     * @param name the name
      * @param namespace the namespace
-     * @param parser    the parser
+     * @param parser the parser
      */
     protected TplExecuteIdImpl(String name, String namespace, TplExecuteIdParser parser) {
         super();

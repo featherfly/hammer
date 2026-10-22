@@ -162,10 +162,24 @@ public abstract class AbstractMulitiRepositorySqlQueryConditionsGroupExpression4
         return new RepositorySqlQueryLimitExecutor<>(repositorySqlQueryConditionGroupQuery, rowMapper);
     }
 
+    /**
+     * Mapper.
+     *
+     * @param <T> the generic type
+     * @param type the type
+     * @return the query executor
+     */
     public <T> QueryExecutor<T> mapper(Class<T> type) {
         return mapper(repositorySqlQueryConditionGroupQuery.createRowMapper(type));
     }
 
+    /**
+     * Mapper.
+     *
+     * @param <T> the generic type
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
+     * @return the query executor
+     */
     public <T> QueryExecutor<T> mapper(Function<TupleRowMapperBuilder, RowMapper<T>> tupleRowMapperBuilderFunction) {
         return mapper(tupleRowMapperBuilderFunction
             .apply(new TupleRowMapperBuilderImpl(repositorySqlQueryConditionGroupQuery::createRowMapper)));

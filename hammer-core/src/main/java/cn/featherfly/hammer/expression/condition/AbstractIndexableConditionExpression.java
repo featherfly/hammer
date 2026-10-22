@@ -24,13 +24,14 @@ public class AbstractIndexableConditionExpression<C extends ConditionExpression>
     /** The expression. */
     protected C expression;
 
+    /** The ignore strategy. */
     protected Predicate<Object> ignoreStrategy;
 
     /**
      * Instantiates a new abstract condition entity expression.
      *
-     * @param index          the index
-     * @param expression     the expression
+     * @param index the index
+     * @param expression the expression
      * @param ignoreStrategy the ignore strategy
      */
     protected AbstractIndexableConditionExpression(int index, C expression, Predicate<Object> ignoreStrategy) {

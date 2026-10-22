@@ -7,6 +7,7 @@ import java.util.List;
  * dsl for entity query list value executor.
  *
  * @author zhongj
+ * @param <V> the value type
  */
 public interface EntityQueryValueListExecutor<V> {
 

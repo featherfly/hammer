@@ -14,9 +14,16 @@ import cn.featherfly.common.lang.ArrayUtils;
  */
 public class TplExecuteConfig {
 
+    /** The Constant PARAM_NAMES. */
     public static final String PARAM_NAMES = "paramNames";
+
+    /** The Constant IN_PARAM_NAMES. */
     public static final String IN_PARAM_NAMES = "inParamNames";
+
+    /** The Constant IN_PARAM_INDEXS. */
     public static final String IN_PARAM_INDEXS = "inParamIndexs";
+
+    /** The Constant PARAMS_FORMAT. */
     public static final String PARAMS_FORMAT = "paramsFormat";
 
     private String fileName;
@@ -59,7 +66,7 @@ public class TplExecuteConfig {
     private boolean included;
 
     /**
-     * get content value
+     * get content value.
      *
      * @return content
      */
@@ -68,7 +75,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set content value
+     * set content value.
      *
      * @param content content
      */
@@ -85,6 +92,11 @@ public class TplExecuteConfig {
         return count;
     }
 
+    /**
+     * Gets the count execute id.
+     *
+     * @return the count execute id
+     */
     public String getCountExecuteId() {
         return executeId + "." + TplConfigFactory.COUNT_SUFFIX;
     }
@@ -258,7 +270,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get inParamNames value
+     * get inParamNames value.
      *
      * @return inParamNames
      */
@@ -267,7 +279,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get inParamIndexs value
+     * get inParamIndexs value.
      *
      * @return inParamIndexs
      */
@@ -276,7 +288,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set inParamIndexs value
+     * set inParamIndexs value.
      *
      * @param inParamIndexs inParamIndexs
      */
@@ -285,7 +297,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set inParamNames value
+     * set inParamNames value.
      *
      * @param inParamNames inParamNames
      */
@@ -294,7 +306,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get paramsFormat value
+     * get paramsFormat value.
      *
      * @return paramsFormat
      */
@@ -303,7 +315,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set paramsFormat value
+     * set paramsFormat value.
      *
      * @param paramsFormat paramsFormat
      */
@@ -312,7 +324,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get paramNames value
+     * get paramNames value.
      *
      * @return paramNames
      */
@@ -321,7 +333,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set paramNames value
+     * set paramNames value.
      *
      * @param paramNames paramNames
      */
@@ -330,7 +342,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get params value
+     * get params value.
      *
      * @return params
      */
@@ -339,7 +351,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get included value
+     * get included value.
      *
      * @return includes
      */
@@ -357,7 +369,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * get includes value
+     * get includes value.
      *
      * @return includes
      */
@@ -366,7 +378,7 @@ public class TplExecuteConfig {
     }
 
     /**
-     * set params value
+     * set params value.
      *
      * @param params params
      */
@@ -386,18 +398,20 @@ public class TplExecuteConfig {
         inParamNames = inNames.toArray(new String[inNames.size()]);
     }
 
+    /**
+     * The Enum ParamsFormat.
+     *
+     * @author zhongj
+     */
     public enum ParamsFormat {
-        /**
-         * the program automatically decides
-         */
+
+        /** the program automatically decides. */
         AUTO,
-        /**
-         * indexd param
-         */
+
+        /** indexd param. */
         INDEX,
-        /**
-         * named param
-         */
+
+        /** named param. */
         NAME;
     }
 
@@ -467,7 +481,7 @@ public class TplExecuteConfig {
         }
 
         /**
-         * get inParam value
+         * get inParam value.
          *
          * @return inParam
          */

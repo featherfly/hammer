@@ -9,6 +9,8 @@ import cn.featherfly.hammer.expression.condition.ni.MulitiNotInExpression;
 import cn.featherfly.hammer.expression.repository.condition.ni.AbstractNotInRepositoryExpression;
 
 /**
+ * The Class NotInRepositoryExpressionImpl.
+ *
  * @author zhongj
  * @param <C> the generic type
  * @param <L> the generic type
@@ -17,8 +19,10 @@ public class NotInRepositoryExpressionImpl<C extends ConditionExpression, L exte
     extends AbstractNotInRepositoryExpression<C, L> {
 
     /**
-     * @param index            the index
-     * @param expression       the expression
+     * Instantiates a new not in repository expression impl.
+     *
+     * @param index the index
+     * @param expression the expression
      * @param ignorepPredicate the ignorep predicate
      */
     public NotInRepositoryExpressionImpl(int index, MulitiNotInExpression<C, L> expression,

@@ -15,17 +15,38 @@ package cn.featherfly.hammer.entity;
  */
 public interface EntitySupports {
 
+    /**
+     * Insert.
+     */
     void insert();
 
+    /**
+     * Update.
+     */
     void update();
 
+    /**
+     * Merge.
+     */
     void merge();
 
+    /**
+     * Update fetch.
+     */
     void updateFetch();
 
+    /**
+     * Upsert.
+     */
     void upsert();
 
+    /**
+     * Gets the.
+     */
     void get();
 
+    /**
+     * Delete.
+     */
     void delete();
 }

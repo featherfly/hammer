@@ -8,12 +8,14 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * field is not null expression.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface FieldIsNotNullExpression<C extends ConditionExpression, L extends LogicExpression<C, L>>
-        extends ConditionExpression {
+    extends ConditionExpression {
 
     /**
-     * is not null
+     * is not null.
      *
      * @return LogicExpression
      */
@@ -25,7 +27,7 @@ public interface FieldIsNotNullExpression<C extends ConditionExpression, L exten
      * is not null.
      *
      * @param value if true, is not null; if false, is null; if null, ignore
-     *              this operate
+     *        this operate
      * @return LogicExpression
      */
     L inn(Boolean value);

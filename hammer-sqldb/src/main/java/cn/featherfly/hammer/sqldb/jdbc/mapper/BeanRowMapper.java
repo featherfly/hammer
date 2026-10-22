@@ -117,7 +117,7 @@ public class BeanRowMapper<T> extends AbstractRowMapper<T> {
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         T mappedObject = propertyAccessor.instantiate();
 
-        Asserts.isTrue(mappedObject.getClass() != null, "Mapped class was not specified");
+        Asserts.isNotNull(mappedObject.getClass(), "Mapped class was not specified");
 
         if (rowNumber == 0) {
             initProperties(mappedObject, rs);
@@ -147,25 +147,15 @@ public class BeanRowMapper<T> extends AbstractRowMapper<T> {
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
 
-        for (int index = 1; index <= columnCount; index++) {
-            String columnLabel = JdbcUtils.lookupColumnName(rsmd, index);
-            final int columnIndex = index;
-
+        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+            String columnLabel = JdbcUtils.lookupColumnName(rsmd, columnIndex);
             if (Lang.isNotEmpty(columnLabel) && columnLabel.contains(Chars.DOT)) {
-                String[] names = columnLabel.split("\\.");
-                Property<?, Serializable> p = propertyAccessor.getProperty(names);
-                if (assertProperty(p, columnLabel, columnLabel)) {
-                    properties.add(Tuples.of((obj, pv) -> propertyAccessor.setPropertyValue(obj, names, pv),
-                        () -> manager.get(rs, columnIndex, propertyAccessor.getProperty(names))));
-                    if (logger.isDebugEnabled()) {
-                        mappingDebugMessage.addMapping(rsmd.getColumnName(index), columnLabel, columnLabel,
-                            propertyAccessor.getProperty(names).getTypeName());
-                    }
-                }
+                addProperty(rs, rsmd, columnLabel, columnIndex, columnLabel.split("\\."), mappingDebugMessage);
             } else {
-                String field = WordUtils.parseToUpperFirst(columnLabel, Chars.UNDER_LINE_CHAR);
+                String field = WordUtils.parseToLowerCamelCase(columnLabel, Chars.UNDER_LINE_CHAR);
                 try {
-                    initProperty(rs, columnIndex, rsmd.getColumnName(index), columnLabel, field, mappingDebugMessage);
+                    initProperty(rs, columnIndex, rsmd.getColumnName(columnIndex), columnLabel, field,
+                        mappingDebugMessage);
                 } catch (NoSuchPropertyException e) {
                     // FIXME 后续来优化这里的逻辑，PropertyAccessor应该加入判断是否包含指定的属性，使用异常开销太大了
                     assertProperty(null, columnLabel, field);
@@ -182,6 +172,20 @@ public class BeanRowMapper<T> extends AbstractRowMapper<T> {
         }
     }
 
+    private void addProperty(final ResultSet rs, ResultSetMetaData rsmd,
+        String columnLabel, final int columnIndex, String[] names, MappingDebugMessage mappingDebugMessage)
+        throws SQLException {
+        Property<?, Serializable> p = propertyAccessor.getProperty(names);
+        if (assertProperty(p, columnLabel, columnLabel)) {
+            properties.add(Tuples.of((obj, pv) -> propertyAccessor.setPropertyValue(obj, names, pv),
+                () -> manager.get(rs, columnIndex, propertyAccessor.getProperty(names))));
+            if (logger.isDebugEnabled()) {
+                mappingDebugMessage.addMapping(rsmd.getColumnName(columnIndex), columnLabel, columnLabel,
+                    propertyAccessor.getProperty(names).getTypeName());
+            }
+        }
+    }
+
     /**
      * Inits the property.
      *
@@ -195,7 +199,6 @@ public class BeanRowMapper<T> extends AbstractRowMapper<T> {
      */
     protected void initProperty(ResultSet rs, final int columnIndex, String columnName, String columnLabel,
         String field, MappingDebugMessage mappingDebugMessage) throws SQLException {
-        //        Property<T, Serializable> property = getProperty(rsmd.getColumnName(index), field);
         Property<T, Serializable> property = propertyAccessor.getProperty(field);
         if (assertProperty(property, columnLabel, field)) {
             properties.add(Tuples.of(property::set, () -> manager.get(rs, columnIndex, property)));

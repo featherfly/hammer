@@ -36,6 +36,7 @@ import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
  * @param <E> the element type
  * @param <R1> query or joined type
  * @param <R2> query or joined type
+ * @param <R3> the generic type
  */
 public class EntitySqlQueryRelatedFetched3RRF<E, R1, R2, R3> extends
     AbstractEntitySqlQueryFetch4<E, R1, R2, R3, Tuple2<E, R3>> implements EntityQueryRelatedFetched3RRF<E, R1, R2, R3> {

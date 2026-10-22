@@ -14,6 +14,7 @@ import cn.featherfly.common.db.mapping.SqlTypeMappingManager;
  * BeanResultSetExtractor.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public class BeanListResultSetExtractor<E> extends AbstractListResultSetExtractor<E> {
 

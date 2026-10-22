@@ -8,6 +8,7 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * Type field expression.
  *
  * @author zhongj
+ * @param <T> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */

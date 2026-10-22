@@ -415,6 +415,9 @@ public class NestedBeanPropertyRowMapper<T> extends AbstractRowMapper<T> {
 
             for (int index = 1; index <= columnCount; index++) {
                 String column = JdbcUtils.lookupColumnName(rsmd, index);
+                // TODO 这里改为 是否映射由外部传入的对象提供
+                // 例如 columnFinder.test(column), column = mapable.preprocess(column)
+                // 即把匹配prefix逻辑放入外部，除了匹配prefix外还可以有其他的逻辑
                 if (prefix != null) {
                     if (column.startsWith(prefix)) {
                         column = Strings.CS.removeStart(column, prefix);
@@ -595,15 +598,5 @@ public class NestedBeanPropertyRowMapper<T> extends AbstractRowMapper<T> {
         BeanProperty<?, ?> beanProperty;
 
         private PropertyDescriptor propertyDescriptor;
-
-        //        /**
-        //         * {@inheritDoc}
-        //         */
-        //        @Override
-        //        public String toString() {
-        //            String format = Str.format("  Mapping column %-{0}s as %-{1}s to property %-{2}s of type {3}\n",
-        //                    columnMaxLength, columnAsMaxLength, propertyMaxLength, propertyTypeName);
-        //            return String.format(format, column, columnAs, property);
-        //        }
     }
 }

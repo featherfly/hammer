@@ -104,11 +104,17 @@ public interface RepositoryContainsExpressionBase3<C extends ConditionExpression
         return co3(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
         return co3(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co3(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {

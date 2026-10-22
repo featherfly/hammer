@@ -31,6 +31,7 @@ import cn.featherfly.hammer.sqldb.dsl.repository.condition.field.RepositoryField
  */
 public class RepositorySqlExecutableUpdate6 implements RepositorySqlUpdate6, RepositoryExecutableUpdate6 {
 
+    /** The update. */
     protected RepositorySqlExecutableUpdate update;
 
     /**

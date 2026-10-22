@@ -19,8 +19,8 @@ import cn.featherfly.common.tuple.Tuple;
  *
  * @author zhongj
  * @param <E1> executor type
- * @param <E2> execution type
  * @param <E2> params type
+ * @param <P> the generic type
  * @param <T> prefixes tuple type
  */
 public abstract class AbstractPrefixEntityMapper<E1 extends ExecutionExecutor<E2>, E2, P, T extends Tuple> {
@@ -53,11 +53,21 @@ public abstract class AbstractPrefixEntityMapper<E1 extends ExecutionExecutor<E2
         this.prefixes = prefixes;
     }
 
+    /**
+     * Gets the params map.
+     *
+     * @return the params map
+     */
     @SuppressWarnings("unchecked")
     protected Map<String, Serializable> getParamsMap() {
         return (Map<String, Serializable>) params;
     }
 
+    /**
+     * Gets the params.
+     *
+     * @return the params
+     */
     protected Serializable[] getParams() {
         return (Serializable[]) params;
     }

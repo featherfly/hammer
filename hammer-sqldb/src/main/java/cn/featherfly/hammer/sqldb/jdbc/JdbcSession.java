@@ -21,10 +21,24 @@ import cn.featherfly.hammer.sqldb.jdbc.transaction.JdbcTransaction;
  */
 public interface JdbcSession extends Jdbc, AutoCloseable {
 
+    /**
+     * Begin transation.
+     *
+     * @return the jdbc transaction
+     */
     JdbcTransaction beginTransation();
 
+    /**
+     * Begin transation.
+     *
+     * @param isolation the isolation
+     * @return the jdbc transaction
+     */
     JdbcTransaction beginTransation(Isolation isolation);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     void close() throws JdbcException;
 }

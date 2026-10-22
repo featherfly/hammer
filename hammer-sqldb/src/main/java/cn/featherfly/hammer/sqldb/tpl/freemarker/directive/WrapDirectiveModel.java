@@ -27,6 +27,8 @@ public class WrapDirectiveModel implements FreemarkerDirective, WrapDirective {
     private Dialect dialect;
 
     /**
+     * Instantiates a new wrap directive model.
+     *
      * @param dialect dialect
      */
     public WrapDirectiveModel(Dialect dialect) {

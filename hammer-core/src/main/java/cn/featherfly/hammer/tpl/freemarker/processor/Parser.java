@@ -63,12 +63,15 @@ public class Parser {
 
     private Pattern hasReplaceableTargetPattern = Pattern.compile("\\$=%?" + namedParamStart + "\\w+%?");
 
+    /** The template config. */
     TemplateConfig templateConfig;
 
     private final ChainMap<String, TemplateEngineBuiltInDirective> directives = new ChainMapImpl<>();
 
     /**
      * The Enum NullType.
+     *
+     * @author zhongj
      */
     public enum NullType {
         /** The null. */
@@ -677,10 +680,23 @@ public class Parser {
         return directiveEnd[0] == c && directiveEnd[1] == c2;
     }
 
+    /**
+     * Scan param name.
+     *
+     * @param content the content
+     * @return the string
+     */
     String scanParamName(CharSequence content) {
         return scanParamName(content, false);
     }
 
+    /**
+     * Scan param name.
+     *
+     * @param content the content
+     * @param inParam the in param
+     * @return the string
+     */
     String scanParamName(CharSequence content, boolean inParam) {
         if (Lang.isEmpty(content)) {
             return content.toString();
@@ -1084,6 +1100,12 @@ public class Parser {
         return false;
     }
 
+    /**
+     * Checks if is directive.
+     *
+     * @param name the name
+     * @return true, if is directive
+     */
     public boolean isDirective(CharSequence name) {
         return directives.containsKey(name);
     }

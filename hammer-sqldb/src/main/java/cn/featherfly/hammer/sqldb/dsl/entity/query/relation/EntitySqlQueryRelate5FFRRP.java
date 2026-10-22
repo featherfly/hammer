@@ -10,9 +10,8 @@
  */
 package cn.featherfly.hammer.sqldb.dsl.entity.query.relation;
 
-import cn.featherfly.common.tuple.Tuple3;
-
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
+import cn.featherfly.common.tuple.Tuple3;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelate5FFRRP;
 import cn.featherfly.hammer.dsl.entity.query.relation.EntityQueryRelatedFetched5FFRRP;
@@ -21,6 +20,8 @@ import cn.featherfly.hammer.sqldb.dsl.entity.query.AbstractEntitySqlQueryFetch6;
 import cn.featherfly.hammer.sqldb.jdbc.SqlPageFactory;
 
 /**
+ * The Class EntitySqlQueryRelate5FFRRP.
+ *
  * @author zhongj
  * @param <E> query type
  * @param <R1> query or joined type

@@ -8,5 +8,10 @@ package cn.featherfly.hammer.expression.condition;
  */
 public interface Expression {
 
+    /**
+     * Expression.
+     *
+     * @return the expression string
+     */
     String expression();
 }

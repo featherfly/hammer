@@ -9,6 +9,7 @@ import cn.featherfly.data.query.QueryLimitExecutor;
  *
  * @author zhongj
  * @param <E> the query type
+ * @param <V> the value type
  */
 public interface EntityQueryValueLimitExecutor<E, V> extends QueryLimitExecutor<E> //
     , EntityQueryValueExecutor<V> {

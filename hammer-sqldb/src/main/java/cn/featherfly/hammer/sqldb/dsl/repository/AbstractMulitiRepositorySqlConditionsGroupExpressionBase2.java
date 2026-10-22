@@ -12,12 +12,11 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 
-import cn.featherfly.common.tuple.Tuple;
-
 import cn.featherfly.common.db.builder.SqlBuilder;
 import cn.featherfly.common.function.CharPredicate;
 import cn.featherfly.common.lang.Console;
 import cn.featherfly.common.operator.ComparisonOperator.MatchStrategy;
+import cn.featherfly.common.tuple.Tuple;
 import cn.featherfly.hammer.config.dsl.ConditionConfig;
 import cn.featherfly.hammer.expression.condition.GroupEndExpression;
 import cn.featherfly.hammer.expression.condition.GroupExpression;
@@ -1396,6 +1395,15 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase2<
         return in(name, value, ignoreStrategy, repositoryAlias2);
     }
 
+    /**
+     * In 2.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Serializable> L in2(String name, R[] value, Predicate<R[]> ignoreStrategy) {
         return in(name, value, ignoreStrategy, repositoryAlias2);
     }
@@ -1521,6 +1529,15 @@ public abstract class AbstractMulitiRepositorySqlConditionsGroupExpressionBase2<
         return ni(name, value, ignoreStrategy, repositoryAlias2);
     }
 
+    /**
+     * Ni 2.
+     *
+     * @param <R> the generic type
+     * @param name the name
+     * @param value the value
+     * @param ignoreStrategy the ignore strategy
+     * @return the l
+     */
     public <R extends Serializable> L ni2(String name, R[] value, Predicate<R[]> ignoreStrategy) {
         return ni(name, value, ignoreStrategy, repositoryAlias2);
     }

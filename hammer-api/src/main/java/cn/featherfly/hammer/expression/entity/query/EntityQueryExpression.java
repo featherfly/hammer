@@ -17,8 +17,8 @@ import cn.featherfly.hammer.expression.query.Queryable;
  * @param <E1> first filterable entity type
  * @param <C> condition expression
  * @param <L> logic expression
- * @param <S> sort expression
  * @param <S> this expression
+ * @param <T> the generic type
  */
 public interface EntityQueryExpression<E1, C extends EntityQueryConditionGroupExpression<E1, C, L, S>,
     L extends EntityQueryConditionGroupLogicExpression<E1, C, L, S>, S extends EntityQuerySortExpression<E1>,

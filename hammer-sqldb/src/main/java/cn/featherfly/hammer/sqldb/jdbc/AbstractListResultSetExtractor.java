@@ -20,6 +20,7 @@ import cn.featherfly.common.repository.mapper.RowMapper;
  * AbstractResultSetExtractor.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public abstract class AbstractListResultSetExtractor<E> implements SqlResultSetExtractor<List<E>> {
 

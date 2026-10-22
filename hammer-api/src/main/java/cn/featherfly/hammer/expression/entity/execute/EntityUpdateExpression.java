@@ -11,6 +11,10 @@ import cn.featherfly.hammer.expression.condition.LogicExpression;
  * EntityUpdateExpression.
  *
  * @author zhongj
+ * @param <E> the element type
+ * @param <U> the generic type
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface EntityUpdateExpression<E, U, C extends ConditionExpression, L extends LogicExpression<C, L>>
     extends EntityPropertyUpdateExpression<E, U, C, L>, EntityUpdateSetExpression<E, U, C, L>,

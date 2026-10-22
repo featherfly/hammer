@@ -34,7 +34,6 @@ import cn.featherfly.data.query.QueryLimitExecutor;
  * RepositoryLimitQuery.
  *
  * @author zhongj
- * @param <Map<String, Serializable>> the element type
  */
 public class LimitAwareRepositoryQuery
     implements LimitAwareQuery1<Map<String, Serializable>>, LimitAwareQuery2<Map<String, Serializable>>,

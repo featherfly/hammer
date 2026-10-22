@@ -12,7 +12,10 @@ package cn.featherfly.hammer.expression.operation;
  * Arithmetic.
  *
  * @author zhongj
+ * @param <N> the number type
+ * @param <R> the generic type
  */
-public interface ArithmeticOperations<N extends Number, R> extends Add<N, R>, Subtract<N, R>, Multiply<N, R>, Divide<N, R> {
+public interface ArithmeticOperations<N extends Number, R>
+    extends Add<N, R>, Subtract<N, R>, Multiply<N, R>, Divide<N, R> {
 
 }

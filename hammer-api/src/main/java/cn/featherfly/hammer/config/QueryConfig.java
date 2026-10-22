@@ -12,6 +12,7 @@ package cn.featherfly.hammer.config;
  * QueryConfig.
  *
  * @author zhongj
+ * @param <Q> the generic type
  */
 public interface QueryConfig<Q extends QueryConfig<Q>> {
 

@@ -6,12 +6,10 @@ import java.util.function.Function;
 
 import cn.featherfly.common.db.mapping.JdbcClassMapping;
 import cn.featherfly.common.db.mapping.JdbcMappingFactory;
-import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.function.serializable.SerializableFunction;
 import cn.featherfly.common.operator.AggregateFunction;
 import cn.featherfly.hammer.config.HammerConfig;
 import cn.featherfly.hammer.config.dsl.DslQueryConfig;
-import cn.featherfly.hammer.dsl.entity.compat.query.EntityQueryFetchCompat;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroup;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryConditionGroupLogic;
 import cn.featherfly.hammer.dsl.entity.query.EntityQueryFetch;
@@ -117,12 +115,12 @@ public class EntitySqlQueryFetch<E> extends AbstractEntitySqlQueryFetch<E> imple
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EntityQueryFetchCompat<E> compat() {
-        // NOIMPL 还未实现
-        throw new NotImplementedException();
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    public EntityQueryFetchCompat<E> compat() {
+    //        // NOIMPL 还未实现
+    //        throw new NotImplementedException();
+    //    }
 }

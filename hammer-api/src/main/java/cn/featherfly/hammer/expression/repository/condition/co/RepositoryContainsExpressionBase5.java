@@ -104,11 +104,17 @@ public interface RepositoryContainsExpressionBase5<C extends ConditionExpression
         return co5(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
         return co5(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co5(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {

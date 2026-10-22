@@ -41,7 +41,7 @@ public interface QueryMapperLimitedSetter4 extends QueryMapperLimitedSetter0 {
      * Mapper.
      *
      * @param <T> the generic type
-     * @param mapperBuilderFunction the mapper builder function
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
      * @return the paramed mapped executor
      */
     <T> QueryLimitExecutor<T> mapper(Function<TupleRowMapperBuilder, RowMapper<T>> tupleRowMapperBuilderFunction);

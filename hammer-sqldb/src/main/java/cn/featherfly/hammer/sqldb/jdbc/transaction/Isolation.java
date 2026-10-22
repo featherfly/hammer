@@ -2,6 +2,11 @@ package cn.featherfly.hammer.sqldb.jdbc.transaction;
 
 import java.sql.Connection;
 
+/**
+ * The Enum Isolation.
+ *
+ * @author zhongj
+ */
 public enum Isolation {
     /**
      * A constant indicating that transactions are not supported.
@@ -45,10 +50,20 @@ public enum Isolation {
 
     private int value;
 
+    /**
+     * Instantiates a new isolation.
+     *
+     * @param value the value
+     */
     Isolation(int value) {
         this.value = value;
     }
 
+    /**
+     * Value.
+     *
+     * @return the int
+     */
     public int value() {
         return value;
     }

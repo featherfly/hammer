@@ -176,26 +176,6 @@ public class JdbcTest extends JdbcTestBase {
     }
 
     @Test
-    public void queryBeanRowMapper() {
-        Integer id = 1;
-
-        String sql = "select * from role where id = ?";
-
-        Role role = jdbc.querySingle(sql,
-            new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(Role.class), sqlTypeMappingManager), id);
-        assertNotNull(role.getCreateTime());
-
-        sql = "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
-        UserInfo ui = jdbc.querySingle(sql,
-            new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class), sqlTypeMappingManager), id);
-        assertNotNull(ui);
-        assertNotNull(ui.getDivision());
-        assertNotNull(ui.getDivision().getProvince());
-        assertNotNull(ui.getDivision().getCity());
-        assertNotNull(ui.getDivision().getDistrict());
-    }
-
-    @Test
     public void queryEntityBeanRowMapper() {
         Integer id = 1;
 
@@ -211,7 +191,8 @@ public class JdbcTest extends JdbcTestBase {
             sqlTypeMappingManager, mappingFactory.getClassMapping(Role.class)), id);
         assertNotNull(role.getCreateTime());
 
-        sql = "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
+        sql =
+            "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
         UserInfo ui = jdbc.querySingle(sql, new EntityBeanRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class),
             sqlTypeMappingManager, mappingFactory.getClassMapping(UserInfo.class)), id);
         assertNotNull(ui);
@@ -221,10 +202,32 @@ public class JdbcTest extends JdbcTestBase {
         assertNotNull(ui.getDivision().getDistrict());
     }
 
-    @Test(expectedExceptions = JdbcException.class)
-    public void queryBeanAccessorRowMapperException() {
+    @Test
+    public void queryBeanRowMapper() {
         Integer id = 1;
-        String sql = "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
+
+        String sql = "select * from role where id = ?";
+
+        Role role = jdbc.querySingle(sql,
+            new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(Role.class), sqlTypeMappingManager), id);
+        assertNotNull(role.getCreateTime());
+
+        sql =
+            "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
+        UserInfo ui = jdbc.querySingle(sql,
+            new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class), sqlTypeMappingManager), id);
+        assertNotNull(ui);
+        assertNotNull(ui.getDivision());
+        assertNotNull(ui.getDivision().getProvince());
+        assertNotNull(ui.getDivision().getCity());
+        assertNotNull(ui.getDivision().getDistrict());
+    }
+
+    @Test(expectedExceptions = JdbcException.class)
+    public void queryBeanRowMapperAccessesException() {
+        Integer id = 1;
+        String sql =
+            "select id, user_id `user.id`, name, descp, province `division.province`, city `division.city`, district `division.district`, street from user_info where id = ?";
         jdbc.querySingle(sql, new BeanRowMapper<>(BeanDescriptor.getBeanDescriptor(UserInfo.class),
             sqlTypeMappingManager, NoPropertyMatchStrategy.EXCEPTION), id);
     }
@@ -595,9 +598,10 @@ public class JdbcTest extends JdbcTestBase {
     public void queryMapperBuilderTuple5() {
         String sql = getSql("queryTuple5").replaceAll("`", jdbc.getDialect().getWrapSymbol());
         List<Tuple5<User, UserInfo, UserRole, Role,
-            Order>> list = jdbc.queryList(sql, b -> b.map("_user0.", User.class).map("ui.", UserInfo.class)
-                .map("ur.", UserRole.class).map("r.", Role.class).map("o.", Order.class).mapper(),
-                queryTupleListParamsArray);
+            Order>> list =
+                jdbc.queryList(sql, b -> b.map("_user0.", User.class).map("ui.", UserInfo.class)
+                    .map("ur.", UserRole.class).map("r.", Role.class).map("o.", Order.class).mapper(),
+                    queryTupleListParamsArray);
         for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -611,9 +615,10 @@ public class JdbcTest extends JdbcTestBase {
         }
 
         List<Tuple5<User, UserInfo, UserRole, Role,
-            Map<String, Serializable>>> list2 = jdbc.queryList(sql, b -> b.map("_user0.", User.class)
-                .map("ui.", UserInfo.class).map("ur.", UserRole.class).map("r.", Role.class).map("o.").mapper(),
-                queryTupleListParamsArray);
+            Map<String, Serializable>>> list2 =
+                jdbc.queryList(sql, b -> b.map("_user0.", User.class)
+                    .map("ui.", UserInfo.class).map("ur.", UserRole.class).map("r.", Role.class).map("o.").mapper(),
+                    queryTupleListParamsArray);
         for (Tuple5<User, UserInfo, UserRole, Role, Map<String, Serializable>> r : list2) {
             assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
             assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -852,9 +857,10 @@ public class JdbcTest extends JdbcTestBase {
 
             String sql = getSql("queryTuple5").replaceAll("`", jdbc.getDialect().getWrapSymbol());
             RowIterable<Tuple5<User, UserInfo, UserRole, Role,
-                Order>> list = jdbc.queryEach(sql, b -> b.map("_user0.", User.class).map("ui.", UserInfo.class)
-                    .map("ur.", UserRole.class).map("r.", Role.class).map("o.", Order.class).mapper(),
-                    queryTupleListParamsArray);
+                Order>> list =
+                    jdbc.queryEach(sql, b -> b.map("_user0.", User.class).map("ui.", UserInfo.class)
+                        .map("ur.", UserRole.class).map("r.", Role.class).map("o.", Order.class).mapper(),
+                        queryTupleListParamsArray);
             for (Tuple5<User, UserInfo, UserRole, Role, Order> r : list) {
                 assertEquals(r.get1().getUser().getId(), r.get1().getUser().getId());
                 assertEquals(r.get1().getUser().getId(), r.get2().getUserId());
@@ -2317,6 +2323,12 @@ public class JdbcTest extends JdbcTestBase {
             System.out.println(map);
             assertTrue(map.get("username").toString().startsWith("yufei"));
         }
+
+        list = jdbc.callQuery("call call_query_user(?)", "yufei%");
+        for (Map<String, Serializable> map : list) {
+            System.out.println(map);
+            assertTrue(map.get("username").toString().startsWith("yufei"));
+        }
     }
 
     @Test
@@ -2471,13 +2483,15 @@ public class JdbcTest extends JdbcTestBase {
         Serializable[] params = new Serializable[] { uid };
         Tuple6<List<User>, List<UserInfo2>, List<Order2>, List<Map<String, Serializable>>, List<UserRole>,
             List<
-                Tuple5<User, UserInfo, UserRole, Role, Order>>> mulitiList = jdbc
-                    .callMultiQuery(name,
-                        mapperBuilder -> mapperBuilder.mapper(User.class).mapper(UserInfo2.class).mapper(Order2.class)
-                            .mapper().mapper(UserRole.class)
-                            .mapper(b -> b.map("_user0.", User.class).map("ui.", UserInfo.class)
-                                .map("ur.", UserRole.class).map("r.", Role.class).map("o.", Order.class).mapper()),
-                        params);
+                Tuple5<User, UserInfo, UserRole, Role, Order>>> mulitiList =
+                    jdbc
+                        .callMultiQuery(name,
+                            mapperBuilder -> mapperBuilder.mapper(User.class).mapper(UserInfo2.class)
+                                .mapper(Order2.class)
+                                .mapper().mapper(UserRole.class)
+                                .mapper(b -> b.map("_user0.", User.class).map("ui.", UserInfo.class)
+                                    .map("ur.", UserRole.class).map("r.", Role.class).map("o.", Order.class).mapper()),
+                            params);
         assertEquals(params[0], uid + 1);
         assertEquals(mulitiList.degree(), 6); // 三个查询
 

@@ -27,6 +27,8 @@ import cn.featherfly.hammer.expression.repository.condition.sw.RepositoryStartWi
  * all repository conditions expression4.
  *
  * @author zhongj
+ * @param <C> the generic type
+ * @param <L> the generic type
  */
 public interface RepositoryConditionsExpression4<C extends RepositoryConditionsExpression4<C, L>,
     L extends RepositoryConditionsLogicExpression4<C, L>>

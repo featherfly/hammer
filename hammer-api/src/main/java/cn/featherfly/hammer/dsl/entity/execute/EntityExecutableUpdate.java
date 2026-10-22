@@ -8,6 +8,7 @@ import cn.featherfly.hammer.expression.entity.execute.EntityExecutableUpdateExpr
  * entity executable update.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public interface EntityExecutableUpdate<E> extends
     EntityExecutableUpdateExpression<E, EntityExecutableUpdate<E>,

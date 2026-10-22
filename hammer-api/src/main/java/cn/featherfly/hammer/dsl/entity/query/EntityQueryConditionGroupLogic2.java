@@ -10,6 +10,8 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression2
  *
  * @author zhongj
  * @param <E> the element type
+ * @param <E2> the generic type
+ * @param <R> the generic type
  */
 public interface EntityQueryConditionGroupLogic2<E, E2, R> extends
     EntityQueryConditionGroupLogicExpression2<E, E2, EntityQueryConditionGroup2<E, E2, R>,

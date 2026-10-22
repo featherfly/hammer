@@ -223,6 +223,11 @@ public abstract class LogicDirectiveModel implements FreemarkerDirective, LogicD
         return name;
     }
 
+    /**
+     * Gets the logic world.
+     *
+     * @return the logic world
+     */
     protected abstract String getLogicWorld();
 
 }

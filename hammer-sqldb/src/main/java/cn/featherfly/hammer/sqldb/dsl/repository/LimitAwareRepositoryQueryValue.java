@@ -28,7 +28,6 @@ import cn.featherfly.hammer.sqldb.dsl.repository.query.AbstractMulitiRepositoryS
  * RepositoryLimitQuery.
  *
  * @author zhongj
- * @param <Map<String, Serializable>> the element type
  */
 public class LimitAwareRepositoryQueryValue implements LimitAwareQueryValue {
 

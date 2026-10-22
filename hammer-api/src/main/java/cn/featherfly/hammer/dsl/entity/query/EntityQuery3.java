@@ -9,6 +9,10 @@ import cn.featherfly.hammer.expression.entity.query.EntityQuerySortedExpression3
  * dsl for query entity.
  *
  * @author zhongj
+ * @param <E> the element type
+ * @param <E2> the generic type
+ * @param <E3> the generic type
+ * @param <R> the generic type
  */
 public interface EntityQuery3<E, E2, E3, R> extends
     EntityQueryExpression3<E, E2, E3, EntityQueryConditionGroup3<E, E2, E3, R>,

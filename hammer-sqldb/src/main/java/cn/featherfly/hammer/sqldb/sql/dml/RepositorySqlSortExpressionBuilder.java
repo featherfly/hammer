@@ -17,16 +17,27 @@ import cn.featherfly.hammer.expression.repository.query.sort.RepositorySortedExp
  * @author zhongj
  */
 public class RepositorySqlSortExpressionBuilder implements RepositorySortExpression<RepositorySqlSortExpressionBuilder>,
-        RepositorySortedExpression<RepositorySqlSortExpressionBuilder>, SqlBuilder {
+    RepositorySortedExpression<RepositorySqlSortExpressionBuilder>, SqlBuilder {
 
     private SqlOrderByBasicBuilder orderByBuilder;
 
     private String tableAlias;
 
+    /**
+     * Instantiates a new repository sql sort expression builder.
+     *
+     * @param dialect the dialect
+     */
     public RepositorySqlSortExpressionBuilder(Dialect dialect) {
         this(dialect, null);
     }
 
+    /**
+     * Instantiates a new repository sql sort expression builder.
+     *
+     * @param dialect the dialect
+     * @param tableAlias the table alias
+     */
     public RepositorySqlSortExpressionBuilder(Dialect dialect, String tableAlias) {
         orderByBuilder = new SqlOrderByBasicBuilder(dialect);
         this.tableAlias = tableAlias;
@@ -67,9 +78,9 @@ public class RepositorySqlSortExpressionBuilder implements RepositorySortExpress
      */
     @Override
     public <T, R> RepositorySqlSortExpressionBuilder asc(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
-                .toArray(value -> new String[value]);
+            .toArray(value -> new String[value]);
         return asc(nameArray);
     }
 
@@ -108,9 +119,9 @@ public class RepositorySqlSortExpressionBuilder implements RepositorySortExpress
      */
     @Override
     public <T, R> RepositorySqlSortExpressionBuilder desc(
-            @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
+        @SuppressWarnings("unchecked") SerializableFunction<T, R>... names) {
         String[] nameArray = Arrays.stream(names).map(LambdaUtils::getLambdaPropertyName)
-                .toArray(value -> new String[value]);
+            .toArray(value -> new String[value]);
         return desc(nameArray);
     }
 
@@ -131,7 +142,7 @@ public class RepositorySqlSortExpressionBuilder implements RepositorySortExpress
     }
 
     /**
-     * 返回tableAlias
+     * 返回tableAlias.
      *
      * @return tableAlias
      */
@@ -140,7 +151,7 @@ public class RepositorySqlSortExpressionBuilder implements RepositorySortExpress
     }
 
     /**
-     * 设置tableAlias
+     * 设置tableAlias.
      *
      * @param tableAlias tableAlias
      */

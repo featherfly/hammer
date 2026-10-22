@@ -14,6 +14,7 @@ import cn.featherfly.common.repository.mapper.RowMapper;
  * MapResultSetExtractor.
  *
  * @author zhongj
+ * @param <E> the element type
  */
 public class RowMapperListResultSetExtractor<E> extends AbstractListResultSetExtractor<E> {
 

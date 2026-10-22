@@ -91,7 +91,7 @@ public final class ValidatorUtils {
      * @param validator the validator
      * @param operatorType the operator type
      * @param entity the entity
-     * @param propertyMapping the property mapping
+     * @param propertyMappings the property mappings
      */
     public static <T> void validate(Validator validator, OperatorType operatorType, T entity,
         JdbcPropertyMapping... propertyMappings) {

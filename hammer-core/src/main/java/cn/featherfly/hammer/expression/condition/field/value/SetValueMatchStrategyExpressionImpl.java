@@ -20,6 +20,7 @@ import cn.featherfly.common.repository.mapping.PropertyMapping;
  * SetValueMatchStrategyExpressionImpl.
  *
  * @author zhongj
+ * @param <V> the value type
  */
 public class SetValueMatchStrategyExpressionImpl<V> implements SetMatchStrategyValueExpression<V> {
 
@@ -35,10 +36,10 @@ public class SetValueMatchStrategyExpressionImpl<V> implements SetMatchStrategyV
      * Instantiates a new sets the string expression impl.
      *
      * @param ignoreStrategy the ignore strategy
-     * @param setValue       the set value
+     * @param setValue the set value
      */
     public SetValueMatchStrategyExpressionImpl(Predicate<?> ignoreStrategy,
-            ThConsumer<V, MatchStrategy, Predicate<V>> setValue) {
+        ThConsumer<V, MatchStrategy, Predicate<V>> setValue) {
         this.ignoreStrategy = ignoreStrategy;
         setValue0 = setValue;
     }
@@ -47,12 +48,12 @@ public class SetValueMatchStrategyExpressionImpl<V> implements SetMatchStrategyV
      * Instantiates a new sets the string expression impl.
      *
      * @param propertyMapping the property mapping
-     * @param ignoreStrategy  the ignore strategy
-     * @param setValue        the set value
+     * @param ignoreStrategy the ignore strategy
+     * @param setValue the set value
      */
     public SetValueMatchStrategyExpressionImpl(Function<V, PropertyMapping<?>> propertyMapping,
-            Predicate<?> ignoreStrategy,
-            FoConsumer<V, MatchStrategy, Predicate<V>, PropertyMapping<?>> setValue) {
+        Predicate<?> ignoreStrategy,
+        FoConsumer<V, MatchStrategy, Predicate<V>, PropertyMapping<?>> setValue) {
         this.propertyMapping = propertyMapping;
         this.ignoreStrategy = ignoreStrategy;
         this.setValue = setValue;

@@ -36,6 +36,17 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  */
 public interface InternalMulitiEntityCondition<L> extends InternalMulitiCondition<L>, MulitiEntityConditionExpression {
 
+    /**
+     * Property.
+     *
+     * @param <R> the generic type
+     * @param <C2> the generic type
+     * @param <L2> the generic type
+     * @param currentIndex the current index
+     * @param properties the properties
+     * @param entityTypePropertyExpressionConsumer the entity type property expression consumer
+     * @return the l
+     */
     <R, C2 extends EntityConditionGroupExpression<R, C2, L2>,
         L2 extends EntityConditionGroupLogicExpression<R, C2, L2>> L property(
             final int currentIndex, List<Serializable> properties,

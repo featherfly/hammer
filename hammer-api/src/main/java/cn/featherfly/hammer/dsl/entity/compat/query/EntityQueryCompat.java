@@ -15,6 +15,8 @@ import cn.featherfly.hammer.expression.entity.compatible.query.EntityQuerySortCo
  * dsl for query entity.
  *
  * @author zhongj
+ * @param <E> the element type
+ * @param <T> the generic type
  */
 public interface EntityQueryCompat<E, T extends EntityQueryCompat<E, T>>
     extends EntityQueryCompatibleExpression<E, EntityQueryConditionGroupCompat<E>,

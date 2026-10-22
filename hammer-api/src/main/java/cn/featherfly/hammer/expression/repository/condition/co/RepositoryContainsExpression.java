@@ -104,11 +104,17 @@ public interface RepositoryContainsExpression<C extends ConditionExpression, L e
         return co(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
         return co(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {

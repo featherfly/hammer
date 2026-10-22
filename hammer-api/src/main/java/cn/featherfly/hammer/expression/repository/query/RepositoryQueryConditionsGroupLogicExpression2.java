@@ -22,6 +22,7 @@ import cn.featherfly.hammer.expression.repository.condition.RepositoryConditions
  * @param <C> the generic type
  * @param <L> the generic type
  * @param <S> the generic type
+ * @param <S2> the generic type
  * @param <Q> the generic type
  */
 public interface RepositoryQueryConditionsGroupLogicExpression2<

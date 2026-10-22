@@ -29,6 +29,7 @@ import cn.featherfly.hammer.sqldb.dsl.condition.InternalMulitiCondition;
  * abstract mntity in expression..
  *
  * @author zhongj
+ * @param <I> the generic type
  * @param <C> the generic type
  * @param <L> the generic type
  */

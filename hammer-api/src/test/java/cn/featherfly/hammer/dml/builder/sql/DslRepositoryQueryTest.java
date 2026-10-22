@@ -302,11 +302,11 @@ public class DslRepositoryQueryTest {
         queryFetch.where().eq("", 1).endGroup();
 
         queryFetch.where().eq("", 1).and().group().eq("", 1).endGroup();
-        // FIXME  这里的endGroup是错误的
+        // FIXME  这里的endGroup是错误的，开启一次，关闭两次，虽然程序不会出错（内部进行了判断），但是代码层面很不优雅
         queryFetch.where().eq("", 1).and().group().eq("", 1).endGroup().endGroup();
 
         queryFetch.where().eq("", 1).and().group().group().eq("", 1).endGroup().endGroup();
-        // FIXME  这里的endGroup是错误的
+        // FIXME  这里的endGroup是错误的，开启两次，关闭三次，虽然程序不会出错（内部进行了判断），但是代码层面很不优雅
         queryFetch.where().eq("", 1).and().group().group().eq("", 1).endGroup().endGroup().endGroup();
 
         queryFetch.fetch("name").where().eq("", 1).and().lt("age", 18).and().group().gt("score", 80).endGroup()

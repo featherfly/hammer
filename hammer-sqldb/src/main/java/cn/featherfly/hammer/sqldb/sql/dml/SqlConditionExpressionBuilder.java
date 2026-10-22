@@ -213,6 +213,8 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
 
     /**
      * The Class Builder.
+     *
+     * @author zhongj
      */
     public static class Builder {
         private Dialect dialect;
@@ -231,6 +233,11 @@ public class SqlConditionExpressionBuilder implements ParamedExpression, SqlBuil
             this.field = field;
         }
 
+        /**
+         * Builds the.
+         *
+         * @return the sql condition expression builder
+         */
         public SqlConditionExpressionBuilder build() {
             if (field instanceof String) {
                 return new SqlConditionExpressionBuilder(dialect, (String) field, value, comparisonOperator,

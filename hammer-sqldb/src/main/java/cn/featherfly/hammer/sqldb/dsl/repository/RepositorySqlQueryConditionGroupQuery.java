@@ -131,8 +131,6 @@ public class RepositorySqlQueryConditionGroupQuery {
     /**
      * Creates the row mapper.
      *
-     * @param <T> the generic type
-     * @param type the type
      * @return the row mapper
      */
     public TupleRowMapperBuilder createTupleRowMapperBuilder() {
@@ -144,6 +142,7 @@ public class RepositorySqlQueryConditionGroupQuery {
      *
      * @param <T> the generic type
      * @param type the type
+     * @param prefix the prefix
      * @return the row mapper
      */
     public <T> RowMapper<T> createRowMapper(Class<T> type, String prefix) {
@@ -264,11 +263,24 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().queryLong(execution.getExecution(), execution.getParams());
     }
 
+    /**
+     * Value.
+     *
+     * @param <T> the generic type
+     * @return the t
+     */
     public <T> T value() {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryValue(execution.getExecution(), execution.getParams());
     }
 
+    /**
+     * Value.
+     *
+     * @param <T> the generic type
+     * @param type the type
+     * @return the t
+     */
     public <T> T value(Class<T> type) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryValue(execution.getExecution(), type, execution.getParams());
@@ -529,6 +541,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().querySingle(execution.getExecution(), rowMapper, execution.getParams());
     }
 
+    /**
+     * Single.
+     *
+     * @param <E> the element type
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
+     * @return the e
+     */
     public <E> E single(Function<TupleRowMapperBuilder, RowMapper<E>> tupleRowMapperBuilderFunction) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().querySingle(execution.getExecution(), tupleRowMapperBuilderFunction,
@@ -569,6 +588,13 @@ public class RepositorySqlQueryConditionGroupQuery {
         return queryRelation.getJdbc().queryUnique(execution.getExecution(), rowMapper, execution.getParams());
     }
 
+    /**
+     * Unique.
+     *
+     * @param <E> the element type
+     * @param tupleRowMapperBuilderFunction the tuple row mapper builder function
+     * @return the e
+     */
     public <E> E unique(Function<TupleRowMapperBuilder, RowMapper<E>> tupleRowMapperBuilderFunction) {
         Execution execution = getExecution();
         return queryRelation.getJdbc().queryUnique(execution.getExecution(), tupleRowMapperBuilderFunction,

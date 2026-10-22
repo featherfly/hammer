@@ -104,11 +104,17 @@ public interface RepositoryContainsExpressionBase2<C extends ConditionExpression
         return co2(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
         return co2(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co2(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {

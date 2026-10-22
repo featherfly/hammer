@@ -3,7 +3,7 @@ TODO dsl实体查询加入以下（EntityQuery）
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 4. Repository DSL update 从数据库元数据提取数据库的数据数据约束，在程序内进行校验
 
-# 0.7.6
+# 0.7.6 2026-10-22
 
 1. entity save|update 支持JSR-380(Bean Validation)
 1. entity update DSL 支持JSR-380(Bean Validation)

@@ -759,7 +759,9 @@ public abstract class AbstractJdbc implements Jdbc {
                     message.append("    args -> ").append(Arrays.toString(execution.getParams())).append("\n");
                 }
             });
-            logger.debug(message.toString());
+            if (logger.isDebugEnabled()) {
+                logger.debug(message.toString());
+            }
             int[] results = prep.executeBatch();
             // 不是查询操作，没有查询结果
             for (JdbcExecution execution : jdbcExecutions) {
@@ -1145,7 +1147,6 @@ public abstract class AbstractJdbc implements Jdbc {
             ResultSet rs = prep.executeQuery();
             SqlResultSet sqlResultSet = new SqlResultSet(rs);
             return new JdbcRowIterable<>(sqlResultSet, rowMapper);
-            //                return postHandle(execution.setOriginalResult(list), sql, args);
         } catch (SQLException e) {
             releaseConnection(con);
             throw new JdbcException(Str.format("queryEach: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
@@ -1557,7 +1558,7 @@ public abstract class AbstractJdbc implements Jdbc {
                     assertSingleResult(i + 1);
                     result = rowMapper.mapRow(sqlResultSet, i++);
                 }
-                assertNullableResult(result);
+                assertNonnullResult(result);
                 return postHandle(execution.setOriginalResult(result));
             }
         } catch (SQLException e) {
@@ -1742,71 +1743,6 @@ public abstract class AbstractJdbc implements Jdbc {
         } else {
             throw new JdbcException("unsupport for CONCUR_UPDATABLE");
         }
-
-        //        if (metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.SCROLL_SENSITIVE,
-        //                ResultSetConcurrency.CONCUR_UPDATABLE)
-        //                || metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.SCROLL_INSENSITIVE,
-        //                        ResultSetConcurrency.CONCUR_UPDATABLE)) {
-        //            Connection conn = getConnection();
-        //            try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
-        //                    ResultSet.CONCUR_UPDATABLE)) {
-        //                setParams(prep, args);
-        //                try (ResultSet rs = prep.executeQuery()) {
-        //                    T result = null;
-        //                    int i = 0;
-        //                    while (rs.next()) {
-        //                        assertSingleResult(i + 1);
-        //                        result = rowMapper.mapRow(new SqlResultSet(rs), i++);
-        //                    }
-        //                    result = postHandle(execution.setOriginalResult(result));
-        //                    // 先确定是否超出一条数据，再来处理游标
-        //                    rs.previous();
-        //                    int size = setValueOperator.applyAsInt(rs, result);
-        //                    return Tuples.of(result, size);
-        //                    //                    return setValueOperator.apply(rs,
-        //                    //                            postHandle(execution.setOriginalResult(singleResult(list)), sql, args));
-        //                }
-        //            } catch (SQLException e) {
-        //                releaseConnection(conn);
-        //                conn = null;
-        //                throw new JdbcException(
-        //                        Str.format("querySingleUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-        //            } finally {
-        //                releaseConnection(conn);
-        //            }
-        //        } else if (metadata.getFeatures().supportsResultSetConcurrency(ResultSetType.FORWARD_ONLY,
-        //                ResultSetConcurrency.CONCUR_UPDATABLE)) {
-        //            Connection conn = getConnection();
-        //            try (PreparedStatement prep = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
-        //                    ResultSet.CONCUR_UPDATABLE)) {
-        //
-        //                setParams(prep, args);
-        //                try (ResultSet rs = prep.executeQuery()) {
-        //                    T result = null;
-        //                    int i = 0;
-        //                    int size = 0;
-        //                    if (rs.next()) {
-        //                        result = rowMapper.mapRow(new SqlResultSet(rs), i++);
-        //                        result = postHandle(execution.setOriginalResult(result));
-        //                        size = setValueOperator.applyAsInt(rs, result);
-        //                    }
-        //                    // 判断查询的数量，大于1则抛出异常
-        //                    while (rs.next()) {
-        //                        i++;
-        //                    }
-        //                    assertSingleResult(i);
-        //
-        //                    return Tuples.of(result, size);
-        //                }
-        //            } catch (SQLException e) {
-        //                releaseConnection(conn);
-        //                conn = null;
-        //                throw new JdbcException(
-        //                        Str.format("querySingleUpdate: \nsql: {0} \nargs: {1}", sql, Arrays.toString(args)), e);
-        //            } finally {
-        //                releaseConnection(conn);
-        //            }
-        //        }
     }
 
     /**
@@ -2289,33 +2225,6 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public int call(String name, SequencedMap<String, Serializable> args) {
-    //        String procedure = getProcedure(name, args.size());
-    //        JdbcExecution execution = preHandle(procedure, args.values().toArray());
-    //        procedure = execution.getExecution();
-    //        Serializable[] newArgs = execution.getParams();
-    //        Connection con = getConnection();
-    //        try (CallableStatement call = con.prepareCall(procedure)) {
-    //            Map<Integer, Class<?>> outParams = setParams(call, newArgs);
-    //            call.execute();
-    //            setOutParams(call, outParams, args);
-    //            postHandle(execution);
-    //            return call.getUpdateCount();
-    //        } catch (SQLException e) {
-    //            //            releaseConnection(con, dataSource);
-    //            releaseConnection(con);
-    //            con = null;
-    //            throw new JdbcException(
-    //                    Str.format("call procedure: \nprocedure: {0} \nargs: {1}", procedure, newArgs.toString()), e);
-    //        } finally {
-    //            releaseConnection(con);
-    //        }
-    //    }
-
     /**
      * {@inheritDoc}
      */
@@ -2410,6 +2319,7 @@ public abstract class AbstractJdbc implements Jdbc {
         args = execution.getParams();
         Connection con = getConnection();
         try {
+            // 不能在这里关闭资源，因为返回的MulitiQuery中延迟调用查询，需要外部关闭
             CallableStatement call = con.prepareCall(procedure);
             Map<Integer, Class<? extends Serializable>> outParams = setParams(call, args);
             call.execute();
@@ -2676,22 +2586,6 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
-    //    /**
-    //     * Sets the params.
-    //     *
-    //     * @param call      the CallableStatement
-    //     * @param outParams the out params
-    //     * @param args      the args
-    //     */
-    //    protected void setOutParams(CallableStatement call, Map<Integer, Class<?>> outParams,
-    //            SequencedMap<String, Serializable> args) {
-    //        String[] keys = Lang.toArray(args.keySet());
-    //        for (Entry<Integer, Class<?>> entry : outParams.entrySet()) {
-    //            int index = entry.getKey();
-    //            args.put(keys[index - 1], manager.getParam(call, index, entry.getValue()));
-    //        }
-    //    }
-
     /**
      * Sets the params.
      *
@@ -2738,7 +2632,7 @@ public abstract class AbstractJdbc implements Jdbc {
         }
     }
 
-    private void assertNullableResult(Object results) {
+    private void assertNonnullResult(Object results) {
         if (Lang.isEmpty(results)) {
             // ENHANCE 优化错误消息
             throw new JdbcException("results is empty");
@@ -2754,7 +2648,7 @@ public abstract class AbstractJdbc implements Jdbc {
     }
 
     private <T> T nullableSingleResult(Collection<T> results) {
-        assertNullableResult(results);
+        assertNonnullResult(results);
         assertSingleResult(results.size());
         return results.iterator().next();
     }

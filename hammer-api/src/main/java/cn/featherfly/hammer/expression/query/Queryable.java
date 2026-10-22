@@ -14,6 +14,7 @@ package cn.featherfly.hammer.expression.query;
  * Queryable.
  *
  * @author zhongj
+ * @param <S> the generic type
  */
 //TODO 后续group by 的表达式也是在这里定义 extends Sortable, Groupbyable
 public interface Queryable<S> extends Sortable<S> {

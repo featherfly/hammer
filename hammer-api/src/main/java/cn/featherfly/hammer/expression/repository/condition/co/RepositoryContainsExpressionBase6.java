@@ -104,11 +104,17 @@ public interface RepositoryContainsExpressionBase6<C extends ConditionExpression
         return co6(LambdaUtils.getLambdaPropertyName(name), value, matchStrategy, ignoreStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy) {
         return co6(LambdaUtils.getLambdaPropertyName(property), value, matchStrategy);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default L co6(SerializableStringSupplier property, String value, MatchStrategy matchStrategy,
         Predicate<String> ignoreStrategy) {
