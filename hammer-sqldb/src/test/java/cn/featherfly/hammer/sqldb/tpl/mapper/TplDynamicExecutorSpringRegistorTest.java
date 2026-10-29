@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Randoms;
+import cn.featherfly.hammer.HammerValidateException;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.User;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo;
 import cn.featherfly.hammer.sqldb.jdbc.vo.r.UserInfo2;
@@ -32,6 +33,9 @@ public class TplDynamicExecutorSpringRegistorTest extends SpringTestBase {
 
     @Resource
     UserInfoMapper3 userInfoMapper3;
+
+    @Resource
+    UserInfoMapper4 userInfoMapper4;
 
     @Resource
     UserInfoMapper2 userInfoMapper2;
@@ -171,6 +175,11 @@ public class TplDynamicExecutorSpringRegistorTest extends SpringTestBase {
             list.add(u);
         }
         userService.saveBatch(list.toArray(new User[list.size()]));
+    }
+
+    @Test(expectedExceptions = { HammerValidateException.class })
+    void testValidate() {
+        userInfoMapper4.save(null);
     }
 
 }

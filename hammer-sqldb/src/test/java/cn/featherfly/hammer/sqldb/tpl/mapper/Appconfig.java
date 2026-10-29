@@ -48,7 +48,9 @@ public class Appconfig extends JdbcTestBase {
 
     @Bean
     public HammerConfig hammerConfig() {
-        return new HammerConfigImpl(devMode);
+        return new HammerConfigImpl(devMode).setValidatorConfig(new ValidatorConfigImpl(
+            new JavaxValidator(Validation.byProvider(HibernateValidator.class).configure()
+                .failFast(false).buildValidatorFactory().getValidator(), HammerValidateException::new)));
     }
 
     @Bean

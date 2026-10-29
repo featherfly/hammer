@@ -818,7 +818,7 @@ public class TplDynamicExecutorFactory implements Opcodes {
         }
         methodNode.visitMethodInsn(INVOKESPECIAL, Asm.getName(type), method.getName(),
             Type.getMethodDescriptor(method), true);
-        methodNode.visitInsn(ARETURN);
+        methodNode.visitInsn(Asm.getReturnCode(method.getReturnType()));
         methodNode.visitMaxs(stackSize.intValue(), localeSize);
         methodNode.visitEnd();
         return methodNode;
