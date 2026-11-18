@@ -28,8 +28,8 @@ compile group: 'cn.featherfly.hammer', name: 'hammer-sqldb', version: '+'
 
 ```java
 
-// 示例用，具体配置看SqlDbHammerImpl配置章节
-Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
+// 示例用，具体配置看SqlDbHammer配置章节
+Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
 
 // 通过主键获取
 User u = hammer.get(id, User.class);
@@ -44,21 +44,21 @@ int result = hammer.update(u);// 或者 hammer.merge(u); // update和merge区别
 int result = hammer.delete(u);
 
 // DSL模式更新数据
-int result = hammer.update(User.class)
+int result = hammer.update("role")
     			.set("name", newName)
-    			.property("descp").set(newDescp)
+    			.field("descp").set(newDescp)
     			.where()
     			.eq("id", id)
     			.execute();
-int result = hammer.update(User.class)
-    			.set(User::getName, newName)
-    			.property(User::getDescp).set(newDescp)
+int result = hammer.update(Role.class)
+    			.set(Role::getName, newName)
+    			.property(Role::getDescp).set(newDescp)
     			.where()
-    			.eq(User::getId, id)
+    			.eq(Role::getId, id)
     			.execute();
 
 // DSL模式更新自增长数据
-int result = hammer.update(User.class)
+int result = hammer.update("user")
     			.increase("age", 1)
     			.where()
     			.eq("id", id)
@@ -70,7 +70,7 @@ int result = hammer.update(User.class)
     			.execute();
 
 // DSL模式删除数据
-int result = hammer.delete(Role.class)
+int result = hammer.delete("role")
     			.where()
     			.in("id", new Integer[] { r.getId(), r2.getId() })
     			.or()
@@ -84,18 +84,18 @@ int result = hammer.delete(Role.class)
     			.execute();
 
 // DSL模式查询数据
-User user = hammer.query("user")
+Map<String, Serializable> user = hammer.query("user")
     			.where()
     			.eq("username", username)
     			.and()
     			.eq("password", password)
-    			.single()    
+    			.single();
 User user = hammer.query(User.class)
     			.where()
     			.eq(User::getUsername, username)
     			.and()
-    			.eq(User::getPassword, password)
-    			.single()
+    			.eq(User::getPwd, password)
+    			.single();
 List<User> users = hammer.query("user")
     			.where()
     			.eq("username", username)
@@ -109,13 +109,13 @@ List<User> users = hammer.query("user")
     			.list(User.class)
 List<Role> roles = hammer.query(Role.class)
     			.where()
-    			.gt("id", 5)
+    			.gt(Role::getId, 5)
     			.and()
-    			.le("id", 10)
-    			.list()
+    			.le(Role::getId, 10)
+    			.list();
 
 // 模板SQL查询数据
-String str = hammer.template().string("selectString", new HashMap<String, Object>());
+String str = hammer.template().string("selectString", new HashMap<String, Serializable>());
 int avg = hammer.template().numberInt("selectAvg2", new ChainMapImpl<String, Serializable>().putChain("age", 40));
 User u = hammer.template().single("selectByUsername@user", User.class,
                 new ChainMapImpl<String, Serializable>().putChain("username", username));
@@ -140,23 +140,23 @@ public interface UserMapper {
     String selectString();
 
     @Template(namespace = "user_info")
-	List<Map<String, Object>> select2();
+	List<Map<String, Serializable>> select2();
 
     @Template(namespace = "user_info", name = "select2")
-    List<Map<String, Object>> select2(Page page);
+    List<Map<String, Serializable>> select2(Page page);
 
     @Template(namespace = "user_info", name = "select2")
-    PaginationResults<Map<String, Object>> select2Page(Page page);
+    PaginationResults<Map<String, Serializable>> select2Page(Page page);
 }
 ```
 
 ```java
 // 除了可以使用模板sql进行查询外，可以继承Hammer、GenericHammer进行api操作,或者继承HammerSupport通过getHammer获取hammer对象进行操作，需要使用jdk8的default method
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericHammer<User> {
+public interface UserMapper3 extends GenericHammer<User, Integer> {
 	// 这里的query方法就是GenericHammer接口定义的方法
     default User getByUsernameAndPassword2(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("password", pwd).single();
+        return query().where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 }
 
@@ -174,7 +174,7 @@ public class UserService {
     public void regist(User user) {
         // ....
         // 其他业务代码
-        if (userMapper.getByUsernameAndPassword2(user.getUsername(), user.getPassword()) == null) {
+        if (userMapper.getByUsernameAndPassword2(user.getUsername(), user.getPwd()) == null) {
             userMapper.save(user);
         } else {
             // 用户已经存在异常处理
@@ -240,26 +240,29 @@ dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 dataSource.setUsername("root");
 dataSource.setPassword("123456");
 
-Dialect dialect = Dialects.MYSQL;
 // 这里的dataSource使用你自己的数据源实现
-Jdbc jdbc = new JdbcImpl(dataSource, dialect, sqlTypeMappingManager);
+Dialect dialect = Dialects.mysql();
 DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-
 SqlTypeMappingManager sqlTypeMappingManager = new SqlTypeMappingManager();
+PropertyAccessorFactory propertyAccessorFactory = new AsmPropertyAccessorFactory(
+        Thread.currentThread().getContextClassLoader());
+Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
 
-//Jdbc jdbc = new SpringJdbcTemplateImpl(dataSource, Dialects.ORACLE);
-//DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource, "hammer_jdbc");
-// 如果数据库驱动不支持从connnection获取数据库名称，需要在create时传入数据库名称
-JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager);
+// 如果数据库驱动不支持从connection获取数据库名称，需要在create时传入数据库名称
+JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager,
+        new IdGeneratorManager(), propertyAccessorFactory);
 
 Set<String> basePackages = new HashSet<>();
 basePackages.add("cn.featherfly.hammer.sqldb.tpl.mapper");
 boolean devMode = true;
+HammerConfig hammerConfig = new HammerConfigImpl(devMode);
 // 这里的tpl/表示开始查找sql模板文件的根目录
 // 这里的basePackages表示扫描Mapper文件的根目录集合,用于把@Template("sql")内置sql模板加入模板管理
 // FreemarkerTemplatePreProcessor表示模板预处理，即把为sql处理特化的模板转换为freemarker模板
-TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/", basePackages, new FreemarkerTemplatePreProcessor(), devMode);
-hammer hammer = new hammerJdbcImpl(jdbc, mappingFactory, configFactory);
+TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
+        .basePackages(basePackages).config(hammerConfig.getTemplateConfig())
+        .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
+Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
 // 然后使用hammer进行数据操作
 ```
 
@@ -281,8 +284,8 @@ public interface UserMapper {
 
 ```java
 TplDynamicExecutorFactory mapperFactory = TplDynamicExecutorFactory.getInstance();
-Hammer hammer = new SqldbHammerImpl(jdbc, mappingFactory, configFactory);
-UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
+Hammer hammer = SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
+UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, hammer, hammerConfig);
 // 然后使用userMapper进行数据操作
 ```
 
@@ -292,32 +295,44 @@ UserMapper userMapper = mapperFactory.newInstance(UserMapper.class, hammer);
 
 ```java
 @Configuration
+@EnableTransactionManagement
 public class Appconfig {
-	// 动态注册Mapper，类似mybatis,在packages里指定包扫描路径
+    // 动态注册Mapper，类似mybatis,在packages里指定包扫描路径
     @Bean
-    public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor() {
+    public DynamicTplExecutorSpringRegistor tplDynamicExecutorSpringRegistor(HammerConfig hammerConfig) {
         Set<String> packages = new HashSet<>();
         packages.add("你需要扫描的包路径");
         // 例如 packages.add("cn.featherfly");
-        DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(packages, "hammer");
+        DynamicTplExecutorScanSpringRegistor registor = new DynamicTplExecutorScanSpringRegistor(
+                packages, "hammer", "hammerConfig", hammerConfig);
         // 这里的"hammer"是你注册到spring的SqldbHammerImpl的name
         return registor;
     }
 
     @Bean
-    public SqldbHammerImpl hammer(DataSource dataSource) {
-    	// dataSource自行配置
+    public HammerConfig hammerConfig() {
+        return new HammerConfigImpl(true);
+    }
+
+    @Bean
+    public SqldbHammerImpl hammer(DataSource dataSource, HammerConfig hammerConfig) {
+        // dataSource自行配置
         // 配置你自己的日志框架
-        DOMConfigurator.configure(ClassLoaderUtils.getResource("log4j.xml", JdbcTestBase.class));
+        Configurator.initialize("log4j2_dev", "log4j2_dev.xml");
         DatabaseMetadata metadata = DatabaseMetadataManager.getDefaultManager().create(dataSource);
-        Dialect dialect = new MysqlDialect();
-        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata);
-        JdbcMappingFactory mappingFactory = new JdbcMappingFactory(metadata, dialect);
-        // tpl/代表sql模板从classpath查找的根目录，如果调用无参构造函数，则从classpath目录开始查找，
+        Dialect dialect = Dialects.mysql();
+        SqlTypeMappingManager sqlTypeMappingManager = new SqlTypeMappingManager();
+        PropertyAccessorFactory propertyAccessorFactory = new AsmPropertyAccessorFactory(
+                Thread.currentThread().getContextClassLoader());
+        Jdbc jdbc = new JdbcSpringImpl(dataSource, dialect, metadata, sqlTypeMappingManager, propertyAccessorFactory);
+        JdbcMappingFactory mappingFactory = new JdbcMappingFactoryImpl(metadata, dialect, sqlTypeMappingManager,
+                new IdGeneratorManager(), propertyAccessorFactory);
+        // tpl/代表sql模板从classpath查找的根目录
         // FreemarkerTemplatePreProcessor是freemarker模板的预处理器，从特化模板转换为freemarker模板
-        TplConfigFactory configFactory = new TplConfigFactoryImpl("tpl/",new FreemarkerTemplatePreProcessor());
-        SqlDbHammerImpl hammer = new SqlDbHammerImpl(jdbc, mappingFactory, configFactory);
-        return hammer;
+        TplConfigFactory configFactory = TplConfigFactoryImpl.builder().prefixes("tpl/").suffixes(".yaml.tpl")
+                .config(hammerConfig.getTemplateConfig())
+                .preCompile(new FreemarkerTemplatePreProcessor(hammerConfig.getTemplateConfig())).build();
+        return SqldbHammerImpl.builder(jdbc, mappingFactory, configFactory, propertyAccessorFactory, hammerConfig).build();
     }
 }
 ```
@@ -470,8 +485,8 @@ int result = hammer.save(role);
 
 UserInfo ui = new UserInfo();
 ui.setUser(new User(1));
-ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
-ui.setName("name_" + RandomUtils.getRandomInt(100));
+ui.setDescp("descp_" + Randoms.getInt(100));
+ui.setName("name_" + Randoms.getInt(100));
 ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
 hammer.save(ui);
 ```
@@ -523,19 +538,19 @@ hammer.update(r);
 UserInfo ui = new UserInfo();
 ui.setId(1);
 ui.setUser(new User(1));
-ui.setDescp("descp_" + RandomUtils.getRandomInt(100));
-ui.setName("name_" + RandomUtils.getRandomInt(100));
+ui.setDescp("descp_" + Randoms.getInt(100));
+ui.setName("name_" + Randoms.getInt(100));
 ui.setDivision(new DistrictDivision("四川", "成都", "高新"));
 hammer.update(ui);
 
 Role r2 = new Role();
 r2.setId(r.getId());
-r2.setName("merge_name" + RandomUtils.getRandomInt(100));
+r2.setName("merge_name" + Randoms.getInt(100));
 hammer.merge(r2);
 
 UserInfo ui2 = new UserInfo();
 ui2.setId(2);
-ui2.setDescp("descp_" + RandomUtils.getRandomInt(100));
+ui2.setDescp("descp_" + Randoms.getInt(100));
 hammer.merge(ui2);
 ```
 
@@ -559,7 +574,7 @@ hammer.update(userRole2);
 UserRole ur = new UserRole();
 ur.setRoleId(4);
 ur.setUserId(4);
-ur.setDescp("descp_update_" + RandomUtils.getRandomInt(99));
+ur.setDescp("descp_update_" + Randoms.getInt(99));
 hammer.merge(ur);
 ```
 
@@ -621,27 +636,27 @@ _条件查询方法_
 #### 数据更新
 
 ```java
-hammer.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+hammer.update("role").set("name", newName).field("descp").set(newDescp).where().eq("id", id).execute();
 hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where().eq(Role::getId, id).execute();
 ```
 
 #### 数据自增长更新
 
 ```java
-hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
+hammer.update("user").increase("age", 1).where().eq("id", id).execute();
 hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
 
-hammer.update(User.class).propertyNumber("age").increase(1).where().eq("id", id).execute();
-hammer.update(User.class).propertyNumber(User::getAge).increase(1).where().eq(User::getId, id).execute();
+hammer.update("user").fieldAsNumber("age").increase(1).where().eq("id", id).execute();
+hammer.update(User.class).property(User::getAge).increase(1).where().eq(User::getId, id).execute();
 ```
 
 ### DSL 模式删除数据
 
 ```java
-hammer.delete(Role.class).where().eq("id", id).execute();
+hammer.delete("role").where().eq("id", id).execute();
 hammer.delete(Role.class).where().eq(Role::getId, id).execute();
 
-hammer.delete(Role.class).where().in("id", new Integer[] { id1, id2 }).or().eq("id", id3)
+hammer.delete("role").where().in("id", new Integer[] { id1, id2 }).or().eq("id", id3)
             .or().ge("id", id4).execute();
 hammer.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or().eq(Role::getId, id3)
             .or().ge(Role::getId, id4).execute();
@@ -657,7 +672,8 @@ hammer.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or
 `single` 查询唯一值
 
 ```java
-Role r = hammer.query(Role.class).where().eq("id", id).single();
+Map<String, Serializable> r = hammer.query("role").where().eq("id", id).single();
+Role r = hammer.query(Role.class).where().eq(Role::getId, id).single();
 ```
 
 #### 查询列表
@@ -665,7 +681,8 @@ Role r = hammer.query(Role.class).where().eq("id", id).single();
 `list` 查询列表
 
 ```java
-List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).list();
+List<Role> roles = hammer.query("role").where().gt("id", 5).and().le("id", 10).list();
+List<Role> roles = hammer.query(Role.class).where().gt(Role::getId, 5).and().le(Role::getId, 10).list();
 ```
 
 #### 查询分页列表
@@ -673,8 +690,8 @@ List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 1
 `limit` 设置分页参数
 
 ```java
-List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2).list();
-roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 3).list();
+List<Role> roles = hammer.query("role").where().gt("id", 5).and().le("id", 10).limit(2).list();
+List<Role> roles = hammer.query(Role.class).where().gt(Role::getId, 5).and().le(Role::getId, 10).limit(2, 3).list();
 ```
 
 #### 查询排序列表
@@ -684,7 +701,8 @@ roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2,
 `desc` 对传入属性进行降序
 
 ```java
-List<Role> roles = hammer.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
+List<Role> roles = hammer.query("role").where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
+List<Role> roles = hammer.query(Role.class).where().eq(Role::getId, 4).or().group().eq(Role::getId, 5).and().le(Role::getId, 10).sort().asc(Role::getId).desc(Role::getName).limit(2, 3).list();
 ```
 
 ## 模板 SQL 执行
@@ -716,7 +734,7 @@ API 调用传入的模板ID字符串格式为 name@namespace（邮件格式xx@yy
 
 [_`role.yaml.tpl`_](./src/test/resources/tpl/role.yaml.tpl) [_`role.yaml.sql`_](./src/test/resources/tpl_pre/role.yaml.sql)
 
-[_`role_common.yaml.tpl`_](./src/test/resources/tpl/user.yaml.tpl)
+[_`role_common.yaml.tpl`_](./src/test/resources/tpl/role_common.yaml.tpl)
 
 ### 模板数据操作 SQL 执行
 
@@ -725,11 +743,11 @@ API 调用传入的模板ID字符串格式为 name@namespace（邮件格式xx@yy
 | `execute` | 执行数据操作（即执行 insert,update,delete 等操作） |
 
 ```java
-int i = executor.template().execute("insertRole", new ChainMapImpl<String, Serializable>().putChain("name", name).putChain("descp", descp));
+int i = hammer.template().execute("insertRole", new ChainMapImpl<String, Serializable>().putChain("name", name).putChain("descp", descp));
 
-int i = executor.template().execute("updateRoleByName", new ChainMapImpl<String, Serializable>().putChain("name", name).putChain("descp", descp));
+int i = hammer.template().execute("updateRoleByName", new ChainMapImpl<String, Serializable>().putChain("name", name).putChain("descp", descp));
 
-int i = executor.template().execute("deleteRoleByName", new ChainMapImpl<String, Serializable>().putChain("name", name));
+int i = hammer.template().execute("deleteRoleByName", new ChainMapImpl<String, Serializable>().putChain("name", name));
 ```
 
 ### 模板 SQL 唯一值查询
@@ -779,11 +797,11 @@ User u2 = hammer.template().unique("selectByUsernameAndPassword@user", User.clas
 | `list` | 查询返回列表 |
 
 ```java
-List<User> users = executor.template().list("selectUser@user", User.class, new ChainMapImpl<String, Serializable>());
-List<User> users = executor.template().list("selectByAge@user", User.class, new ChainMapImpl<String, Serializable>().putChain("age", 5));
-List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>());
-List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
-List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
+List<User> users = hammer.template().list("selectUser@user", User.class, new ChainMapImpl<String, Serializable>());
+List<User> users = hammer.template().list("selectByAge@user", User.class, new ChainMapImpl<String, Serializable>().putChain("age", 5));
+List<User> users = hammer.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>());
+List<User> users = hammer.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"));
+List<User> users = hammer.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username2 + "%"));
 ```
 
 ### 模板 SQL 分页查询
@@ -795,8 +813,8 @@ List<User> users = executor.template().list("selectConditions@user", User.class,
 | `list` | 查询返回分页列表 |
 
 ```java
-List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>(), start, limit);
-List<User> users = executor.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"),new SimplePagination(start, limit));
+List<User> users = hammer.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>(), start, limit);
+List<User> users = hammer.template().list("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"),new SimplePagination(start, limit));
 ```
 
 #### 包装分页
@@ -810,8 +828,8 @@ List<User> users = executor.template().list("selectConditions@user", User.class,
 基于查询 sql 自动转换统计 sql
 
 ```java
-PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>(), start, limit);
-PaginationResults<User> userPaginationResults = executor.template().pagination("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
+PaginationResults<User> userPaginationResults = hammer.template().pagination("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>(), start, limit);
+PaginationResults<User> userPaginationResults = hammer.template().pagination("selectConditions@user", User.class, new ChainMapImpl<String, Serializable>().putChain("minAge", minAge).putChain("maxAge", maxAge).putChain("username", username1 + "%"), new SimplePagination(start, limit));
 ```
 
 > 注意：sql 转换功能做的测试不可能覆盖所有的复查查询，当你的查询足够复杂并且自动转换不能正常工作时，请使用手动声明统计 sql
@@ -831,9 +849,9 @@ sqlName:
 具体内容可以进入此章节[**`include支持`**](#include支持)
 
 ```java
-PaginationResults<Role> uis = executor.pagination("selectWithTemplate@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("selectWithTemplate2@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
-PaginationResults<Role> uis = executor.pagination("selectWithTemplate3@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
+PaginationResults<Role> uis = hammer.template().pagination("selectWithTemplate@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
+PaginationResults<Role> uis = hammer.template().pagination("selectWithTemplate2@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
+PaginationResults<Role> uis = hammer.template().pagination("selectWithTemplate3@role", Role.class, new ChainMapImpl<String, Serializable>(), 0, 10);
 ```
 
 ## 模板动态 SQL
@@ -1165,8 +1183,8 @@ selectByAge: 'select <@prop/> from user where age = :age'
 selectById: "select <@prop repo='user_info'/> from user_info where id = :id"
 selectWithTemplate3:
     query: >
-        select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
-    count: "select count(*) <@sql id='roleFromTemplate2' namespace='tpl/role_common'/>"
+        select <@prop alias="_r"/> <@tpl name='roleFromTemplate2' namespace='tpl/role_common'/>
+    count: "select count(*) <@sql name='roleFromTemplate2' namespace='tpl/role_common'/>"
 ```
 
 **如果调用返回的映射对象是使用@Entity 或者@Table 标注的实体对象，则只需要`<@prop/>`或者`<@columns/>`就行了，标签实现会根据对象映射信息生成正确的内容  
@@ -1182,9 +1200,9 @@ selectByAge: >
     select /*<<prop*/* from /*<<wrap*/user where age = :age
 selectWithTemplate3:
   query: |
-    select /*prop alias="_r"*/* /*<tpl id='roleFromTemplate2' namespace='role_common'>*/
+    select /*prop alias="_r"*/* /*<tpl name='roleFromTemplate2' namespace='role_common'>*/
   count: |
-    select count(*) /*<sql id='roleFromTemplate2' namespace='role_common'>*/
+    select count(*) /*<sql name='roleFromTemplate2' namespace='role_common'>*/
 selectConditions: |
     select id, username, password pwd, mobile_no, age from /*<<wrap*/user
     /*<where*/ where
@@ -1245,8 +1263,8 @@ selectByUsernameAndPassword: >
 
 ```yaml
 selectWithTemplate2:
-  query: "select <@prop/> <@tpl id='roleFromTemplate2'/>"
-  count: "select count(*) <@sql id='roleFromTemplate2'/>"
+  query: "select <@prop/> <@tpl name='roleFromTemplate2'/>"
+  count: "select count(*) <@sql name='roleFromTemplate2'/>"
 roleFromTemplate2: >
 	from role <@where>
 	<@and if = name??>
@@ -1255,8 +1273,8 @@ roleFromTemplate2: >
 	</@where>
 selectWithTemplate3:
   query: >
-    select <@prop alias="_r"/> <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>
-  count: "select count(*) <@sql id='roleFromTemplate2' namespace='tpl/role_common'/>"
+    select <@prop alias="_r"/> <@tpl name='roleFromTemplate2' namespace='tpl/role_common'/>
+  count: "select count(*) <@sql name='roleFromTemplate2' namespace='tpl/role_common'/>"
 ```
 
 ##### freemarker 的 include 机制
@@ -1280,9 +1298,9 @@ roleFromTemplate: >
 ```sql
 selectWithTemplate:
   query: |
-    select /*prop alias="_r"*/* /*<tpl id='roleFromTemplate2' namespace='role_common'>*/
+    select /*prop alias="_r"*/* /*<tpl name='roleFromTemplate2' namespace='role_common'>*/
   count: |
-    select count(*) /*<sql id='roleFromTemplate2' namespace='role_common'>*/
+    select count(*) /*<sql name='roleFromTemplate2' namespace='role_common'>*/
 ```
 
 ## Mapper 详解
@@ -1313,7 +1331,7 @@ public interface UserMapper2 extends Hammer {
 
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericHammer<User> {
+public interface UserMapper3 extends GenericHammer<User, Integer> {
 	// methods
 }
 ```
@@ -1328,21 +1346,21 @@ public interface UserMapper3 extends GenericHammer<User> {
 @Mapper(namespace = "user")
 public interface UserMapper4 extends HammerSupport {
 	// methods
-    default User getByEmailAndPass(String email, String pass) {
+    default User getByUsernameAndPwd(String username, String pwd) {
         return getHammer().query(User.class).where()
-            .eq(User::getEmail, email)
-            .and().eq(User::getPass, pass)
+            .eq(User::getUsername, username)
+            .and().eq(User::getPwd, pwd)
             .single();
     }
 }
 
 @Mapper(namespace = "user")
-public interface UserMapper5 extends GenericHammerSupport<User, Long> {
+public interface UserMapper5 extends GenericHammerSupport<User, Integer> {
 	// methods    
-	default User getByEmailAndPass(String email, String pass) {
+	default User getByUsernameAndPwd(String username, String pwd) {
         return getHammer().query().where()
-            .eq(User::getEmail, email)
-            .and().eq(User::getPass, pass)
+            .eq(User::getUsername, username)
+            .and().eq(User::getPwd, pwd)
             .single();
     }
 }
@@ -1445,7 +1463,7 @@ public interface UserMapper {
 
     User selectByUsername(@Param("username") String username);
 
-    Map<String, Object> selectByUsername2(@Param("username") String username);
+    Map<String, Serializable> selectByUsername2(@Param("username") String username);
 
     User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String pwd);
 
@@ -1476,24 +1494,24 @@ public interface UserMapper {
     String selectString2(@Param("id") Integer id);
 
     @Template(namespace = "user_info")
-    List<Map<String, Object>> select2();
+    List<Map<String, Serializable>> select2();
 
     @Template(namespace = "user_info", name = "select2")
-    List<Map<String, Object>> select2(@Param(type = ParamType.PAGE_OFFSET) int offset,
+    List<Map<String, Serializable>> select2(@Param(type = ParamType.PAGE_OFFSET) int offset,
             @Param(type = ParamType.PAGE_LIMIT) int limit);
 
     @Template(namespace = "user_info", name = "select2")
-    List<Map<String, Object>> select2(Page page);
+    List<Map<String, Serializable>> select2(Page page);
 
     @Template(namespace = "user_info", name = "select2")
-    PaginationResults<Map<String, Object>> select2Page(@Param(type = ParamType.PAGE_OFFSET) int offset,
+    PaginationResults<Map<String, Serializable>> select2Page(@Param(type = ParamType.PAGE_OFFSET) int offset,
             @Param(type = ParamType.PAGE_LIMIT) int limit);
 
     @Template(namespace = "user_info", name = "select2")
-    PaginationResults<Map<String, Object>> select2Page(Page page);
+    PaginationResults<Map<String, Serializable>> select2Page(Page page);
 
     @Template(namespace = "user_info", name = "selectById")
-    List<Map<String, Object>> selectById2(@Param("id") Integer id);
+    List<Map<String, Serializable>> selectById2(@Param("id") Integer id);
 }
 
 @Mapper(namespace = "role")
@@ -1502,17 +1520,17 @@ public interface RoleMapper {
     @Template("select <@prop repo='role'/> from role")
     List<Role> list();
 
-    @Template("select <@prop repo='role'/> from role")
+    @Template(name = "list2", value = "select <@prop repo='role'/> from role")
     List<Role> list(Page page);
 
-    @Template("select <@prop repo='role'/> from role")
+    @Template(name = "list3", value = "select <@prop repo='role'/> from role")
     List<Role> list(@Param(type = ParamType.PAGE_OFFSET) int offset, @Param(type = ParamType.PAGE_LIMIT) int limit);
 
-    @Template("select <@prop repo='role'/> from role")
+    @Template(value = "select <@prop repo='role'/> from role")
     PaginationResults<Role> page(Page page);
 
     @Template("select <@prop repo='role'/> from role")
-    PaginationResults<Role> page(@Param(type = ParamType.PAGE_OFFSET) int offset,
+    PaginationResults<Role> page2(@Param(type = ParamType.PAGE_OFFSET) int offset,
             @Param(type = ParamType.PAGE_LIMIT) int limit);
 
     @Template("select <@prop repo='role'/> from role <@where><@and if = name??>name like :name</@and></@where>")
@@ -1524,7 +1542,7 @@ public interface RoleMapper {
     @Template
     List<Role> selectByName(@Param("name") String name);
 
-    @Template("select <@prop alias=\"_r\"/> <@tpl id='roleFromTemplate2' namespace='tpl/role_common'/>")
+    @Template("select <@prop alias=\"_r\"/> <@tpl name='roleFromTemplate2' namespace='tpl/role_common'/>")
     List<Role> selectWithTemplate(@Param("name") String name);
 
     @Template("insert into role(name, descp) values(:name, :descp)")
@@ -1539,7 +1557,7 @@ public interface RoleMapper {
     @Template("select <@prop repo='role'/> from role where name = :name")
     Role getByName(@Param("name") String name);
 
-    @Template(value = "select count(*) from role", type = TplType.QUERY)
+    @Template(value = "select count(*) from role", type = ExecutionType.QUERY)
     int countRole();
 
     @Template("select count(*) from role")
@@ -1583,7 +1601,7 @@ Integer selectAvg2(@Param("age") Integer age);
 
 String selectString2(@Param("id") Integer id);
 
-@Template(value = "select count(*) from role", type = TplType.QUERY)
+@Template(value = "select count(*) from role", type = ExecutionType.QUERY)
 int countRole();
 
 @Template("select count(*) from role")
@@ -1598,7 +1616,7 @@ long countRole3();
 ```java
 User selectByUsername(@Param("username") String username);
 
-Map<String, Object> selectByUsername2(@Param("username") String username);
+Map<String, Serializable> selectByUsername2(@Param("username") String username);
 
 User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String pwd);
 ```
@@ -1611,7 +1629,7 @@ List<User> selectByAge2(@Param("age") Integer age);
 List<User> selectById(@Param("id") Integer id);
 
 @Template(namespace = "user_info")
-List<Map<String, Object>> select2();
+List<Map<String, Serializable>> select2();
 ```
 
 #### [**`模板SQL分页查询`**](#模板SQL分页查询)章节介绍的 API 对应的 Mapper 调用
@@ -1638,21 +1656,21 @@ PaginationResults<User> selectByAge2Page(@Param("age") Integer age, Page page);
 
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericHammer<User> {
+public interface UserMapper3 extends GenericHammer<User, Integer> {
 
     User selectByUsername(@Param("username") String username);
     // methods ....
 
 	default User getByUsernameAndPassword(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("pwd", pwd).single();
+        return query().where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 
     default User getByUsernameAndPassword2(String username, String pwd) {
-        return query().where().eq("username", username).and().eq("password", pwd).single();
+        return query().where().eq(User::getUsername, username).and().eq(User::getPwd, pwd).single();
     }
 
     default User getByUsernameAndPassword3(String username, String pwd) {
-        return query().where().property("username").eq(username).and().property("pwd").eq(pwd).single();
+        return query().where().property(User::getUsername).eq(username).and().property(User::getPwd).eq(pwd).single();
     }
 
      default int updatePasswordByUsername(String username, String pwd) {
@@ -1670,6 +1688,14 @@ public interface UserMapper3 extends GenericHammer<User> {
 public interface HammerSupportMapper extends HammerSupport {
     default User get(Long id) {
         return getHammer().get(id, User.class);
+    }
+    User getByUsername(String username);
+}
+
+@Mapper
+public interface GenericHammerSupportMapper extends GenericHammerSupport<User, Integer> {
+    default User get(Long id) {
+        return getHammer().get(id);
     }
     User getByUsername(String username);
 }
