@@ -44,7 +44,7 @@ int result = hammer.update(u);// 或者 hammer.merge(u); // update和merge区别
 int result = hammer.delete(u);
 
 // DSL模式更新数据
-int result = hammer.update(User.class)
+int result = hammer.update("user")
     			.set("name", newName)
     			.property("descp").set(newDescp)
     			.where()
@@ -58,7 +58,7 @@ int result = hammer.update(User.class)
     			.execute();
 
 // DSL模式更新自增长数据
-int result = hammer.update(User.class)
+int result = hammer.update("user)
     			.increase("age", 1)
     			.where()
     			.eq("id", id)
@@ -70,7 +70,7 @@ int result = hammer.update(User.class)
     			.execute();
 
 // DSL模式删除数据
-int result = hammer.delete(Role.class)
+int result = hammer.delete("role")
     			.where()
     			.in("id", new Integer[] { r.getId(), r2.getId() })
     			.or()
@@ -153,7 +153,7 @@ public interface UserMapper {
 ```java
 // 除了可以使用模板sql进行查询外，可以继承Hammer、GenericHammer进行api操作,或者继承HammerSupport通过getHammer获取hammer对象进行操作，需要使用jdk8的default method
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericHammer<User> {
+public interface UserMapper3 extends GenericHammer<User, Integer> {
 	// 这里的query方法就是GenericHammer接口定义的方法
     default User getByUsernameAndPassword2(String username, String pwd) {
         return query().where().eq("username", username).and().eq("password", pwd).single();
@@ -621,27 +621,27 @@ _条件查询方法_
 #### 数据更新
 
 ```java
-hammer.update(Role.class).set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
+hammer.update("role").set("name", newName).property("descp").set(newDescp).where().eq("id", id).execute();
 hammer.update(Role.class).set(Role::getName, newName).property(Role::getDescp).set(newDescp).where().eq(Role::getId, id).execute();
 ```
 
 #### 数据自增长更新
 
 ```java
-hammer.update(User.class).increase("age", 1).where().eq("id", id).execute();
+hammer.update("user").increase("age", 1).where().eq("id", id).execute();
 hammer.update(User.class).increase(User::getAge, 1).where().eq(User::getId, id).execute();
 
-hammer.update(User.class).propertyNumber("age").increase(1).where().eq("id", id).execute();
-hammer.update(User.class).propertyNumber(User::getAge).increase(1).where().eq(User::getId, id).execute();
+hammer.update("user").propertyNumber("age").increase(1).where().eq("id", id).execute();
+hammer.update(User.class).property(User::getAge).increase(1).where().eq(User::getId, id).execute();
 ```
 
 ### DSL 模式删除数据
 
 ```java
-hammer.delete(Role.class).where().eq("id", id).execute();
+hammer.delete("role").where().eq("id", id).execute();
 hammer.delete(Role.class).where().eq(Role::getId, id).execute();
 
-hammer.delete(Role.class).where().in("id", new Integer[] { id1, id2 }).or().eq("id", id3)
+hammer.delete("role").where().in("id", new Integer[] { id1, id2 }).or().eq("id", id3)
             .or().ge("id", id4).execute();
 hammer.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or().eq(Role::getId, id3)
             .or().ge(Role::getId, id4).execute();
@@ -657,7 +657,8 @@ hammer.delete(Role.class).where().in(Role::getId, new Integer[] { id1, id2 }).or
 `single` 查询唯一值
 
 ```java
-Role r = hammer.query(Role.class).where().eq("id", id).single();
+Role r = hammer.query("role").where().eq("id", id).single();
+Role r = hammer.query(Role.class).where().eq(Role::getId, id).single();
 ```
 
 #### 查询列表
@@ -665,7 +666,8 @@ Role r = hammer.query(Role.class).where().eq("id", id).single();
 `list` 查询列表
 
 ```java
-List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).list();
+List<Role> roles = hammer.query("role").where().gt("id", 5).and().le("id", 10).list();
+List<Role> roles = hammer.query(Role.class).where().gt(Role::getId, 5).and().le(Role::getId, 10).list();
 ```
 
 #### 查询分页列表
@@ -673,8 +675,8 @@ List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 1
 `limit` 设置分页参数
 
 ```java
-List<Role> roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2).list();
-roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2, 3).list();
+List<Role> roles = hammer.query("role").where().gt("id", 5).and().le("id", 10).limit(2).list();
+List<Role> roles = hammer.query(Role.class).where().gt(Role::getId, 5).and().le(Role::getId, 10).limit(2, 3).list();
 ```
 
 #### 查询排序列表
@@ -684,7 +686,8 @@ roles = hammer.query(Role.class).where().gt("id", 5).and().le("id", 10).limit(2,
 `desc` 对传入属性进行降序
 
 ```java
-List<Role> roles = hammer.query(Role.class).where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
+List<Role> roles = hammer.query("role").where().eq("id", 4).or().group().gt("id", 5).and().le("id", 10).sort().asc("id").desc("name").list();
+List<Role> roles = hammer.query(Role.class).where().eq(Role::getId, 4).or().group().eq(Role::getId, 5).and().le(Role::getId, 10).sort().asc(Role::getId).desc(Role::getName).limit(2, 3).list();
 ```
 
 ## 模板 SQL 执行
@@ -1313,7 +1316,7 @@ public interface UserMapper2 extends Hammer {
 
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericHammer<User> {
+public interface UserMapper3 extends GenericHammer<User, Integer> {
 	// methods
 }
 ```
@@ -1337,7 +1340,7 @@ public interface UserMapper4 extends HammerSupport {
 }
 
 @Mapper(namespace = "user")
-public interface UserMapper5 extends GenericHammerSupport<User, Long> {
+public interface UserMapper5 extends GenericHammerSupport<User, Integer> {
 	// methods    
 	default User getByEmailAndPass(String email, String pass) {
         return getHammer().query().where()
@@ -1638,7 +1641,7 @@ PaginationResults<User> selectByAge2Page(@Param("age") Integer age, Page page);
 
 ```java
 @Mapper(namespace = "user")
-public interface UserMapper3 extends GenericHammer<User> {
+public interface UserMapper3 extends GenericHammer<User, Integer> {
 
     User selectByUsername(@Param("username") String username);
     // methods ....
@@ -1670,6 +1673,14 @@ public interface UserMapper3 extends GenericHammer<User> {
 public interface HammerSupportMapper extends HammerSupport {
     default User get(Long id) {
         return getHammer().get(id, User.class);
+    }
+    User getByUsername(String username);
+}
+
+@Mapper
+public interface GenericHammerSupportMapper extends GenericHammerSupport<User, Integer> {
+    default User get(Long id) {
+        return getHammer().get(id);
     }
     User getByUsername(String username);
 }
