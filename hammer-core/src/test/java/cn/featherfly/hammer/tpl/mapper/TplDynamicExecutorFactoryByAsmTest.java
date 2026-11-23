@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -73,10 +74,9 @@ public class TplDynamicExecutorFactoryByAsmTest {
         config = new HammerConfigImpl();
 
         HammerConfigImpl hammerConfig = new HammerConfigImpl(true);
-        hammerConfig.setValidatorConfig(
-            new ValidatorConfigImpl(
-                new JavaxValidator(Validation.byDefaultProvider().configure().buildValidatorFactory().getValidator(),
-                    HammerValidateException::new)));
+        hammerConfig.setValidatorConfig(new ValidatorConfigImpl(
+            new JavaxValidator(Validation.byDefaultProvider().configure().buildValidatorFactory().getValidator(),
+                HammerValidateException::new)));
         config = hammerConfig;
     }
 
@@ -171,8 +171,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         Class<User> userClass = User.class;
         Long userId = 1L;
 
-        GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
-            config);
+        GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass), config);
 
         User u = mapper.getByUsername(null);
         assertNull(u);
@@ -187,8 +186,7 @@ public class TplDynamicExecutorFactoryByAsmTest {
         Class<User> userClass = User.class;
         Long userId = 1L;
 
-        GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass),
-            config);
+        GenericHammerSupportMapper mapper = ClassUtils.newInstance(type, getHammer(userId, userClass), config);
 
         User u = mapper.getUser(null, null);
         assertNull(u);
@@ -223,6 +221,83 @@ public class TplDynamicExecutorFactoryByAsmTest {
 
         User u = mapper.get(userId);
         assertNull(u);
+    }
+
+    /**
+     * 回归测试：继承 GenericHammer 并覆写重载的 update(User) / update(List&lt;User&gt;)
+     * 时，实现类应能正常生成并调用，不应因桥接方法或泛型重载匹配错误
+     * 而抛出 VerifyError/ClassCastException。
+     */
+    @Test
+    public void testOverloadedUpdateWithValidation() throws Exception {
+        @SuppressWarnings("unchecked")
+        Class<OverloadUpdateMapper> type = (Class<OverloadUpdateMapper>) ClassUtils
+            .forName(factory.create(OverloadUpdateMapper.class, config));
+
+        // 实现类不应生成 update(Object) 桥接方法；桥接由父类提供
+        for (Method m : type.getDeclaredMethods()) {
+            if (m.getName().equals("update")) {
+                assertEquals(m.isBridge(), false);
+            }
+        }
+
+        OverloadUpdateMapper mapper = ClassUtils.newInstance(type, getHammer(1L, User.class), config);
+
+        // 两个重载都应能正常调用，不再因错误的父方法匹配而抛出 VerifyError/ClassCastException
+        assertEquals(mapper.update(new User()), 0);
+        mapper.update(Collections.singletonList(new User()));
+
+        // 参数校验字节码仍被正确生成：单个带 @NotNull 的方法应对 null 抛异常
+        try {
+            mapper.validate(null);
+            throw new AssertionError("validate(null) should reject null");
+        } catch (HammerValidateException e) {
+            // expected
+        }
+        assertEquals(mapper.validate(new User()), 0);
+    }
+
+    @Test
+    public void testOverloadedUpdateWithValidation2() throws Exception {
+        @SuppressWarnings("unchecked")
+        Class<OverloadUpdateMapper2> type = (Class<OverloadUpdateMapper2>) ClassUtils
+            .forName(factory.create(OverloadUpdateMapper2.class, config));
+
+        // 实现类不应生成 update(Object) 桥接方法
+        for (Method m : type.getDeclaredMethods()) {
+            if (m.getName().equals("update")) {
+                assertEquals(m.isBridge(), false);
+            }
+        }
+
+        OverloadUpdateMapper2 mapper = ClassUtils.newInstance(type, getHammer(1L, User.class), config);
+
+        // 两个同名重载的 default 方法都应正常生成并调用
+        assertEquals(mapper.update(new User()), 1);
+        assertEquals(mapper.update(Collections.emptyList()), 0);
+        assertEquals(mapper.update(Collections.singletonList(new User())), 1);
+
+        // 参数校验字节码仍被正确生成
+        try {
+            mapper.validate(null);
+            throw new AssertionError("validate(null) should reject null");
+        } catch (HammerValidateException e) {
+            // expected
+        }
+        assertEquals(mapper.validate(new User()), 0);
+
+        try {
+            mapper.update((User) null);
+            throw new AssertionError("validate(null) should reject null");
+        } catch (HammerValidateException e) {
+            // expected
+        }
+        try {
+            mapper.update((List<User>) null);
+            throw new AssertionError("validate(null) should reject null");
+        } catch (HammerValidateException e) {
+            // expected
+        }
     }
 
     @SuppressWarnings("unchecked")

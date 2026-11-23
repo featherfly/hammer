@@ -649,6 +649,12 @@ public class TplDynamicExecutorFactory implements Opcodes {
             idVisitor.visitClassType(Type.getInternalName(idType));
             idVisitor.visitEnd();
             superVisitor.visitEnd();
+            // 类签名必须同时包含实现的接口，否则 Class#getGenericInterfaces() 会返回空数组，
+            // 依赖泛型解析的框架（Bean Validation 使用的 ClassMate）看不到接口上声明的方法，
+            // 会把同名的重载方法错误地合并成一个方法，参数校验被静默跳过（参见 OverloadUpdateMapper2）。
+            SignatureVisitor interfaceVisitor = signature.visitInterface();
+            interfaceVisitor.visitClassType(Asm.getName(type));
+            interfaceVisitor.visitEnd();
 
             cn.signature = signature.toString();
 
@@ -718,6 +724,12 @@ public class TplDynamicExecutorFactory implements Opcodes {
             java.lang.reflect.Type> genericTypes = ClassUtils.getInterfaceGenericTypeMap(type, GenericHammer.class);
         int methodIndex = 0;
         for (Method method : type.getDeclaredMethods()) {
+            // 编译器为泛型覆写生成的桥接/合成方法会继承被桥接方法的参数约束注解，
+            // 若为其生成实现与校验，传给校验器的 Method 参数类型是擦除后的类型，
+            // 与实际参数类型不一致，会导致参数校验失效。桥接委托由父类提供。
+            if (method.isBridge() || method.isSynthetic()) {
+                continue;
+            }
             boolean needValidation = needValidation(method, hammerConfig);
             if (method.isDefault() && !needValidation) {
                 continue;
@@ -1404,20 +1416,44 @@ public class TplDynamicExecutorFactory implements Opcodes {
 
     private boolean isSameParameter(Method method, Method overwriteMethod,
         Map<String, java.lang.reflect.Type> genericTypes) {
-        Class<?>[] types = new Class[method.getParameterCount()];
-        int i = 0;
-        for (java.lang.reflect.Type type : method.getGenericParameterTypes()) {
-            if (type instanceof Class) {
-                types[i] = (Class<?>) type;
-            } else {
-                java.lang.reflect.Type genericType = genericTypes.get(type.getTypeName());
-                if (genericType == null) {
-                    return false;
-                }
-                types[i] = (Class<?>) genericType;
+        java.lang.reflect.Type[] genericParameterTypes = method.getGenericParameterTypes();
+        Class<?>[] parameterTypes = overwriteMethod.getParameterTypes();
+        if (genericParameterTypes.length != parameterTypes.length) {
+            return false;
+        }
+        // 必须真正比较解析后的类型，否则重载的泛型方法（如 update(E) 与 update(List<E>)）
+        // 会被错误地匹配为同一个父方法，导致生成的实现方法描述符与调用不匹配。
+        for (int i = 0; i < genericParameterTypes.length; i++) {
+            Class<?> resolvedType = resolveType(genericParameterTypes[i], genericTypes);
+            if (resolvedType == null || !resolvedType.equals(parameterTypes[i])) {
+                return false;
             }
         }
         return true;
+    }
+
+    private Class<?> resolveType(java.lang.reflect.Type type,
+        Map<String, java.lang.reflect.Type> genericTypes) {
+        if (type instanceof Class) {
+            return (Class<?>) type;
+        }
+        if (type instanceof java.lang.reflect.TypeVariable) {
+            java.lang.reflect.Type resolved = genericTypes.get(type.getTypeName());
+            return resolved == null ? null : resolveType(resolved, genericTypes);
+        }
+        if (type instanceof java.lang.reflect.ParameterizedType) {
+            return (Class<?>) ((java.lang.reflect.ParameterizedType) type).getRawType();
+        }
+        if (type instanceof java.lang.reflect.GenericArrayType) {
+            Class<?> componentType = resolveType(
+                ((java.lang.reflect.GenericArrayType) type).getGenericComponentType(), genericTypes);
+            return componentType == null ? null : java.lang.reflect.Array.newInstance(componentType, 0).getClass();
+        }
+        if (type instanceof java.lang.reflect.WildcardType) {
+            java.lang.reflect.Type[] upperBounds = ((java.lang.reflect.WildcardType) type).getUpperBounds();
+            return upperBounds.length == 0 ? Object.class : resolveType(upperBounds[0], genericTypes);
+        }
+        return null;
     }
 
     /**

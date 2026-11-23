@@ -3,9 +3,11 @@ TODO dsl实体查询加入以下（EntityQuery）
 1. fetch多次(大于1)，数据返回加入Object[] values(), <T extends Tuple> T tuple() 和 List<Object[]> listValues()，<T extends Tuple> List<T> listTuple() 
 4. Repository DSL update 从数据库元数据提取数据库的数据数据约束，在程序内进行校验
 
-# 0.7.7 
+# 0.7.7 2026-11-28
 
 1. 修复 mapper default method 返回基础类型并进行了JSR-380注解标注，生成mapper实现报错
+
+2. 修复重载方法参数校验失效
 
 # 0.7.6 2026-10-22
 

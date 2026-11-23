@@ -69,7 +69,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
 
     @Test
     public void testInsertBatchSingleSql() {
-        String insertSql = Dialects.mysql().dml().insertBatch("user_info",
+        String insertSql = Dialects.mysql().dml().insertBatch("user_info", "id",
             new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize, true);
         Timer timer = Timer.start();
         ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);
@@ -148,7 +148,7 @@ public class JdbcPerformanceTest extends HammerJdbcTestBase {
 
     @Test
     public void testInsertBatchSingleSql2() {
-        String insertSql = Dialects.mysql().dml().insertBatch("user_info",
+        String insertSql = Dialects.mysql().dml().insertBatch("user_info", "id",
             new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, batchSize, true);
         Timer timer = Timer.start();
         ConnectionWrapper conn = JdbcUtils.getConnectionWrapper(dataSource);

@@ -283,7 +283,7 @@ public abstract class AbstractJdbc implements Jdbc {
                     columnNames, metadata.getTable(tableName).getPrimaryColumns().get(0).isAutoincrement()),
                 keyHolder, args);
         } else {
-            return update(getDialect().dml().insert(tableName, columnNames, false), keyHolder, args);
+            return update(getDialect().dml().insert(tableName, columnNames), keyHolder, args);
         }
     }
 

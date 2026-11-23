@@ -94,7 +94,7 @@ public class JdbcBenchmark2 extends AbstractBenchmark {
      */
     @Override
     protected void doInsertBatch(List<UserInfo2> userInfos) {
-        String insertSql = Dialects.mysql().dml().insert("user_info",
+        String insertSql = Dialects.mysql().dml().insert("user_info", "id",
             new String[] { "id", "user_id", "name", "descp", "province", "city", "district" }, true);
         try {
             PreparedStatement prep = conn.prepareStatement(insertSql);
